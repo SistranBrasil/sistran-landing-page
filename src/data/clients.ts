@@ -1,0 +1,28 @@
+// Nomes de seguradoras/parceiros mencionados na trajetória da Sistran.
+// Reciclados a partir de TIMELINE_EVENTS. Usados na wall of clients textual.
+export const CLIENT_NAMES: readonly string[] = [
+  'Bradesco Seguros',
+  'Mapfre',
+  'Zurich Brasil',
+  'AIG',
+  'Sompo',
+  'Marítima',
+  'Allianz',
+  'Generali',
+  'Santander',
+  'Swiss Re',
+  'Seguros Unimed',
+  'Assurant',
+  'Notre Dame',
+  'Royal & Sun Alliance',
+  'QBE Brasil',
+  'IRB',
+  'Aliança do Brasil',
+  'Brasil Seguradora',
+  'Winterthur',
+  'MBM',
+  'Combined',
+  'BTG / Too Seguros',
+  'BCN',
+  'ENS',
+] as const;

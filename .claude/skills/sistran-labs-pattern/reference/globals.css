@@ -1,0 +1,290 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===========================================================
+   Sistran Labs — Design tokens globais (skill luminna-lp-builder)
+   Fundo escuro sofisticado, atmosfera de IA/dados, glass cards.
+   =========================================================== */
+
+:root {
+  /* Paleta Luminna AI (SISTRAN) */
+  --color-bg: #004D8A;
+  --color-bg-alt: #0079CB;
+  --color-bg-deep: #005FA3;
+  --color-grid: rgba(255, 255, 255, 0.06);
+  --color-cyan: #0099E6;
+  --color-sky: #78C9F8;
+  --color-blue: #0079CB;
+  --color-violet: #7c3aed;
+  --color-purple: #a855f7;
+  --radius-card: 24px;
+  --border-soft: rgba(255, 255, 255, 0.14);
+  --border-active: rgba(0, 153, 230, 0.45);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: #f8fafc;
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Fundo global Luminna: navy profundo + orbs azuis suaves */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse at 80% 10%,  rgba(0, 153, 230, 0.28), transparent 45%),
+    radial-gradient(ellipse at 10% 20%,  rgba(0,  77, 138, 0.55), transparent 40%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 121, 203, 0.20), transparent 50%),
+    linear-gradient(180deg, #004D8A 0%, #0079CB 55%, #004D8A 100%);
+  pointer-events: none;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 68%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 68%);
+  pointer-events: none;
+}
+
+/* ===========================================================
+   Componentes utilitários
+   =========================================================== */
+@layer components {
+  /* Container padrão */
+  .container-lp {
+    @apply mx-auto w-full max-w-container px-5 sm:px-6 lg:px-8;
+  }
+
+  /* Espaçamento vertical de seção */
+  .section-py {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+
+  /* Card glass padrão */
+  .glass-card {
+    background: linear-gradient(135deg, rgba(0, 55, 100, 0.88), rgba(0, 95, 163, 0.55));
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 18px 40px -16px rgba(0, 40, 80, 0.8);
+  }
+
+  /* Card com hover ativo */
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 ease-out;
+  }
+  .glass-card-hover:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-active);
+    box-shadow: 0 24px 50px -16px rgba(0, 121, 203, 0.30);
+  }
+
+  /* Texto com gradiente */
+  .text-gradient {
+    background: linear-gradient(135deg, #ffffff 0%, #002D5C 52%, #001A3D 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Texto gradiente acentuado (azul escuro) */
+  .text-gradient-accent {
+    background: linear-gradient(135deg, #002D5C 0%, #001A3D 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Botão primário */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all duration-300;
+    background: linear-gradient(135deg, #0079CB 0%, #0099E6 100%);
+    box-shadow: 0 12px 30px -10px rgba(0, 121, 203, 0.50);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px -8px rgba(0, 121, 203, 0.65);
+  }
+
+  /* Botão secundário / outline glass */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-ink transition-all duration-300;
+    border: 1px solid var(--border-soft);
+    background: rgba(0, 55, 100, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+  .btn-ghost:hover {
+    border-color: var(--border-active);
+    background: rgba(0, 77, 138, 0.75);
+    color: #002D5C;
+  }
+
+  /* Pill / chip */
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium;
+    background: rgba(0, 55, 100, 0.70);
+    border: 1px solid var(--border-soft);
+    color: #cbd5e1;
+  }
+
+  /* Pill de categoria com tom acentuado */
+  .pill-accent {
+    @apply pill;
+    color: #002D5C;
+    border-color: rgba(0, 45, 92, 0.40);
+    background: rgba(0, 45, 92, 0.14);
+  }
+
+  /* Eyebrow (rótulo acima de título) */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em];
+    color: #002D5C;
+  }
+}
+
+/* ===========================================================
+   Alternância de fundo: escuro (padrão) ↔ claro (Luminna light)
+   =========================================================== */
+
+/* Seção clara — sobrepõe o fundo escuro do body */
+.section-light {
+  background: radial-gradient(50% 80% at 50% 50%, #FEFEFF 0%, #CCE4F5 100%);
+  position: relative;
+  isolation: isolate;
+}
+
+/* Overrides de cor para texto sobre fundo claro */
+.section-light .text-ink-override,
+.section-light h2,
+.section-light h3,
+.section-light h4,
+.section-light p,
+.section-light span:not([class*="badge"]):not([class*="pill"]):not([class*="eyebrow"]) {
+  color: #0a1f44;
+}
+.section-light .eyebrow,
+.section-light [class*="eyebrow"],
+.section-light .text-cyan-glow {
+  color: #0079CB !important;
+}
+.section-light .text-ink-muted,
+.section-light [class*="text-ink-muted"] {
+  color: #3d5a80 !important;
+}
+.section-light .text-ink-faint,
+.section-light [class*="text-ink-faint"] {
+  color: #5c7a9e !important;
+}
+.section-light .glass-card,
+.section-light .glass-card-hover {
+  background: linear-gradient(135deg, rgba(255,255,255,0.75), rgba(255,255,255,0.45));
+  border-color: rgba(0,121,203,0.14);
+  box-shadow: 0 8px 32px -8px rgba(0,121,203,0.12);
+}
+.section-light .glass-card-hover:hover {
+  box-shadow: 0 16px 40px -8px rgba(0,121,203,0.22);
+  border-color: rgba(0,121,203,0.30);
+}
+
+/* ===========================================================
+   Animação reveal-on-scroll
+   =========================================================== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Acessibilidade: respeitar redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Foco visível acessível */
+:focus-visible {
+  outline: 2px solid #0079CB;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Scrollbar global discreta */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #004D8A;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 121, 203, 0.40);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 121, 203, 0.65);
+}
+
+/* Scrollbar elegante para modais */
+.modal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 201, 248, 0.25) transparent;
+}
+.modal-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.modal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 12px 0;
+}
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(120, 201, 248, 0.20);
+  border-radius: 999px;
+  transition: background 0.2s;
+}
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 201, 248, 0.50);
+}
+.modal-scroll::-webkit-scrollbar-thumb:active {
+  background: rgba(120, 201, 248, 0.70);
+}
