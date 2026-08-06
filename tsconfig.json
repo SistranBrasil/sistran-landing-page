@@ -17,5 +17,5 @@
     "paths": { "@/*": ["./src/*"] }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "linha-tempo-sistran-react"]
+  "exclude": ["node_modules", "linha-tempo-sistran-react", "sistran-video", "scroll-world"]
 }
