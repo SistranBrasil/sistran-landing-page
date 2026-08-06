@@ -127,7 +127,8 @@ function EventCard({ e }: { e: SistranEvent }) {
 export default function EventsGrid() {
   const rm = useReducedMotion();
   const [filter, setFilter] = useState<Filter>('todos');
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true);
+  const userPaused = useRef(false);
   const [activeIdx, setActiveIdx] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
   const timer = useRef<number | null>(null);
@@ -264,7 +265,12 @@ export default function EventsGrid() {
             </button>
             <button
               type="button"
-              onClick={() => setPlaying((p) => !p)}
+              onClick={() =>
+                setPlaying((p) => {
+                  userPaused.current = p;
+                  return !p;
+                })
+              }
               className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#0ed8f6]/40 bg-[#0079CB]/25 text-white transition-colors hover:border-[#0ed8f6]/70 hover:bg-[#0079CB]/40"
               aria-label={playing ? 'Pausar carrossel' : 'Reproduzir carrossel'}
             >
@@ -295,6 +301,9 @@ export default function EventsGrid() {
             role="region"
             aria-label="Carrossel de eventos"
             onMouseEnter={() => setPlaying(false)}
+            onMouseLeave={() => {
+              if (!userPaused.current) setPlaying(true);
+            }}
           >
             {visible.map((e) => (
               <EventCard key={e.id} e={e} />

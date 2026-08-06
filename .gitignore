@@ -7,3 +7,6 @@ out
 .claude/gsap-skills/
 .claude/skills/scroll-world/
 scroll-world/
+
+.vercel
+.env*

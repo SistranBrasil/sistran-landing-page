@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { gsap } from 'gsap';
 import { useReducedMotion } from '@/lib/motion';
 
-const WORDS = ['Alta Performance', 'Comprometimento', 'Precisão', 'Escala'] as const;
+const WORDS = ['Alta Performance', 'Precisão', 'Escala'] as const;
 
 export default function MorphingHeadline() {
   const rm = useReducedMotion();
