@@ -67,7 +67,9 @@ export default function PartnersTimeline({ id = 'implementacoes' }: { id?: strin
             </div>
           </div>
 
-          <div className="filters" aria-label="Filtrar linha do tempo">
+          {/* data-lenis-prevent: sem isto o Lenis captura o wheel/trackpad e a
+              barra de filtros nao rola na horizontal. */}
+          <div className="filters" data-lenis-prevent aria-label="Filtrar linha do tempo">
             <button
               className={activeFilter === 'todos' ? 'active' : ''}
               onClick={() => chooseFilter('todos')}

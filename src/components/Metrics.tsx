@@ -55,7 +55,7 @@ function MetricBig({ m, index }: { m: (typeof METRICS)[number]; index: number })
       ref={liRef}
       initial={rm ? false : { opacity: 0, y: 40, filter: 'blur(6px)' }}
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-      viewport={{ once: true, margin: '-15% 0px -15% 0px' }}
+      viewport={{ once: true, margin: '-80px 0px -80px 0px' }}
       transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       className={`relative flex flex-col gap-3 border-b border-[#0079CB]/12 py-10 md:py-14 last:border-b-0 ${align}`}
     >

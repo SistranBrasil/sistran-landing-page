@@ -58,7 +58,10 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   /* `clip` (nao `hidden`): hidden cria um scroll container e quebra o
-     position: sticky do hero. Ver HeroScrollWrapper. */
+     position: sticky do hero. Ver HeroScrollWrapper.
+     Sem fallback para `hidden`: em engines que nao suportam `clip` a
+     declaracao e descartada, e um `hidden` aqui quebraria todo sticky da
+     pagina. Preferimos overflow visivel a sticky congelado. */
   overflow-x: clip;
 }
 
@@ -468,6 +471,30 @@ body::after {
     opacity: 1;
     transform: none;
   }
+  /* CRITICO: qualquer elemento que o JS esconde para depois revelar precisa de
+     um estado final VISIVEL aqui. Sem isto, quem tem "reduzir movimento"
+     ligado (padrao em muitas maquinas Windows corporativas e VMs/RDP) ve a
+     pagina com blocos permanentemente invisiveis, nao apenas sem animacao. */
+  .reveal-stagger > *,
+  .reveal-stagger.is-visible > *,
+  [data-reveal],
+  [data-hero-chip],
+  [data-hero-headline],
+  [data-hero-paragraph],
+  [data-hero-ctas],
+  [data-hero-indicators],
+  [data-hero-mobilechips],
+  [data-hero-peek] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  /* O marquee horizontal fica parado, mas legivel: sem isto o track fica
+     deslocado em -50% e metade do conteudo sai da tela. */
+  .marquee-track {
+    animation: none;
+    transform: none !important;
+  }
 }
 
 /* Foco visível acessível */
@@ -515,10 +542,6 @@ body::after {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }
 }
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; }
-}
-
 /* Utility: hide scrollbar (para carrosséis) */
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }

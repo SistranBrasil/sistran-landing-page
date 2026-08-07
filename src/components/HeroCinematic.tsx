@@ -238,15 +238,26 @@ export default function HeroCinematic() {
       // if (video && wrapper) driveVideoByScroll(video, wrapper);
     }, wrapper);
 
-    // Pausar animações quando a aba está inativa
-    const onVis = () => {
-      if (document.hidden) gsap.globalTimeline.pause();
-      else gsap.globalTimeline.resume();
-    };
-    document.addEventListener('visibilitychange', onVis);
+    /* Rede de seguranca: o gsap.set acima (e o <style> do JSX) deixa o
+       conteudo em opacity 0. Se a timeline nao rodar (erro de JS, GSAP nao
+       carregado), o hero ficaria vazio para sempre. */
+    const safety = window.setTimeout(() => {
+      [chip, headline, paragraph, ctas, indicators, mobileChips, peek].forEach((el) => {
+        if (el && Number(getComputedStyle(el).opacity) < 0.05) {
+          gsap.set(el, { opacity: 1, y: 0, filter: 'none' });
+        }
+      });
+    }, 2500);
+
+    /* NAO pausar gsap.globalTimeline em visibilitychange. Isso congela TODAS
+       as animacoes do site, inclusive as de outras secoes, e se o componente
+       desmontar com a aba oculta o resume nunca acontece — a pagina fica
+       estatica de forma permanente. Era a causa dos "efeitos travados" em
+       algumas maquinas (abrir em nova aba de fundo, RDP, segundo monitor).
+       O browser ja throttla o requestAnimationFrame em abas ocultas. */
 
     return () => {
-      document.removeEventListener('visibilitychange', onVis);
+      window.clearTimeout(safety);
       ctx.revert();
     };
   }, [rm]);
@@ -459,7 +470,8 @@ export default function HeroCinematic() {
 
             {/* Mobile chips */}
             <div className="lg:hidden" data-hero-mobilechips>
-              <div className="-mx-2 flex snap-x snap-mandatory gap-2 overflow-x-auto px-2 pb-2">
+              <div data-lenis-prevent
+                className="-mx-2 flex snap-x snap-mandatory gap-2 overflow-x-auto px-2 pb-2">
                 {DIFFERENTIALS.map((d) => {
                   const Icon = getIcon(d.icon);
                   return (

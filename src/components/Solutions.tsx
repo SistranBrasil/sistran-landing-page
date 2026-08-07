@@ -182,7 +182,16 @@ export default function Solutions() {
         }),
       );
     });
+    /* As fontes carregam com `display: swap`: o texto reflui depois dos
+       triggers serem medidos, deixando os `start`/`end` em posicoes velhas —
+       o card ativo entao para de trocar. Refresh apos o layout estabilizar. */
+    ScrollTrigger.refresh();
+    const onResize = () => ScrollTrigger.refresh();
+    window.addEventListener('resize', onResize);
+    document.fonts?.ready.then(() => ScrollTrigger.refresh()).catch(() => {});
+
     return () => {
+      window.removeEventListener('resize', onResize);
       triggers.forEach((t) => t.kill());
     };
   }, [isDesktop]);

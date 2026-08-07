@@ -124,7 +124,8 @@ export default function Hero() {
 
             {/* Mobile chips */}
             <div className="lg:hidden">
-              <div className="-mx-2 flex snap-x snap-mandatory gap-2 overflow-x-auto px-2 pb-2">
+              <div data-lenis-prevent
+                className="-mx-2 flex snap-x snap-mandatory gap-2 overflow-x-auto px-2 pb-2">
                 {DIFFERENTIALS.map((d) => {
                   const Icon = getIcon(d.icon);
                   return (

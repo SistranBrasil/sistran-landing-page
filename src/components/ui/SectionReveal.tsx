@@ -30,9 +30,7 @@ export default function SectionReveal({
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    gsap.registerPlugin(ScrollTrigger);
     const el = ref.current;
     if (!el) return;
 
@@ -40,6 +38,24 @@ export default function SectionReveal({
       (t) => !t.closest('[data-reveal-skip]')
     );
     if (!targets.length) return;
+
+    /* Com reduced-motion nao escondemos nada: o conteudo simplesmente aparece.
+       Antes havia um early return ANTES do gsap.set, o que funcionava, mas
+       tambem impedia o fallback abaixo de existir. */
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    /* Rede de seguranca: o gsap.set abaixo deixa os alvos em opacity 0. Se o
+       ScrollTrigger nao disparar (posicao medida errada por reflow de fonte,
+       ancestral com overflow, erro de JS), o conteudo ficaria invisivel para
+       sempre. Este IntersectionObserver revela por conta propria caso o GSAP
+       nao tenha revelado dentro do tempo esperado. */
+    let revealed = false;
+    const forceVisible = () => {
+      if (revealed) return;
+      revealed = true;
+      gsap.set(targets, { opacity: 1, y: 0, filter: 'none', clearProps: 'filter,transform' });
+    };
 
     gsap.set(targets, { opacity: 0, y, filter: `blur(${blur}px)` });
 
@@ -57,11 +73,31 @@ export default function SectionReveal({
           start: 'top 82%',
           end: 'bottom 40%',
           toggleActions: 'play none none reverse',
+          onEnter: () => {
+            revealed = true;
+          },
         },
       });
     }, el);
 
-    return () => ctx.revert();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          // Deixa o ScrollTrigger agir primeiro; so intervem se ele nao agiu.
+          window.setTimeout(() => {
+            if (!revealed) forceVisible();
+          }, 600);
+        }
+      },
+      { threshold: 0.01 },
+    );
+    io.observe(el);
+
+    return () => {
+      io.disconnect();
+      ctx.revert();
+    };
   }, [selector, y, duration, stagger, blur]);
 
   return (

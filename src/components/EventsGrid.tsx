@@ -174,21 +174,43 @@ export default function EventsGrid() {
     })),
   ];
 
+  /* Filhos diretos da trilha (cada um envolve um <article>). Usar
+     getBoundingClientRect + scrollLeft em vez de offsetLeft: offsetLeft e
+     relativo ao offsetParent, que nao e a trilha (ela nao tem position),
+     entao a conta antiga errava o alvo. */
+  const slides = () =>
+    trackRef.current ? Array.from(trackRef.current.children) as HTMLElement[] : [];
+
+  /* `behavior: 'smooth'` em elemento + scroll-snap mandatory e inconsistente
+     no WebKit/Safari (o snap re-snapa no meio da animacao e o carrossel
+     "congela"). Fazemos o scroll instantaneo e animamos so quando o browser
+     suporta de forma confiavel. */
+  const supportsSmooth =
+    typeof document !== 'undefined' && 'scrollBehavior' in document.documentElement.style;
+
+  const scrollToLeft = (left: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    if (rm || !supportsSmooth) el.scrollLeft = left;
+    else el.scrollTo({ left, behavior: 'smooth' });
+  };
+
   const scrollBy = (dir: -1 | 1) => {
     const el = trackRef.current;
     if (!el) return;
-    const first = el.querySelector<HTMLElement>('article');
+    const first = slides()[0];
     const step = first ? first.offsetWidth + 20 : 400;
-    el.scrollBy({ left: step * dir, behavior: 'smooth' });
+    scrollToLeft(el.scrollLeft + step * dir);
   };
 
   const scrollToIdx = (idx: number) => {
     const el = trackRef.current;
     if (!el) return;
-    const cards = el.querySelectorAll<HTMLElement>('article');
-    const card = cards[idx];
+    const card = slides()[idx];
     if (!card) return;
-    el.scrollTo({ left: card.offsetLeft - el.offsetLeft, behavior: 'smooth' });
+    const left =
+      card.getBoundingClientRect().left - el.getBoundingClientRect().left + el.scrollLeft;
+    scrollToLeft(left);
   };
 
   // autoplay
@@ -318,6 +340,7 @@ export default function EventsGrid() {
         <div className="relative">
           <div
             ref={trackRef}
+            data-lenis-prevent
             className="scrollbar-hide flex snap-x snap-mandatory gap-5 overflow-x-auto pb-6 pl-1 pr-6"
             style={{
               maskImage:
