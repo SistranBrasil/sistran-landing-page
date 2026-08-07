@@ -14,16 +14,25 @@ const ITEMS = [
 
 export default function TrustTicker() {
   const rm = useReducedMotion();
-  const loop = [...ITEMS, ...ITEMS];
+  // Com movimento reduzido nao duplicamos: sem animacao a 2a copia seria
+  // conteudo repetido e inalcancavel.
+  const loop = rm ? ITEMS : [...ITEMS, ...ITEMS];
 
   return (
     <div
-      className="relative w-full overflow-hidden"
+      className="relative w-full"
       style={{
-        maskImage:
-          'linear-gradient(90deg, transparent, black 8%, black 92%, transparent)',
-        WebkitMaskImage:
-          'linear-gradient(90deg, transparent, black 8%, black 92%, transparent)',
+        // O mask degrade sugere "tem mais conteudo rolando". Parado, ele apenas
+        // apaga as bordas do que o usuario precisa ler.
+        maskImage: rm
+          ? undefined
+          : 'linear-gradient(90deg, transparent, black 8%, black 92%, transparent)',
+        WebkitMaskImage: rm
+          ? undefined
+          : 'linear-gradient(90deg, transparent, black 8%, black 92%, transparent)',
+        // Ticker e CONTEUDO: parar a animacao esconderia os itens fora da tela.
+        // Sem movimento, viramos lista rolavel para tudo seguir alcancavel.
+        overflowX: rm ? 'auto' : 'hidden',
       }}
       aria-label="Indicadores institucionais"
     >

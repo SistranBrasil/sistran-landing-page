@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'motion/react';
+import { motion, useScroll, useTransform } from 'motion/react';
+import { useReducedMotion } from '@/lib/motion';
 
 /**
  * Wrapper do Hero: o Hero fica sticky por 200vh e, conforme o scroll avança,
@@ -29,22 +30,28 @@ export default function HeroScrollWrapper({ children }: { children: React.ReactN
     ['blur(0px)', 'blur(0px)', 'blur(6px)'],
   );
 
-  if (rm) return <>{children}</>;
-
+  // A arvore precisa ser identica no SSR e na hidratacao: `useReducedMotion`
+  // retorna false no servidor e o valor real so chega apos montar. Trocar a
+  // arvore em funcao dele causaria hydration mismatch. Com movimento reduzido
+  // apenas neutralizamos os estilos, sem remover os nos.
   return (
-    <div ref={ref} style={{ height: '200vh', position: 'relative' }}>
+    <div ref={ref} style={{ height: rm ? 'auto' : '200vh', position: 'relative' }}>
       <motion.div
-        style={{
-          position: 'sticky',
-          top: 0,
-          height: '100vh',
-          scale,
-          opacity,
-          y,
-          filter,
-          transformOrigin: '50% 40%',
-          willChange: 'transform, opacity, filter',
-        }}
+        style={
+          rm
+            ? undefined
+            : {
+                position: 'sticky',
+                top: 0,
+                height: '100vh',
+                scale,
+                opacity,
+                y,
+                filter,
+                transformOrigin: '50% 40%',
+                willChange: 'transform, opacity, filter',
+              }
+        }
       >
         {children}
       </motion.div>

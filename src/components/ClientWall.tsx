@@ -47,22 +47,30 @@ function Marquee({
   speed: number;
   direction: 'left' | 'right';
 }) {
-  const doubled = [...items, ...items];
+  // Duas copias identicas: a 2a e aria-hidden para o leitor de tela nao ler
+  // a lista duas vezes, e sai de cena em prefers-reduced-motion.
+  const copy = (
+    <>
+      {items.map((name, i) => (
+        <span
+          key={`${name}-${i}`}
+          className="inline-flex flex-none items-center gap-2 whitespace-nowrap rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white/80 backdrop-blur transition-all duration-300 hover:border-[#0ed8f6]/50 hover:bg-white/[0.08] hover:text-white hover:shadow-[0_10px_30px_-10px_rgba(14,216,246,0.5)]"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-[#0ed8f6]/70" />
+          {name}
+        </span>
+      ))}
+    </>
+  );
+
   return (
     <div className="marquee-viewport">
       <div
         className={`marquee-track ${direction === 'left' ? 'marquee-left' : 'marquee-right'}`}
         style={{ animationDuration: `${speed}s` }}
       >
-        {doubled.map((name, i) => (
-          <span
-            key={`${name}-${i}`}
-            className="inline-flex flex-none items-center gap-2 whitespace-nowrap rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white/80 backdrop-blur transition-all duration-300 hover:border-[#0ed8f6]/50 hover:bg-white/[0.08] hover:text-white hover:shadow-[0_10px_30px_-10px_rgba(14,216,246,0.5)]"
-          >
-            <span className="h-1.5 w-1.5 rounded-full bg-[#0ed8f6]/70" />
-            {name}
-          </span>
-        ))}
+        <div className="marquee-copy">{copy}</div>
+        <div className="marquee-copy" aria-hidden="true">{copy}</div>
       </div>
     </div>
   );

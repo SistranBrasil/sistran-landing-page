@@ -489,12 +489,22 @@ body::after {
     transform: none !important;
     filter: none !important;
   }
-  /* O marquee horizontal fica parado, mas legivel: sem isto o track fica
-     deslocado em -50% e metade do conteudo sai da tela. */
-  .marquee-track {
-    animation: none;
-    transform: none !important;
+  /* O marquee e rolagem continua de CONTEUDO, nao efeito decorativo: congelar
+     no primeiro item deixa os demais INALCANCAVEIS (nao ha scroll nem setas).
+     Em vez de parar, viramos o mecanismo: lista rolavel nativa. O usuario
+     alcanca tudo e nada se move sozinho. A copia duplicada sai de cena. */
+  .marquee-viewport {
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
   }
+  .marquee-track {
+    animation: none !important;
+    transform: none !important;
+    width: auto !important;
+  }
+  .marquee-copy[aria-hidden='true'] { display: none !important; }
+  .marquee-copy > * { scroll-snap-align: start; }
 }
 
 /* Foco visível acessível */
@@ -525,17 +535,27 @@ body::after {
   width: 100%;
   overflow: hidden;
 }
+/* A trilha NAO tem gap: cada copia carrega o proprio espacamento (inclusive o
+   final, via padding-right). Assim a largura da trilha e exatamente 2x a copia
+   e o translate de -50% fecha o loop sem salto. Com gap na trilha, -50% seria
+   "metade da trilha" != "largura de uma copia" e o loop pularia a cada volta. */
 .marquee-track {
   display: flex;
-  gap: 0.75rem;
-  padding: 0 0.5rem;
   width: max-content;
   animation-name: marquee-scroll;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   will-change: transform;
+  backface-visibility: hidden;
 }
-.marquee-track:hover { animation-play-state: paused; }
+.marquee-copy {
+  display: flex;
+  flex: none;
+  gap: 0.75rem;
+  padding-right: 0.75rem;
+}
+.marquee-track:hover,
+.marquee-track:focus-within { animation-play-state: paused; }
 .marquee-left { animation-direction: normal; }
 .marquee-right { animation-direction: reverse; }
 @keyframes marquee-scroll {
