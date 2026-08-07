@@ -72,9 +72,9 @@ function Stat({
         style={{ fontVariantNumeric: 'tabular-nums' }}
       >
         {value}
-        {!plain && typeof value === 'number' && <span className="ml-0.5 text-[#0ed8f6]">+</span>}
+        {!plain && typeof value === 'number' && <span className="ml-0.5 text-[#A5F0FF]">+</span>}
       </span>
-      <span className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-ink-faint">
+      <span className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/70">
         {label}
       </span>
     </div>

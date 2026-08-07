@@ -49,7 +49,7 @@ export default function Page() {
       <section id="parceiros" aria-labelledby="parceiros-titulo">
         <div className="container-lp mt-14 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <span className="eyebrow !text-[#0ed8f6]">01 · Parceiros</span>
+            <span className="eyebrow !text-[#A5F0FF]">01 · Parceiros</span>
             <h2
               id="parceiros-titulo"
               className="mt-3 font-display text-3xl font-bold leading-tight text-white md:text-4xl"
@@ -57,7 +57,7 @@ export default function Page() {
               Ecossistema de parcerias
             </h2>
           </div>
-          <p className="max-w-md text-sm leading-relaxed text-ink-muted">
+          <p className="max-w-md text-sm leading-relaxed text-white/85">
             Filtre por especialidade para navegar pelos parceiros por área de atuação.
           </p>
         </div>
@@ -73,7 +73,7 @@ export default function Page() {
       <section id="implementacoes" aria-labelledby="implementacoes-titulo" className="pt-16 md:pt-20">
         <div className="container-lp mb-4 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <span className="eyebrow !text-[#0ed8f6]">02 · Implementações</span>
+            <span className="eyebrow !text-[#A5F0FF]">02 · Implementações</span>
             <h2
               id="implementacoes-titulo"
               className="mt-3 font-display text-3xl font-bold leading-tight text-white md:text-4xl"
@@ -81,7 +81,7 @@ export default function Page() {
               Uma jornada que não para
             </h2>
           </div>
-          <p className="max-w-md text-sm leading-relaxed text-ink-muted">
+          <p className="max-w-md text-sm leading-relaxed text-white/85">
             Explore parceiros e implantações ao longo do tempo. Use os filtros para focar em uma
             categoria específica.
           </p>
@@ -110,9 +110,9 @@ function Stat({
         style={{ fontVariantNumeric: 'tabular-nums' }}
       >
         {value}
-        {format === 'year' ? null : <span className="ml-0.5 text-[#0ed8f6]">{suffix}</span>}
+        {format === 'year' ? null : <span className="ml-0.5 text-[#A5F0FF]">{suffix}</span>}
       </span>
-      <span className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-ink-faint">
+      <span className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/70">
         {label}
       </span>
     </div>

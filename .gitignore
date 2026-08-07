@@ -10,3 +10,5 @@ scroll-world/
 
 .vercel
 .env*
+
+tsconfig.tsbuildinfo

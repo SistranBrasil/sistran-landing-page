@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
+
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
 /**
  * Design system de motion do padrão Sistran Labs.
@@ -65,17 +67,19 @@ export const tabContent = {
 
 /** Gradient de texto assinatura — usar como className em <span>. */
 export const grad =
-  'bg-gradient-to-r from-[#0079CB] via-[#1e8fe0] to-[#78C9F8] bg-clip-text text-transparent';
+  'bg-gradient-to-r from-[#ffffff] via-[#A9DAF8] to-[#78C9F8] bg-clip-text text-transparent';
 
 /** Hook: retorna true se o usuário prefere motion reduzido. */
 export function useReducedMotion(): boolean {
-  const [rm, setRm] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setRm(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setRm(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-  return rm;
+  return useSyncExternalStore(subscribeReducedMotion, getReducedMotion, () => false);
+}
+
+function subscribeReducedMotion(onChange: () => void): () => void {
+  const mq = window.matchMedia(REDUCED_MOTION_QUERY);
+  mq.addEventListener('change', onChange);
+  return () => mq.removeEventListener('change', onChange);
+}
+
+function getReducedMotion(): boolean {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
 }

@@ -38,8 +38,8 @@ export default function ExamplePage() {
           <Reveal delay={160}>
             <div className="glass-card-hover p-8">
               <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl"
-                   style={{ background: '#0079CB14', border: '1px solid #0079CB40' }}>
-                <Zap className="h-7 w-7" style={{ color: '#0099E6' }} strokeWidth={1.8} />
+                   style={{ background: '#57B7EE1F', border: '1px solid #78C9F855' }}>
+                <Zap className="h-7 w-7" style={{ color: '#78C9F8' }} strokeWidth={1.8} />
               </div>
               <h3 className="font-display text-2xl font-bold text-ink">
                 Pré-configurado

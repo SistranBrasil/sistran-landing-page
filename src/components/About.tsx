@@ -5,15 +5,43 @@ import { motion } from 'motion/react';
 import { vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '@/lib/motion';
 
 const HIGHLIGHTS = [
-  { value: '1988', label: 'Ano de fundação', num: 1988, suffix: '', start: 1900 },
-  { value: '850+', label: 'Profissionais', num: 850, suffix: '+', start: 0 },
-  { value: '3', label: 'Unidades no Brasil', num: 3, suffix: '', start: 0 },
+  {
+    value: '1988',
+    label: 'Ano de fundação',
+    detail: 'Três décadas e meia dedicadas ao mercado de seguros.',
+    num: 1988,
+    suffix: '',
+    start: 1900,
+    color: '#0ed8f6',
+  },
+  {
+    value: '850+',
+    label: 'Profissionais',
+    detail: 'Especialistas em negócio e tecnologia atuando no core.',
+    num: 850,
+    suffix: '+',
+    start: 0,
+    color: '#0079CB',
+  },
+  {
+    value: '3',
+    label: 'Unidades no Brasil',
+    detail: 'Presença nacional com alcance também no exterior.',
+    num: 3,
+    suffix: '',
+    start: 0,
+    color: '#7c3aed',
+  },
 ];
 
 function easeOut(t: number) {
   return 1 - Math.pow(1 - t, 3);
 }
 
+/**
+ * Contador crescente. Escreve direto no DOM dentro do rAF em vez de chamar
+ * setState por frame — evita ~96 re-renders por número durante a contagem.
+ */
 function CountUpNumber({
   target,
   start,
@@ -28,38 +56,47 @@ function CountUpNumber({
   color: string;
 }) {
   const rm = useReducedMotion();
-  const [val, setVal] = useState(rm ? target : start);
+  const ref = useRef<HTMLSpanElement>(null);
+
   useEffect(() => {
-    if (!active || rm) return;
-    setVal(start);
-    const dur = 1600;
+    const el = ref.current;
+    if (!el) return;
+    if (rm) {
+      el.textContent = `${target}${suffix}`;
+      return;
+    }
+    if (!active) {
+      el.textContent = `${start}${suffix}`;
+      return;
+    }
+    const dur = 1800;
     const t0 = performance.now();
     let id = 0;
     const tick = (now: number) => {
       const p = Math.min(1, (now - t0) / dur);
-      setVal(Math.round(start + (target - start) * easeOut(p)));
+      el.textContent = `${Math.round(start + (target - start) * easeOut(p))}${suffix}`;
       if (p < 1) id = requestAnimationFrame(tick);
     };
     id = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(id);
-  }, [active, rm, start, target]);
+  }, [active, rm, start, target, suffix]);
+
   return (
     <span
+      ref={ref}
+      aria-hidden
       className="font-display font-black leading-none tabular-nums"
       style={{
-        fontSize: 'clamp(3rem, 7vw, 5.5rem)',
-        letterSpacing: '-0.045em',
-        background: `linear-gradient(135deg, ${color} 0%, #0ed8f6 60%, #7c3aed 100%)`,
+        fontSize: 'clamp(3.25rem, 7.5vw, 6rem)',
+        letterSpacing: '-0.05em',
+        background: `linear-gradient(135deg, ${color} 0%, #0ed8f6 55%, #7c3aed 100%)`,
         WebkitBackgroundClip: 'text',
         backgroundClip: 'text',
         WebkitTextFillColor: 'transparent',
         color: 'transparent',
       }}
     >
-      <span aria-hidden>
-        {val}
-        {suffix}
-      </span>
+      {rm ? `${target}${suffix}` : `${start}${suffix}`}
     </span>
   );
 }
@@ -97,12 +134,12 @@ export default function About() {
             viewport={VP}
             className="lg:col-span-5 lg:col-start-1"
           >
-            <motion.span variants={vSubtitle} className="eyebrow">
+            <motion.span variants={vSubtitle} className="tag-section">
               Quem somos
             </motion.span>
             <motion.h2
               variants={vTitle}
-              className="mt-4 font-display font-bold text-ink"
+              className="mt-5 font-display font-bold text-ink"
               style={{
                 fontSize: 'clamp(2.25rem, 4.6vw, 4rem)',
                 lineHeight: 1.02,
@@ -111,6 +148,17 @@ export default function About() {
             >
               Especialistas em <span className="text-gradient-brand">tecnologia</span> para seguradoras
             </motion.h2>
+            {/* Régua da marca: fecha o bloco do título e amarra com a coluna de texto */}
+            <motion.span
+              variants={vSubtitle}
+              aria-hidden
+              className="mt-8 block h-[3px] w-24 origin-left rounded-full"
+              style={{
+                background:
+                  'linear-gradient(90deg, #0ed8f6, #0079CB 55%, #7c3aed)',
+                boxShadow: '0 0 18px rgba(14,216,246,0.45)',
+              }}
+            />
           </motion.div>
 
           <motion.div
@@ -120,17 +168,33 @@ export default function About() {
             viewport={VP}
             className="lg:col-span-6 lg:col-start-7 lg:pt-4"
           >
+            {/* Lead: primeira frase em destaque, cria hierarquia dentro do próprio parágrafo */}
             <motion.p
               variants={vSubtitle}
-              className="max-w-xl text-lg leading-relaxed text-ink-muted md:text-xl"
+              className="max-w-xl text-ink-muted"
+              style={{
+                fontSize: 'clamp(1.125rem, 1.6vw, 1.5rem)',
+                lineHeight: 1.55,
+                letterSpacing: '-0.011em',
+              }}
             >
-              Há mais de três décadas transformando processos, sistemas e operações de seguradoras no
-              Brasil e no exterior. Combinamos domínio profundo do negócio com tecnologia pragmática
-              para entregar resultados mensuráveis.
+              <span className="font-semibold text-ink">
+                Há mais de três décadas transformando processos, sistemas e operações de seguradoras
+              </span>{' '}
+              no Brasil e no exterior. Combinamos domínio profundo do negócio com tecnologia
+              pragmática para entregar resultados mensuráveis.
             </motion.p>
-            <motion.p variants={vSubtitle} className="mt-5 max-w-xl text-base leading-relaxed text-ink-muted">
+
+            {/* Segundo parágrafo com barra lateral: vira citação editorial, não repetição */}
+            <motion.p
+              variants={vSubtitle}
+              className="mt-8 max-w-xl border-l-2 pl-5 text-base leading-relaxed text-ink-muted md:text-lg"
+              style={{ borderColor: 'rgba(0,121,203,0.35)' }}
+            >
               Da subscrição ao sinistro, do vida ao P&amp;C, da sustentação ao delivery de novos
-              produtos: nosso time atua no core do negócio das principais seguradoras do país.
+              produtos: nosso time atua no{' '}
+              <span className="font-semibold text-ink">core do negócio</span> das principais
+              seguradoras do país.
             </motion.p>
           </motion.div>
         </div>
@@ -164,16 +228,23 @@ export default function About() {
               />
             ))}
           </span>
-          <ul className="relative grid grid-cols-1 gap-10 sm:grid-cols-3">
+          <ul className="relative grid grid-cols-1 gap-8 sm:grid-cols-3">
             {HIGHLIGHTS.map((h, i) => {
-              const color = i === 0 ? '#0ed8f6' : i === 1 ? '#0079CB' : '#7c3aed';
+              const color = h.color;
               return (
-                <li
+                <motion.li
                   key={h.label}
-                  className="group relative flex flex-col rounded-2xl border border-[#0079CB]/15 bg-white/70 p-6 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1"
-                  style={{
-                    boxShadow: `0 20px 40px -30px ${color}66`,
+                  initial={rm ? false : { opacity: 0, y: 30, filter: 'blur(8px)' }}
+                  whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  viewport={VP}
+                  transition={{
+                    duration: 0.75,
+                    ease: [0.22, 1, 0.36, 1],
+                    // cascata: cada card entra depois do anterior
+                    delay: rm ? 0 : 0.14 * i,
                   }}
+                  className="group relative flex flex-col overflow-hidden rounded-2xl border border-[#0079CB]/15 bg-white/70 p-7 backdrop-blur-sm transition-transform duration-500 hover:-translate-y-1.5"
+                  style={{ boxShadow: `0 20px 40px -30px ${color}66` }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.boxShadow = `0 30px 60px -24px ${color}88, 0 0 0 1px ${color}55 inset`;
                   }}
@@ -181,13 +252,19 @@ export default function About() {
                     (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 40px -30px ${color}66`;
                   }}
                 >
+                  {/* Wash de cor no canto: dá identidade a cada indicador */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-70"
+                    style={{ background: color }}
+                  />
                   {/* corner-accents */}
-                  <span aria-hidden className="pointer-events-none absolute left-2 top-2 h-3 w-3 border-l-2 border-t-2" style={{ borderColor: color }} />
-                  <span aria-hidden className="pointer-events-none absolute right-2 top-2 h-3 w-3 border-r-2 border-t-2" style={{ borderColor: color }} />
-                  <span aria-hidden className="pointer-events-none absolute left-2 bottom-2 h-3 w-3 border-l-2 border-b-2" style={{ borderColor: color }} />
-                  <span aria-hidden className="pointer-events-none absolute right-2 bottom-2 h-3 w-3 border-r-2 border-b-2" style={{ borderColor: color }} />
+                  <span aria-hidden className="pointer-events-none absolute left-2 top-2 h-3 w-3 border-l-2 border-t-2 transition-all duration-500 group-hover:h-5 group-hover:w-5" style={{ borderColor: color }} />
+                  <span aria-hidden className="pointer-events-none absolute right-2 top-2 h-3 w-3 border-r-2 border-t-2 transition-all duration-500 group-hover:h-5 group-hover:w-5" style={{ borderColor: color }} />
+                  <span aria-hidden className="pointer-events-none absolute left-2 bottom-2 h-3 w-3 border-l-2 border-b-2 transition-all duration-500 group-hover:h-5 group-hover:w-5" style={{ borderColor: color }} />
+                  <span aria-hidden className="pointer-events-none absolute right-2 bottom-2 h-3 w-3 border-r-2 border-b-2 transition-all duration-500 group-hover:h-5 group-hover:w-5" style={{ borderColor: color }} />
 
-                  <div className="flex items-center gap-3">
+                  <div className="relative flex items-start gap-3">
                     <CountUpNumber
                       target={h.num}
                       start={h.start}
@@ -197,19 +274,34 @@ export default function About() {
                     />
                     <span
                       aria-hidden
-                      className="mt-4 inline-block h-2 w-2 rounded-full"
+                      className="mt-4 inline-block h-2 w-2 flex-none rounded-full"
                       style={{
                         background: color,
                         boxShadow: `0 0 12px ${color}`,
-                        animation: 'halo-pulse 2.2s ease-in-out infinite',
+                        animation: rm ? 'none' : 'halo-pulse 2.2s ease-in-out infinite',
                       }}
                     />
+                    {/* Valor real para leitores de tela — o contador é aria-hidden */}
                     <span className="sr-only">{h.value}</span>
                   </div>
-                  <p className="mt-3 max-w-[220px] text-sm font-medium uppercase tracking-[0.14em] text-[#3d5a80]">
+
+                  <p className="relative mt-4 text-sm font-semibold uppercase tracking-[0.14em] text-[#3d5a80]">
                     {h.label}
                   </p>
-                </li>
+
+                  {/* Trilha que preenche no hover, reforçando a cor do indicador */}
+                  <span aria-hidden className="relative mt-4 block h-[2px] w-full overflow-hidden rounded-full bg-[#0079CB]/10">
+                    <span
+                      className="block h-full w-full origin-left scale-x-0 rounded-full transition-transform duration-700 group-hover:scale-x-100"
+                      style={{ background: `linear-gradient(90deg, ${color}, #7c3aed)` }}
+                    />
+                  </span>
+
+                  {/* Detalhe: aparece no hover e explica o número */}
+                  <p className="relative mt-3 text-sm leading-relaxed text-[#3d5a80] opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                    {h.detail}
+                  </p>
+                </motion.li>
               );
             })}
           </ul>

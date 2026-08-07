@@ -30,7 +30,7 @@ export default function PillarsCarousel() {
 
   return (
     <div
-      className="relative overflow-hidden rounded-3xl border border-white/12 bg-gradient-to-br from-[rgba(0,45,92,0.72)] to-[rgba(0,77,138,0.4)] p-7 backdrop-blur-xl"
+      className="relative overflow-hidden rounded-3xl border border-white/12 bg-gradient-to-br from-[#083156]/95 to-[#041D37]/95 p-7 backdrop-blur-xl"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       role="region"
@@ -61,7 +61,7 @@ export default function PillarsCarousel() {
         <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#0ed8f6]">
           Nossos pilares
         </span>
-        <span className="text-[10px] font-semibold tabular-nums text-white/50">
+        <span className="text-[10px] font-semibold tabular-nums text-white/75">
           {String(i + 1).padStart(2, '0')} / {String(DIFFERENTIALS.length).padStart(2, '0')}
         </span>
       </div>

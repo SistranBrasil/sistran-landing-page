@@ -1,30 +1,40 @@
 'use client';
 
-import { useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { ACCELERATORS, type Accelerator } from '@/data/accelerators';
 import { getIcon } from '@/lib/icons';
 import { vGrid, vCard, vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '@/lib/motion';
+import { useTilt } from '@/lib/useTilt';
 
 function AccelCard({ a, index }: { a: Accelerator; index: number }) {
   const rm = useReducedMotion();
-  const ref = useRef<HTMLElement>(null);
-  const [pos, setPos] = useState({ x: 50, y: 50 });
+  const { hover, mouse, handlers, tiltTransform } = useTilt(!rm);
   const Icon = getIcon(a.icon);
-
-  const onMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (rm || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    setPos({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 });
-  };
+  const pos = { x: mouse.x * 100, y: mouse.y * 100 };
 
   return (
-    <motion.article
-      ref={ref}
-      variants={vCard}
-      onMouseMove={onMove}
-      whileHover={rm ? undefined : { y: -4 }}
-      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[rgba(0,45,92,0.72)] to-[rgba(0,77,138,0.42)] p-7 backdrop-blur-xl"
+    /* Camada externa: entrada via variants (motion controla o transform).
+       Camada interna: tilt 3D. Ver nota em useTilt. */
+    <motion.div variants={vCard} className="h-full [perspective:1000px]">
+    <article
+      {...handlers}
+      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/12 p-7 backdrop-blur-xl"
+      style={{
+        // Navy escuro: o card precisa contrastar com o fundo azul medio da
+        // pagina. Um branco translucido ficava com a mesma cor do fundo.
+        background:
+          'linear-gradient(135deg, rgba(8,49,86,0.94), rgba(6,38,69,0.90) 55%, rgba(4,29,55,0.94))',
+        transform: tiltTransform({ lift: 8, deg: 7 }),
+        transformStyle: 'preserve-3d',
+        transition: hover
+          ? 'box-shadow .25s ease, border-color .2s ease'
+          : 'transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease',
+        willChange: 'transform',
+        // Sombra em camadas + halo do tone: da volume real ao card.
+        boxShadow: hover
+          ? `0 2px 6px rgba(3,26,52,0.20), 0 20px 40px -16px rgba(3,26,52,0.42), 0 44px 80px -32px rgba(3,26,52,0.50), 0 0 60px -18px ${a.tone}55, inset 0 1px 0 rgba(255,255,255,0.22)`
+          : `0 1px 3px rgba(3,26,52,0.16), 0 12px 26px -14px rgba(3,26,52,0.34), 0 30px 60px -30px rgba(3,26,52,0.40), inset 0 1px 0 rgba(255,255,255,0.16)`,
+      }}
     >
       <span
         aria-hidden
@@ -48,37 +58,53 @@ function AccelCard({ a, index }: { a: Accelerator; index: number }) {
         style={{ background: a.tone }}
       />
 
-      <div className="relative flex items-start justify-between gap-3">
+      <div
+        className="relative flex items-start justify-between gap-3"
+        style={{ transform: 'translateZ(34px)' }}
+      >
         <div
-          className="flex h-13 w-13 items-center justify-center rounded-2xl p-3"
+          className="flex h-13 w-13 items-center justify-center rounded-2xl p-3 transition-transform duration-300 group-hover:scale-110"
           style={{
-            background: `linear-gradient(135deg, ${a.tone}22, ${a.tone}08)`,
-            border: `1px solid ${a.tone}55`,
-            boxShadow: `0 8px 24px -12px ${a.tone}88`,
+            background: `linear-gradient(135deg, ${a.tone}33, ${a.tone}10)`,
+            border: `1px solid ${a.tone}66`,
+            boxShadow: `0 8px 24px -12px ${a.tone}99`,
           }}
         >
           <Icon className="h-6 w-6" style={{ color: a.tone }} strokeWidth={1.8} />
         </div>
         <span
           aria-hidden
-          className="font-display text-3xl font-black opacity-15 leading-none"
-          style={{ color: a.tone, fontVariantNumeric: 'tabular-nums' }}
+          className="font-display text-3xl font-black leading-none"
+          style={{
+            // Branco translucido: o tone em opacity 15% desaparecia no fundo azul.
+            color: 'rgba(255,255,255,0.30)',
+            fontVariantNumeric: 'tabular-nums',
+          }}
         >
           {String(index + 1).padStart(2, '0')}
         </span>
       </div>
 
-      <h3 className="relative mt-6 font-display text-xl font-bold leading-tight text-white">
+      <h3
+        className="relative mt-6 font-display text-xl font-bold leading-tight text-white"
+        style={{ transform: 'translateZ(24px)' }}
+      >
         {a.name}
       </h3>
       <p
         className="relative mt-1 text-xs font-semibold uppercase tracking-[0.14em]"
-        style={{ color: a.tone }}
+        style={{ color: a.tone, transform: 'translateZ(18px)' }}
       >
         {a.tagline}
       </p>
-      <p className="relative mt-4 text-sm leading-relaxed text-ink-muted">{a.description}</p>
-    </motion.article>
+      <p
+        className="relative mt-4 text-sm leading-relaxed text-white/85"
+        style={{ transform: 'translateZ(12px)' }}
+      >
+        {a.description}
+      </p>
+    </article>
+    </motion.div>
   );
 }
 
@@ -87,8 +113,8 @@ export default function Accelerators() {
   return (
     <section id="tecnologia-disruptiva" className="section-py relative overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-0 top-32 h-[380px] w-[380px] rounded-full bg-[#0079CB]/15 blur-[130px]" />
-        <div className="absolute right-0 bottom-32 h-[420px] w-[420px] rounded-full bg-[#7c3aed]/12 blur-[130px]" />
+        <div className="absolute left-0 top-32 h-[380px] w-[380px] rounded-full bg-[#57B7EE]/15 blur-[130px]" />
+        <div className="absolute right-0 bottom-32 h-[420px] w-[420px] rounded-full bg-[#A78BFA]/12 blur-[130px]" />
       </div>
 
       <div className="container-lp">
@@ -100,7 +126,7 @@ export default function Accelerators() {
           className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
         >
           <div className="max-w-2xl">
-            <motion.span variants={vSubtitle} className="eyebrow !text-[#0ed8f6]">
+            <motion.span variants={vSubtitle} className="eyebrow !text-[#A5F0FF]">
               Tecnologia Disruptiva · Soluções
             </motion.span>
             <motion.h2
@@ -115,7 +141,7 @@ export default function Accelerators() {
               entregando resultados assertivos com excelência.
             </motion.p>
           </div>
-          <span className="inline-flex h-fit items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0ed8f6]">
+          <span className="inline-flex h-fit items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#A5F0FF]">
             {ACCELERATORS.length} aceleradores
           </span>
         </motion.div>

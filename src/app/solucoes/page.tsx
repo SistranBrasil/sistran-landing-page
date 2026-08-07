@@ -24,7 +24,7 @@ export default function Page() {
               Oferecemos <strong className="text-white">soluções, serviços e consultoria</strong>{' '}
               sob medida para modernização e otimização do desempenho da sua seguradora.
             </p>
-            <p className="text-[#0ed8f6]">Beyond Technology: é o nosso lema.</p>
+            <p className="text-[#A5F0FF]">Beyond Technology: é o nosso lema.</p>
           </>
         }
       />
@@ -62,9 +62,9 @@ function AnchorPill({ href, label }: { href: string; label: string }) {
   return (
     <a
       href={href}
-      className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold text-ink-muted transition-colors hover:bg-white/10 hover:text-white"
+      className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold text-white/80 transition-colors hover:bg-white/10 hover:text-white"
     >
-      <span className="h-1 w-1 rounded-full bg-[#0ed8f6]" />
+      <span className="h-1 w-1 rounded-full bg-[#A5F0FF]" />
       {label}
     </a>
   );

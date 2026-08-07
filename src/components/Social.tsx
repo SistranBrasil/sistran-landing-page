@@ -13,17 +13,22 @@ export default function Social() {
       className="relative overflow-hidden py-24 md:py-32"
       style={{
         background:
-          'radial-gradient(70% 60% at 20% 20%, rgba(0,121,203,0.35), transparent 65%), radial-gradient(60% 60% at 80% 80%, rgba(124,58,237,0.25), transparent 65%), linear-gradient(180deg, #04122A 0%, #071c3d 55%, #04122A 100%)',
+          // Faixa mais profunda que o resto da pagina: o titulo usa gradiente
+          // claro (a5f3fc -> branco -> e9d5ff) e sobre #2A9BE0 ele sumia.
+          'radial-gradient(70% 60% at 20% 20%, rgba(14,216,246,0.22), transparent 65%), radial-gradient(60% 60% at 80% 80%, rgba(124,58,237,0.30), transparent 65%), linear-gradient(180deg, #0B4E86 0%, #0F63A8 55%, #0B4E86 100%)',
       }}
     >
       {/* Ghost background text */}
       <span
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 select-none text-center font-display font-black uppercase leading-none opacity-[0.06] mix-blend-screen"
+        className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 select-none text-center font-display font-black uppercase leading-none"
         style={{
           fontSize: 'clamp(4rem, 18vw, 18rem)',
           letterSpacing: '-0.05em',
-          color: '#0ed8f6',
+          // Sem mix-blend-screen (que apagava tudo no fundo claro) e com
+          // contorno: o texto fantasma volta a ser legivel como marca d'agua.
+          color: 'rgba(255,255,255,0.05)',
+          WebkitTextStroke: '1px rgba(14,216,246,0.20)',
           animation: rm ? undefined : 'gradient-shift 20s ease-in-out infinite',
         }}
       >
@@ -65,7 +70,7 @@ export default function Social() {
           </motion.h2>
           <motion.p
             variants={vSubtitle}
-            className="mt-6 max-w-2xl text-lg leading-relaxed text-white/75 md:text-xl"
+            className="mt-6 max-w-2xl text-lg leading-relaxed text-white/85 md:text-xl"
           >
             Conecte-se ao futuro! Siga nossa página no LinkedIn e fique por dentro das últimas
             tendências e oportunidades do mercado.

@@ -23,7 +23,7 @@ export const CONSULTING_AREAS: readonly ConsultingArea[] = [
     description:
       'Consultoria especializada para otimizar processos, implementar tecnologias de ponta e garantir a máxima eficiência em suas operações.',
     icon: 'Cog',
-    tone: '#0079CB',
+    tone: '#57B7EE',
   },
   {
     id: 'politica-ai',
@@ -31,7 +31,7 @@ export const CONSULTING_AREAS: readonly ConsultingArea[] = [
     description:
       'Auxiliamos na formulação e implementação de políticas de inteligência artificial robustas e eficazes, garantindo a governança adequada e a gestão responsável dessa tecnologia em sua empresa.',
     icon: 'ShieldCheck',
-    tone: '#7c3aed',
+    tone: '#A78BFA',
   },
   {
     id: 'analises-mercado',
@@ -39,6 +39,6 @@ export const CONSULTING_AREAS: readonly ConsultingArea[] = [
     description:
       'Fornecemos análises e estudos econômicos detalhados que permitem tomar decisões estratégicas embasadas em dados e informações precisas sobre o mercado segurador.',
     icon: 'Briefcase',
-    tone: '#a855f7',
+    tone: '#C4A0FB',
   },
 ];

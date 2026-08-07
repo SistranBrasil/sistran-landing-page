@@ -3,7 +3,7 @@
 .partners-timeline-shell {
   --ink: #f4f8ff;
   --muted: #8f9cb6;
-  --navy: #07101e;
+  --navy: #0E639F;
   --panel: #0b1729;
   --panel-strong: #101f35;
   --line: rgba(155, 189, 240, 0.2);
@@ -20,7 +20,7 @@
     linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
     radial-gradient(circle at 70% -10%, rgba(68, 127, 213, 0.22), transparent 34%),
-    #07101e;
+    #0E639F;
   background-size: 56px 56px, 56px 56px, auto, auto;
 }
 
@@ -46,7 +46,7 @@
   padding: 32px;
   background:
     radial-gradient(circle at 46% 30%, rgba(42, 88, 151, 0.14), transparent 28%),
-    linear-gradient(145deg, rgba(16, 31, 53, 0.86), rgba(7, 16, 30, 0.95));
+    linear-gradient(145deg, rgba(17, 91, 150,0.86), rgba(15, 87, 144,0.95));
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
@@ -139,7 +139,7 @@
   background:
     linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-    rgba(5, 13, 25, 0.66);
+    rgba(14, 86, 142,0.66);
   background-size: 32px 32px;
 }
 .partners-timeline-shell .timeline-stage::after {
@@ -147,7 +147,7 @@
   position: absolute;
   inset: auto 0 0;
   height: 220px;
-  background: linear-gradient(180deg, transparent, rgba(7, 25, 44, 0.82));
+  background: linear-gradient(180deg, transparent, rgba(15, 90, 148,0.82));
   pointer-events: none;
 }
 
@@ -326,7 +326,7 @@
   overflow: hidden;
   border: 1px solid rgba(115, 174, 244, 0.2);
   border-radius: 24px;
-  background: linear-gradient(112deg, rgba(14, 37, 63, 0.96), rgba(10, 26, 44, 0.92) 55%, rgba(14, 54, 53, 0.9));
+  background: linear-gradient(112deg, rgba(17, 93, 153,0.96), rgba(16, 90, 148,0.92) 55%, rgba(14, 54, 53, 0.9));
   box-shadow: 0 24px 50px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 .partners-timeline-shell .future-horizon::before {
@@ -500,7 +500,7 @@
   padding: 16px 19px 16px 16px;
   border: 1px solid rgba(152, 190, 239, 0.14);
   border-radius: 22px;
-  background: rgba(13, 28, 48, 0.9);
+  background: rgba(17, 91, 149,0.9);
   box-shadow: 0 22px 50px rgba(0, 0, 0, 0.26);
   backdrop-filter: blur(16px);
 }

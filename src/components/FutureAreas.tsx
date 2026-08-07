@@ -47,7 +47,7 @@ export default function FutureAreas() {
                       <span
                         aria-hidden
                         className="pointer-events-none absolute left-0 top-0 hidden h-3 w-3 -translate-y-[6px] rounded-full sm:block"
-                        style={{ background: dot, boxShadow: `0 0 12px ${dot}aa`, border: '2px solid #04122A' }}
+                        style={{ background: dot, boxShadow: `0 0 12px ${dot}aa`, border: '2px solid #1273BC' }}
                       />
                       <span
                         className="flex h-8 w-8 flex-none items-center justify-center rounded-lg sm:hidden"

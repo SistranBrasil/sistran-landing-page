@@ -7,12 +7,14 @@
  * Todo o texto/copy do Hero.tsx original é preservado — apenas apresentação e
  * timing mudam.
  *
- * Sequência (por progresso do wrapper, 0..1):
- *   0.00–0.15  Atmosfera + chip institucional
- *   0.15–0.40  Título (MorphingHeadline) revelado por linhas
- *   0.40–0.65  Evolução visual (parallax do PillarsCarousel + intensificação do mesh)
- *   0.65–0.82  Parágrafo + CTAs
- *   0.82–1.00  Indicadores (TrustTicker + peek "Quem somos") e transição
+ * Sequência:
+ *   mount      Chip, título (MorphingHeadline), parágrafo e CTAs — o hero já
+ *              está legível antes de qualquer scroll.
+ *   0.03–0.22  CompanySignature (painel institucional orbital) entra
+ *   0.24–0.40  Indicadores (TrustTicker) e peek "Quem somos"
+ *   0.00–0.55  Órbita cresce; orbs e linhas fazem parallax em profundidades
+ *              distintas
+ *   0.55–1.00  A cena "afunda" (scale + fade + blur) para a próxima seção
  *
  * ── Como plugar o vídeo real (quando disponível) ─────────────────────────────
  * Substitua o placeholder pela tag <video> abaixo (a estrutura já suporta):
@@ -48,7 +50,7 @@ import { DIFFERENTIALS } from '@/data/differentials';
 import { getIcon } from '@/lib/icons';
 import { useReducedMotion } from '@/lib/motion';
 import HeroMesh from './ui/HeroMesh';
-import PillarsCarousel from './ui/PillarsCarousel';
+import CompanySignature from './ui/CompanySignature';
 import MorphingHeadline from './ui/MorphingHeadline';
 import TrustTicker from './ui/TrustTicker';
 
@@ -120,27 +122,83 @@ export default function HeroCinematic() {
     const atmosphere = scene.querySelector<HTMLElement>('[data-hero-atmosphere]');
     const mobileChips = scene.querySelector<HTMLElement>('[data-hero-mobilechips]');
 
+    const progress = scene.querySelector<HTMLElement>('[data-hero-progress-fill]');
+    const orbit = scene.querySelector<HTMLElement>('[data-hero-orbit]');
+    const orbs = scene.querySelectorAll<HTMLElement>('[data-hero-orb]');
+    const lines = scene.querySelector<HTMLElement>('[data-hero-lines]');
+
     const initial = { opacity: 0, y: 34, filter: 'blur(10px)' };
-    [chip, headline, evolve, paragraph, ctas, indicators, mobileChips].forEach((el) => {
+    [chip, headline, paragraph, ctas, indicators, mobileChips].forEach((el) => {
       if (el) gsap.set(el, initial);
     });
     if (peek) gsap.set(peek, { opacity: 0, y: 10 });
 
     const ctx = gsap.context(() => {
-      // Entrada do hero: timeline única no mount (não gated por scroll)
-      const tl = gsap.timeline({ defaults: { ease: 'power2.out', duration: 0.8 } });
+      // ── Fase 0 (sem scroll): o essencial já está legível no primeiro frame.
+      // Chip, headline, parágrafo e CTAs entram no mount — o usuário nunca vê
+      // um hero vazio esperando scroll.
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 0.9 } });
       const reveal = (el: Element | null, at: string | number = '<0.12') => {
         if (!el) return;
         tl.to(el, { opacity: 1, y: 0, filter: 'blur(0px)' }, at);
       };
+      // TUDO entra no mount. Nada de conteúdo do hero fica esperando scroll —
+      // o primeiro quadro já mostra a cena completa, inclusive o painel da
+      // direita. O scroll serve só para parallax e para a saída da cena.
       reveal(chip, 0);
-      reveal(mobileChips, '<0.05');
-      reveal(headline, '<0.1');
-      reveal(evolve, '<0.05');
-      reveal(paragraph, '<0.1');
-      reveal(ctas, '<0.05');
-      reveal(indicators, '<0.05');
-      if (peek) tl.to(peek, { opacity: 1, y: 0 }, '<0.1');
+      reveal(headline, '<0.12');
+      reveal(paragraph, '<0.18');
+      reveal(ctas, '<0.1');
+      reveal(mobileChips, '<0.08');
+      reveal(indicators, '<0.08');
+      if (peek) tl.to(peek, { opacity: 1, y: 0 }, '<0.15');
+
+      // Órbita: entrada com escala própria e depois parallax suave no scroll.
+      if (orbit) {
+        gsap.from(orbit, {
+          scale: 0.82,
+          rotate: -6,
+          duration: 1.4,
+          ease: 'power3.out',
+          delay: 0.15,
+        });
+        gsap.to(orbit, {
+          yPercent: -8,
+          ease: 'none',
+          scrollTrigger: { trigger: wrapper, start: 'top top', end: '55% top', scrub: 0.8 },
+        });
+      }
+
+      // Barra de progresso do hero (0 → 1 ao longo de todo o wrapper).
+      if (progress) {
+        gsap.fromTo(
+          progress,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            ease: 'none',
+            scrollTrigger: { trigger: wrapper, start: 'top top', end: 'bottom top', scrub: 0.4 },
+          },
+        );
+      }
+
+      // ── Profundidade: cada camada da atmosfera anda a uma velocidade
+      // diferente, então o fundo "abre" em vez de deslizar em bloco.
+      orbs.forEach((orbEl, idx) => {
+        const depth = [0.18, 0.34, 0.5][idx] ?? 0.3;
+        gsap.to(orbEl, {
+          yPercent: -depth * 100,
+          ease: 'none',
+          scrollTrigger: { trigger: wrapper, start: 'top top', end: 'bottom top', scrub: 1 },
+        });
+      });
+      if (lines) {
+        gsap.to(lines, {
+          yPercent: -12,
+          ease: 'none',
+          scrollTrigger: { trigger: wrapper, start: 'top top', end: 'bottom top', scrub: 1.2 },
+        });
+      }
 
       // Atmosfera: leve intensificação do mesh no meio, fade no fim
       if (atmosphere) {
@@ -160,12 +218,20 @@ export default function HeroCinematic() {
         });
       }
 
-      // Escala/fade geral da cena para transição para próxima seção
-      gsap.to(scene, {
-        scale: 0.97,
-        ease: 'none',
-        scrollTrigger: { trigger: wrapper, start: '85% top', end: '100% top', scrub: 0.6 },
+      // Transição para a próxima seção: o hero "afunda" (scale + fade + blur + y).
+      // Mesmos parâmetros do HeroScrollWrapper do padrão sistran-labs.
+      gsap.set(scene, { transformOrigin: '50% 40%', willChange: 'transform, opacity, filter' });
+      const sink = gsap.timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: { trigger: wrapper, start: '55% top', end: '100% top', scrub: 0.6 },
       });
+      // 0 → 1 do percurso de saída: encolhe e sobe o tempo todo…
+      sink.to(scene, { scale: 0.86, y: -80, duration: 1 }, 0);
+      // …fade a partir de 55% (igual opacity [1, 0.85, 0])…
+      sink.to(scene, { opacity: 0.85, duration: 0.55 }, 0);
+      sink.to(scene, { opacity: 0, duration: 0.45 }, 0.55);
+      // …e blur só no trecho final (70% → 100%).
+      sink.to(scene, { filter: 'blur(6px)', duration: 0.3 }, 0.7);
 
       // ── Ativar quando <video> real estiver plugado ───────────────────────
       // const video = scene.querySelector<HTMLVideoElement>('video[data-video-src]');
@@ -201,9 +267,11 @@ export default function HeroCinematic() {
         <style>{`
           #top { height: 200vh; }
           @media (min-width: 1024px) { #top { height: 320vh; } }
+          /* NOTA: [data-hero-evolve] fica de fora de propósito. O painel
+             institucional nunca deve depender do JS para ficar visível — se o
+             GSAP falhar, ele continua na tela. */
           [data-hero-chip],
           [data-hero-headline],
-          [data-hero-evolve],
           [data-hero-paragraph],
           [data-hero-ctas],
           [data-hero-indicators],
@@ -238,12 +306,100 @@ export default function HeroCinematic() {
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10"
         >
+          {/* Base navy própria do hero. O body é um azul médio (#1273BC) e os
+              acentos ciano/violeta somem em cima dele — este gradiente escuro
+              devolve o contraste para as cores da marca aparecerem. */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(ellipse 90% 70% at 72% 38%, rgba(4,32,66,0.45), transparent 62%),' +
+                'linear-gradient(165deg, #041B3D 0%, #062B54 42%, #0A3E70 78%, #0F5590 100%)',
+            }}
+          />
           <div className="absolute inset-0 grid-mask opacity-70" />
-          <div className="orb orb-cyan orb-drift left-[4%] top-[10%] h-[420px] w-[420px]" />
-          <div className="orb orb-violet orb-drift-slow right-[2%] bottom-[4%] h-[520px] w-[520px]" />
-          <div className="orb orb-blue orb-drift left-[38%] top-[52%] h-[360px] w-[360px] opacity-60" />
+          {/* Orbs mais saturados e maiores: com a base escura eles finalmente leem */}
+          <div
+            data-hero-orb
+            className="orb orb-drift left-[2%] top-[6%] h-[520px] w-[520px]"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(14,216,246,0.55), rgba(14,216,246,0.08) 55%, transparent 72%)',
+            }}
+          />
+          <div
+            data-hero-orb
+            className="orb orb-drift-slow right-[-4%] bottom-[-6%] h-[600px] w-[600px]"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(168,85,247,0.5), rgba(124,58,237,0.10) 55%, transparent 72%)',
+            }}
+          />
+          {/* Terceiro orb só no desktop: menos camadas com blur no mobile */}
+          <div
+            data-hero-orb
+            className="orb orb-drift left-[34%] top-[54%] hidden h-[420px] w-[420px] lg:block"
+            style={{
+              background:
+                'radial-gradient(circle, rgba(0,180,255,0.42), transparent 68%)',
+            }}
+          />
+
+          {/* Linhas SVG tracejadas em movimento (receita skill sistran-labs, camada 5) */}
+          <svg
+            data-hero-lines
+            viewBox="0 0 1440 900"
+            preserveAspectRatio="xMidYMid slice"
+            className="absolute inset-0 h-full w-full"
+            style={{ mixBlendMode: 'screen' }}
+          >
+            <defs>
+              <linearGradient id="hero-lg1" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#0ed8f6" stopOpacity="0" />
+                <stop offset="30%" stopColor="#57B7EE" stopOpacity="1" />
+                <stop offset="70%" stopColor="#78C9F8" stopOpacity="1" />
+                <stop offset="100%" stopColor="#78C9F8" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="hero-lg2" x1="100%" y1="0%" x2="0%" y2="0%">
+                <stop offset="0%" stopColor="#7c3aed" stopOpacity="0" />
+                <stop offset="35%" stopColor="#a855f7" stopOpacity="0.9" />
+                <stop offset="75%" stopColor="#78C9F8" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#78C9F8" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M -100 700 Q 300 200 720 380 T 1540 100"
+              fill="none"
+              stroke="url(#hero-lg1)"
+              strokeWidth="1.4"
+              strokeDasharray="6 6"
+              opacity="0.55"
+              style={{ animation: 'dash-march 2.5s linear infinite' }}
+            />
+            <path
+              d="M -80 200 Q 380 620 780 460 T 1520 760"
+              fill="none"
+              stroke="url(#hero-lg2)"
+              strokeWidth="1.2"
+              strokeDasharray="6 6"
+              opacity="0.42"
+              style={{ animation: 'dash-march-rev 4.2s linear infinite' }}
+            />
+            <line x1="0" y1="520" x2="1440" y2="280" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+            <line x1="0" y1="300" x2="1440" y2="640" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+          </svg>
         </div>
         <HeroMesh />
+
+        {/* Vinheta radial: escurece as bordas e joga o olho para o centro */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-[1]"
+          style={{
+            background:
+              'radial-gradient(ellipse 78% 68% at 50% 45%, transparent 40%, rgba(3,17,38,0.55) 100%)',
+          }}
+        />
 
         {/* Linha decorativa inferior */}
         <span
@@ -251,8 +407,11 @@ export default function HeroCinematic() {
           className="pointer-events-none absolute inset-x-0 bottom-0 z-10 brand-line opacity-60"
         />
 
-        <div className="container-lp relative z-10 grid w-full grid-cols-1 items-center gap-14 pt-32 pb-24 lg:grid-cols-[1.15fr_1fr] lg:pt-40">
-          <div className="flex flex-col gap-7">
+        {/* minmax(0, …) é obrigatório: sem ele a largura mínima automática do
+            grid deixa a headline gigante empurrar a coluna da direita para
+            fora da tela. */}
+        <div className="container-lp relative z-10 grid w-full grid-cols-1 items-center gap-14 pt-32 pb-24 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:pt-40">
+          <div className="flex min-w-0 flex-col gap-7">
             <span
               data-hero-chip
               className="shine-badge inline-flex w-fit items-center gap-2.5 rounded-full border border-white/12 bg-white/[0.04] px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#B8DDF6] backdrop-blur"
@@ -326,25 +485,39 @@ export default function HeroCinematic() {
           </div>
 
           <div data-hero-evolve className="relative">
-            <PillarsCarousel />
+            <div data-hero-orbit className="will-change-transform">
+              <CompanySignature />
+            </div>
           </div>
         </div>
 
-        {/* Peek próxima seção */}
+        {/* Peek da próxima seção + progresso do percurso do hero */}
         {!rm && (
-          <a
+          <div
             data-hero-peek
-            href="#quem-somos"
-            className="group absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/50 transition-colors hover:text-white"
+            className="absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-3"
           >
-            <span>Quem somos</span>
-            <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 transition-colors group-hover:border-white/40">
-              <ArrowDown
-                className="h-3.5 w-3.5 animate-pulse-soft"
-                strokeWidth={1.8}
+            <a
+              href="#quem-somos"
+              className="group flex flex-col items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/75 transition-colors hover:text-white"
+            >
+              <span>Quem somos</span>
+              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 transition-colors group-hover:border-white/40">
+                <ArrowDown className="h-3.5 w-3.5 animate-pulse-soft" strokeWidth={1.8} />
+              </span>
+            </a>
+            {/* Trilha de progresso: quanto do percurso do hero já foi rolado */}
+            <span
+              aria-hidden
+              className="h-[2px] w-[min(220px,40vw)] overflow-hidden rounded-full bg-white/10"
+            >
+              <span
+                data-hero-progress-fill
+                className="progress-line block h-full w-full origin-left rounded-full"
+                style={{ transform: 'scaleX(0)' }}
               />
             </span>
-          </a>
+          </div>
         )}
       </div>
     </section>

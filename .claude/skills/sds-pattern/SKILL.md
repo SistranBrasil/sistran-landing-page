@@ -1,6 +1,6 @@
 ---
 name: sds-pattern
-description: Cria/edita landing pages do padrão SDS (Sistema Digital de Sinistros) — sub-produto Sistran. Herda o padrão sistran-labs (Next 14 + Tailwind 3 + motion/react + tokens navy/violet) mas com estrutura narrativa própria: Hero(logo+halo) → Desafio → Jornada → Agentes IA → Benefícios → Timeline → Resultado(KPIs) → CTA Final. Use quando o usuário pedir LP institucional de produto Sistran com foco em jornada operacional, agentes IA e KPIs.
+description: Cria/edita landing pages do padrão SDS (Sistema Digital de Sinistros) — sub-produto Sistran. Herda o padrão sistran-labs (Next 16 + Tailwind 3 + motion/react + tokens navy/violet) mas com estrutura narrativa própria: Hero(logo+halo) → Desafio → Jornada → Agentes IA → Benefícios → Timeline → Resultado(KPIs) → CTA Final. Use quando o usuário pedir LP institucional de produto Sistran com foco em jornada operacional, agentes IA e KPIs.
 ---
 
 # SDS — Sistema Digital de Sinistros (pattern)
@@ -8,7 +8,7 @@ description: Cria/edita landing pages do padrão SDS (Sistema Digital de Sinistr
 Skill dedicada ao projeto `sistran-labs-2/`. É um **fork narrativo** do `sistran-labs-pattern`: mesma stack, mesmos tokens, mesmas utilities CSS (`container-lp`, `section-py`, `glass-card`, `.section-light`, `btn-primary`, `text-gradient`), mas com **composição de página específica** para apresentar um produto (não um portfólio).
 
 ## Stack (idêntica ao sistran-labs)
-- Next 14 App Router + React 18 + TS strict, `@/*` → `./src/*`
+- Next 16 App Router + React 19 + TS strict, `@/*` → `./src/*` — versões exatas e ESLint flat config na skill `nextjs-16-setup`
 - Tailwind 3 (`tailwind.config.ts`)
 - `motion/react` (nunca `framer-motion`)
 - `lucide-react` (`strokeWidth={1.8}`)

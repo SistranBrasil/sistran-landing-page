@@ -7,7 +7,7 @@ import { LINKEDIN_URL, CONTACT_PHONE, UNITS } from '@/data/contact';
 export default function Footer() {
   const main = UNITS[0];
   return (
-    <footer className="relative border-t border-white/10 bg-[#04122A]/85 py-14">
+    <footer className="relative border-t border-white/10 bg-[#1273BC]/85 py-14">
       <span aria-hidden className="brand-line pointer-events-none absolute inset-x-0 top-0" />
 
       <div className="container-lp relative grid grid-cols-1 gap-10 md:grid-cols-4">

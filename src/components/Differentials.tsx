@@ -135,7 +135,7 @@ export default function Differentials() {
                       style={{
                         width: isActive ? 14 : 6,
                         height: isActive ? 14 : 6,
-                        background: isActive ? CARD_COLORS[i] : 'rgba(10,31,68,0.25)',
+                        background: isActive ? CARD_COLORS[i] : 'rgba(16, 91, 154,0.25)',
                         boxShadow: isActive ? `0 0 18px ${CARD_COLORS[i]}, 0 0 0 4px ${CARD_COLORS[i]}22` : undefined,
                         opacity: isActive ? 1 : 0.6,
                       }}

@@ -8,28 +8,39 @@ import { ArrowLeft, ArrowRight, MapPin, Pause, Play, PlayCircle } from 'lucide-r
 import { EVENTS, EVENT_KIND_META, type EventKind, type SistranEvent } from '@/data/events';
 import { getIcon } from '@/lib/icons';
 import { useReducedMotion } from '@/lib/motion';
+import { useTilt } from '@/lib/useTilt';
 
 type Filter = 'todos' | EventKind;
 
 function EventCard({ e }: { e: SistranEvent }) {
   const rm = useReducedMotion();
-  const ref = useRef<HTMLElement>(null);
-  const [pos, setPos] = useState({ x: 50, y: 50 });
+  const { hover, mouse, handlers, tiltTransform } = useTilt(!rm);
   const Icon = getIcon(e.icon);
   const tone = EVENT_KIND_META[e.kind].tone;
   const hasVideo = e.id === 'web-summit-ai' || e.id === 'suitability-ai';
-
-  const onMove = (ev: React.MouseEvent<HTMLElement>) => {
-    if (rm || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    setPos({ x: ((ev.clientX - r.left) / r.width) * 100, y: ((ev.clientY - r.top) / r.height) * 100 });
-  };
+  const pos = { x: mouse.x * 100, y: mouse.y * 100 };
 
   return (
+    /* Wrapper com a perspective; o tilt vai no <article>. */
+    <div className="h-full w-[85vw] max-w-[380px] flex-none snap-center [perspective:1000px] sm:w-[380px]">
     <article
-      ref={ref}
-      onMouseMove={onMove}
-      className="group relative flex h-full min-h-[520px] w-[85vw] max-w-[380px] flex-none snap-center flex-col overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[rgba(0,45,92,0.72)] to-[rgba(0,77,138,0.42)] backdrop-blur-xl sm:w-[380px]"
+      {...handlers}
+      className="group relative flex h-full min-h-[520px] flex-col overflow-hidden rounded-3xl border border-white/12 backdrop-blur-xl"
+      style={{
+        // Navy escuro: o card precisa contrastar com o fundo azul medio da
+        // pagina. Um branco translucido ficava com a mesma cor do fundo.
+        background:
+          'linear-gradient(135deg, rgba(8,49,86,0.94), rgba(6,38,69,0.90) 55%, rgba(4,29,55,0.94))',
+        transform: tiltTransform({ lift: 8, deg: 6 }),
+        transformStyle: 'preserve-3d',
+        transition: hover
+          ? 'box-shadow .25s ease, border-color .2s ease'
+          : 'transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease',
+        willChange: 'transform',
+        boxShadow: hover
+          ? `0 2px 6px rgba(3,26,52,0.20), 0 20px 40px -16px rgba(3,26,52,0.42), 0 44px 80px -32px rgba(3,26,52,0.50), 0 0 60px -18px ${tone}55, inset 0 1px 0 rgba(255,255,255,0.22)`
+          : `0 1px 3px rgba(3,26,52,0.16), 0 12px 26px -14px rgba(3,26,52,0.34), 0 30px 60px -30px rgba(3,26,52,0.40), inset 0 1px 0 rgba(255,255,255,0.16)`,
+      }}
     >
       {/* Imagem de capa */}
       {e.image && (
@@ -43,7 +54,11 @@ function EventCard({ e }: { e: SistranEvent }) {
           />
           <div
             aria-hidden
-            className="absolute inset-0 bg-gradient-to-t from-[rgba(4,18,42,0.95)] via-[rgba(4,18,42,0.4)] to-transparent"
+            className="absolute inset-0"
+            style={{
+              background:
+                'linear-gradient(to top, rgba(9,63,109,0.92), rgba(9,63,109,0.35) 55%, transparent)',
+            }}
           />
         </div>
       )}
@@ -71,26 +86,29 @@ function EventCard({ e }: { e: SistranEvent }) {
         style={{ background: tone }}
       />
 
-      <div className="relative flex items-start justify-between gap-3">
+      <div
+        className="relative flex items-start justify-between gap-3"
+        style={{ transform: 'translateZ(34px)' }}
+      >
         <div
-          className="flex h-14 w-14 items-center justify-center rounded-2xl"
+          className="flex h-14 w-14 items-center justify-center rounded-2xl transition-transform duration-300 group-hover:scale-110"
           style={{
-            background: `linear-gradient(135deg, ${tone}22, ${tone}08)`,
-            border: `1px solid ${tone}55`,
-            boxShadow: `0 8px 24px -12px ${tone}88`,
+            background: `linear-gradient(135deg, ${tone}33, ${tone}10)`,
+            border: `1px solid ${tone}66`,
+            boxShadow: `0 8px 24px -12px ${tone}99`,
           }}
         >
           <Icon className="h-7 w-7" style={{ color: tone }} strokeWidth={1.8} />
         </div>
         <div className="flex flex-col items-end gap-2">
           <span
-            className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em]"
+            className="inline-flex items-center rounded-full border border-white/12 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em]"
             style={{ color: tone }}
           >
             {EVENT_KIND_META[e.kind].label}
           </span>
           {e.location && (
-            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-white/55">
+            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-white/75">
               <MapPin className="h-3 w-3" strokeWidth={1.8} />
               {e.location}
             </span>
@@ -98,10 +116,18 @@ function EventCard({ e }: { e: SistranEvent }) {
         </div>
       </div>
 
-      <h3 className="relative mt-6 font-display text-xl font-bold leading-tight text-white">
+      <h3
+        className="relative mt-6 font-display text-xl font-bold leading-tight text-white"
+        style={{ transform: 'translateZ(24px)' }}
+      >
         {e.title}
       </h3>
-      <p className="relative mt-3 flex-1 text-sm leading-relaxed text-ink-muted">{e.description}</p>
+      <p
+        className="relative mt-3 flex-1 text-sm leading-relaxed text-white/85"
+        style={{ transform: 'translateZ(14px)' }}
+      >
+        {e.description}
+      </p>
 
       {hasVideo && (
         <div
@@ -121,6 +147,7 @@ function EventCard({ e }: { e: SistranEvent }) {
         style={{ background: `linear-gradient(90deg, transparent, ${tone}, transparent)` }}
       />
     </article>
+    </div>
   );
 }
 
@@ -209,14 +236,14 @@ export default function EventsGrid() {
   return (
     <section id="eventos" className="section-py relative overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-0 top-40 h-[380px] w-[380px] rounded-full bg-[#0079CB]/15 blur-[130px]" />
-        <div className="absolute right-0 bottom-40 h-[420px] w-[420px] rounded-full bg-[#7c3aed]/12 blur-[130px]" />
+        <div className="absolute left-0 top-40 h-[380px] w-[380px] rounded-full bg-[#57B7EE]/15 blur-[130px]" />
+        <div className="absolute right-0 bottom-40 h-[420px] w-[420px] rounded-full bg-[#A78BFA]/12 blur-[130px]" />
       </div>
 
       <div className="container-lp">
         {/* Toolbar: filtros + controles */}
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.03] p-2 backdrop-blur-lg">
+          <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-white/12 bg-white/[0.03] p-2 backdrop-blur-lg">
             {filters.map((f) => {
               const active = filter === f.key;
               return (
@@ -233,7 +260,7 @@ export default function EventsGrid() {
                   {active && (
                     <motion.span
                       layoutId="events-filter-pill"
-                      className="absolute inset-0 rounded-xl bg-gradient-to-b from-[#0079CB]/40 to-[#004D8A]/40 ring-1 ring-inset ring-white/15"
+                      className="absolute inset-0 rounded-xl bg-gradient-to-b from-[#57B7EE]/40 to-[#1885CE]/40 ring-1 ring-inset ring-white/15"
                       transition={{ type: 'spring', stiffness: 380, damping: 32 }}
                     />
                   )}
@@ -271,7 +298,7 @@ export default function EventsGrid() {
                   return !p;
                 })
               }
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#0ed8f6]/40 bg-[#0079CB]/25 text-white transition-colors hover:border-[#0ed8f6]/70 hover:bg-[#0079CB]/40"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#0ed8f6]/40 bg-[#57B7EE]/25 text-white transition-colors hover:border-[#0ed8f6]/70 hover:bg-[#57B7EE]/40"
               aria-label={playing ? 'Pausar carrossel' : 'Reproduzir carrossel'}
             >
               {playing ? <Pause className="h-4 w-4" strokeWidth={1.8} /> : <Play className="h-4 w-4" strokeWidth={1.8} />}

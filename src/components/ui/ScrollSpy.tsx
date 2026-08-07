@@ -17,6 +17,9 @@ const SECTIONS: Section[] = [
 export default function ScrollSpy() {
   const [active, setActive] = useState('top');
   const [wide, setWide] = useState(false);
+  /** A seção ativa está sobre fundo claro? O nav é `fixed` (fora de
+   *  `.section-light`), então a cascata do CSS não o alcança. */
+  const [onLight, setOnLight] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1440px)');
@@ -31,7 +34,9 @@ export default function ScrollSpy() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
+          if (!e.isIntersecting) return;
+          setActive(e.target.id);
+          setOnLight(!!e.target.closest('.section-light'));
         });
       },
       { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 },
@@ -62,13 +67,29 @@ export default function ScrollSpy() {
           >
             <span
               className={`h-1.5 rounded-full transition-all duration-300 ${
-                isActive ? 'w-6 bg-[#0ed8f6]' : 'w-1.5 bg-white/25 group-hover:w-3 group-hover:bg-white/60'
+                isActive
+                  ? onLight
+                    ? 'w-6 bg-[#0079CB]'
+                    : 'w-6 bg-[#0ed8f6]'
+                  : onLight
+                    ? 'w-1.5 bg-[#0a1f44]/30 group-hover:w-3 group-hover:bg-[#0a1f44]/60'
+                    : 'w-1.5 bg-white/25 group-hover:w-3 group-hover:bg-white/60'
               }`}
-              style={isActive ? { boxShadow: '0 0 12px #0ed8f6' } : undefined}
+              style={
+                isActive
+                  ? { boxShadow: onLight ? '0 0 12px rgba(0,121,203,0.55)' : '0 0 12px #0ed8f6' }
+                  : undefined
+              }
             />
             <span
               className={`ml-3 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.16em] transition-opacity ${
-                isActive ? 'text-white opacity-100' : 'text-white/60 opacity-0 group-hover:opacity-100'
+                isActive
+                  ? onLight
+                    ? 'text-[#0a1f44] opacity-100'
+                    : 'text-white opacity-100'
+                  : onLight
+                    ? 'text-[#0a1f44]/70 opacity-0 group-hover:opacity-100'
+                    : 'text-white/60 opacity-0 group-hover:opacity-100'
               }`}
             >
               {s.label}

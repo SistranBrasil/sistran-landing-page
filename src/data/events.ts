@@ -19,9 +19,9 @@ export type SistranEvent = {
 
 export const EVENT_KIND_META: Record<EventKind, { label: string; tone: string }> = {
   proprio: { label: 'Realizado pela Sistran', tone: '#0ed8f6' },
-  global: { label: 'Evento global', tone: '#7c3aed' },
-  nacional: { label: 'Evento nacional', tone: '#0079CB' },
-  parceiro: { label: 'Evento de parceiro', tone: '#a855f7' },
+  global: { label: 'Evento global', tone: '#A78BFA' },
+  nacional: { label: 'Evento nacional', tone: '#57B7EE' },
+  parceiro: { label: 'Evento de parceiro', tone: '#C4A0FB' },
 };
 
 export const EVENTS: readonly SistranEvent[] = [

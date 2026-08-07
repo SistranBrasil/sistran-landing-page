@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
+
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
 /**
  * Design system de motion do padrão Sistran Labs.
@@ -22,38 +24,64 @@ export const VP0 = { once: true } as const;
 /** Container que orquestra stagger nos filhos (eyebrow/title/subtitle). */
 export const vHeader = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.13 } },
+  visible: { transition: { staggerChildren: 0.12 } },
 };
 
 export const vEyebrow = {
-  hidden: { opacity: 0, y: 14 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease } },
+  hidden: { opacity: 0, y: 34, filter: 'blur(10px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.8, ease: easeExpo },
+  },
 };
 
 export const vTitle = {
-  hidden: { opacity: 0, y: 28, filter: 'blur(8px)' },
-  visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.88, ease: easeExpo } },
+  hidden: { opacity: 0, y: 34, filter: 'blur(10px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.9, ease: easeExpo },
+  },
 };
 
 export const vSubtitle = {
-  hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease } },
+  hidden: { opacity: 0, y: 34, filter: 'blur(10px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.8, ease: easeExpo },
+  },
 };
 
 /** Container de grid com stagger para cards. */
 export const vGrid = {
   hidden: {},
-  visible: { transition: { staggerChildren: 0.09 } },
+  visible: { transition: { staggerChildren: 0.12 } },
 };
 
 export const vCard = {
-  hidden: { opacity: 0, y: 36, scale: 0.96 },
-  visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: easeExpo } },
+  hidden: { opacity: 0, y: 34, scale: 0.97, filter: 'blur(10px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: { duration: 0.8, ease: easeExpo },
+  },
 };
 
 export const vFadeUp = {
-  hidden: { opacity: 0, y: 22 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease } },
+  hidden: { opacity: 0, y: 34, filter: 'blur(10px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.8, ease: easeExpo },
+  },
 };
 
 /** Enter/exit para conteúdo de tabs (usar com AnimatePresence mode="wait"). */
@@ -69,13 +97,15 @@ export const grad =
 
 /** Hook: retorna true se o usuário prefere motion reduzido. */
 export function useReducedMotion(): boolean {
-  const [rm, setRm] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setRm(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setRm(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-  return rm;
+  return useSyncExternalStore(subscribeReducedMotion, getReducedMotion, () => false);
+}
+
+function subscribeReducedMotion(onChange: () => void): () => void {
+  const mq = window.matchMedia(REDUCED_MOTION_QUERY);
+  mq.addEventListener('change', onChange);
+  return () => mq.removeEventListener('change', onChange);
+}
+
+function getReducedMotion(): boolean {
+  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
 }

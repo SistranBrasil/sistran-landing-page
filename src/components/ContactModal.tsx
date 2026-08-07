@@ -87,7 +87,7 @@ export default function ContactModal({ open, onClose }: Props) {
                       name="mensagem"
                       rows={4}
                       required
-                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none placeholder:text-white/30 focus:border-[#0ed8f6]/60"
+                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none placeholder:text-white/50 focus:border-[#0ed8f6]/60"
                     />
                   </div>
                   <button type="submit" className="btn-primary w-full">
@@ -142,7 +142,7 @@ function Field({
         type={type}
         autoComplete={autoComplete}
         required={required}
-        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none placeholder:text-white/30 focus:border-[#0ed8f6]/60"
+        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white outline-none placeholder:text-white/50 focus:border-[#0ed8f6]/60"
       />
     </div>
   );

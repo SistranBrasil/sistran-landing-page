@@ -85,10 +85,20 @@ export default function MorphingHeadline() {
   return (
     <h1
       ref={rootRef}
-      className="font-display text-hero font-black tracking-tight leading-[0.98] text-white"
+      className="font-display font-black tracking-tight text-white"
+      style={{
+        // Escala pela coluna, não pela viewport: em 7vw o título estourava a
+        // metade esquerda do grid do hero.
+        // "e Comprometimento" é a linha mais longa e estourava a coluna.
+        // 3.5vw + hifenização garantem que ela caiba em qualquer largura.
+        fontSize: 'clamp(2.25rem, 3.5vw, 3.9rem)',
+        lineHeight: 1.0,
+        letterSpacing: '-0.025em',
+        hyphens: 'auto',
+      }}
     >
       <span className="block overflow-hidden">
-        <span ref={line1Ref} className="block font-medium text-white/55 will-change-transform">
+        <span ref={line1Ref} className="block font-medium text-white/80 will-change-transform">
           Entrega com
         </span>
       </span>
@@ -101,7 +111,7 @@ export default function MorphingHeadline() {
               animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
               exit={rm ? { opacity: 0 } : { y: '-0.4em', opacity: 0, filter: 'blur(10px)' }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="inline-block font-black text-white"
+              className="text-gradient-hero inline-block font-black"
             >
               {WORDS[i]}
             </motion.span>
@@ -109,7 +119,7 @@ export default function MorphingHeadline() {
         </span>
       </span>
       <span className="block overflow-hidden">
-        <span ref={line3Ref} className="block font-medium text-white/55 will-change-transform">
+        <span ref={line3Ref} className="block font-medium text-white/80 will-change-transform">
           e Comprometimento
         </span>
       </span>

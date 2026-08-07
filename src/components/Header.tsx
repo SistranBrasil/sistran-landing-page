@@ -3,16 +3,17 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
 import clsx from 'clsx';
+import type Lenis from 'lenis';
 import { NAV_ITEMS } from '@/data/nav';
 
 const ACCENT = '#0ed8f6';
-const PILL_BG = 'linear-gradient(135deg, rgba(4,18,42,0.78), rgba(7,28,61,0.72))';
-const PILL_BG_STRONG = 'linear-gradient(135deg, rgba(4,18,42,0.94), rgba(7,28,61,0.90))';
+const PILL_BG = 'linear-gradient(135deg, rgba(14, 88, 147,0.78), rgba(15, 91, 152,0.72))';
+const PILL_BG_STRONG = 'linear-gradient(135deg, rgba(14, 88, 147,0.94), rgba(15, 91, 152,0.90))';
 const PILL_BORDER = '1px solid rgba(255,255,255,0.14)';
-const PILL_SHADOW = '0 24px 60px rgba(1,12,28,0.35), inset 0 1px 0 rgba(255,255,255,0.06)';
+const PILL_SHADOW = '0 24px 60px rgba(13, 86, 143,0.35), inset 0 1px 0 rgba(255,255,255,0.06)';
 
 function matchActive(href: string, pathname: string, activeHash: string) {
   if (href.startsWith('/#')) {
@@ -40,6 +41,22 @@ export default function Header() {
   const hidden = isHome && !scrolled;
 
   useEffect(() => setOpen(false), [pathname]);
+
+  // Na home, o <Link href="/"> navega para a rota atual e o Next não faz nada —
+  // a página não sobe. Aqui interceptamos para rolar até o topo do hero.
+  // Fora da home, deixamos o Link seguir a navegação normal.
+  const onLogoClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (pathname !== '/') return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+      event.preventDefault();
+      setOpen(false);
+      const lenis = (window as unknown as { __lenis?: Lenis }).__lenis;
+      if (lenis) lenis.scrollTo(0, { duration: 1.1 });
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
+    [pathname],
+  );
 
   // Escape fecha o menu overlay
   useEffect(() => {
@@ -105,14 +122,19 @@ export default function Header() {
         }}
       />
       {/* LOGO */}
-      <Link href="/" aria-label="Sistran, ir para a página inicial" className="inline-flex flex-shrink-0 items-center gap-4">
+      <Link
+        href="/"
+        onClick={onLogoClick}
+        aria-label="Sistran, ir para a página inicial"
+        className="inline-flex flex-shrink-0 items-center gap-4"
+      >
         <Image
           src="/images/sistran-corp-logo.png"
           alt="Sistran"
           width={280}
           height={96}
           priority
-          className="logo-glow h-14 w-auto object-contain md:h-16"
+          className="logo-glow h-[4.5rem] w-auto object-contain md:h-[5.5rem]"
         />
       </Link>
 

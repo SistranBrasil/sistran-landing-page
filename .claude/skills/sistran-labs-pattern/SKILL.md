@@ -1,6 +1,6 @@
 ---
 name: sistran-labs-pattern
-description: Cria landing pages executivas seguindo a arquitetura, identidade visual e padrões de código reais do projeto Sistran Labs (Next 14 + Tailwind 3 + motion/react). Use quando o usuário pedir novo site institucional, LP corporativa, ou replicar o visual "Luminna/Sistran" (navy escuro, glass cards, gradientes azul/violeta, seções alternando dark/light).
+description: Cria landing pages executivas seguindo a arquitetura, identidade visual e padrões de código reais do projeto Sistran Labs (Next 16 + Tailwind 3 + motion/react). Use quando o usuário pedir novo site institucional, LP corporativa, ou replicar o visual "Luminna/Sistran" (navy escuro, glass cards, gradientes azul/violeta, seções alternando dark/light).
 ---
 
 # Sistran Labs Pattern
@@ -9,7 +9,7 @@ Skill baseada 1:1 no código real de `sistran-labs/`. Substitui o `luminna-site-
 
 ## Stack obrigatória
 
-- **Next.js 14** (App Router) + **React 18** + **TypeScript strict**, `paths: { "@/*": ["./src/*"] }`
+- **Next.js 16** (App Router) + **React 19** + **TypeScript strict**, `paths: { "@/*": ["./src/*"] }` — versões exatas, ESLint flat config e pitfalls na skill `nextjs-16-setup` (ela manda na stack; esta skill manda no visual)
 - **Tailwind CSS 3** com `tailwind.config.ts` (JS/TS, NÃO config-in-CSS)
 - **motion** (import `motion/react`) — nunca `framer-motion`
 - **lucide-react** para ícones (`strokeWidth={1.8}`)
@@ -54,8 +54,8 @@ src/
 ### Paleta
 | Papel | Hex |
 |---|---|
-| Base navy | `#004D8A` `#003D70` `#005FA3` |
-| Primário azul | `#0079CB` `#0099E6` |
+| Base azul médio | `#1273BC` `#0E639F` `#1885CE` |
+| Primário azul | `#2A9BE0` `#57B7EE` |
 | Sky/accent | `#78C9F8` |
 | Violet/purple | `#7c3aed` `#a855f7` |
 | Deep blue | `#024EA0` |
@@ -87,14 +87,14 @@ src/
 ```
 .container-lp      → wrapper mx-auto + max-w-container + px responsivo
 .section-py        → padding vertical padrão
-.glass-card        → gradiente translúcido navy + border white/14 + blur(16px) + shadow
+.glass-card        → gradiente translúcido azul claro + border white/14 + blur(16px) + shadow
 .glass-card-hover  → + hover translateY(-3px) + border-active + glow
-.text-gradient     → white → deep-navy clipped
+.text-gradient     → white → sky clipped (invertido em .section-light)
 .text-gradient-accent
-.btn-primary       → pill gradient #0079CB→#0099E6 + hover lift
+.btn-primary       → pill gradient #2A9BE0→#57B7EE + hover lift
 .btn-ghost         → pill glass translúcido
 .pill / .pill-accent
-.eyebrow           → uppercase micro-caps navy
+.eyebrow           → uppercase micro-caps sky (#78C9F8)
 .section-light     → radial #FEFEFF→#CCE4F5 (cascade override de cores automático)
 .reveal / .reveal.is-visible
 ```

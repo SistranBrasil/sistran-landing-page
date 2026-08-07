@@ -206,7 +206,7 @@ const filtered = useMemo(
       className={clsx(
         'rounded-full px-4 py-2 text-sm font-semibold transition-all',
         activeCat === c
-          ? 'bg-gradient-to-r from-[#0079CB] to-[#0099E6] text-white shadow-glow'
+          ? 'bg-gradient-to-r from-[#2A9BE0] to-[#57B7EE] text-white shadow-glow'
           : 'border border-white/[.10] bg-white/[.04] text-ink-muted hover:bg-white/[.08]'
       )}
     >
@@ -272,7 +272,7 @@ Barra horizontal (desktop) ou vertical (mobile) atrás dos steps, com gradiente 
     viewport={{ once: true, margin: '-80px' }}
     transition={{ duration: 1.6, ease: [.22,1,.36,1] }}
     style={{ transformOrigin: 'left' }}
-    className="absolute left-0 right-0 top-9 hidden h-px lg:block bg-gradient-to-r from-[#0079CB] to-[#a855f7]"
+    className="absolute left-0 right-0 top-9 hidden h-px lg:block bg-gradient-to-r from-[#57B7EE] to-[#c084fc]"
   />
 
   <div className="grid gap-6 lg:grid-cols-7">
@@ -390,7 +390,7 @@ Receita completa de fundo institucional escuro, usada no Hero (`HeroBackground.t
      <defs>
        <linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="0%">
          <stop offset="0%" stopColor="#003D7A" stopOpacity="0" />
-         <stop offset="30%" stopColor="#0079CB" stopOpacity="1" />
+         <stop offset="30%" stopColor="#57B7EE" stopOpacity="1" />
          <stop offset="70%" stopColor="#78C9F8" stopOpacity="1" />
          <stop offset="100%" stopColor="#78C9F8" stopOpacity="0" />
        </linearGradient>

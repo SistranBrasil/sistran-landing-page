@@ -154,7 +154,7 @@ export default function Hero() {
         {!rm && (
           <a
             href="#quem-somos"
-            className="group absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/50 transition-colors hover:text-white"
+            className="group absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/75 transition-colors hover:text-white"
           >
             <span>Quem somos</span>
             <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 transition-colors group-hover:border-white/40">

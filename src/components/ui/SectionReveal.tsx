@@ -21,10 +21,10 @@ export default function SectionReveal({
   className,
   id,
   selector = '[data-reveal]',
-  y = 40,
-  duration = 0.9,
-  stagger = 0.08,
-  blur = 6,
+  y = 34,
+  duration = 0.8,
+  stagger = 0.12,
+  blur = 10,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -49,7 +49,7 @@ export default function SectionReveal({
         y: 0,
         filter: 'blur(0px)',
         duration,
-        ease: 'power3.out',
+        ease: 'power2.out',
         stagger,
         clearProps: 'filter',
         scrollTrigger: {

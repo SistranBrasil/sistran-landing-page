@@ -13,7 +13,7 @@ export const DIFFERENTIALS: readonly (Differential & { description: string })[] 
     id: 'flexibilidade',
     title: 'Flexibilidade',
     icon: 'Zap',
-    color: '#0079CB',
+    color: '#57B7EE',
     description:
       'Modelo de entrega adaptável: squads dedicadas, alocações, managed services ou projetos fechados. A operação se molda ao seu momento.',
   },
@@ -21,7 +21,7 @@ export const DIFFERENTIALS: readonly (Differential & { description: string })[] 
     id: 'tecnologia',
     title: 'Tecnologia',
     icon: 'Cpu',
-    color: '#7c3aed',
+    color: '#A78BFA',
     description:
       'Aceleradores próprios, integração de plataformas de mercado e uso pragmático de cloud, IA e APIs para acelerar entregas.',
   },
@@ -29,7 +29,7 @@ export const DIFFERENTIALS: readonly (Differential & { description: string })[] 
     id: 'solidez-permanencia',
     title: 'Solidez e permanência',
     icon: 'Building2',
-    color: '#a855f7',
+    color: '#C4A0FB',
     description:
       'Mais de três décadas atendendo seguradoras. Estabilidade, previsibilidade e relacionamento de longo prazo com o mercado.',
   },

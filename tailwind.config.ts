@@ -29,8 +29,8 @@ const config: Config = {
         // Texto
         ink: {
           DEFAULT: '#f8fafc',
-          muted: '#cbd5e1',
-          faint: '#94a3b8',
+          muted: '#e2effa',
+          faint: '#bcd8ee',
         },
         // Acentos Luminna
         cyan: {

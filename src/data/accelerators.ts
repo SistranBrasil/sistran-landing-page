@@ -26,7 +26,7 @@ export const ACCELERATORS: readonly Accelerator[] = [
     description:
       'Solução integrada com uso de IA generativa que orquestra toda a esteira de DevOps, gerando maior produtividade em toda a cadeia, especialmente na codificação, integrada às ferramentas líderes de mercado.',
     icon: 'Code2',
-    tone: '#0079CB',
+    tone: '#57B7EE',
   },
   {
     id: 'smart-sinistros',
@@ -35,7 +35,7 @@ export const ACCELERATORS: readonly Accelerator[] = [
     description:
       'Automatiza e acelera processos de sinistros, reduzindo erros humanos, melhorando a eficiência e garantindo conformidade com as regulamentações.',
     icon: 'ShieldCheck',
-    tone: '#7c3aed',
+    tone: '#A78BFA',
   },
   {
     id: 'update-service',
@@ -44,7 +44,7 @@ export const ACCELERATORS: readonly Accelerator[] = [
     description:
       'Altos padrões de qualidade, mantendo constância na melhoria, evolução e inovação das plataformas em produção.',
     icon: 'Workflow',
-    tone: '#0099E6',
+    tone: '#7CCBF3',
   },
   {
     id: 'connect',
@@ -53,7 +53,7 @@ export const ACCELERATORS: readonly Accelerator[] = [
     description:
       'Jornada de distribuição de Vida Individual, Empresarial e Grupo, com venda consultiva e autogestão do faturamento pelo estipulante.',
     icon: 'HeartHandshake',
-    tone: '#a855f7',
+    tone: '#C4A0FB',
   },
   {
     id: 'smart-docs',
@@ -62,7 +62,7 @@ export const ACCELERATORS: readonly Accelerator[] = [
     description:
       'Solução poderosa para identificar documentos em arquivos com múltiplas imagens, tipificação e extração de dados para Onboarding (Aceitação da Proposta) e Abertura de Sinistros.',
     icon: 'Layers',
-    tone: '#34d399',
+    tone: '#6EE7B7',
   },
   {
     id: 'guru-voice',

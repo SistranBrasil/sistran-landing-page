@@ -9,9 +9,9 @@
 
 :root {
   /* Paleta SISTRAN — dark navy sofisticado */
-  --color-bg: #04122A;
-  --color-bg-alt: #071c3d;
-  --color-bg-deep: #0b2a54;
+  --color-bg: #1273BC;
+  --color-bg-alt: #2A9BE0;
+  --color-bg-deep: #1885CE;
   --color-grid: rgba(255, 255, 255, 0.06);
   --color-cyan: #0099E6;
   --color-sky: #0ed8f6;
@@ -52,12 +52,14 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-scrolling iframe { pointer-events: none; }
 
 body {
-  background-color: #04122A;
+  background-color: #1273BC;
   color: #f8fafc;
   font-feature-settings: 'cv11', 'ss01';
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  /* `clip` (nao `hidden`): hidden cria um scroll container e quebra o
+     position: sticky do hero. Ver HeroScrollWrapper. */
+  overflow-x: clip;
 }
 
 /* Fundo global Luminna: navy profundo + orbs azuis suaves */
@@ -68,9 +70,9 @@ body::before {
   z-index: -2;
   background:
     radial-gradient(ellipse at 80% 10%,  rgba(0, 121, 203, 0.18), transparent 45%),
-    radial-gradient(ellipse at 10% 20%,  rgba(11, 42, 84, 0.55), transparent 40%),
+    radial-gradient(ellipse at 10% 20%,  rgba(16, 95, 159,0.55), transparent 40%),
     radial-gradient(ellipse at 50% 100%, rgba(124, 58, 237, 0.14), transparent 50%),
-    linear-gradient(180deg, #04122A 0%, #061a35 55%, #04122A 100%);
+    linear-gradient(180deg, #1273BC 0%, #1885CE 55%, #1273BC 100%);
   pointer-events: none;
 }
 
@@ -108,14 +110,14 @@ body::after {
     background:
       radial-gradient(120% 80% at 0% 0%, rgba(14, 216, 246, 0.10), transparent 55%),
       radial-gradient(120% 80% at 100% 100%, rgba(124, 58, 237, 0.10), transparent 55%),
-      linear-gradient(135deg, rgba(8, 26, 55, 0.88), rgba(15, 44, 88, 0.55));
+      linear-gradient(135deg, rgba(15, 90, 151,0.88), rgba(17, 95, 160,0.55));
     border: 1px solid var(--border-soft);
     border-radius: var(--radius-card);
     backdrop-filter: blur(22px) saturate(1.2);
     -webkit-backdrop-filter: blur(22px) saturate(1.2);
     box-shadow:
-      0 24px 50px -22px rgba(0, 18, 50, 0.9),
-      0 2px 10px -4px rgba(0, 20, 55, 0.5),
+      0 24px 50px -22px rgba(13, 88, 149,0.9),
+      0 2px 10px -4px rgba(13, 88, 151,0.5),
       inset 0 1px 0 rgba(255, 255, 255, 0.08),
       inset 0 -1px 0 rgba(0, 0, 0, 0.25);
     overflow: hidden;
@@ -169,8 +171,8 @@ body::after {
   .glass-card-hover:hover::after { opacity: 1; transform: translate(10%, 10%); }
 
   /* Textos de destaque (sem gradiente) */
-  .text-gradient { color: #0079CB; }
-  .text-gradient-accent { color: #002D5C; }
+  .text-gradient { color: #a5f3fc; }
+  .text-gradient-accent { color: #D6ECFB; }
 
   /* Botão primário */
   .btn-primary {
@@ -181,7 +183,7 @@ body::after {
       0 14px 34px -10px rgba(0, 121, 203, 0.60),
       0 2px 6px -2px rgba(0, 60, 120, 0.35),
       inset 0 1px 0 rgba(255, 255, 255, 0.35),
-      inset 0 -1px 0 rgba(0, 40, 90, 0.35);
+      inset 0 -1px 0 rgba(13, 94, 161,0.35);
     overflow: hidden;
     isolation: isolate;
   }
@@ -210,7 +212,7 @@ body::after {
     @apply relative inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-ink transition-all duration-300;
     border: 1px solid var(--border-soft);
     background:
-      linear-gradient(135deg, rgba(0, 55, 100, 0.55), rgba(0, 77, 138, 0.35));
+      linear-gradient(135deg, rgba(13, 98, 163,0.55), rgba(0, 77, 138, 0.35));
     backdrop-filter: blur(14px) saturate(1.1);
     -webkit-backdrop-filter: blur(14px) saturate(1.1);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -229,7 +231,7 @@ body::after {
   /* Pill / chip */
   .pill {
     @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium;
-    background: rgba(0, 55, 100, 0.70);
+    background: rgba(13, 98, 163,0.70);
     border: 1px solid var(--border-soft);
     color: #cbd5e1;
   }
@@ -237,9 +239,9 @@ body::after {
   /* Pill de categoria com tom acentuado */
   .pill-accent {
     @apply pill;
-    color: #002D5C;
-    border-color: rgba(0, 45, 92, 0.40);
-    background: rgba(0, 45, 92, 0.14);
+    color: #D6ECFB;
+    border-color: rgba(13, 95, 161,0.40);
+    background: rgba(13, 95, 161,0.14);
   }
 
   /* Eyebrow (rótulo acima de título) */
@@ -259,6 +261,33 @@ body::after {
   @keyframes eyebrow-pulse {
     0%, 100% { box-shadow: 0 0 0 3px rgba(14, 216, 246, 0.18), 0 0 8px rgba(14, 216, 246, 0.45); }
     50%       { box-shadow: 0 0 0 5px rgba(14, 216, 246, 0.10), 0 0 18px rgba(14, 216, 246, 0.75); }
+  }
+
+  /* Tag de seção — versão "chip" do eyebrow, com moldura e fundo.
+     Usar quando o rótulo precisa de mais presença acima do título. */
+  .tag-section {
+    @apply relative inline-flex items-center gap-2.5 rounded-full border px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em];
+    color: #B8DDF6;
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .tag-section::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #0ed8f6;
+    box-shadow: 0 0 0 3px rgba(14, 216, 246, 0.18), 0 0 12px rgba(14, 216, 246, 0.55);
+    animation: eyebrow-pulse 2.6s ease-in-out infinite;
+  }
+  /* Sobre fundo claro a moldura inverte para azul da marca */
+  .section-light .tag-section {
+    color: #0060a8;
+    border-color: rgba(0, 121, 203, 0.22);
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 10px 30px -22px rgba(0, 121, 203, 0.7);
   }
 
   /* Title fluído — hierarquia de landing pesada */
@@ -286,6 +315,10 @@ body::after {
 /* ===========================================================
    Alternância de fundo: escuro (padrão) ↔ claro (Luminna light)
    =========================================================== */
+
+/* A seção seguinte "sobe" por cima do hero enquanto ele afunda */
+#top { z-index: 0; }
+#top + * { position: relative; z-index: 1; }
 
 /* Seção clara — sobrepõe o fundo escuro do body */
 .section-light {
@@ -316,13 +349,24 @@ body::after {
 .section-light h3,
 .section-light h4,
 .section-light p,
-.section-light span:not([class*="badge"]):not([class*="pill"]):not([class*="eyebrow"]) {
+.section-light span:not([class*="badge"]):not([class*="pill"]):not([class*="eyebrow"]):not([class*="tag-section"]) {
   color: #0a1f44;
+}
+/* dot da tag-section sobre fundo claro: azul da marca */
+.section-light .tag-section::before {
+  background: #0079CB;
+  box-shadow: 0 0 0 3px rgba(0, 121, 203, 0.16), 0 0 10px rgba(0, 121, 203, 0.45);
 }
 .section-light .eyebrow,
 .section-light [class*="eyebrow"],
 .section-light .text-cyan-glow {
-  color: #0079CB !important;
+  color: #024E86 !important;
+}
+/* dot do eyebrow: ciano puro quase invisivel sobre fundo claro */
+.section-light .eyebrow::before {
+  background: #0079CB;
+  box-shadow: 0 0 0 3px rgba(0, 121, 203, 0.16), 0 0 10px rgba(0, 121, 203, 0.45);
+  animation: none;
 }
 .section-light .text-ink-muted,
 .section-light [class*="text-ink-muted"] {
@@ -331,6 +375,18 @@ body::after {
 .section-light .text-ink-faint,
 .section-light [class*="text-ink-faint"] {
   color: #5c7a9e !important;
+}
+
+/* Gradiente/acentos claros ficariam invisiveis sobre fundo claro */
+.section-light .text-gradient-brand {
+  /* usar background-image (nao o shorthand) para nao resetar background-clip */
+  background-image: linear-gradient(120deg, #0079CB 0%, #1885CE 45%, #7c3aed 100%) !important;
+  -webkit-background-clip: text !important;
+          background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+.section-light .text-gradient {
+  color: #0079CB !important;
 }
 .section-light .glass-card,
 .section-light .glass-card-hover {
@@ -348,31 +404,36 @@ body::after {
    =========================================================== */
 .reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(34px);
+  filter: blur(10px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0px);
 }
 
 /* Stagger children when parent has .reveal.is-visible */
 .reveal-stagger > * {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(34px);
+  filter: blur(10px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.reveal-stagger.is-visible > * { opacity: 1; transform: translateY(0); }
-.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.05s; }
+.reveal-stagger.is-visible > * { opacity: 1; transform: translateY(0); filter: blur(0px); }
+.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.0s; }
 .reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.12s; }
-.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.19s; }
-.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.26s; }
-.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.33s; }
-.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.40s; }
-.reveal-stagger.is-visible > *:nth-child(7) { transition-delay: 0.47s; }
-.reveal-stagger.is-visible > *:nth-child(8) { transition-delay: 0.54s; }
+.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.24s; }
+.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.36s; }
+.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.48s; }
+.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.6s; }
+.reveal-stagger.is-visible > *:nth-child(7) { transition-delay: 0.72s; }
+.reveal-stagger.is-visible > *:nth-child(8) { transition-delay: 0.84s; }
 
 /* Orbs decorativos reutilizáveis */
 .decor-orb {
@@ -468,7 +529,7 @@ body::after {
 
 /* Gradiente de texto marca (ciano → azul → violeta) */
 .text-gradient-brand {
-  background: linear-gradient(120deg, #0ed8f6 0%, #0079CB 45%, #a855f7 100%);
+  background: linear-gradient(120deg, #a5f3fc 0%, #FFFFFF 45%, #e9d5ff 100%);
   -webkit-background-clip: text;
           background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -479,6 +540,22 @@ body::after {
 @keyframes gradient-shift {
   0%, 100% { background-position: 0% 50%; }
   50%      { background-position: 100% 50%; }
+}
+
+/* Gradiente saturado para a palavra em destaque do hero. O text-gradient-brand
+   é quase branco de propósito (funciona sobre fundo claro); aqui queremos que a
+   palavra que troca puxe o ciano e o violeta da marca. */
+.text-gradient-hero {
+  background: linear-gradient(105deg, #0ed8f6 0%, #7dd3fc 30%, #ffffff 52%, #c4b5fd 78%, #a855f7 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  background-size: 220% 220%;
+  animation: gradient-shift 7s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient-hero { animation: none; }
 }
 
 /* Orbs animados posicionáveis */
@@ -634,7 +711,7 @@ body::after {
 /* Gradient border animado para pills / futures */
 .pill-gradient {
   position: relative;
-  background: linear-gradient(135deg, rgba(4,18,42,0.6), rgba(7,28,61,0.4));
+  background: linear-gradient(135deg, rgba(14, 88, 147,0.6), rgba(15, 91, 152,0.4));
   border-radius: 999px;
   isolation: isolate;
 }
@@ -766,4 +843,19 @@ body::after {
     rgba(14,216,246,0.2));
   background-size: 100% 200%;
   animation: progress-line-flow 4s linear infinite;
+}
+
+/* Órbita do CompanySignature: o anel gira e cada nó contra-gira na mesma
+   duração, mantendo os chips legíveis na horizontal. */
+@keyframes orbit-spin    { to { transform: rotate(360deg); } }
+@keyframes orbit-counter {
+  from { transform: translate(-50%, -50%) rotate(var(--orbit-angle, 0deg)); }
+  to   { transform: translate(-50%, -50%) rotate(calc(var(--orbit-angle, 0deg) - 360deg)); }
+}
+
+/* Linhas tracejadas em movimento (hero — receita skill sistran-labs) */
+@keyframes dash-march     { to { stroke-dashoffset: -40; } }
+@keyframes dash-march-rev { to { stroke-dashoffset: 40; } }
+@media (prefers-reduced-motion: reduce) {
+  [style*="dash-march"] { animation: none !important; }
 }
