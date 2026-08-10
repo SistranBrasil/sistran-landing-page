@@ -4,9 +4,21 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { X, Check } from 'lucide-react';
 
-type Props = { open: boolean; onClose: () => void };
+type Props = {
+  open: boolean;
+  onClose: () => void;
+  /* Copy opcional: o mesmo modal atende o botao "Fale com a gente" do header e
+     o CTA da secao de contato, que chegam com intencoes diferentes. */
+  title?: string;
+  description?: string;
+};
 
-export default function ContactModal({ open, onClose }: Props) {
+export default function ContactModal({
+  open,
+  onClose,
+  title = 'Deixe uma mensagem',
+  description = 'Nossa equipe entrará em contato para conversar sobre seu desafio.',
+}: Props) {
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
@@ -68,11 +80,9 @@ export default function ContactModal({ open, onClose }: Props) {
             {!sent ? (
               <>
                 <h3 id="contato-modal-titulo" className="font-display text-2xl font-bold text-white">
-                  Deixe uma mensagem
+                  {title}
                 </h3>
-                <p className="mt-2 text-sm text-ink-muted">
-                  Nossa equipe entrará em contato para conversar sobre seu desafio.
-                </p>
+                <p className="mt-2 text-sm text-ink-muted">{description}</p>
 
                 <form className="mt-6 space-y-4" onSubmit={onSubmit}>
                   <Field id="nome" label="Nome Completo" type="text" autoComplete="name" required />

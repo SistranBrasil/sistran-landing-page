@@ -43,6 +43,7 @@
  */
 
 import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, ArrowDown } from 'lucide-react';
@@ -446,8 +447,11 @@ export default function HeroCinematic() {
             </p>
 
             <div data-hero-ctas className="flex flex-wrap items-center gap-6 pt-1">
-              <a
-                href="#solucoes"
+              {/* Link (nao <a href="#solucoes">): o CTA leva para a pagina
+                  /solucoes, nao para a ancora da secao na home. Link faz a
+                  navegacao client-side e o prefetch da rota. */}
+              <Link
+                href="/solucoes"
                 className="btn-primary group focus-visible:ring-2 focus-visible:ring-[#0ed8f6] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
               >
                 Veja como a Sistran pode ajudar
@@ -455,7 +459,7 @@ export default function HeroCinematic() {
                   className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
                   strokeWidth={1.8}
                 />
-              </a>
+              </Link>
               <a
                 href="#contato"
                 className="group relative inline-flex items-center gap-2 text-sm font-semibold text-white/85 transition-colors hover:text-white"

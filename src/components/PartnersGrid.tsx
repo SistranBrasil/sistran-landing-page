@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'motion/react';
 import clsx from 'clsx';
-import { ArrowUpRight } from 'lucide-react';
 import { PARTNERS, PARTNER_CATEGORIES, type PartnerCategory, type Partner } from '@/data/partners';
 import { getIcon } from '@/lib/icons';
 import { useReducedMotion } from '@/lib/motion';
@@ -160,20 +159,6 @@ function PartnerCard({ p, index }: { p: Partner; index: number }) {
         </div>
       )}
       {!p.logo && <div className="flex-1" />}
-
-      {/* Footer arrow */}
-      <div className="relative mt-6 flex items-center gap-2 text-xs font-semibold text-white/60 transition-colors group-hover:text-white">
-        <span className="tracking-[0.16em] uppercase">Saiba mais</span>
-        <span
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 transition-all duration-500 group-hover:border-white/40 group-hover:bg-white/10"
-          style={{ boxShadow: `inset 0 0 0 0 ${tone}` }}
-        >
-          <ArrowUpRight
-            className="h-4 w-4 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            strokeWidth={1.8}
-          />
-        </span>
-      </div>
 
       {/* Bottom line reveal */}
       <span

@@ -8,6 +8,7 @@ import { ArrowUpRight, Menu, X } from 'lucide-react';
 import clsx from 'clsx';
 import type Lenis from 'lenis';
 import { NAV_ITEMS } from '@/data/nav';
+import ContactModal from './ContactModal';
 
 const ACCENT = '#0ed8f6';
 const PILL_BG = 'linear-gradient(135deg, rgba(14, 88, 147,0.78), rgba(15, 91, 152,0.72))';
@@ -28,6 +29,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeHash, setActiveHash] = useState('');
+  const [contactOpen, setContactOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -98,7 +100,13 @@ export default function Header() {
     return () => observer.disconnect();
   }, [pathname]);
 
+  const openContact = useCallback(() => {
+    setOpen(false);
+    setContactOpen(true);
+  }, []);
+
   return (
+    <>
     <header
       className="fixed inset-x-0 top-4 z-50 mx-auto flex h-[72px] w-[min(1240px,calc(100%-32px))] items-center justify-between rounded-[20px] px-3 pl-5 text-white md:h-[88px]"
       style={{
@@ -163,15 +171,20 @@ export default function Header() {
         })}
       </nav>
 
-      {/* CTA */}
-      <Link
-        href="/#contato"
+      {/* CTA — abre o modal de contato em vez de navegar para /#contato.
+          <button>, nao <Link>: nao ha mudanca de rota. A secao #contato segue
+          existindo na home e acessivel pelo menu. */}
+      <button
+        type="button"
+        onClick={openContact}
+        aria-haspopup="dialog"
+        aria-expanded={contactOpen}
         className="hidden h-11 flex-shrink-0 items-center gap-3 rounded-[13px] bg-white px-4 text-[0.78rem] font-bold md:inline-flex"
         style={{ color: '#0b2550', boxShadow: '0 8px 24px rgba(0,0,0,0.16)' }}
       >
         Fale com a gente
         <ArrowUpRight className="h-3.5 w-3.5" style={{ color: '#087fc4' }} strokeWidth={2.4} />
-      </Link>
+      </button>
 
       {/* Mobile toggle */}
       <button
@@ -214,16 +227,30 @@ export default function Header() {
               </Link>
             );
           })}
-          <Link
-            href="/#contato"
+          <button
+            type="button"
+            onClick={openContact}
+            aria-haspopup="dialog"
+            aria-expanded={contactOpen}
             className="mt-2 inline-flex items-center justify-between rounded-xl bg-white px-4 py-3 text-sm font-bold"
             style={{ color: '#0b2550' }}
           >
             Fale com a gente
             <ArrowUpRight className="h-4 w-4" style={{ color: '#087fc4' }} strokeWidth={2.4} />
-          </Link>
+          </button>
         </nav>
       </div>
     </header>
+
+    {/* Fora do <header>: o header tem backdrop-filter, que cria um containing
+        block e faria o `position: fixed` do modal se ancorar nele em vez de na
+        viewport. */}
+    <ContactModal
+      open={contactOpen}
+      onClose={() => setContactOpen(false)}
+      title="Fale com a gente"
+      description="Conte o seu desafio e um especialista da Sistran entra em contato."
+    />
+    </>
   );
 }
