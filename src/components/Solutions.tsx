@@ -82,20 +82,19 @@ function SolutionPanel({
           : `0 1px 2px rgba(4,32,64,0.08), 0 10px 20px -10px rgba(4,32,64,0.20), 0 30px 60px -26px rgba(4,32,64,0.30), inset 0 1px 0 rgba(255,255,255,0.9)`,
       }}
     >
-      {/* Orb de luz seguindo o cursor (receita MetricCard) */}
-      {!rm && (
-        <div
-          aria-hidden
-          className="pointer-events-none absolute h-[180px] w-[180px] rounded-full"
-          style={{
-            background: `radial-gradient(circle, ${accent}22 0%, transparent 70%)`,
-            top: `calc(${mouse.y * 100}% - 90px)`,
-            left: `calc(${mouse.x * 100}% - 90px)`,
-            opacity: hover ? 1 : 0,
-            transition: 'opacity .3s ease',
-          }}
-        />
-      )}
+      {/* Orb de luz seguindo o cursor (receita MetricCard). O nó existe sempre;
+          com movimento reduzido ele só nunca acende. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute h-[180px] w-[180px] rounded-full"
+        style={{
+          background: `radial-gradient(circle, ${accent}22 0%, transparent 70%)`,
+          top: `calc(${mouse.y * 100}% - 90px)`,
+          left: `calc(${mouse.x * 100}% - 90px)`,
+          opacity: hover && !rm ? 1 : 0,
+          transition: 'opacity .3s ease',
+        }}
+      />
 
       {/* Linha de acento no topo */}
       <span

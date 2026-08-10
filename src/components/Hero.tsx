@@ -151,18 +151,19 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Peek próxima seção */}
-        {!rm && (
-          <a
-            href="#quem-somos"
-            className="group absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/75 transition-colors hover:text-white"
-          >
-            <span>Quem somos</span>
-            <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 transition-colors group-hover:border-white/40">
-              <ArrowDown className="h-3.5 w-3.5 animate-pulse-soft" strokeWidth={1.8} />
-            </span>
-          </a>
-        )}
+        {/* Peek próxima seção. Sem percurso de scroll não há o que indicar,
+            mas o nó continua existindo: a árvore não pode mudar em função de
+            `prefers-reduced-motion`. */}
+        <a
+          href="#quem-somos"
+          style={{ display: rm ? 'none' : undefined }}
+          className="group absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/75 transition-colors hover:text-white"
+        >
+          <span>Quem somos</span>
+          <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 transition-colors group-hover:border-white/40">
+            <ArrowDown className="h-3.5 w-3.5 animate-pulse-soft" strokeWidth={1.8} />
+          </span>
+        </a>
       </div>
     </section>
   );

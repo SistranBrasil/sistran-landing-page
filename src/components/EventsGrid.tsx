@@ -213,9 +213,10 @@ export default function EventsGrid() {
     scrollToLeft(left);
   };
 
-  // autoplay
+  // Autoplay: o usuário tem botão de pausa, então segue valendo com movimento
+  // reduzido — parado por padrão os cards seguintes passariam despercebidos.
   useEffect(() => {
-    if (!playing || rm) return;
+    if (!playing) return;
     timer.current = window.setInterval(() => {
       setActiveIdx((i) => {
         const next = (i + 1) % visible.length;
@@ -226,7 +227,7 @@ export default function EventsGrid() {
     return () => {
       if (timer.current) window.clearInterval(timer.current);
     };
-  }, [playing, rm, visible.length]);
+  }, [playing, visible.length]);
 
   // detectar card ativo pelo scroll
   useEffect(() => {

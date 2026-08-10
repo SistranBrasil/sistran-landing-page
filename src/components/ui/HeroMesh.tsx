@@ -115,7 +115,9 @@ export default function HeroMesh() {
     };
   }, [rm]);
 
-  if (rm) return null;
+  /* O canvas é renderizado sempre. Removê-lo quando `rm` vira true (só depois
+     da hidratação) desmontaria o nó e derrubaria junto o contexto 2D já
+     inicializado; sem o loop acima ele apenas fica transparente. */
   return (
     <canvas
       ref={canvasRef}

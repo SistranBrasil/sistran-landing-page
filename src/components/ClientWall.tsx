@@ -67,7 +67,7 @@ function Marquee({
     <div className="marquee-viewport">
       <div
         className={`marquee-track ${direction === 'left' ? 'marquee-left' : 'marquee-right'}`}
-        style={{ animationDuration: `${speed}s` }}
+        style={{ '--mq-duration': `${speed}s` } as React.CSSProperties}
       >
         <div className="marquee-copy">{copy}</div>
         <div className="marquee-copy" aria-hidden="true">{copy}</div>

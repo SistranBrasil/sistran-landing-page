@@ -47,8 +47,10 @@ function MetricBig({ m, index }: { m: (typeof METRICS)[number]; index: number })
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
-  const v = useCountUp(m.value, active && !rm);
-  const display = rm || !active ? (active ? m.value : 0) : v;
+  /* A contagem é a informação em si — ver o número subir é o conteúdo, não um
+     enfeite. Roda mesmo com movimento reduzido; o que fica desligado é a
+     entrada com blur/translate abaixo. */
+  const display = useCountUp(m.value, active);
   const align = index % 2 === 0 ? 'items-start text-left' : 'items-end text-right';
   return (
     <motion.li

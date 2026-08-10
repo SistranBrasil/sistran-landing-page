@@ -15,7 +15,7 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { DOMAINS } from '@/data/domains';
 import { getIcon } from '@/lib/icons';
-import { easeExpo, useReducedMotion } from '@/lib/motion';
+import { easeExpo } from '@/lib/motion';
 
 const ROTATE_MS = 3200;
 const RING_SECONDS = 44;
@@ -25,22 +25,16 @@ function CountUp({
   to,
   suffix = '',
   durationMs = 1600,
-  disabled,
 }: {
   to: number;
   suffix?: string;
   durationMs?: number;
-  disabled: boolean;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (disabled) {
-      el.textContent = `${to}${suffix}`;
-      return;
-    }
     let raf = 0;
     let start = 0;
     const tick = (now: number) => {
@@ -53,7 +47,7 @@ function CountUp({
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [to, suffix, durationMs, disabled]);
+  }, [to, suffix, durationMs]);
 
   return (
     <span ref={ref} className="tabular-nums">
@@ -63,21 +57,28 @@ function CountUp({
 }
 
 export default function CompanySignature() {
-  const rm = useReducedMotion();
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
 
+  /* A rotação dos domínios é conteúdo, não efeito: parada, os demais só
+     ficariam acessíveis por clique. Segue rodando mesmo com movimento
+     reduzido, junto com a órbita — ver a isenção em globals.css. */
   useEffect(() => {
-    if (rm || paused) return;
+    if (paused) return;
     const t = window.setInterval(
       () => setI((n) => (n + 1) % DOMAINS.length),
       ROTATE_MS,
     );
     return () => window.clearInterval(t);
-  }, [rm, paused]);
+  }, [paused]);
 
   const active = DOMAINS[i];
   const step = 360 / DOMAINS.length;
+  const playState = paused ? 'paused' : 'running';
+  const orbitVars = {
+    '--orbit-duration': `${RING_SECONDS}s`,
+    animationPlayState: playState,
+  } as React.CSSProperties;
 
   return (
     <div
@@ -119,16 +120,8 @@ export default function CompanySignature() {
             Ficam dentro do anel girante, então acompanham a rotação. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={
-            rm
-              ? undefined
-              : {
-                  animation: `orbit-spin ${RING_SECONDS}s linear infinite`,
-                  animationPlayState: paused ? 'paused' : 'running',
-                  willChange: 'transform',
-                }
-          }
+          className="orbit-spin pointer-events-none absolute inset-0"
+          style={orbitVars}
         >
           {DOMAINS.map((d, idx) => {
             const isActive = idx === i;
@@ -147,41 +140,29 @@ export default function CompanySignature() {
           })}
         </div>
 
-        {/* Ponto luminoso que percorre o anel externo */}
-        {!rm && (
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              animation: `orbit-spin ${RING_SECONDS / 2.4}s linear infinite`,
-              animationPlayState: paused ? 'paused' : 'running',
-              willChange: 'transform',
-            }}
-          >
-            <span
-              className="absolute left-1/2 top-0 block h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full"
-              style={{
-                background: active.color,
-                boxShadow: `0 0 16px 4px ${active.color}aa`,
-                transition: 'background 700ms ease, box-shadow 700ms ease',
-              }}
-            />
-          </div>
-        )}
-
-        {/* Anel orbital com os domínios */}
+        {/* Ponto luminoso que percorre o anel externo, mais rápido que o anel */}
         <div
-          className="absolute inset-0"
+          aria-hidden
+          className="orbit-spin pointer-events-none absolute inset-0"
           style={
-            rm
-              ? undefined
-              : {
-                  animation: `orbit-spin ${RING_SECONDS}s linear infinite`,
-                  animationPlayState: paused ? 'paused' : 'running',
-                  willChange: 'transform',
-                }
+            {
+              '--orbit-duration': `${RING_SECONDS / 2.4}s`,
+              animationPlayState: playState,
+            } as React.CSSProperties
           }
         >
+          <span
+            className="absolute left-1/2 top-0 block h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              background: active.color,
+              boxShadow: `0 0 16px 4px ${active.color}aa`,
+              transition: 'background 700ms ease, box-shadow 700ms ease',
+            }}
+          />
+        </div>
+
+        {/* Anel orbital com os domínios */}
+        <div className="orbit-spin absolute inset-0" style={orbitVars}>
           {DOMAINS.map((d, idx) => {
             const angle = idx * step;
             const isActive = idx === i;
@@ -197,17 +178,14 @@ export default function CompanySignature() {
                 {/* posiciona no topo do círculo e contra-rotaciona para manter
                     o chip legível na horizontal */}
                 <div
-                  className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2"
+                  className="orbit-counter absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2"
                   style={
-                    rm
-                      ? { transform: `translate(-50%, -50%) rotate(${-angle}deg)` }
-                      : ({
-                          transform: `translate(-50%, -50%) rotate(${-angle}deg)`,
-                          '--orbit-angle': `${-angle}deg`,
-                          animation: `orbit-counter ${RING_SECONDS}s linear infinite`,
-                          animationPlayState: paused ? 'paused' : 'running',
-                          willChange: 'transform',
-                        } as React.CSSProperties)
+                    {
+                      transform: `translate(-50%, -50%) rotate(${-angle}deg)`,
+                      '--orbit-angle': `${-angle}deg`,
+                      '--orbit-duration': `${RING_SECONDS}s`,
+                      animationPlayState: playState,
+                    } as React.CSSProperties
                   }
                 >
                   <button
@@ -242,7 +220,7 @@ export default function CompanySignature() {
         <div className="absolute left-1/2 top-1/2 flex w-[46%] -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-3 text-center">
           <span
             aria-hidden
-            className={`absolute inset-0 -z-10 rounded-full ${rm ? '' : 'halo-pulse'}`}
+            className="halo-pulse absolute inset-0 -z-10 rounded-full"
             style={{
               color: active.color,
               background: `radial-gradient(circle, ${active.color}33, transparent 70%)`,
@@ -286,9 +264,9 @@ export default function CompanySignature() {
           <AnimatePresence mode="wait">
             <motion.p
               key={active.id}
-              initial={rm ? false : { opacity: 0, y: 8 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={rm ? { opacity: 0 } : { opacity: 0, y: -8 }}
+              exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.45, ease: easeExpo }}
               className="text-sm leading-relaxed text-white/70"
             >
@@ -321,7 +299,7 @@ export default function CompanySignature() {
                   color: 'transparent',
                 }}
               >
-                <CountUp to={s.value} suffix={s.suffix} disabled={rm} />
+                <CountUp to={s.value} suffix={s.suffix} />
               </span>
               <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/50">
                 {s.label}

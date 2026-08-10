@@ -95,17 +95,45 @@ export const tabContent = {
 export const grad =
   'bg-gradient-to-r from-[#0079CB] via-[#1e8fe0] to-[#0ed8f6] bg-clip-text text-transparent';
 
-/** Hook: retorna true se o usuário prefere motion reduzido. */
+/* Uma única MediaQueryList para toda a aplicação. Sem o cache, cada render de
+   cada componente que chama o hook alocaria um objeto novo — `getSnapshot` roda
+   em todo render, e são dezenas de consumidores. */
+let mediaQuery: MediaQueryList | null = null;
+
+function getMediaQuery(): MediaQueryList {
+  if (!mediaQuery) mediaQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+  return mediaQuery;
+}
+
+/**
+ * Leitura síncrona da preferência. Use dentro de `useEffect`, nunca durante o
+ * render: no render o valor precisa ser o mesmo do servidor (`false`), senão a
+ * hidratação diverge.
+ */
+export function prefersReducedMotion(): boolean {
+  if (typeof window === 'undefined') return false;
+  return getMediaQuery().matches;
+}
+
+/**
+ * Hook: retorna true se o usuário prefere motion reduzido.
+ *
+ * O snapshot do servidor é sempre `false` e o primeiro render do cliente também
+ * — o valor real só chega depois da hidratação. Por isso o consumidor NUNCA
+ * pode usar `rm` para decidir quais nós existem (`if (rm) return <A/>`): quando
+ * o valor vira `true`, a subárvore inteira é desmontada e remontada. Condicione
+ * apenas estilos e props, ou resolva a diferença em CSS.
+ */
 export function useReducedMotion(): boolean {
   return useSyncExternalStore(subscribeReducedMotion, getReducedMotion, () => false);
 }
 
 function subscribeReducedMotion(onChange: () => void): () => void {
-  const mq = window.matchMedia(REDUCED_MOTION_QUERY);
+  const mq = getMediaQuery();
   mq.addEventListener('change', onChange);
   return () => mq.removeEventListener('change', onChange);
 }
 
 function getReducedMotion(): boolean {
-  return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+  return getMediaQuery().matches;
 }
