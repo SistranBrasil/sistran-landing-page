@@ -421,7 +421,10 @@ export default function HeroCinematic() {
         {/* minmax(0, …) é obrigatório: sem ele a largura mínima automática do
             grid deixa a headline gigante empurrar a coluna da direita para
             fora da tela. */}
-        <div className="container-lp relative z-10 grid w-full grid-cols-1 items-center gap-14 pt-32 pb-24 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:pt-40">
+        {/* Em lg+ o hero abandona o max-w-container (1180px) e assume a MESMA
+            caixa da navbar — min(1240px, 100%-32px) + pl-5 — para que a headline
+            comece exatamente na vertical do logo. */}
+        <div className="container-lp relative z-10 grid w-full grid-cols-1 items-center gap-14 pt-32 pb-24 lg:w-[min(1240px,calc(100%-32px))] lg:max-w-none lg:grid-cols-[minmax(0,1.18fr)_minmax(0,0.82fr)] lg:gap-10 lg:px-5 lg:pt-40">
           <div className="flex min-w-0 flex-col gap-7">
             <span
               data-hero-chip

@@ -49,38 +49,63 @@ function MetricBig({ m, index }: { m: (typeof METRICS)[number]; index: number })
   }, []);
   const v = useCountUp(m.value, active && !rm);
   const display = rm || !active ? (active ? m.value : 0) : v;
-  const align = index % 2 === 0 ? 'items-start text-left' : 'items-end text-right';
+
+  // Alternância em torno do eixo central: ímpares encostam o número no eixo
+  // pela direita, pares pela esquerda. O número nunca vai para a borda da tela.
+  const even = index % 2 === 0;
+
   return (
     <motion.li
       ref={liRef}
-      initial={rm ? false : { opacity: 0, y: 40, filter: 'blur(6px)' }}
+      initial={rm ? false : { opacity: 0, y: 32, filter: 'blur(6px)' }}
       whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, margin: '-80px 0px -80px 0px' }}
       transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-      className={`relative flex flex-col gap-3 border-b border-[#0079CB]/12 py-10 md:py-14 last:border-b-0 ${align}`}
+      className="group relative border-b border-[#0079CB]/12 py-3.5 last:border-b-0 md:py-4"
     >
-      <div className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#0079CB]">
-        <span className="tabular-nums">{String(index + 1).padStart(2, '0')}</span>
-        <span aria-hidden className="h-px w-16 bg-gradient-to-r from-[#0079CB] to-transparent" />
-      </div>
-      <div
-        className="font-display font-black leading-[0.9]"
+      {/* Nó no eixo central, na altura do número: costura a métrica à linha
+          vertical e cresce no hover. */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 hidden h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-transform duration-500 group-hover:scale-150 md:block"
         style={{
-          fontVariantNumeric: 'tabular-nums',
-          fontSize: 'clamp(4rem, 12vw, 10rem)',
-          letterSpacing: '-0.055em',
-          background: 'linear-gradient(135deg, #0079CB 0%, #0ed8f6 55%, #7c3aed 100%)',
-          WebkitBackgroundClip: 'text',
-          backgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          color: 'transparent',
+          background: 'linear-gradient(135deg, #0ed8f6, #7c3aed)',
+          boxShadow: '0 0 12px rgba(14,216,246,0.7)',
         }}
+      />
+      <div
+        className={`flex flex-col gap-1.5 md:w-1/2 ${
+          even
+            ? 'items-start text-left md:items-end md:pr-8 md:text-right'
+            : 'items-start text-left md:ml-auto md:pl-8'
+        }`}
       >
-        <span aria-hidden>{display}</span>
-        <span aria-hidden className="text-[#0ed8f6]">{m.suffix}</span>
-        <span className="sr-only">{m.value}{m.suffix}</span>
+        <div className={`flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#0079CB] ${even ? 'md:flex-row-reverse' : ''}`}>
+          <span className="tabular-nums">{String(index + 1).padStart(2, '0')}</span>
+          <span aria-hidden className={`h-px w-16 bg-gradient-to-r ${even ? 'md:bg-gradient-to-l' : ''} from-[#0079CB] to-transparent`} />
+        </div>
+
+        <div
+          className="font-display font-black leading-[0.9] transition-transform duration-500 group-hover:scale-[1.04]"
+          style={{
+            fontVariantNumeric: 'tabular-nums',
+            fontSize: 'clamp(2.25rem, 4.6vw, 4rem)',
+            letterSpacing: '-0.055em',
+            background: 'linear-gradient(135deg, #0079CB 0%, #0ed8f6 55%, #7c3aed 100%)',
+            WebkitBackgroundClip: 'text',
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            color: 'transparent',
+            transformOrigin: even ? 'right center' : 'left center',
+          }}
+        >
+          <span aria-hidden>{display}</span>
+          <span aria-hidden className="text-[#0ed8f6]">{m.suffix}</span>
+          <span className="sr-only">{m.value}{m.suffix}</span>
+        </div>
+
+        <p className="max-w-md text-base font-medium leading-relaxed text-[#3d5a80] md:text-lg">{m.label}</p>
       </div>
-      <p className="max-w-md text-base font-medium leading-relaxed text-[#3d5a80] md:text-lg">{m.label}</p>
     </motion.li>
   );
 }
@@ -98,7 +123,7 @@ export default function Metrics() {
           viewport={VP}
           className="mb-16 max-w-2xl"
         >
-          <motion.span variants={vSubtitle} className="eyebrow">
+          <motion.span variants={vSubtitle} className="tag-section">
             Resultados acumulados
           </motion.span>
           <motion.h2 variants={vTitle} className="mt-3 font-display text-section font-bold text-ink">
@@ -111,12 +136,16 @@ export default function Metrics() {
 
         <div className="relative">
           {/* Linha técnica vertical conectando */}
+          {/* Eixo central com gradiente em movimento (utility .progress-line-v),
+              mascarado nas pontas para não terminar em corte seco. */}
           <span
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 md:block"
+            className="progress-line-v pointer-events-none absolute left-1/2 top-0 hidden h-full w-[2px] -translate-x-1/2 opacity-60 md:block"
             style={{
-              background:
-                'linear-gradient(180deg, transparent 0%, rgba(0,121,203,0.35) 15%, rgba(14,216,246,0.4) 50%, rgba(124,58,237,0.3) 85%, transparent 100%)',
+              maskImage:
+                'linear-gradient(180deg, transparent 0%, #000 10%, #000 90%, transparent 100%)',
+              WebkitMaskImage:
+                'linear-gradient(180deg, transparent 0%, #000 10%, #000 90%, transparent 100%)',
             }}
           />
           <ul className="relative">

@@ -13,15 +13,20 @@
 
   position: relative;
   overflow: hidden;
-  padding: 40px 0 80px;
+  /* padding-top pequeno: o espaco antes do painel agora vem da margem do
+     cabecalho na pagina, nao de um vao dentro do shell. */
+  padding: 16px 0 80px;
   color: var(--ink);
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  /* Sem cor de base (era `#0E639F` chapado): o shell comecava numa borda reta
+     logo abaixo do titulo da pagina e parecia um bloco solto, separado do
+     cabecalho. Agora o fundo da pagina atravessa e so a malha + o brilho
+     ficam por cima, entao a secao le como continuacao do titulo. */
   background:
     linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
-    radial-gradient(circle at 70% -10%, rgba(68, 127, 213, 0.22), transparent 34%),
-    #0E639F;
-  background-size: 56px 56px, 56px 56px, auto, auto;
+    radial-gradient(circle at 70% -10%, rgba(68, 127, 213, 0.22), transparent 34%);
+  background-size: 56px 56px, 56px 56px, auto;
 }
 
 .partners-timeline-shell button { font: inherit; color: inherit; }
@@ -37,7 +42,10 @@
 .partners-timeline-shell .ambient-two { width: 320px; height: 320px; background: #74df4a; top: 520px; right: -210px; opacity: 0.1; }
 
 .partners-timeline-shell .timeline-section {
-  width: min(1540px, calc(100% - 48px));
+  /* 1180px = maxWidth.container do tailwind.config, o mesmo de .container-lp.
+     Era min(1540px, ...): o painel ficava bem mais largo que o titulo logo
+     acima, o que aumentava a sensacao de bloco desalinhado/solto. */
+  width: min(1180px, calc(100% - 40px));
   margin: 0 auto;
   position: relative;
   z-index: 2;
@@ -56,6 +64,9 @@
   justify-content: space-between;
   gap: 30px;
 }
+/* Sem o bloco de titulo, a toolbar so tem os filtros: alinha a direita em vez
+   de esticar a barra pela largura inteira. */
+.partners-timeline-shell .timeline-toolbar.toolbar-filters-only { justify-content: flex-end; }
 .partners-timeline-shell .timeline-toolbar > div:first-child {
   display: flex;
   align-items: center;
@@ -108,8 +119,9 @@
   border-radius: 11px;
   padding: 0 12px;
   background: transparent;
-  color: #77869f;
-  font-size: 0.69rem;
+  color: #BBD9F2;
+  font-size: 0.72rem;
+  font-weight: 600;
   cursor: pointer;
   transition: 180ms ease;
 }
@@ -130,7 +142,9 @@
 }
 
 .partners-timeline-shell .timeline-stage {
-  min-height: 760px;
+  /* 4 linhas de 158px + padding (70 topo / 40 base) + folga para o painel
+     "future-horizon", que fica absoluto no rodape do palco. */
+  min-height: 880px;
   margin-top: 26px;
   padding: 70px 40px 40px;
   position: relative;
@@ -181,7 +195,10 @@
 }
 
 .partners-timeline-shell .timeline-desktop { position: relative; z-index: 2; padding: 0 80px; }
-.partners-timeline-shell .track-row { height: 132px; position: relative; }
+/* 158px, nao 132: as legendas ocupam ate 2 linhas para baixo (linhas impares) e
+   para cima (linhas pares) — com 132px os dois blocos de texto se encontravam
+   no meio e o bloco ficava ilegivel, como na captura. */
+.partners-timeline-shell .track-row { height: 158px; position: relative; }
 .partners-timeline-shell .track-line {
   height: 5px;
   position: absolute;
@@ -200,7 +217,8 @@
 }
 .partners-timeline-shell .track-turn {
   width: 78px;
-  height: 137px;
+  /* Acompanha a altura da linha (158px + 5px da borda). */
+  height: 163px;
   position: absolute;
   top: 38px;
   right: -74px;
@@ -286,11 +304,16 @@
   pointer-events: none;
 }
 .partners-timeline-shell .track-row:nth-child(even) .node-label { top: -48px; }
+/* Os cinzas-azulados abaixo (#58718f, #b8c5d8, #687a97, #7d8da5...) vinham do
+   painel quase preto original (--panel: #0b1729). O fundo passou a ser azul
+   medio (#0E639F), onde eles ficam com luminancia parecida com a do proprio
+   fundo — e o texto "desaparece". Tons claros e frios resolvem sem mudar a
+   hierarquia visual. */
 .partners-timeline-shell .node-label small {
   display: block;
   margin-bottom: 4px;
-  color: #58718f;
-  font-size: 0.51rem;
+  color: #A5D4F5;
+  font-size: 0.54rem;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -298,10 +321,11 @@
 .partners-timeline-shell .node-label strong {
   display: -webkit-box;
   overflow: hidden;
-  color: #b8c5d8;
-  font-size: 0.61rem;
+  color: #F2F8FF;
+  font-size: 0.66rem;
   line-height: 1.35;
-  font-weight: 560;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(3, 26, 52, 0.55);
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   transition: 180ms ease;
@@ -397,8 +421,8 @@
 .partners-timeline-shell .future-copy p {
   max-width: 410px;
   margin: 0;
-  color: #7d8da5;
-  font-size: 0.69rem;
+  color: #C6DFF3;
+  font-size: 0.72rem;
   line-height: 1.55;
 }
 .partners-timeline-shell .future-route { height: 46px; position: relative; z-index: 2; }
@@ -521,7 +545,7 @@
   text-transform: uppercase;
 }
 .partners-timeline-shell .detail-copy h3 { margin: 5px 0 3px; color: white; font-size: 1rem; }
-.partners-timeline-shell .detail-copy p { margin: 0; color: #75849c; font-size: 0.75rem; }
+.partners-timeline-shell .detail-copy p { margin: 0; color: #C6DFF3; font-size: 0.78rem; }
 .partners-timeline-shell .detail-controls { display: flex; align-items: center; gap: 6px; }
 .partners-timeline-shell .detail-controls button {
   width: 38px;
@@ -599,7 +623,7 @@
     border: 0;
     padding: 8px 10px 8px 0;
     text-align: left;
-    color: #aab8ca;
+    color: #E4F1FB;
     background: transparent;
     cursor: pointer;
     transition: 180ms ease;
@@ -619,7 +643,7 @@
   }
   .partners-timeline-shell .mobile-event small {
     display: block;
-    color: #5c7290;
+    color: #A5D4F5;
     font-size: 0.51rem;
     font-weight: 700;
     letter-spacing: 0.08em;

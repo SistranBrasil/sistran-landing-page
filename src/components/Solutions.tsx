@@ -39,13 +39,16 @@ function SolutionPanel({
   s,
   index,
   rm,
+  isActive = true,
 }: {
   s: (typeof SOLUTIONS)[number];
   index: number;
   rm: boolean;
+  isActive?: boolean;
 }) {
   const Icon = getIcon(s.icon);
-  const { hover, mouse, handlers } = useTilt(!rm);
+  // Tilt só no card da frente: nos cards do fundo o cursor nem chega neles.
+  const { hover, mouse, handlers } = useTilt(!rm && isActive);
   // Accent escurecido: o card e branco, tons claros perderiam contraste.
   const accent = s.colorOnLight;
   const num = String(index + 1).padStart(2, '0');
@@ -55,9 +58,9 @@ function SolutionPanel({
        transform), a interna faz o tilt. Num unico elemento o style.transform do
        tilt sobrescreveria o `y` do motion. */
     <motion.div
-      initial={rm ? false : { opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      /* Sem animação de entrada própria: o baralho (transform/opacity no
+         wrapper) já faz a transição entre cards. */
+      initial={false}
       className="w-full"
     >
     <article
@@ -111,10 +114,10 @@ function SolutionPanel({
       {/* Numero fantasma */}
       <span
         aria-hidden
-        className="pointer-events-none absolute -right-2 -top-8 select-none font-display font-black leading-none"
+        className="pointer-events-none absolute right-6 top-4 select-none font-display font-black leading-none"
         style={{
-          color: `${accent}1f`,
-          fontSize: 'clamp(6rem, 10vw, 9rem)',
+          color: `${accent}1a`,
+          fontSize: 'clamp(5rem, 8vw, 7.5rem)',
         }}
       >
         {num}
@@ -155,6 +158,7 @@ export default function Solutions() {
   const [openMobile, setOpenMobile] = useState<number | null>(0);
   const listRef = useRef<HTMLOListElement>(null);
   const itemRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)');
@@ -167,21 +171,24 @@ export default function Solutions() {
   useEffect(() => {
     if (!isDesktop) return;
     gsap.registerPlugin(ScrollTrigger);
-    const triggers: ScrollTrigger[] = [];
-    itemRefs.current.forEach((el, i) => {
-      if (!el) return;
-      triggers.push(
-        ScrollTrigger.create({
-          trigger: el,
-          // Faixa larga o bastante para cobrir blocos de 58vh sem deixar
-          // intervalo morto entre um card e o proximo.
-          start: 'top 70%',
-          end: 'bottom 30%',
-          onEnter: () => setActive(i),
-          onEnterBack: () => setActive(i),
-        }),
-      );
+    const track = trackRef.current;
+    if (!track) return;
+    /* UM trigger sobre a trilha inteira, com o indice derivado do progresso.
+       Antes havia um trigger por espacador com start/end diferentes (70%/30%):
+       na subida os intervalos nao eram simetricos e o onEnterBack de um card
+       disparava antes do outro sair, fazendo o ativo pular (4 -> 2). Faixas
+       iguais calculadas do progresso sao reversiveis por construcao. */
+    const N = SOLUTIONS.length;
+    const trigger = ScrollTrigger.create({
+      trigger: track,
+      start: 'top top',
+      end: 'bottom bottom',
+      onUpdate: (self) => {
+        const idx = Math.min(N - 1, Math.max(0, Math.floor(self.progress * N)));
+        setActive((prev) => (prev === idx ? prev : idx));
+      },
     });
+    const triggers = [trigger];
     /* As fontes carregam com `display: swap`: o texto reflui depois dos
        triggers serem medidos, deixando os `start`/`end` em posicoes velhas —
        o card ativo entao para de trocar. Refresh apos o layout estabilizar. */
@@ -210,17 +217,99 @@ export default function Solutions() {
   );
 
   return (
-    <section id="servicos" className="section-py relative">
-      <div className="container-lp">
+    /* lg:pb-0: o padding inferior de .section-py somaria ao final do pin e
+       criaria um vazio depois do ultimo card. */
+    /* overflow-clip, NAO overflow-hidden: hidden faria da secao o scrollport
+       mais proximo e o `sticky` do pin pararia de funcionar. clip apara os
+       orbs sem criar container de scroll. */
+    <section id="servicos" className="section-py relative overflow-clip lg:pb-0">
+      {/* Atmosfera: mesma receita do hero (orbs em drift + grade mascarada +
+          linhas tracejadas em marcha), em intensidade menor para nao competir
+          com os cards brancos. Fica atras de tudo e nao capta ponteiro. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(ellipse 80% 60% at 28% 30%, rgba(4,32,66,0.38), transparent 64%)',
+          }}
+        />
+        <div className="absolute inset-0 grid-mask opacity-40" />
+        <div
+          className="orb orb-drift left-[-6%] top-[8%] h-[460px] w-[460px]"
+          style={{
+            background:
+              'radial-gradient(circle, rgba(14,216,246,0.34), rgba(14,216,246,0.06) 55%, transparent 72%)',
+          }}
+        />
+        <div
+          className="orb orb-drift-slow right-[-8%] top-[42%] h-[540px] w-[540px]"
+          style={{
+            background:
+              'radial-gradient(circle, rgba(87,183,238,0.30), transparent 70%)',
+          }}
+        />
+        <div
+          className="orb orb-drift bottom-[-4%] left-[38%] hidden h-[380px] w-[380px] lg:block"
+          style={{
+            background: 'radial-gradient(circle, rgba(0,180,255,0.26), transparent 68%)',
+          }}
+        />
+        <svg
+          viewBox="0 0 1440 1200"
+          preserveAspectRatio="xMidYMid slice"
+          className="absolute inset-0 h-full w-full"
+          style={{ mixBlendMode: 'screen' }}
+        >
+          <defs>
+            <linearGradient id="sol-lg1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#0ed8f6" stopOpacity="0" />
+              <stop offset="35%" stopColor="#57B7EE" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#78C9F8" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M -100 980 Q 320 420 760 620 T 1540 260"
+            fill="none"
+            stroke="url(#sol-lg1)"
+            strokeWidth="1.3"
+            strokeDasharray="6 6"
+            opacity="0.4"
+            style={{ animation: 'dash-march 3s linear infinite' }}
+          />
+          <path
+            d="M -80 260 Q 420 820 860 600 T 1520 1020"
+            fill="none"
+            stroke="url(#sol-lg1)"
+            strokeWidth="1.1"
+            strokeDasharray="6 6"
+            opacity="0.28"
+            style={{ animation: 'dash-march-rev 4.6s linear infinite' }}
+          />
+          <line x1="0" y1="700" x2="1440" y2="360" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
+        </svg>
+      </div>
+      <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 brand-line opacity-50" />
+      {/* Em lg+ assume a mesma caixa da navbar (min(1240px,100%-32px) + px-5),
+          como o hero: em telas grandes o conteúdo deixa de parecer estreito e
+          fica na vertical do logo. */}
+      <div className="container-lp lg:w-[min(1240px,calc(100%-32px))] lg:max-w-none lg:px-5">
+        {/* Pin da seção inteira: em lg+ o bloco (titulo + descricao + lista +
+            card) congela na viewport e o scroll passa a trocar os cards. A
+            altura do pin vem da trilha de espacadores irma, logo abaixo. */}
+        <div className="lg:relative">
+        <div className="lg:sticky lg:top-0 lg:flex lg:h-screen lg:flex-col lg:justify-center">
         <motion.div
           variants={vHeader}
           initial={rm ? false : 'hidden'}
           whileInView="visible"
           viewport={VP}
-          className="mb-14 max-w-3xl"
+          className="mb-10 max-w-3xl lg:mb-8"
         >
-          <motion.span variants={vSubtitle} className="eyebrow">Serviços</motion.span>
-          <motion.h2 variants={vTitle} className="mt-3 font-display text-section font-bold text-ink">
+          {/* .tag-section (chip com moldura) em vez de .eyebrow: mesma marcação
+              das outras seções e legível sobre o fundo azul. */}
+          <motion.span variants={vSubtitle} className="tag-section">Serviços</motion.span>
+          <motion.h2 variants={vTitle} className="mt-5 font-display text-section font-bold text-ink">
             Integradora de sistemas <span className="text-gradient-brand">100% focada em Seguros</span>
           </motion.h2>
           <motion.p variants={vSubtitle} className="mt-4 text-lg leading-relaxed text-ink-muted">
@@ -232,18 +321,17 @@ export default function Solutions() {
         </motion.div>
 
         {/* Desktop: sticky list + panel */}
-        <div className="hidden lg:grid lg:grid-cols-[minmax(280px,360px)_1fr] lg:gap-16">
+        <div className="hidden lg:grid lg:grid-cols-[minmax(280px,340px)_1fr] lg:gap-12 xl:grid-cols-[minmax(320px,400px)_1fr] xl:gap-20">
           <div className="relative">
-            {/* Centraliza a lista na viewport para acompanhar o painel ativo
-                (antes: top-32, que a colava sob o header e deixava um vazio
-                grande embaixo). */}
-            <div className="sticky top-0 flex min-h-screen flex-col justify-center py-24">
+            {/* Sem sticky proprio: quem congela agora e a secao inteira (pin).
+                pt acompanha o mesmo recuo da coluna do baralho. */}
+            <div className="flex flex-col pt-24">
               <ol
                 ref={listRef}
                 role="tablist"
                 aria-orientation="vertical"
                 onKeyDown={onKey}
-                className="flex flex-col gap-1"
+                className="flex flex-col gap-2"
               >
                 {SOLUTIONS.map((s, i) => {
                   const num = String(i + 1).padStart(2, '0');
@@ -259,27 +347,55 @@ export default function Solutions() {
                           setActive(i);
                           itemRefs.current[i]?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                         }}
-                        className={`group relative flex w-full items-baseline gap-4 rounded-lg py-3 pl-4 pr-3 text-left transition-colors ${
-                          isActive ? 'text-ink' : 'text-ink/75'
+                        className={`group relative flex w-full cursor-pointer items-baseline gap-4 rounded-xl py-3 pl-5 pr-3 text-left transition-all duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0ed8f6] ${
+                          isActive
+                            ? 'translate-x-1 text-white'
+                            : 'text-white/55 hover:translate-x-1 hover:bg-white/[0.06] hover:text-white/85'
                         }`}
+                        style={{
+                          // Ativo ganha placa de vidro + halo na cor do item:
+                          // muito mais legível que a variação sutil de opacidade.
+                          background: isActive
+                            ? `linear-gradient(90deg, ${s.color}2e, ${s.color}08 60%, transparent)`
+                            : undefined,
+                          boxShadow: isActive ? `inset 0 0 0 1px ${s.color}33` : undefined,
+                        }}
                       >
                         <span
                           aria-hidden
-                          className="absolute left-0 top-1/2 h-8 w-[3px] -translate-y-1/2 rounded-full transition-all duration-500"
+                          className="absolute left-0 top-1/2 w-[3px] -translate-y-1/2 rounded-full transition-all duration-500"
                           style={{
                             background: isActive ? s.color : 'rgba(255,255,255,0.22)',
-                            boxShadow: isActive ? `0 0 12px ${s.color}88` : 'none',
-                            height: isActive ? '2.5rem' : '1rem',
+                            boxShadow: isActive ? `0 0 16px 2px ${s.color}` : 'none',
+                            height: isActive ? '100%' : '1rem',
+                            width: isActive ? '4px' : '3px',
                           }}
                         />
                         <span
-                          className="font-display text-sm font-bold tabular-nums"
-                          style={{ color: isActive ? s.color : 'rgba(255,255,255,0.72)' }}
+                          className="font-display text-sm font-bold tabular-nums transition-colors duration-500"
+                          style={{ color: isActive ? s.color : 'rgba(255,255,255,0.5)' }}
                         >
                           {num}
                         </span>
-                        <span className="flex-1 font-display text-lg font-bold leading-tight">
+                        <span
+                          className={`flex-1 font-display font-bold leading-tight transition-all duration-500 ${
+                            isActive ? 'text-xl' : 'text-lg'
+                          }`}
+                        >
                           {s.title}
+                        </span>
+                        {/* Seta: fixa no item ativo (marca onde o scroll está),
+                            e surge no hover nos demais como pista de clique. */}
+                        <span
+                          aria-hidden
+                          className={`self-center text-base transition-all duration-300 ${
+                            isActive
+                              ? 'translate-x-0 opacity-100'
+                              : 'translate-x-[-6px] opacity-0 group-hover:translate-x-0 group-hover:opacity-100'
+                          }`}
+                          style={{ color: s.color }}
+                        >
+                          →
                         </span>
                       </button>
                     </li>
@@ -293,7 +409,7 @@ export default function Solutions() {
                   className="h-full rounded-full transition-all duration-500"
                   style={{
                     width: `${((active + 1) / SOLUTIONS.length) * 100}%`,
-                    background: 'linear-gradient(90deg, #0079CB, #0ed8f6, #7c3aed)',
+                    background: 'linear-gradient(90deg, #0079CB, #0ed8f6, #7DD3FC)',
                   }}
                 />
               </div>
@@ -303,37 +419,69 @@ export default function Solutions() {
             </div>
           </div>
 
-          {/* O card fica sticky e centrado na viewport, igual a lista. Quem
-              consome o scroll sao os espacadores abaixo, que tambem servem de
-              trigger para trocar o card ativo. O -mt-[100vh] sobrepoe a trilha
-              de espacadores ao container sticky, para que a coluna nao fique
-              com uma tela extra de altura. */}
-          <div className="relative">
-            <div className="sticky top-0 flex h-screen items-center">
-              {/* key = remonta o painel a cada troca, refazendo a animacao de
-                  entrada. */}
-              <SolutionPanel
-                key={SOLUTIONS[active].id}
-                s={SOLUTIONS[active]}
-                index={active}
-                rm={rm}
-              />
-            </div>
-
-            <div aria-hidden className="-mt-[100vh]">
-              {SOLUTIONS.map((s, i) => (
-                <div
-                  key={s.id}
-                  ref={(el) => {
-                    itemRefs.current[i] = el;
-                  }}
-                  data-idx={i}
-                  /* Altura = quanto scroll cada card consome. */
-                  className="min-h-[58vh]"
-                />
-              ))}
-            </div>
+          {/* pt-24 (96px): reserva espaco para as camadas recuadas do baralho.
+              Com 3 camadas a 34px o topo sobe ~102px, mas a escala menor
+              (0.055/camada) encolhe o card e devolve a folga — 96px cobre.
+              Nao reduzir mais: abaixo disto as camadas de tras sao cortadas. */}
+          <div className="relative flex items-start pt-24">
+                {/* Baralho: todos os cards coexistem. O ativo fica na frente; os
+                    que já passaram recuam para tras (escala menor + deslocamento
+                    para cima), deixando as bordas/sombras visiveis. Os futuros
+                    aguardam embaixo, fora de vista. */}
+                <div className="relative w-full" style={{ perspective: '1400px' }}>
+                  {SOLUTIONS.map((s, i) => {
+                  const offset = i - active;
+                  const passed = offset < 0;
+                  // Só as 3 camadas imediatamente atras continuam renderizadas.
+                  const depth = Math.min(-offset, 3);
+                  return (
+                    <div
+                      key={s.id}
+                      className={i === active ? 'relative' : 'absolute inset-x-0 top-0'}
+                      style={{
+                        zIndex: SOLUTIONS.length - Math.abs(offset),
+                        transform: passed
+                          ? `translateY(${-depth * 34}px) scale(${1 - depth * 0.055})`
+                          : offset > 0
+                            ? 'translateY(40px) scale(0.96)'
+                            : 'none',
+                        opacity: offset === 0 ? 1 : passed ? Math.max(0, 0.78 - depth * 0.16) : 0,
+                        filter: passed ? `blur(${depth * 0.4}px)` : 'none',
+                        pointerEvents: offset === 0 ? 'auto' : 'none',
+                        transition: rm
+                          ? 'none'
+                          : 'transform .7s cubic-bezier(.22,1,.36,1), opacity .6s ease, filter .6s ease',
+                        willChange: 'transform, opacity',
+                      }}
+                    >
+                      <SolutionPanel s={s} index={i} rm={rm} isActive={i === active} />
+                    </div>
+                  );
+                })}
+                </div>
           </div>
+        </div>
+        </div>
+
+        {/* Trilha de scroll do pin: fica FORA do bloco fixado e e ela que da
+            altura a secao. Cada espacador tambem e o trigger que troca o card.
+            O -mt-[100vh] devolve a tela consumida pelo `h-screen` do sticky,
+            senao a secao ganharia uma viewport extra de vazio no fim. */}
+        <div ref={trackRef} aria-hidden className="hidden lg:-mt-[100vh] lg:block">
+          {SOLUTIONS.map((s, i) => (
+            <div
+              key={s.id}
+              ref={(el) => {
+                itemRefs.current[i] = el;
+              }}
+              data-idx={i}
+              /* Alturas IGUAIS: o indice ativo vem de floor(progress * N), logo
+                 cada card precisa ocupar a mesma fatia da trilha — senao a
+                 troca acontece fora do espacador correspondente. */
+              className="min-h-[75vh]"
+            />
+          ))}
+        </div>
         </div>
 
 

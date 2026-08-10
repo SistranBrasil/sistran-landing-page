@@ -12,6 +12,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { AnimatePresence, motion } from 'motion/react';
 import { DOMAINS } from '@/data/domains';
 import { getIcon } from '@/lib/icons';
@@ -255,12 +256,17 @@ export default function CompanySignature() {
             className="pointer-events-none absolute inset-[-14%] -z-10 rounded-full border transition-colors duration-700"
             style={{ borderColor: `${active.color}55` }}
           />
-          <span className="font-display text-[clamp(1.4rem,2.8vw,2rem)] font-black leading-none tracking-tight text-white">
-            SISTRAN
-          </span>
-          <span className="text-[9px] font-semibold uppercase tracking-[0.28em] text-[#B8DDF6]">
-            Insurance Tech
-          </span>
+          {/* A marca no núcleo: o símbolo em vez do wordmark tipografado. O
+              `alt` carrega o nome, então o texto que saiu daqui não se perde
+              para leitores de tela. */}
+          <Image
+            src="/images/sistran-logo.png"
+            alt="Sistran — Insurance Tech"
+            width={220}
+            height={230}
+            className="h-auto w-[clamp(3.5rem,7vw,5.5rem)] object-contain"
+            style={{ filter: 'drop-shadow(0 6px 18px rgba(0,0,0,0.35))' }}
+          />
         </div>
       </div>
 

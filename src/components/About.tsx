@@ -297,10 +297,26 @@ export default function About() {
                     />
                   </span>
 
-                  {/* Detalhe: aparece no hover e explica o número */}
-                  <p className="relative mt-3 text-sm leading-relaxed text-[#3d5a80] opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                    {h.detail}
-                  </p>
+                  {/* Detalhe e a pista de hover ocupam o MESMO espaço e fazem
+                      crossfade: sem a pista, o texto escondido é indescobrível.
+                      focus-within replica o comportamento para teclado/touch. */}
+                  <div className="mt-3 grid [&>*]:col-start-1 [&>*]:row-start-1">
+                    <span
+                      aria-hidden
+                      className="flex items-center gap-2 self-start text-[11px] font-semibold uppercase tracking-[0.18em] text-[#3d5a80]/70 opacity-100 transition-opacity duration-300 group-hover:opacity-0 group-focus-within:opacity-0"
+                    >
+                      <span
+                        className="inline-flex h-4 w-4 flex-none items-center justify-center rounded-full text-[13px] leading-none"
+                        style={{ background: `${color}22`, color }}
+                      >
+                        +
+                      </span>
+                      Passe o mouse
+                    </span>
+                    <p className="self-start text-sm leading-relaxed text-[#3d5a80] opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100">
+                      {h.detail}
+                    </p>
+                  </div>
                 </motion.li>
               );
             })}

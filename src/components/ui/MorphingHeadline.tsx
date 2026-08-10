@@ -89,9 +89,10 @@ export default function MorphingHeadline() {
       style={{
         // Escala pela coluna, não pela viewport: em 7vw o título estourava a
         // metade esquerda do grid do hero.
-        // "e Comprometimento" é a linha mais longa e estourava a coluna.
-        // 3.5vw + hifenização garantem que ela caiba em qualquer largura.
-        fontSize: 'clamp(2.25rem, 3.5vw, 3.9rem)',
+        // "e Comprometimento" é a linha mais longa: em 3.5vw ela ficava mais
+        // larga que a coluna e era hifenizada ("Comprometi-/mento"). Em 3.2vw
+        // cabe inteira, então a hifenização só age como rede de segurança.
+        fontSize: 'clamp(2.25rem, 3.2vw, 4.1rem)',
         lineHeight: 1.0,
         letterSpacing: '-0.025em',
         hyphens: 'auto',
@@ -119,7 +120,9 @@ export default function MorphingHeadline() {
         </span>
       </span>
       <span className="block overflow-hidden">
-        <span ref={line3Ref} className="block font-medium text-white/80 will-change-transform">
+        {/* lg:whitespace-nowrap: a partir de lg a coluna já acomoda a linha
+            inteira, então proibimos a quebra em vez de aceitar o hífen. */}
+        <span ref={line3Ref} className="block font-medium text-white/80 will-change-transform lg:whitespace-nowrap">
           e Comprometimento
         </span>
       </span>

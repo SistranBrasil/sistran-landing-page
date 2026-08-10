@@ -10,6 +10,11 @@ import { vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '@/lib/motion';
 
 const CARD_COLORS = ['#0ed8f6', '#0079CB', '#7c3aed', '#B8DDF6'] as const;
 
+/* Numeracao em azul escuro fixo, nao no `color` do card: dois dos quatro tons
+   (#0ed8f6, #B8DDF6) sao claros e sumiam sobre o card claro. Um navy unico
+   mantem o contraste igual nos quatro passos. */
+const NUM_COLOR = '#062B52';
+
 export default function Differentials() {
   const rm = useReducedMotion();
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -65,7 +70,7 @@ export default function Differentials() {
             viewport={VP}
             className="mb-12 max-w-2xl"
           >
-            <motion.span variants={vSubtitle} className="eyebrow">Diferenciais</motion.span>
+            <motion.span variants={vSubtitle} className="tag-section">Diferenciais</motion.span>
             <motion.h2 variants={vTitle} className="mt-3 font-display text-section font-bold text-ink">
               O que nos torna <span className="text-gradient-brand">parceiros estratégicos</span>
             </motion.h2>
@@ -84,7 +89,7 @@ export default function Differentials() {
                   <div
                     aria-hidden
                     className="pointer-events-none absolute -right-2 -top-4 select-none font-display text-[4.5rem] font-black leading-none opacity-15"
-                    style={{ color }}
+                    style={{ color: NUM_COLOR }}
                   >
                     {String(i + 1).padStart(2, '0')}
                   </div>
@@ -119,7 +124,7 @@ export default function Differentials() {
             {/* Header */}
             <div className="mb-8 flex items-end justify-between gap-6">
               <div className="max-w-2xl">
-                <span className="eyebrow">Diferenciais</span>
+                <span className="tag-section">Diferenciais</span>
                 <h2 className="mt-3 font-display text-section font-bold text-ink">
                   O que nos torna <span className="text-gradient-brand">parceiros estratégicos</span>
                 </h2>
@@ -145,7 +150,10 @@ export default function Differentials() {
               </div>
             </div>
 
-            <div className="relative h-[62vh] min-h-[420px]">
+            {/* 52vh: com 62vh o bloco (header + card) passava da altura da
+                viewport e o topo — onde fica a tag "Diferenciais" — era cortado
+                pelo header fixo. min-h menor pela mesma razao. */}
+            <div className="relative h-[52vh] min-h-[360px]">
               {DIFFERENTIALS.map((d, i) => {
                 const Icon = getIcon(d.icon);
                 const color = CARD_COLORS[i] ?? d.color;
@@ -163,7 +171,7 @@ export default function Differentials() {
                   <article
                     key={d.id}
                     aria-hidden={!isActive}
-                    className="glass-card absolute inset-0 flex flex-col justify-between overflow-hidden p-8 md:p-12"
+                    className="glass-card absolute inset-0 flex flex-col justify-between overflow-hidden p-7 md:p-10"
                     style={{
                       transform: `translateY(${y}) scale(${scale})`,
                       opacity,
@@ -182,7 +190,7 @@ export default function Differentials() {
                     <span
                       aria-hidden
                       className="pointer-events-none absolute right-4 top-2 select-none font-display font-black leading-none opacity-[0.14]"
-                      style={{ color, fontSize: 'clamp(8rem, 18vw, 16rem)' }}
+                      style={{ color: NUM_COLOR, fontSize: 'clamp(7rem, 15vw, 13rem)' }}
                     >
                       {String(i + 1).padStart(2, '0')}
                     </span>
@@ -190,11 +198,15 @@ export default function Differentials() {
                     <div className="relative flex items-start justify-between">
                       <span
                         className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em]"
-                        style={{ color, borderColor: `${color}66`, background: `${color}14` }}
+                        style={{
+                          color: NUM_COLOR,
+                          borderColor: `${NUM_COLOR}33`,
+                          background: `${NUM_COLOR}0f`,
+                        }}
                       >
                         <span
                           className="h-1.5 w-1.5 rounded-full"
-                          style={{ background: color, boxShadow: `0 0 8px ${color}` }}
+                          style={{ background: NUM_COLOR }}
                         />
                         {String(i + 1).padStart(2, '0')} / {String(DIFFERENTIALS.length).padStart(2, '0')}
                       </span>
@@ -228,7 +240,10 @@ export default function Differentials() {
                         className="h-px flex-1"
                         style={{ background: `linear-gradient(90deg, ${color}88, transparent)` }}
                       />
-                      <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/60">
+                      <span
+                        className="text-[11px] font-semibold uppercase tracking-[0.22em]"
+                        style={{ color: `${NUM_COLOR}99` }}
+                      >
                         {d.id}
                       </span>
                     </div>

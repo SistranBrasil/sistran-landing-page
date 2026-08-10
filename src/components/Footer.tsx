@@ -16,9 +16,9 @@ export default function Footer() {
           <Image
             src="/images/sistran-corp-logo.png"
             alt="Sistran"
-            width={280}
-            height={96}
-            className="h-16 w-auto"
+            width={360}
+            height={124}
+            className="h-20 w-auto md:h-24"
           />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-ink-muted">
             Tecnologia, serviços e consultoria para o mercado de seguros. Beyond Technology.

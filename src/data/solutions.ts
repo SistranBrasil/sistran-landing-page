@@ -24,15 +24,16 @@ export const SOLUTIONS: readonly Solution[] = [
     title: 'Tipos de Serviço',
     description: 'Squads/vilas, Managed Services, alocações, projetos fechados.',
     icon: 'Boxes',
-    color: '#7c3aed',
-    colorOnLight: '#6D28D9',
+    // Paleta 100% azul da marca: o violeta/roxo antigo destoava dos cards.
+    color: '#38BDF8',
+    colorOnLight: '#0369A1',
   },
   {
     id: 'staff-augmentation',
     title: 'Staff Augmentation',
     description: 'A serviço do Delivery.',
     icon: 'UserPlus',
-    color: '#a855f7',
-    colorOnLight: '#8B32D4',
+    color: '#7DD3FC',
+    colorOnLight: '#075985',
   },
 ] as const;

@@ -45,33 +45,36 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Section: Parceiros */}
-      <section id="parceiros" aria-labelledby="parceiros-titulo">
-        <div className="container-lp mt-14 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+      {/* Section: Parceiros — azul claro, alternando com o hero/strip escuros
+          acima e a timeline escura abaixo. Os cards seguem navy (.on-dark). */}
+      <section
+        id="parceiros"
+        aria-labelledby="parceiros-titulo"
+        /* scroll-mt: o header e fixo, entao ao pular para #parceiros o titulo
+           ficava por baixo dele. pt generoso porque o titulo agora e o primeiro
+           elemento dentro da faixa clara. */
+        className="section-light section-light-blue relative mt-14 scroll-mt-32 pt-16 md:pt-20"
+      >
+        <div className="container-lp flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <span className="eyebrow !text-[#A5F0FF]">01 · Parceiros</span>
+            <span className="tag-section">01 · Parceiros</span>
             <h2
               id="parceiros-titulo"
-              className="mt-3 font-display text-3xl font-bold leading-tight text-white md:text-4xl"
+              className="mt-3 font-display text-3xl font-bold leading-tight text-ink md:text-4xl"
             >
               Ecossistema de parcerias
             </h2>
           </div>
-          <p className="max-w-md text-sm leading-relaxed text-white/85">
+          <p className="max-w-md text-sm leading-relaxed text-ink-muted">
             Filtre por especialidade para navegar pelos parceiros por área de atuação.
           </p>
         </div>
         <PartnersGrid />
       </section>
 
-      {/* Divider */}
-      <div aria-hidden className="container-lp">
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-white/15 to-transparent" />
-      </div>
-
-      {/* Section: Implementações */}
+      {/* Section: Implementações — volta ao escuro */}
       <section id="implementacoes" aria-labelledby="implementacoes-titulo" className="pt-16 md:pt-20">
-        <div className="container-lp mb-4 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div className="container-lp mb-6 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
             <span className="eyebrow !text-[#A5F0FF]">02 · Implementações</span>
             <h2

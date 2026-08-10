@@ -28,9 +28,10 @@ export default function Page() {
         </div>
         {/* Bloco escuro de destaque: soluções (CTA-mor) */}
         <SectionReveal><Solutions /></SectionReveal>
-        {/* Prova social + faixa fina de áreas futuras */}
         <SectionReveal><ClientWall /></SectionReveal>
-        <SectionReveal><FutureAreas /></SectionReveal>
+        {/* Só âncoras (#esg, #trabalhe-conosco) para os links da navbar: sem
+            conteúdo visível, não faz sentido envolver em SectionReveal. */}
+        <FutureAreas />
         <SectionReveal><Social /></SectionReveal>
         <div className="section-light">
           <SectionReveal><Contact /></SectionReveal>

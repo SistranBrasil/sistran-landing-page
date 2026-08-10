@@ -126,7 +126,7 @@ export default function Accelerators() {
           className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
         >
           <div className="max-w-2xl">
-            <motion.span variants={vSubtitle} className="eyebrow !text-[#A5F0FF]">
+            <motion.span variants={vSubtitle} className="tag-section">
               Tecnologia Disruptiva · Soluções
             </motion.span>
             <motion.h2

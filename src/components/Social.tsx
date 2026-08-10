@@ -53,7 +53,8 @@ export default function Social() {
           viewport={VP}
           className="max-w-3xl"
         >
-          <motion.span variants={vSubtitle} className="eyebrow !text-[#0ed8f6]">
+          {/* .tag-section (chip com moldura), igual Serviços e Clientes */}
+          <motion.span variants={vSubtitle} className="tag-section">
             #sistran
           </motion.span>
           <motion.h2

@@ -66,7 +66,7 @@ export default function Contact() {
           viewport={VP}
           className="max-w-4xl"
         >
-          <motion.span variants={vSubtitle} className="eyebrow">Contato</motion.span>
+          <motion.span variants={vSubtitle} className="tag-section">Contato</motion.span>
           <motion.h2
             variants={vTitle}
             className="mt-4 font-display font-bold text-ink"

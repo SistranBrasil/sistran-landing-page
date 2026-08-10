@@ -57,16 +57,12 @@ export default function PartnersTimeline({ id = 'implementacoes' }: { id?: strin
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
 
-      <section className="timeline-section" aria-labelledby="partners-timeline-title">
-        <div className="timeline-toolbar">
-          <div>
-            <span className="section-index">01</span>
-            <div>
-              <p className="section-kicker">Implementações</p>
-              <h2 id="partners-timeline-title">Uma jornada que não para</h2>
-            </div>
-          </div>
-
+      <section className="timeline-section" aria-labelledby="implementacoes-titulo">
+        {/* Sem cabecalho interno: a pagina ja imprime "02 · Implementacoes /
+            Uma jornada que nao para" logo acima, e o bloco interno repetia
+            titulo e numeracao ("01") em conflito com ela. Sobra a toolbar so
+            com os filtros. O aria-labelledby aponta para o titulo da pagina. */}
+        <div className="timeline-toolbar toolbar-filters-only">
           {/* data-lenis-prevent: sem isto o Lenis captura o wheel/trackpad e a
               barra de filtros nao rola na horizontal. */}
           <div className="filters" data-lenis-prevent aria-label="Filtrar linha do tempo">

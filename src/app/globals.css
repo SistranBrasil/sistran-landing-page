@@ -136,6 +136,9 @@ body::after {
     -webkit-mask:
       linear-gradient(#000 0 0) content-box,
       linear-gradient(#000 0 0);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
             mask-composite: exclude;
     pointer-events: none;
@@ -332,6 +335,16 @@ body::after {
   position: relative;
   isolation: isolate;
 }
+/* Variante azul-claro: mesma familia de .section-light (herda todos os
+   overrides de texto para navy), mas com base azul em vez de branca. Usada
+   quando a secao precisa se separar das vizinhas escuras sem ir a branco. */
+.section-light.section-light-blue {
+  background:
+    radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), transparent 62%),
+    radial-gradient(55% 60% at 92% 88%, rgba(124, 58, 237, 0.10), transparent 62%),
+    linear-gradient(160deg, #F2F9FE 0%, #E3F1FB 45%, #CFE7F7 100%);
+}
+
 .section-light::before {
   content: '';
   position: absolute;
@@ -391,6 +404,31 @@ body::after {
 .section-light .text-gradient {
   color: #0079CB !important;
 }
+/* Ilha escura dentro de uma secao clara.
+   Os overrides acima pintam h2/h3/p/span de navy — o que quebraria os cards de
+   fundo navy (PartnersGrid, EventsGrid), pintando o texto na mesma cor do
+   proprio fundo. `.on-dark` no card devolve os valores originais. */
+/* `!important` + `:not([style*="color"])`: o important e necessario porque as
+   utilities do Tailwind (`text-white/85`) vivem em @layer e perdem para
+   qualquer regra sem layer — inclusive para os overrides navy acima. Ja o
+   :not preserva quem carrega cor propria por style inline (o `tone` da
+   categoria, o numero translucido), que o important atropelaria. */
+.section-light .on-dark:not([style*="color"]),
+.section-light .on-dark p:not([style*="color"]),
+.section-light .on-dark li:not([style*="color"]),
+.section-light .on-dark a:not([style*="color"]),
+/* div incluida por causa do rodape "Saiba mais" do PartnersGrid, que herda a
+   cor de uma div. As placas brancas de logo nao tem texto, so <Image>. */
+.section-light .on-dark div:not([style*="color"]),
+.section-light .on-dark span:not([style*="color"]) {
+  color: rgba(255, 255, 255, 0.88) !important;
+}
+.section-light .on-dark h2:not([style*="color"]),
+.section-light .on-dark h3:not([style*="color"]),
+.section-light .on-dark h4:not([style*="color"]) {
+  color: #ffffff !important;
+}
+
 .section-light .glass-card,
 .section-light .glass-card-hover {
   background: linear-gradient(135deg, rgba(255,255,255,0.75), rgba(255,255,255,0.45));
@@ -493,8 +531,12 @@ body::after {
      no primeiro item deixa os demais INALCANCAVEIS (nao ha scroll nem setas).
      Em vez de parar, viramos o mecanismo: lista rolavel nativa. O usuario
      alcanca tudo e nada se move sozinho. A copia duplicada sai de cena. */
+  /* `!important` obrigatorio: a regra base `.marquee-viewport { overflow:
+     hidden }` vem DEPOIS deste bloco no arquivo e tem a mesma especificidade,
+     entao sem isto ela ganha e a lista continua sem rolagem — o conteudo
+     seguiria inalcancavel, que e justamente o que queremos evitar. */
   .marquee-viewport {
-    overflow-x: auto;
+    overflow-x: auto !important;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
   }
@@ -766,6 +808,7 @@ body::after {
   padding: 1px;
   background: linear-gradient(120deg, rgba(14,216,246,0.55), rgba(168,85,247,0.40), rgba(14,216,246,0.15));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
           mask-composite: exclude;
   pointer-events: none;

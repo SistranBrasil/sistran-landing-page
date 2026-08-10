@@ -43,7 +43,10 @@ function PartnerCard({ p, index }: { p: Partner; index: number }) {
     >
     <article
       {...handlers}
-      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/12 p-7 backdrop-blur-xl"
+      /* on-dark: o card mantem fundo navy mesmo quando a secao e clara.
+         Sem isso os overrides de .section-light pintariam h3/p de navy sobre
+         navy. Ver globals.css. */
+      className="on-dark group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/12 p-7 backdrop-blur-xl"
       style={{
         // Navy escuro: o card precisa contrastar com o fundo azul medio da
         // pagina. Um branco translucido ficava com a mesma cor do fundo.
@@ -204,13 +207,16 @@ export default function PartnersGrid() {
     <section className="section-py relative overflow-hidden">
       {/* Ambient orbs */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-0 top-40 h-[400px] w-[400px] rounded-full bg-[#57B7EE]/15 blur-[130px]" />
-        <div className="absolute right-0 bottom-40 h-[440px] w-[440px] rounded-full bg-[#A78BFA]/12 blur-[130px]" />
+        <div className="absolute left-0 top-40 h-[400px] w-[400px] rounded-full bg-[#0079CB]/14 blur-[130px]" />
+        <div className="absolute right-0 bottom-40 h-[440px] w-[440px] rounded-full bg-[#7c3aed]/10 blur-[130px]" />
       </div>
 
       <div className="container-lp">
         {/* Filter bar */}
-        <div className="mb-10 flex flex-wrap items-center gap-2 rounded-2xl border border-white/12 bg-white/[0.03] p-2 backdrop-blur-lg">
+        {/* Barra de filtros: fica fora dos cards, direto sobre o fundo claro da
+            secao — daí borda azul e base branca em vez de white/12 + white/3%,
+            que sobre claro nao se enxergavam. */}
+        <div className="mb-10 flex flex-wrap items-center gap-2 rounded-2xl border border-[#0079CB]/18 bg-white/70 p-2 shadow-[0_12px_34px_-24px_rgba(0,121,203,0.6)] backdrop-blur-lg">
           {filters.map((f) => {
             const active = filter === f.key;
             return (
@@ -220,14 +226,16 @@ export default function PartnersGrid() {
                 onClick={() => setFilter(f.key)}
                 className={clsx(
                   'relative inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition-colors',
-                  active ? 'text-white' : 'text-ink-muted hover:text-white',
+                  active
+                    ? '!text-white'
+                    : '!text-[#3C5A7A] hover:!text-[#0060a8]',
                 )}
                 aria-pressed={active}
               >
                 {active && (
                   <motion.span
                     layoutId="partner-filter-pill"
-                    className="absolute inset-0 rounded-xl bg-gradient-to-b from-[#57B7EE]/40 to-[#1885CE]/40 ring-1 ring-inset ring-white/15"
+                    className="absolute inset-0 rounded-xl bg-gradient-to-b from-[#0079CB] to-[#0060A8] ring-1 ring-inset ring-white/25"
                     transition={{ type: 'spring', stiffness: 380, damping: 32 }}
                   />
                 )}
@@ -235,7 +243,9 @@ export default function PartnersGrid() {
                 <span
                   className={clsx(
                     'relative z-10 rounded-full px-2 py-0.5 text-[10px] tabular-nums',
-                    active ? 'bg-white/20 text-white' : 'bg-white/[0.06] text-ink-faint',
+                    active
+                      ? 'bg-white/25 !text-white'
+                      : 'bg-[#0079CB]/10 !text-[#5c7a9e]',
                   )}
                 >
                   {f.count}

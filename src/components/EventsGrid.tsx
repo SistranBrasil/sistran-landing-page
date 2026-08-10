@@ -12,7 +12,7 @@ import { useTilt } from '@/lib/useTilt';
 
 type Filter = 'todos' | EventKind;
 
-function EventCard({ e }: { e: SistranEvent }) {
+function EventCard({ e, active }: { e: SistranEvent; active: boolean }) {
   const rm = useReducedMotion();
   const { hover, mouse, handlers, tiltTransform } = useTilt(!rm);
   const Icon = getIcon(e.icon);
@@ -22,24 +22,49 @@ function EventCard({ e }: { e: SistranEvent }) {
 
   return (
     /* Wrapper com a perspective; o tilt vai no <article>. */
-    <div className="h-full w-[85vw] max-w-[380px] flex-none snap-center [perspective:1000px] sm:w-[380px]">
+    <div
+      /* items-center + transicao de opacidade/escala no wrapper: os cards
+         inativos recuam para que o card do centro seja o destaque. Sem isto
+         os tres apareciam com o mesmo peso e nada se destacava. */
+      className={clsx(
+        'w-[85vw] max-w-[380px] flex-none snap-center [perspective:1000px] sm:w-[380px]',
+        'transition-opacity duration-500',
+        active ? 'opacity-100' : 'opacity-55',
+      )}
+      style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
+    >
+    {/* Escala numa camada interna, nao no item flex: getBoundingClientRect (que
+        scrollToIdx usa para mirar o card) reflete transform, e escalar o item
+        deslocava o alvo do snap em ~11px por card. */}
+    <div
+      className="h-full transition-transform duration-500"
+      style={{
+        transform: rm ? undefined : `scale(${active ? 1 : 0.95})`,
+        transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      }}
+    >
     <article
       {...handlers}
-      className="group relative flex h-full min-h-[520px] flex-col overflow-hidden rounded-3xl border border-white/12 backdrop-blur-xl"
+      /* on-dark: mantem o card navy mesmo com a secao clara — sem isso os
+         overrides de .section-light pintariam titulo/texto de navy sobre navy. */
+      className="on-dark group relative flex h-full min-h-[520px] flex-col overflow-hidden rounded-3xl backdrop-blur-xl"
       style={{
         // Navy escuro: o card precisa contrastar com o fundo azul medio da
         // pagina. Um branco translucido ficava com a mesma cor do fundo.
         background:
           'linear-gradient(135deg, rgba(8,49,86,0.94), rgba(6,38,69,0.90) 55%, rgba(4,29,55,0.94))',
+        // Borda no tone quando ativo: reforca qual card e o principal.
+        border: `1px solid ${active ? `${tone}80` : 'rgba(255,255,255,0.12)'}`,
         transform: tiltTransform({ lift: 8, deg: 6 }),
         transformStyle: 'preserve-3d',
         transition: hover
           ? 'box-shadow .25s ease, border-color .2s ease'
-          : 'transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease',
+          : 'transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease, border-color .4s ease',
         willChange: 'transform',
-        boxShadow: hover
-          ? `0 2px 6px rgba(3,26,52,0.20), 0 20px 40px -16px rgba(3,26,52,0.42), 0 44px 80px -32px rgba(3,26,52,0.50), 0 0 60px -18px ${tone}55, inset 0 1px 0 rgba(255,255,255,0.22)`
-          : `0 1px 3px rgba(3,26,52,0.16), 0 12px 26px -14px rgba(3,26,52,0.34), 0 30px 60px -30px rgba(3,26,52,0.40), inset 0 1px 0 rgba(255,255,255,0.16)`,
+        boxShadow:
+          hover || active
+            ? `0 2px 6px rgba(3,26,52,0.20), 0 20px 40px -16px rgba(3,26,52,0.42), 0 44px 80px -32px rgba(3,26,52,0.50), 0 0 60px -18px ${tone}55, inset 0 1px 0 rgba(255,255,255,0.22)`
+            : `0 1px 3px rgba(3,26,52,0.16), 0 12px 26px -14px rgba(3,26,52,0.34), 0 30px 60px -30px rgba(3,26,52,0.40), inset 0 1px 0 rgba(255,255,255,0.16)`,
       }}
     >
       {/* Imagem de capa */}
@@ -148,6 +173,7 @@ function EventCard({ e }: { e: SistranEvent }) {
       />
     </article>
     </div>
+    </div>
   );
 }
 
@@ -213,37 +239,53 @@ export default function EventsGrid() {
     scrollToLeft(left);
   };
 
-  // autoplay
+  /* activeIdx tambem num ref: o autoplay abaixo le o indice atual sem precisar
+     do `setActiveIdx` como fonte, o que permite ao observer ser o unico dono do
+     estado. Antes os dois escreviam em activeIdx e disputavam — o autoplay
+     avancava, o observer reportava a posicao intermediaria do scroll suave, e o
+     proximo tick partia do indice errado. Resultado: o carrossel parecia travar
+     e voltar. */
+  const activeRef = useRef(0);
   useEffect(() => {
-    if (!playing || rm) return;
+    activeRef.current = activeIdx;
+  }, [activeIdx]);
+
+  // autoplay: apenas rola. Quem atualiza activeIdx e o observer.
+  useEffect(() => {
+    if (!playing || rm || visible.length < 2) return;
     timer.current = window.setInterval(() => {
-      setActiveIdx((i) => {
-        const next = (i + 1) % visible.length;
-        scrollToIdx(next);
-        return next;
-      });
-    }, 3600);
+      scrollToIdx((activeRef.current + 1) % visible.length);
+    }, 4200);
     return () => {
       if (timer.current) window.clearInterval(timer.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playing, rm, visible.length]);
 
-  // detectar card ativo pelo scroll
+  // detectar card ativo pelo scroll — fonte unica de activeIdx
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
-    const cards = el.querySelectorAll<HTMLElement>('article');
+    const cards = Array.from(el.querySelectorAll<HTMLElement>('article'));
     if (!cards.length) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = Array.from(cards).indexOf(entry.target as HTMLElement);
-            if (idx >= 0) setActiveIdx(idx);
-          }
-        });
+        /* Pega a entrada MAIS visivel do lote, em vez de aplicar cada uma em
+           sequencia: com varios cards cruzando o threshold no mesmo frame, o
+           `forEach` deixava vencer o ultimo do array, nao o card centralizado. */
+        let best: IntersectionObserverEntry | null = null;
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          if (!best || entry.intersectionRatio > best.intersectionRatio) best = entry;
+        }
+        if (!best) return;
+        const idx = cards.indexOf(best.target as HTMLElement);
+        if (idx >= 0) setActiveIdx(idx);
       },
-      { root: el, threshold: 0.6 },
+      /* threshold em varios pontos: com um unico 0.6 o observer so disparava ao
+         cruzar exatamente aquele valor e nao reavaliava qual card estava mais
+         centralizado — outra origem da sensacao de travamento. */
+      { root: el, threshold: [0.4, 0.6, 0.8, 0.95] },
     );
     cards.forEach((c) => observer.observe(c));
     return () => observer.disconnect();
@@ -256,16 +298,23 @@ export default function EventsGrid() {
   }, [filter]);
 
   return (
-    <section id="eventos" className="section-py relative overflow-hidden">
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-0 top-40 h-[380px] w-[380px] rounded-full bg-[#57B7EE]/15 blur-[130px]" />
-        <div className="absolute right-0 bottom-40 h-[420px] w-[420px] rounded-full bg-[#A78BFA]/12 blur-[130px]" />
+    /* Fundo azul claro, alternando com o hero/strip escuros acima e Social
+       abaixo. Os cards de evento seguem navy via .on-dark. */
+    <section
+      id="eventos"
+      className="section-light section-light-blue section-py relative overflow-hidden"
+    >
+      {/* z-0, nao -z-10: .section-light aplica isolation:isolate e o fundo esta
+          nesta section — z negativo esconderia os orbs atras do background. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
+        <div className="absolute left-0 top-40 h-[380px] w-[380px] rounded-full bg-[#0079CB]/14 blur-[130px]" />
+        <div className="absolute right-0 bottom-40 h-[420px] w-[420px] rounded-full bg-[#7c3aed]/10 blur-[130px]" />
       </div>
 
-      <div className="container-lp">
+      <div className="container-lp relative z-10">
         {/* Toolbar: filtros + controles */}
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-white/12 bg-white/[0.03] p-2 backdrop-blur-lg">
+          <div className="flex flex-wrap items-center gap-2 rounded-2xl border border-[#0079CB]/18 bg-white/70 p-2 shadow-[0_12px_34px_-24px_rgba(0,121,203,0.6)] backdrop-blur-lg">
             {filters.map((f) => {
               const active = filter === f.key;
               return (
@@ -275,14 +324,14 @@ export default function EventsGrid() {
                   onClick={() => setFilter(f.key)}
                   className={clsx(
                     'relative inline-flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition-colors',
-                    active ? 'text-white' : 'text-ink-muted hover:text-white',
+                    active ? '!text-white' : '!text-[#3C5A7A] hover:!text-[#0060a8]',
                   )}
                   aria-pressed={active}
                 >
                   {active && (
                     <motion.span
                       layoutId="events-filter-pill"
-                      className="absolute inset-0 rounded-xl bg-gradient-to-b from-[#57B7EE]/40 to-[#1885CE]/40 ring-1 ring-inset ring-white/15"
+                      className="absolute inset-0 rounded-xl bg-gradient-to-b from-[#0079CB] to-[#0060A8] ring-1 ring-inset ring-white/25"
                       transition={{ type: 'spring', stiffness: 380, damping: 32 }}
                     />
                   )}
@@ -290,7 +339,7 @@ export default function EventsGrid() {
                   <span
                     className={clsx(
                       'relative z-10 rounded-full px-2 py-0.5 text-[10px] tabular-nums',
-                      active ? 'bg-white/20 text-white' : 'bg-white/[0.06] text-ink-faint',
+                      active ? 'bg-white/25 !text-white' : 'bg-[#0079CB]/10 !text-[#5c7a9e]',
                     )}
                   >
                     {f.count}
@@ -301,13 +350,13 @@ export default function EventsGrid() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="hidden text-xs font-semibold tabular-nums text-white/60 md:inline">
+            <span className="hidden text-xs font-semibold tabular-nums !text-[#5c7a9e] md:inline">
               {String(activeIdx + 1).padStart(2, '0')} / {String(visible.length).padStart(2, '0')}
             </span>
             <button
               type="button"
               onClick={() => scrollBy(-1)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/12 bg-white/[0.04] text-white transition-colors hover:border-[#0ed8f6]/50 hover:bg-white/10"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#0079CB]/22 bg-white/75 !text-[#0060a8] shadow-[0_8px_20px_-16px_rgba(0,121,203,0.7)] transition-colors hover:border-[#0079CB]/50 hover:bg-white"
               aria-label="Evento anterior"
             >
               <ArrowLeft className="h-4 w-4" strokeWidth={1.8} />
@@ -320,7 +369,7 @@ export default function EventsGrid() {
                   return !p;
                 })
               }
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#0ed8f6]/40 bg-[#57B7EE]/25 text-white transition-colors hover:border-[#0ed8f6]/70 hover:bg-[#57B7EE]/40"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#0079CB]/60 bg-[#0079CB] !text-white transition-colors hover:bg-[#0060A8]"
               aria-label={playing ? 'Pausar carrossel' : 'Reproduzir carrossel'}
             >
               {playing ? <Pause className="h-4 w-4" strokeWidth={1.8} /> : <Play className="h-4 w-4" strokeWidth={1.8} />}
@@ -328,7 +377,7 @@ export default function EventsGrid() {
             <button
               type="button"
               onClick={() => scrollBy(1)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/12 bg-white/[0.04] text-white transition-colors hover:border-[#0ed8f6]/50 hover:bg-white/10"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#0079CB]/22 bg-white/75 !text-[#0060a8] shadow-[0_8px_20px_-16px_rgba(0,121,203,0.7)] transition-colors hover:border-[#0079CB]/50 hover:bg-white"
               aria-label="Próximo evento"
             >
               <ArrowRight className="h-4 w-4" strokeWidth={1.8} />
@@ -341,12 +390,17 @@ export default function EventsGrid() {
           <div
             ref={trackRef}
             data-lenis-prevent
-            className="scrollbar-hide flex snap-x snap-mandatory gap-5 overflow-x-auto pb-6 pl-1 pr-6"
+            /* py em vez de pb: o card ativo agora escala para 1 e a sombra maior
+               precisava de folga em cima, senao era cortada pelo overflow. */
+            className="scrollbar-hide flex snap-x snap-mandatory gap-5 overflow-x-auto px-1 py-6"
             style={{
+              /* Fade encurtado (era black ate 92%): o mask apagava boa parte do
+                 terceiro card, que e justamente onde o card ativo cai com
+                 frequencia — ele ficava lavado e nada parecia destacado. */
               maskImage:
-                'linear-gradient(90deg, black 0, black 92%, transparent 100%)',
+                'linear-gradient(90deg, black 0, black 97%, transparent 100%)',
               WebkitMaskImage:
-                'linear-gradient(90deg, black 0, black 92%, transparent 100%)',
+                'linear-gradient(90deg, black 0, black 97%, transparent 100%)',
             }}
             role="region"
             aria-label="Carrossel de eventos"
@@ -355,8 +409,8 @@ export default function EventsGrid() {
               if (!userPaused.current) setPlaying(true);
             }}
           >
-            {visible.map((e) => (
-              <EventCard key={e.id} e={e} />
+            {visible.map((e, i) => (
+              <EventCard key={e.id} e={e} active={i === activeIdx} />
             ))}
           </div>
         </div>
@@ -373,15 +427,15 @@ export default function EventsGrid() {
               }}
               aria-label={`Ir para o evento ${i + 1}`}
               aria-current={i === activeIdx ? 'true' : undefined}
-              className="group relative h-1.5 overflow-hidden rounded-full bg-white/10 transition-all"
+              className="group relative h-1.5 overflow-hidden rounded-full bg-[#0079CB]/18 transition-all"
               style={{ width: i === activeIdx ? 32 : 10 }}
             >
               <span
                 className="absolute inset-y-0 left-0 rounded-full transition-all duration-500"
                 style={{
                   width: i === activeIdx ? '100%' : '0%',
-                  background: '#0ed8f6',
-                  boxShadow: i === activeIdx ? '0 0 10px #0ed8f6' : 'none',
+                  background: '#0079CB',
+                  boxShadow: i === activeIdx ? '0 0 10px rgba(0,121,203,0.7)' : 'none',
                 }}
               />
             </button>
