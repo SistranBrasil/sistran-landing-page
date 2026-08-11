@@ -4,8 +4,7 @@ out
 .env*
 *.log
 .DS_Store
-.claude/gsap-skills/
-.claude/skills/scroll-world/
+.claude/
 scroll-world/
 
 .vercel
