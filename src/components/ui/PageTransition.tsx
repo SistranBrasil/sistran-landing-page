@@ -22,17 +22,20 @@ export default function PageTransition({ children }: { children: React.ReactNode
     return () => window.clearTimeout(id);
   }, [pathname]);
 
-  if (rm) return <>{children}</>;
-
   // Sem AnimatePresence mode="wait": no App Router o exit não completa de
   // forma confiável e a rota nova fica presa em opacity 0 (tela em branco).
   // Fade-in simples keyed por pathname é suficiente e à prova de falhas.
+  //
+  // O wrapper existe SEMPRE. Trocá-lo por um Fragment quando `rm` vira true
+  // (o que só acontece depois da hidratação) desmontava e remontava o site
+  // inteiro, matando os ScrollTriggers e os canvases já inicializados — era a
+  // origem da página congelada em quem tem "reduzir movimento" ligado.
   return (
     <motion.div
       key={pathname}
-      initial={{ opacity: 0 }}
+      initial={rm ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      transition={rm ? { duration: 0 } : { duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>

@@ -250,9 +250,13 @@ export default function EventsGrid() {
     activeRef.current = activeIdx;
   }, [activeIdx]);
 
-  // autoplay: apenas rola. Quem atualiza activeIdx e o observer.
+  /* Autoplay: apenas rola. Quem atualiza activeIdx e o observer.
+     Sem guard de `rm`: o usuario tem botao de pausa, entao o movimento segue
+     valendo com movimento reduzido — parado por padrao os cards seguintes
+     passariam despercebidos. O respeito a preferencia esta em scrollToLeft, que
+     pula direto para o card em vez de animar. */
   useEffect(() => {
-    if (!playing || rm || visible.length < 2) return;
+    if (!playing || visible.length < 2) return;
     timer.current = window.setInterval(() => {
       scrollToIdx((activeRef.current + 1) % visible.length);
     }, 4200);
@@ -260,7 +264,7 @@ export default function EventsGrid() {
       if (timer.current) window.clearInterval(timer.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playing, rm, visible.length]);
+  }, [playing, visible.length]);
 
   // detectar card ativo pelo scroll — fonte unica de activeIdx
   useEffect(() => {

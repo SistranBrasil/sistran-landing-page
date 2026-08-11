@@ -49,7 +49,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import { DIFFERENTIALS } from '@/data/differentials';
 import { getIcon } from '@/lib/icons';
-import { useReducedMotion } from '@/lib/motion';
+import { prefersReducedMotion, useReducedMotion } from '@/lib/motion';
 import HeroMesh from './ui/HeroMesh';
 import CompanySignature from './ui/CompanySignature';
 import MorphingHeadline from './ui/MorphingHeadline';
@@ -104,8 +104,13 @@ export default function HeroCinematic() {
   const sceneRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (rm) return;
     if (typeof window === 'undefined') return;
+    /* `prefersReducedMotion()` além de `rm`: no primeiro effect o hook ainda
+       devolve o snapshot do servidor (`false`), e sem a leitura síncrona a
+       timeline chegaria a esconder o conteúdo antes de descobrir que deveria
+       ficar parada. `rm` fica na dependência para reagir a quem liga a
+       preferência com a página já aberta. */
+    if (rm || prefersReducedMotion()) return;
 
     gsap.registerPlugin(ScrollTrigger);
     const wrapper = wrapperRef.current;
@@ -128,13 +133,17 @@ export default function HeroCinematic() {
     const orbs = scene.querySelectorAll<HTMLElement>('[data-hero-orb]');
     const lines = scene.querySelector<HTMLElement>('[data-hero-lines]');
 
-    const initial = { opacity: 0, y: 34, filter: 'blur(10px)' };
-    [chip, headline, paragraph, ctas, indicators, mobileChips].forEach((el) => {
-      if (el) gsap.set(el, initial);
-    });
-    if (peek) gsap.set(peek, { opacity: 0, y: 10 });
-
     const ctx = gsap.context(() => {
+      /* O estado oculto entra DENTRO do contexto: se o effect for limpo antes
+         da timeline terminar, `ctx.revert()` devolve os elementos ao estado do
+         CSS. Fora do contexto, eles ficariam com `opacity: 0` inline para
+         sempre. */
+      const initial = { opacity: 0, y: 34, filter: 'blur(10px)' };
+      [chip, headline, paragraph, ctas, indicators, mobileChips].forEach((el) => {
+        if (el) gsap.set(el, initial);
+      });
+      if (peek) gsap.set(peek, { opacity: 0, y: 10 });
+
       // ── Fase 0 (sem scroll): o essencial já está legível no primeiro frame.
       // Chip, headline, parágrafo e CTAs entram no mount — o usuário nunca vê
       // um hero vazio esperando scroll.
@@ -264,42 +273,13 @@ export default function HeroCinematic() {
   }, [rm]);
 
   return (
-    <section
-      id="top"
-      ref={wrapperRef}
-      className="relative"
-      style={{
-        // 300vh desktop / 200vh mobile via CSS variables
-        // Fallback quando reduced-motion: auto
-        height: rm ? 'auto' : undefined,
-      }}
-    >
-      {/* Wrapper de altura: 300vh desktop, 200vh mobile */}
-      {!rm && (
-        <style>{`
-          #top { height: 200vh; }
-          @media (min-width: 1024px) { #top { height: 320vh; } }
-          /* NOTA: [data-hero-evolve] fica de fora de propósito. O painel
-             institucional nunca deve depender do JS para ficar visível — se o
-             GSAP falhar, ele continua na tela. */
-          [data-hero-chip],
-          [data-hero-headline],
-          [data-hero-paragraph],
-          [data-hero-ctas],
-          [data-hero-indicators],
-          [data-hero-mobilechips] {
-            opacity: 0;
-            transform: translateY(34px);
-            filter: blur(10px);
-            will-change: transform, opacity, filter;
-          }
-          [data-hero-peek] { opacity: 0; transform: translateY(10px); }
-        `}</style>
-      )}
-
+    /* Altura do percurso (200vh / 320vh), cena sticky e estado inicial oculto
+       vivem em globals.css. Nada aqui depende de `prefers-reduced-motion` para
+       decidir quais nós existem — a media query cuida disso no browser. */
+    <section id="top" ref={wrapperRef} className="relative">
       <div
         ref={sceneRef}
-        className={`${rm ? 'relative' : 'sticky top-0'} flex overflow-hidden`}
+        className="hero-scene flex overflow-hidden"
         style={{ minHeight: 'clamp(640px, 100svh, 960px)' }}
       >
         {/* Linha decorativa superior */}
@@ -510,34 +490,34 @@ export default function HeroCinematic() {
           </div>
         </div>
 
-        {/* Peek da próxima seção + progresso do percurso do hero */}
-        {!rm && (
-          <div
-            data-hero-peek
-            className="absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-3"
+        {/* Peek da próxima seção + progresso do percurso do hero.
+            Sem percurso de scroll não há o que indicar: globals.css tira este
+            bloco de cena em reduced-motion, sem mexer na árvore de nós. */}
+        <div
+          data-hero-peek
+          className="absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-3"
+        >
+          <a
+            href="#quem-somos"
+            className="group flex flex-col items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/75 transition-colors hover:text-white"
           >
-            <a
-              href="#quem-somos"
-              className="group flex flex-col items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-white/75 transition-colors hover:text-white"
-            >
-              <span>Quem somos</span>
-              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 transition-colors group-hover:border-white/40">
-                <ArrowDown className="h-3.5 w-3.5 animate-pulse-soft" strokeWidth={1.8} />
-              </span>
-            </a>
-            {/* Trilha de progresso: quanto do percurso do hero já foi rolado */}
-            <span
-              aria-hidden
-              className="h-[2px] w-[min(220px,40vw)] overflow-hidden rounded-full bg-white/10"
-            >
-              <span
-                data-hero-progress-fill
-                className="progress-line block h-full w-full origin-left rounded-full"
-                style={{ transform: 'scaleX(0)' }}
-              />
+            <span>Quem somos</span>
+            <span className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 transition-colors group-hover:border-white/40">
+              <ArrowDown className="h-3.5 w-3.5 animate-pulse-soft" strokeWidth={1.8} />
             </span>
-          </div>
-        )}
+          </a>
+          {/* Trilha de progresso: quanto do percurso do hero já foi rolado */}
+          <span
+            aria-hidden
+            className="h-[2px] w-[min(220px,40vw)] overflow-hidden rounded-full bg-white/10"
+          >
+            <span
+              data-hero-progress-fill
+              className="progress-line block h-full w-full origin-left rounded-full"
+              style={{ transform: 'scaleX(0)' }}
+            />
+          </span>
+        </div>
       </div>
     </section>
   );

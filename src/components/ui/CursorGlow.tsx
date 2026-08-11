@@ -14,13 +14,12 @@ export default function CursorGlow() {
     return () => window.removeEventListener('mousemove', onMove);
   }, [rm]);
 
-  if (rm) return null;
-
   return (
     <div
       aria-hidden
       className="pointer-events-none fixed inset-0 z-0"
       style={{
+        display: rm ? 'none' : undefined,
         background: `radial-gradient(400px circle at ${pos.x}px ${pos.y}px, rgba(0,153,230,0.10), transparent 60%)`,
       }}
     />

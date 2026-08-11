@@ -31,7 +31,7 @@ export default function Differentials() {
   }, []);
 
   useEffect(() => {
-    if (rm || !isDesktop) return;
+    if (!isDesktop) return;
     const el = wrapperRef.current;
     if (!el) return;
     gsap.registerPlugin(ScrollTrigger);
@@ -56,10 +56,13 @@ export default function Differentials() {
       window.removeEventListener('resize', refresh);
       st.kill();
     };
-  }, [rm, isDesktop]);
+  }, [isDesktop]);
 
-  // Mobile fallback (lista vertical) ou reduced motion
-  if (!isDesktop || rm) {
+  /* Layout de mobile. A pilha de cards com scroll travado vale para todo
+     desktop: quem define qual das duas árvores existe é só a largura da tela,
+     nunca `prefers-reduced-motion` — o valor dessa preferência só chega depois
+     da hidratação e trocaria a seção inteira debaixo do usuário. */
+  if (!isDesktop) {
     return (
       <section id="diferenciais" className="section-py relative overflow-hidden">
         <div className="container-lp">

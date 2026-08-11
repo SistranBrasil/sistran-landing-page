@@ -55,16 +55,13 @@ function CountUpNumber({
   active: boolean;
   color: string;
 }) {
-  const rm = useReducedMotion();
   const ref = useRef<HTMLSpanElement>(null);
 
+  /* A contagem é a informação em si, não um efeito decorativo: roda também com
+     movimento reduzido. */
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (rm) {
-      el.textContent = `${target}${suffix}`;
-      return;
-    }
     if (!active) {
       el.textContent = `${start}${suffix}`;
       return;
@@ -79,7 +76,7 @@ function CountUpNumber({
     };
     id = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(id);
-  }, [active, rm, start, target, suffix]);
+  }, [active, start, target, suffix]);
 
   return (
     <span
@@ -96,7 +93,7 @@ function CountUpNumber({
         color: 'transparent',
       }}
     >
-      {rm ? `${target}${suffix}` : `${start}${suffix}`}
+      {`${start}${suffix}`}
     </span>
   );
 }

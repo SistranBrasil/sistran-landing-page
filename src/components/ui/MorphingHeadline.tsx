@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { gsap } from 'gsap';
-import { useReducedMotion } from '@/lib/motion';
+import { prefersReducedMotion, useReducedMotion } from '@/lib/motion';
 
 const WORDS = ['Alta Performance', 'Precisão', 'Escala'] as const;
 
@@ -18,7 +18,11 @@ export default function MorphingHeadline() {
 
   // Intro sequencial estilo valientebrands: mask reveal linha a linha
   useEffect(() => {
-    if (rm) {
+    /* `prefersReducedMotion()` além de `rm`: no primeiro passe o hook ainda
+       devolve o snapshot do servidor (`false`), e sem a leitura síncrona o
+       gsap.set abaixo escondia as três linhas um instante antes de o valor real
+       chegar — aí o effect saía por aqui e ninguém mais as revelava. */
+    if (rm || prefersReducedMotion()) {
       setIntroDone(true);
       return;
     }
@@ -27,60 +31,64 @@ export default function MorphingHeadline() {
     const slot = morphSlotRef.current;
     if (!l1 || !l3 || !slot) return;
 
-    // estado inicial: máscara escondendo (translateY 100% + clip-path inset)
-    gsap.set([l1, slot, l3], {
-      yPercent: 110,
-      opacity: 0,
-      filter: 'blur(14px)',
-      clipPath: 'inset(0 0 100% 0)',
-    });
+    const ctx = gsap.context(() => {
+      // estado inicial: máscara escondendo (translateY 100% + clip-path inset)
+      gsap.set([l1, slot, l3], {
+        yPercent: 110,
+        opacity: 0,
+        filter: 'blur(14px)',
+        clipPath: 'inset(0 0 100% 0)',
+      });
 
-    const tl = gsap.timeline({
-      defaults: { ease: 'power4.out' },
-      onComplete: () => setIntroDone(true),
-    });
+      const tl = gsap.timeline({
+        defaults: { ease: 'power4.out' },
+        onComplete: () => setIntroDone(true),
+      });
 
-    tl.to(l1, {
-      yPercent: 0,
-      opacity: 1,
-      filter: 'blur(0px)',
-      clipPath: 'inset(0 0 0% 0)',
-      duration: 1.15,
-    })
-      .to(
-        slot,
-        {
-          yPercent: 0,
-          opacity: 1,
-          filter: 'blur(0px)',
-          clipPath: 'inset(0 0 0% 0)',
-          duration: 1.25,
-        },
-        '-=0.85'
-      )
-      .to(
-        l3,
-        {
-          yPercent: 0,
-          opacity: 1,
-          filter: 'blur(0px)',
-          clipPath: 'inset(0 0 0% 0)',
-          duration: 1.15,
-        },
-        '-=0.9'
-      );
+      tl.to(l1, {
+        yPercent: 0,
+        opacity: 1,
+        filter: 'blur(0px)',
+        clipPath: 'inset(0 0 0% 0)',
+        duration: 1.15,
+      })
+        .to(
+          slot,
+          {
+            yPercent: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            clipPath: 'inset(0 0 0% 0)',
+            duration: 1.25,
+          },
+          '-=0.85'
+        )
+        .to(
+          l3,
+          {
+            yPercent: 0,
+            opacity: 1,
+            filter: 'blur(0px)',
+            clipPath: 'inset(0 0 0% 0)',
+            duration: 1.15,
+          },
+          '-=0.9'
+        );
+    }, rootRef);
 
-    return () => {
-      tl.kill();
-    };
+    /* `ctx.revert()`, não `tl.kill()`: matar a timeline no meio deixaria as
+       linhas paradas no estado oculto em que o gsap.set as colocou. */
+    return () => ctx.revert();
   }, [rm]);
 
-  // Após a intro terminar, começa o morph das palavras
+  /* O rodízio das palavras roda mesmo com movimento reduzido: congelado, as
+     outras duas ficariam inacessíveis. O que fica desligado é a intro com
+     blur/clip acima, essa sim decorativa. */
   useEffect(() => {
-    if (rm || !introDone) return;
+    if (!introDone) return;
     const t = window.setInterval(() => setI((n) => (n + 1) % WORDS.length), 2600);
     return () => window.clearInterval(t);
-  }, [rm, introDone]);
+  }, [introDone]);
 
   return (
     <h1

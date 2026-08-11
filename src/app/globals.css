@@ -495,6 +495,49 @@ body::after {
 }
 .glow-drift { animation: glow-drift 9s ease-in-out infinite; will-change: transform, opacity; }
 
+/* ===========================================================
+   Hero cinematográfico — percurso de scroll e estado inicial
+
+   Tudo isto vive em CSS, e não em JSX condicionado a
+   `prefers-reduced-motion`, de propósito. O valor da preferência só chega ao
+   React depois da hidratação; se a árvore de nós dependesse dele, a página
+   inteira seria remontada nesse instante — GSAP/ScrollTrigger perderiam suas
+   medidas e a cena ficaria congelada. O browser resolve a media query na
+   primeira leitura da folha de estilo, antes de qualquer JS.
+   =========================================================== */
+#top {
+  height: 200vh;
+}
+@media (min-width: 1024px) {
+  #top {
+    height: 320vh;
+  }
+}
+
+.hero-scene {
+  position: sticky;
+  top: 0;
+}
+
+/* Estado inicial oculto dos blocos que a timeline do GSAP revela no mount.
+   [data-hero-evolve] fica de fora de propósito: o painel institucional nunca
+   deve depender do JS para ficar visível. */
+[data-hero-chip],
+[data-hero-headline],
+[data-hero-paragraph],
+[data-hero-ctas],
+[data-hero-indicators],
+[data-hero-mobilechips] {
+  opacity: 0;
+  transform: translateY(34px);
+  filter: blur(10px);
+  will-change: transform, opacity, filter;
+}
+[data-hero-peek] {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
 /* Acessibilidade: respeitar redução de movimento */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -521,11 +564,15 @@ body::after {
   [data-hero-paragraph],
   [data-hero-ctas],
   [data-hero-indicators],
-  [data-hero-mobilechips],
-  [data-hero-peek] {
+  [data-hero-mobilechips] {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
+  }
+  /* Sem o percurso de scroll não há cena sticky nem indicador de progresso:
+     o hero vira uma seção comum da altura do próprio conteúdo. */
+  #top {
+    height: auto !important;
   }
   /* O marquee e rolagem continua de CONTEUDO, nao efeito decorativo: congelar
      no primeiro item deixa os demais INALCANCAVEIS (nao ha scroll nem setas).
@@ -540,13 +587,43 @@ body::after {
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
   }
+  .hero-scene {
+    position: relative !important;
+  }
+  [data-hero-peek] {
+    display: none !important;
+  }
+  /* O track para de vez: quem garante o acesso ao conteudo aqui e a rolagem
+     nativa da .marquee-viewport acima, nao o movimento. A copia duplicada sai
+     de cena para o leitor de tela nao ler tudo duas vezes. */
   .marquee-track {
     animation: none !important;
     transform: none !important;
     width: auto !important;
   }
-  .marquee-copy[aria-hidden='true'] { display: none !important; }
-  .marquee-copy > * { scroll-snap-align: start; }
+  .marquee-copy[aria-hidden='true'] {
+    display: none !important;
+  }
+  .marquee-copy > * {
+    scroll-snap-align: start;
+  }
+  /* ── Isenção cirúrgica: a órbita ──────────────────────────────────────
+     A órbita do painel institucional carrega CONTEÚDO em rotação contínua e
+     não tem equivalente rolável: congelada, o painel vira uma imagem parada e
+     os itens fora de vista ficam inalcançáveis. Por isso segue animando —
+     parallax, reveals, tilt e scroll suave continuam desligados no resto.
+
+     O marquee NÃO entra aqui: ele resolve o mesmo problema pela rolagem
+     nativa acima, que é preferível (nada se move sozinho). Reativar a
+     animação dele contradiria aquele bloco.
+
+     A duração vem de custom property porque estas regras precisam reafirmar
+     `!important` para vencer o reset genérico acima. */
+  .orbit-spin,
+  .orbit-counter {
+    animation-duration: var(--orbit-duration, 44s) !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 /* Foco visível acessível */
@@ -585,6 +662,11 @@ body::after {
   display: flex;
   width: max-content;
   animation-name: marquee-scroll;
+  /* A duração vem de uma custom property, não de `style` inline: estilo inline
+     perde para o `animation-duration: 0.01ms !important` da regra global de
+     reduced-motion, então quem precisa vencer essa disputa tem que ser uma
+     classe CSS. */
+  animation-duration: var(--mq-duration, 40s);
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   will-change: transform;
@@ -604,6 +686,17 @@ body::after {
   from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }
 }
+/* Ticker de indicadores (TrustTicker). O degradê nas bordas sugere que há mais
+   conteúdo rolando. Segue animando em reduced-motion pelo mesmo motivo do
+   marquee — é conteúdo em rotação, não enfeite. */
+.ticker-viewport {
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+
 /* Utility: hide scrollbar (para carrosséis) */
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -937,6 +1030,23 @@ body::after {
 @keyframes orbit-counter {
   from { transform: translate(-50%, -50%) rotate(var(--orbit-angle, 0deg)); }
   to   { transform: translate(-50%, -50%) rotate(calc(var(--orbit-angle, 0deg) - 360deg)); }
+}
+/* Classes, não `animation` inline: a duração precisa vir de uma custom property
+   consumida por uma classe para poder ser reafirmada com `!important` no bloco
+   de reduced-motion. Estilo inline perde essa disputa. */
+.orbit-spin {
+  animation-name: orbit-spin;
+  animation-duration: var(--orbit-duration, 44s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+.orbit-counter {
+  animation-name: orbit-counter;
+  animation-duration: var(--orbit-duration, 44s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
 }
 
 /* Linhas tracejadas em movimento (hero — receita skill sistran-labs) */
