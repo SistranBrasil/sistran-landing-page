@@ -4,30 +4,34 @@ import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '@/lib/motion';
 
+/* Numeros e frases da secao "Sobre nós" da pagina A Sistran — nada aqui é
+   redacao nova: cada `detail` é uma frase do proprio texto do site.
+   Fonte: .claude/conteudo-site/01-a-sistran.md (secao 1) */
 const HIGHLIGHTS = [
   {
     value: '1988',
-    label: 'Ano de fundação',
-    detail: 'Três décadas e meia dedicadas ao mercado de seguros.',
+    label: 'Estabelecida no Brasil',
+    detail: 'Processamos um terço de todos os prêmios de Seguro de Vida no país.',
     num: 1988,
     suffix: '',
     start: 1900,
     color: '#0ed8f6',
   },
   {
-    value: '850+',
-    label: 'Profissionais',
-    detail: 'Especialistas em negócio e tecnologia atuando no core.',
-    num: 850,
+    value: '130+',
+    label: 'Clientes',
+    detail: 'Ampla presença na América do Sul, com mais de 130 clientes e 850 colaboradores.',
+    num: 130,
     suffix: '+',
     start: 0,
     color: '#0079CB',
   },
   {
-    value: '3',
-    label: 'Unidades no Brasil',
-    detail: 'Presença nacional com alcance também no exterior.',
-    num: 3,
+    value: '18',
+    label: 'Países',
+    detail:
+      'Nossas soluções e serviços estão presentes em 18 países, com qualidade e confiabilidade.',
+    num: 18,
     suffix: '',
     start: 0,
     color: '#7c3aed',
@@ -132,7 +136,7 @@ export default function About() {
             className="lg:col-span-5 lg:col-start-1"
           >
             <motion.span variants={vSubtitle} className="tag-section">
-              Quem somos
+              Sobre nós
             </motion.span>
             <motion.h2
               variants={vTitle}
@@ -143,7 +147,7 @@ export default function About() {
                 letterSpacing: '-0.032em',
               }}
             >
-              Especialistas em <span className="text-gradient-brand">tecnologia</span> para seguradoras
+              A <span className="text-gradient-brand">Sistran</span>
             </motion.h2>
             {/* Régua da marca: fecha o bloco do título e amarra com a coluna de texto */}
             <motion.span
@@ -176,10 +180,23 @@ export default function About() {
               }}
             >
               <span className="font-semibold text-ink">
-                Há mais de três décadas transformando processos, sistemas e operações de seguradoras
+                Com ampla presença na América do Sul, contando com mais de 130 clientes e 850
+                colaboradores, a Sistran é referência em soluções tecnológicas para o setor de
+                Seguros.
               </span>{' '}
-              no Brasil e no exterior. Combinamos domínio profundo do negócio com tecnologia
-              pragmática para entregar resultados mensuráveis.
+              Somos uma empresa que entrega soluções em TI de forma inovadora e personalizada,
+              transformando ideias em resultados tangíveis.
+            </motion.p>
+
+            <motion.p
+              variants={vSubtitle}
+              className="mt-6 max-w-xl text-base leading-relaxed text-ink-muted md:text-lg"
+            >
+              Estabelecida em 1988 no Brasil, processamos um terço de todos os prêmios de Seguro de
+              Vida no país. Nossas soluções e serviços estão presentes em 18 países, com qualidade e
+              confiabilidade. Construímos relacionamentos sólidos e duradouros com o cliente,
+              trabalhando no aperfeiçoamento contínuo de tudo que fazemos em benefício dos usuários
+              finais.
             </motion.p>
 
             {/* Segundo parágrafo com barra lateral: vira citação editorial, não repetição */}
@@ -188,10 +205,11 @@ export default function About() {
               className="mt-8 max-w-xl border-l-2 pl-5 text-base leading-relaxed text-ink-muted md:text-lg"
               style={{ borderColor: 'rgba(0,121,203,0.35)' }}
             >
-              Da subscrição ao sinistro, do vida ao P&amp;C, da sustentação ao delivery de novos
-              produtos: nosso time atua no{' '}
-              <span className="font-semibold text-ink">core do negócio</span> das principais
-              seguradoras do país.
+              Com profunda especialização em Seguros e sólida compreensão das necessidades do
+              mercado, oferecemos também consultoria especializada em inteligência artificial e
+              DEVOPS, criando ofertas personalizadas que impulsionam o sucesso das Seguradoras.
+              Aqui, realmente{' '}
+              <span className="font-semibold text-ink">CONHECEMOS SEGUROS</span>.
             </motion.p>
           </motion.div>
         </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'motion/react';
 import { ACCELERATORS, type Accelerator } from '@/data/accelerators';
 import { getIcon } from '@/lib/icons';
@@ -91,18 +92,29 @@ function AccelCard({ a, index }: { a: Accelerator; index: number }) {
       >
         {a.name}
       </h3>
-      <p
-        className="relative mt-1 text-xs font-semibold uppercase tracking-[0.14em]"
-        style={{ color: a.tone, transform: 'translateZ(18px)' }}
-      >
-        {a.tagline}
-      </p>
+      {/* Filete no lugar do subtitulo: o site nao escreve tagline nenhuma para
+          os aceleradores, então nao ha texto a exibir aqui. */}
+      <span
+        aria-hidden
+        className="relative mt-3 block h-px w-10 rounded-full"
+        style={{ background: a.tone, transform: 'translateZ(18px)' }}
+      />
       <p
         className="relative mt-4 text-sm leading-relaxed text-white/85"
         style={{ transform: 'translateZ(12px)' }}
       >
         {a.description}
       </p>
+      {/* No site cada card leva a pagina do produto; o rotulo do link nao existe
+          na origem (o card inteiro é clicavel), então usa o nome do produto. */}
+      <Link
+        href={`/solucoes/${a.id}`}
+        className="relative mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#A5F0FF] underline-offset-4 hover:underline"
+        style={{ transform: 'translateZ(12px)' }}
+      >
+        Conheça o {a.name}
+        <span aria-hidden>&rarr;</span>
+      </Link>
     </article>
     </motion.div>
   );
@@ -126,19 +138,27 @@ export default function Accelerators() {
           className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
         >
           <div className="max-w-2xl">
+            {/* Sobretitulo e titulo como no site: "Tecnologia Disruptiva" /
+                "Soluções". O paragrafo é verbatim. */}
             <motion.span variants={vSubtitle} className="tag-section">
-              Tecnologia Disruptiva · Soluções
+              Tecnologia Disruptiva
             </motion.span>
             <motion.h2
               variants={vTitle}
               className="mt-3 font-display text-section font-bold text-white"
             >
-              Aceleradores para os melhores resultados
+              Soluções
             </motion.h2>
             <motion.p variants={vSubtitle} className="mt-4 text-lg leading-relaxed text-white/75">
-              Desenvolvemos aceleradores para entregar os melhores resultados. Ouvimos seu desafio,
-              fazemos Discovery para o seu negócio e desenhamos uma solução personalizada,
-              entregando resultados assertivos com excelência.
+              Desenvolvemos aceleradores para entregar os melhores resultados,
+              &ldquo;ouvimos seu desafio&rdquo;, fazendo Discovery para seu negócio, desenhando uma
+              solução personalizada entregando resultados assertivos com excelência.
+            </motion.p>
+            <motion.p
+              variants={vSubtitle}
+              className="mt-3 text-lg font-semibold leading-relaxed text-white"
+            >
+              Conheça nossos aceleradores:
             </motion.p>
           </div>
           <span className="inline-flex h-fit items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#A5F0FF]">

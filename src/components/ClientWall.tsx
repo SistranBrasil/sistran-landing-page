@@ -17,24 +17,9 @@ export default function ClientWall() {
        conteudo adiante. */
     <section
       id="clientes"
-      aria-labelledby="clientes-titulo"
+      aria-label="Seguradoras e parceiros"
       className="relative overflow-hidden pb-24 pt-14 md:pb-36 md:pt-20"
     >
-      <div className="container-lp">
-        <div className="mb-8 flex flex-col items-start gap-2 md:flex-row md:items-end md:justify-between">
-          <div>
-            {/* .tag-section (chip com moldura), igual Serviços e #sistran */}
-            <span className="tag-section">Confiam na Sistran</span>
-            <h2 id="clientes-titulo" className="mt-3 font-display text-2xl font-bold text-white md:text-3xl">
-              Seguradoras e parceiros que atendemos
-            </h2>
-          </div>
-          <p className="max-w-sm text-sm text-ink-muted">
-            Uma trajetória construída em parceria com o mercado segurador brasileiro e global.
-          </p>
-        </div>
-      </div>
-
       {/* Fade lateral generoso (14%) e com parada intermediaria: as placas
           BRANCAS têm muito mais contraste que os chips translucidos de antes,
           então um fade curto de 6% terminava em corte seco na borda. O stop em

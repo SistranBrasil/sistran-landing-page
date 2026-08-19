@@ -6,11 +6,14 @@ export type EventKind =
   | 'nacional' // eventos brasileiros
   | 'parceiro'; // eventos de parceiros de plataforma
 
+/* Titulo e descricao verbatim de /eventos-inovacao/ (15 eventos, na ordem do
+   site). O site nao informa data nem local de nenhum evento — por isso nao ha
+   campo `location` nem `date` aqui.
+   Fonte: .claude/conteudo-site/06-eventos-inovacao.md */
 export type SistranEvent = {
   id: string;
   title: string;
   kind: EventKind;
-  location?: string;
   description: string;
   icon: IconName;
   featured?: boolean;
@@ -33,57 +36,53 @@ export const EVENTS: readonly SistranEvent[] = [
     featured: true,
     image: '/images/EVENTOS/summit-julho-26.jpg',
     description:
-      'Realizado pela Sistran e com a presença de grandes líderes do mercado de seguros, o evento teve como foco mostrar o potencial da inteligência artificial na geração de ofertas de seguros, assessorando agentes e corretores. Disponível no canal do YouTube da Sistran.',
+      'Realizado pela Sistran e com a presença de grandes líderes do mercado de seguros, o evento teve como foco mostrar o potencial da inteligência artificial na geração das ofertas de seguros assessorando os agentes e corretores. Vale a pena ver esse evento que está disponível no canal do YouTube da Sistran.',
   },
   {
     id: 'itc-vegas',
     title: 'ITC Vegas',
     kind: 'global',
-    location: 'Las Vegas, EUA',
     icon: 'Sparkles',
     image: '/images/EVENTOS/itc-vegas-julho-26.jpg',
     description:
-      'A Sistran todos os anos se une aos grandes nomes da tecnologia para o maior congresso focado em inovação e Insurtechs do mercado securitário global.',
+      'A Sistran todos os anos se une aos grandes nomes da tecnologia para esse que é o maior congresso focado em inovação e Insurtechs do mercado securitário global.',
   },
   {
     id: 'cqcs-inovacao',
     title: 'CQCS Inovação',
     kind: 'global',
-    location: 'América Latina',
     icon: 'Zap',
     image: '/images/EVENTOS/cqcs-julho-2026.jpg',
     description:
-      'A Sistran consolidou sua participação efetiva como palestrante e expositora nas edições do CQCS Inovação, o maior evento latino-americano de inovação em seguros e um dos principais do mundo.',
+      'A Sistran consolidou sua participação efetiva como palestrante e expositora nas edições do CQCS Inovação que é o maior evento Latino Americano de Inovação em Seguros e um dos principais do mundo. Ocasião propícia para estreitar laços com clientes, parceiros, e claro, projetar novas oportunidades de negócios e crescimento.',
   },
   {
     id: 'pega-world',
     title: 'Pega World',
     kind: 'parceiro',
-    location: 'Las Vegas, EUA',
     icon: 'Boxes',
     image: '/images/EVENTOS/Ev4-Pega-World.jpg',
     description:
-      'Confirmando o compromisso com a plataforma tecnológica Pegasystems, a Sistran considera fundamental participar dos encontros Pega World em Las Vegas. Uma verdadeira experiência imersiva no futuro da TI.',
+      'Confirmando nosso compromisso com a plataforma tecnológica Pegasystems, a Sistran considera fundamental participar dos encontros Pega World em Las Vegas. Uma verdadeira experiência imersiva no futuro da TI.',
   },
   {
     id: 'insurtech-brasil',
     title: 'Insurtech Brasil',
     kind: 'nacional',
-    location: 'Brasil',
     icon: 'Layers',
     image: '/images/EVENTOS/insurtech-julho-26.jpg',
     description:
-      'Importante evento de tecnologia e inovação para o mercado segurador. Anualmente, o Insurtech Brasil conta com a presença da equipe Sistran em suas edições para compartilhar e adquirir conhecimentos.',
+      'Importante evento de tecnologia e inovação para o mercado segurador, anualmente, o Insurtech Brasil conta com a presença da equipe Sistran em suas edições para compartilhar e adquirir conhecimentos.',
   },
   {
     id: 'suitability-ai',
-    title: 'Suitability e IA em Seguros · Ruptura ou inovação?',
+    title: 'Suitability e AI em Seguros · Ruptura ou inovação?',
     kind: 'proprio',
     icon: 'ShieldCheck',
     featured: true,
     image: '/images/EVENTOS/Ev6-Weninar-Suitability.jpg',
     description:
-      'Idealizado pela Sistran, esse evento virtual abordou o desafio de atender demandas de consumidores cada vez mais exigentes. Foram 3 dias de webinar disponíveis no canal do YouTube da Sistran.',
+      'Idealizado pela Sistran, esse evento virtual abordou o desafio de como atender demandas de consumidores cada vez mais exigentes: atualizados, acostumados com autosserviços e informações instantâneas, eles esperam um nível mais sofisticado de serviços digitais, que já experimentam em outros setores. Essa "facilidade" traz para o segurado uma expectativa de maior aderência das ofertas às suas necessidades. Foram 3 dias de webinar que estão disponíveis no canal do YouTube da Sistran.',
   },
   {
     id: 'open-summit',
@@ -92,37 +91,34 @@ export const EVENTS: readonly SistranEvent[] = [
     icon: 'Workflow',
     image: '/images/EVENTOS/Ev7-Open-Summit.jpg',
     description:
-      'Semana de conteúdo com palestrantes e especialistas em Open Banking, Payments, Moedas Digitais, Fintechs, Insurtechs e Open Innovation. A Sistran participou da curadoria do Open Insurance, dia especialmente voltado a Seguros.',
+      'O evento virtual Open Summit contou com uma semana de conteúdo com grandes palestrantes e especialistas em Open Banking, Payments, Moedas Digitais, Fintechs, Insurtechs e Open Innovation e a Sistran participou da curadoria do Open Insurance, dia especialmente voltado a Seguros, assessorando na seleção dos palestrantes, tema para os debates, assim como a divulgação do evento.',
   },
   {
     id: 'fenacor',
     title: 'Congresso Brasileiro dos Corretores de Seguros · FENACOR',
     kind: 'nacional',
-    location: 'Brasil',
     icon: 'Users',
     image: '/images/EVENTOS/Ev8-Congresso-Brasileiro.jpg',
     description:
-      'Maior evento do setor de seguros no Brasil, organizado pela FENACOR. Reúne corretores, seguradoras, empresas de tecnologia e profissionais do mercado para discutir tendências, desafios e oportunidades.',
+      'O Congresso Brasileiro dos Corretores de Seguros, organizado pela FENACOR (Federação Nacional dos Corretores de Seguros), é o maior evento do setor de seguros no Brasil. Ele reúne corretores de seguros, seguradoras, empresas de tecnologia e outros profissionais do mercado para discutir as últimas tendências, desafios e oportunidades do setor.',
   },
   {
     id: 'conec',
     title: 'CONEC',
     kind: 'nacional',
-    location: 'Brasil',
     icon: 'HeartHandshake',
     image: '/images/EVENTOS/conec-julho-26.jpg',
     description:
-      'Evento de grande relevância para o setor de seguros, organizado pelo Sincor. Reúne milhares de profissionais para discutir tendências, compartilhar conhecimentos e fortalecer relações entre os participantes.',
+      'O Conec é um evento de grande relevância para o setor de seguros, organizado pelo Sincor (Sindicato dos Corretores de Seguros). Reúne milhares de profissionais da área para discutir as últimas tendências, compartilhar conhecimentos e fortalecer as relações entre os participantes.',
   },
   {
     id: 'agile-trends',
     title: 'Agile Trends',
     kind: 'nacional',
-    location: 'Brasil',
     icon: 'Zap',
     image: '/images/EVENTOS/Agile2025.jpg',
     description:
-      'Reúne os principais players do mercado para trazer tendências da metodologia ágil e práticas modernas de gestão. Equipe técnica da Sistran sempre presente.',
+      'O Agile Trends reúne os principais players do mercado para trazer tendências da metodologia ágil e práticas modernas de gestão. Equipe técnica da Sistran sempre presente.',
   },
   {
     id: 'apix',
@@ -131,43 +127,39 @@ export const EVENTS: readonly SistranEvent[] = [
     icon: 'Code2',
     image: '/images/EVENTOS/apix-julho-26.jpg',
     description:
-      'Promove discussões técnicas estratégicas sobre as principais tendências em APIs e tecnologias correlatas. Realizado pela Sensedia, parceira de Plataforma de Gerenciamento de APIs, a Sistran faz questão de estar presente em todas as edições.',
+      'O APIX é um evento que promove discussões técnicas estratégicas sobre as principais tendências em APIs e tecnologias correlatas. Realizado pela Sensedia, nosso parceiro de Plataforma de Gerenciamento de APIs, a Sistran faz questão de estar presente ao longo das edições para firmar essa união, com foco em projetos futuros compartilhando expertise, comprometimento e colaboração.',
   },
   {
     id: 'febraban-tech',
     title: 'Febraban Tech',
     kind: 'nacional',
-    location: 'Brasil',
     icon: 'Building2',
     image: '/images/EVENTOS/FebrabanTech2025.jpg',
     description:
-      'A Sistran prioriza sua participação no Febraban Tech, o maior evento de tecnologia e inovação do setor financeiro brasileiro.',
+      'A Sistran prioriza sua participação no Febraban Tech que é o maior evento de tecnologia e inovação do setor financeiro brasileiro.',
   },
   {
     id: 'conseguro',
     title: 'Conseguro',
     kind: 'nacional',
-    location: 'Brasil',
     icon: 'Briefcase',
     image: '/images/EVENTOS/Conseguro2025.jpg',
     description:
-      'Um dos principais eventos do setor de seguros no Brasil, realizado pela CNseg. Congresso nacional que reúne profissionais, empresas, executivos e especialistas da indústria de seguros, previdência e capitalização.',
+      'O Conseguro é um dos principais eventos do setor de seguros no Brasil. Realizado pela CNseg, trata-se de um congresso nacional que reúne profissionais, empresas, executivos e especialistas da indústria de seguros, previdência e capitalização.',
   },
   {
     id: 'spiw',
     title: 'São Paulo Innovation Week · SPIW',
     kind: 'nacional',
-    location: 'São Paulo, SP',
     icon: 'Sparkles',
     image: '/images/EVENTOS/SPIW-julho-2026.jpg',
     description:
-      'A Sistran esteve presente na primeira edição da SPIW, que consolidou a capital paulista no circuito global de tecnologia e negócios, atraindo mais de 80 mil pessoas, com 33 palcos temáticos e 1.900 palestrantes nacionais e internacionais.',
+      'Sistran esteve presente na primeira edição da São Paulo Innovation Week (SPIW) que consolidou a capital paulista no circuito global de tecnologia e negócios ao atrair mais de 80 mil pessoas. O festival contou com 33 palcos temáticos e 1.900 palestrantes nacionais e internacionais que debateram os impactos da inteligência artificial, sustentabilidade, saúde e inovação social.',
   },
   {
     id: 'aws-summit-sp',
     title: 'AWS Summit São Paulo',
     kind: 'global',
-    location: 'São Paulo, SP',
     icon: 'Cog',
     image: '/images/EVENTOS/aws-summit-julho-26.jpg',
     description:

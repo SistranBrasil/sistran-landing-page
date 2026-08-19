@@ -10,7 +10,6 @@ const SECTIONS: Section[] = [
   { id: 'diferenciais', label: 'Diferenciais' },
   { id: 'resultados', label: 'Resultados' },
   { id: 'solucoes', label: 'Soluções' },
-  { id: 'clientes', label: 'Clientes' },
   { id: 'contato', label: 'Contato' },
 ];
 

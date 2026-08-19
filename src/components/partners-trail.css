@@ -1,0 +1,203 @@
+/* Trilha serpenteante das implementações (desktop).
+   Substitui as quatro faixas em zigue-zague: o percurso agora é um único path
+   SVG e o scroll pinta a rota. */
+
+.trail-stage {
+  position: relative;
+  display: none;
+  margin: 2.5rem 0 0;
+}
+
+@media (min-width: 900px) {
+  .trail-stage {
+    display: block;
+  }
+}
+
+/* O SVG escala pela largura e o `height: auto` faz o palco assumir a altura do
+   viewBox — os cards absolutos herdam esse sistema de coordenadas. */
+.trail-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.trail-route-base {
+  fill: none;
+  stroke: rgba(0, 121, 203, 0.18);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* `pathLength={1}` normaliza a curva: o dashoffset passa a ser 1 - progresso,
+   sem depender do comprimento real em unidades. */
+.trail-route-live {
+  fill: none;
+  stroke: url(#trail-gradient);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 10px rgba(14, 216, 246, 0.45));
+}
+
+/* Viajante: posicionado em porcentagem calculada a partir de
+   `getPointAtLength`, então acompanha a curva de verdade, não uma interpolação
+   linear entre as paradas. */
+.trail-traveler {
+  position: absolute;
+  left: var(--x, 50%);
+  top: var(--y, 0%);
+  z-index: 3;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 35%, #ffffff, #0ed8f6 45%, #0079cb);
+  box-shadow: 0 0 0 6px rgba(14, 216, 246, 0.16), 0 0 22px rgba(14, 216, 246, 0.7);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Paradas */
+
+.trail-stop {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 30%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 0.55s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    transform 0.55s var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+/* Lado esquerdo da serpentina: o card cresce para a direita do nó. */
+.trail-stop[data-side='left'] {
+  transform: translate(1.75rem, calc(-50% - 0.75rem));
+}
+.trail-stop[data-side='right'] {
+  flex-direction: row-reverse;
+  text-align: right;
+  transform: translate(calc(-100% - 1.75rem), calc(-50% - 0.75rem));
+}
+
+/* Revelação amarrada ao viajante: a parada só aparece quando a rota pintada
+   chega perto dela. */
+.trail-stop[data-reached='true'] {
+  opacity: 1;
+}
+.trail-stop[data-reached='true'][data-side='left'] {
+  transform: translate(1.75rem, -50%);
+}
+.trail-stop[data-reached='true'][data-side='right'] {
+  transform: translate(calc(-100% - 1.75rem), -50%);
+}
+
+.trail-stop[data-muted='true'] {
+  opacity: 0.28;
+}
+
+.trail-dot {
+  position: relative;
+  flex: 0 0 auto;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  background: var(--node-color, #0ed8f6);
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.06);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.trail-stop[data-current='true'] .trail-dot,
+.trail-stop[data-selected='true'] .trail-dot {
+  transform: scale(1.45);
+  box-shadow: 0 0 0 7px color-mix(in srgb, var(--node-color, #0ed8f6) 22%, transparent);
+}
+
+.trail-card {
+  min-width: 0;
+  padding: 0.7rem 0.95rem;
+  border: 1px solid rgba(0, 121, 203, 0.16);
+  border-radius: 0.9rem;
+  background: rgba(0, 38, 71, 0.55);
+  backdrop-filter: blur(6px);
+  transition: border-color 0.35s ease, background 0.35s ease, transform 0.35s ease;
+}
+
+.trail-stop:hover .trail-card {
+  border-color: rgba(14, 216, 246, 0.45);
+  transform: translateY(-2px);
+}
+
+.trail-stop[data-selected='true'] .trail-card {
+  border-color: color-mix(in srgb, var(--node-color, #0ed8f6) 55%, transparent);
+  background: rgba(0, 38, 71, 0.8);
+}
+
+.trail-card small {
+  display: block;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--node-color, #0ed8f6);
+}
+
+.trail-card strong {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.trail-card span {
+  margin-top: 0.25rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.62);
+  /* Duas linhas: com 24 paradas, texto solto empurraria os cards um sobre o
+     outro no espaçamento vertical da trilha. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Movimento reduzido: nada de rota se pintando nem viajante correndo. A rota
+   nasce completa (o componente força progresso 1) e as paradas ficam todas
+   visíveis — a informação continua toda alcançável, parada. */
+@media (prefers-reduced-motion: reduce) {
+  .trail-stop,
+  .trail-stop[data-reached='true'] {
+    opacity: 1;
+    transition: none;
+  }
+  .trail-traveler {
+    display: none;
+  }
+}
+
+html[data-motion='reduce'] .trail-stop,
+html[data-motion='reduce'] .trail-stop[data-reached='true'] {
+  opacity: 1;
+  transition: none;
+}
+html[data-motion='reduce'] .trail-stop[data-muted='true'] {
+  opacity: 0.28;
+}
+html[data-motion='reduce'] .trail-traveler {
+  display: none;
+}

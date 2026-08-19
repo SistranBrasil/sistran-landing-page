@@ -133,13 +133,25 @@ function PartnerCard({ p, index }: { p: Partner; index: number }) {
         {p.title}
       </h3>
 
+      {/* Area de atuacao: a linha em negrito do card no site, quando existe */}
+      {p.focus && (
+        <p
+          className="relative mt-1 text-xs font-semibold uppercase tracking-[0.14em]"
+          style={{ color: tone, transform: 'translateZ(18px)' }}
+        >
+          {p.focus}
+        </p>
+      )}
+
       {/* Description */}
-      <p
-        className="relative mt-3 text-sm leading-relaxed text-white/85"
-        style={{ transform: 'translateZ(14px)' }}
-      >
-        {p.description}
-      </p>
+      {p.description && (
+        <p
+          className="relative mt-3 text-sm leading-relaxed text-white/85"
+          style={{ transform: 'translateZ(14px)' }}
+        >
+          {p.description}
+        </p>
+      )}
 
       {/* Logo do parceiro */}
       {p.logo && (

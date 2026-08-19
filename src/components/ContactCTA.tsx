@@ -8,13 +8,16 @@ import { vFadeUp, VP, useReducedMotion } from '@/lib/motion';
 type Props = {
   title?: string;
   description?: string;
+  /** Opcional: o bloco do site nao tem sobretitulo. */
   eyebrow?: string;
 };
 
+/* Bloco final "Fale com a Gente!" da home, verbatim.
+   Fonte: .claude/conteudo-site/00-home.md (secao 8) */
 export default function ContactCTA({
-  eyebrow = 'Fale com a gente',
-  title = 'Quer conversar com um de nossos especialistas?',
-  description = 'Temos uma equipe qualificada para atender as suas necessidades.',
+  eyebrow,
+  title = 'Fale com a Gente!',
+  description = 'Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.',
 }: Props) {
   const rm = useReducedMotion();
   return (
@@ -38,9 +41,11 @@ export default function ContactCTA({
           />
           <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="max-w-2xl">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#B8DDF6]">
-                {eyebrow}
-              </span>
+              {eyebrow && (
+                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#B8DDF6]">
+                  {eyebrow}
+                </span>
+              )}
               <h2 className="mt-3 font-display text-3xl font-bold leading-tight text-white md:text-4xl">
                 {title}
               </h2>
@@ -51,7 +56,7 @@ export default function ContactCTA({
               className="inline-flex flex-none items-center gap-3 self-start rounded-full bg-white px-6 py-3 text-sm font-bold md:self-auto"
               style={{ color: '#0b2550', boxShadow: '0 10px 30px rgba(0,0,0,0.24)' }}
             >
-              Fale com a Sistran
+              Fale com a SISTRAN
               <ArrowRight className="h-4 w-4" strokeWidth={2} />
             </Link>
           </div>

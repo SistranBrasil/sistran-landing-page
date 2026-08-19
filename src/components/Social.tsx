@@ -84,7 +84,8 @@ export default function Social() {
               className="btn-primary"
             >
               <Linkedin className="h-4 w-4" strokeWidth={1.8} />
-              Seguir no LinkedIn
+              {/* Rotulo do botao como escrito no site. */}
+              Siga nossa página no Linkedin
             </a>
           </motion.div>
         </motion.div>

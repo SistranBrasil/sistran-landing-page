@@ -42,66 +42,65 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, ArrowDown } from 'lucide-react';
 import { DIFFERENTIALS } from '@/data/differentials';
+import { HERO_SLIDES } from '@/data/hero';
 import { getIcon } from '@/lib/icons';
 import { prefersReducedMotion, useReducedMotion } from '@/lib/motion';
 import HeroMesh from './ui/HeroMesh';
 import CompanySignature from './ui/CompanySignature';
 import MorphingHeadline from './ui/MorphingHeadline';
 import TrustTicker from './ui/TrustTicker';
+import { ScrollVideo } from './primitives/ScrollVideo';
+import { ScrollCue } from './primitives/ScrollCue';
 
 /**
- * Sincroniza video.currentTime com o progresso do scroll dentro do wrapper.
- * Ativar quando o <video> real estiver plugado. Retorna cleanup.
+ * Vídeo reencodado all-intra: todo quadro é keyframe, então o scroll pode buscar
+ * qualquer posição sem o decodificador recomeçar do keyframe anterior (que é o
+ * que faz a imagem andar aos saltos). Comando em `ScrollVideo`.
  */
-export function driveVideoByScroll(
-  videoEl: HTMLVideoElement,
-  wrapperEl: HTMLElement,
-): () => void {
-  let raf = 0;
-  let targetTime = 0;
-  let currentTime = 0;
-
-  const st = ScrollTrigger.create({
-    trigger: wrapperEl,
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: true,
-    onUpdate: (self) => {
-      const dur = videoEl.duration;
-      if (!dur || Number.isNaN(dur)) return;
-      targetTime = self.progress * dur;
-    },
-  });
-
-  const tick = () => {
-    currentTime += (targetTime - currentTime) * 0.15;
-    if (Math.abs(targetTime - currentTime) > 0.01) {
-      try {
-        videoEl.currentTime = currentTime;
-      } catch {
-        /* ignore */
-      }
-    }
-    raf = requestAnimationFrame(tick);
-  };
-  raf = requestAnimationFrame(tick);
-
-  return () => {
-    cancelAnimationFrame(raf);
-    st.kill();
-  };
-}
+const HERO_VIDEO = '/videos/hero-scroll.mp4';
 
 export default function HeroCinematic() {
   const rm = useReducedMotion();
+
+  /* Rodizio dos 3 slides do hero do site: titulo, sobretitulo, texto e CTA
+     trocam juntos, como no Slider Revolution do original. Comeca sempre no
+     slide 0, entao a arvore do servidor e a da hidratacao sao iguais.
+     Roda tambem com movimento reduzido — congelado, a escrita dos slides 2 e 3
+     ficaria inalcancavel (nao ha setas nem bullets). */
+  const [slideIdx, setSlideIdx] = useState(0);
+  useEffect(() => {
+    const t = window.setInterval(
+      () => setSlideIdx((n) => (n + 1) % HERO_SLIDES.length),
+      8000,
+    );
+    return () => window.clearInterval(t);
+  }, []);
+  const slide = HERO_SLIDES[slideIdx];
   const wrapperRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
+
+  /* Relógio único do hero: o mesmo percurso que o GSAP usa para o parallax e
+     para a saída da cena posiciona o vídeo quadro a quadro. Nada de play/pause —
+     o vídeo só existe como função do scroll.
+
+     Substitui o `driveVideoByScroll` que ficava aqui comentado: aquele escrevia
+     `currentTime` a cada frame de um lerp, inclusive durante um seek pendente,
+     e é exatamente isso que entope a fila do decodificador. O acelerador certo
+     está em `ScrollVideo`. */
+  const { scrollYProgress } = useScroll({
+    target: wrapperRef,
+    offset: ['start start', 'end end'],
+  });
+
+  // 55% é onde a timeline do GSAP começa a afundar a cena (ver `sink` abaixo).
+  const cueFade = useTransform(scrollYProgress, [0.55, 0.78], [1, 0]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -309,6 +308,11 @@ export default function HeroCinematic() {
                 'linear-gradient(165deg, #041B3D 0%, #062B54 42%, #0A3E70 78%, #0F5590 100%)',
             }}
           />
+          {/* Vídeo conduzido pelo scroll, por cima da base navy e por baixo dos
+              orbs/linhas: se o arquivo não chegar, o que se vê é o gradiente
+              acima, não um retângulo preto. */}
+          <ScrollVideo className="hero-video" src={HERO_VIDEO} progress={scrollYProgress} />
+
           <div className="absolute inset-0 grid-mask opacity-70" />
           {/* Orbs mais saturados e maiores: com a base escura eles finalmente leem */}
           <div
@@ -407,34 +411,40 @@ export default function HeroCinematic() {
             comece exatamente na vertical do logo. */}
         <div className="container-lp relative z-10 grid w-full grid-cols-1 items-center gap-14 pt-32 pb-24 lg:w-[min(1240px,calc(100%-32px))] lg:max-w-none lg:grid-cols-[minmax(0,1.18fr)_minmax(0,0.82fr)] lg:gap-10 lg:px-5 lg:pt-40">
           <div className="flex min-w-0 flex-col gap-7">
+            {/* Chip: so o slide 2 do site tem sobretitulo. Nos outros o chip sai
+                de cena — nao ha texto para ele. O antigo "Especialistas em
+                seguros desde 1988" era escrita inventada. */}
             <span
               data-hero-chip
               className="shine-badge inline-flex w-fit items-center gap-2.5 rounded-full border border-white/12 bg-white/[0.04] px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#B8DDF6] backdrop-blur"
+              style={{ visibility: slide.eyebrow ? 'visible' : 'hidden' }}
+              aria-hidden={slide.eyebrow ? undefined : true}
             >
               <span className="h-1.5 w-1.5 rounded-full bg-[#0ed8f6] pulse-glow" />
-              Especialistas em seguros desde 1988
+              {slide.eyebrow ?? ' '}
             </span>
 
             <div data-hero-headline>
-              <MorphingHeadline />
+              <MorphingHeadline index={slideIdx} />
             </div>
 
             <p
               data-hero-paragraph
               className="max-w-xl text-lg leading-relaxed text-ink-muted"
             >
-              Empresas que aderem a tecnologia em seus processos estão sempre a frente no mercado.
+              {slide.lead}
             </p>
 
             <div data-hero-ctas className="flex flex-wrap items-center gap-6 pt-1">
-              {/* Link (nao <a href="#solucoes">): o CTA leva para a pagina
-                  /solucoes, nao para a ancora da secao na home. Link faz a
+              {/* Link (nao <a>): os CTAs do site apontam para localhost e para
+                  slugs inexistentes; aqui cada slide leva para a rota
+                  equivalente deste projeto, com o rotulo do site. Link faz a
                   navegacao client-side e o prefetch da rota. */}
               <Link
-                href="/solucoes"
+                href={slide.ctaHref}
                 className="btn-primary group focus-visible:ring-2 focus-visible:ring-[#0ed8f6] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
               >
-                Veja como a Sistran pode ajudar
+                {slide.ctaLabel}
                 <ArrowRight
                   className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
                   strokeWidth={1.8}
@@ -444,7 +454,7 @@ export default function HeroCinematic() {
                 href="#contato"
                 className="group relative inline-flex items-center gap-2 text-sm font-semibold text-white/85 transition-colors hover:text-white"
               >
-                Entre em contato conosco
+                Entre em contato
                 <span className="inline-block transition-transform group-hover:translate-x-0.5">
                   →
                 </span>
@@ -519,6 +529,16 @@ export default function HeroCinematic() {
           </span>
         </div>
       </div>
+
+      {/* Irmã da cena, nunca filha: o `position: fixed` da pastilha seria contido
+          pelo `scale`/`filter` que o GSAP aplica em `.hero-scene`.
+
+          Some junto com a saída da cena — sendo `fixed`, sem isso a pastilha
+          continuaria colada ao cursor pelo resto da página, convidando a rolar um
+          percurso que já terminou. */}
+      <motion.div className="hero-cue" style={{ opacity: cueFade }}>
+        <ScrollCue />
+      </motion.div>
     </section>
   );
 }

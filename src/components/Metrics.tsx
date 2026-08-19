@@ -1,56 +1,14 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { motion } from 'motion/react';
 import { METRICS } from '@/data/metrics';
-import { vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '@/lib/motion';
-
-function easeOutCubic(t: number) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
-function useCountUp(target: number, active: boolean, duration = 1400) {
-  const [value, setValue] = useState(0);
-  const raf = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (!active) return;
-    setValue(0);
-    const start = performance.now();
-    const tick = (now: number) => {
-      const p = Math.min(1, (now - start) / duration);
-      setValue(Math.round(target * easeOutCubic(p)));
-      if (p < 1) raf.current = requestAnimationFrame(tick);
-    };
-    raf.current = requestAnimationFrame(tick);
-    return () => {
-      if (raf.current) cancelAnimationFrame(raf.current);
-    };
-  }, [target, active, duration]);
-
-  return value;
-}
+import { CountUp } from '@/components/primitives/CountUp';
+import { useReducedMotion } from '@/lib/motion';
 
 function MetricBig({ m, index }: { m: (typeof METRICS)[number]; index: number }) {
   const rm = useReducedMotion();
   const liRef = useRef<HTMLLIElement>(null);
-  const [active, setActive] = useState(false);
-  useEffect(() => {
-    const el = liRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        setActive(e.isIntersecting);
-      },
-      { threshold: 0.35 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  /* A contagem é a informação em si — ver o número subir é o conteúdo, não um
-     enfeite. Roda mesmo com movimento reduzido; o que fica desligado é a
-     entrada com blur/translate abaixo. */
-  const display = useCountUp(m.value, active);
 
   // Alternância em torno do eixo central: ímpares encostam o número no eixo
   // pela direita, pares pela esquerda. O número nunca vai para a borda da tela.
@@ -102,7 +60,11 @@ function MetricBig({ m, index }: { m: (typeof METRICS)[number]; index: number })
             transformOrigin: even ? 'right center' : 'left center',
           }}
         >
-          <span aria-hidden>{display}</span>
+          {/* Contagem num MotionValue: o Motion escreve no nó a cada frame, sem
+              re-render da lista inteira. O valor acessível completo (número +
+              sufixo) fica no `.sr-only` abaixo, e a parte que corre é
+              `aria-hidden`. */}
+          <CountUp value={String(m.value)} srText={null} />
           <span aria-hidden className="text-[#0ed8f6]">{m.suffix}</span>
           <span className="sr-only">{m.value}{m.suffix}</span>
         </div>
@@ -114,28 +76,19 @@ function MetricBig({ m, index }: { m: (typeof METRICS)[number]; index: number })
 }
 
 export default function Metrics() {
-  const rm = useReducedMotion();
-
   return (
-    <section id="resultados" className="section-py relative overflow-hidden">
+    /* Na home do site esta secao sao SO os 7 contadores: nao ha sobretitulo,
+       titulo nem paragrafo. O cabecalho que existia aqui ("Resultados
+       acumulados" / "Números que traduzem nossa entrega" / "Métricas acumuladas
+       ao longo da trajetória...") era texto inventado e saiu; o nome acessivel
+       da secao fica no aria-label.
+       Fonte: .claude/conteudo-site/00-home.md (secao 4) */
+    <section
+      id="resultados"
+      aria-label="Sistran em números"
+      className="section-py relative overflow-hidden"
+    >
       <div className="container-lp">
-        <motion.div
-          variants={vHeader}
-          initial={rm ? false : 'hidden'}
-          whileInView="visible"
-          viewport={VP}
-          className="mb-16 max-w-2xl"
-        >
-          <motion.span variants={vSubtitle} className="tag-section">
-            Resultados acumulados
-          </motion.span>
-          <motion.h2 variants={vTitle} className="mt-3 font-display text-section font-bold text-ink">
-            Números que traduzem <span className="text-gradient-brand">nossa entrega</span>
-          </motion.h2>
-          <motion.p variants={vSubtitle} className="mt-4 max-w-xl text-base text-ink-muted">
-            Métricas acumuladas ao longo da trajetória da Sistran no mercado segurador.
-          </motion.p>
-        </motion.div>
 
         <div className="relative">
           {/* Linha técnica vertical conectando */}

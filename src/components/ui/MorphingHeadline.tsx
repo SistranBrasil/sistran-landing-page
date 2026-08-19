@@ -4,12 +4,16 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { gsap } from 'gsap';
 import { prefersReducedMotion, useReducedMotion } from '@/lib/motion';
+import { HERO_SLIDES } from '@/data/hero';
 
-const WORDS = ['Alta Performance', 'Precisão', 'Escala'] as const;
-
-export default function MorphingHeadline() {
+/* O h1 gira os titulos dos 3 slides do hero do site (antes girava
+   "Alta Performance / Precisão / Escala", que nao existe em lugar nenhum e
+   ainda era a escrita do bloco de diferenciais).
+   O indice vem do pai: titulo, texto e CTA trocam juntos, como no slider.
+   Fonte: .claude/conteudo-site/00-home.md (secao 2) */
+export default function MorphingHeadline({ index = 0 }: { index?: number }) {
   const rm = useReducedMotion();
-  const [i, setI] = useState(0);
+  const slide = HERO_SLIDES[index] ?? HERO_SLIDES[0];
   const rootRef = useRef<HTMLHeadingElement>(null);
   const line1Ref = useRef<HTMLSpanElement>(null);
   const line3Ref = useRef<HTMLSpanElement>(null);
@@ -81,15 +85,6 @@ export default function MorphingHeadline() {
     return () => ctx.revert();
   }, [rm]);
 
-  /* O rodízio das palavras roda mesmo com movimento reduzido: congelado, as
-     outras duas ficariam inacessíveis. O que fica desligado é a intro com
-     blur/clip acima, essa sim decorativa. */
-  useEffect(() => {
-    if (!introDone) return;
-    const t = window.setInterval(() => setI((n) => (n + 1) % WORDS.length), 2600);
-    return () => window.clearInterval(t);
-  }, [introDone]);
-
   return (
     <h1
       ref={rootRef}
@@ -106,34 +101,45 @@ export default function MorphingHeadline() {
         hyphens: 'auto',
       }}
     >
+      {/* line1Ref/line3Ref e morphSlotRef seguem sendo os nós da intro do GSAP;
+          o texto dentro deles é que troca de slide. Assim as refs nunca são
+          substituídas pelo AnimatePresence. */}
       <span className="block overflow-hidden">
         <span ref={line1Ref} className="block font-medium text-white/80 will-change-transform">
-          Entrega com
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={slide.titleTop}
+              initial={rm || !introDone ? false : { y: '0.35em', opacity: 0, filter: 'blur(8px)' }}
+              animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+              exit={rm ? { opacity: 0 } : { y: '-0.35em', opacity: 0, filter: 'blur(8px)' }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              className="block"
+            >
+              {slide.titleTop}
+            </motion.span>
+          </AnimatePresence>
         </span>
       </span>
       <span className="relative block overflow-hidden">
         <span ref={morphSlotRef} className="block will-change-transform">
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait" initial={false}>
             <motion.span
-              key={WORDS[i]}
+              key={slide.titleBottom}
               initial={rm || !introDone ? false : { y: '0.4em', opacity: 0, filter: 'blur(10px)' }}
               animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
               exit={rm ? { opacity: 0 } : { y: '-0.4em', opacity: 0, filter: 'blur(10px)' }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="text-gradient-hero inline-block font-black"
             >
-              {WORDS[i]}
+              {slide.titleBottom}
             </motion.span>
           </AnimatePresence>
         </span>
       </span>
-      <span className="block overflow-hidden">
-        {/* lg:whitespace-nowrap: a partir de lg a coluna já acomoda a linha
-            inteira, então proibimos a quebra em vez de aceitar o hífen. */}
-        <span ref={line3Ref} className="block font-medium text-white/80 will-change-transform lg:whitespace-nowrap">
-          e Comprometimento
-        </span>
-      </span>
+      {/* Terceira linha existia para "e Comprometimento"; os títulos do site tem
+          duas linhas, então ela some — a ref fica num nó vazio para a intro do
+          GSAP continuar com a mesma árvore. */}
+      <span ref={line3Ref} className="hidden" aria-hidden />
     </h1>
   );
 }

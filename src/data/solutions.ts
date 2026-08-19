@@ -1,5 +1,10 @@
 import type { Solution } from './types';
 
+/* Os 4 cards de "Soluções de Negócios" da home, tambem repetidos na pagina
+   Soluções, Serviços e Consultoria (secao "Serviços — Diferenciais").
+   Titulo e descricao verbatim; o card 2 nao tem ponto final no site.
+   Fonte: .claude/conteudo-site/00-home.md e 04-solucoes-servicos-e-consultoria.md */
+
 export const SOLUTIONS: readonly Solution[] = [
   {
     id: 'apis-projetos',
@@ -14,7 +19,7 @@ export const SOLUTIONS: readonly Solution[] = [
   {
     id: 'servicos-processos',
     title: 'Serviços e Processos',
-    description: 'Amplo domínio de negócios e processos em Seguros em TODOS os ramos.',
+    description: 'Amplo domínio de negócios e processos em Seguros em TODOS os ramos',
     icon: 'Workflow',
     color: '#0ed8f6',
     colorOnLight: '#0193B4',

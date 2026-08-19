@@ -1,0 +1,2128 @@
+/*
+ * Estilos das três seções portadas da apresentação de transformação de legado
+ * (projeto `apresentação/site`): Método (quatro movimentos), Arquitetura
+ * (mosaico parallax) e Roadmap (trilha com modal por parada).
+ *
+ * Cópia fiel de `app/styles/sections.css` da fonte, com duas adaptações:
+ *
+ * 1. As utilidades de que as seções dependem (`.section`, `.container`,
+ *    `.eyebrow`, `.display`, `.lead`, `.chip`…) vinham do `base.css` daquele
+ *    projeto e aqui ganham o prefixo `lp-`. Sem o prefixo, `.container` bateria
+ *    com a utilidade homônima do Tailwind e `.eyebrow`/`.tag-section` com as
+ *    regras do `globals.css` deste site — o mesmo nome, outro desenho.
+ * 2. Os tokens de cor/geometria são declarados aqui em `:root`, e não sob um
+ *    seletor de página: o modal (`.stop-dialog`) é renderizado por portal em
+ *    `document.body`, fora de qualquer wrapper da página.
+ *
+ * Os nomes de classe das próprias seções (`mosaic-*`, `scene-*`, `roadmap-*`,
+ * `stop-*`, `rc-*`) ficam como na fonte — são únicos neste projeto.
+ */
+
+:root {
+  /* Paleta Sistran da apresentação: branco + azuis, sem roxo. Os hexes vêm de
+     `tokens.css` da fonte; não introduzir cor nova sem passar por lá. */
+  --ink: #001a3d;
+  --deep: #004d8a;
+  --panel: #005fa3;
+  --paper: #ffffff;
+  --cream: #e2effa;
+  --muted: #3c5a7a;
+  --signal: #0ed8f6;
+  --signal-deep: #0079cb;
+  --frost: #a5f0ff;
+
+  --line: rgb(0 26 61 / 14%);
+  --line-dark: rgb(14 216 246 / 22%);
+
+  --radius-sm: 0.4rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.4rem;
+  --pill: 999px;
+  --lp-container: min(100% - 2rem, 90rem);
+  --section-pad: clamp(5rem, 10vw, 10rem);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fast: 250ms;
+  --base: 400ms;
+  --slow: 700ms;
+
+  /* `--font-legacy-serif` é gravada pela página (next/font, Instrument Serif);
+     sem ela a escala editorial cai no serif do sistema. */
+  --font-editorial: var(--font-legacy-serif), Georgia, "Times New Roman", serif;
+  --font-interface: var(--font-inter), Inter, system-ui, sans-serif;
+}
+
+/* ---- Utilidades da fonte, com prefixo (ver nota 1 acima) ---- */
+
+.lp-container {
+  width: var(--lp-container);
+  margin-inline: auto;
+}
+
+.lp-section {
+  position: relative;
+  padding-block: var(--section-pad);
+}
+
+.lp-section--dark {
+  color: var(--paper);
+  background: var(--deep);
+}
+
+.lp-section--cream {
+  color: var(--ink);
+  background: var(--cream);
+}
+
+.lp-eyebrow {
+  margin: 0 0 1rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--signal-deep);
+}
+
+.lp-section--dark .lp-eyebrow {
+  color: var(--signal);
+}
+
+/* Chip de seção: base clara, borda da marca e um ponto que pulsa. O pulso é
+   decoração — sem ele o chip continua legível e completo. */
+.lp-tag {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.375rem 0.875rem;
+  border: 1px solid color-mix(in srgb, var(--signal-deep) 32%, transparent);
+  border-radius: var(--pill);
+  background: rgb(255 255 255 / 72%);
+  box-shadow: 0 1px 10px rgb(0 26 61 / 8%);
+  backdrop-filter: blur(8px);
+  letter-spacing: 0.2em;
+}
+
+.lp-tag::before {
+  content: "";
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--pill);
+  background: var(--signal-deep);
+  animation: lp-tag-pulse-deep 2.6s var(--ease) infinite;
+}
+
+/* Sobre fundo escuro o chip volta a ser vidro, e o acento fica só no ponto:
+   dentro da moldura o ciano do texto cai a ~2:1 sobre o azul da seção. */
+.lp-section--dark .lp-tag {
+  color: var(--paper);
+  border-color: var(--line-dark);
+  background: rgb(255 255 255 / 5%);
+  box-shadow: none;
+}
+
+.lp-section--dark .lp-tag::before {
+  background: var(--signal);
+  animation-name: lp-tag-pulse;
+}
+
+@keyframes lp-tag-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 2px rgb(14 216 246 / 28%),
+      0 0 10px 2px rgb(14 216 246 / 45%);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 4px rgb(14 216 246 / 12%),
+      0 0 18px 5px rgb(14 216 246 / 18%);
+  }
+}
+
+@keyframes lp-tag-pulse-deep {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 2px rgb(0 121 203 / 24%),
+      0 0 10px 2px rgb(0 121 203 / 32%);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 4px rgb(0 121 203 / 10%),
+      0 0 16px 5px rgb(0 121 203 / 14%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-tag::before {
+    animation: none;
+  }
+}
+
+.lp-display {
+  margin: 0;
+  font-family: var(--font-editorial);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.lp-display--lg {
+  font-size: clamp(2.4rem, 5.5vw, 5rem);
+}
+
+.lp-display--md {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1;
+}
+
+.lp-lead {
+  max-width: 46ch;
+  margin: 1.6rem 0 0;
+  font-size: clamp(1.05rem, 1.4vw, 1.3rem);
+  line-height: 1.5;
+  color: color-mix(in srgb, currentColor 78%, transparent);
+}
+
+.lp-numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+.lp-section-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(1.5rem, 5vw, 6rem);
+  align-items: end;
+  margin-bottom: clamp(3rem, 6vw, 6rem);
+}
+
+.lp-section-intro > p:last-child {
+  max-width: 44ch;
+  margin: 0;
+  color: var(--muted);
+}
+
+.lp-section--dark .lp-section-intro > p:last-child {
+  color: color-mix(in srgb, var(--paper) 62%, transparent);
+}
+
+@media (max-width: 48rem) {
+  .lp-section-intro {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
+
+.lp-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.2rem;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--pill);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+
+.lp-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.6rem;
+  border: 0;
+  border-radius: var(--pill);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform var(--fast) var(--ease);
+}
+
+.lp-button--primary {
+  color: var(--paper);
+  background: var(--signal-deep);
+}
+
+.lp-button--primary:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--signal) 35%, var(--signal-deep));
+}
+
+/* Fundo técnico em canvas (TechnicalBackdrop) */
+.technical-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at 50% 40%, black, transparent 74%);
+}
+
+.technical-backdrop canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Barra de rolagem do modal: sobre navy o polegar precisa clarear. */
+.stop-dialog-inner {
+  scrollbar-color: color-mix(in srgb, var(--signal) 60%, var(--deep)) rgb(255 255 255 / 7%);
+}
+
+/* ---- 04. Sticky storytelling ---- */
+
+.scene-story {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  align-items: start;
+}
+
+.scene-media {
+  position: sticky;
+  top: 12.5rem;
+  /* Caixa quadrada, não mais em pé: em 4:5 ela ficava estreita e encostada à
+     esquerda da coluna, com metade do espaço sobrando à direita. Em 1:1, com
+     teto maior (30rem) e centralizada, ela ocupa o meio da coluna e casa com o
+     `aspect-ratio` do tile viajante (`.stack-carrier`, abaixo) — mesma
+     proporção nas duas pontas do percurso, sem esticar o vídeo na escala.
+     Ela é o alvo medido pelo tile viajante, por isso o tamanho dela não pode
+     variar durante o scroll. */
+  width: min(100%, 36rem);
+  height: 18rem;
+  aspect-ratio: 1 / 1;
+  justify-self: center;
+  /* Cantos arredondados iguais aos do tile viajante (`--radius-lg`): sem isso o
+     vídeo chegava reto na troca de opacidade, quebrando a continuidade com o
+     tile que pousa aqui ainda arredondado. `overflow: hidden` é quem recorta —
+     o vídeo em si (`.scene-video`) não tem raio próprio. */
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+/* Frame visível: nasce em pé preenchendo a caixa e se deita até 3:2 conforme o
+   leitor percorre as quatro etapas. Centralizado na vertical para o movimento
+   ler como "deitar", e absoluto para que a mudança de altura não gere reflow. */
+.scene-media-frame {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  transform: translateY(-50%);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--ink);
+  clip-path: polygon(0 0, calc(100% - 1.5rem) 0, 100% 1.5rem, 100% 100%, 1.5rem 100%, 0 calc(100% - 1.5rem));
+}
+
+/* Sem animação o frame já nasce na forma final, mais retangular. */
+html[data-motion="reduce"] .scene-media-frame {
+  aspect-ratio: 3 / 2;
+}
+
+/* Vídeo das quatro etapas (ScrollVideo). Ocupa o frame inteiro: o `--ink` de
+   `.scene-media-frame` fica só como fundo enquanto o arquivo não carregou. */
+.scene-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.scene-steps {
+  display: grid;
+}
+
+.scene-step {
+  width: 100%;
+  /* Era 70vh: rápido demais para acompanhar o vídeo do processo, que corre por
+     todo o trajeto até a cena 4 (ver `reel` em `StackScenes.tsx`). Mais alto
+     dá mais scroll por etapa e estica essa corrida, deixando a passagem mais
+     lenta e legível. */
+  min-height: 88vh;
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
+  padding: 2rem 0 3rem;
+  border: 0;
+  border-top: 1px solid var(--line-dark);
+  text-align: left;
+  background: transparent;
+  color: color-mix(in srgb, var(--paper) 32%, transparent);
+  cursor: pointer;
+  transition: color var(--base) var(--ease);
+}
+
+.scene-step.is-active {
+  color: var(--paper);
+}
+
+.scene-step-index {
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.14em;
+  color: var(--signal);
+}
+
+.scene-step h3 {
+  margin: 0;
+  font-family: var(--font-editorial);
+  font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.scene-step p {
+  max-width: 36ch;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* ---- 05. Mosaico parallax ---- */
+
+/* Wrapper de Stack + Frentes. Sem `overflow` de propósito: é ele quem deixa o
+   card das Frentes subir até dentro do bloco da Stack. Quem recorta os tiles é
+   o `.mosaic`, um nível abaixo. `relative` o torna o offsetParent da medição. */
+.stack-scenes {
+  position: relative;
+}
+
+.mosaic {
+  position: relative;
+  min-height: 205svh;
+  display: grid;
+  /* Texto no ALTO do bloco, não no centro: assim ele já está visível logo abaixo
+     do card do hero, em vez de esperar quase uma tela de vazio até os 85svh. */
+  align-content: start;
+  justify-items: center;
+  /* `clip` e não `hidden`: os dois recortam os tiles igual, mas `hidden` faz do
+     bloco um contêiner de scroll e isso mata o `position: sticky` do texto —
+     ele passaria a "colar" dentro de uma caixa que não rola, ou seja, nunca. */
+  overflow: clip;
+  padding-block: clamp(2rem, 7svh, 6rem) 0;
+  background: var(--paper);
+}
+
+.mosaic-copy {
+  /* Acompanha o scroll durante a travessia do mosaico: o texto fica preso perto
+     do topo enquanto os tiles passam por trás, e desprende antes de o bloco
+     acabar. */
+  position: sticky;
+  /* Mais baixo que a barra do topo: com 14svh o kicker parava atrás do header
+     flutuante. */
+  top: clamp(11rem, 28svh, 20rem);
+  /* Encurta o alcance do sticky: a margem inferior faz parte da caixa que o
+     sticky prende, então o texto solta enquanto o tile viajante ainda está bem
+     abaixo dele. Sem isso o texto ficava preso até o fim do mosaico e o cartão
+     subia por cima da escrita.
+     Folga menor que antes (era 78svh): o texto acompanha o scroll por mais tempo
+     e desce mais dentro do mosaico antes de soltar — sem isso ele desprendia
+     cedo e o título subia até atrás do header flutuante. */
+  margin-bottom: 52svh;
+  z-index: 2;
+  max-width: 46rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.mosaic-copy .lp-lead {
+  margin-inline: auto;
+}
+
+/* Camada de mídia periférica: absoluta no desktop, grid no mobile.
+   Sem `perspective` aqui de propósito: com um ponto de fuga único no centro, um
+   cartão distante dele ganha um deslocamento de projeção proporcional à
+   distância e era arremessado para fora da tela — os tiles das bordas apareciam
+   cortados. Cada face aplica a sua própria `perspective()` na função de
+   transform, projetando em torno do próprio centro: fica no lugar. */
+.mosaic-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.mosaic-tile {
+  position: absolute;
+  display: grid;
+  align-content: end;
+  width: clamp(6rem, 11vw, 11rem);
+  aspect-ratio: 3 / 4;
+  padding: 0.7rem;
+  border-radius: var(--radius-md);
+  font-size: 0.72rem;
+  line-height: 1.25;
+  color: var(--paper);
+  background: linear-gradient(160deg, var(--panel), var(--ink));
+  box-shadow: 0 22px 50px rgb(0 26 61 / 16%);
+}
+
+/* Tiles do mosaico com profundidade. O visual (fundo, sombra, rótulo) migra para
+   `.mosaic-face`: o tile em si fica só como caixa de posição e de parallax, cujo
+   `transform` é escrito inline pelo Motion. Duas camadas, dois transforms — sem
+   isso o tilt e o `y` do parallax brigariam pela mesma propriedade. */
+.mosaic-tile--3d {
+  padding: 0;
+  /* Transparente: quem pinta é a face. Como ela está inclinada, qualquer fundo
+     no tile apareceria como uma borda reta atrás do cartão. */
+  background: none;
+  box-shadow: none;
+  /* Sem `transform-style: preserve-3d` de propósito: dentro de um contexto 3D os
+     filhos são ordenados por profundidade e o `z-index` é IGNORADO — a sombra
+     desfocada era pintada por cima da face e aparecia como uma faixa diagonal
+     atravessando o cartão. Cada camada aplica a sua própria `perspective()`
+     local, então nada aqui depende de um espaço 3D compartilhado. */
+}
+
+/* Camada só da flutuação. Duração e atraso variam por tile (regras adiante) para
+   os dez não respirarem em uníssono. */
+.mosaic-float {
+  position: absolute;
+  inset: 0;
+  animation: mosaic-float var(--float-time, 7s) var(--float-delay, 0s) ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Quatro tempos em vez de ida-e-volta: com dois quadros o cartão descreve sempre
+   a mesma reta e, nesta amplitude, lê como pêndulo. Os pontos intermediários
+   derivam dos mesmos vars com sinal e fração diferentes, então o percurso é uma
+   volta irregular — e um ajuste em `--float-y` continua controlando tudo.
+   A `perspective()` local é o que faz o `rotateY` girar em profundidade em vez de
+   achatar; sem ela o giro viraria só uma distorção. */
+@keyframes mosaic-float {
+  0%,
+  100% {
+    transform: perspective(1200px) translate3d(0, 0, 0) rotate(0deg) rotateY(0deg)
+      rotateX(0deg);
+  }
+  30% {
+    transform: perspective(1200px)
+      translate3d(var(--float-x, 12px), var(--float-y, -34px), 0) rotate(var(--float-rot, 2.6deg))
+      rotateY(var(--float-ry, 7deg)) rotateX(var(--float-rx, -4deg));
+  }
+  62% {
+    transform: perspective(1200px)
+      translate3d(calc(var(--float-x, 12px) * -0.7), calc(var(--float-y, -34px) * 0.5), 0)
+      rotate(calc(var(--float-rot, 2.6deg) * -0.65)) rotateY(calc(var(--float-ry, 7deg) * -0.8))
+      rotateX(calc(var(--float-rx, -4deg) * -0.7));
+  }
+  84% {
+    transform: perspective(1200px)
+      translate3d(calc(var(--float-x, 12px) * 0.35), calc(var(--float-y, -34px) * 0.78), 0)
+      rotate(calc(var(--float-rot, 2.6deg) * 0.4)) rotateY(calc(var(--float-ry, 7deg) * 0.35))
+      rotateX(calc(var(--float-rx, -4deg) * 0.4));
+  }
+}
+
+.mosaic-face {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: end;
+  padding: 0.7rem;
+  border-radius: var(--radius-md);
+  color: var(--paper);
+  background: linear-gradient(160deg, var(--panel), var(--ink));
+  /* Inclinação de repouso. Cada tile recebe o seu par de ângulos adiante, pelo
+     lado em que está: os da esquerda giram mostrando a face direita e vice-versa,
+     como se a câmera estivesse no centro da seção. A `perspective()` é local (na
+     função, não herdada da camada) para o cartão projetar em torno do próprio
+     centro e não escorregar para fora da tela. */
+  transform: perspective(1100px) rotateX(var(--tilt-x, 4deg)) rotateY(var(--tilt-y, 0deg))
+    translateZ(0);
+  transform-origin: 50% 50%;
+  /* Só transform e box-shadow: nada que force reflow. */
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 2px 0 rgb(255 255 255 / 8%) inset;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Face com mídia: é o vídeo ou a imagem que É o cartão. O recorte é feito aqui,
+   não no
+   `border-radius` do filho — a mídia é absoluta e não herda o arredondamento da
+   face, e sem `overflow: hidden` ela vazava para fora do cartão em quadro cheio,
+   com as pontas retas. */
+.mosaic-face--media {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+/* `z-index: 0`, não negativo: basta subir acima do degradê da face, que fica
+   apenas como fundo enquanto o arquivo não chega. */
+/* O `next/image` com `fill` já escreve position/inset/width/height inline; o
+   `object-fit` e o raio ficam aqui porque ele não os presume. */
+.mosaic-video,
+.mosaic-image {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+/* O rótulo tem de vencer a mídia na pilha — os dois estão na mesma camada. */
+.mosaic-face--media .mosaic-label {
+  position: relative;
+  z-index: 1;
+}
+
+/* Sobre mídia o rótulo perde contraste em qualquer quadro claro. Sombra no
+   texto, não caixa atrás: a caixa desenharia uma aresta sobre a imagem.
+   O branco é declarado aqui em vez de herdado da face: o rótulo deixa de
+   depender de quem for a cor de texto do cartão. */
+.mosaic-face--media .mosaic-label {
+  color: var(--paper);
+  text-shadow:
+    0 1px 3px rgb(0 26 61 / 90%),
+    0 4px 18px rgb(0 26 61 / 70%);
+}
+
+/* ---- Tiles que são link ----
+ *
+ * Três tiles levam à LP da própria frente. O que anuncia isso é a seta no canto,
+ * o cursor e a borda que acende — sem isso o cartão é indistinguível dos sete
+ * decorativos, e um clique que funciona sem parecer clicável não é descoberto.
+ */
+.mosaic-face--link {
+  /* Moldura de repouso em ciano cheio, 2px: um fio de 1px translúcido se perdia
+     sobre o vídeo do cartão, e o tile não se distinguia dos sete decorativos
+     antes do hover. */
+  outline: 2px solid color-mix(in srgb, var(--signal) 75%, transparent);
+  outline-offset: -2px;
+  cursor: pointer;
+}
+
+.mosaic-link {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border-radius: inherit;
+  /* O rótulo visível fica fora da âncora; nada aqui deve pintar texto. */
+  text-decoration: none;
+}
+
+/* A seta, no canto oposto ao rótulo — que mora no rodapé do cartão. */
+.mosaic-link-mark {
+  position: absolute;
+  inset: 0.45rem 0.45rem auto auto;
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: var(--pill);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #0b2550;
+  background: var(--paper);
+  box-shadow:
+    0 4px 12px rgb(0 26 61 / 35%),
+    0 0 0 3px color-mix(in srgb, var(--signal) 32%, transparent);
+  transition: transform var(--fast) var(--ease);
+}
+
+/* Hover e foco: o anel fecha em ciano cheio, com halo externo. O tile já sobe
+   `translateZ(46px)` pela regra geral do mosaico; o que muda aqui é a cor. */
+.mosaic-tile--3d:hover .mosaic-face--link,
+.mosaic-face--link:focus-within {
+  outline-color: var(--signal);
+  box-shadow:
+    0 2px 0 rgb(255 255 255 / 8%) inset,
+    0 0 0 3px color-mix(in srgb, var(--signal) 55%, transparent),
+    0 0 34px color-mix(in srgb, var(--signal) 45%, transparent);
+}
+
+.mosaic-tile--3d:hover .mosaic-link-mark,
+.mosaic-face--link:focus-within .mosaic-link-mark {
+  transform: translate(2px, -2px) scale(1.12);
+}
+
+/* ---- Tooltip ----
+ *
+ * Vive na camada de flutuação, acima do cartão. Fica fora do fluxo e sem captura
+ * de ponteiro: um balão sob o cursor entraria e sairia do próprio hover e
+ * piscaria sem parar. */
+.mosaic-tip {
+  position: absolute;
+  z-index: 3;
+  inset: auto 50% calc(100% + 0.7rem) auto;
+  transform: translate(50%, 0.35rem);
+  width: max-content;
+  max-width: 11rem;
+  padding: 0.42rem 0.7rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-interface);
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-align: center;
+  color: #0b2550;
+  background: var(--paper);
+  box-shadow: 0 10px 26px rgb(0 26 61 / 40%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity var(--fast) var(--ease),
+    transform var(--fast) var(--ease);
+}
+
+/* A pontinha do balão. */
+.mosaic-tip::after {
+  content: "";
+  position: absolute;
+  inset: 100% auto auto 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  background: var(--paper);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.mosaic-tile--3d:hover .mosaic-tip,
+.mosaic-face--link:focus-within ~ .mosaic-tip {
+  opacity: 1;
+  transform: translate(50%, 0);
+}
+
+/* Sem movimento: o balão aparece e desaparece, sem deslizar. */
+html[data-motion="reduce"] .mosaic-tip {
+  transform: translate(50%, 0);
+}
+
+/* O anel de foco fica na face, não na âncora: a âncora é uma caixa invisível do
+   tamanho do cartão, e um `outline` nela desenharia um retângulo reto sobre a
+   face inclinada. */
+.mosaic-link:focus-visible {
+  outline: none;
+}
+
+/* Sombra projetada atrás do cartão. Um pseudo-elemento desfocado em vez de
+   `box-shadow` porque ela precisa se afastar e abrir no hover — box-shadow não dá
+   esse deslocamento com blur crescente sem repintar a cada frame.
+   Fica na camada de flutuação e NÃO usa `z-index: -1`: sendo o primeiro filho
+   posicionado, ela já pinta antes da face, que vem depois no DOM. Um `z-index`
+   negativo aqui só criaria a chance de a sombra escapar para a frente.
+   Ela acompanha o cartão no percurso: parada, com esta amplitude, o cartão se
+   afastava tanto que a sombra lia como uma segunda peça solta atrás. */
+.mosaic-float::before {
+  content: "";
+  position: absolute;
+  /* Recuo generoso e escala menor: a sombra tem de ser um borrão mais estreito
+     que o cartão, não uma cópia dele deslocada. */
+  inset: 14% 12%;
+  border-radius: var(--radius-md);
+  background: rgb(0 26 61 / 34%);
+  filter: blur(30px);
+  transform: translateY(16px) scale(0.9);
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0.55;
+}
+
+/* Hover: o cartão se endireita e vem para frente. `translateZ` em vez de `scale`
+   porque, com a perspectiva, o crescimento sai correto de graça — e o cartão
+   parece deslocar-se no espaço em vez de inflar. */
+.mosaic-tile--3d:hover .mosaic-face {
+  transform: perspective(1100px) rotateX(0deg) rotateY(0deg) translateZ(46px);
+}
+
+/* Sombra mais baixa, maior e mais difusa: é ela que vende a altura ganha. */
+.mosaic-tile--3d:hover .mosaic-float::before {
+  transform: translateY(30px) scale(0.98);
+  filter: blur(38px);
+  opacity: 0.6;
+}
+
+/* Pausa a flutuação enquanto o cursor está no cartão: com ela ativa, o cartão em
+   destaque continuaria balançando e o hover perderia firmeza. */
+.mosaic-tile--3d:hover .mosaic-float {
+  animation-play-state: paused;
+}
+
+/* Tile de ligação Stack → Frentes. Vive no wrapper, não no `.mosaic`, para não
+   ser cortado pelo `overflow: hidden` dele. `--carrier-top` vem da medição em
+   JS; o fallback deixa-o na faixa de rodapé do mosaico se o JS não rodar. */
+/* Seletor propositalmente específico (0,3,0): as regras `.mosaic-tile:nth-child()`
+   logo abaixo valem 0,2,0 e vêm depois no arquivo — com especificidade igual
+   elas ganhariam por ordem e jogariam este tile para `right: 4%; top: 5%`. */
+.stack-scenes > .mosaic-tile.stack-carrier {
+  top: var(--carrier-top, 82%);
+  /* Faixa central-baixa em vez da vaga original a 4%: no tamanho novo, encostado
+     à esquerda ele cobria o rótulo do tile vizinho de 16%. No centro sobra
+     espaço, e o cartão maior lê como foco do mosaico antes de partir. */
+  left: 30%;
+  right: auto;
+  /* Maior que os tiles vizinhos: aqui não é rótulo de tecnologia, é a tela onde
+     o vídeo já está rodando quando a Stack entra em cena. A proporção é a mesma
+     1:1 do card 01 (`.scene-media`) — com as duas pontas do percurso quadradas,
+     `sx` e `sy` (calculados em `StackScenes.tsx`) saem iguais e o vídeo não
+     estica na escala do percurso. */
+  width: clamp(11rem, 19vw, 19rem);
+  aspect-ratio: 1 / 1;
+  z-index: 3;
+  pointer-events: none;
+  /* Origem no canto superior esquerdo: com ela, dx/dy e scaleX/scaleY bastam
+     para as duas caixas coincidirem, sem compensar deslocamento de centro. */
+  transform-origin: 0 0;
+  border-radius: var(--radius-lg);
+  will-change: transform;
+  /* O vídeo é filho absoluto e tem cantos próprios a respeitar. */
+  overflow: hidden;
+}
+
+/* Vídeo carregado pelo tile em viagem. Absoluto para não entrar no grid do tile
+   (que alinha o rótulo ao rodapé) e para ficar atrás dele. */
+.stack-carrier .carrier-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+/* Sem espaço para o percurso: o tile volta a ser só decoração e sai de cena. */
+@media (max-width: 63.99rem) {
+  .stack-carrier {
+    display: none;
+  }
+}
+
+html[data-motion="reduce"] .stack-carrier {
+  display: none;
+}
+
+.mosaic-tile:nth-child(3n) .mosaic-face {
+  background: linear-gradient(160deg, var(--signal-deep), var(--ink));
+}
+
+.mosaic-tile:nth-child(4n) .mosaic-face {
+  color: var(--ink);
+  background: var(--cream);
+}
+
+/* Recuos mínimos de 4%: com a flutuação e o crescimento do hover somados, 2%
+   deixava o cartão raspando a borda recortada pelo `.mosaic`. */
+.mosaic-tile:nth-child(1) { left: 4%; top: 8%; }
+.mosaic-tile:nth-child(2) { right: 5%; top: 5%; }
+.mosaic-tile:nth-child(3) { left: 14%; top: 30%; }
+.mosaic-tile:nth-child(4) { right: 13%; top: 26%; }
+.mosaic-tile:nth-child(5) { left: 4%; top: 52%; }
+.mosaic-tile:nth-child(6) { right: 5%; top: 49%; }
+.mosaic-tile:nth-child(7) { left: 16%; top: 71%; }
+.mosaic-tile:nth-child(8) { right: 17%; top: 70%; }
+.mosaic-tile:nth-child(9) { left: 5%; top: 87%; }
+.mosaic-tile:nth-child(10) { right: 6%; top: 89%; }
+
+/* Ângulos de repouso e ritmo da flutuação, por tile.
+   Ímpares estão à esquerda, pares à direita: giram para dentro, mostrando a face
+   oposta à borda em que se encostam. Os tempos são primos entre si o suficiente
+   para as dez respirações nunca sincronizarem. */
+.mosaic-tile:nth-child(1)  { --tilt-y: 9deg;   --tilt-x: 4deg;  --float-time: 5.4s; --float-delay: 0s;    --float-y: -40px; --float-x: 13px; --float-rot: 2.4deg;  --float-ry: 8deg;   --float-rx: -5deg; }
+.mosaic-tile:nth-child(2)  { --tilt-y: -10deg; --tilt-x: 3deg;  --float-time: 6.6s; --float-delay: -1.1s; --float-y: -30px; --float-x: -16px; --float-rot: -3deg;  --float-ry: -10deg; --float-rx: 4deg; }
+.mosaic-tile:nth-child(3)  { --tilt-y: 7deg;   --tilt-x: -3deg; --float-time: 4.8s; --float-delay: -2.3s; --float-y: -46px; --float-x: 10px; --float-rot: 3.4deg;  --float-ry: 7deg;   --float-rx: -6deg; }
+.mosaic-tile:nth-child(4)  { --tilt-y: -8deg;  --tilt-x: 5deg;  --float-time: 7.2s; --float-delay: -0.6s; --float-y: -33px; --float-x: -11px; --float-rot: -2.2deg; --float-ry: -8deg;  --float-rx: 5deg; }
+.mosaic-tile:nth-child(5)  { --tilt-y: 11deg;  --tilt-x: 3deg;  --float-time: 6s;   --float-delay: -3.2s; --float-y: -43px; --float-x: 15px; --float-rot: 3deg;    --float-ry: 11deg;  --float-rx: -4deg; }
+.mosaic-tile:nth-child(6)  { --tilt-y: -7deg;  --tilt-x: -4deg; --float-time: 5.1s; --float-delay: -1.7s; --float-y: -36px; --float-x: -9px; --float-rot: -3.4deg; --float-ry: -7deg;  --float-rx: 6deg; }
+.mosaic-tile:nth-child(7)  { --tilt-y: 8deg;   --tilt-x: 5deg;  --float-time: 6.9s; --float-delay: -2.9s; --float-y: -29px; --float-x: 12px; --float-rot: 2.2deg;  --float-ry: 9deg;   --float-rx: -5deg; }
+.mosaic-tile:nth-child(8)  { --tilt-y: -9deg;  --tilt-x: -3deg; --float-time: 5.7s; --float-delay: -0.4s; --float-y: -48px; --float-x: -14px; --float-rot: -2.8deg; --float-ry: -11deg; --float-rx: 4deg; }
+.mosaic-tile:nth-child(9)  { --tilt-y: 10deg;  --tilt-x: 4deg;  --float-time: 7.5s; --float-delay: -2.1s; --float-y: -32px; --float-x: 9px;  --float-rot: 3.4deg;  --float-ry: 8deg;   --float-rx: -6deg; }
+.mosaic-tile:nth-child(10) { --tilt-y: -9deg;  --tilt-x: 4deg;  --float-time: 4.6s; --float-delay: -1.4s; --float-y: -38px; --float-x: -13px; --float-rot: -2.4deg; --float-ry: -9deg;  --float-rx: 5deg; }
+
+/* Tudo aqui é decoração: com reduced motion o cartão fica reto, parado e com a
+   sombra no lugar — nenhum conteúdo depende do movimento. */
+html[data-motion="reduce"] {
+  & .mosaic-face,
+  & .mosaic-tile--3d:hover .mosaic-face {
+    transform: none;
+    transition: none;
+  }
+
+  & .mosaic-float {
+    animation: none;
+  }
+}
+
+/* ---- 09. Roadmap em trilha ---- */
+
+/* Fundo da seção. O gelo liso deixava a trilha flutuando no vazio: os cards
+   escuros são o assunto, e sem nenhuma profundidade atrás deles o azul claro
+   lia como área não terminada. São três camadas, todas na paleta da marca:
+   lavagens radiais no fundo, uma malha técnica por cima e dois halos que
+   derivam devagar. `overflow-x: clip` — não `hidden` — porque `hidden` num
+   dos eixos cria contexto de scroll e mataria o `position: sticky` do header. */
+.roadmap {
+  position: relative;
+  overflow-x: clip;
+  background:
+    radial-gradient(60rem 40rem at 12% 8%, color-mix(in srgb, var(--frost) 55%, transparent), transparent 70%),
+    radial-gradient(50rem 38rem at 88% 42%, color-mix(in srgb, var(--signal) 18%, transparent), transparent 72%),
+    radial-gradient(70rem 50rem at 50% 100%, color-mix(in srgb, var(--signal-deep) 14%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--cream) 0%, #eef7ff 45%, var(--cream) 100%);
+}
+
+/* Malha técnica: dá escala e sugere planta/arquitetura sem virar textura. A
+   máscara radial a apaga nas bordas, senão o retângulo da grade aparece. */
+.roadmap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--signal-deep) 12%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--signal-deep) 12%, transparent) 1px, transparent 1px);
+  background-size: 5.5rem 5.5rem;
+  mask-image: radial-gradient(120% 80% at 50% 40%, #000 20%, transparent 78%);
+  pointer-events: none;
+}
+
+/* Dois halos em deriva lenta, o movimento que faltava no fundo. Duas sombras
+   num só elemento em vez de dois elementos: é fundo, não conteúdo. */
+.roadmap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(22rem 22rem at 18% 30%, color-mix(in srgb, var(--signal) 22%, transparent), transparent 65%),
+    radial-gradient(28rem 28rem at 82% 72%, color-mix(in srgb, var(--frost) 60%, transparent), transparent 68%);
+  animation: roadmap-drift 26s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes roadmap-drift {
+  to {
+    translate: -3% 2%;
+    scale: 1.08;
+  }
+}
+
+/* Cabeçalho e palco acima do fundo. Sem isso o ::after, que vem depois dos
+   filhos na ordem da árvore, pintaria sobre a trilha. */
+.roadmap > * {
+  position: relative;
+  z-index: 1;
+}
+
+.roadmap-head {
+  max-width: 46rem;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+/* O SVG está no fluxo e define a altura do palco; as paradas e a marca
+   flutuam sobre ele em porcentagem do mesmo espaço de coordenadas. */
+/* Sai da largura do container: a trilha é o elemento mais largo da página. */
+.roadmap-stage {
+  position: relative;
+  width: min(96vw, 108rem);
+  margin-inline: auto;
+}
+
+.roadmap-svg {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.roadmap-route,
+.roadmap-route-done {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 5;
+}
+
+/* Fundo creme: o tracejado precisa de tinta escura para aparecer. */
+.roadmap-route {
+  stroke: color-mix(in srgb, var(--ink) 26%, transparent);
+  stroke-dasharray: 2 22;
+}
+
+/* Trecho já percorrido: sólido sobre o tracejado. `pathLength: 1` no JSX
+   permite usar o próprio progresso como dashoffset. */
+.roadmap-route-done {
+  stroke: var(--signal);
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 12px rgb(14 216 246 / 45%));
+}
+
+.roadmap-stops {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roadmap-stop {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 0;
+}
+
+.roadmap-node {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 2px solid var(--signal);
+  border-radius: 50%;
+  background: var(--ink);
+  transform: translate(-50%, -50%);
+  transition: background var(--base) var(--ease), box-shadow var(--base) var(--ease);
+}
+
+.roadmap-stop.is-reached .roadmap-node {
+  background: var(--signal);
+  box-shadow: 0 0 24px rgb(14 216 246 / 60%);
+}
+
+/* O card é escuro sobre a seção creme: fixa a tinta clara aqui, senão os
+   textos sem cor própria herdam o navy do corpo e desaparecem no fundo. */
+.roadmap-card {
+  --card-shift: 0rem;
+  --card-z: -170px;
+  --card-rot: 0deg;
+  --card-scale: 1;
+  --card-pad: clamp(1.3rem, 2.2vw, 2rem);
+  --stop-accent: var(--signal);
+  --stop-gradient: linear-gradient(145deg, #000c1c 0%, #002a52 30%, #00579b 60%, #0079cb 82%, #a5f0ff 100%);
+
+  position: absolute;
+  top: 50%;
+  width: clamp(18rem, 27vw, 28rem);
+  border: 2px solid color-mix(in srgb, var(--paper) 8%, transparent);
+  border-radius: var(--radius-md);
+  background: var(--ink);
+  box-shadow: 0 8px 24px rgb(0 26 61 / 25%);
+  color: var(--paper);
+  opacity: 0.5;
+  overflow: hidden;
+
+  /* `perspective()` dentro do próprio transform: a profundidade não depende de
+     um ancestral, que aqui carrega os offsets percentuais da trilha. */
+  transform: translate(var(--card-shift), -50%) perspective(1400px)
+    translateZ(var(--card-z)) rotateY(var(--card-rot)) scale(var(--card-scale));
+  transform-origin: center;
+  backface-visibility: hidden;
+  transition: transform var(--slow) var(--ease), opacity var(--slow) var(--ease),
+    border-color var(--slow) var(--ease), box-shadow var(--slow) var(--ease);
+}
+
+/* Cada lado gira em direção ao centro da rota, como páginas abertas. */
+.roadmap-stop--left .roadmap-card {
+  --card-shift: 3rem;
+  --card-rot: 18deg;
+  left: 0;
+}
+
+.roadmap-stop--right .roadmap-card {
+  --card-shift: -3rem;
+  --card-rot: -18deg;
+  right: 0;
+}
+
+/* Parada já percorrida: sobe um degrau, sem roubar o foco da atual. */
+.roadmap-stop.is-reached .roadmap-card {
+  --card-z: -70px;
+  --card-rot: 8deg;
+  opacity: 0.82;
+  border-color: color-mix(in srgb, var(--stop-accent) 45%, transparent);
+}
+
+.roadmap-stop--right.is-reached .roadmap-card {
+  --card-rot: -8deg;
+}
+
+/* A parada que a marca acabou de alcançar vem à frente, de frente e maior. */
+.roadmap-stop[aria-current="step"] {
+  z-index: 3;
+}
+
+/* Sombra do card em foco: pilha de quatro camadas, como na vitrine (§10.4) —
+   anel nítido, halo médio, halo largo e sombra de contato. Reduzir a uma
+   camada achata o card de volta ao plano dos outros. */
+.roadmap-stop[aria-current="step"] .roadmap-card,
+.roadmap-stop--right[aria-current="step"] .roadmap-card {
+  --card-z: 0px;
+  --card-rot: 0deg;
+  --card-scale: 1.05;
+  opacity: 1;
+  border-color: var(--stop-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--stop-accent) 60%, transparent),
+    0 24px 60px color-mix(in srgb, var(--stop-accent) 40%, transparent),
+    0 48px 100px color-mix(in srgb, var(--stop-accent) 20%, transparent),
+    0 60px 110px rgb(0 26 61 / 45%);
+}
+
+/* ---- Camadas internas do card (ordem da vitrine, §10.5) ---- */
+
+.roadmap-card-bg,
+.roadmap-card-lines,
+.roadmap-card-veil,
+.roadmap-card-glow,
+.roadmap-card-depth {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.roadmap-card-bg {
+  background: var(--stop-gradient);
+}
+
+/* Traços: `slice` preenche qualquer proporção de card sem distorcer. */
+.roadmap-card-lines {
+  width: 100%;
+  height: 100%;
+  opacity: 0.18;
+  transition: opacity var(--slow) var(--ease);
+}
+
+.roadmap-stop[aria-current="step"] .roadmap-card-lines {
+  opacity: 0.4;
+}
+
+.roadmap-card-lines .rc-line {
+  fill: none;
+  stroke: var(--stop-accent);
+}
+
+.rc-line--a { stroke-width: 1; stroke-dasharray: 6 12; animation: rc-flow 6s linear infinite; }
+.rc-line--b { stroke-width: 0.8; stroke-dasharray: 5 14; animation: rc-flow-r 8s linear infinite; }
+.rc-line--c { stroke-width: 0.7; stroke-dasharray: 4 16; animation: rc-flow 10s linear infinite; }
+.rc-line--d { stroke-width: 0.7; stroke-dasharray: 5 14; animation: rc-flow-r 9s linear infinite; }
+.rc-line--e { stroke-width: 0.6; stroke-dasharray: 4 18; animation: rc-flow 12s linear infinite; }
+
+.roadmap-card-lines .rc-node {
+  fill: var(--stop-accent);
+  animation: rc-node-pulse 3.5s ease-in-out infinite;
+}
+
+.rc-node--2 { animation-duration: 4s; animation-delay: 0.7s; }
+.rc-node--3 { animation-duration: 3s; animation-delay: 1.2s; }
+.rc-node--4 { animation-duration: 5s; animation-delay: 0.4s; }
+
+/* A varredura pertence ao card em foco: nos outros não há nada a escanear. */
+.roadmap-card-lines .rc-scan {
+  stroke: var(--stop-accent);
+  stroke-width: 1.5;
+  opacity: 0;
+}
+
+.roadmap-stop[aria-current="step"] .roadmap-card-lines .rc-scan {
+  animation: rc-scan 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px var(--stop-accent));
+}
+
+/* Véu escuro: é ele que devolve contraste ao texto sobre o gradiente. */
+.roadmap-card-veil {
+  background: linear-gradient(to top, rgb(0 8 20 / 92%) 0%, rgb(0 8 20 / 62%) 55%, rgb(0 8 20 / 18%) 100%);
+}
+
+.roadmap-card-glow {
+  inset: -8rem -4rem auto auto;
+  width: 20rem;
+  height: 20rem;
+  background: radial-gradient(circle, rgb(255 255 255 / 10%) 0%, transparent 70%);
+}
+
+/* Véu de profundidade: ÚLTIMO filho de propósito — escurece inclusive o texto
+   das paradas ainda não alcançadas, que estão giradas e ao fundo. Sem isso
+   elas competem em leitura com a parada em foco. */
+.roadmap-card-depth {
+  background: rgb(0 8 20 / 55%);
+  opacity: 1;
+  transition: opacity var(--slow) var(--ease);
+}
+
+.roadmap-stop.is-reached .roadmap-card-depth {
+  opacity: 0.3;
+}
+
+.roadmap-stop[aria-current="step"] .roadmap-card-depth {
+  opacity: 0;
+}
+
+.roadmap-card-body {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 0.8rem;
+  padding: var(--card-pad);
+}
+
+.roadmap-card-head {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.roadmap-badge {
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  padding: 0.4rem;
+  border: 1px solid var(--line-dark);
+  border-radius: var(--radius-md);
+  background: rgb(255 255 255 / 92%);
+}
+
+.roadmap-badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Sem arquivo de logo, o monograma ocupa o mesmo selo. */
+.roadmap-badge b {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+}
+
+.roadmap-client {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* Cartão branco com a marca, no molde do modal. O fundo branco é o ponto:
+   é o contraste com o azul do card que faz a peça parecer clicável. */
+.roadmap-card-logo {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: center;
+  margin: 0.2rem 0 0.3rem;
+}
+
+.roadmap-card-logo-frame {
+  width: min(100%, 15rem);
+  /* Proporção fixa em vez de altura: a faixa não muda de tamanho conforme a
+     logo, então os seis cards com marca ficam alinhados entre si. */
+  aspect-ratio: 16 / 10;
+  padding: 1.3rem;
+  border-radius: 0.9rem;
+  background: #fff;
+  box-shadow: 0 10px 26px rgb(0 8 20 / 35%);
+}
+
+/* `contain` porque é logo de marca — `cover` cortaria. */
+.roadmap-card-logo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.roadmap-card-logo-tag {
+  margin: 0;
+  padding: 0.24rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--stop-accent) 40%, transparent);
+  border-radius: var(--pill);
+  background: rgb(0 8 20 / 45%);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--stop-accent);
+  text-wrap: nowrap;
+}
+
+.roadmap-index {
+  margin: 0.1rem 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--paper) 52%, transparent);
+}
+
+.roadmap-card h3 {
+  margin: 0;
+  font-family: var(--font-editorial);
+  font-size: clamp(1.35rem, 2vw, 1.95rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.roadmap-text {
+  margin: 0;
+  font-size: clamp(0.9rem, 1.05vw, 1rem);
+  color: color-mix(in srgb, var(--paper) 72%, transparent);
+}
+
+/* Pílula de estágio no topo direito, como o badge de categoria da vitrine. */
+.roadmap-stage-tag {
+  margin: 0 0 auto auto;
+  padding: 0.28rem 0.65rem;
+  border: 1px solid currentcolor;
+  border-radius: var(--pill);
+  background: rgb(0 8 20 / 45%);
+  backdrop-filter: blur(8px);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-wrap: nowrap;
+}
+
+.roadmap-card[data-stage="entregue"] .roadmap-stage-tag {
+  color: var(--frost);
+}
+
+.roadmap-card[data-stage="evolucao"] .roadmap-stage-tag {
+  color: var(--signal);
+}
+
+/* Plano aguardando decisão e plano futuro não podem parecer entrega feita. */
+.roadmap-card[data-stage="negociacao"] .roadmap-stage-tag,
+.roadmap-card[data-stage="planejado"] .roadmap-stage-tag {
+  color: color-mix(in srgb, var(--paper) 62%, transparent);
+  border-style: dashed;
+}
+
+/* Chips no accent — três por card, sempre na mesma linha de leitura. */
+.roadmap-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roadmap-chips li {
+  padding: 0.15rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--stop-accent) 40%, transparent);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--stop-accent) 14%, transparent);
+  color: color-mix(in srgb, var(--stop-accent) 88%, var(--paper));
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* Checklist: no desktop só a parada em foco o mostra — as demais estão atrás,
+   giradas e sob o véu, e o texto extra só somaria ruído. O conteúdo continua
+   no HTML e, no empilhamento vertical (abaixo de 64rem), sempre visível. */
+.roadmap-topics {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roadmap-topics li {
+  display: flex;
+  gap: 0.4rem;
+  align-items: flex-start;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--paper) 76%, transparent);
+}
+
+.roadmap-topics svg {
+  flex: none;
+  width: 0.85rem;
+  height: 0.85rem;
+  margin-top: 0.16rem;
+  stroke: var(--stop-accent);
+}
+
+@media (min-width: 64rem) {
+  .roadmap-topics {
+    display: none;
+  }
+
+  .roadmap-stop[aria-current="step"] .roadmap-topics {
+    display: grid;
+  }
+
+  /* Troca, não acúmulo: na parada em destaque o checklist assume o corpo do card
+     e o resumo sai. Os dois juntos diziam a mesma coisa duas vezes e o card
+     ficava alto demais para o espaço da trilha. O resumo continua no HTML das
+     outras paradas, na linha do tempo vertical e, por inteiro, no modal. */
+  .roadmap-stop[aria-current="step"] .roadmap-text {
+    display: none;
+  }
+}
+
+.roadmap-next {
+  margin: 0;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--line-dark);
+  font-size: 0.8rem;
+  color: color-mix(in srgb, var(--paper) 66%, transparent);
+}
+
+.roadmap-next b {
+  color: var(--paper);
+  font-weight: 600;
+}
+
+/* Convite a abrir o detalhe. O ::after estica o alvo de clique sobre o card
+   inteiro sem criar um segundo elemento focável — o foco continua sendo um só
+   por parada, e o `border-radius` herdado evita canto clicável fora da borda. */
+.roadmap-card-more {
+  justify-self: start;
+  display: inline-flex;
+  gap: 0.45rem;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--stop-accent);
+  cursor: pointer;
+  transition: color var(--fast) var(--ease), gap var(--fast) var(--ease);
+}
+
+/* O alvo estica até a borda do card: o `--card-pad` negativo recupera o
+   miolo que o padding do corpo tirava do retângulo clicável. */
+.roadmap-card-more::after {
+  content: "";
+  position: absolute;
+  inset: calc(-1 * var(--card-pad));
+  border-radius: inherit;
+}
+
+.roadmap-card-more-arrow {
+  transition: translate var(--fast) var(--ease);
+}
+
+.roadmap-card:hover .roadmap-card-more,
+.roadmap-card-more:focus-visible {
+  color: var(--frost);
+}
+
+.roadmap-card:hover .roadmap-card-more-arrow {
+  translate: 0.25rem 0;
+}
+
+/* O outline precisa aparecer em volta do card, que é a área realmente
+   clicável, e não só nas duas palavras do rótulo. */
+.roadmap-card-more:focus-visible {
+  outline: none;
+}
+
+.roadmap-card:has(.roadmap-card-more:focus-visible) {
+  outline: 3px solid var(--frost);
+  outline-offset: 3px;
+}
+
+/* Só o card em foco reage ao ponteiro: os demais estão girados e atrás, e
+   convidá-los ao clique enquanto ilegíveis seria um alvo enganoso. */
+.roadmap-card {
+  cursor: pointer;
+}
+
+.roadmap-stop[aria-current="step"] .roadmap-card:hover,
+.roadmap-stop.is-reached .roadmap-card:hover {
+  border-color: var(--stop-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--stop-accent) 60%, transparent),
+    0 24px 60px color-mix(in srgb, var(--stop-accent) 40%, transparent),
+    0 60px 110px rgb(0 26 61 / 45%);
+}
+
+/* Traços marchando, nós pulsando e a varredura do card em foco — os mesmos
+   quatro keyframes do card da vitrine (§10.6). Todos decorativos: o reset de
+   reduced motion os congela e nada fica preso invisível. */
+@keyframes rc-flow {
+  to {
+    stroke-dashoffset: -120;
+  }
+}
+
+@keyframes rc-flow-r {
+  to {
+    stroke-dashoffset: 120;
+  }
+}
+
+/* Só opacidade: animar o atributo `r` por CSS não vale no Firefox, e a
+   diferença de raio não compensa um pulso que aparece em metade dos browsers. */
+@keyframes rc-node-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes rc-scan {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  12% {
+    opacity: 0.85;
+  }
+  88% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(440px);
+  }
+}
+
+/* A marca percorre a rota: o JS só atualiza --x/--y a cada frame de scroll. */
+.roadmap-traveler {
+  position: absolute;
+  z-index: 3;
+  left: var(--x, 17.92%);
+  top: var(--y, 4.67%);  /* primeira parada, antes do JS assumir */
+  width: clamp(4.6rem, 6.5vw, 6.6rem);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--signal);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--ink) 62%, color-mix(in srgb, var(--ink) 70%, transparent));
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 26px rgb(14 216 246 / 55%));
+  pointer-events: none;
+}
+
+.roadmap-traveler img {
+  width: 78%;
+  height: auto;
+}
+
+/* ---- 9b. Detalhe da parada (dialog nativo) ---- */
+
+/* Travar o documento é responsabilidade nossa: o `<dialog>` modal deixa a
+   página rolar atrás dele. Mas a trava NÃO pode ser `overflow: hidden`, em
+   nenhum dos dois elementos.
+ *
+ * Pela cascata de overflow da viewport, quem manda é o `html`: o valor do body
+ * só é adotado quando o do html é `visible`. Então `overflow: hidden` no html
+ * é justamente o que torna a viewport não rolável — e o navegador grampeia o
+ * offset em zero. Tentar no body dá no mesmo, porque o valor propaga para a
+ * viewport.
+ *
+ * O salto para o Hero ao abrir o modal tinha outra causa, corrigida em
+ * `RoadmapStopDialog`: a posição era lida DEPOIS do `showModal()`, ou seja já
+ * depois de o navegador ter rolado a página para trazer o primeiro focável à
+ * vista. Este bloco nunca foi a correção daquilo — é só a contenção da rolagem.
+ *
+ * Sem mudar o overflow, a posição fica onde está. O congelamento é por evento,
+ * no componente (`travarRolagem`), e o `.stop-dialog-inner` continua rolando
+ * porque a trava ignora o que acontece dentro dele.
+ *
+ * `overscroll-behavior: contain` impede que o fim da rolagem do modal vire
+ * rolagem da página, e mata o pull-to-refresh enquanto o diálogo está aberto. */
+html.has-dialog {
+  overscroll-behavior: contain;
+}
+
+.stop-dialog {
+  width: min(100% - 2rem, 66rem);
+  max-height: 86svh;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: none;
+  color: var(--paper);
+  overflow: visible;
+}
+
+.stop-dialog::backdrop {
+  background: rgb(0 26 61 / 62%);
+  backdrop-filter: blur(6px);
+  animation: stop-dialog-veil var(--fast) var(--ease) both;
+}
+
+.stop-dialog[open] {
+  animation: stop-dialog-in var(--base) var(--ease) both;
+}
+
+@keyframes stop-dialog-veil {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes stop-dialog-in {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+    scale: 0.97;
+  }
+}
+
+/* O scroll é do miolo, não do <dialog>. */
+.stop-dialog-inner {
+  --stop-accent: var(--signal);
+  position: relative;
+  max-height: 86svh;
+  padding: 1rem clamp(1.4rem, 2.6vw, 2.2rem) clamp(1.5rem, 2.6vw, 2.2rem);
+  border: 1px solid var(--line-dark);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--deep) 42%, var(--ink));
+  box-shadow: 0 40px 90px rgb(0 26 61 / 45%);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  /* Barra de rolagem no vocabulário do modal. `scrollbar-gutter: stable`
+     reserva a calha sempre, para o conteúdo não deslocar quando a barra
+     aparece; a versão `-webkit-` usa `background-clip: padding-box` com borda
+     transparente, que é como se afina o polegar sem mexer na largura da
+     calha — e a margem no track o afasta dos cantos arredondados, que era o
+     encontro feio entre barra nativa e `border-radius`. */
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--stop-accent) 55%, transparent) transparent;
+}
+
+.stop-dialog-inner::-webkit-scrollbar {
+  width: 10px;
+}
+
+.stop-dialog-inner::-webkit-scrollbar-track {
+  margin: 0.9rem 0;
+  background: color-mix(in srgb, var(--paper) 6%, transparent);
+  border-radius: var(--pill);
+}
+
+.stop-dialog-inner::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: var(--pill);
+  background: color-mix(in srgb, var(--stop-accent) 55%, transparent);
+  background-clip: padding-box;
+}
+
+.stop-dialog-inner::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--stop-accent) 85%, transparent);
+  background-clip: padding-box;
+}
+
+/* Duas colunas separadas por um fio de 1px — é o `border-left` da coluna da
+   direita, não um elemento: assim ele acompanha a altura real do grid. */
+.stop-dialog-grid {
+  display: grid;
+  gap: clamp(1.4rem, 2.4vw, 2.4rem);
+}
+
+@media (min-width: 60rem) {
+  .stop-dialog-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stop-dialog-side {
+    padding-left: clamp(1.4rem, 2.4vw, 2.4rem);
+    border-left: 1px solid var(--line-dark);
+  }
+}
+
+.stop-dialog-main,
+.stop-dialog-side {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+/* Sticky, com fundo próprio: o conteúdo passa por baixo dela sem transparecer.
+   O `-1rem` de margem lateral estica a barra até a borda do padding, senão
+   sobrava uma faixa translúcida nas laterais. */
+.stop-dialog-bar {
+  position: sticky;
+  top: -1rem;
+  z-index: 3;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  margin: -1rem calc(-1 * clamp(1.4rem, 2.6vw, 2.2rem)) 0.6rem;
+  padding: 1rem clamp(1.4rem, 2.6vw, 2.2rem) 0.7rem;
+  background: color-mix(in srgb, var(--deep) 42%, var(--ink));
+}
+
+.stop-dialog-counter {
+  margin: 0;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--stop-accent) 40%, transparent);
+  border-radius: var(--pill);
+  background: rgb(0 8 20 / 45%);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  color: color-mix(in srgb, var(--paper) 60%, transparent);
+}
+
+.stop-dialog-counter b {
+  font-weight: 700;
+  color: var(--stop-accent);
+}
+
+.stop-dialog-head {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.stop-dialog-client {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.stop-dialog-close {
+  flex: none;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-dark);
+  border-radius: 50%;
+  background: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--paper);
+  cursor: pointer;
+  transition: background var(--fast) var(--ease), border-color var(--fast) var(--ease);
+}
+
+.stop-dialog-close:hover {
+  border-color: var(--signal);
+  background: rgb(14 216 246 / 14%);
+}
+
+.stop-dialog-title {
+  margin: 0;
+  font-family: var(--font-editorial);
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.stop-dialog-stage {
+  justify-self: start;
+  margin: 0;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid currentcolor;
+  border-radius: var(--pill);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stop-dialog-inner[data-stage="entregue"] .stop-dialog-stage {
+  color: var(--frost);
+}
+
+.stop-dialog-inner[data-stage="evolucao"] .stop-dialog-stage {
+  color: var(--signal);
+}
+
+/* Mesma regra do card: plano aguardando decisão não se veste de entrega. */
+.stop-dialog-inner[data-stage="negociacao"] .stop-dialog-stage,
+.stop-dialog-inner[data-stage="planejado"] .stop-dialog-stage {
+  color: color-mix(in srgb, var(--paper) 62%, transparent);
+  border-style: dashed;
+}
+
+.stop-dialog-summary {
+  margin: 0;
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  color: color-mix(in srgb, var(--paper) 86%, transparent);
+}
+
+.stop-dialog-block {
+  display: grid;
+  gap: 0.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line-dark);
+}
+
+.stop-dialog-block h3 {
+  margin: 0;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--stop-accent);
+}
+
+.stop-dialog-block p {
+  margin: 0;
+  color: color-mix(in srgb, var(--paper) 78%, transparent);
+}
+
+.stop-dialog-chips {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+}
+
+/* O modal é escuro dentro de uma seção clara, então `.chip` chega com a borda
+   de fundo claro (`--line`) e desaparece. Aqui volta para a versão escura. */
+.stop-dialog-chips .lp-chip {
+  border-color: var(--line-dark);
+  color: color-mix(in srgb, var(--paper) 86%, transparent);
+}
+
+/* Faixa de números da parada: dois cartões por linha, `auto-fit` para cair em
+   coluna única quando a lateral do modal encolhe. `minmax(0, 1fr)` porque
+   legenda longa sem piso zerado estica a coluna e desalinha o par. */
+.stop-dialog-figures {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+  gap: 0.7rem;
+}
+
+/* Cartão de vidro no vocabulário da casa (skill `sistran-labs-pattern`): fundo
+   em degradê diagonal, fio de luz no topo e leve elevação no hover. O fio é um
+   `::before` de 1px — em `border-top` ele brigaria com a borda dos quatro lados,
+   e o que se quer é luz de cima, não moldura mais grossa. */
+.stop-figure {
+  position: relative;
+  display: grid;
+  gap: 0.2rem;
+  padding: 1rem 1.05rem 1.05rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--stop-accent) 22%, var(--line-dark));
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(
+      140deg,
+      color-mix(in srgb, var(--stop-accent) 14%, transparent),
+      color-mix(in srgb, var(--deep) 26%, transparent) 62%
+    );
+  transition: translate var(--fast) var(--ease), border-color var(--fast) var(--ease),
+    box-shadow var(--fast) var(--ease);
+}
+
+.stop-figure::before {
+  content: "";
+  position: absolute;
+  inset: 0 12% auto 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--stop-accent), transparent);
+  opacity: 0.75;
+}
+
+.stop-figure:hover {
+  translate: 0 -2px;
+  border-color: color-mix(in srgb, var(--stop-accent) 45%, transparent);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--stop-accent) 18%, transparent);
+}
+
+/* Escala editorial e `tabular-nums` pela classe `.numeric` do HTML: são números
+   comparáveis lado a lado, e largura de dígito variável desalinharia a coluna. */
+.stop-figure-value {
+  font-family: var(--font-editorial);
+  font-size: clamp(1.8rem, 3.4vw, 2.3rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--paper);
+  text-shadow: 0 0 22px color-mix(in srgb, var(--stop-accent) 45%, transparent);
+}
+
+/* `dd` vem com recuo do UA — sem zerar, a legenda desalinha do número. */
+.stop-figure-label {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--paper) 68%, transparent);
+}
+
+.stop-dialog-next {
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line-dark);
+  font-size: 0.9rem;
+  color: color-mix(in srgb, var(--paper) 72%, transparent);
+}
+
+.stop-dialog-next b {
+  color: var(--paper);
+  font-weight: 600;
+}
+
+.stop-dialog-link {
+  justify-self: start;
+}
+
+/* Bloco sem o fio de topo: o checklist vem logo depois do resumo, e ali a
+   régua horizontal só picava a leitura. */
+.stop-dialog-block--flush {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.stop-dialog-checks {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+  list-style: none;
+  font-size: 0.95rem;
+  color: color-mix(in srgb, var(--paper) 82%, transparent);
+}
+
+.stop-dialog-checks li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.6rem;
+  align-items: start;
+}
+
+/* Ícone quadrado, não redondo: é o que separa o checklist do modal dos
+   ícones-círculo do card da trilha. */
+.stop-dialog-check {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.1rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--stop-accent) 45%, transparent);
+  border-radius: 0.3rem;
+  background: color-mix(in srgb, var(--stop-accent) 14%, transparent);
+}
+
+.stop-dialog-check svg {
+  width: 0.75rem;
+  height: 0.75rem;
+  stroke: var(--stop-accent);
+}
+
+/* Valor gerado: o único bloco com fundo no accent, porque é a conclusão do
+   painel esquerdo. `margin-top: auto` o cola na base quando a coluna direita
+   é a mais alta. */
+.stop-dialog-value {
+  margin-top: auto;
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.9rem 1rem;
+  border-left: 2px solid var(--stop-accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: color-mix(in srgb, var(--stop-accent) 10%, transparent);
+}
+
+.stop-dialog-value h3 {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stop-accent);
+}
+
+.stop-dialog-value p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: color-mix(in srgb, var(--paper) 84%, transparent);
+}
+
+.stop-dialog-side-label {
+  margin: 0;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--paper) 45%, transparent);
+}
+
+/* ---- 9c. Cartão de mídia do modal ---- */
+
+/* A flutuação e a sombra ficam no invólucro externo, e a sombra é
+   `drop-shadow` em vez de `box-shadow` justamente para seguir o alpha e os
+   cantos do cartão em vez do retângulo do elemento. */
+.stop-media {
+  margin: 0;
+  display: grid;
+  gap: 0.6rem;
+  justify-items: start;
+  animation: stop-media-float 5.2s ease-in-out infinite;
+  filter: drop-shadow(0 8px 24px color-mix(in srgb, var(--stop-accent) 45%, transparent));
+}
+
+@keyframes stop-media-float {
+  50% {
+    translate: 0 -6px;
+  }
+}
+
+/* Sem borda: o cartão já se separa do fundo do modal pela faixa branca e pela
+   sombra projetada do `.stop-media`. O fio azul do accent desenhava uma segunda
+   moldura em volta da primeira. */
+.stop-media-card {
+  /* Teto de volta, num meio-termo: ocupando a coluna inteira o cartão virava o
+     elemento dominante do modal — com logo panorâmica (a do DBS é ~4:1) a marca
+     chegava a competir com o título. 320px mantém a leitura de "peça de mídia"
+     sem esmagar o resto da lateral. */
+  width: min(100%, 320px);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--deep) 30%, var(--ink));
+  overflow: hidden;
+  transition: translate var(--fast) var(--ease), scale var(--fast) var(--ease);
+}
+
+.stop-media:hover .stop-media-card {
+  translate: 0 -3px;
+  scale: 1.02;
+}
+
+/* Cartão-link. `display: block` porque o <a> nasce inline e a caixa dele não
+   conteria a faixa branca; o cursor de mão é o que avisa que a peça leva a algum
+   lugar, já que ela não tem rótulo de botão. O anel de foco é obrigatório: sem
+   ele o cartão recebe foco de teclado sem dar sinal de onde está. */
+.stop-media-card[data-link="true"] {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.stop-media-card[data-link="true"]:focus-visible {
+  outline: 2px solid var(--frost);
+  outline-offset: 3px;
+}
+
+/* Faixa de mídia branca. A logo é posicionada por `inset`, não por padding:
+   é `position: absolute` que dá a ela uma caixa de tamanho conhecido para o
+   `contain` trabalhar. `contain`, não `cover` — logo de marca não se corta. */
+/* Proporção, não altura fixa: com o cartão fluido, 200px cravados viravam uma
+   tarja cada vez mais achatada conforme a coluna cresce. O `min-height` segura
+   o piso em telas estreitas. */
+.stop-media-frame {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  min-height: 150px;
+  background: #fff;
+}
+
+/* Margem menor (era 22px): com o `contain`, a caixa é o teto do desenho — quem
+   define o tamanho da logo é o recuo, não a imagem. */
+.stop-media-frame img {
+  position: absolute;
+  inset: 14px;
+  width: calc(100% - 28px);
+  height: calc(100% - 28px);
+  object-fit: contain;
+}
+
+.stop-media-frame b {
+  position: absolute;
+  inset: 22px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-editorial);
+  font-size: 2.4rem;
+  color: var(--ink);
+}
+
+/* Véu só na base: existe para dar contraste ao que se apoia embaixo.
+   Escurecer a faixa inteira sujaria a logo. */
+.stop-media-veil {
+  position: absolute;
+  inset: auto 0 0;
+  height: 58px;
+  background: linear-gradient(to top, rgb(0 20 28 / 38%), transparent);
+  pointer-events: none;
+}
+
+.stop-media-foot {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 0.6rem;
+  align-items: center;
+  padding: 12px 14px;
+}
+
+.stop-media-sigla {
+  grid-row: span 2;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 0.35rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--stop-accent) 25%, var(--ink)), var(--stop-accent));
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+
+/* Barrinhas de esqueleto: leem como "peça de mídia" sem prometer conteúdo
+   que não existe. Por isso o rodapé todo é aria-hidden no componente. */
+.stop-media-bars {
+  display: grid;
+  gap: 4px;
+}
+
+.stop-media-bars i {
+  height: 5px;
+  border-radius: var(--pill);
+  background: color-mix(in srgb, var(--paper) 22%, transparent);
+}
+
+.stop-media-bars i:first-child {
+  width: 80%;
+}
+
+.stop-media-bars i:last-child {
+  width: 55%;
+  height: 4px;
+}
+
+.stop-media-name {
+  grid-column: 2;
+  margin: 0;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 11px;
+  line-height: 1.3;
+  color: color-mix(in srgb, var(--paper) 70%, transparent);
+}
+
+.stop-media-tag {
+  padding: 0.22rem 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--stop-accent) 40%, transparent);
+  border-radius: var(--pill);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--stop-accent);
+}
+

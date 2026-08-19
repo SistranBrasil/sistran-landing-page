@@ -73,10 +73,15 @@ export default function Differentials() {
             viewport={VP}
             className="mb-12 max-w-2xl"
           >
-            <motion.span variants={vSubtitle} className="tag-section">Diferenciais</motion.span>
-            <motion.h2 variants={vTitle} className="mt-3 font-display text-section font-bold text-ink">
-              O que nos torna <span className="text-gradient-brand">parceiros estratégicos</span>
+            {/* Titulo e texto verbatim do bloco de diferenciais da home.
+                Fonte: .claude/conteudo-site/00-home.md (secao 3) */}
+            <motion.h2 variants={vTitle} className="font-display text-section font-bold text-ink">
+              Entrega com <span className="text-gradient-brand">Alta Performance</span> e
+              Comprometimento
             </motion.h2>
+            <motion.p variants={vSubtitle} className="mt-4 text-lg leading-relaxed text-ink-muted">
+              Empresas que aderem a tecnologia em seus processos estão sempre a frente no mercado!
+            </motion.p>
           </motion.div>
           <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             {DIFFERENTIALS.map((d, i) => {
@@ -127,10 +132,15 @@ export default function Differentials() {
             {/* Header */}
             <div className="mb-8 flex items-end justify-between gap-6">
               <div className="max-w-2xl">
-                <span className="tag-section">Diferenciais</span>
-                <h2 className="mt-3 font-display text-section font-bold text-ink">
-                  O que nos torna <span className="text-gradient-brand">parceiros estratégicos</span>
+                {/* Idem cabecalho de mobile: mesma escrita do site. */}
+                <h2 className="font-display text-section font-bold text-ink">
+                  Entrega com <span className="text-gradient-brand">Alta Performance</span> e
+                  Comprometimento
                 </h2>
+                <p className="mt-4 text-lg leading-relaxed text-ink-muted">
+                  Empresas que aderem a tecnologia em seus processos estão sempre a frente no
+                  mercado!
+                </p>
               </div>
               {/* Dots de progresso lateral */}
               <div aria-hidden className="hidden shrink-0 md:flex md:flex-col md:items-center md:gap-3">

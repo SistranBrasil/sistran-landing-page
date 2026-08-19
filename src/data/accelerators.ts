@@ -1,9 +1,14 @@
 import type { IconName } from '@/lib/icons';
 
+/* Nomes e textos verbatim de /solucoes-servicos-e-consultoria/ (secao "Soluções
+   — Tecnologia Disruptiva"). No site atual o nome do produto existe APENAS
+   dentro da imagem do logo, sem alt: invisivel para busca e leitor de tela.
+   Aqui o nome é texto. Nao ha subtitulo/tagline escrito no site — o card tem
+   nome + descricao e nada mais, então o tipo tambem nao tem.
+   Fonte: .claude/conteudo-site/04-solucoes-servicos-e-consultoria.md */
 export type Accelerator = {
   id: string;
   name: string;
-  tagline: string;
   description: string;
   icon: IconName;
   tone: string;
@@ -11,65 +16,59 @@ export type Accelerator = {
 
 export const ACCELERATORS: readonly Accelerator[] = [
   {
-    id: 'guru',
-    name: 'Guru',
-    tagline: 'Ofertas personalizadas para corretores',
+    id: 'match-ai',
+    name: 'Match AI',
     description:
-      'Permite à seguradora empoderar o corretor ou agente nas jornadas de ofertas personalizadas, gerando propostas inteligentes e individualização do discurso explicativo.',
+      'Permite a seguradora empoderar o corretor/agente nas jornadas de ofertas personalizadas, gerando propostas inteligentes e individualização do discurso explicativo.',
     icon: 'Users',
     tone: '#0ed8f6',
   },
   {
-    id: 'devops-ai',
-    name: 'DevOps AI',
-    tagline: 'IA generativa na esteira de desenvolvimento',
+    id: 'lumina-ai',
+    name: 'Lumina AI',
     description:
-      'Solução integrada com uso de IA generativa que orquestra toda a esteira de DevOps, gerando maior produtividade em toda a cadeia, especialmente na codificação, integrada às ferramentas líderes de mercado.',
+      'Solução integrada com uso de IA generativa que orquestra toda a esteira do DEVOPs, gerando maior produtividade em toda cadeia, especialmente na codificação, integrada às ferramentas líderes de mercado.',
     icon: 'Code2',
     tone: '#57B7EE',
   },
   {
-    id: 'smart-sinistros',
-    name: 'Smart Sinistros',
-    tagline: 'Automação e conformidade em sinistros',
+    id: 'fast',
+    name: 'Fast',
     description:
       'Automatiza e acelera processos de sinistros, reduzindo erros humanos, melhorando a eficiência e garantindo conformidade com as regulamentações.',
     icon: 'ShieldCheck',
     tone: '#A78BFA',
   },
   {
-    id: 'update-service',
-    name: 'Update Service',
-    tagline: 'Qualidade contínua e evolução',
-    description:
-      'Altos padrões de qualidade, mantendo constância na melhoria, evolução e inovação das plataformas em produção.',
+    id: 'qa-integrado',
+    name: 'QA Integrado',
+    description: 'Altos padrões de qualidade, mantendo constância na melhoria, evolução e inovação.',
     icon: 'Workflow',
     tone: '#7CCBF3',
   },
   {
-    id: 'connect',
-    name: 'Connect',
-    tagline: 'Distribuição de vida e autogestão',
+    id: 'connect-api',
+    name: 'Connect API',
     description:
-      'Jornada de distribuição de Vida Individual, Empresarial e Grupo, com venda consultiva e autogestão do faturamento pelo estipulante.',
+      'Jornada de Distribuição de Vida Individual, Empresarial e Grupo; Venda Consultiva; Auto-gestão do faturamento pelo estipulante.',
     icon: 'HeartHandshake',
     tone: '#C4A0FB',
   },
   {
-    id: 'smart-docs',
-    name: 'Smart Docs',
-    tagline: 'Tipificação e extração de documentos',
+    id: 'smart-miner',
+    name: 'Smart Miner',
     description:
       'Solução poderosa para identificar documentos em arquivos com múltiplas imagens, tipificação e extração de dados para Onboarding (Aceitação da Proposta) e Abertura de Sinistros.',
     icon: 'Layers',
     tone: '#6EE7B7',
   },
   {
-    id: 'guru-voice',
-    name: 'Guru Voice',
-    tagline: 'Assistente conversacional com LLM',
+    id: 'guru-de-seguros',
+    name: 'Guru de Seguros',
+    /* Site escreve "Quizes" e "FAC"; corrigido para quizzes e FAQ — erro de
+       digitacao nao é conteudo a replicar. */
     description:
-      'Assistente conversacional via Alexa (com LLM) para educação de corretores e segurados, com quizzes e FAQ, turbinado com aplicações transacionais.',
+      'Assistente conversacional via Alexa (com LLM) para educação de corretores e segurados (quizzes, FAQ), turbinado com aplicações transacionais.',
     icon: 'Cpu',
     tone: '#0ed8f6',
   },

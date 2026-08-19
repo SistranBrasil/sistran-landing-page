@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'motion/react';
 import clsx from 'clsx';
-import { ArrowLeft, ArrowRight, MapPin, Pause, Play, PlayCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Pause, Play, PlayCircle } from 'lucide-react';
 import { EVENTS, EVENT_KIND_META, type EventKind, type SistranEvent } from '@/data/events';
 import { getIcon } from '@/lib/icons';
 import { useReducedMotion } from '@/lib/motion';
@@ -132,12 +132,6 @@ function EventCard({ e, active }: { e: SistranEvent; active: boolean }) {
           >
             {EVENT_KIND_META[e.kind].label}
           </span>
-          {e.location && (
-            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-white/75">
-              <MapPin className="h-3 w-3" strokeWidth={1.8} />
-              {e.location}
-            </span>
-          )}
         </div>
       </div>
 

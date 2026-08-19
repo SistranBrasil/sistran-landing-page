@@ -360,11 +360,33 @@ body::after {
 }
 
 /* Overrides de cor para texto sobre fundo claro */
+/* `li`, `strong`, `small`, `dt`/`dd`, `figcaption` e `blockquote` estavam fora
+   desta lista: qualquer texto nesses elementos ficava com a cor de fundo escuro
+   (`text-ink` = #f8fafc) sobre o fundo claro, ou seja, invisivel. Foi o que
+   acontecia nos cards de "Diferenciais" de /quem-somos, que sao <li>. */
 .section-light .text-ink-override,
 .section-light h2,
 .section-light h3,
 .section-light h4,
+.section-light h5,
 .section-light p,
+.section-light li,
+.section-light dt,
+.section-light dd,
+.section-light strong,
+.section-light em,
+.section-light small,
+.section-light figcaption,
+.section-light blockquote,
+.section-light th,
+.section-light td,
+.section-light label,
+/* Rede de seguranca por classe, independente da tag: `text-ink` (#f8fafc) e
+   `text-white` sao cores de fundo escuro. Em qualquer elemento dentro de uma
+   secao clara elas significam texto invisivel — aqui viram navy. O `.on-dark`
+   logo abaixo usa !important e continua vencendo nas ilhas escuras. */
+.section-light [class~="text-ink"],
+.section-light [class*="text-white"],
 .section-light span:not([class*="badge"]):not([class*="pill"]):not([class*="eyebrow"]):not([class*="tag-section"]) {
   color: #0a1f44;
 }
@@ -420,12 +442,20 @@ body::after {
 /* div incluida por causa do rodape "Saiba mais" do PartnersGrid, que herda a
    cor de uma div. As placas brancas de logo nao tem texto, so <Image>. */
 .section-light .on-dark div:not([style*="color"]),
+.section-light .on-dark dt:not([style*="color"]),
+.section-light .on-dark dd:not([style*="color"]),
+.section-light .on-dark strong:not([style*="color"]),
+.section-light .on-dark em:not([style*="color"]),
+.section-light .on-dark small:not([style*="color"]),
+.section-light .on-dark figcaption:not([style*="color"]),
+.section-light .on-dark blockquote:not([style*="color"]),
 .section-light .on-dark span:not([style*="color"]) {
   color: rgba(255, 255, 255, 0.88) !important;
 }
 .section-light .on-dark h2:not([style*="color"]),
 .section-light .on-dark h3:not([style*="color"]),
-.section-light .on-dark h4:not([style*="color"]) {
+.section-light .on-dark h4:not([style*="color"]),
+.section-light .on-dark h5:not([style*="color"]) {
   color: #ffffff !important;
 }
 
@@ -1054,4 +1084,397 @@ body::after {
 @keyframes dash-march-rev { to { stroke-dashoffset: 40; } }
 @media (prefers-reduced-motion: reduce) {
   [style*="dash-march"] { animation: none !important; }
+}
+
+/* ===========================================================
+   Hero conduzido por scroll: vídeo de fundo + convite de scroll
+   =========================================================== */
+
+/* Vídeo posicionado pelo scroll (ver src/components/primitives/ScrollVideo.tsx).
+   Fica na camada da atmosfera do hero, que continua atrás dele — enquanto o
+   arquivo não chega, é a atmosfera que se vê, não um retângulo preto. */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Opacidade exatamente 1 deixa o Chrome/Edge no Windows promover o vídeo a um
+     plano de overlay por hardware, que ignora `z-index` e desenha por cima de
+     tudo — inclusive do conteúdo do hero. Qualquer valor abaixo de 1 tira o
+     vídeo desse caminho e ele volta a respeitar a ordem normal do DOM. */
+  opacity: 0.9999;
+}
+
+/* Camada da pastilha: `position: fixed` num irmão da cena, nunca dentro dela —
+   a cena é animada em `scale`/`filter`, e isso conteria o `fixed`. */
+.hero-cue {
+  position: fixed;
+  z-index: 3;
+  inset: 0;
+  pointer-events: none;
+}
+
+.scroll-cue {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  /* Centraliza a pastilha no ponteiro e a desloca para baixo, para não cobrir a
+     ponta do cursor. O motion escreve `translate` por cima; os dois se somam. */
+  translate: -50% 1.6rem;
+  padding: 0.4rem 0.8rem 0.4rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: rgb(0 26 61 / 55%);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity var(--dur-base, 0.4s) var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+/* Só aparece depois do primeiro movimento do ponteiro: antes disso não há
+   posição conhecida, e a pastilha piscaria no canto da tela. */
+.scroll-cue[data-awake='true'] {
+  opacity: 1;
+}
+
+.scroll-cue-arrow {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-right: 1.5px solid #0ed8f6;
+  border-bottom: 1.5px solid #0ed8f6;
+  rotate: 45deg;
+  translate: 0 -0.15rem;
+  animation: scroll-cue-nudge 1.9s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@keyframes scroll-cue-nudge {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  30% {
+    transform: translateY(0.22rem);
+    opacity: 1;
+  }
+}
+
+/* Ponteiro grosso não tem cursor a seguir: em vez de esconder o aviso, ele
+   ancora na base da tela — o convite continua sendo feito. */
+@media (hover: none), (pointer: coarse) {
+  .scroll-cue {
+    top: auto;
+    bottom: clamp(1.2rem, 4vw, 2.4rem);
+    left: 50%;
+    translate: -50% 0 !important;
+    /* Sem ponteiro o hook nunca atualiza x/y, e o valor inicial (fora de tela)
+       ficaria escrito no `transform` inline do motion. */
+    transform: none !important;
+  }
+}
+
+/* ===========================================================
+   Preferência de movimento escolhida pelo visitante
+
+   Vem no FIM do arquivo de propósito: a política precisa vencer as regras das
+   seções acima (e, com `!important`, os inline styles do GSAP/Motion). Mover
+   este bloco para cima quebra o fallback sem erro visível — a página parece
+   certa com a preferência desligada.
+
+   O atributo `data-motion="reduce"` é gravado em `<html>` pelo script inline de
+   `src/app/layout.tsx`, antes do primeiro paint. Cada regra abaixo espelha uma
+   do bloco `@media (prefers-reduced-motion: reduce)`: at-rule não pode ser
+   condicionada por seletor de atributo, então a duplicação é obrigatória.
+   Mudar uma exige mudar a outra.
+   =========================================================== */
+html[data-motion='reduce'],
+html[data-motion='reduce'] *,
+html[data-motion='reduce'] *::before,
+html[data-motion='reduce'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+html[data-motion='reduce'] .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+/* Estado final VISÍVEL de tudo que o JS esconde para depois revelar. */
+html[data-motion='reduce'] .reveal-stagger > *,
+html[data-motion='reduce'] .reveal-stagger.is-visible > *,
+html[data-motion='reduce'] [data-reveal],
+html[data-motion='reduce'] [data-hero-chip],
+html[data-motion='reduce'] [data-hero-headline],
+html[data-motion='reduce'] [data-hero-paragraph],
+html[data-motion='reduce'] [data-hero-ctas],
+html[data-motion='reduce'] [data-hero-indicators],
+html[data-motion='reduce'] [data-hero-mobilechips] {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+html[data-motion='reduce'] #top {
+  height: auto !important;
+}
+
+html[data-motion='reduce'] .hero-scene {
+  position: relative !important;
+}
+
+html[data-motion='reduce'] [data-hero-peek] {
+  display: none !important;
+}
+
+/* Marquee: o movimento rola CONTEÚDO. Em vez de congelar (deixando os itens
+   fora da tela inalcançáveis), troca-se o mecanismo por rolagem nativa. */
+html[data-motion='reduce'] .marquee-viewport {
+  overflow-x: auto !important;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+html[data-motion='reduce'] .marquee-track {
+  animation: none !important;
+  transform: none !important;
+  width: auto !important;
+}
+
+html[data-motion='reduce'] .marquee-copy[aria-hidden='true'] {
+  display: none !important;
+}
+
+html[data-motion='reduce'] .marquee-copy > * {
+  scroll-snap-align: start;
+}
+
+html[data-motion='reduce'] .text-gradient-hero {
+  animation: none !important;
+}
+
+html[data-motion='reduce'] [style*='dash-march'] {
+  animation: none !important;
+}
+
+/* Isenção cirúrgica: a órbita carrega conteúdo em rotação e não tem
+   equivalente rolável — congelada, os itens fora de vista ficam inalcançáveis.
+   Segue animando, como no bloco @media. */
+html[data-motion='reduce'] .orbit-spin,
+html[data-motion='reduce'] .orbit-counter {
+  animation-duration: var(--orbit-duration, 44s) !important;
+  animation-iteration-count: infinite !important;
+}
+
+/* ---- Banner da preferência de movimento -------------------------------- */
+/* Banner, não modal: sem véu, a página segue rolável e clicável por trás. */
+.motion-banner {
+  position: fixed;
+  left: 50%;
+  right: auto;
+  bottom: 1rem;
+  z-index: 90;
+  width: min(calc(100% - 2rem), 500px);
+  transform: translate(-50%, 120%);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.motion-banner[data-open='true'] {
+  transform: translate(-50%, 0);
+}
+
+.motion-dialog-inner {
+  max-height: 80svh;
+  padding: clamp(1.2rem, 2.4vw, 1.8rem);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+  background: rgba(0, 38, 71, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 30px 70px rgba(0, 26, 61, 0.45);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: #fff;
+}
+
+.motion-dialog-title {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-sora), system-ui, sans-serif;
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.motion-dialog-note {
+  margin: 0 0 1.4rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.motion-dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.motion-more-trigger {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.82);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.motion-dialog-accept {
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  background: var(--color-cyan);
+  color: #00223f;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: filter var(--dur-fast) var(--ease-out);
+}
+
+.motion-dialog-accept:hover {
+  filter: brightness(1.1);
+}
+
+.motion-dialog-close {
+  padding: 0.55rem 1.2rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Altura desconhecida sem medir: 0fr → 1fr resolve em CSS puro. */
+.motion-dialog-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 350ms var(--ease-out);
+}
+
+.motion-dialog-panel[data-open='true'] {
+  grid-template-rows: 1fr;
+}
+
+.motion-dialog-panel > div {
+  min-height: 0;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.motion-dialog-panel[data-open='true'] > div {
+  opacity: 1;
+  padding-top: 1.4rem;
+}
+
+.motion-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.4rem;
+}
+
+.motion-choice {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-height: 2.2rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+
+.motion-choice-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.motion-choice input {
+  accent-color: var(--color-sky);
+}
+
+.motion-choice[data-checked='true'] {
+  border-color: var(--color-sky);
+  background: rgba(14, 216, 246, 0.14);
+}
+
+.motion-choice-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.motion-choice-hint {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.motion-dialog-alternative-note {
+  margin: 0 0 1.2rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+/* ---- Modal de contato em <dialog> nativo ------------------------------- */
+/* A entrada é CSS (`dialog[open]` + `::backdrop`), não JS: o navegador já sabe.
+   O `position: fixed` que cobre a tela vem da regra `dialog:modal` do
+   navegador — por isso o componente vive num portal para `document.body`, fora
+   de qualquer ancestral com `transform`/`filter`/`clip`. */
+.contact-dialog {
+  width: min(100% - 2rem, 34rem);
+  max-height: 90svh;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  overflow: visible;
+}
+
+.contact-dialog::backdrop {
+  background: rgba(0, 26, 61, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: contact-dialog-veil var(--dur-fast) var(--ease-out) both;
+}
+
+.contact-dialog[open] {
+  animation: contact-dialog-in var(--dur-fast) var(--ease-out) both;
+}
+
+/* O scroll é do miolo, não do <dialog>. */
+.contact-dialog-inner {
+  position: relative;
+  max-height: 90svh;
+  padding: 2rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@keyframes contact-dialog-veil {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes contact-dialog-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
 }

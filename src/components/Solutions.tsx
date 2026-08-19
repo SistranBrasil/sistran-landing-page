@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import Link from 'next/link';
 import { motion } from 'motion/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -307,16 +308,17 @@ export default function Solutions() {
         >
           {/* .tag-section (chip com moldura) em vez de .eyebrow: mesma marcação
               das outras seções e legível sobre o fundo azul. */}
-          <motion.span variants={vSubtitle} className="tag-section">Serviços</motion.span>
+          {/* Sobretitulo e titulo verbatim do bloco "Soluções de Negócios" da
+              home. O paragrafo que existia aqui era a escrita da pagina
+              /solucoes-servicos-e-consultoria reescrita; na home o bloco tem
+              apenas estas duas linhas.
+              Fonte: .claude/conteudo-site/00-home.md (secao 5) */}
+          <motion.span variants={vSubtitle} className="tag-section">
+            Veja como a Sistran pode ajudar sua Seguradora nos mais variados desafios de negócios.
+          </motion.span>
           <motion.h2 variants={vTitle} className="mt-5 font-display text-section font-bold text-ink">
-            Integradora de sistemas <span className="text-gradient-brand">100% focada em Seguros</span>
+            Soluções de <span className="text-gradient-brand">Negócios</span>
           </motion.h2>
-          <motion.p variants={vSubtitle} className="mt-4 text-lg leading-relaxed text-ink-muted">
-            Dedicada ao mercado segurador, com experiência em todos os ramos. A Sistran atua como
-            integradora de sistemas para clientes com grandes carteiras. Somos uma empresa de TI
-            100% focada no segmento de Seguros no Brasil, com mais de 30 implementações de ERP
-            bem-sucedidas.
-          </motion.p>
         </motion.div>
 
         {/* Desktop: sticky list + panel */}
@@ -554,6 +556,15 @@ export default function Solutions() {
             );
           })}
         </ol>
+
+        {/* Botao "Veja mais" que fecha a secao na home do site. No site ele leva
+            a uma pagina de servico com Lorem Ipsum; aqui aponta para a secao
+            Serviços de /solucoes, que é onde esse conteudo existe de verdade. */}
+        <div className="mt-10">
+          <Link href="/solucoes#servicos-diferenciais" className="btn-primary inline-flex">
+            Veja mais
+          </Link>
+        </div>
       </div>
     </section>
   );

@@ -177,12 +177,17 @@ export default function Consulting() {
             variants={vTitle}
             className="mt-3 font-display text-section font-bold text-ink"
           >
-            Expertise que <span className="text-gradient-brand">impulsiona crescimento</span>
+            <span className="text-gradient-brand">Consultoria</span>
           </motion.h2>
+          {/* Abertura e fechamento verbatim da secao Consultoria do site. */}
           <motion.p variants={vSubtitle} className="mt-4 text-base leading-relaxed text-ink-muted">
-            Consultoria personalizada, projetada para impulsionar o crescimento e a eficiência do
-            seu negócio. Nosso time está preparado para entender suas necessidades e oferecer
-            soluções que promovem inovação, eficiência e escala.
+            Nossa expertise abrange consultoria personalizada, projetada para impulsionar o
+            crescimento e a eficiência de sua empresa:
+          </motion.p>
+          <motion.p variants={vSubtitle} className="mt-4 text-base leading-relaxed text-ink-muted">
+            Nosso time de consultores está preparado para entender as necessidades e desafios do seu
+            negócio, para oferecer soluções personalizadas que impulsionam a inovação, a eficiência e
+            o crescimento da sua empresa.
           </motion.p>
           <motion.span
             variants={vSubtitle}

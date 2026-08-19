@@ -66,7 +66,11 @@ export default function Contact() {
           viewport={VP}
           className="max-w-4xl"
         >
-          <motion.span variants={vSubtitle} className="tag-section">Contato</motion.span>
+          {/* Sobretitulo, titulo e texto verbatim do bloco de contato da home.
+              Fonte: .claude/conteudo-site/00-home.md (secao 6) */}
+          <motion.span variants={vSubtitle} className="tag-section">
+            Saiba mais sobre o que podemos oferecer
+          </motion.span>
           <motion.h2
             variants={vTitle}
             className="mt-4 font-display font-bold text-ink"
@@ -76,10 +80,12 @@ export default function Contact() {
               letterSpacing: '-0.035em',
             }}
           >
-            Quer conversar com um de nossos <span className="text-gradient-brand">especialistas</span>?
+            Entre em <span className="text-gradient-brand">contato</span> conosco
           </motion.h2>
           <motion.p variants={vSubtitle} className="mt-6 max-w-xl text-lg text-ink-muted md:text-xl">
-            Temos uma equipe qualificada para atender as suas necessidades.
+            Contacte-nos para saber que tipo de soluções podemos implementar para o seu negócio!
+            Nosso telefone é <strong className="font-bold text-ink">{CONTACT_PHONE}</strong>. Ou se
+            preferir, deixe uma mensagem abaixo que te retornaremos em breve.
           </motion.p>
 
           <motion.div variants={vSubtitle} className="mt-10 flex flex-wrap items-center gap-3">

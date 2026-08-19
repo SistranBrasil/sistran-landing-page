@@ -4,10 +4,9 @@ import About from '@/components/About';
 import Differentials from '@/components/Differentials';
 import Metrics from '@/components/Metrics';
 import Solutions from '@/components/Solutions';
-import ClientWall from '@/components/ClientWall';
-import FutureAreas from '@/components/FutureAreas';
 import Social from '@/components/Social';
 import Contact from '@/components/Contact';
+import ContactCTA from '@/components/ContactCTA';
 import Footer from '@/components/Footer';
 import ScrollSpy from '@/components/ui/ScrollSpy';
 import BackToTop from '@/components/ui/BackToTop';
@@ -28,14 +27,12 @@ export default function Page() {
         </div>
         {/* Bloco escuro de destaque: soluções (CTA-mor) */}
         <SectionReveal><Solutions /></SectionReveal>
-        <SectionReveal><ClientWall /></SectionReveal>
-        {/* Só âncoras (#esg, #trabalhe-conosco) para os links da navbar: sem
-            conteúdo visível, não faz sentido envolver em SectionReveal. */}
-        <FutureAreas />
-        <SectionReveal><Social /></SectionReveal>
+        {/* Ordem da home do site: contato -> LinkedIn -> "Fale com a Gente!" */}
         <div className="section-light">
           <SectionReveal><Contact /></SectionReveal>
         </div>
+        <SectionReveal><Social /></SectionReveal>
+        <SectionReveal><ContactCTA /></SectionReveal>
       </main>
       <Footer />
       <BackToTop />
