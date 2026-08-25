@@ -47,12 +47,6 @@ export type Metric = {
   note: string
 }
 
-/** Item da faixa de sinais. */
-export type Signal = {
-  label: string
-  logo?: string
-}
-
 /** Estágio da parada. O rótulo visível sai de `stageLabel`. */
 export type RoadmapStage = "entregue" | "negociacao" | "evolucao" | "planejado"
 
@@ -180,24 +174,12 @@ export const metrics: Metric[] = [
   },
 ]
 
-/**
- * Sinais do marquee: cada um é uma escrita e a logo da frente correspondente.
- * `logo` segue opcional de propósito — sinal novo sem asset continua valendo como
- * palavra, e inventar uma marca para ele seria pior que a assimetria. Hoje as
- * seis têm arquivo. As logos apontam para as versões `-trim`, sem a margem branca
- * embutida nos originais (ela faria o desenho render pequeno na faixa).
- */
-export const marquee: Signal[] = [
-  { label: "Diagnóstico do legado", logo: "/imagens/assementlogo-trim.png" },
-  { label: "Conhecimento navegável", logo: "/imagens/asis-trim.png" },
-  /* Era a logo do DBS. Saiu porque DBS e Gateway de Pagamentos são a mesma
-     frente sob dois nomes (ver o comentário em `roadmapStops`), e a faixa
-     exibia as duas como se fossem frentes distintas. */
-  { label: "Decisão arquitetural", logo: "/imagens/GatewayPag-trim.png" },
-  { label: "Engenharia com IA", logo: "/imagens/luminna-logo.svg" },
-  { label: "Qualidade contínua", logo: "/imagens/quality-trim.png" },
-  { label: "Evolução sustentada", logo: "/imagens/sad-trim.png" },
-]
+/* A lista `marquee` (seis sinais do método, cada um com a logo da frente
+   correspondente) morava aqui. Saiu a pedido junto com o `type Signal`: a faixa
+   passou a exibir as marcas de parceiros, e a fonte delas é `src/data/clients.ts`
+   — a mesma de `/parceiros-e-implementacoes`, para as duas páginas não
+   divergirem. Ver `legacy/SignalMarquee`. Os arquivos `-trim` seguem em
+   `public/imagens/`, usados pelo mosaico e pelo roadmap. */
 
 export const mosaicIntro = {
   kicker: "Arquitetura | destino adequado ao contexto",

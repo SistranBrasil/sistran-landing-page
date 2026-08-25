@@ -57,8 +57,10 @@ export default function Page() {
             primeiro os quatro movimentos, depois as evidências que os comprovam.
             Antes eles fechavam o percurso do hero, e saíram de lá a pedido.
 
-            O chanfro leva o navy da seção para dentro da faixa clara de sinais,
-            que encerra o bloco. Conteúdo em `src/data/legacy.ts`. */}
+            O chanfro leva o navy da seção para dentro da faixa clara de
+            parceiros, que encerra o bloco — as evidências dos casos emendam na
+            prova de terceiros. Números em `src/data/legacy.ts`, marcas em
+            `src/data/clients.ts`. */}
         <div className={editorial.variable}>
           <MetricsStrip />
           {/* `--deep` é declarada em `:root` pelo `legacy.css`, importado pelo

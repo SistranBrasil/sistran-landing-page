@@ -2433,7 +2433,7 @@ html.has-dialog {
   }
 }
 
-/* ---- Faixa de sinais (SignalMarquee) ---- */
+/* ---- Faixa de parceiros (SignalMarquee) ---- */
 
 /* Faixa clara depois da seção navy: a mudança de superfície é o que separa os
    resultados do resto da página. A mecânica de rolagem vem de `globals.css`
@@ -2446,58 +2446,64 @@ html.has-dialog {
   color: var(--ink);
 }
 
-/* Sobrescreve o vão pequeno de `.marquee-copy` (0.75rem, calibrado para as logos
-   do `ClientWall`): aqui cada item é uma linha de texto em serifa grande. O
-   `padding-right` acompanha o `gap` — é ele que faz a largura da cópia incluir o
-   último vão, e sem isso o `translate3d(-50%)` deixaria de valer uma cópia
-   exata e o loop pularia a cada volta. */
+/* Sobrescreve o vão pequeno de `.marquee-copy` (0.75rem, calibrado para as placas
+   do `ClientWall`): aqui as logos não têm cartão em volta, então o vão é o único
+   separador entre uma marca e a próxima. O `padding-right` acompanha o `gap` — é
+   ele que faz a largura da cópia incluir o último vão, e sem isso o
+   `translate3d(-50%)` deixaria de valer uma cópia exata e o loop pularia a cada
+   volta. */
 .lp-signals-copy {
   align-items: center;
-  gap: 3rem;
-  padding-right: 3rem;
+  gap: clamp(2.4rem, 4.5vw, 4rem);
+  padding-right: clamp(2.4rem, 4.5vw, 4rem);
 }
 
-.lp-signal {
-  display: inline-flex;
-  align-items: center;
-  /* Menor que o vão entre sinais (3rem): a logo e o ponto pertencem a ESTE item,
-     e com o mesmo vão dos dois lados o ponto passaria a ler como separador solto
-     no meio da faixa. */
-  gap: clamp(0.9rem, 1.8vw, 1.5rem);
-  font-family: var(--font-editorial);
-  font-size: clamp(1.4rem, 3vw, 2.6rem);
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-}
+/* Item da faixa: só a logo, sem placa nem chip.
+   Todas as marcas de `clients.ts` são desenhadas para fundo claro, e a faixa é
+   `--paper` — no `ClientWall` elas precisam da placa branca porque lá o fundo é
+   navy. Aqui a placa só somaria moldura.
 
-/* Ponto de separação entre sinais. Decorativo: nasce do CSS, então nenhum leitor
-   de tela o anuncia. */
-.lp-signal::after {
-  content: "";
-  flex: none;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--frost);
-}
-
-/* Logo do sinal.
-   A altura é fixa em `rem` e vai no próprio `<img>`, não em `em` no invólucro:
-   em `em` cada logo herdaria o corpo do texto e, com desenhos de proporção
-   diferente, nenhuma ficaria do mesmo tamanho da outra. Em `rem` as seis medem
-   igual — quem dita a altura da faixa é a linha de texto, mais alta que isto. */
-.lp-signal-logo {
+   Em repouso a marca fica dessaturada e um pouco recuada: são 15 logos de paletas
+   conflitantes passando em loop, e todas em cor cheia competem com o conteúdo da
+   página em vez de servirem de rodapé de credibilidade. */
+.lp-partner {
   flex: none;
   display: inline-flex;
   align-items: center;
+  filter: grayscale(1);
+  opacity: 0.62;
+  transition:
+    filter var(--base) var(--ease),
+    opacity var(--base) var(--ease);
 }
 
-.lp-signal-logo img {
+/* A cor volta no ponteiro. Só onde há ponteiro fino: em toque o estado de hover
+   fica preso depois do tap. */
+@media (hover: hover) and (pointer: fine) {
+  .lp-partner:hover {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+}
+
+/* Sem movimento não há hover útil (a faixa vira lista rolável e a pessoa
+   percorre com o dedo/teclado): as marcas nascem em cor cheia. O mesmo vale para
+   `forced-colors`, onde `grayscale` só atrapalha. */
+@media (prefers-reduced-motion: reduce) {
+  .lp-partner {
+    filter: none;
+    opacity: 1;
+  }
+}
+
+/* A altura é fixa em `rem` e vai no próprio `<img>`: em `em` cada logo herdaria o
+   corpo do texto e, com desenhos de proporção diferente, nenhuma ficaria do mesmo
+   tamanho da outra. */
+.lp-partner img {
   width: auto;
-  height: 3.1rem;
-  max-height: 3.1rem;
-  /* Teto de largura: os lockups são horizontais (até ~4:1) e sem isto um deles
-     esticaria o item bem além dos vizinhos. */
-  max-width: 13rem;
+  height: clamp(2.2rem, 3.4vw, 3.1rem);
+  /* Teto de largura: os lockups vão de quadrados a ~4:1, e sem isto os mais
+     largos esticariam o item muito além dos vizinhos. */
+  max-width: 11rem;
   object-fit: contain;
 }
