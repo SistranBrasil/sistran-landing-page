@@ -2136,9 +2136,9 @@ html[data-motion="reduce"] .orbit-counter {
 .section-light .contact-inline .contact-dialog-fone-nota {
   color: var(--contact-muted) !important;
 }
-.section-light .contact-inline .contact-dialog-endereco-texto {
-  color: rgba(247, 251, 255, 0.86);
-}
+/* O endereco NAO reaparece aqui: a excecao generica acima ja devolve
+   `--contact-text` cheio, e repetir a versao a 86% era justamente o que mantinha
+   o texto lavado na secao inline mesmo depois de corrigir a regra base. */
 .section-light .contact-inline .contact-dialog-campo label {
   color: rgba(247, 251, 255, 0.7);
 }
@@ -2469,7 +2469,13 @@ html[data-motion="reduce"] .orbit-counter {
   padding: 0.85rem 1rem;
   border-radius: 16px;
   border: 1px solid var(--contact-border);
-  background: rgba(3, 24, 47, 0.62);
+  /* 0.92 e nao 0.62: o cartao fica sobre a fachada iluminada do edificio, e com
+     o navy quase transparente o endereco ficava lavado — o `backdrop-filter`
+     desfoca a foto mas nao escurece o que passa por baixo. Mesmo navy do painel
+     (`--contact-bg`), so mais denso, entao o cartao continua sendo vidro sobre a
+     foto em vez de virar uma caixa cega. Garante contraste do texto mesmo no
+     pior caso (foto branca): ~13:1. */
+  background: rgba(3, 24, 47, 0.92);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -2486,10 +2492,14 @@ html[data-motion="reduce"] .orbit-counter {
   letter-spacing: 0.16em;
   color: var(--contact-cyan);
 }
+/* O endereco é informacao, nao legenda decorativa: cor cheia do painel em vez de
+   branco a 86%, e 0.78rem em vez de 0.7rem. Era a soma de tres atenuacoes —
+   texto translucido, corpo minusculo e cartao quase transparente — que o deixava
+   apagado sobre a foto. */
 .contact-dialog-endereco-texto {
-  font-size: 0.7rem;
-  line-height: 1.6;
-  color: rgba(247, 251, 255, 0.86);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--contact-text);
 }
 
 /* Em tela larga o cartao fica na parte reta da silhueta: perto da base a curva
@@ -2512,7 +2522,7 @@ html[data-motion="reduce"] .orbit-counter {
     padding: 0.7rem 0.85rem;
   }
   .contact-dialog-endereco-texto {
-    font-size: 0.66rem;
+    font-size: 0.72rem;
   }
 }
 
