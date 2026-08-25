@@ -2268,3 +2268,236 @@ html.has-dialog {
   position: relative;
   height: min(100svh, 46rem);
 }
+
+/* ---- Resultados (MetricsStrip) ---- */
+
+.lp-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* Cartões separados, não células de uma tabela: o pedido era destacar cada
+     número, e um fio de 1px entre painéis do mesmo azul não destaca nada. */
+  gap: clamp(0.7rem, 1.4vw, 1.1rem);
+}
+
+/* Cartão CLARO sobre a seção navy — ver a nota de inversão de superfície no
+   docblock de `MetricsStrip`. */
+.lp-metric {
+  position: relative;
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+  padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1.1rem, 2vw, 2rem);
+  border: 1px solid transparent;
+  border-radius: 18px;
+  color: var(--ink);
+  background:
+    radial-gradient(120% 80% at 12% 0%, rgb(14 216 246 / 14%), transparent 60%),
+    linear-gradient(180deg, var(--paper), var(--cream));
+  box-shadow: 0 18px 40px -28px rgb(0 26 61 / 55%);
+  /* Só transform, opacity, box-shadow e border-color mudam no hover: nada que
+     force reflow (orçamento de performance das skills da casa). */
+  transition:
+    transform var(--fast) var(--ease),
+    box-shadow var(--fast) var(--ease),
+    border-color var(--fast) var(--ease);
+}
+
+/* Fio da marca no alto do cartão. */
+.lp-metric::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: clamp(2.5rem, 6vw, 4.5rem);
+  height: 3px;
+  margin: clamp(1.5rem, 3vw, 2.5rem) 0 0 clamp(1.1rem, 2vw, 2rem);
+  border-radius: var(--pill);
+  background: linear-gradient(90deg, var(--signal-deep), var(--signal));
+  transition: width var(--base) var(--ease);
+}
+
+/*
+ * Reação ao ponteiro. Fechada em `(hover: hover)` de propósito: em toque, o
+ * estado `:hover` fica grudado depois do tap e o cartão permanece levantado sem
+ * que ninguém tenha pedido.
+ */
+@media (hover: hover) and (pointer: fine) {
+  /* O cartão vem para frente: sobe, cresce 4% e passa a cobrir os vizinhos. O
+     `z-index` só funciona porque `.lp-metric` já é `position: relative` — sem
+     ele a escala seria desenhada por baixo do cartão seguinte na ordem do DOM. */
+  .lp-metric:hover {
+    z-index: 2;
+    transform: translateY(-8px) scale(1.04);
+    border-color: color-mix(in srgb, var(--signal) 55%, transparent);
+    box-shadow:
+      0 34px 70px -24px rgb(0 26 61 / 68%),
+      0 0 0 1px rgb(14 216 246 / 22%);
+  }
+
+  .lp-metric:hover::before {
+    width: clamp(4rem, 10vw, 7rem);
+  }
+
+  /* Destaque maior no número, e só nele: `scale` ancorado na base esquerda para
+     o valor crescer sem empurrar o rótulo nem invadir a borda do cartão.
+     `scale`/`transform` em vez de `font-size` — mudar corpo de fonte reflui o
+     bloco inteiro a cada quadro do hover. */
+  .lp-metric:hover .lp-metric-value {
+    scale: 1.1;
+  }
+
+  .lp-metric:hover .lp-metric-count {
+    filter: drop-shadow(0 0 26px rgb(0 121 203 / 42%));
+  }
+
+  /* A unidade não acompanha a escala do número: ela é legenda, e ampliada junto
+     roubava a hierarquia que o gesto quer reforçar. */
+  .lp-metric:hover .lp-metric-unit {
+    scale: 0.92;
+    color: var(--signal-deep);
+  }
+}
+
+/* O cartão não é focável, então o realce de teclado é o da própria seção — nada
+   a fazer aqui. Mas se um dia ganhar link, o mesmo gesto vale para o foco. */
+.lp-metric:focus-within {
+  border-color: color-mix(in srgb, var(--signal) 55%, transparent);
+}
+
+.lp-metric-value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  margin: 0.9rem 0 0;
+  font-family: var(--font-editorial);
+  /* O número é a prova, e a nota abaixo é o rodapé dele. */
+  font-size: clamp(3.6rem, 7.5vw, 7rem);
+  line-height: 0.82;
+  letter-spacing: -0.05em;
+  color: var(--signal-deep);
+  /* Origem na base esquerda: é o ponto de ancoragem do bloco no cartão, então a
+     ampliação do hover cresce para dentro do espaço livre à direita e para cima,
+     nunca por cima do rótulo. */
+  transform-origin: left bottom;
+  transition: scale var(--base) var(--ease);
+}
+
+.lp-metric-count {
+  background: linear-gradient(180deg, var(--signal-deep), var(--deep) 60%, var(--ink));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 0 transparent);
+  transition: filter var(--base) var(--ease);
+}
+
+.lp-metric-unit {
+  font-family: var(--font-interface);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  /* A unidade pode ter duas palavras ("destinos tecnológicos"). Sem o limite ela
+     empurraria o número para fora do cartão, porque `.lp-metric-value` é uma
+     linha flex sem quebra. */
+  max-width: 9ch;
+  line-height: 1.15;
+  text-wrap: balance;
+  color: var(--muted);
+  transform-origin: left bottom;
+  transition:
+    scale var(--base) var(--ease),
+    color var(--fast) var(--ease);
+}
+
+.lp-metric-label {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.lp-metric-note {
+  margin: 0;
+  max-width: 32ch;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+@media (max-width: 64rem) {
+  .lp-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 40rem) {
+  .lp-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Faixa de sinais (SignalMarquee) ---- */
+
+/* Faixa clara depois da seção navy: a mudança de superfície é o que separa os
+   resultados do resto da página. A mecânica de rolagem vem de `globals.css`
+   (`.marquee-*`) — aqui é só o desenho. */
+.lp-signals {
+  position: relative;
+  padding-block: clamp(1.2rem, 2.5vw, 2rem);
+  border-block: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* Sobrescreve o vão pequeno de `.marquee-copy` (0.75rem, calibrado para as logos
+   do `ClientWall`): aqui cada item é uma linha de texto em serifa grande. O
+   `padding-right` acompanha o `gap` — é ele que faz a largura da cópia incluir o
+   último vão, e sem isso o `translate3d(-50%)` deixaria de valer uma cópia
+   exata e o loop pularia a cada volta. */
+.lp-signals-copy {
+  align-items: center;
+  gap: 3rem;
+  padding-right: 3rem;
+}
+
+.lp-signal {
+  display: inline-flex;
+  align-items: center;
+  /* Menor que o vão entre sinais (3rem): a logo e o ponto pertencem a ESTE item,
+     e com o mesmo vão dos dois lados o ponto passaria a ler como separador solto
+     no meio da faixa. */
+  gap: clamp(0.9rem, 1.8vw, 1.5rem);
+  font-family: var(--font-editorial);
+  font-size: clamp(1.4rem, 3vw, 2.6rem);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+/* Ponto de separação entre sinais. Decorativo: nasce do CSS, então nenhum leitor
+   de tela o anuncia. */
+.lp-signal::after {
+  content: "";
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--frost);
+}
+
+/* Logo do sinal.
+   A altura é fixa em `rem` e vai no próprio `<img>`, não em `em` no invólucro:
+   em `em` cada logo herdaria o corpo do texto e, com desenhos de proporção
+   diferente, nenhuma ficaria do mesmo tamanho da outra. Em `rem` as seis medem
+   igual — quem dita a altura da faixa é a linha de texto, mais alta que isto. */
+.lp-signal-logo {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.lp-signal-logo img {
+  width: auto;
+  height: 3.1rem;
+  max-height: 3.1rem;
+  /* Teto de largura: os lockups são horizontais (até ~4:1) e sem isto um deles
+     esticaria o item bem além dos vizinhos. */
+  max-width: 13rem;
+  object-fit: contain;
+}

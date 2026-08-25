@@ -1,6 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
+import { type MotionValue, useTransform } from 'motion/react';
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
@@ -136,4 +137,38 @@ function subscribeReducedMotion(onChange: () => void): () => void {
 
 function getReducedMotion(): boolean {
   return getMediaQuery().matches;
+}
+
+/**
+ * Opacidade presa a um progresso de scroll, sem aceleração nativa.
+ *
+ * `useTransform(progress, [a, b], [de, para])` na prop `opacity` é um caso que o
+ * `motion` 12 tenta acelerar: em vez de escrever o valor a cada frame, ele
+ * registra uma `Animation` nativa com `ViewTimeline`. E uma `ViewTimeline` mede
+ * a visibilidade DO PRÓPRIO elemento no scrollport — nada a ver com o relógio
+ * que passamos.
+ *
+ * Nas camadas do hero (`.hero-cue`, e antes dela a dos indicadores de
+ * "Resultados"), que são `sticky`/`fixed` — a dos indicadores com
+ * `margin-bottom: -100svh` —, os dois relógios divergem por completo: a
+ * camada subia até ~0.8 e VOLTAVA para ~0.1 no fim do percurso, e a pastilha de
+ * scroll nunca saía de cena. Só a opacidade sofria disso — `y`/`scale` em `rem`
+ * e `svh` não são aceleráveis e continuavam corretas, o que faz o sintoma
+ * parecer inexplicável.
+ *
+ * A forma de função não é analisável como keyframes, então o `motion` mantém o
+ * cálculo em JS, no relógio certo. Interpolação linear entre dois pontos, com
+ * clamp nas pontas — é tudo o que a forma de array fazia.
+ */
+export function useScrollOpacity(
+  progress: MotionValue<number>,
+  [inicio, fim]: readonly [number, number],
+  [de, para]: readonly [number, number] = [0, 1],
+): MotionValue<number> {
+  return useTransform(() => {
+    const t = (progress.get() - inicio) / (fim - inicio);
+    if (t <= 0) return de;
+    if (t >= 1) return para;
+    return de + (para - de) * t;
+  });
 }

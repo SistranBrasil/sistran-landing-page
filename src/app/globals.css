@@ -750,124 +750,6 @@ body::after {
 #top {
   background: #ffffff;
 }
-
-/* Indicadores de "Resultados" no fim do percurso do hero.
-
-   O DEFAULT desta regra é o estado final: bloco em fluxo normal, opaco, com a
-   escrita inteira e as notas de cada indicador. É o que se ve sem JavaScript,
-   abaixo de 1024px e com movimento reduzido. O comportamento preso na tela é
-   acrescimo, e vive na media query de 1024px logo abaixo. */
-.hero-results {
-  position: relative;
-  z-index: 2;
-  padding-block: clamp(2.5rem, 6vw, 4.5rem);
-  /* Sobre a folha clara do hero: a escrita é navy, nao branca. */
-  color: #0a1f44;
-}
-.hero-results-kicker {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #024e86;
-}
-.hero-results-titulo {
-  margin-top: 0.75rem;
-  max-width: 40rem;
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-size: clamp(1.4rem, 2.6vw, 2.25rem);
-  font-weight: 800;
-  line-height: 1.12;
-  text-wrap: balance;
-}
-.hero-results-texto {
-  margin-top: 0.85rem;
-  max-width: 46rem;
-  font-size: clamp(0.82rem, 1vw, 0.95rem);
-  line-height: 1.6;
-  color: #3d5a80;
-}
-.hero-results-lista {
-  margin-top: clamp(1.5rem, 3vw, 2.25rem);
-  display: grid;
-  gap: clamp(1.25rem, 2.5vw, 2rem);
-}
-@media (min-width: 40rem) {
-  .hero-results-lista {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (min-width: 64rem) {
-  .hero-results-lista {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-.hero-results-item {
-  border-top: 1px solid rgba(0, 121, 203, 0.18);
-  padding-top: 0.85rem;
-}
-.hero-results-valor {
-  display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-size: clamp(2rem, 3.4vw, 3rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  /* Sem isto a largura muda a cada digito durante a contagem e a unidade ao lado
-     escorrega. */
-  font-variant-numeric: tabular-nums;
-  color: #0079cb;
-}
-.hero-results-unidade {
-  font-size: clamp(0.72rem, 0.9vw, 0.85rem);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: lowercase;
-  color: #3d5a80;
-}
-.hero-results-rotulo {
-  margin-top: 0.5rem;
-  font-size: clamp(0.78rem, 0.95vw, 0.9rem);
-  font-weight: 700;
-  line-height: 1.35;
-}
-.hero-results-nota {
-  margin-top: 0.4rem;
-  font-size: clamp(0.68rem, 0.8vw, 0.76rem);
-  line-height: 1.55;
-  color: #4c6a8e;
-}
-
-/* A partir de 1024px os indicadores fecham o percurso do hero: camada presa na
-   tela, ocupando a faixa que o card desocupa no alto depois de recuar e descer.
-
-   `margin-bottom: -100svh` é o mesmo arranjo da folha clara — divide a vaga da
-   cena em vez de somar 100svh ao percurso.
-
-   `pointer-events: none`: a camada cobre a tela inteira e nao tem nada
-   clicavel; sem isto ela roubaria a selecao de texto e o cursor da cena. */
-@media (min-width: 64rem) {
-  .hero-results {
-    position: sticky;
-    top: 0;
-    height: 100svh;
-    margin-bottom: -100svh;
-    padding-block: 0;
-    pointer-events: none;
-  }
-  .hero-results-inner {
-    /* Abaixo do header e dentro da faixa livre: o card fechado ocupa a metade de
-       baixo da tela. */
-    padding-top: clamp(6rem, 11vh, 8rem);
-    max-height: 46svh;
-  }
-  .hero-results-item {
-    border-top-color: rgba(0, 121, 203, 0.24);
-  }
-}
-
 .hero-scene {
   position: sticky;
   top: 0;
@@ -909,20 +791,6 @@ body::after {
   #top {
     height: auto !important;
     min-height: 0 !important;
-  }
-  /* Idem: sem percurso a camada dos indicadores fica em fluxo, opaca e completa. */
-  .hero-results {
-    position: relative !important;
-    height: auto !important;
-    margin-bottom: 0 !important;
-    padding-block: clamp(2.5rem, 6vw, 4.5rem) !important;
-    opacity: 1 !important;
-    transform: none !important;
-    pointer-events: auto !important;
-  }
-  .hero-results-inner {
-    padding-top: 0 !important;
-    max-height: none !important;
   }
   /* O marquee e rolagem continua de CONTEUDO, nao efeito decorativo: congelar
      no primeiro item deixa os demais INALCANCAVEIS (nao ha scroll nem setas).
@@ -1957,25 +1825,6 @@ html[data-motion="reduce"] [data-reveal] {
 html[data-motion="reduce"] #top {
   height: auto !important;
   min-height: 0 !important;
-}
-
-/* Sem percurso de rolagem a camada dos indicadores nao teria como surgir: fica em
-   fluxo, opaca e completa, no fim da secao. Repete o default da regra base
-   porque a media query de 1024px acima venceria por ordem no arquivo. */
-html[data-motion="reduce"] .hero-results {
-  position: relative !important;
-  height: auto !important;
-  max-height: none !important;
-  margin-bottom: 0 !important;
-  padding-block: clamp(2.5rem, 6vw, 4.5rem) !important;
-  opacity: 1 !important;
-  transform: none !important;
-  pointer-events: auto !important;
-}
-
-html[data-motion="reduce"] .hero-results-inner {
-  padding-top: 0 !important;
-  max-height: none !important;
 }
 
 html[data-motion="reduce"] .hero-scene {

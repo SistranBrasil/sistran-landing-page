@@ -13,7 +13,10 @@ import ScrollSpy from '@/components/ui/ScrollSpy';
 import BackToTop from '@/components/ui/BackToTop';
 import SectionReveal from '@/components/ui/SectionReveal';
 import OptionalMorphIntro from '@/components/intro/OptionalMorphIntro';
+import NotchDivider from '@/components/ui/NotchDivider';
 import { StackScenes } from '@/components/legacy/StackScenes';
+import { MetricsStrip } from '@/components/legacy/MetricsStrip';
+import { SignalMarquee } from '@/components/legacy/SignalMarquee';
 import { ImpactSequence } from '@/components/legacy/ImpactSequence';
 
 /* A serifa editorial existe só para o mosaico (e para /transformacao-legado) —
@@ -35,7 +38,11 @@ export default function Page() {
       <OptionalMorphIntro />
       <Header />
       <ScrollSpy />
-      <main id="conteudo" tabIndex={-1}>
+      {/* A serifa editorial é declarada no `main`, e não num wrapper em volta do
+          hero: um `<div>` ali quebraria `#top + *` no `globals.css` — a seção
+          seguinte deixaria de ser irmã do hero e perderia o `z-index` que a faz
+          subir por cima dele. */}
+      <main id="conteudo" tabIndex={-1} className={editorial.variable}>
         <HeroCinematic />
         {/* Sem separador aqui: o hero encolhe em card sobre fundo claro e já
             entrega a cor do mosaico.
@@ -46,6 +53,19 @@ export default function Page() {
             emenda. Conteúdo em `src/data/legacy.ts`. */}
         <div className={editorial.variable}>
           <StackScenes />
+        </div>
+        {/* Resultados logo DEPOIS do método, como na apresentação de legado:
+            primeiro os quatro movimentos, depois as evidências que os comprovam.
+            Antes eles fechavam o percurso do hero, e saíram de lá a pedido.
+
+            O chanfro leva o navy da seção para dentro da faixa clara de sinais,
+            que encerra o bloco. Conteúdo em `src/data/legacy.ts`. */}
+        <div className={editorial.variable}>
+          <MetricsStrip />
+          {/* `--deep` é declarada em `:root` pelo `legacy.css`, importado pelo
+              próprio `MetricsStrip` acima. */}
+          <NotchDivider cor="var(--deep)" />
+          <SignalMarquee />
         </div>
         {/* O bloco claro era um só (sobre + diferenciais + resultados) e agora é
             dois, porque a montagem entra no meio: ela é full bleed e tem fundo

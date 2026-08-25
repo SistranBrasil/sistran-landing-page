@@ -14,15 +14,15 @@
  *   0.55–0.78  A pastilha "role para explorar" sai de cena
  *   0.62–1.00  A viewport cheia recua e vira card sobre a folha clara, e depois
  *              desce para encontrar o mosaico da seção seguinte
- *   0.86–0.95  Os indicadores de "Resultados" entram na faixa que o card
- *              desocupa no alto da tela (ver `HeroResults`)
+ *
+ * Os indicadores de "Resultados" fechavam este percurso e saíram a pedido: agora
+ * são seção própria depois do Método (ver `legacy/MetricsStrip`).
  */
 
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { useReducedMotion } from '@/lib/motion';
+import { useReducedMotion, useScrollOpacity } from '@/lib/motion';
 import HeroCaptions from './ui/HeroCaptions';
-import HeroResults from './ui/HeroResults';
 import { ScrollVideo } from './primitives/ScrollVideo';
 import { ScrollCue } from './primitives/ScrollCue';
 
@@ -56,8 +56,15 @@ export default function HeroCinematic() {
     offset: ['start start', 'end end'],
   });
 
-  // 55% é onde a cena começa a se recolher (ver `scale` abaixo).
-  const cueFade = useTransform(scrollYProgress, [0.55, 0.78], [1, 0]);
+  /* 55% é onde a cena começa a se recolher (ver `scale` abaixo).
+
+     `useScrollOpacity` em vez da forma de array: nela o `motion` acelera a
+     opacidade numa `Animation` nativa com `ViewTimeline`, que mede a
+     visibilidade da propria pastilha — e ela é `position: fixed`, entao esse
+     relogio nunca avança e a pastilha ficava em `opacity: 1` pelo resto da
+     pagina, exatamente o que o comentario de `.hero-cue` diz que nao pode
+     acontecer. Ver `@/lib/motion`. */
+  const cueFade = useScrollOpacity(scrollYProgress, [0.55, 0.78], [1, 0]);
 
   /* Saída da cena: em vez de afundar (scale + fade + blur), a viewport cheia
      recua e vira card sobre uma folha clara — a mesma cor do mosaico da seção
@@ -157,12 +164,6 @@ export default function HeroCinematic() {
             tela. Ele continua aqui, so nao e desenhado. */}
         <h1 className="sr-only">Soluções de Negócio em Seguros — Sistran Brasil</h1>
       </motion.div>
-
-      {/* Os indicadores de "Resultados" fecham o percurso: entram na faixa que o
-          card desocupa no alto da tela depois de recuar e descer. Camada irmã da
-          cena e DEPOIS dela no DOM, para ficar por cima; o relógio é o mesmo
-          `scrollYProgress`. */}
-      <HeroResults progress={scrollYProgress} />
 
       {/* Irmã da cena, nunca filha: o `position: fixed` da pastilha seria contido
           pelo `scale` aplicado em `.hero-scene`.

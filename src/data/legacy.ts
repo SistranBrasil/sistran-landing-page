@@ -36,6 +36,23 @@ export type MosaicTile = {
 }
 
 
+export type Metric = {
+  /** Como está escrito no conteúdo ("10", "1"…). O contador só anima o número. */
+  value: string
+  /** Unidade ao lado do número. Pode ter duas palavras ("destinos tecnológicos"). */
+  unit: string
+  label: string
+  /** Escopo que torna o número verdadeiro. Sem ela o valor grande fica sem
+   *  contexto — e o texto de abertura promete justamente o contrário. */
+  note: string
+}
+
+/** Item da faixa de sinais. */
+export type Signal = {
+  label: string
+  logo?: string
+}
+
 /** Estágio da parada. O rótulo visível sai de `stageLabel`. */
 export type RoadmapStage = "entregue" | "negociacao" | "evolucao" | "planejado"
 
@@ -120,6 +137,66 @@ export const scenes: Scene[] = [
     title: "Validar para evoluir",
     text: "Build, testes, segurança, revisão e deploy fazem parte da transformação desde o início. O resultado combina software modernizado, observabilidade, documentação viva, base de conhecimento e rastreabilidade.",
   },
+]
+
+/**
+ * Indicadores de "Resultados", logo abaixo do Método.
+ *
+ * ⚠️ Os valores sao 10 / 1 / 2 / 6. Copiados da TELA da apresentacao eles
+ * aparecem como 100 / 10 / 20 / 60, porque lá o numero é um contador animado e a
+ * captura traz o digito em curso junto com o final. A fonte é o arquivo
+ * (`content/site.ts`, `metrics`), nao a tela.
+ */
+export const metricsIntro = {
+  kicker: "Resultados | evidências dos casos",
+  title: "Resultados que conectam velocidade, qualidade e contexto.",
+  text: "Os indicadores abaixo vêm de entregas reais e devem ser lidos com seu contexto: escopo da prova, arquitetura construída, automação de qualidade e estágio de implantação.",
+}
+
+export const metrics: Metric[] = [
+  {
+    value: "10",
+    unit: "dias",
+    label: "Prova tecnológica do Gateway de Pagamentos",
+    note: "Prova tecnológica que levou o Gateway de Pagamentos de Java 7 e Struts em ambiente local para .NET 10, React, Azure SQL e Azure, com identidade visual do cliente, entrega contínua e Playwright validando os PRs.",
+  },
+  {
+    value: "1",
+    unit: "semana",
+    label: "Prova tecnológica do Aceite Digital",
+    note: "Prova tecnológica que reinterpretou o SAD em Java e Spring, orientado ao padrão AWS, e adicionou um Portal Administrativo inexistente no legado.",
+  },
+  {
+    value: "2",
+    unit: "destinos tecnológicos",
+    label: "Um método",
+    note: "O Gateway de Pagamentos seguiu para .NET, React e Azure; o Aceite Digital, para Java, Spring e AWS. A consistência está no método de decisão, não na preferência por uma linguagem.",
+  },
+  {
+    value: "6",
+    unit: "etapas",
+    label: "Do legado à evolução",
+    note: "Entender, decidir, transformar, validar, entregar e evoluir. Nenhuma delas começa na primeira linha de código.",
+  },
+]
+
+/**
+ * Sinais do marquee: cada um é uma escrita e a logo da frente correspondente.
+ * `logo` segue opcional de propósito — sinal novo sem asset continua valendo como
+ * palavra, e inventar uma marca para ele seria pior que a assimetria. Hoje as
+ * seis têm arquivo. As logos apontam para as versões `-trim`, sem a margem branca
+ * embutida nos originais (ela faria o desenho render pequeno na faixa).
+ */
+export const marquee: Signal[] = [
+  { label: "Diagnóstico do legado", logo: "/imagens/assementlogo-trim.png" },
+  { label: "Conhecimento navegável", logo: "/imagens/asis-trim.png" },
+  /* Era a logo do DBS. Saiu porque DBS e Gateway de Pagamentos são a mesma
+     frente sob dois nomes (ver o comentário em `roadmapStops`), e a faixa
+     exibia as duas como se fossem frentes distintas. */
+  { label: "Decisão arquitetural", logo: "/imagens/GatewayPag-trim.png" },
+  { label: "Engenharia com IA", logo: "/imagens/luminna-logo.svg" },
+  { label: "Qualidade contínua", logo: "/imagens/quality-trim.png" },
+  { label: "Evolução sustentada", logo: "/imagens/sad-trim.png" },
 ]
 
 export const mosaicIntro = {
