@@ -14,12 +14,15 @@
  *   0.55–0.78  A pastilha "role para explorar" sai de cena
  *   0.62–1.00  A viewport cheia recua e vira card sobre a folha clara, e depois
  *              desce para encontrar o mosaico da seção seguinte
+ *   0.86–0.95  Os indicadores de "Resultados" entram na faixa que o card
+ *              desocupa no alto da tela (ver `HeroResults`)
  */
 
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useReducedMotion } from '@/lib/motion';
 import HeroCaptions from './ui/HeroCaptions';
+import HeroResults from './ui/HeroResults';
 import { ScrollVideo } from './primitives/ScrollVideo';
 import { ScrollCue } from './primitives/ScrollCue';
 
@@ -154,6 +157,12 @@ export default function HeroCinematic() {
             tela. Ele continua aqui, so nao e desenhado. */}
         <h1 className="sr-only">Soluções de Negócio em Seguros — Sistran Brasil</h1>
       </motion.div>
+
+      {/* Os indicadores de "Resultados" fecham o percurso: entram na faixa que o
+          card desocupa no alto da tela depois de recuar e descer. Camada irmã da
+          cena e DEPOIS dela no DOM, para ficar por cima; o relógio é o mesmo
+          `scrollYProgress`. */}
+      <HeroResults progress={scrollYProgress} />
 
       {/* Irmã da cena, nunca filha: o `position: fixed` da pastilha seria contido
           pelo `scale` aplicado em `.hero-scene`.
