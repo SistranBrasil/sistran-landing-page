@@ -4084,6 +4084,15 @@ html[data-motion="reduce"] .bm-halo {
   color: #f4fbff;
 }
 
+/* A sede em tres dimensoes, dentro da propria cena dos escritorios: ela entra
+   no trecho de Sao Paulo, com o 2º andar marcado. A moldura fica no modo
+   scroll — em lista a cena nem é montada, e a regra base existe para o caso de
+   a preferencia de movimento mudar com a pagina aberta. */
+.os-predio {
+  position: relative;
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
 /* --- modo lista: o mapa tambem surge com a rolagem ----------------------- */
 /* Sem a tela cheia e sem o sticky, mas com a mesma partitura: o contorno se
    desenha, o corpo do pais entra atras dele e a rota corre depois. Quem escreve
@@ -4289,6 +4298,36 @@ html[data-motion="reduce"] .bm-halo {
     transform: translate3d(0, calc(var(--os-p, 0) * -11px), 0) scale(1.06);
   }
 
+  /* A torre pousa do lado esquerdo da tela — o painel de Sao Paulo, com as
+     fotos do escritorio, fica à direita, e os dois nao se cruzam. Chega de
+     baixo e de longe conforme `--os-predio`, que é a fracao inicial do trecho
+     de Sao Paulo. */
+  .os-palco[data-modo="scroll"] .os-predio {
+    position: absolute;
+    left: clamp(1rem, 4vw, 4.5rem);
+    bottom: clamp(1rem, 6vh, 4.5rem);
+    width: clamp(21rem, 40vw, 42rem);
+    height: clamp(20rem, 66vh, 42rem);
+    margin: 0;
+    z-index: 1;
+    /* Nunca intercepta o ponteiro: a secao é dirigida por rolagem e esta cena
+       nao tem controles proprios — a roda do mouse continua rolando a pagina. */
+    pointer-events: none;
+    opacity: var(--os-predio, 1);
+    transform: translate3d(0, calc((1 - var(--os-predio, 1)) * 9vh), 0)
+      scale(calc(0.9 + 0.1 * var(--os-predio, 1)));
+    will-change: transform, opacity;
+  }
+  .os-palco[data-modo="scroll"] .os-predio .three-explorer-shell {
+    height: 100%;
+  }
+  /* O mapa recua enquanto a torre esta em cena: dois desenhos disputando a
+     mesma tela cansam, e no trecho de Sao Paulo quem conta a historia é o
+     predio. Sem rolagem a fracao vale 0 e o mapa fica inteiro. */
+  .os-palco[data-modo="scroll"] .os-mapa {
+    opacity: calc(1 - 0.62 * var(--os-predio, 0));
+  }
+
   .os-palco[data-modo="scroll"] .os-abas {
     position: absolute;
     left: clamp(1rem, 3vw, 3.5rem);
@@ -4327,6 +4366,18 @@ html[data-motion="reduce"] .bm-halo {
   }
   .os-palco[data-modo="scroll"] .bm-mapa {
     height: auto;
+  }
+  /* A torre volta para o fluxo, embaixo do mapa — que fica inteiro, sem recuo. */
+  .os-palco .os-predio {
+    position: relative;
+    inset: auto;
+    width: auto;
+    height: clamp(360px, 62svh, 640px);
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .os-palco[data-modo="scroll"] .os-mapa {
+    opacity: 1 !important;
   }
   /* O mapa em modo lista nao depende da rolagem para existir: chega inteiro. */
   .os-palco[data-modo="lista"] .bm-mapa,
@@ -4393,6 +4444,17 @@ html[data-motion="reduce"] .os-palco[data-modo="scroll"] .os-painel {
 }
 html[data-motion="reduce"] .os-palco[data-modo="scroll"] .bm-mapa {
   height: auto;
+}
+html[data-motion="reduce"] .os-palco .os-predio {
+  position: relative;
+  inset: auto;
+  width: auto;
+  height: clamp(360px, 62svh, 640px);
+  opacity: 1 !important;
+  transform: none !important;
+}
+html[data-motion="reduce"] .os-palco[data-modo="scroll"] .os-mapa {
+  opacity: 1 !important;
 }
 html[data-motion="reduce"] .os-palco[data-modo="lista"] .bm-mapa,
 html[data-motion="reduce"] .os-palco[data-modo="lista"] .bm-pais,

@@ -1,11 +1,21 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { prefersReducedMotion } from '@/lib/motion';
 import { OFFICES } from '@/data/aSistran';
 import BrazilOfficesMap from './BrazilOfficesMap';
+import type { ExplorerApi } from './BuildingExplorer';
+
+/* WebGL nao roda no servidor, e a cena inteira (three + controles) é o maior
+   pacote da pagina: entra sob demanda, e só quando a rolagem chega em Sao
+   Paulo. */
+const ExploradorPredio = dynamic(
+  () => import('./BuildingExplorer').then((m) => m.BuildingExplorer),
+  { ssr: false },
+);
 
 /**
  * Cena dos escritorios: o mapa fica preso na tela enquanto a rolagem percorre as
@@ -121,6 +131,20 @@ const ROTA_INICIO = 0.26;
 const ROTA_FIM = 0.86;
 const CIDADES_INICIO = 0.22; // antes disso nenhuma cidade esta acesa
 
+/* Trecho de Sao Paulo: é o ultimo, e é nele que a sede sai do mapa e vira
+   predio. O inicio é calculado da mesma divisao que escolhe a cidade ativa —
+   escrito de novo como numero solto, os dois sairiam do lugar juntos. */
+const SP_INICIO =
+  CIDADES_INICIO + (1 - CIDADES_INICIO) * ((CIDADES.length - 1) / CIDADES.length);
+/* Fracoes DENTRO do trecho de Sao Paulo. O predio chega no primeiro terco;
+   depois ele se monta e a camera gira (partitura do proprio explorador); e o
+   andar do escritorio acende quando a torre ja esta de pé. */
+const PREDIO_SURGIR = 0.3;
+const MARCADOR_INICIO = 0.56;
+/* Montagem comeca um pouco antes do trecho: compilar shader e primeira imagem
+   custam alguns quadros, e ninguem deve ver isso acontecendo. */
+const PREDIO_MONTAR = 0.06;
+
 export default function OfficesScene() {
   const [dirigindo, setDirigindo] = useState(false);
   /* -1 = ainda na revelacao do mapa, nenhuma cidade acesa. */
@@ -128,6 +152,13 @@ export default function OfficesScene() {
   const trilhaRef = useRef<HTMLDivElement>(null);
   const palcoRef = useRef<HTMLDivElement>(null);
   const ativaRef = useRef(-1);
+  /* O predio 3D entra uma vez e fica: montar e desmontar WebGL a cada passada
+     pela fronteira do trecho custaria contexto novo, shader novo e um quadro
+     branco. Quando nao é a vez dele, o CSS o deixa em opacidade 0. */
+  const [predio, setPredio] = useState(false);
+  const predioRef = useRef(false);
+  const predioApiRef = useRef<ExplorerApi | null>(null);
+  const predioProgressoRef = useRef(0);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)');
@@ -165,6 +196,21 @@ export default function OfficesScene() {
         );
         palco.style.setProperty('--os-p', String(p));
 
+        /* Sao Paulo: o mapa cede a cena para a torre da sede. O progresso vai
+           por chamada imperativa, nao por estado — a cena 3D nao pode depender
+           de re-render para acompanhar a rolagem. */
+        const sp = clamp01((p - SP_INICIO) / (1 - SP_INICIO));
+        palco.style.setProperty('--os-predio', String(clamp01(sp / PREDIO_SURGIR)));
+        predioProgressoRef.current = sp;
+        predioApiRef.current?.setProgress(sp);
+        predioApiRef.current?.setDestaque(
+          clamp01((sp - MARCADOR_INICIO) / (1 - MARCADOR_INICIO)),
+        );
+        if (!predioRef.current && p > SP_INICIO - PREDIO_MONTAR) {
+          predioRef.current = true;
+          setPredio(true);
+        }
+
         const trecho = (p - CIDADES_INICIO) / (1 - CIDADES_INICIO);
         const indice =
           trecho < 0 ? -1 : Math.min(CIDADES.length - 1, Math.floor(trecho * CIDADES.length));
@@ -179,7 +225,7 @@ export default function OfficesScene() {
     return () => {
       window.removeEventListener('resize', atualizar);
       gatilho.kill();
-      for (const nome of ['--os-contorno', '--os-entrada', '--os-rota', '--os-p']) {
+      for (const nome of ['--os-contorno', '--os-entrada', '--os-rota', '--os-p', '--os-predio']) {
         palco.style.removeProperty(nome);
       }
     };
@@ -253,6 +299,28 @@ export default function OfficesScene() {
           <div className="os-mapa">
             <BrazilOfficesMap />
           </div>
+
+          {/* A sede em tres dimensoes, na MESMA cena do mapa: quando a rolagem
+              chega em Sao Paulo a torre surge sobre o mapa que se apaga, e o 2º
+              andar acende marcado — é o andar do escritorio. As fotos daquele
+              andar estao no painel de Sao Paulo, ao lado.
+
+              Sem controles proprios: aqui o predio é cena de apoio de uma secao
+              dirigida por rolagem, e a roda do mouse tem de continuar rolando a
+              pagina em vez de dar zoom. Quem quiser girar o modelo tem o
+              explorador 360°, que segue com a moldura inteira. */}
+          {predio && (
+            <div className="os-predio">
+              <ExploradorPredio
+                model="tower"
+                apiRef={predioApiRef}
+                progressRef={predioProgressoRef}
+                andarDestacado={2}
+                rotuloDestaque="2º andar · escritório São Paulo"
+                mostrarControles={false}
+              />
+            </div>
+          )}
 
           <div className="os-cidades">
             {CIDADES.map((c) => (

@@ -32,6 +32,10 @@ export type BuildingModel = "tower" | "campus";
 /** Interface imperativa do scroll: o pai empurra progresso sem re-renderizar. */
 export type ExplorerApi = {
   setProgress: (progress: number) => void;
+  /* Intensidade do marcador de andar, de 0 a 1. Fica separada do progresso
+     porque quem decide QUANDO o escritorio acende é a cena que hospeda o
+     predio — na cena dos escritorios é o trecho de Sao Paulo. */
+  setDestaque: (intensity: number) => void;
 };
 
 type BuildingExplorerProps = {
@@ -42,6 +46,15 @@ type BuildingExplorerProps = {
   /* Progresso ja acumulado quando a cena monta. Sem isso, trocar de modelo no
      meio da secao reiniciaria o predio do zero. */
   progressRef?: React.RefObject<number>;
+  /* Andar a marcar na fachada da torre (o do escritorio de Sao Paulo é o 2º).
+     Sem o prop nao existe marcador nenhum: o explorador da propria secao 360°
+     continua como era. */
+  andarDestacado?: number;
+  rotuloDestaque?: string;
+  /* Bussola, vistas rapidas e orbita pela mao do visitante. Desligados quando o
+     predio entra como cena de apoio dentro de OUTRA secao dirigida por rolagem:
+     ali a roda do mouse tem de continuar rolando a pagina, e nao dar zoom. */
+  mostrarControles?: boolean;
 };
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value));
@@ -822,10 +835,158 @@ function getHeading(camera: THREE.PerspectiveCamera, target: THREE.Vector3) {
   return "Esquerda";
 }
 
+/* ---------------------------------------------------------------------------
+   Marcador de andar
+
+   Marca UM andar da torre — na cena dos escritorios, o 2º, onde fica o
+   escritorio de Sao Paulo. Sao as mesmas medidas das esquadrias frontais
+   (`createFrontGrid`), e nao valores parecidos: o marcador tem de cair
+   exatamente sobre a laje daquele andar.
+
+   Entra na fachada frontal E na traseira, que sao identicas no predio real: a
+   camera da volta na secao, e um marcador só de um lado desapareceria por
+   metade do percurso. O rotulo é um `Sprite`, que encara a camera sozinho — e
+   com teste de profundidade ligado, para o rotulo do lado de tras ficar
+   escondido pelo predio em vez de flutuar sobre ele.
+--------------------------------------------------------------------------- */
+
+const PISO_BASE = 1.45;
+const PISO_ALTURA = 0.335;
+
+type MarcadorApi = { setIntensidade: (valor: number) => void };
+
+/** Rotulo em textura de canvas: texto no espaco 3D sem carregar fonte nenhuma. */
+function criarRotulo(texto: string) {
+  const canvas = document.createElement("canvas");
+  const contexto = canvas.getContext("2d");
+  if (!contexto) return null;
+
+  /* Densidade fixa de 2: é textura, nao layout — nao acompanha o zoom da
+     pagina, e 2 basta para o texto nao serrar. */
+  const densidade = 2;
+  const corpo = 30 * densidade;
+  const fonte = `700 ${corpo}px system-ui, sans-serif`;
+  contexto.font = fonte;
+  canvas.width = Math.ceil(contexto.measureText(texto).width + 44 * densidade);
+  canvas.height = Math.ceil(corpo * 2.1);
+
+  // Redimensionar zera o contexto: a fonte precisa ser declarada de novo.
+  contexto.font = fonte;
+  contexto.textBaseline = "middle";
+  contexto.fillStyle = "rgba(3, 12, 24, 0.82)";
+  const raio = canvas.height / 2;
+  contexto.beginPath();
+  if (typeof contexto.roundRect === "function") {
+    contexto.roundRect(1, 1, canvas.width - 2, canvas.height - 2, raio);
+  } else {
+    contexto.rect(1, 1, canvas.width - 2, canvas.height - 2);
+  }
+  contexto.fill();
+  contexto.strokeStyle = "rgba(120, 214, 255, 0.75)";
+  contexto.lineWidth = 2 * densidade;
+  contexto.stroke();
+  contexto.fillStyle = "#eaf8ff";
+  contexto.fillText(texto, 22 * densidade, canvas.height / 2 + 1);
+
+  const textura = new THREE.CanvasTexture(canvas);
+  textura.colorSpace = THREE.SRGBColorSpace;
+  const material = new THREE.SpriteMaterial({
+    map: textura,
+    transparent: true,
+    opacity: 0,
+  });
+  const sprite = new THREE.Sprite(material);
+  const altura = 0.46;
+  sprite.scale.set((altura * canvas.width) / canvas.height, altura, 1);
+  return { sprite, material };
+}
+
+function criarMarcadorAndar(andar: number, rotulo: string) {
+  const group = new THREE.Group();
+  group.name = "office-floor-marker";
+  group.visible = false;
+
+  /* Centro da faixa: entre a linha de piso do andar e a do andar seguinte. */
+  const y = PISO_BASE + andar * PISO_ALTURA + PISO_ALTURA / 2;
+  // Alguns milimetros a frente das esquadrias, senao as duas superficies brigam.
+  const z = FRONT_Z + 0.078;
+  // Ala esquerda da fachada frontal, a mesma de `createFrontFacade`.
+  const x = -1.72;
+
+  const faixaMaterial = new THREE.MeshBasicMaterial({
+    color: 0x64d9ff,
+    transparent: true,
+    opacity: 0,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+  });
+  const tracoMaterial = new THREE.LineBasicMaterial({
+    color: 0xf2fbff,
+    transparent: true,
+    opacity: 0,
+  });
+  const faixaGeometria = new THREE.PlaneGeometry(2.02, PISO_ALTURA * 0.86);
+
+  const frente = new THREE.Group();
+  const faixa = new THREE.Mesh(faixaGeometria, faixaMaterial);
+  faixa.position.set(x, y, z);
+  frente.add(faixa);
+
+  const contorno = new THREE.LineSegments(
+    new THREE.EdgesGeometry(faixaGeometria),
+    tracoMaterial,
+  );
+  contorno.position.copy(faixa.position);
+  frente.add(contorno);
+
+  /* Haste em cotovelo, da borda da faixa até onde o rotulo pousa. */
+  const haste = new THREE.Line(
+    new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(x - 1.01, y, z),
+      new THREE.Vector3(x - 1.95, y + 0.78, z),
+      new THREE.Vector3(x - 3.05, y + 0.78, z),
+    ]),
+    tracoMaterial,
+  );
+  frente.add(haste);
+
+  const etiqueta = rotulo ? criarRotulo(rotulo) : null;
+  if (etiqueta) {
+    etiqueta.sprite.position.set(
+      x - 3.05 - etiqueta.sprite.scale.x / 2,
+      y + 0.78,
+      z,
+    );
+    frente.add(etiqueta.sprite);
+  }
+
+  group.add(frente);
+  /* Fachada traseira: `clone()` compartilha os materiais, entao os dois lados
+     acendem juntos com uma unica escrita de opacidade. */
+  const tras = frente.clone();
+  tras.rotation.y = Math.PI;
+  group.add(tras);
+
+  const api: MarcadorApi = {
+    setIntensidade: (valor) => {
+      const t = clamp01(valor);
+      group.visible = t > 0.002;
+      faixaMaterial.opacity = 0.34 * t;
+      tracoMaterial.opacity = 0.9 * t;
+      if (etiqueta) etiqueta.material.opacity = t;
+    },
+  };
+
+  return { group, api };
+}
+
 export function BuildingExplorer({
   model,
   apiRef,
   progressRef,
+  andarDestacado,
+  rotuloDestaque,
+  mostrarControles = true,
 }: BuildingExplorerProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const viewApiRef = useRef<ViewApi | null>(null);
@@ -902,6 +1063,9 @@ export function BuildingExplorer({
        movimento a cena fica parada e o visitante gira quando quiser. */
     controls.autoRotate = !prefersReducedMotion();
     controls.autoRotateSpeed = 0.45;
+    /* Sem a moldura de controles o predio é cena de apoio de outra secao: a
+       roda do mouse ali tem de continuar rolando a pagina. */
+    controls.enabled = mostrarControles;
 
     /* A torre traz os proprios materiais (os do estudo River Park); o complexo
        segue com a paleta azul da marca. Por isso `makeMaterials()` só é chamado
@@ -911,6 +1075,15 @@ export function BuildingExplorer({
         ? createTowerModel()
         : createCampusModel(makeMaterials());
     scene.add(building);
+
+    /* O marcador entra no grupo do predio, e nao na cena: assim ele acompanha
+       qualquer transformacao que o edificio receba. Só a torre tem andares
+       medidos — no complexo modular a nocao de "2º andar" nao existe. */
+    const marcador =
+      model === "tower" && andarDestacado
+        ? criarMarcadorAndar(andarDestacado, rotuloDestaque ?? "")
+        : null;
+    if (marcador) building.add(marcador.group);
 
     const ground = new THREE.Mesh(
       new THREE.CircleGeometry(model === "tower" ? 11 : 15, 96),
@@ -1085,17 +1258,24 @@ export function BuildingExplorer({
       orbitar(clamp01((p - FASE_MONTAGEM) / (1 - FASE_MONTAGEM)));
     };
 
-    if (apiRef) apiRef.current = { setProgress: aplicarProgresso };
+    if (apiRef) {
+      apiRef.current = {
+        setProgress: aplicarProgresso,
+        setDestaque: (intensidade) => marcador?.api.setIntensidade(intensidade),
+      };
+    }
 
     /* Sem pai dirigindo o scroll — ou com preferencia por menos movimento, ou em
        tela estreita, casos em que o pai nao cria o gatilho — o edificio nasce
-       completo. O predio nunca depende de rolagem para existir. */
+       completo. O predio nunca depende de rolagem para existir, e o andar do
+       escritorio ja chega marcado: o estado final do marcador é aceso. */
     const dirigidoPeloScroll = Boolean(apiRef) && !prefersReducedMotion();
     if (dirigidoPeloScroll) {
       controls.autoRotate = false;
       aplicarProgresso(progressRef?.current ?? 0);
     } else {
       montar(1);
+      marcador?.api.setIntensidade(1);
     }
 
     const resize = () => {
@@ -1147,9 +1327,18 @@ export function BuildingExplorer({
       viewApiRef.current = null;
       if (apiRef) apiRef.current = null;
       scene.traverse((object) => {
+        /* `Sprite` fica de fora do bloco abaixo porque a geometria dele é
+           compartilhada pela biblioteca: descartar a geometria de um sprite
+           quebraria qualquer outro. Material e textura sao nossos. */
+        if (object instanceof THREE.Sprite) {
+          object.material.map?.dispose();
+          object.material.dispose();
+          return;
+        }
         if (
           object instanceof THREE.Mesh ||
-          object instanceof THREE.LineSegments
+          // `LineSegments` é subclasse de `Line`: a haste do marcador entra aqui.
+          object instanceof THREE.Line
         ) {
           object.geometry.dispose();
           const objectMaterials = Array.isArray(object.material)
@@ -1163,7 +1352,7 @@ export function BuildingExplorer({
     };
     /* `apiRef`/`progressRef` sao refs estaveis do pai: entram na lista para o
        lint, mas nao reconstroem a cena. Quem reconstroi é a troca de modelo. */
-  }, [model, apiRef, progressRef]);
+  }, [model, apiRef, progressRef, andarDestacado, rotuloDestaque, mostrarControles]);
 
   return (
     <div className="three-explorer-shell">
@@ -1177,7 +1366,7 @@ export function BuildingExplorer({
         disponível neste dispositivo.
       </p>
 
-      <div ref={hudRef}>
+      <div ref={hudRef} hidden={!mostrarControles || undefined}>
         <div className="compass-hud" aria-live="polite">
           <span className="compass-ring" aria-hidden="true">
             <i />

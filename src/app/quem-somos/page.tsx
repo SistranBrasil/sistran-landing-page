@@ -89,7 +89,14 @@ export default function Page() {
 
         {/* Explorador 3D. Fica junto dos escritorios porque é do edificio que
             trata; entra sem titulo e sem texto novo — o pedido foi manter o
-            componente 3D, nao acrescentar escrita. */}
+            componente 3D, nao acrescentar escrita.
+
+            A torre tambem aparece DENTRO da cena acima, no trecho de Sao Paulo,
+            com o 2º andar marcado — lá ela é dirigida pela rolagem e nao aceita
+            o ponteiro. Este bloco continua sendo o explorador de verdade: gira
+            com o arraste, tem bussola, vistas rapidas e o complexo modular.
+            Cada cena pausa o proprio laco de render quando sai da tela, entao só
+            uma delas desenha por vez. */}
         <section aria-label="Explorador arquitetônico 360°" className="section-py pt-0">
           <div className="container-lp">
             <BuildingShowcase />
