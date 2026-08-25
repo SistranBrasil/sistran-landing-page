@@ -75,11 +75,10 @@ export default function Page() {
               className="font-display text-section font-bold text-ink"
             />
           </div>
-          {/* Mapa das tres cidades com as fotos dos escritorios: a rolagem
-              percorre Pato Branco, Sao Paulo e Rio de Janeiro. As descricoes
-              sao as mesmas de antes, agora sobre o mapa. O site descreve
-              apenas SP e Pato Branco; o Rio de Janeiro aparece no rodape e em
-              "São 3 escritórios no Brasil", mas nao tem texto.
+          {/* Mapa com as fotos dos escritorios: a rolagem percorre Pato Branco
+              e Sao Paulo. As descricoes sao as mesmas de antes, agora sobre o
+              mapa. O Rio de Janeiro saiu da cena por ora — continua no rodape e
+              na pagina de contato.
               Fica fora do container de proposito: em telas largas o mapa toma a
               largura inteira da janela. Em tela estreita a cena volta a ser
               lista, e por isso ela mesma reaplica a margem lateral. */}

@@ -9,9 +9,11 @@ import BrazilOfficesMap from './BrazilOfficesMap';
 
 /**
  * Cena dos escritorios: o mapa fica preso na tela enquanto a rolagem percorre as
- * tres cidades de sul para nordeste — Pato Branco, Sao Paulo, Rio de Janeiro. A
- * cada cidade o marcador acende, a rota chega até ele e as fotos daquele
- * escritorio entram.
+ * cidades de sul para nordeste — Pato Branco e Sao Paulo. A cada cidade o
+ * marcador acende, a rota chega até ele e as fotos daquele escritorio entram.
+ *
+ * O Rio de Janeiro saiu da cena por ora: continua no rodape e na pagina de
+ * contato, que sao as suas outras aparicoes no site.
  *
  * A secao é alta com o interior `sticky`, como no explorador 3D e na secao de
  * diferenciais, e nao `pin: true`: pin remonta o no no DOM e desalinha com o
@@ -26,8 +28,7 @@ import BrazilOfficesMap from './BrazilOfficesMap';
  * rota inteira desenhada e todas as fotos visiveis.
  *
  * Os textos sao os que o site ja tem: as descricoes de Sao Paulo e Pato Branco de
- * `OFFICES` e os rotulos do proprio mapa. O Rio de Janeiro nao tem descricao nem
- * foto no material — acende no mapa e aparece com o nome, nada foi inventado.
+ * `OFFICES` e os rotulos do proprio mapa.
  */
 
 const clamp01 = (valor: number) => Math.min(1, Math.max(0, valor));
@@ -82,7 +83,6 @@ const CIDADES: Cidade[] = [
       },
     ],
   },
-  { id: 'rj', nome: 'Rio de Janeiro', fotos: [] },
 ];
 
 function Fotos({ fotos }: { fotos: Foto[] }) {
@@ -158,7 +158,7 @@ export default function OfficesScene() {
           String(clamp01((p - PREENCHE_INICIO) / (ENTRADA_FIM - PREENCHE_INICIO))),
         );
         /* A rota comeca depois da primeira cidade se apresentar e termina antes
-           do fim, para o Rio nao acender no ultimo pixel. */
+           do fim, para Sao Paulo nao acender no ultimo pixel. */
         palco.style.setProperty(
           '--os-rota',
           String(clamp01((p - ROTA_INICIO) / (ROTA_FIM - ROTA_INICIO))),
@@ -188,7 +188,7 @@ export default function OfficesScene() {
   /* Modo lista (abaixo de 1024px): sem tela cheia e sem sticky, mas o mapa
      continua surgindo com a rolagem — se desenha enquanto a secao atravessa a
      janela. É a mesma partitura do modo scroll, só sem o ciclo das cidades: em
-     tela estreita as tres ficam acesas, porque nao ha trecho por cidade.
+     tela estreita as duas ficam acesas, porque nao ha trecho por cidade.
 
      Nada aqui é requisito: se este efeito nao rodar (sem JavaScript, ou com
      movimento reduzido), as variaveis nao existem e o CSS usa 1 em todas — o

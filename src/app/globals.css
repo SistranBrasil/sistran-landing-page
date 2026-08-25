@@ -3843,7 +3843,7 @@ html[data-motion="reduce"] .bm-halo {
    direto no no pelo componente.
 
    Todos os valores padrao sao o estado final: sem JavaScript, em tela estreita
-   ou com movimento reduzido, o mapa aparece desenhado, a rota inteira, as tres
+   ou com movimento reduzido, o mapa aparece desenhado, a rota inteira, as duas
    cidades acesas e todas as fotos visiveis.
    ========================================================================== */
 
@@ -3859,21 +3859,18 @@ html[data-motion="reduce"] .bm-halo {
 .os-palco[data-ativa="pr"] .bm-mapa g[data-cidade="pr"],
 .os-palco[data-ativa="pr"] .bm-chamadas path[data-cidade="pr"],
 .os-palco[data-ativa="sp"] .bm-mapa g[data-cidade="sp"],
-.os-palco[data-ativa="sp"] .bm-chamadas path[data-cidade="sp"],
-.os-palco[data-ativa="rj"] .bm-mapa g[data-cidade="rj"],
-.os-palco[data-ativa="rj"] .bm-chamadas path[data-cidade="rj"] {
+.os-palco[data-ativa="sp"] .bm-chamadas path[data-cidade="sp"] {
   opacity: 1;
 }
 /* Cidade que ja passou continua marcada, discreta: o percurso fica legivel. */
-.os-palco[data-ativa="sp"] .bm-mapa g[data-cidade="pr"],
-.os-palco[data-ativa="rj"] .bm-mapa g[data-cidade="pr"] {
+.os-palco[data-ativa="sp"] .bm-mapa g[data-cidade="pr"] {
   opacity: 0.4;
 }
 
 /* --- Sao Paulo fica marcada ---------------------------------------------- */
 /* Depois de o mapa se desenhar, Sao Paulo continua acesa em todos os trechos —
-   é a sede, e a secao existe para mostra-la. As outras duas cidades acendem no
-   seu trecho e depois recuam; esta nao. Vem DEPOIS das regras acima de proposito,
+   é a sede, e a secao existe para mostra-la. Pato Branco acende no seu trecho e
+   depois recua; esta nao. Vem DEPOIS das regras acima de proposito,
    para vencer o recuo para 0.4. */
 .os-palco[data-ativa] .bm-mapa g[data-cidade="sp"] {
   opacity: 1;
@@ -4128,16 +4125,8 @@ html[data-motion="reduce"] .bm-halo {
     right: clamp(1rem, 3vw, 3.5rem);
     bottom: clamp(1rem, 6vh, 4.5rem);
   }
-  /* O Rio nao tem descricao nem foto no material do site: entra só com o nome,
-     e por isso o painel é estreito. Nada foi inventado para preencher. */
-  .os-palco[data-modo="scroll"] .os-painel[data-cidade="rj"] {
-    right: clamp(1rem, 3vw, 3.5rem);
-    top: clamp(4rem, 12vh, 8rem);
-    width: auto;
-  }
   .os-palco[data-modo="scroll"][data-ativa="pr"] .os-painel[data-cidade="pr"],
-  .os-palco[data-modo="scroll"][data-ativa="sp"] .os-painel[data-cidade="sp"],
-  .os-palco[data-modo="scroll"][data-ativa="rj"] .os-painel[data-cidade="rj"] {
+  .os-palco[data-modo="scroll"][data-ativa="sp"] .os-painel[data-cidade="sp"] {
     opacity: 1;
     transform: none;
     pointer-events: auto;
