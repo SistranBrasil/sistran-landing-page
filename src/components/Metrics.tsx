@@ -31,7 +31,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { animate, motion, useMotionValue, useTransform } from 'motion/react';
+import { animate } from 'motion/react';
 import { METRICS } from '@/data/metrics';
 import { prefersReducedMotion } from '@/lib/motion';
 import ImpactVisual from '@/components/ui/impact/ImpactVisuais';
@@ -70,35 +70,58 @@ const doisDigitos = (n: number) => String(n).padStart(2, '0');
  * estao TODOS dentro da viewport ao mesmo tempo, entao todos contariam juntos no
  * primeiro quadro. O gatilho certo aqui é "virou o indicador ativo".
  *
- * O MotionValue nasce no valor FINAL: é isso que o servidor renderiza, e é o que
- * fica na tela sem JavaScript ou com movimento reduzido. A contagem so acontece
- * quando o indicador fica ativo, e uma unica vez — voltar e reavancar a rolagem
- * nao reinicia o numero.
+ * O numero final é filho REAL do span: é isso que o servidor renderiza, e é o
+ * que fica na tela sem JavaScript ou com movimento reduzido. A contagem so
+ * acontece quando o indicador fica ativo, e uma unica vez — voltar e reavancar a
+ * rolagem nao reinicia o numero.
+ *
+ * A contagem escreve `textContent` por ref em vez de passar um MotionValue como
+ * filho de `motion.span`. Nao é preferencia de estilo: com o MotionValue como
+ * filho, o texto do servidor e o do cliente se somavam na hidratacao e o span
+ * ficava com o numero DUAS vezes ("850850"); como ele tem largura reservada e
+ * `line-height: 0.95`, o excedente quebrava linha e as duas linhas se
+ * sobrepunham. Por ref nao ha texto vindo de dois lugares.
  */
 function ImpactNumero({ valor, ativo }: { valor: number; ativo: boolean }) {
-  const conta = useMotionValue(valor);
-  const texto = useTransform(conta, (v) => Math.round(v).toString());
+  const alvo = useRef<HTMLSpanElement>(null);
   const jaContou = useRef(false);
 
   useEffect(() => {
     if (!ativo || jaContou.current) return;
     jaContou.current = true;
     if (prefersReducedMotion()) return;
-    conta.set(0);
-    const controle = animate(conta, valor, { duration: 1.1, ease: [0.22, 1, 0.36, 1] });
-    return () => controle.stop();
-  }, [ativo, conta, valor]);
+    const no = alvo.current;
+    if (!no) return;
+    const controle = animate(0, valor, {
+      duration: 1.1,
+      ease: [0.22, 1, 0.36, 1],
+      onUpdate: (v) => {
+        no.textContent = String(Math.round(v));
+      },
+      /* Fecha exatamente no valor: `Math.round` do ultimo quadro poderia parar
+         um digito antes. */
+      onComplete: () => {
+        no.textContent = String(valor);
+      },
+    });
+    /* Se a secao desmontar no meio da contagem, o que fica é o valor certo. */
+    return () => {
+      controle.stop();
+      no.textContent = String(valor);
+    };
+  }, [ativo, valor]);
 
   return (
-    <motion.span
+    <span
+      ref={alvo}
       aria-hidden
       className="impact-numero"
       /* Largura reservada pelo numero final: contando 0 -> 850 o texto passa de
          um para tres digitos, e sem a reserva o `+` ao lado escorregaria. */
       style={{ minWidth: `${String(valor).length}ch` }}
     >
-      {texto}
-    </motion.span>
+      {valor}
+    </span>
   );
 }
 

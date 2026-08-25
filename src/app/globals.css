@@ -5375,6 +5375,9 @@ html[data-motion="reduce"] .ct-veu {
 .impact-numero {
   display: inline-block;
   text-align: right;
+  /* Trava de seguranca: com `line-height: 0.95` no pai, qualquer quebra de linha
+     aqui faria as linhas se sobreporem em vez de empilhar. O numero nunca quebra. */
+  white-space: nowrap;
 }
 .impact-mais {
   font-size: 0.55em;
