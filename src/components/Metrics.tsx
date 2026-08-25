@@ -40,6 +40,7 @@ import {
   CAIXA_L,
   CURVA_D,
   alturaDoIndicador,
+  coord,
   pontoNaCurva,
   posicaoDoIndicador,
 } from '@/components/ui/impact/geometria';
@@ -320,10 +321,13 @@ export default function Metrics() {
                           return (
                             <line
                               key={t}
-                              x1={100 + Math.cos(a) * r1}
-                              y1={100 + Math.sin(a) * r1}
-                              x2={100 + Math.cos(a) * r2}
-                              y2={100 + Math.sin(a) * r2}
+                              /* `coord` arredonda: sem ele o cosseno do Node e
+                                 o do navegador diferem no ultimo digito e o
+                                 React acusa divergencia de hidratacao. */
+                              x1={coord(100 + Math.cos(a) * r1)}
+                              y1={coord(100 + Math.sin(a) * r1)}
+                              x2={coord(100 + Math.cos(a) * r2)}
+                              y2={coord(100 + Math.sin(a) * r2)}
                             />
                           );
                         })}

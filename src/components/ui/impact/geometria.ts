@@ -14,6 +14,17 @@
  * para centralizar a trilha.
  */
 
+/**
+ * Coordenada pronta para virar atributo SVG.
+ *
+ * `Math.cos`/`Math.sin` NAO sao especificadas bit a bit pelo IEEE 754: o V8 do
+ * Node e o do navegador divergem no ultimo digito da mantissa. Como o React
+ * compara atributos como texto, `116.58340096719189` (servidor) contra
+ * `...188` (cliente) virava aviso de hidratacao. Truncar em tres casas mata a
+ * divergencia — e 0.001 unidade de uma caixa de 200 nao existe na tela.
+ */
+export const coord = (n: number): number => Number(n.toFixed(3));
+
 export const CAIXA_L = 700;
 export const CAIXA_A = 200;
 

@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactElement } from 'react';
 import type { ImpactVisual } from '@/data/types';
+import { coord } from '@/components/ui/impact/geometria';
 
 /**
  * Os sete componentes contextuais da secao "Sistran em numeros".
@@ -16,6 +17,10 @@ import type { ImpactVisual } from '@/data/types';
  * `[data-visivel]` em globals.css). Nada aqui roda `setInterval` nem RAF.
  *
  * Todos sao decorativos: `aria-hidden` no `<svg>`, nenhum foco, nenhum texto.
+ *
+ * Coordenada calculada com seno/cosseno passa por `coord`: essas funcoes nao sao
+ * especificadas bit a bit pelo IEEE 754 e divergem no ultimo digito entre o Node
+ * e o navegador, o que o React acusa como divergencia de hidratacao.
  */
 
 const CAIXA = { viewBox: '0 0 200 200', 'aria-hidden': true, focusable: 'false' } as const;
@@ -149,10 +154,10 @@ function CapacityPulse() {
           return (
             <line
               key={i}
-              x1={100 + Math.cos(a) * r1}
-              y1={100 + Math.sin(a) * r1}
-              x2={100 + Math.cos(a) * r2}
-              y2={100 + Math.sin(a) * r2}
+              x1={coord(100 + Math.cos(a) * r1)}
+              y1={coord(100 + Math.sin(a) * r1)}
+              x2={coord(100 + Math.cos(a) * r2)}
+              y2={coord(100 + Math.sin(a) * r2)}
               style={{ '--iv-i': i } as CSSProperties}
             />
           );
@@ -210,10 +215,10 @@ function InsurerNetwork() {
           return (
             <line
               key={i}
-              x1={100 + Math.cos(a) * 18}
-              y1={100 + Math.sin(a) * 18}
-              x2={100 + Math.cos(a) * 62}
-              y2={100 + Math.sin(a) * 62}
+              x1={coord(100 + Math.cos(a) * 18)}
+              y1={coord(100 + Math.sin(a) * 18)}
+              x2={coord(100 + Math.cos(a) * 62)}
+              y2={coord(100 + Math.sin(a) * 62)}
             />
           );
         })}
@@ -224,8 +229,8 @@ function InsurerNetwork() {
           return (
             <circle
               key={i}
-              cx={100 + Math.cos(a) * 62}
-              cy={100 + Math.sin(a) * 62}
+              cx={coord(100 + Math.cos(a) * 62)}
+              cy={coord(100 + Math.sin(a) * 62)}
               r={i % 2 === 0 ? 5.5 : 3.5}
               style={{ '--iv-i': i } as CSSProperties}
             />
