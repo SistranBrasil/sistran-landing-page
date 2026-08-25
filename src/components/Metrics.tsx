@@ -397,6 +397,12 @@ export default function Metrics() {
                     key={m.id}
                     className="impact-no"
                     data-estado={i === ativo ? 'ativo' : i < ativo ? 'feito' : 'proximo'}
+                    /* Distancia (em etapas) até o indicador da vez, saturada em 3.
+                       É ela que faz o aglomerado rarefazer conforme se afasta do
+                       centro: o CSS liga os satelites por faixa de distancia. Vem
+                       do render, e nao do ScrollTrigger, porque só muda quando a
+                       etapa muda — nao a cada quadro. */
+                    data-dist={Math.min(3, Math.abs(i - ativo))}
                     style={{ '--impact-i': i } as React.CSSProperties}
                   />
                 ))}
@@ -416,6 +422,15 @@ export default function Metrics() {
                 <path className="impact-anel impact-anel-1" d="M100 186 A 86 86 0 0 1 14 100" />
                 <path className="impact-anel impact-anel-2" d="M28 128 A 76 76 0 0 0 172 128" />
                 <path className="impact-anel impact-anel-2" d="M172 72 A 76 76 0 0 0 28 72" />
+                {/* Terceiro anel, contínuo e quase apagado: dá um terceiro plano
+                    de profundidade sem competir com os dois arcos que giram. */}
+                <circle className="impact-anel impact-anel-3" cx="100" cy="100" r="66" />
+                {/* Arco de progresso: dois círculos sobrepostos, o de baixo como
+                    calha e o de cima recortado por `stroke-dashoffset`, que o CSS
+                    calcula a partir de `--impact-etapa` — a MESMA variável que o
+                    único ScrollTrigger da seção já escreve. Nenhum trigger novo. */}
+                <circle className="impact-arco-calha" cx="100" cy="100" r="92" />
+                <circle className="impact-arco-vivo" cx="100" cy="100" r="92" />
                 <g className="impact-ticks">
                   {Array.from({ length: 36 }, (_, t) => {
                     const a = (t / 36) * Math.PI * 2;
@@ -491,6 +506,14 @@ export default function Metrics() {
                 ))}
               </ol>
             </div>
+
+            {/* Régua discreta no pé do palco: traços em `repeating-linear-gradient`
+                e, por cima, a mesma régua em ciano recortada pelo progresso. Dá
+                escala ao percurso sem acrescentar texto — a etapa em número
+                continua no marcador do cabeçalho. */}
+            <span aria-hidden className="impact-regua">
+              <span className="impact-regua-viva" />
+            </span>
           </div>
 
           <span aria-hidden className="impact-vinheta" />

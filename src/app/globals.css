@@ -5332,7 +5332,8 @@ html[data-motion="reduce"] .ct-veu {
 .impact-curva-recorte,
 .impact-pulso,
 .impact-no,
-.impact-chegada {
+.impact-chegada,
+.impact-regua {
   display: none;
 }
 
@@ -5535,18 +5536,26 @@ html[data-motion="reduce"] .ct-veu {
     left: 0;
     top: 0;
   }
+  /* O futuro do percurso é um fio fino e quase cinza; o trecho já percorrido é
+     grosso e aceso. O contraste entre os dois é o que faz a curva contar quanto
+     do caminho foi feito — antes eram duas espessuras parecidas. */
   .impact-scroll[data-dirigindo] .impact-curva-base {
     fill: none;
-    stroke: rgba(150, 210, 255, 0.2);
-    stroke-width: 1.5;
+    stroke: rgba(196, 216, 238, 0.16);
+    stroke-width: 1.2;
     stroke-linecap: round;
   }
   .impact-scroll[data-dirigindo] .impact-curva-viva {
     fill: none;
     stroke: #0ed8f6;
-    stroke-width: 2.5;
+    stroke-width: 3;
     stroke-linecap: round;
-    filter: drop-shadow(0 0 10px rgba(14, 216, 246, 0.45));
+    /* Dois halos em vez de um: o curto define a borda do traço, o longo espalha a
+       luz no palco. Continua sendo um único `filter` por camada, e a camada é um
+       path só — não há custo por indicador. */
+    filter:
+      drop-shadow(0 0 6px rgba(14, 216, 246, 0.55))
+      drop-shadow(0 0 22px rgba(14, 216, 246, 0.28));
   }
   /* O trecho aceso é revelado por corte geométrico, em pixels da trilha. A borda
      dura do corte cai sempre no ponto da vez — que é o centro da tela — e
@@ -5624,6 +5633,14 @@ html[data-motion="reduce"] .ct-veu {
 
   /* Nodes: moram na trilha da CURVA, na linha-base, e não no item — é assim que
      eles ficam sobre a curva enquanto o conteúdo do vizinho fica deslocado. */
+  /* Cada node é um AGLOMERADO, não um ponto: a esfera principal (o próprio
+     elemento), um anel de órbita (`::before`) e um punhado de satélites
+     (`::after` + suas `box-shadow`, que são cópias da mesma forma redonda — quatro
+     pontos ao custo de um nó de layout).
+
+     A densidade cai com `data-dist`, a distância em etapas até o indicador da
+     vez: perto o aglomerado é completo, longe sobra só a esfera. É o que dá
+     profundidade ao percurso sem encher o palco de grafismo. */
   .impact-scroll[data-dirigindo] .impact-no {
     display: block;
     position: absolute;
@@ -5634,12 +5651,94 @@ html[data-motion="reduce"] .ct-veu {
     margin: -4.5px 0 0 -4.5px;
     border-radius: 999px;
     background: rgba(150, 210, 255, 0.5);
+    --no-orbita: rgba(155, 220, 255, 0.16);
+    --no-satelite: rgba(155, 220, 255, 0.4);
+    --no-sats: none;
     transition:
       background var(--dur-fast) var(--ease-out),
-      box-shadow var(--dur-fast) var(--ease-out);
+      box-shadow var(--dur-fast) var(--ease-out),
+      opacity var(--dur-base) var(--ease-out);
+  }
+  /* Anel de órbita e satélites são decoração de camada: `pointer-events` já não
+     existe aqui (o node é um `span` sem interação), e nenhum dos dois participa
+     do fluxo. */
+  .impact-scroll[data-dirigindo] .impact-no::before,
+  .impact-scroll[data-dirigindo] .impact-no::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-radius: 999px;
+  }
+  .impact-scroll[data-dirigindo] .impact-no::before {
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    border: 1px solid var(--no-orbita);
+  }
+  .impact-scroll[data-dirigindo] .impact-no::after {
+    width: 3px;
+    height: 3px;
+    margin: -1.5px 0 0 -1.5px;
+    background: var(--no-satelite);
+    box-shadow: var(--no-sats);
+    transform-origin: 1.5px 1.5px;
+  }
+  /* Faixas de densidade. `data-dist="3"` cobre 3 ou mais: o aglomerado se
+     desfaz e sobra a esfera, mais apagada. */
+  .impact-scroll[data-dirigindo] .impact-no[data-dist="0"] {
+    --no-sats:
+      15px -10px 0 0 var(--no-satelite),
+      -14px 11px 0 0 var(--no-satelite),
+      18px 9px 0 0 rgba(155, 220, 255, 0.24),
+      -17px -8px 0 0 rgba(155, 220, 255, 0.24);
+  }
+  .impact-scroll[data-dirigindo] .impact-no[data-dist="1"] {
+    --no-orbita: rgba(155, 220, 255, 0.12);
+    --no-satelite: rgba(155, 220, 255, 0.3);
+    --no-sats:
+      15px -10px 0 0 var(--no-satelite),
+      -14px 11px 0 0 rgba(155, 220, 255, 0.18);
+  }
+  .impact-scroll[data-dirigindo] .impact-no[data-dist="2"] {
+    --no-orbita: rgba(155, 220, 255, 0.08);
+    --no-satelite: rgba(155, 220, 255, 0.2);
+    --no-sats: -14px 11px 0 0 rgba(155, 220, 255, 0.12);
+  }
+  .impact-scroll[data-dirigindo] .impact-no[data-dist="3"] {
+    opacity: 0.55;
+  }
+  .impact-scroll[data-dirigindo] .impact-no[data-dist="3"]::before,
+  .impact-scroll[data-dirigindo] .impact-no[data-dist="3"]::after {
+    display: none;
   }
   .impact-scroll[data-dirigindo] .impact-no[data-estado="feito"] {
     background: rgba(14, 216, 246, 0.65);
+    --no-orbita: rgba(14, 216, 246, 0.18);
+    --no-satelite: rgba(14, 216, 246, 0.45);
+  }
+  /* O node da vez fica escondido pelo buraco da máscara (quem marca a chegada é
+     `.impact-chegada`), mas o aglomerado dele nasce fora do buraco — daí valer a
+     pena acendê-lo. */
+  .impact-scroll[data-dirigindo] .impact-no[data-estado="ativo"] {
+    background: #ffffff;
+    --no-orbita: rgba(14, 216, 246, 0.4);
+    --no-satelite: rgba(14, 216, 246, 0.85);
+    box-shadow: 0 0 18px 3px rgba(14, 216, 246, 0.4);
+  }
+  /* Movimento de permanência: o aglomerado respira e os satélites giram devagar
+     enquanto a etapa está parada. Só com a seção na tela — fora dela
+     `[data-visivel]` sai e o compositor descansa. */
+  .impact-sticky[data-visivel="1"] .impact-no[data-dist="0"]::before {
+    animation: impact-respira-anel 5.5s ease-in-out infinite;
+  }
+  .impact-sticky[data-visivel="1"] .impact-no[data-dist="0"]::after,
+  .impact-sticky[data-visivel="1"] .impact-no[data-dist="1"]::after {
+    animation: impact-orbita 34s linear infinite;
+  }
+  .impact-sticky[data-visivel="1"] .impact-no[data-dist="1"]::after {
+    animation-duration: 52s;
+    animation-direction: reverse;
   }
 
   /* ── A lente ────────────────────────────────────────────────────────────
@@ -5699,6 +5798,35 @@ html[data-motion="reduce"] .ct-veu {
   .impact-anel-2 {
     stroke: rgba(155, 220, 255, 0.3);
     stroke-width: 1;
+  }
+  .impact-anel-3 {
+    stroke: rgba(155, 220, 255, 0.14);
+    stroke-width: 0.8;
+  }
+  /* Arco de progresso. A calha é o círculo inteiro, apagado; o vivo é o mesmo
+     círculo com `stroke-dashoffset` proporcional à etapa.
+
+     578.053 é o perímetro de r=92 (2π·92) na caixa 200×200 do SVG — em unidades
+     de `viewBox`, e não em pixels de tela, então não depende do tamanho da lente.
+     Divide por 6 porque são SETE indicadores: `--impact-etapa` vai de 0 a
+     TOTAL-1. O `-90deg` põe o zero no topo. */
+  .impact-arco-calha,
+  .impact-arco-vivo {
+    fill: none;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 100px 100px;
+  }
+  .impact-arco-calha {
+    stroke: rgba(196, 216, 238, 0.1);
+    stroke-width: 1.6;
+  }
+  .impact-arco-vivo {
+    stroke: rgba(14, 216, 246, 0.8);
+    stroke-width: 1.6;
+    stroke-dasharray: 578.053;
+    stroke-dashoffset: calc(578.053 * (1 - var(--impact-etapa, 0) / 6));
+    filter: drop-shadow(0 0 6px rgba(14, 216, 246, 0.45));
   }
   .impact-ticks line {
     stroke: rgba(155, 220, 255, 0.28);
@@ -5837,6 +5965,86 @@ html[data-motion="reduce"] .ct-veu {
     opacity: 1;
     transform: none;
   }
+
+  /* ── Régua de base ──────────────────────────────────────────────────────────
+     Traços em `repeating-linear-gradient` (um só elemento, nenhum nó por traço) e
+     por cima a mesma régua acesa, recortada por `clip-path` na fração do
+     percurso já feita. Fica no rodapé da cena, longe da lente e dos indicadores
+     deslocados para baixo. */
+  .impact-scroll[data-dirigindo] .impact-regua {
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: clamp(18px, 3vh, 34px);
+    height: 10px;
+    z-index: 4;
+    pointer-events: none;
+    opacity: calc(0.4 + 0.6 * var(--impact-entrada, 1));
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(196, 216, 238, 0.22) 0 1px,
+      transparent 1px 16px
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent 0,
+      #000 12%,
+      #000 88%,
+      transparent 100%
+    );
+  }
+  .impact-scroll[data-dirigindo] .impact-regua-viva {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(14, 216, 246, 0.75) 0 1px,
+      transparent 1px 16px
+    );
+    /* O corte acompanha o progresso bruto da seção, que o ScrollTrigger já
+       escreve — não é uma segunda medição do percurso. */
+    clip-path: inset(0 calc(100% - 100% * var(--impact-p, 0)) 0 0);
+  }
+
+  /* Legibilidade dos indicadores laterais. Nada encolheu e a trilha não ficou
+     mais larga: o que muda é hierarquia interna (ordinal menor e mais marcado,
+     número com sombra que o separa dos anéis) e um pouco mais de presença nos
+     vizinhos, que estavam quase ilegíveis em 0.42. */
+  .impact-scroll[data-dirigindo] .impact-item[data-estado="feito"],
+  .impact-scroll[data-dirigindo] .impact-item[data-estado="proximo"] {
+    opacity: 0.52;
+  }
+  .impact-scroll[data-dirigindo] .impact-indice {
+    font-size: 0.66rem;
+    letter-spacing: 0.3em;
+    color: rgba(14, 216, 246, 0.7);
+  }
+  .impact-scroll[data-dirigindo]
+    .impact-item[data-estado="ativo"]
+    .impact-indice {
+    color: rgba(14, 216, 246, 0.95);
+  }
+  /* `text-shadow` não serve aqui: o número é gradiente recortado no texto
+     (`background-clip: text`), e a sombra sairia atrás do recorte. `filter`
+     aplica-se ao resultado pintado. */
+  .impact-scroll[data-dirigindo]
+    .impact-item[data-estado="ativo"]
+    .impact-valor {
+    filter: drop-shadow(0 6px 26px rgba(4, 26, 51, 0.85));
+  }
+  .impact-scroll[data-dirigindo]
+    .impact-item[data-estado="ativo"]
+    .impact-rotulo {
+    text-shadow: 0 2px 12px rgba(4, 26, 51, 0.8);
+  }
 }
 
 /* Entrada do contextual quando a lente troca de indicador. Como só existe um
@@ -5864,6 +6072,26 @@ html[data-motion="reduce"] .ct-veu {
   }
   50% {
     opacity: 1;
+  }
+}
+/* Respiro do anel de órbita do aglomerado ativo: escala mínima e opacidade, nada
+   que mexa em layout. */
+@keyframes impact-respira-anel {
+  0%,
+  100% {
+    transform: scale(0.94);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+/* Órbita dos satélites. Girar o `::after` gira também as cópias em `box-shadow`,
+   porque elas acompanham a forma. */
+@keyframes impact-orbita {
+  to {
+    transform: rotate(360deg);
   }
 }
 @keyframes impact-brilha {
@@ -5931,6 +6159,7 @@ html[data-motion="reduce"] .ct-veu {
   .impact-scroll[data-dirigindo] .impact-pulso,
   .impact-scroll[data-dirigindo] .impact-no,
   .impact-scroll[data-dirigindo] .impact-lente,
+  .impact-scroll[data-dirigindo] .impact-regua,
   .impact-scroll[data-dirigindo] .impact-vinheta {
     display: none !important;
   }
@@ -5989,6 +6218,7 @@ html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-curva-recorte,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-pulso,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-no,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-lente,
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-regua,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-vinheta {
   display: none !important;
 }
