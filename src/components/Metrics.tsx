@@ -114,7 +114,6 @@ function ImpactNumero({ valor, ativo }: { valor: number; ativo: boolean }) {
   return (
     <span
       ref={alvo}
-      aria-hidden
       className="impact-numero"
       /* Largura reservada pelo numero final: contando 0 -> 850 o texto passa de
          um para tres digitos, e sem a reserva o `+` ao lado escorregaria. */
@@ -361,22 +360,22 @@ export default function Metrics() {
                     </span>
                   </span>
 
-                  <p className="impact-indice">
-                    <span aria-hidden>{doisDigitos(i + 1)}</span>
-                    <span className="sr-only">Indicador {i + 1} de {TOTAL}</span>
+                  {/* Ordinal decorativo: a posicao no percurso ja vem da `<ol>`,
+                      entao repeti-la em texto acessivel seria leitura dobrada. */}
+                  <p aria-hidden className="impact-indice">
+                    {doisDigitos(i + 1)}
                   </p>
 
+                  {/* Nada aqui é `sr-only`: o numero e o sufixo SAO o texto
+                      acessivel. A versao anterior duplicava o valor num
+                      `sr-only` para poder esconder o contador do leitor de tela,
+                      e era essa copia que aparecia sobreposta ao numero. Com o
+                      valor real no HTML a copia perdeu a razao de existir. */}
                   <p className="impact-valor">
                     <ImpactNumero valor={m.value} ativo={i === ativo} />
-                    {/* Fora da contagem de proposito: dentro dela o `+` entraria
-                        no MotionValue e piscaria a cada quadro. */}
-                    <span aria-hidden className="impact-mais">
-                      {m.suffix}
-                    </span>
-                    <span className="sr-only">
-                      {m.value}
-                      {m.suffix}
-                    </span>
+                    {/* Fora do contador de proposito: dentro dele o `+` seria
+                        reescrito a cada quadro da contagem. */}
+                    <span className="impact-mais">{m.suffix}</span>
                   </p>
 
                   <p className="impact-rotulo">{m.label}</p>
