@@ -2086,6 +2086,72 @@ html[data-motion="reduce"] .orbit-counter {
   margin-inline: auto;
 }
 
+/* O painel inline é uma ilha ESCURA dentro de uma secao clara: na home ele vive
+   dentro de `.section-light`, cujos overrides pintam h2/h3/p/span/label de navy
+   (#0a1f44) para o texto nao desaparecer sobre fundo claro. Dentro deste cartao
+   o efeito é o oposto: navy sobre navy, texto invisivel — e só em parte dele,
+   porque os seletores de duas classes do painel (`.contact-dialog-campo label`)
+   ganham do override e os de uma classe (`.contact-dialog-titulo`) perdem. Era
+   isso que produzia a paleta pela metade.
+
+   Nao serve usar `.on-dark` aqui: ele achata tudo em branco translucido e
+   apagaria o ciano, que é a identidade do painel. Entao a excecao devolve os
+   tokens do proprio cartao, um por um.
+
+   `!important` apenas onde o override tambem usa (`[class*="eyebrow"]`,
+   `text-ink-muted`, `text-ink-faint`); no resto a especificidade de tres classes
+   ja vence sem ele. */
+.section-light .contact-inline,
+.section-light .contact-inline p,
+.section-light .contact-inline li,
+.section-light .contact-inline strong,
+.section-light .contact-inline em,
+.section-light .contact-inline small,
+.section-light .contact-inline span:not([class*="eyebrow"]) {
+  color: var(--contact-text);
+}
+.section-light .contact-inline h2,
+.section-light .contact-inline h3,
+.section-light .contact-inline h4,
+.section-light .contact-inline .contact-dialog-titulo {
+  color: var(--contact-text);
+}
+.section-light .contact-inline .contact-dialog-eyebrow,
+.section-light .contact-inline .contact-dialog-endereco-titulo,
+.section-light .contact-inline .contact-dialog-fone a,
+.section-light .contact-inline .contact-dialog-campo label span {
+  color: var(--contact-cyan) !important;
+}
+.section-light .contact-inline .contact-dialog-desc,
+.section-light .contact-inline .contact-dialog-fone-rotulo,
+.section-light .contact-inline .contact-dialog-fone-nota {
+  color: var(--contact-muted) !important;
+}
+.section-light .contact-inline .contact-dialog-endereco-texto {
+  color: rgba(247, 251, 255, 0.86);
+}
+.section-light .contact-inline .contact-dialog-campo label {
+  color: rgba(247, 251, 255, 0.7);
+}
+.section-light .contact-inline .contact-dialog-erro {
+  color: var(--contact-erro);
+}
+/* O botao tem fundo em degrade azul→ciano e rotulo branco: sem esta linha o
+   override o pintaria de navy e o texto sumiria dentro do proprio botao. */
+.section-light .contact-inline .contact-dialog-enviar {
+  color: #fff;
+}
+/* Dois `span` que carregam cor propria e ficam sobre fundo claro DENTRO do
+   cartao — a seta é uma pastilha branca, o icone do telefone uma caixa ciano
+   translucida. Ambos desenham `currentColor` num SVG, entao herdar o branco do
+   cartao os apagaria. */
+.section-light .contact-inline .contact-dialog-enviar-seta {
+  color: var(--contact-blue);
+}
+.section-light .contact-inline .contact-dialog-fone-icone {
+  color: var(--contact-cyan);
+}
+
 /* Veu: navy quase preto, translucido de proposito — o site continua legivel
    atras, como pedido. Nao chega a preto pleno. */
 .contact-dialog::backdrop {
