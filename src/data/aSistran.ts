@@ -2,7 +2,8 @@
    verbatim; as unicas mudancas estao comentadas.
    Fonte: .claude/conteudo-site/01-a-sistran.md */
 
-/** Secao 2 — Escritórios BRASIL. O site nao descreve o Rio de Janeiro. */
+/** Secao 2 — Escritórios BRASIL. A cena mostra Sao Paulo e Pato Branco; o Rio de
+    Janeiro saiu dela por ora e segue no rodape e na pagina de contato. */
 export const OFFICES = [
   {
     id: 'sp',

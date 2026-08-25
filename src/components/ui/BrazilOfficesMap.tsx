@@ -1,6 +1,7 @@
 /**
- * Mapa dos tres escritorios do Brasil: Pato Branco (PR), Sao Paulo (SP) e Rio de
- * Janeiro (RJ).
+ * Mapa dos escritorios do Brasil que a secao mostra: Pato Branco (PR) e Sao
+ * Paulo (SP). O Rio de Janeiro saiu da cena por ora — continua no rodape e na
+ * pagina de contato, que sao as suas outras aparicoes no site.
  *
  * Portado de `mapa-conexoes-latam-final.html`, que troca o Brasil isolado pela
  * America do Sul inteira ao fundo. Veio só o mapa: a pagina original tinha
@@ -28,14 +29,14 @@ const SOUTH_AMERICA_BORDERS =
 const BRAZIL_PATH =
   'M338.263 556.361L334.817 547.934L340.277 540.912L333.116 530.895L323.36 522.802L310.56 513.481L305.95 513.923L293.464 502.763L285.408 504.296L301.967 484.803L316.02 471.101L324.344 465.375L334.817 457.663L335.085 446.563L328.864 438.591L322.688 441.252L325.105 433.305L326.806 425.188L326.806 417.685L322.33 415.222L317.676 417.432L313.066 416.833L311.589 411.591L310.426 399.214L308.098 395.183L299.729 391.546L294.627 394.182L281.514 391.614L282.32 373.488L278.65 366.099L282.544 363.366L281.335 355.835L284.781 350.065L286.974 339.744L284.021 331.63L277.263 327.97L275.92 322.841L277.755 315.333L253.901 314.806L249.112 299.771L252.737 299.553L252.603 294.001L250.142 290.263L249.605 282.845L242.399 279.056L234.567 279.186L229.42 275.466L221.007 272.939L216.128 268.191L202.21 266.079L188.694 254.699L189.723 246.204L188.202 241.343L189.5 231.873L173.254 234.009L166.675 238.754L155.8 243.869L153.025 247.704L146.625 247.982L137.406 246.911L130.379 249.097L124.74 247.639L125.546 228.437L115.342 235.868L104.377 235.547L99.678 228.821L91.443 228.096L94.084 222.681L87.147 215.039L82 203.736L85.267 201.444L85.267 196.143L92.786 192.519L91.533 185.765L94.71 181.408L95.605 175.595L109.837 167.104L119.996 164.698L121.652 162.82L132.886 163.411L138.48 129.277L138.748 123.889L136.824 116.755L131.319 112.231L131.364 103.183L138.346 101.142L140.852 102.425L141.255 97.67L134.004 96.386L133.825 88.598L158.037 88.872L162.155 84.598L165.601 88.535L168.062 95.881L170.39 94.345L177.237 100.91L186.904 100.111L189.321 96.302L198.54 93.397L203.687 91.356L205.119 86.093L213.98 82.556L213.309 79.945L202.792 78.871L201.046 71.034L201.583 62.686L195.989 59.459L198.316 58.299L207.536 59.902L217.426 63.024L221.007 60.071L229.957 58.13L243.831 53.467L248.396 48.716L246.74 45.189L253.23 44.639L256.094 47.512L254.483 52.981L258.779 54.881L261.599 60.662L258.153 65.069L256.183 75.648L259.361 81.945L260.256 87.714L267.909 93.545L274.04 94.155L275.383 91.714L279.321 91.187L284.96 88.998L288.988 85.693L295.88 86.746L298.879 86.304L305.637 87.314L306.756 84.788L304.697 82.303L305.95 78.702L310.963 79.818L316.825 78.534L323.941 81.166L329.357 83.735L333.205 80.366L335.98 80.892L337.681 84.388L343.633 83.503L348.422 78.786L352.226 69.601L359.566 58.215L363.817 57.624L366.905 64.521L373.842 86.283L380.511 88.325L380.824 96.912L371.515 107.16L375.364 110.905L397.338 112.841L397.786 125.32L407.229 117.155L422.848 121.616L443.525 129.213L449.566 136.497L447.552 143.384L462.008 139.551L486.175 146.144L504.748 145.659L523.142 155.965L539.03 169.934L548.607 173.524L559.214 174.031L563.734 177.962L567.941 193.875L570 201.465L565.077 222.234L558.722 230.443L541.223 248.025L533.302 262.374L524.082 273.435L520.994 273.673L517.503 283.083L518.398 307.169L514.952 327.133L513.61 335.739L509.671 340.896L507.478 358.469L494.858 375.761L492.754 389.549L482.685 395.365L479.775 403.46L466.26 403.414L446.702 408.609L437.975 414.647L424.056 418.63L409.422 429.497L398.905 443.145L397.07 453.491L399.128 461.183L396.846 475.368L394.026 482.283L385.299 490.098L371.515 515.394L360.595 526.929L352.136 533.803L346.453 547.859Z';
 
-/* Rota Pato Branco -> Sao Paulo -> Rio, desenhada duas vezes: o traco de base
-   fica sempre visivel, e o de cima é o pulso que corre por ele. */
-const ROTA = 'M347 448C372 430 394 417 422 411C438 407 449 405 462 403';
+/* Rota Pato Branco -> Sao Paulo, desenhada duas vezes: o traco de base fica
+   sempre visivel, e o de cima é o pulso que corre por ele. O trecho que seguia
+   para o Rio saiu junto com a cidade. */
+const ROTA = 'M347 448C372 430 394 417 422 411';
 
 const PONTOS = [
   { cidade: 'pr', x: 347, y: 448 },
   { cidade: 'sp', x: 422, y: 411 },
-  { cidade: 'rj', x: 462, y: 403 },
 ];
 
 export default function BrazilOfficesMap() {
@@ -50,7 +51,7 @@ export default function BrazilOfficesMap() {
         <title id="bm-titulo">Mapa da América do Sul com o Brasil em destaque</title>
         <desc id="bm-descricao">
           Países sul-americanos em azul discreto e o Brasil iluminado, com Pato Branco conectada a
-          São Paulo e Rio de Janeiro.
+          São Paulo.
         </desc>
 
         <defs>
@@ -102,6 +103,16 @@ export default function BrazilOfficesMap() {
             em fracao de 0 a 1 sem calcular comprimento em JavaScript. Sem a
             rolagem fica desenhado inteiro, entao nao esconde nada. */}
         <path className="bm-pais-contorno" pathLength="1" d={BRAZIL_PATH} />
+        {/* Ponta acesa que corre a frente do traco enquanto ele se desenha: é o
+            mesmo contorno com um tracejado curto levado pela mesma fracao. Sem a
+            rolagem a fracao vale 1 e o CSS apaga a ponta — no estado final nao
+            existe desenho em andamento para marcar. */}
+        <path
+          className="bm-pais-cabeca"
+          pathLength="1"
+          d={BRAZIL_PATH}
+          filter="url(#bm-brilho-rota)"
+        />
 
         <g className="bm-relevo" clipPath="url(#bm-recorte)">
           <path d="M32 320C190 233 300 285 389 201S616 91 718 127" />
@@ -116,10 +127,11 @@ export default function BrazilOfficesMap() {
           <path className="bm-rota bm-rota-pulso" pathLength="1" d={ROTA} />
         </g>
 
+        {/* `pathLength` aqui tambem: a linha de chamada nao aparece de uma vez,
+            ela corre do marcador até o rotulo quando a cidade acende. */}
         <g className="bm-chamadas">
-          <path data-cidade="pr" d="M337 448H186L152 476H55" />
-          <path data-cidade="sp" d="M432 411H560L592 444H690" />
-          <path data-cidade="rj" d="M472 403H576L601 372H690" />
+          <path data-cidade="pr" pathLength="1" d="M337 448H186L152 476H55" />
+          <path data-cidade="sp" pathLength="1" d="M432 411H560L592 444H690" />
         </g>
 
         {PONTOS.map((p) => (
@@ -144,14 +156,6 @@ export default function BrazilOfficesMap() {
           </text>
           <text className="bm-coord" textAnchor="end" x="690" y="454">
             23.550° S / 46.633° W
-          </text>
-        </g>
-        <g className="bm-rotulo" data-cidade="rj">
-          <text textAnchor="end" x="690" y="359">
-            RIO DE JANEIRO – RJ
-          </text>
-          <text className="bm-coord" textAnchor="end" x="690" y="382">
-            22.926° S / 43.458° W
           </text>
         </g>
       </svg>

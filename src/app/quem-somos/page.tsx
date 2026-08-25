@@ -75,11 +75,10 @@ export default function Page() {
               className="font-display text-section font-bold text-ink"
             />
           </div>
-          {/* Mapa das tres cidades com as fotos dos escritorios: a rolagem
-              percorre Pato Branco, Sao Paulo e Rio de Janeiro. As descricoes
-              sao as mesmas de antes, agora sobre o mapa. O site descreve
-              apenas SP e Pato Branco; o Rio de Janeiro aparece no rodape e em
-              "São 3 escritórios no Brasil", mas nao tem texto.
+          {/* Mapa com as fotos dos escritorios: a rolagem percorre Pato Branco
+              e Sao Paulo. As descricoes sao as mesmas de antes, agora sobre o
+              mapa. O Rio de Janeiro saiu da cena por ora — continua no rodape e
+              na pagina de contato.
               Fica fora do container de proposito: em telas largas o mapa toma a
               largura inteira da janela. Em tela estreita a cena volta a ser
               lista, e por isso ela mesma reaplica a margem lateral. */}
@@ -90,7 +89,14 @@ export default function Page() {
 
         {/* Explorador 3D. Fica junto dos escritorios porque é do edificio que
             trata; entra sem titulo e sem texto novo — o pedido foi manter o
-            componente 3D, nao acrescentar escrita. */}
+            componente 3D, nao acrescentar escrita.
+
+            A torre tambem aparece DENTRO da cena acima, no trecho de Sao Paulo,
+            com o 2º andar marcado — lá ela é dirigida pela rolagem e nao aceita
+            o ponteiro. Este bloco continua sendo o explorador de verdade: gira
+            com o arraste, tem bussola, vistas rapidas e o complexo modular.
+            Cada cena pausa o proprio laco de render quando sai da tela, entao só
+            uma delas desenha por vez. */}
         <section aria-label="Explorador arquitetônico 360°" className="section-py pt-0">
           <div className="container-lp">
             <BuildingShowcase />
