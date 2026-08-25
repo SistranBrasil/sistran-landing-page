@@ -2040,33 +2040,735 @@ html[data-motion="reduce"] .orbit-counter {
    navegador — por isso o componente vive num portal para `document.body`, fora
    de qualquer ancestral com `transform`/`filter`/`clip`. */
 .contact-dialog {
-  width: min(100% - 2rem, 34rem);
-  max-height: 90svh;
+  /* Tokens locais do modal. O tema global (`--ink-*`, `--accent`) cobre o site
+     inteiro e é mais claro do que este cartao pede; aqui o navy é mais profundo
+     de proposito, para a foto e os campos elevados terem contraste. Ficam no
+     escopo do modal para nao vazarem para o resto da pagina. */
+  --contact-bg: #03182f;
+  --contact-bg-deep: #020f21;
+  --contact-surface: #0c223d;
+  --contact-surface-hover: #102a49;
+  --contact-cyan: #14c8f5;
+  --contact-blue: #138fdf;
+  --contact-text: #f7fbff;
+  --contact-muted: #a9bad0;
+  --contact-border: rgba(111, 181, 224, 0.28);
+  --contact-border-strong: rgba(20, 200, 245, 0.75);
+  --contact-erro: #ff9fa8;
+
+  --cd-altura: min(90svh, 47rem);
+  --cd-raio: 28px;
+  /* Quanto a barriga da curva avanca sobre a coluna do formulario. Um valor só,
+     usado na largura do painel e no recuo do corpo — se mudar aqui, os dois
+     acompanham. */
+  --cd-avanco: 3rem;
+
+  width: min(100% - 1.5rem, 68rem);
+  max-height: var(--cd-altura);
   padding: 0;
   border: 0;
   background: transparent;
-  color: #fff;
+  color: var(--contact-text);
   overflow: visible;
 }
 
+/* Veu: navy quase preto, translucido de proposito — o site continua legivel
+   atras, como pedido. Nao chega a preto pleno. */
 .contact-dialog::backdrop {
-  background: rgba(0, 26, 61, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  animation: contact-dialog-veil var(--dur-fast) var(--ease-out) both;
+  background: rgba(2, 12, 28, 0.72);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  animation: contact-dialog-veil 220ms var(--ease-out) both;
 }
 
 .contact-dialog[open] {
-  animation: contact-dialog-in var(--dur-fast) var(--ease-out) both;
+  animation: contact-dialog-in 320ms var(--ease-out) both;
 }
 
-/* O scroll é do miolo, não do <dialog>. */
 .contact-dialog-inner {
   position: relative;
-  max-height: 90svh;
-  padding: 2rem;
-  overflow-y: auto;
+  max-height: var(--cd-altura);
+  overflow: hidden auto;
   overscroll-behavior: contain;
+  border-radius: var(--cd-raio);
+  border: 1px solid var(--contact-border);
+  background:
+    radial-gradient(
+      ellipse 70% 60% at 88% 0%,
+      rgba(19, 143, 223, 0.18),
+      transparent 70%
+    ),
+    linear-gradient(
+      150deg,
+      var(--contact-bg) 0%,
+      var(--contact-bg-deep) 55%,
+      #03182f 100%
+    );
+  box-shadow:
+    0 60px 130px -45px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(20, 200, 245, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Brilho lento passando pela borda de cima. Decorativo: `transform` de um
+   pseudo-elemento, sem intervalo de JS e sem repintar o cartao. */
+.contact-dialog-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 4;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(20, 200, 245, 0.9) 45%,
+    rgba(167, 240, 255, 0.95) 50%,
+    rgba(20, 200, 245, 0.9) 55%,
+    transparent 100%
+  );
+  animation: contact-dialog-fio 7s var(--ease-in-out, ease-in-out) infinite;
+}
+
+/* Fora do fluxo e acima da foto: em tela estreita a foto é a faixa do topo, e o
+   botao cai justamente sobre ela. */
+.contact-dialog-close {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  z-index: 5;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+}
+.contact-dialog-close:hover {
+  background: rgba(20, 200, 245, 0.22);
+  border-color: var(--contact-border-strong);
+  transform: rotate(90deg);
+}
+
+.contact-dialog-grid {
+  display: grid;
+}
+@media (min-width: 60rem) {
+  .contact-dialog-grid {
+    /* 38% / 62%, a composicao assimetrica da referencia. O `minmax` garante o
+       piso de ~360px do painel: mais estreito que isso a curva fica apertada e o
+       cartao de endereco deixa de caber. */
+    grid-template-columns: minmax(22.5rem, 38fr) 62fr;
+    align-items: stretch;
+    /* O cartao para de rolar como um todo: quem rola é so a coluna direita. */
+    max-height: var(--cd-altura);
+  }
+  .contact-dialog-inner {
+    overflow: hidden;
+  }
+}
+
+/* --- painel visual: a foto da sede ---------------------------------------- */
+/* A divisao com o formulario nao é uma linha reta: a propria fotografia é
+   recortada num arco vertical — estreito no topo, mais largo perto do meio,
+   recuando na base. O recorte é uma mascara SVG (`mask-image`), e nao
+   `border-radius` nem um desenho por cima: a mascara vale para a caixa inteira,
+   entao a foto, o gradiente e as linhas decorativas terminam todos na mesma
+   curva. O `path` vem de `RECORTE_LATERAL`/`RECORTE_BASE` no componente, para a
+   silhueta e o fio ciano nunca divergirem. Ver as skills `clip-path` e
+   `gradientes-layers`. */
+.contact-dialog-foto {
+  position: relative;
+  /* Abaixo do corpo: se em alguma largura a barriga da curva chegar perto do
+     formulario, quem fica na frente é o texto. */
+  z-index: 0;
+  margin: 0;
+  min-height: 12rem;
+}
+/* A caixa que leva a mascara. Separada do <figure> porque o contorno ciano e o
+   cartao de endereco precisam ficar FORA do recorte. */
+.contact-dialog-foto-recorte {
+  position: absolute;
+  inset: 0;
+  isolation: isolate;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  /* Faixa no topo: arco na base. É o padrao, e a media query larga troca. */
+  -webkit-mask-image: var(--cd-mask-base);
+  mask-image: var(--cd-mask-base);
+}
+.contact-dialog-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+/* Gradiente navy concentrado na base: amarra a foto ao cartao e garante o
+   contraste do cartao de endereco, sem cobrir o predio com bloco chapado. */
+.contact-dialog-foto-recorte::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to top,
+      rgba(2, 15, 33, 0.94) 0%,
+      rgba(3, 24, 47, 0.55) 32%,
+      transparent 62%
+    ),
+    linear-gradient(120deg, rgba(19, 143, 223, 0.18), transparent 55%);
+}
+
+/* O fio ciano acompanhando o contorno. Sem nenhuma borda reta atras dele. */
+.contact-dialog-contorno {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.contact-dialog-contorno path {
+  fill: none;
+  stroke: rgba(20, 200, 245, 0.85);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 6px rgba(20, 200, 245, 0.45));
+}
+/* Só um dos dois contornos vale por vez — o que corresponde à mascara ativa. */
+.contact-dialog-contorno-lateral {
+  display: none;
+}
+
+@media (min-width: 60rem) {
+  .contact-dialog-foto-recorte {
+    -webkit-mask-image: var(--cd-mask-lateral);
+    mask-image: var(--cd-mask-lateral);
+  }
+  .contact-dialog-contorno-lateral {
+    display: block;
+  }
+  .contact-dialog-contorno-base {
+    display: none;
+  }
+  /* A barriga da curva avanca sobre a coluna do formulario: o painel é mais
+     largo que a propria coluna do grid. Sem isso a curva teria de caber dentro
+     de 38% e ficaria rasa. O recuo é devolvido no `padding-left` do corpo, para
+     o formulario nao encostar na curva. */
+  .contact-dialog-foto {
+    width: calc(100% + var(--cd-avanco));
+  }
+}
+
+/* Camada de conexoes: curvas finas e pontos que percorrem as linhas. Puramente
+   decorativa — `aria-hidden` no markup e sem eventos de ponteiro aqui. */
+.contact-dialog-rede {
+  --network-line-primary: rgba(38, 201, 238, 0.42);
+  --network-line-secondary: rgba(38, 201, 238, 0.24);
+  --network-line-tertiary: rgba(92, 184, 220, 0.16);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* Respiracao do conjunto. O valor pedido (0.18 a 0.32) multiplicaria os
+     alfas de cada fio (0.42/0.24/0.16) e a rede sumiria — 0.07 no pico. Entao
+     o alfa de cada fio é o pico literal e a respiracao guarda a mesma razao
+     (0.18/0.32 ≈ 0.56) sobre o grupo. */
+  animation: contact-dialog-rede-respiro 8s ease-in-out infinite;
+}
+/* Os tres niveis de intensidade. O `currentColor` dos stops resolve no proprio
+   gradiente (nao no path que o referencia), por isso a cor vive aqui. */
+#cd-rede-fio-1 {
+  color: var(--network-line-primary);
+}
+#cd-rede-fio-2 {
+  color: var(--network-line-secondary);
+}
+#cd-rede-fio-3 {
+  color: var(--network-line-tertiary);
+}
+.contact-dialog-rede .cd-linha {
+  fill: none;
+  /* `non-scaling-stroke`: a espessura fica em pixels de tela, entao 1px é 1px
+     em qualquer altura de painel. */
+  stroke-width: 1;
+}
+.contact-dialog-rede .cd-linha-1 {
+  /* Brilho quase imperceptivel, so na principal. */
+  filter: drop-shadow(0 0 1px rgba(20, 200, 245, 0.25));
+}
+.contact-dialog-rede .cd-linha-2 {
+  stroke-width: 0.75;
+}
+.contact-dialog-rede .cd-linha-3 {
+  stroke-width: 0.5;
+}
+
+/* Pontos: nucleo pequeno e halo proprio, com hierarquia — um principal, dois
+   intermediarios, dois quase imperceptiveis. */
+.contact-dialog-rede .cd-ponto-nucleo {
+  fill: #d6f6ff;
+}
+.contact-dialog-rede .cd-ponto-halo {
+  fill: rgba(38, 201, 238, 0.18);
+}
+.contact-dialog-rede .cd-ponto-medio .cd-ponto-nucleo {
+  fill: rgba(214, 246, 255, 0.6);
+}
+.contact-dialog-rede .cd-ponto-medio .cd-ponto-halo {
+  fill: rgba(38, 201, 238, 0.14);
+}
+.contact-dialog-rede .cd-ponto-fraco .cd-ponto-nucleo {
+  fill: rgba(214, 246, 255, 0.3);
+}
+.contact-dialog-rede .cd-ponto-fraco .cd-ponto-halo {
+  fill: rgba(38, 201, 238, 0.12);
+}
+/* O glow fica so nos pontos, nunca ao longo dos fios. */
+.contact-dialog-rede .cd-ponto {
+  filter: drop-shadow(0 0 1px rgba(20, 200, 245, 0.45));
+}
+/* Os dois pulsos percorrem a linha via `offset-path`; onde isso nao existir
+   eles ficam parados — a mascara de borda ja os deixa fracos ali. Duracoes
+   primas e atraso diferente para nunca sincronizarem. */
+.contact-dialog-rede .cd-ponto-principal,
+.contact-dialog-rede .cd-ponto-medio[style] {
+  offset-distance: 0%;
+  offset-rotate: 0deg;
+  animation: contact-dialog-ponto 11s ease-in-out infinite;
+}
+.contact-dialog-rede .cd-ponto-medio[style] {
+  animation-duration: 14s;
+  animation-delay: -3s;
+}
+
+/* Menos painel, menos rede: no tablet caem a linha terciaria e os pontos
+   fracos; no mobile sobra so a principal com dois pontos e sem pulso, porque
+   a foto vira uma faixa baixa e qualquer movimento ali chama atencao demais. */
+@media (max-width: 74.99rem) {
+  .contact-dialog-rede .cd-linha-3,
+  .contact-dialog-rede .cd-ponto-fraco {
+    display: none;
+  }
+}
+@media (max-width: 47.99rem) {
+  .contact-dialog-rede .cd-linha-2 {
+    display: none;
+  }
+  /* Sem pulso: os dois pontos moveis saem e fica so o ponto parado que
+     pertence a linha que continua visivel. */
+  .contact-dialog-rede .cd-ponto-principal,
+  .contact-dialog-rede .cd-ponto-medio[style] {
+    display: none;
+  }
+}
+
+/* Cartao de endereco, translucido sobre a foto. */
+.contact-dialog-endereco {
+  position: absolute;
+  z-index: 3;
+  left: clamp(1rem, 2vw, 1.5rem);
+  right: clamp(1rem, 2vw, 1.5rem);
+  bottom: clamp(1rem, 2vh, 1.5rem);
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--contact-border);
+  background: rgba(3, 24, 47, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.contact-dialog-endereco svg {
+  flex: none;
+  margin-top: 0.1rem;
+  color: var(--contact-cyan);
+}
+.contact-dialog-endereco-titulo {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--contact-cyan);
+}
+.contact-dialog-endereco-texto {
+  font-size: 0.7rem;
+  line-height: 1.6;
+  color: rgba(247, 251, 255, 0.86);
+}
+
+/* Em tela larga o cartao fica na parte reta da silhueta: perto da base a curva
+   volta para dentro, e sem esse recuo o cartao atravessaria o contorno. */
+@media (min-width: 60rem) {
+  .contact-dialog-endereco {
+    right: calc(var(--cd-avanco) + 18%);
+  }
+}
+
+/* Em tela estreita: faixa no topo com o arco na base, e o endereco continua
+   legivel — só mais compacto e acima da barriga da curva. */
+@media (max-width: 59.99rem) {
+  .contact-dialog-foto {
+    min-height: 11rem;
+    max-height: 32svh;
+  }
+  .contact-dialog-endereco {
+    bottom: clamp(1.75rem, 5vh, 2.75rem);
+    padding: 0.7rem 0.85rem;
+  }
+  .contact-dialog-endereco-texto {
+    font-size: 0.66rem;
+  }
+}
+
+/* --- coluna direita ------------------------------------------------------- */
+.contact-dialog-corpo {
+  position: relative;
+  z-index: 1;
+  padding: clamp(1.5rem, 2.6vw, 2.5rem);
+}
+@media (min-width: 60rem) {
+  .contact-dialog-corpo {
+    /* Só esta coluna rola: o painel da foto fica parado, como na referencia. */
+    max-height: var(--cd-altura);
+    overflow: hidden auto;
+    overscroll-behavior: contain;
+    padding-right: clamp(1.75rem, 3vw, 3rem);
+    /* Devolve o avanco da curva: o formulario comeca depois da barriga, nunca
+       encostado nela. */
+    padding-left: calc(clamp(1.5rem, 2.6vw, 2.5rem) + var(--cd-avanco));
+  }
+}
+
+/* Sobretitulo com o tracinho ciano à esquerda. */
+.contact-dialog-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--contact-cyan);
+}
+.contact-dialog-eyebrow::before {
+  content: "";
+  flex: none;
+  width: 1.75rem;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--contact-cyan), transparent);
+}
+.contact-dialog-titulo {
+  margin-top: 0.85rem;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: clamp(1.6rem, 2.8vw, 2.35rem);
+  font-weight: 800;
+  line-height: 1.1;
+  /* Evita quebra esquisita em palavra longa sem hifenizar tudo. */
+  text-wrap: balance;
+  color: var(--contact-text);
+}
+.contact-dialog-desc {
+  margin-top: 0.85rem;
+  max-width: 34rem;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--contact-muted);
+}
+
+/* --- cartao do telefone --------------------------------------------------- */
+.contact-dialog-fone {
+  position: relative;
+  overflow: hidden;
+  margin-top: 1.5rem;
+  padding: 1rem 1.1rem;
+  border-radius: 16px;
+  border: 1px solid var(--contact-border);
+  background: linear-gradient(
+    120deg,
+    var(--contact-surface) 0%,
+    rgba(3, 24, 47, 0.6) 100%
+  );
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+.contact-dialog-fone:hover {
+  border-color: rgba(20, 200, 245, 0.45);
+  background: linear-gradient(
+    120deg,
+    var(--contact-surface-hover) 0%,
+    rgba(3, 24, 47, 0.6) 100%
+  );
+}
+/* Brilho discreto respirando no lado direito. */
+.contact-dialog-fone::after {
+  content: "";
+  position: absolute;
+  inset: -40% -20% -40% auto;
+  width: 45%;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 100% 50%,
+    rgba(20, 200, 245, 0.22),
+    transparent 70%
+  );
+  animation: contact-dialog-respiro 6s var(--ease-in-out, ease-in-out) infinite;
+}
+.contact-dialog-fone-linha {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.contact-dialog-fone-icone {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 12px;
+  border: 1px solid var(--contact-border);
+  background: rgba(20, 200, 245, 0.12);
+  color: var(--contact-cyan);
+}
+.contact-dialog-fone-rotulo {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--contact-muted);
+}
+.contact-dialog-fone a {
+  display: inline-block;
+  margin-top: 0.1rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--contact-cyan);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.contact-dialog-fone a:hover,
+.contact-dialog-fone a:focus-visible {
+  color: #a7f0ff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.contact-dialog-fone-nota {
+  position: relative;
+  z-index: 1;
+  margin: 0.7rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--contact-muted);
+}
+
+/* --- formulario ---------------------------------------------------------- */
+.contact-dialog-form {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 1.1rem;
+}
+.contact-dialog-dupla {
+  display: grid;
+  gap: 1.1rem;
+}
+/* Lado a lado só a partir do tablet: no celular cada campo tem a linha inteira. */
+@media (min-width: 48rem) {
+  .contact-dialog-dupla {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.contact-dialog-campo label {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(247, 251, 255, 0.7);
+}
+.contact-dialog-campo label span {
+  color: var(--contact-cyan);
+}
+/* O icone fica dentro da caixa: o wrapper posiciona, o campo abre espaco à
+   esquerda com padding. */
+.contact-dialog-caixa {
+  position: relative;
+  display: block;
+}
+.contact-dialog-caixa > svg {
+  position: absolute;
+  left: 0.9rem;
+  top: 0.85rem;
+  pointer-events: none;
+  color: rgba(169, 186, 208, 0.75);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.contact-dialog-campo input,
+.contact-dialog-campo textarea {
+  width: 100%;
+  /* 44px de alvo de toque (WCAG 2.5.8). */
+  min-height: 2.85rem;
+  padding: 0.75rem 1rem 0.75rem 2.6rem;
+  border-radius: 12px;
+  border: 1px solid var(--contact-border);
+  background: var(--contact-surface);
+  font-size: 0.9rem;
+  color: var(--contact-text);
+  outline: none;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+.contact-dialog-campo textarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+.contact-dialog-campo input:hover:not(:disabled),
+.contact-dialog-campo textarea:hover:not(:disabled) {
+  background: var(--contact-surface-hover);
+}
+.contact-dialog-campo input::placeholder,
+.contact-dialog-campo textarea::placeholder {
+  color: rgba(169, 186, 208, 0.6);
+}
+.contact-dialog-campo input:focus-visible,
+.contact-dialog-campo textarea:focus-visible {
+  border-color: var(--contact-border-strong);
+  background: var(--contact-surface-hover);
+  box-shadow: 0 0 0 3px rgba(20, 200, 245, 0.18);
+}
+.contact-dialog-caixa:focus-within > svg {
+  color: var(--contact-cyan);
+}
+/* Preenchido: a borda esfria um pouco, para o campo ja resolvido nao competir
+   com o que falta preencher. */
+.contact-dialog-campo input:not(:placeholder-shown):not(:focus),
+.contact-dialog-campo textarea:not(:placeholder-shown):not(:focus) {
+  border-color: rgba(111, 181, 224, 0.42);
+}
+.contact-dialog-campo input:disabled,
+.contact-dialog-campo textarea:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.contact-dialog-campo input[aria-invalid="true"],
+.contact-dialog-campo textarea[aria-invalid="true"] {
+  border-color: var(--contact-erro);
+  background: rgba(255, 159, 168, 0.07);
+}
+/* O erro nao depende de cor: tem icone e texto proprio. */
+.contact-dialog-erro {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--contact-erro);
+}
+.contact-dialog-erro svg {
+  flex: none;
+}
+
+.contact-dialog-enviar {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0 1.25rem;
+  border-radius: 14px;
+  border: 0;
+  background: linear-gradient(
+    100deg,
+    var(--contact-blue) 0%,
+    var(--contact-cyan) 100%
+  );
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  box-shadow:
+    0 16px 34px -16px rgba(20, 200, 245, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    filter var(--dur-fast) var(--ease-out);
+}
+.contact-dialog-enviar-seta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--contact-blue);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.contact-dialog-enviar:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow:
+    0 20px 40px -16px rgba(20, 200, 245, 0.72),
+    inset 0 1px 0 rgba(255, 255, 255, 0.34);
+}
+.contact-dialog-enviar:hover:not(:disabled) .contact-dialog-enviar-seta {
+  transform: translateX(3px);
+}
+.contact-dialog-enviar:disabled {
+  opacity: 0.65;
+  cursor: progress;
+}
+
+/* Entrada do conteudo: painel, cabecalho e campos em cascata muito curta. Todos
+   terminam em `opacity: 1` sem deslocamento — se a animacao nao rodar, o
+   conteudo esta visivel do mesmo jeito. */
+.contact-dialog[open] .contact-dialog-foto,
+.contact-dialog[open] .contact-dialog-corpo > * {
+  animation: contact-dialog-conteudo 380ms var(--ease-out) both;
+}
+.contact-dialog[open] .contact-dialog-corpo > *:nth-child(2) {
+  animation-delay: 60ms;
+}
+.contact-dialog[open] .contact-dialog-corpo > *:nth-child(3) {
+  animation-delay: 100ms;
+}
+.contact-dialog[open] .contact-dialog-corpo > *:nth-child(4) {
+  animation-delay: 140ms;
+}
+.contact-dialog[open] .contact-dialog-form > * {
+  animation: contact-dialog-conteudo 360ms var(--ease-out) both;
+}
+.contact-dialog[open] .contact-dialog-form > *:nth-child(1) {
+  animation-delay: 180ms;
+}
+.contact-dialog[open] .contact-dialog-form > *:nth-child(2) {
+  animation-delay: 220ms;
+}
+.contact-dialog[open] .contact-dialog-form > *:nth-child(3) {
+  animation-delay: 260ms;
+}
+.contact-dialog[open] .contact-dialog-form > *:nth-child(4) {
+  animation-delay: 300ms;
+}
+.contact-dialog[open] .contact-dialog-form > *:nth-child(5) {
+  animation-delay: 340ms;
 }
 
 @keyframes contact-dialog-veil {
@@ -2081,12 +2783,119 @@ html[data-motion="reduce"] .orbit-counter {
 @keyframes contact-dialog-in {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.98);
+    transform: translateY(18px) scale(0.985);
   }
   to {
     opacity: 1;
     transform: none;
   }
+}
+
+@keyframes contact-dialog-conteudo {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes contact-dialog-fio {
+  0%,
+  100% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  85% {
+    opacity: 0.9;
+  }
+  99% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes contact-dialog-respiro {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes contact-dialog-ponto {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
+@keyframes contact-dialog-rede-respiro {
+  0%,
+  100% {
+    opacity: 0.62;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Movimento reduzido: o modal continua abrindo e todo o conteudo continua
+   visivel — só sem deslocamento e sem os enfeites que se movem sozinhos. */
+@media (prefers-reduced-motion: reduce) {
+  .contact-dialog[open],
+  .contact-dialog[open] .contact-dialog-foto,
+  .contact-dialog[open] .contact-dialog-corpo > *,
+  .contact-dialog[open] .contact-dialog-form > * {
+    animation: contact-dialog-veil 1ms linear both;
+  }
+  .contact-dialog-inner::before,
+  .contact-dialog-fone::after,
+  .contact-dialog-rede,
+  .contact-dialog-rede .cd-ponto {
+    animation: none;
+  }
+  /* A respiracao morria em `opacity: 0.62` (valor do keyframe); sem animacao a
+     rede precisa ficar no seu estado cheio. */
+  .contact-dialog-rede {
+    opacity: 1;
+  }
+  .contact-dialog-close:hover,
+  .contact-dialog-enviar:hover:not(:disabled),
+  .contact-dialog-enviar:hover:not(:disabled) .contact-dialog-enviar-seta {
+    transform: none;
+  }
+}
+html[data-motion="reduce"] .contact-dialog[open],
+html[data-motion="reduce"] .contact-dialog[open] .contact-dialog-foto,
+html[data-motion="reduce"] .contact-dialog[open] .contact-dialog-corpo > *,
+html[data-motion="reduce"] .contact-dialog[open] .contact-dialog-form > * {
+  animation: contact-dialog-veil 1ms linear both;
+}
+html[data-motion="reduce"] .contact-dialog-inner::before,
+html[data-motion="reduce"] .contact-dialog-fone::after,
+html[data-motion="reduce"] .contact-dialog-rede,
+html[data-motion="reduce"] .contact-dialog-rede .cd-ponto {
+  animation: none;
+}
+html[data-motion="reduce"] .contact-dialog-rede {
+  opacity: 1;
+}
+html[data-motion="reduce"] .contact-dialog-close:hover,
+html[data-motion="reduce"] .contact-dialog-enviar:hover:not(:disabled),
+html[data-motion="reduce"]
+  .contact-dialog-enviar:hover:not(:disabled)
+  .contact-dialog-enviar-seta {
+  transform: none;
 }
 
 /* ===========================================================

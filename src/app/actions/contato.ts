@@ -23,19 +23,10 @@
  * guardar dado pessoal sem base legal definida seria pior que não guardar.
  */
 
-export type EstadoContato = {
-  status: 'idle' | 'sucesso' | 'erro';
-  /** Mensagem técnica de status, anunciada por `aria-live`. */
-  mensagem: string;
-  /** Campos que falharam, para marcar `aria-invalid` no cliente. */
-  invalidos: string[];
-};
-
-export const ESTADO_INICIAL: EstadoContato = {
-  status: 'idle',
-  mensagem: '',
-  invalidos: [],
-};
+/* O tipo e o `ESTADO_INICIAL` vivem em `./contato-estado`: este módulo é
+   `'use server'` e só pode exportar funções async. Reexportar daqui reintroduz o
+   mesmo problema — os componentes importam de lá. */
+import type { EstadoContato } from './contato-estado';
 
 const OBRIGATORIOS = ['nome', 'email', 'telefone', 'mensagem'] as const;
 

@@ -2,7 +2,8 @@
 
 import { useActionState } from 'react';
 import { Check } from 'lucide-react';
-import { enviarFormulario, ESTADO_INICIAL } from '@/app/actions/contato';
+import { enviarFormulario } from '@/app/actions/contato';
+import { ESTADO_INICIAL } from '@/app/actions/contato-estado';
 
 export type DemoField =
   | { kind: 'name-pair'; id: string; label: string; required?: boolean }

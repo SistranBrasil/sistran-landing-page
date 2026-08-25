@@ -299,12 +299,10 @@ export default function Header() {
     {/* Fora do <header>: o header tem backdrop-filter, que cria um containing
         block e faria o `position: fixed` do modal se ancorar nele em vez de na
         viewport. */}
-    <ContactModal
-      open={contactOpen}
-      onClose={() => setContactOpen(false)}
-      title="Fale com a gente"
-      description="Conte o seu desafio e um especialista da Sistran entra em contato."
-    />
+    {/* Sem `title`/`description` de proposito: o botao "Fale com a gente" abre o
+        convite completo — sobretitulo, "Entre em contato conosco", telefone e
+        formulario —, que é a escrita padrao do modal. */}
+    <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </>
   );
 }
