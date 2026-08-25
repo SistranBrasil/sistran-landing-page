@@ -24,17 +24,36 @@ import { useEffect, useRef } from 'react';
  *   quando o teto de tempo vence. `minimumMs` garante que a sequencia seja
  *   percebida em cache quente; `maximumMs` garante que ela nunca segure a
  *   pagina.
- * - **Reduced motion:** sem geometria, sem movimento ambiental — so a marca e
- *   uma dissolucao de 420ms (o relatorio pede <= 500ms). Resolvido por CSS
- *   (`html[data-motion='reduce']` + media query), como no resto do projeto; o
- *   componente nao ramifica a arvore por preferencia.
+ * - **Saida em cortina dividida.** A abertura nao dissolve: depois da morfagem,
+ *   a cena escura se abre em duas metades que saem pelo topo e pela base. O
+ *   gesto e o da abertura da apresentacao de legado (`IndustrialIntro`), e a
+ *   ordem importa — primeiro a marca chega ao lugar dela no cabecalho, ainda
+ *   sob a cortina; so depois a cortina abre e entrega a pagina.
+ * - **Uma fonte para a duracao da saida.** Ela vive em `--mmi-saida`, no CSS.
+ *   Aqui ela e LIDA, nunca redeclarada: numero duplicado entre JS e CSS e a
+ *   forma classica de a limpeza acontecer antes ou depois da animacao.
+ * - **Reduced motion:** sem geometria, sem movimento ambiental e sem cortina —
+ *   so a marca e uma dissolucao de 400ms (o relatorio pede <= 500ms). Resolvido
+ *   por CSS (`html[data-motion='reduce']` + media query), como no resto do
+ *   projeto; o componente nao ramifica a arvore por preferencia. Como a propria
+ *   `--mmi-saida` encurta lá, a rede de seguranca daqui acompanha sozinha.
  */
 
 const CHAVE_SESSAO = 'sistran:intro-visto';
 const MINIMO_MS = 1400; // faixa pedida: 1.200-1.600
 const MAXIMO_MS = 4000; // teto pedido: 3.500-4.500
 const MORPH_MS = 900;
-const SAIDA_MS = 420;
+/* Usada apenas se `--mmi-saida` nao puder ser lida (folha ainda nao aplicada).
+   O valor de verdade esta no CSS. */
+const SAIDA_MS_PADRAO = 820;
+
+/** Le `--mmi-saida` do proprio no e devolve em milissegundos. */
+function lerDuracaoSaida(no: HTMLElement): number {
+  const bruto = getComputedStyle(no).getPropertyValue('--mmi-saida').trim();
+  if (bruto.endsWith('ms')) return parseFloat(bruto) || SAIDA_MS_PADRAO;
+  if (bruto.endsWith('s')) return (parseFloat(bruto) || 0) * 1000 || SAIDA_MS_PADRAO;
+  return SAIDA_MS_PADRAO;
+}
 
 /** Pesos dos sinais de prontidao. Somam 88; os 12 restantes sao a liberacao. */
 const PESOS = { inicio: 8, dom: 18, load: 22, fontes: 20, midia: 20 };
@@ -69,10 +88,14 @@ export default function OptionalMorphIntro() {
 
     let raf = 0;
     const timers: number[] = [];
+    /* Ouvintes registrados no meio do caminho (o `transitionend` da cortina):
+       desmontar antes do fim nao pode deixar nada preso ao no. */
+    const limpezas: Array<() => void> = [];
     let alvo = 0; // progresso "real" acumulado
     let mostrado = 0; // progresso suavizado, o que aparece
     let liberado = false;
     let encerrando = false;
+    let concluido = false;
     const inicio = performance.now();
 
     raiz.removeAttribute('hidden');
@@ -164,7 +187,24 @@ export default function OptionalMorphIntro() {
 
       const fim = () => {
         raiz!.dataset.estado = 'saindo';
-        timers.push(window.setTimeout(finalizar, SAIDA_MS + 60));
+
+        /* A cortina termina quando o painel de cima acaba de sair — e nao quando
+           um cronometro paralelo acha que ela acabou. O timer existe como rede:
+           `transitionend` nao dispara se a transicao for cortada (aba oculta,
+           movimento reduzido, no reciclado). */
+        const painel = raiz!.querySelector<HTMLElement>('.mmi-painel--topo');
+        const saidaMs = lerDuracaoSaida(raiz!);
+
+        const aoTerminar = (evento: TransitionEvent) => {
+          if (evento.target !== painel) return;
+          if (evento.propertyName !== 'transform' && evento.propertyName !== 'opacity') return;
+          painel?.removeEventListener('transitionend', aoTerminar);
+          finalizar();
+        };
+        painel?.addEventListener('transitionend', aoTerminar);
+        limpezas.push(() => painel?.removeEventListener('transitionend', aoTerminar));
+
+        timers.push(window.setTimeout(finalizar, saidaMs + 160));
       };
       // Timer de seguranca: `transitionend` nao dispara se a transicao for
       // cortada (aba oculta, reduced motion, elemento reciclado).
@@ -172,6 +212,11 @@ export default function OptionalMorphIntro() {
     }
 
     function finalizar() {
+      /* Chamada por `transitionend` E pelo timer de seguranca: quem chegar
+         primeiro encerra, o segundo nao faz nada. */
+      if (concluido) return;
+      concluido = true;
+      limpezas.forEach((f) => f());
       try {
         sessionStorage.setItem(CHAVE_SESSAO, '1');
       } catch {
@@ -188,6 +233,7 @@ export default function OptionalMorphIntro() {
     return () => {
       cancelAnimationFrame(raf);
       timers.forEach((t) => window.clearTimeout(t));
+      limpezas.forEach((f) => f());
       // Desmontar no meio (navegacao SPA) nao pode deixar a pagina sem scroll.
       html.style.overflow = overflowAnterior;
       html.removeAttribute('data-intro');
@@ -196,7 +242,14 @@ export default function OptionalMorphIntro() {
 
   return (
     <div ref={raizRef} className="mmi-root" data-estado="loading" aria-hidden hidden>
-      <div className="mmi-cena" />
+      {/* A cena e a cortina: duas metades identicas que se afastam no fim. Sao
+          irmas do cartao e vem ANTES dele no DOM, para ficarem por baixo. */}
+      <div className="mmi-cena">
+        <div className="mmi-painel mmi-painel--topo" />
+        <div className="mmi-painel mmi-painel--base" />
+      </div>
+      {/* Costura: a linha onde a cortina vai abrir. Puramente decorativa. */}
+      <span className="mmi-costura" />
       <div ref={cartaoRef} className="mmi-cartao" data-etapa="0">
         {/* eslint-disable-next-line @next/next/no-img-element -- fora do fluxo
             de layout e medido por getBoundingClientRect; o wrapper do next/image

@@ -3195,14 +3195,53 @@ html[data-motion="reduce"] ::view-transition-group(*) {
   display: grid;
   place-items: center;
   pointer-events: none; /* decorativo: nunca intercepta clique nem foco */
+
+  /* FONTE UNICA da duracao da saida: o JavaScript le esta propriedade com
+     getComputedStyle para dimensionar a rede de seguranca. Mudar o valor aqui
+     muda os dois lados — nao existe numero duplicado no componente. */
+  --mmi-saida: 820ms;
+  --mmi-saida-ease: cubic-bezier(0.76, 0, 0.24, 1);
 }
 .mmi-root[hidden] {
   display: none;
 }
 
+/* A cena escura e uma CORTINA DIVIDIDA: duas metades que se afastam no fim, em
+   vez da dissolucao de 420ms que havia aqui. O gesto vem da abertura da
+   apresentacao de legado (`IndustrialIntro`). So `transform` anima. */
 .mmi-cena {
   position: absolute;
   inset: 0;
+  overflow: hidden;
+}
+
+.mmi-painel {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  /* 1px de sobreposicao: em alturas fracionarias, duas metades exatas deixam
+     uma fresta clara no meio da tela. */
+  height: calc(50% + 1px);
+  overflow: hidden;
+  transition: transform var(--mmi-saida) var(--mmi-saida-ease);
+  will-change: transform;
+}
+.mmi-painel--topo {
+  top: 0;
+}
+.mmi-painel--base {
+  bottom: 0;
+}
+
+/* Cada metade carrega uma copia do fundo em altura de tela cheia, alinhada pela
+   propria borda: assim o degrade continua sem quebra na emenda e a cena parada
+   e indistinguivel da anterior. */
+.mmi-painel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100svh;
   background:
     radial-gradient(
       120% 90% at 50% 0%,
@@ -3210,7 +3249,39 @@ html[data-motion="reduce"] ::view-transition-group(*) {
       transparent 62%
     ),
     #031326;
-  transition: opacity var(--motion-scene, 650ms) var(--motion-ease, ease);
+}
+.mmi-painel--topo::before {
+  top: 0;
+}
+.mmi-painel--base::before {
+  bottom: 0;
+}
+
+.mmi-root[data-estado="saindo"] .mmi-painel--topo {
+  transform: translateY(-101%);
+}
+.mmi-root[data-estado="saindo"] .mmi-painel--base {
+  transform: translateY(101%);
+}
+
+/* Costura luminosa no encontro das metades: anuncia onde a cortina vai abrir. */
+.mmi-costura {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(72vw, 46rem);
+  height: 1px;
+  translate: -50% -50%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(14, 216, 246, 0.62),
+    transparent
+  );
+  transition: opacity 240ms linear;
+}
+.mmi-root[data-estado="saindo"] .mmi-costura {
+  opacity: 0;
 }
 
 .mmi-cartao {
@@ -3296,9 +3367,8 @@ html[data-motion="reduce"] ::view-transition-group(*) {
 
 /* Morfagem: o cartao assume o retangulo medido do alvo do hero. Posiciona por
    `position: fixed` + left/top para casar com getBoundingClientRect(). */
-.mmi-root[data-estado="morphing"] .mmi-cena {
-  opacity: 0;
-}
+/* A cena NAO se apaga mais na morfagem: a marca vai ate o lugar dela no
+   cabecalho ainda sob a cortina, e e a cortina que revela a pagina depois. */
 .mmi-root[data-estado="morphing"] .mmi-peca {
   opacity: 0;
   transform: scaleX(0.2);
@@ -3322,14 +3392,35 @@ html[data-motion="reduce"] ::view-transition-group(*) {
   height: 100%;
 }
 
-.mmi-root[data-estado="saindo"] {
+/* Enquanto a cortina abre, a marca do overlay se apaga: por baixo dela ja esta
+   a marca de verdade do cabecalho, no mesmo lugar. */
+.mmi-root[data-estado="saindo"] .mmi-cartao {
   opacity: 0;
-  transition: opacity 420ms var(--motion-ease, ease);
+  transition: opacity 320ms linear;
 }
 
-/* Reduced motion: sem geometria e sem morfagem — marca sobre a cena e uma
-   dissolucao de 420ms, dentro do limite de 500ms pedido. */
+/* Reduced motion: sem geometria, sem morfagem e SEM cortina — marca sobre a
+   cena e uma dissolucao de 400ms, dentro do limite de 500ms pedido. A duracao
+   trocada aqui tambem encurta a rede de seguranca do JavaScript, que le
+   `--mmi-saida`. */
 @media (prefers-reduced-motion: reduce) {
+  .mmi-root {
+    --mmi-saida: 400ms;
+  }
+  .mmi-root[data-estado="saindo"] {
+    opacity: 0;
+    transition: opacity var(--mmi-saida) linear;
+  }
+  .mmi-painel {
+    transition: none !important;
+  }
+  .mmi-root[data-estado="saindo"] .mmi-painel--topo,
+  .mmi-root[data-estado="saindo"] .mmi-painel--base {
+    transform: none;
+  }
+  .mmi-costura {
+    display: none;
+  }
   .mmi-cartao,
   .mmi-marca,
   .mmi-peca,
@@ -3349,6 +3440,23 @@ html[data-motion="reduce"] ::view-transition-group(*) {
     left: auto;
     top: auto;
   }
+}
+html[data-motion="reduce"] .mmi-root {
+  --mmi-saida: 400ms;
+}
+html[data-motion="reduce"] .mmi-root[data-estado="saindo"] {
+  opacity: 0;
+  transition: opacity var(--mmi-saida) linear;
+}
+html[data-motion="reduce"] .mmi-painel {
+  transition: none !important;
+}
+html[data-motion="reduce"] .mmi-root[data-estado="saindo"] .mmi-painel--topo,
+html[data-motion="reduce"] .mmi-root[data-estado="saindo"] .mmi-painel--base {
+  transform: none;
+}
+html[data-motion="reduce"] .mmi-costura {
+  display: none;
 }
 html[data-motion="reduce"] .mmi-cartao,
 html[data-motion="reduce"] .mmi-marca,
