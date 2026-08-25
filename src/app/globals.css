@@ -2039,7 +2039,10 @@ html[data-motion="reduce"] .orbit-counter {
    O `position: fixed` que cobre a tela vem da regra `dialog:modal` do
    navegador — por isso o componente vive num portal para `document.body`, fora
    de qualquer ancestral com `transform`/`filter`/`clip`. */
-.contact-dialog {
+/* Os tokens valem para os dois lugares que mostram o painel: o `<dialog>` e a
+   secao de contato da home, que mostra o mesmo painel inline. */
+.contact-dialog,
+.contact-inline {
   /* Tokens locais do modal. O tema global (`--ink-*`, `--accent`) cobre o site
      inteiro e é mais claro do que este cartao pede; aqui o navy é mais profundo
      de proposito, para a foto e os campos elevados terem contraste. Ficam no
@@ -2070,6 +2073,17 @@ html[data-motion="reduce"] .orbit-counter {
   background: transparent;
   color: var(--contact-text);
   overflow: visible;
+}
+
+/* Inline o painel nao é uma janela sobre a pagina: ele é a secao. Entao nada de
+   altura maxima nem de rolagem propria — quem rola é o documento. `--cd-altura:
+   none` desarma de uma vez as tres regras que a usam (`.contact-inline`,
+   `-inner` e a grade em tela larga), sem repetir `max-height` em cada uma. */
+.contact-inline {
+  --cd-altura: none;
+
+  display: block;
+  margin-inline: auto;
 }
 
 /* Veu: navy quase preto, translucido de proposito — o site continua legivel
@@ -4623,4 +4637,117 @@ html[data-motion="reduce"] .barra-sinal::before {
   .degrau-3 {
     transform: none;
   }
+}
+
+/* ---- Home: secao de contato que surge com a rolagem --------------------- */
+/* A secao é o proprio painel de "Fale com a gente" (o mesmo componente do
+   modal, mostrado inline). Em tela larga ela é alta com o interior `sticky`, e o
+   painel chega de baixo, de longe e menor, enquanto o veu escurece o fundo — o
+   gesto do modal abrindo, sem prender o foco de quem esta apenas passando.
+   Ver as skills `pin-sections`, `scrolltrigger-scrub` e `reveal-on-scroll`.
+
+   Tudo aqui parte do estado FINAL: as variaveis `--ct-*` valem 1 quando nao
+   existem, entao sem JavaScript, em tela estreita ou com movimento reduzido o
+   painel simplesmente esta la, inteiro e no lugar. */
+.ct-trilha {
+  position: relative;
+  padding-block: clamp(4rem, 8vw, 7.5rem);
+}
+.ct-inner {
+  padding-inline: clamp(1rem, 5vw, 2rem);
+}
+
+/* Modo dirigido pela rolagem. A trilha é o percurso; quem fica na tela é o
+   `.ct-inner`. `sticky` e nao `pin: true`: pin remonta o no e desalinha com o
+   Lenis. */
+.ct-trilha[data-modo="scroll"] {
+  /* Um trecho para o painel chegar e mais um para ele ficar parado e legivel. */
+  height: 200svh;
+  padding-block: 0;
+}
+.ct-trilha[data-modo="scroll"] .ct-inner {
+  position: sticky;
+  top: 0;
+  display: flex;
+  height: 100svh;
+  align-items: center;
+  overflow: hidden;
+}
+
+.ct-palco {
+  position: relative;
+  width: 100%;
+}
+
+/* O veu só existe no modo dirigido: inline, sem rolagem comandando, nao ha
+   entrada para acompanhar. */
+.ct-veu {
+  display: none;
+}
+.ct-palco[data-modo="scroll"] .ct-veu {
+  display: block;
+  position: absolute;
+  inset: -30vh -20vw;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 60% 50% at 50% 50%,
+      rgba(3, 24, 47, 0.82),
+      rgba(2, 12, 28, 0.35) 62%,
+      transparent 100%
+    );
+  opacity: var(--ct-surgir, 1);
+}
+
+.ct-painel {
+  position: relative;
+  z-index: 1;
+}
+/* Só `transform` e `opacity`: as duas propriedades que o compositor resolve sem
+   recalcular layout. Nada de `filter: blur()` — desfocar um painel deste tamanho
+   a cada quadro de rolagem derruba o quadro por quadro (skill `performance-gpu`). */
+.ct-palco[data-modo="scroll"] .ct-painel {
+  transform: translate3d(0, calc((1 - var(--ct-surgir, 1)) * 12vh), 0)
+    scale(calc(0.84 + 0.16 * var(--ct-surgir, 1)));
+  opacity: clamp(0, calc(var(--ct-surgir, 1) * 1.5), 1);
+  will-change: transform, opacity;
+}
+
+/* Com preferencia por menos movimento a secao ja nasce em modo lista (o
+   componente nem liga a rolagem), mas os resets ficam explicitos: se a
+   preferencia mudar com a pagina aberta, nada pode ficar deslocado ou apagado. */
+@media (prefers-reduced-motion: reduce) {
+  .ct-trilha {
+    height: auto !important;
+    padding-block: clamp(4rem, 8vw, 7.5rem) !important;
+  }
+  .ct-trilha .ct-inner {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .ct-painel {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .ct-veu {
+    display: none !important;
+  }
+}
+html[data-motion="reduce"] .ct-trilha {
+  height: auto !important;
+  padding-block: clamp(4rem, 8vw, 7.5rem) !important;
+}
+html[data-motion="reduce"] .ct-trilha .ct-inner {
+  position: static !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+html[data-motion="reduce"] .ct-painel {
+  transform: none !important;
+  opacity: 1 !important;
+}
+html[data-motion="reduce"] .ct-veu {
+  display: none !important;
 }

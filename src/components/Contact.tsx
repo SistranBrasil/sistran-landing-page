@@ -1,150 +1,109 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { motion } from 'motion/react';
-import { Phone, MapPin } from 'lucide-react';
-import { CONTACT_PHONE, UNITS } from '@/data/contact';
-import { vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '@/lib/motion';
-import ContactModal from './ContactModal';
+import { useEffect, useRef, useState } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { prefersReducedMotion } from '@/lib/motion';
+import PainelContato from './ContactPanel';
 
-function MagneticButton({ onClick, children }: { onClick: () => void; children: React.ReactNode }) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const rm = useReducedMotion();
+/**
+ * Secao de contato da home. Antes ela era sobretitulo, titulo, paragrafo, dois
+ * botoes e uma grade de unidades — e o formulario só existia atras de um clique
+ * em "Deixe uma mensagem". Agora a secao é o proprio painel de "Fale com a
+ * gente", que surge com a rolagem: a foto da sede, o telefone e o formulario
+ * chegam sem intermediario.
+ *
+ * O painel é o MESMO componente do modal (`ContactPanel`), mostrado inline — e
+ * nao o `<dialog>` aberto por conta propria. Abrir um modal sem clique prenderia
+ * o foco e travaria a rolagem de quem estava apenas passando pela secao; o modal
+ * continua existindo e continua sendo aberto pelo "Fale com a gente" do header.
+ *
+ * A secao é alta com o interior `sticky` — o mesmo padrao da cena dos
+ * escritorios e do explorador 3D, e nao `pin: true`: pin remonta o no no DOM e
+ * desalinha com o scroll suave do Lenis.
+ *
+ * O que muda por quadro viaja em variavel CSS escrita num ref, nao em estado:
+ * nada aqui re-renderiza a 60 Hz.
+ *
+ * Nada disso é requisito para o contato funcionar. Sem JavaScript, abaixo de
+ * 1024px ou com preferencia por menos movimento as variaveis nao existem, o CSS
+ * usa 1 em todas e o painel aparece pronto, no fluxo normal da pagina.
+ */
 
-  const onMove = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (rm || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    const dx = e.clientX - (r.left + r.width / 2);
-    const dy = e.clientY - (r.top + r.height / 2);
-    const max = 8;
-    const nx = Math.max(-max, Math.min(max, dx * 0.25));
-    const ny = Math.max(-max, Math.min(max, dy * 0.25));
-    setPos({ x: nx, y: ny });
-  };
-  const onLeave = () => setPos({ x: 0, y: 0 });
+const clamp01 = (valor: number) => Math.min(1, Math.max(0, valor));
 
-  return (
-    <button
-      ref={ref}
-      type="button"
-      className="btn-primary"
-      onClick={onClick}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      style={{
-        transform: `translate3d(${pos.x}px, ${pos.y}px, 0)`,
-        transition: 'transform 0.35s cubic-bezier(0.22,1,0.36,1)',
-      }}
-    >
-      {children}
-    </button>
-  );
-}
+/* Partitura da rolagem. O painel chega de baixo e de longe durante o primeiro
+   terco; o resto do percurso ele fica parado e legivel, tempo para ler o
+   telefone e comecar a preencher. */
+const SURGIR_FIM = 0.34;
 
 export default function Contact() {
-  const rm = useReducedMotion();
-  const [open, setOpen] = useState(false);
-  const main = UNITS[0];
-  const others = UNITS.slice(1);
+  const [dirigindo, setDirigindo] = useState(false);
+  const trilhaRef = useRef<HTMLElement>(null);
+  const palcoRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const avaliar = () => setDirigindo(mq.matches && !prefersReducedMotion());
+    avaliar();
+    mq.addEventListener('change', avaliar);
+    return () => mq.removeEventListener('change', avaliar);
+  }, []);
+
+  useEffect(() => {
+    if (!dirigindo) return;
+    const trilha = trilhaRef.current;
+    const palco = palcoRef.current;
+    if (!trilha || !palco) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const gatilho = ScrollTrigger.create({
+      trigger: trilha,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1,
+      onUpdate: (self) => {
+        palco.style.setProperty('--ct-surgir', String(clamp01(self.progress / SURGIR_FIM)));
+        palco.style.setProperty('--ct-p', String(self.progress));
+      },
+    });
+
+    const atualizar = () => ScrollTrigger.refresh();
+    window.addEventListener('resize', atualizar);
+    return () => {
+      window.removeEventListener('resize', atualizar);
+      gatilho.kill();
+      for (const nome of ['--ct-surgir', '--ct-p']) palco.style.removeProperty(nome);
+    };
+  }, [dirigindo]);
+
+  const modo = dirigindo ? 'scroll' : 'lista';
 
   return (
-    <section id="contato" className="section-py relative overflow-hidden">
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="orb orb-cyan orb-drift-slow -left-20 top-10 h-[360px] w-[360px] opacity-45" />
-        <div className="orb orb-violet orb-drift right-[-6%] bottom-0 h-[400px] w-[400px] opacity-35" />
-      </div>
-
-      {/* Linha decorativa conectando ao hero acima */}
-      <span aria-hidden className="brand-line pointer-events-none absolute inset-x-0 top-0" />
-
-      <div className="container-lp">
-        <motion.div
-          variants={vHeader}
-          initial={rm ? false : 'hidden'}
-          whileInView="visible"
-          viewport={VP}
-          className="max-w-4xl"
-        >
-          {/* Sobretitulo, titulo e texto verbatim do bloco de contato da home.
-              Fonte: .claude/conteudo-site/00-home.md (secao 6) */}
-          <motion.span variants={vSubtitle} className="tag-section">
-            Saiba mais sobre o que podemos oferecer
-          </motion.span>
-          <motion.h2
-            variants={vTitle}
-            className="mt-5 font-display text-section font-bold text-ink"
-          >
-            Entre em <span className="text-gradient-brand">contato</span> conosco
-          </motion.h2>
-          <motion.p variants={vSubtitle} className="mt-6 max-w-xl text-lg text-ink-muted md:text-xl">
-            Contacte-nos para saber que tipo de soluções podemos implementar para o seu negócio!
-            Nosso telefone é <strong className="font-bold text-ink">{CONTACT_PHONE}</strong>. Ou se
-            preferir, deixe uma mensagem abaixo que te retornaremos em breve.
-          </motion.p>
-
-          <motion.div variants={vSubtitle} className="mt-10 flex flex-wrap items-center gap-3">
-            <MagneticButton onClick={() => setOpen(true)}>
-              Deixe uma mensagem
-            </MagneticButton>
-            <a href={`tel:${CONTACT_PHONE.replace(/\D/g, '')}`} className="btn-ghost">
-              <Phone className="h-4 w-4" strokeWidth={1.8} />
-              {CONTACT_PHONE}
-            </a>
-          </motion.div>
-        </motion.div>
-
-        {/* Grid de dados */}
-        <motion.div
-          initial={rm ? false : { opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={VP}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3"
-        >
-          <div
-            className="glass-card-hover md:col-span-2 flex flex-col p-8"
-            style={{ background: 'rgba(255,255,255,0.9)', border: '1px solid rgba(120,201,248,0.28)' }}
-          >
-            <div className="mb-3 flex items-center gap-2 text-[#0079CB]">
-              <MapPin className="h-4 w-4" strokeWidth={1.8} />
-              <span className="text-xs font-semibold uppercase tracking-[0.18em]">
-                {main.city} · {main.state}
-              </span>
+    <section
+      id="contato"
+      className="ct-trilha"
+      data-modo={modo}
+      aria-labelledby="contato-titulo"
+      ref={trilhaRef}
+    >
+      <div className="ct-inner">
+        <div className="ct-palco" data-modo={modo} ref={palcoRef}>
+          {/* Veu que escurece o fundo conforme o painel chega: é o mesmo gesto
+              do `::backdrop` do modal, mas sem tirar a pagina do caminho. */}
+          <div aria-hidden className="ct-veu" />
+          <div className="ct-painel contact-inline">
+            <div className="contact-dialog-inner">
+              <PainelContato
+                eyebrow="SAIBA MAIS SOBRE O QUE PODEMOS OFERECER"
+                title="Entre em contato conosco"
+                description="Contacte-nos para saber que tipo de soluções podemos implementar para o seu negócio!"
+                tituloId="contato-titulo"
+              />
             </div>
-            <p className="text-lg font-medium leading-relaxed text-[#0a1f44]">{main.address}</p>
-            {main.phone && (
-              <p className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#0a1f44]">
-                <Phone className="h-4 w-4" strokeWidth={1.8} /> {main.phone}
-              </p>
-            )}
           </div>
-
-          <div
-            className="glass-card-hover flex flex-col p-8"
-            style={{ background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(120,201,248,0.24)' }}
-          >
-            <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#0079CB]">
-              Unidades
-            </span>
-            {others.length > 0 ? (
-              <ul className="mt-4 space-y-3">
-                {others.map((u) => (
-                  <li key={u.id} className="flex items-baseline gap-3">
-                    <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[#0ed8f6]" />
-                    <span>
-                      <span className="text-sm font-bold text-[#0a1f44]">{u.city}</span>
-                      <span className="text-sm text-[#3d5a80]"> · {u.state}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
-        </motion.div>
+        </div>
       </div>
-
-      <ContactModal open={open} onClose={() => setOpen(false)} />
     </section>
   );
 }
