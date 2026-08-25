@@ -6170,3 +6170,127 @@ html[data-motion="reduce"] .linkedin-card-verso {
     transform: translateY(0) !important;
   }
 }
+
+/* ===========================================================================
+   Secao #SomosSistraners — palco reativo ao ponteiro
+   ===========================================================================
+   `--sx`/`--sy` (0..1) sao escritas pelo componente num unico
+   `requestAnimationFrame` por quadro. O default 0.5/0.5 é o repouso: em toque e
+   em movimento reduzido o listener nao é registrado e tudo fica centrado.
+
+   As camadas usam `translate` (a propriedade), e nao `transform`: os orbs ja
+   carregam a animacao `drift`, que escreve `transform` — a `translate` compoe
+   com ela em vez de ser sobrescrita pela animacao.
+
+   O acompanhamento é feito por `transition` e nao por interpolacao em JS: o rAF
+   publica o alvo, o CSS suaviza. Duracoes diferentes por camada dao o atraso que
+   separa os planos, e sai de graca. */
+.social-palco {
+  --sx: 0.5;
+  --sy: 0.5;
+  /* Base sem o violeta `rgba(124,58,237,0.30)` que estava no `style` inline: a
+     faixa continua mais profunda que o resto da pagina (o titulo usa gradiente
+     claro e sobre azul medio ele sumia), agora so com azul e ciano da marca. */
+  background:
+    radial-gradient(70% 60% at 20% 20%, rgba(14, 216, 246, 0.18), transparent 65%),
+    radial-gradient(60% 60% at 80% 80%, rgba(0, 77, 138, 0.55), transparent 65%),
+    linear-gradient(180deg, #0b4e86 0%, #0f63a8 55%, #0b4e86 100%);
+}
+.social-luz {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 68vw;
+  max-width: 60rem;
+  aspect-ratio: 1;
+  /* Centragem em `transform` e gesto em `translate`: sao propriedades distintas
+     e se somam, entao a caixa fica centrada de verdade mesmo com `max-width`
+     ativo — com margem negativa em `vw` ela sairia do centro ao bater no teto. */
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  /* Gradiente radial em vez de `filter: blur()`: o borrao sai do proprio
+     gradiente, sem custo de filtro numa camada desse tamanho. */
+  will-change: translate;
+}
+.social-luz-a {
+  background: radial-gradient(circle, rgba(14, 216, 246, 0.22), transparent 66%);
+  translate: calc((var(--sx) - 0.5) * 26vw) calc((var(--sy) - 0.5) * 20vh);
+  transition: translate 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.social-luz-b {
+  background: radial-gradient(circle, rgba(165, 240, 255, 0.14), transparent 60%);
+  /* Sentido oposto e tempo maior: as duas luzes se cruzam em vez de andarem
+     juntas, e é esse cruzamento que faz o fundo parecer ter volume. */
+  translate: calc((var(--sx) - 0.5) * -16vw) calc((var(--sy) - 0.5) * -12vh);
+  transition: translate 1400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.social-orb {
+  transition: translate 1100ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.social-orb-a {
+  translate: calc((var(--sx) - 0.5) * 70px) calc((var(--sy) - 0.5) * 52px);
+}
+.social-orb-b {
+  translate: calc((var(--sx) - 0.5) * -58px) calc((var(--sy) - 0.5) * -44px);
+}
+/* A marca d'agua é a camada mais funda, entao anda menos que todas. O
+   `-50%` vertical vive aqui (e nao mais no `-translate-y-1/2` do Tailwind)
+   porque `translate` e `transform` sao propriedades distintas: deixar a
+   centragem em `transform` e o gesto em `translate` faria as duas somarem. */
+.social-fantasma {
+  translate: calc((var(--sx) - 0.5) * 22px) calc(-50% + (var(--sy) - 0.5) * 14px);
+  transition: translate 1600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Em movimento reduzido nada segue o ponteiro. As variaveis nem chegam a ser
+   escritas (o listener nao é registrado), mas o estado neutro é declarado aqui
+   tambem para o caso de a preferencia mudar com a pagina aberta. */
+html[data-motion="reduce"] .social-luz,
+html[data-motion="reduce"] .social-orb,
+html[data-motion="reduce"] .social-fantasma {
+  transition: none !important;
+}
+html[data-motion="reduce"] .social-luz,
+html[data-motion="reduce"] .social-orb {
+  translate: 0 0 !important;
+}
+html[data-motion="reduce"] .social-fantasma {
+  translate: 0 -50% !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .social-luz,
+  .social-orb {
+    translate: 0 0 !important;
+    transition: none !important;
+  }
+  .social-fantasma {
+    translate: 0 -50% !important;
+    transition: none !important;
+  }
+}
+
+/* Conteudo da secao: reage tambem, mas com a menor amplitude de todas as
+   camadas — o texto é para ler, e o gesto aqui é so o que basta para o bloco
+   nao parecer colado num fundo que se move. Em `translate`, e nao `transform`,
+   porque o Motion escreve `transform` inline na entrada destes dois elementos. */
+.social-copy {
+  translate: calc((var(--sx) - 0.5) * 10px) calc((var(--sy) - 0.5) * 6px);
+  transition: translate 1200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.social-card-reativo {
+  translate: calc((var(--sx) - 0.5) * 16px) calc((var(--sy) - 0.5) * 10px);
+  transition: translate 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+html[data-motion="reduce"] .social-copy,
+html[data-motion="reduce"] .social-card-reativo {
+  translate: 0 0 !important;
+  transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .social-copy,
+  .social-card-reativo {
+    translate: 0 0 !important;
+    transition: none !important;
+  }
+}
