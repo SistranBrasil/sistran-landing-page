@@ -45,7 +45,7 @@ export default function Social() {
         className="orb orb-violet orb-drift pointer-events-none absolute -right-24 bottom-0 h-[420px] w-[420px] opacity-30"
       />
 
-      <div className="container-lp relative">
+      <div className="container-lp relative lg:grid lg:grid-cols-[1fr_auto] lg:items-center lg:gap-16">
         <motion.div
           variants={vHeader}
           initial={rm ? false : 'hidden'}
@@ -84,6 +84,39 @@ export default function Social() {
             </a>
           </motion.div>
         </motion.div>
+
+        {/* Card do LinkedIn com revelação das duas faces. O gesto está todo em
+            CSS (`.linkedin-card` no `globals.css`) e não em Motion: hover e
+            `:focus-visible` são estados do próprio elemento, e resolvê-los na
+            folha de estilo evita um `useState` por evento de ponteiro.
+
+            O card é um link, então o nome acessível vem do conteúdo — sem
+            `aria-label`, que faria o leitor de tela ler destino e texto duas
+            vezes. Só o ícone é decorativo. */}
+        <motion.a
+          variants={vSubtitle}
+          initial={rm ? false : 'hidden'}
+          whileInView="visible"
+          viewport={VP}
+          href={LINKEDIN_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="linkedin-card mt-14 lg:mt-0"
+        >
+          <span className="linkedin-card-face linkedin-card-frente">
+            <Linkedin strokeWidth={1.6} aria-hidden />
+            <span className="linkedin-card-frente-rotulo">#SomosSistraners</span>
+            <span className="linkedin-card-frente-destino">LinkedIn da Sistran</span>
+          </span>
+          <span className="linkedin-card-face linkedin-card-verso">
+            <span className="linkedin-card-verso-titulo">Conecte-se ao futuro</span>
+            <span className="linkedin-card-verso-texto">
+              Tendências, vagas e o dia a dia de quem move a tecnologia do mercado de
+              seguros.
+            </span>
+            <span className="linkedin-card-verso-cta">Seguir a Sistran</span>
+          </span>
+        </motion.a>
       </div>
     </section>
   );

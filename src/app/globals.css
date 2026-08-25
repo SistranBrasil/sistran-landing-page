@@ -6025,3 +6025,148 @@ html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-rotulo,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-caption {
   margin-inline: 0 !important;
 }
+
+/* ===========================================================================
+   Card do LinkedIn — revelacao das duas faces (secao #SomosSistraners)
+   ===========================================================================
+   Traducao do efeito de referencia para a identidade Sistran. O `#333` ->
+   `#ff0057` do original nao entra: repouso no azul institucional da marca,
+   realce em ciano no hover.
+
+   Geometria do efeito, que é a parte nao-obvia: o card tem DUAS linhas de mesma
+   altura, e no repouso a frente desce meia linha enquanto o verso sobe meia
+   linha. As duas faces ocupam exatamente a MESMA faixa central, e como a frente
+   tem `z-index` maior, ela cobre o verso por inteiro — o card lê como uma peca
+   unica. No hover cada face volta para a sua linha e o card se abre em duas
+   metades. Ninguem cresce nem sai da caixa: os deslocamentos sao para DENTRO,
+   entao nao ha overflow para clipar. */
+.linkedin-card {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  width: 100%;
+  max-width: 20rem;
+  /* Altura fixa (e nao `aspect-ratio`) porque as duas linhas precisam ter altura
+     conhecida: é ela que define o meio-passo do deslocamento (`--lc-passo`). */
+  height: 26rem;
+  --lc-passo: 6.5rem;
+  text-decoration: none;
+  isolation: isolate;
+}
+.linkedin-card-face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border-radius: 22px;
+  text-align: center;
+  transition:
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* --- frente: a face azul com o icone, visivel no repouso ------------------ */
+.linkedin-card-frente {
+  z-index: 1;
+  transform: translateY(var(--lc-passo));
+  background: linear-gradient(150deg, #004d8a 0%, #0079cb 100%);
+  border: 1px solid rgba(14, 216, 246, 0.28);
+  box-shadow: 0 24px 60px -28px rgba(0, 26, 61, 0.9);
+  color: #ffffff;
+}
+.linkedin-card-frente svg {
+  width: 3.25rem;
+  height: 3.25rem;
+}
+.linkedin-card-frente-rotulo {
+  font-family: var(--font-display, inherit);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+/* O destino precisa estar claro JA no repouso: o card é um link, e depender do
+   hover para revelar para onde ele leva deixaria o toque e o teclado no escuro. */
+.linkedin-card-frente-destino {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a5f0ff;
+}
+/* --- verso: o painel claro com a chamada, escondido no repouso ------------ */
+.linkedin-card-verso {
+  transform: translateY(calc(var(--lc-passo) * -1));
+  background: #ffffff;
+  border: 1px solid rgba(0, 121, 203, 0.18);
+  box-shadow: 0 24px 60px -30px rgba(0, 26, 61, 0.55);
+  color: #0a1f44;
+}
+.linkedin-card-verso-titulo {
+  font-family: var(--font-display, inherit);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #004d8a;
+}
+.linkedin-card-verso-texto {
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: #3c5a7a;
+}
+.linkedin-card-verso-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0079cb;
+}
+
+/* O gesto só existe onde ha cursor de verdade. Em toque o card nasce aberto —
+   as duas metades visiveis, sem nenhum conteudo preso fora da vista. */
+@media (hover: hover) and (pointer: fine) {
+  .linkedin-card:hover .linkedin-card-frente,
+  .linkedin-card:focus-visible .linkedin-card-frente,
+  .linkedin-card:hover .linkedin-card-verso,
+  .linkedin-card:focus-visible .linkedin-card-verso {
+    transform: translateY(0);
+  }
+  /* Realce ciano no lugar do rosa da referencia. */
+  .linkedin-card:hover .linkedin-card-frente,
+  .linkedin-card:focus-visible .linkedin-card-frente {
+    background: linear-gradient(150deg, #0079cb 0%, #0ed8f6 100%);
+    box-shadow: 0 0 60px -18px #0ed8f655;
+  }
+}
+@media not all and (hover: hover) and (pointer: fine) {
+  .linkedin-card-frente,
+  .linkedin-card-verso {
+    transform: translateY(0);
+  }
+}
+/* Foco visivel proprio: o `outline` padrao seria desenhado na caixa do grid, e
+   nao nas faces deslocadas — ficaria solto no ar durante o gesto. */
+.linkedin-card:focus-visible {
+  outline: none;
+}
+.linkedin-card:focus-visible .linkedin-card-face {
+  outline: 2px solid #0ed8f6;
+  outline-offset: 3px;
+}
+
+/* Em movimento reduzido o card nasce aberto e imovel: o reset global mata a
+   transicao, entao sem forcar o estado final o verso ficaria escondido para
+   sempre atras da frente — conteudo inalcancavel por causa de uma regra de
+   acessibilidade. */
+html[data-motion="reduce"] .linkedin-card-frente,
+html[data-motion="reduce"] .linkedin-card-verso {
+  transform: translateY(0) !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .linkedin-card-frente,
+  .linkedin-card-verso {
+    transform: translateY(0) !important;
+  }
+}
