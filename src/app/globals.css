@@ -4927,6 +4927,121 @@ html[data-motion="reduce"] .barra-sinal::before {
   height: 100svh;
   align-items: center;
   overflow: hidden;
+  /* Atmosfera do fundo. Duas luzes largas da paleta: a fria enche a metade
+     esquerda, que antes era chapada e vazia, e a azul fica por baixo de onde o
+     cartao pousa, dando a ele um chao em vez de deixa-lo flutuando. Fica AQUI e
+     nao num pseudo porque nao leva mascara — os pseudos levam, e mascara vale
+     para o background inteiro do elemento. */
+  background-image:
+    radial-gradient(
+      ellipse 54% 64% at 10% 40%,
+      rgba(14, 216, 246, 0.18),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 48% 56% at 66% 60%,
+      rgba(0, 121, 203, 0.16),
+      transparent 72%
+    );
+}
+
+/* ── Grafismo do fundo do reveal ──────────────────────────────────────────
+   Sem elemento novo, sem asset e sem tocar em `Contact.tsx`: dois pseudos do
+   proprio `.ct-inner`, que é a caixa de 100svh presa na tela durante todo o
+   percurso. Por isso o grafismo é ESTATICO — nao entra, nao escala e nao
+   acompanha `--ct-surgir`. Consequencia pratica: profundidade em toda a
+   extensao do reveal, zero repintura por quadro e nada que precise parar com
+   movimento reduzido (nestes dois modos a secao nem entra em `scroll`).
+
+   `z-index: 0`, e nao `-1`: o veu tambem é 0 e vem antes na arvore, entao a
+   ordem de pintura entre os tres é por posicao no DOM — `::before` fica sob o
+   veu (a malha some junto com o escurecimento no centro, que é o efeito
+   desejado) e `::after` fica sobre ele (a regua continua nitida). O painel é 1
+   e permanece na frente dos dois. */
+.ct-trilha[data-modo="scroll"] .ct-inner::before,
+.ct-trilha[data-modo="scroll"] .ct-inner::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Malha tecnica, mesma linguagem de `.grade-tecnica` e do proprio
+   `.section-light`, so ancorada a esquerda: a mascara eliptica nasce em 22% da
+   largura e morre antes do cartao, entao a malha preenche o vazio sem cruzar a
+   foto nem o formulario. */
+.ct-trilha[data-modo="scroll"] .ct-inner::before {
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 121, 203, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 121, 203, 0.1) 1px, transparent 1px);
+  background-size: 6rem 6rem;
+  -webkit-mask-image: radial-gradient(
+    ellipse 62% 78% at 22% 50%,
+    #000 0%,
+    #000 40%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 62% 78% at 22% 50%,
+    #000 0%,
+    #000 40%,
+    transparent 100%
+  );
+}
+
+/* Regua da marca: trilho de 1px com marcas curtas a cada 1.5rem e longas a cada
+   6rem — as tres camadas saem do mesmo x, entao o trilho é a primeira coluna e
+   as marcas crescem dele para a direita.
+
+   A mascara abre um vao entre 40% e 60% da altura DE PROPOSITO: é exatamente ali
+   que fica o indicador fixo de secao (o chip "CONTATO", `ScrollSpy`, centrado na
+   vertical). Sem o vao a regua passaria por tras dele e roubaria o contraste do
+   rotulo; com ele a regua vira dois segmentos que emolduram o chip. */
+.ct-trilha[data-modo="scroll"] .ct-inner::after {
+  left: clamp(1.75rem, 5vw, 4rem);
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      rgba(0, 121, 203, 0.42) 0 1px,
+      transparent 1px 6rem
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgba(0, 121, 203, 0.22) 0 1px,
+      transparent 1px 1.5rem
+    ),
+    linear-gradient(180deg, rgba(0, 121, 203, 0.34), rgba(0, 121, 203, 0.34));
+  background-size:
+    30px 100%,
+    14px 100%,
+    1px 100%;
+  background-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 12%,
+    #000 30%,
+    transparent 40%,
+    transparent 60%,
+    #000 70%,
+    #000 88%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 12%,
+    #000 30%,
+    transparent 40%,
+    transparent 60%,
+    #000 70%,
+    #000 88%,
+    transparent 100%
+  );
 }
 
 .ct-palco {
