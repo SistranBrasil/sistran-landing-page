@@ -25,7 +25,7 @@ import {
 export const metadata = {
   title: 'Quem somos · Sistran',
   description:
-    'Com ampla presença na América do Sul, contando com mais de 150 clientes e 850 colaboradores, a Sistran é referência em soluções tecnológicas para o setor de Seguros.',
+    'Com ampla presença na América do Sul, contando com mais de 130 clientes e 850 colaboradores, a Sistran é referência em soluções tecnológicas para o setor de Seguros.',
 };
 
 /* Esta pagina reune toda a escrita de /a-sistran/. O sobretitulo e o titulo sao

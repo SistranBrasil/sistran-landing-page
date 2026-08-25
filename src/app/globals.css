@@ -5147,3 +5147,780 @@ html[data-motion="reduce"] .ct-painel {
 html[data-motion="reduce"] .ct-veu {
   display: none !important;
 }
+
+/* ===========================================================
+   "Sistran em números" — scrollytelling horizontal (.impact-*)
+   Ver src/components/Metrics.tsx para a partitura e para quem escreve as
+   variáveis (--impact-p, --impact-pos, --impact-aceso, --impact-pulso-*).
+
+   REGRA DESTE BLOCO: tudo o que este CSS declara por padrão já é o ESTADO
+   FINAL — lista vertical completa, sete números legíveis, nada escondido.
+   O scrollytelling inteiro vive dentro de
+   `.impact-scroll[data-dirigindo]` numa media query de 1024px, e
+   `data-dirigindo` só existe quando o JavaScript rodou e não há preferência
+   por menos movimento. Sem JS, em telas estreitas ou com movimento reduzido a
+   seção é uma lista — nunca uma seção alta e travada.
+   =========================================================== */
+
+.impact-scroll {
+  position: relative;
+  isolation: isolate;
+}
+
+/* ── Faixa clara: sobretitulo, titulo e marcador ─────────────────────────── */
+.impact-topo {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(180deg, #f2f7fc 0%, #e7f0f9 100%);
+  padding-block: clamp(3rem, 6vw, 5rem) clamp(3.5rem, 7vw, 6rem);
+  color: #0a1f44;
+}
+
+.impact-topo-inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-items: flex-start;
+  justify-content: space-between;
+}
+@media (min-width: 900px) {
+  .impact-topo-inner {
+    flex-direction: row;
+    align-items: flex-end;
+  }
+}
+
+.impact-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #0079cb;
+  margin-bottom: 0.75rem;
+}
+
+.impact-titulo {
+  font-size: clamp(2rem, 4.4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  max-width: 22ch;
+  color: #0a1f44;
+}
+.impact-ponto {
+  color: #0ed8f6;
+}
+
+.impact-marcador {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+/* Número em TEXTO: é ele que informa a etapa. Os pontos ao lado são reforço —
+   o item da vez nunca é indicado apenas por cor. */
+.impact-marcador-num {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  color: rgba(10, 31, 68, 0.55);
+}
+.impact-marcador-atual {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0a1f44;
+}
+
+.impact-trilho {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.impact-trilho-aceso {
+  display: none;
+}
+.impact-trilho-ponto {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(10, 31, 68, 0.22);
+  transition:
+    background var(--dur-fast) var(--ease-out),
+    width var(--dur-fast) var(--ease-out);
+}
+.impact-trilho-ponto[data-estado="feito"] {
+  background: rgba(0, 121, 203, 0.55);
+}
+.impact-trilho-ponto[data-estado="ativo"] {
+  width: 26px;
+  background: #0079cb;
+}
+
+/* ── Palco escuro ───────────────────────────────────────────────────────── */
+.impact-palco {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse 70% 60% at 50% 42%,
+      rgba(9, 62, 112, 0.75),
+      transparent 70%
+    ),
+    linear-gradient(180deg, #041a33 0%, #062845 55%, #041a33 100%);
+  padding-block: clamp(4rem, 9vw, 7rem);
+  color: #f8fafc;
+}
+
+/* Fronteira em curva larga (não chanfro, não reta). O path é preenchido com a
+   cor da faixa clara: o desenho é a barriga que invade o palco. */
+.impact-borda {
+  position: absolute;
+  inset: -1px 0 auto 0;
+  width: 100%;
+  height: clamp(56px, 7vw, 110px);
+  z-index: 2;
+  pointer-events: none;
+}
+.impact-borda path {
+  fill: #e7f0f9;
+}
+
+.impact-grade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(120, 200, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 200, 255, 0.06) 1px, transparent 1px);
+  background-size:
+    64px 64px,
+    64px 64px;
+  mask-image: radial-gradient(
+    ellipse 65% 65% at 50% 50%,
+    #000 20%,
+    transparent 75%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 65% 65% at 50% 50%,
+    #000 20%,
+    transparent 75%
+  );
+}
+
+/* Vinheta lateral: no modo dirigido é ela que faz os indicadores das pontas
+   entrarem e saírem da cena em vez de aparecerem cortados na borda. */
+.impact-vinheta {
+  display: none;
+}
+
+/* A curva só faz sentido quando os indicadores estão distribuídos nela; no modo
+   lista seria uma linha solta atravessando texto. */
+.impact-curva,
+.impact-curva-recorte,
+.impact-pulso,
+.impact-no {
+  display: none;
+}
+
+/* ── Modo lista (default: sem JS, mobile, movimento reduzido) ────────────── */
+.impact-track {
+  position: relative;
+  z-index: 1;
+}
+.impact-lista {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 5vw, 2rem);
+  list-style: none;
+  max-width: 68rem;
+  width: 100%;
+}
+@media (min-width: 640px) {
+  .impact-lista {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.impact-item {
+  position: relative;
+  padding-left: 1.25rem;
+  border-left: 1px solid rgba(120, 200, 255, 0.22);
+}
+.impact-lente {
+  display: none;
+}
+.impact-indice {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  color: rgba(14, 216, 246, 0.85);
+  font-variant-numeric: tabular-nums;
+}
+.impact-valor {
+  display: flex;
+  align-items: baseline;
+  gap: 0.1em;
+  margin-block: 0.35rem 0.5rem;
+  font-size: clamp(2.5rem, 6vw, 4.25rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(120deg, #ffffff 0%, #9bdcff 60%, #0ed8f6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.impact-numero {
+  display: inline-block;
+  text-align: right;
+}
+.impact-mais {
+  font-size: 0.55em;
+  font-weight: 600;
+}
+.impact-rotulo {
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  font-weight: 600;
+  color: #f8fafc;
+  max-width: 26ch;
+}
+.impact-caption {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(226, 240, 255, 0.7);
+  max-width: 34ch;
+}
+
+/* ===========================================================
+   Modo dirigido — rolagem vertical vira percurso horizontal.
+   Só com JavaScript (`[data-dirigindo]`) e a partir de 1024px.
+   =========================================================== */
+@media (min-width: 1024px) {
+  .impact-scroll[data-dirigindo] {
+    /* Percurso: cerca de sete telas de rolagem para os sete indicadores, mais
+       entrada e fechamento. Menos que isso e a passagem fica apressada. */
+    min-height: 520vh;
+  }
+  .impact-scroll[data-dirigindo] .impact-sticky {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+  }
+  .impact-scroll[data-dirigindo] .impact-topo {
+    padding-block: clamp(2rem, 3.5vw, 3rem) clamp(2.5rem, 4vw, 3.5rem);
+  }
+  .impact-scroll[data-dirigindo] .impact-palco {
+    padding-block: 0;
+    min-height: 0;
+  }
+
+  .impact-scroll[data-dirigindo] .impact-grade {
+    opacity: calc(0.35 + 0.65 * var(--impact-entrada, 1));
+  }
+
+  .impact-scroll[data-dirigindo] .impact-vinheta {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg, #041a33 0%, rgba(4, 26, 51, 0) 14%),
+      linear-gradient(270deg, #041a33 0%, rgba(4, 26, 51, 0) 14%);
+  }
+
+  /* A trilha é o único elemento que se desloca, e só por `transform`: nenhuma
+     propriedade de layout anima aqui (skill performance-gpu). Não existe
+     `overflow-x: auto` em lugar nenhum — nunca há barra horizontal. */
+  .impact-scroll[data-dirigindo] .impact-track {
+    --impact-w: clamp(3500px, 380vw, 5600px);
+    position: absolute;
+    inset: 0;
+    width: var(--impact-w);
+    padding: 0;
+    /* O ponto `--impact-pos` da trilha é trazido para o centro da tela. */
+    transform: translate3d(
+      calc(50vw - var(--impact-pos, 0.0714) * var(--impact-w)),
+      0,
+      0
+    );
+    will-change: transform;
+  }
+
+  .impact-scroll[data-dirigindo] .impact-curva {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .impact-scroll[data-dirigindo] .impact-curva-base {
+    fill: none;
+    stroke: rgba(150, 210, 255, 0.2);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+  .impact-scroll[data-dirigindo] .impact-curva-viva {
+    fill: none;
+    stroke: #0ed8f6;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    filter: drop-shadow(0 0 10px rgba(14, 216, 246, 0.45));
+  }
+  /* O trecho aceso é revelado por corte geométrico, não por `stroke-dasharray`:
+     com a caixa esticada (`preserveAspectRatio="none"`) e traço de espessura
+     fixa (`non-scaling-stroke`), o comprimento do dash não corresponde ao
+     comprimento desenhado na tela e o fim do traço ficaria errado. */
+  .impact-scroll[data-dirigindo] .impact-curva-recorte {
+    display: block;
+    position: absolute;
+    inset: 0;
+    clip-path: inset(0 calc((1 - var(--impact-aceso, 0)) * 100%) 0 0);
+  }
+
+  /* Pulso viajando pela curva durante a passagem. Não é laço: quem acende e
+     apaga é `--impact-pulso-op`, calculado a partir do progresso. */
+  .impact-scroll[data-dirigindo] .impact-pulso {
+    display: block;
+    position: absolute;
+    left: calc(var(--impact-pulso-x, 0) * 1%);
+    top: calc(var(--impact-pulso-y, 50) * 1%);
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border-radius: 999px;
+    background: radial-gradient(
+      circle,
+      #ffffff 0%,
+      #0ed8f6 45%,
+      rgba(14, 216, 246, 0) 70%
+    );
+    opacity: var(--impact-pulso-op, 0);
+    box-shadow: 0 0 22px 6px rgba(14, 216, 246, 0.35);
+  }
+
+  .impact-scroll[data-dirigindo] .impact-lista {
+    display: block;
+    max-width: none;
+    height: 100%;
+    padding: 0;
+  }
+
+  .impact-scroll[data-dirigindo] .impact-item {
+    position: absolute;
+    left: calc(var(--impact-x, 50) * 1%);
+    top: calc(var(--impact-y, 50) * 1%);
+    width: clamp(20rem, 26vw, 27rem);
+    padding: 0;
+    border: 0;
+    text-align: center;
+    transform: translate3d(-50%, -50%, 0);
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+  /* Vizinhos: presentes, legíveis em tamanho menor, apagados. Nunca
+     `display: none` — o leitor de tela percorre a lista inteira em qualquer
+     estado. */
+  .impact-scroll[data-dirigindo] .impact-item[data-estado="feito"],
+  .impact-scroll[data-dirigindo] .impact-item[data-estado="proximo"] {
+    opacity: 0.34;
+  }
+  .impact-scroll[data-dirigindo] .impact-item[data-estado="ativo"] {
+    opacity: 1;
+    z-index: 2;
+  }
+
+  .impact-scroll[data-dirigindo] .impact-no {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -4.5px;
+    border-radius: 999px;
+    background: rgba(150, 210, 255, 0.5);
+    transition:
+      background var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .impact-scroll[data-dirigindo] .impact-item[data-estado="ativo"] .impact-no {
+    background: #0ed8f6;
+    box-shadow: 0 0 0 6px rgba(14, 216, 246, 0.14);
+  }
+
+  /* ── A lente ────────────────────────────────────────────────────────────
+     Não é um card e não tem fundo opaco: é um conjunto de anéis incompletos em
+     volta do número, com o componente contextual atrás. Quem amplia o
+     indicador é o próprio item ativo — não existe cópia do número em outro
+     lugar, ou o leitor de tela leria tudo duas vezes. */
+  .impact-scroll[data-dirigindo] .impact-lente {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: clamp(19rem, 25vw, 25rem);
+    aspect-ratio: 1;
+    transform: translate3d(-50%, -50%, 0) scale(0.72);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform var(--dur-chapter) var(--ease-out),
+      opacity var(--dur-base) var(--ease-out);
+  }
+  .impact-scroll[data-dirigindo]
+    .impact-item[data-estado="ativo"]
+    .impact-lente {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+    opacity: 1;
+  }
+  .impact-scroll[data-dirigindo] .impact-aneis,
+  .impact-scroll[data-dirigindo] .impact-contextual,
+  .impact-scroll[data-dirigindo] .impact-contextual svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .impact-anel {
+    fill: none;
+    stroke-linecap: round;
+    transform-origin: 100px 100px;
+  }
+  .impact-anel-1 {
+    stroke: rgba(14, 216, 246, 0.55);
+    stroke-width: 1.4;
+  }
+  .impact-anel-2 {
+    stroke: rgba(155, 220, 255, 0.3);
+    stroke-width: 1;
+  }
+  .impact-ticks line {
+    stroke: rgba(155, 220, 255, 0.28);
+    stroke-width: 0.8;
+  }
+  /* Movimento interno só no indicador ativo E só com a seção na tela: fora dela
+     `[data-visivel]` sai e o compositor descansa. */
+  .impact-sticky[data-visivel="1"]
+    .impact-item[data-estado="ativo"]
+    .impact-anel-1 {
+    animation: impact-gira 26s linear infinite;
+  }
+  .impact-sticky[data-visivel="1"]
+    .impact-item[data-estado="ativo"]
+    .impact-anel-2 {
+    animation: impact-gira 38s linear infinite reverse;
+  }
+  .impact-sticky[data-visivel="1"]
+    .impact-item[data-estado="ativo"]
+    .impact-ticks {
+    animation: impact-respira 6s ease-in-out infinite;
+  }
+
+  /* Componente contextual: entra atrás do número, com opacidade baixa, e só no
+     ativo. É contexto, não ilustração principal. */
+  .impact-scroll[data-dirigindo] .impact-contextual {
+    opacity: 0;
+    transform: scale(0.9);
+    transition:
+      opacity var(--dur-chapter) var(--ease-out),
+      transform var(--dur-chapter) var(--ease-out);
+  }
+  .impact-scroll[data-dirigindo]
+    .impact-item[data-estado="ativo"]
+    .impact-contextual {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  .iv {
+    overflow: visible;
+  }
+  .iv-linhas line,
+  .iv-linhas path {
+    fill: none;
+    stroke: rgba(155, 220, 255, 0.35);
+    stroke-width: 1;
+    stroke-linecap: round;
+  }
+  .iv-arcos circle,
+  .iv-arcos path {
+    fill: none;
+    stroke: rgba(14, 216, 246, 0.4);
+    stroke-width: 1;
+  }
+  .iv-nos circle {
+    fill: rgba(14, 216, 246, 0.75);
+  }
+  .iv-esferas circle {
+    fill: rgba(120, 200, 255, 0.16);
+    stroke: rgba(14, 216, 246, 0.45);
+    stroke-width: 0.8;
+  }
+  .iv-barras line {
+    stroke: rgba(14, 216, 246, 0.5);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
+  .iv-planos path {
+    fill: rgba(120, 200, 255, 0.08);
+    stroke: rgba(14, 216, 246, 0.4);
+    stroke-width: 0.9;
+  }
+  .iv-ondas circle {
+    fill: none;
+    stroke: rgba(14, 216, 246, 0.55);
+    stroke-width: 1.2;
+  }
+  /* `--iv-i` vem do markup e serve de atraso: a cascata é do CSS, o SVG é
+     estático. */
+  .impact-sticky[data-visivel="1"]
+    .impact-item[data-estado="ativo"]
+    .iv-nos
+    circle,
+  .impact-sticky[data-visivel="1"]
+    .impact-item[data-estado="ativo"]
+    .iv-esferas
+    circle {
+    animation: impact-brilha 4.5s ease-in-out infinite;
+    animation-delay: calc(var(--iv-i, 0) * 0.12s);
+  }
+  .impact-sticky[data-visivel="1"]
+    .impact-item[data-estado="ativo"]
+    .iv-barras
+    line {
+    animation: impact-barra 3.6s ease-in-out infinite;
+    animation-delay: calc(var(--iv-i, 0) * 0.06s);
+  }
+  .impact-sticky[data-visivel="1"]
+    .impact-item[data-estado="ativo"]
+    .iv-ondas
+    circle {
+    animation: impact-onda 3.2s ease-out infinite;
+  }
+  .impact-sticky[data-visivel="1"]
+    .impact-item[data-estado="ativo"]
+    .iv-planos
+    g {
+    animation: impact-flutua 7s ease-in-out infinite;
+    animation-delay: calc(var(--iv-i, 0) * 0.35s);
+  }
+
+  /* ── Texto do indicador, por cima da lente ──────────────────────────────── */
+  .impact-scroll[data-dirigindo] .impact-indice,
+  .impact-scroll[data-dirigindo] .impact-valor,
+  .impact-scroll[data-dirigindo] .impact-rotulo,
+  .impact-scroll[data-dirigindo] .impact-caption {
+    position: relative;
+    z-index: 1;
+  }
+  .impact-scroll[data-dirigindo] .impact-valor {
+    justify-content: center;
+    font-size: clamp(2.5rem, 4.6vw, 4rem);
+    transition: font-size var(--dur-base) var(--ease-out);
+  }
+  .impact-scroll[data-dirigindo]
+    .impact-item[data-estado="ativo"]
+    .impact-valor {
+    font-size: clamp(4.5rem, 8.5vw, 7.5rem);
+  }
+  .impact-scroll[data-dirigindo] .impact-rotulo,
+  .impact-scroll[data-dirigindo] .impact-caption {
+    margin-inline: auto;
+  }
+  /* A frase de contexto pertence ao indicador da vez. Continua no DOM sempre —
+     só a opacidade muda, nunca `display`, para não mudar a altura do bloco no
+     meio da passagem. */
+  .impact-scroll[data-dirigindo] .impact-caption {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+    transition:
+      opacity var(--dur-base) var(--ease-out),
+      transform var(--dur-base) var(--ease-out);
+  }
+  .impact-scroll[data-dirigindo]
+    .impact-item[data-estado="ativo"]
+    .impact-caption {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes impact-gira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes impact-respira {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes impact-brilha {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes impact-barra {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+@keyframes impact-onda {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.85);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+@keyframes impact-flutua {
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+}
+
+/* Com preferência por menos movimento o componente nem liga a rolagem (não
+   escreve `data-dirigindo`), então a seção já nasce lista. Os resets abaixo
+   existem para o caso de a preferência mudar com a página aberta: nada pode
+   ficar preso numa seção alta, deslocado por `transform` ou apagado. */
+@media (prefers-reduced-motion: reduce) {
+  .impact-scroll[data-dirigindo] {
+    min-height: 0 !important;
+  }
+  .impact-scroll[data-dirigindo] .impact-sticky {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .impact-scroll[data-dirigindo] .impact-palco {
+    padding-block: clamp(4rem, 9vw, 7rem) !important;
+  }
+  .impact-scroll[data-dirigindo] .impact-track {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    transform: none !important;
+  }
+  .impact-scroll[data-dirigindo] .impact-curva,
+  .impact-scroll[data-dirigindo] .impact-curva-recorte,
+  .impact-scroll[data-dirigindo] .impact-pulso,
+  .impact-scroll[data-dirigindo] .impact-no,
+  .impact-scroll[data-dirigindo] .impact-lente,
+  .impact-scroll[data-dirigindo] .impact-vinheta {
+    display: none !important;
+  }
+  .impact-scroll[data-dirigindo] .impact-lista {
+    display: grid !important;
+    max-width: 68rem !important;
+    height: auto !important;
+    padding: 0 clamp(1.25rem, 5vw, 2rem) !important;
+  }
+  .impact-scroll[data-dirigindo] .impact-item {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    text-align: left !important;
+    padding-left: 1.25rem !important;
+    border-left: 1px solid rgba(120, 200, 255, 0.22) !important;
+  }
+  .impact-scroll[data-dirigindo] .impact-valor,
+  .impact-scroll[data-dirigindo]
+    .impact-item[data-estado="ativo"]
+    .impact-valor {
+    justify-content: flex-start !important;
+    font-size: clamp(2.5rem, 6vw, 4.25rem) !important;
+  }
+  .impact-scroll[data-dirigindo] .impact-caption {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .impact-scroll[data-dirigindo] .impact-rotulo,
+  .impact-scroll[data-dirigindo] .impact-caption {
+    margin-inline: 0 !important;
+  }
+}
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] {
+  min-height: 0 !important;
+}
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-sticky {
+  position: static !important;
+  height: auto !important;
+  overflow: visible !important;
+}
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-palco {
+  padding-block: clamp(4rem, 9vw, 7rem) !important;
+}
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-track {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  transform: none !important;
+}
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-curva,
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-curva-recorte,
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-pulso,
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-no,
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-lente,
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-vinheta {
+  display: none !important;
+}
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-lista {
+  display: grid !important;
+  max-width: 68rem !important;
+  height: auto !important;
+  padding: 0 clamp(1.25rem, 5vw, 2rem) !important;
+}
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-item {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  width: auto !important;
+  transform: none !important;
+  opacity: 1 !important;
+  text-align: left !important;
+  padding-left: 1.25rem !important;
+  border-left: 1px solid rgba(120, 200, 255, 0.22) !important;
+}
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-valor,
+html[data-motion="reduce"]
+  .impact-scroll[data-dirigindo]
+  .impact-item[data-estado="ativo"]
+  .impact-valor {
+  justify-content: flex-start !important;
+  font-size: clamp(2.5rem, 6vw, 4.25rem) !important;
+}
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-caption {
+  opacity: 1 !important;
+  transform: none !important;
+}
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-rotulo,
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-caption {
+  margin-inline: 0 !important;
+}

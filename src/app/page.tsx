@@ -65,8 +65,14 @@ export default function Page() {
         </div>
         <div className="section-light">
           <SectionReveal><Differentials /></SectionReveal>
-          <SectionReveal><Metrics /></SectionReveal>
         </div>
+        {/* "Sistran em números" saiu do `SectionReveal` e do `.section-light`
+            pelas mesmas duas razões da montagem acima: ela tem percurso de
+            scroll próprio (o reveal do wrapper brigaria com o sticky) e desenha
+            os dois fundos que precisa — faixa clara em cima, palco escuro
+            embaixo. Dentro do `.section-light` o degradê do bloco pintaria por
+            cima do palco e o repinte de texto navy apagaria os números. */}
+        <Metrics />
         {/* Bloco escuro de destaque: soluções (CTA-mor) */}
         <SectionReveal><Solutions /></SectionReveal>
         {/* Ordem da home do site: contato -> LinkedIn -> "Fale com a Gente!" */}

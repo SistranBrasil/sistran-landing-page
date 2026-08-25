@@ -2,7 +2,25 @@ import type { IconName } from '@/lib/icons';
 
 export type NavItem = { label: string; href: string };
 export type Differential = { id: string; title: string; icon: IconName; color: string; description?: string };
-export type Metric = { id: string; value: number; suffix: string; label: string };
+/** Componente contextual de cada indicador na secao "Sistran em numeros". A
+ *  chave escolhe o desenho em `src/components/ui/impact/ImpactVisuais.tsx`. */
+export type ImpactVisual =
+  | 'people-network'
+  | 'award-facets'
+  | 'client-network'
+  | 'capacity-pulse'
+  | 'erp-layers'
+  | 'insurer-network'
+  | 'claims-flow';
+export type Metric = {
+  id: string;
+  value: number;
+  suffix: string;
+  label: string;
+  /** Uma frase de contexto, mostrada so no indicador ativo. */
+  caption: string;
+  visual: ImpactVisual;
+};
 /** `color` = accent sobre fundo azul (lista lateral). `colorOnLight` = mesmo
  *  accent escurecido para uso dentro dos cards brancos, onde os tons claros
  *  perdem contraste. */
