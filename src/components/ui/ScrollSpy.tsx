@@ -10,7 +10,9 @@ const SECTIONS: Section[] = [
      indicador apontava para uma âncora inexistente — o `IntersectionObserver`
      nunca o acendia e o clique não levava a lugar nenhum. O texto institucional
      está em `/quem-somos`, alcançável pelo menu do header (`src/data/nav.ts`). */
-  { id: 'diferenciais', label: 'Diferenciais' },
+  /* `diferenciais` saiu pela mesma razão, junto com o `<Differentials />` da
+     home ("Entrega com Alta Performance e Comprometimento"), comentado a pedido
+     em `src/app/page.tsx`. Se a seção voltar, esta linha volta com ela. */
   { id: 'resultados', label: 'Resultados' },
   { id: 'solucoes', label: 'Soluções' },
   { id: 'contato', label: 'Contato' },

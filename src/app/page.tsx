@@ -1,7 +1,10 @@
 import { Instrument_Serif } from 'next/font/google';
 import Header from '@/components/Header';
 import HeroCinematic from '@/components/HeroCinematic';
-import Differentials from '@/components/Differentials';
+// Import comentado junto com o consumo da seção logo abaixo (ver o comentário
+// em volta de `<Differentials />`): deixá-lo ativo quebraria o lint por import
+// não utilizado, e removê-lo apagaria a pista de como religar a seção.
+// import Differentials from '@/components/Differentials';
 import Metrics from '@/components/Metrics';
 import Solutions from '@/components/Solutions';
 import Social from '@/components/Social';
@@ -81,9 +84,18 @@ export default function Page() {
         <div className={editorial.variable}>
           <ImpactSequence />
         </div>
+        {/* "Entrega com Alta Performance e Comprometimento" comentada a pedido —
+            os quatro cards numerados (01 Conhecimento em Seguros, 02
+            Flexibilidade, 03 Tecnologia, 04 Solidez e permanência) e a linha
+            "Empresas que aderem a tecnologia em seus processos estão sempre a
+            frente no mercado!". Comentada, e não removida: o componente
+            `src/components/Differentials.tsx` e os dados em
+            `src/data/differentials.ts` continuam intactos, então religar é
+            descomentar este bloco e o import no topo do arquivo.
         <div className="section-light">
           <SectionReveal><Differentials /></SectionReveal>
         </div>
+        */}
         {/* "Sistran em números" saiu do `SectionReveal` e do `.section-light`
             pelas mesmas duas razões da montagem acima: ela tem percurso de
             scroll próprio (o reveal do wrapper brigaria com o sticky) e desenha
