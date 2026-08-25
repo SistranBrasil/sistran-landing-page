@@ -1,0 +1,418 @@
+@import "tailwindcss";
+
+:root {
+  --background: #030817;
+  --foreground: #f4f8fc;
+  --line: rgba(151, 200, 227, 0.18);
+  --cyan: #58c6f2;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: Inter, "Segoe UI", Arial, Helvetica, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+}
+
+.site-main {
+  min-height: 100svh;
+  padding: clamp(10px, 1.6vw, 24px);
+  background:
+    radial-gradient(circle at 50% 34%, rgba(29, 94, 136, 0.2), transparent 35%),
+    radial-gradient(circle at 12% 10%, rgba(42, 138, 188, 0.1), transparent 25%),
+    linear-gradient(145deg, #020715 0%, #071425 56%, #020612 100%);
+}
+
+.viewer-shell {
+  position: relative;
+  width: 100%;
+  height: calc(100svh - clamp(20px, 3.2vw, 48px));
+  min-height: 560px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(137, 190, 220, 0.16);
+  border-radius: clamp(20px, 2.4vw, 34px);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 57%, rgba(31, 113, 157, 0.17), transparent 39%),
+    linear-gradient(180deg, #050b1a 0%, #071323 62%, #040916 100%);
+  background-size: 72px 72px, 72px 72px, auto, auto;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.045),
+    0 32px 90px rgba(0, 0, 0, 0.38);
+}
+
+.viewer-shell::before,
+.viewer-shell::after {
+  position: absolute;
+  z-index: 2;
+  content: "";
+  pointer-events: none;
+}
+
+.viewer-shell::before {
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(2, 6, 16, 0.7), transparent 18%, transparent 82%, rgba(2, 6, 16, 0.7)),
+    linear-gradient(180deg, rgba(2, 6, 16, 0.16), transparent 62%, rgba(2, 6, 16, 0.54));
+}
+
+.viewer-shell::after {
+  inset: 14px;
+  border: 1px solid rgba(173, 215, 236, 0.06);
+  border-radius: 24px;
+}
+
+.viewer-canvas {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  cursor: grab;
+  touch-action: none;
+}
+
+.viewer-canvas:active {
+  cursor: grabbing;
+}
+
+.viewer-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.viewer-header {
+  position: absolute;
+  z-index: 4;
+  top: clamp(24px, 3.5vw, 48px);
+  right: clamp(24px, 4vw, 64px);
+  left: clamp(24px, 4vw, 64px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 10px;
+  color: #73caed;
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.viewer-header h1 {
+  margin: 0;
+  color: #f6fbff;
+  font-size: clamp(1.5rem, 3.2vw, 3rem);
+  font-weight: 550;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  text-shadow: 0 3px 24px rgba(0, 0, 0, 0.45);
+}
+
+.model-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 14px;
+  border: 1px solid rgba(136, 202, 230, 0.18);
+  border-radius: 999px;
+  background: rgba(5, 14, 28, 0.56);
+  color: rgba(227, 242, 250, 0.72);
+  font-size: 0.72rem;
+  font-weight: 520;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(12px);
+}
+
+.model-status i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #65d3fa;
+  box-shadow: 0 0 12px rgba(101, 211, 250, 0.9);
+}
+
+.viewer-toolbar {
+  position: absolute;
+  z-index: 5;
+  right: clamp(22px, 3vw, 44px);
+  bottom: clamp(22px, 3vw, 42px);
+  display: flex;
+  gap: 8px;
+}
+
+.viewer-toolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgba(152, 205, 230, 0.16);
+  border-radius: 13px;
+  background: rgba(4, 13, 26, 0.68);
+  color: rgba(226, 240, 248, 0.68);
+  font-size: 0.72rem;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.viewer-toolbar button:hover,
+.viewer-toolbar button:focus-visible {
+  border-color: rgba(109, 202, 240, 0.4);
+  background: rgba(12, 35, 55, 0.82);
+  color: #eaf8ff;
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.viewer-toolbar button.is-active {
+  border-color: rgba(95, 199, 239, 0.3);
+  color: #89dbfa;
+}
+
+.view-switcher {
+  position: absolute;
+  z-index: 5;
+  bottom: clamp(24px, 3vw, 42px);
+  left: 50%;
+  display: flex;
+  gap: 3px;
+  padding: 4px;
+  border: 1px solid rgba(152, 205, 230, 0.16);
+  border-radius: 14px;
+  background: rgba(4, 13, 26, 0.7);
+  transform: translateX(-50%);
+  backdrop-filter: blur(14px);
+}
+
+.view-switcher button {
+  min-width: 62px;
+  height: 34px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(215, 234, 244, 0.56);
+  font-size: 0.68rem;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.view-switcher button:hover,
+.view-switcher button:focus-visible,
+.view-switcher button.is-active {
+  background: rgba(49, 128, 164, 0.24);
+  color: #a8e2fa;
+  outline: none;
+}
+
+.viewer-toolbar svg,
+.interaction-hint svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.interaction-hint {
+  position: absolute;
+  z-index: 4;
+  bottom: clamp(82px, 7vw, 102px);
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border: 1px solid rgba(143, 203, 229, 0.12);
+  border-radius: 999px;
+  background: rgba(4, 13, 26, 0.54);
+  color: rgba(215, 234, 244, 0.55);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateX(-50%);
+  backdrop-filter: blur(12px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.interaction-hint.is-hidden {
+  opacity: 0;
+  transform: translate(-50%, 5px);
+}
+
+.compass {
+  position: absolute;
+  z-index: 4;
+  bottom: clamp(27px, 3vw, 46px);
+  left: clamp(27px, 3.2vw, 48px);
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 1px solid rgba(125, 198, 231, 0.2);
+  border-radius: 50%;
+  color: rgba(133, 214, 247, 0.72);
+  font-size: 0.62rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  box-shadow: inset 0 0 0 7px rgba(8, 25, 40, 0.45);
+}
+
+.compass::before,
+.compass::after {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #6dd7ff;
+  box-shadow: 0 0 8px rgba(109, 215, 255, 0.8);
+  content: "";
+}
+
+.compass::before {
+  top: -2px;
+}
+
+.compass::after {
+  bottom: -2px;
+}
+
+.loading-state {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  background: #050b19;
+  color: rgba(204, 230, 243, 0.62);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: opacity 520ms ease, visibility 520ms ease;
+}
+
+.loading-state.is-ready {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.loading-orbit {
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(95, 200, 242, 0.18);
+  border-top-color: #68cff6;
+  border-radius: 50%;
+  animation: spin 1.1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 720px) {
+  .site-main {
+    padding: 0;
+  }
+
+  .viewer-shell {
+    height: 100svh;
+    min-height: 520px;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .viewer-shell::after {
+    display: none;
+  }
+
+  .viewer-header {
+    top: 24px;
+    right: 20px;
+    left: 20px;
+  }
+
+  .model-status {
+    width: 38px;
+    height: 38px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .model-status {
+    font-size: 0;
+  }
+
+  .viewer-toolbar {
+    right: 18px;
+    bottom: 19px;
+  }
+
+  .viewer-toolbar button {
+    width: 44px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .viewer-toolbar button span {
+    display: none;
+  }
+
+  .interaction-hint {
+    bottom: 132px;
+  }
+
+  .view-switcher {
+    bottom: 74px;
+  }
+
+  .compass {
+    bottom: 18px;
+    left: 18px;
+  }
+}
+
+@media (max-width: 420px) {
+  .interaction-hint {
+    max-width: calc(100vw - 36px);
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-orbit {
+    animation-duration: 2.4s;
+  }
+}

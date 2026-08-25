@@ -37,6 +37,7 @@
   ],
   "exclude": [
     "node_modules",
+    ".claude",
     "linha-tempo-sistran-react",
     "sistran-video",
     "scroll-world"

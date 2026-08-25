@@ -411,6 +411,12 @@ html[data-motion="reduce"] .scene-media-frame {
      ele passaria a "colar" dentro de uma caixa que não rola, ou seja, nunca. */
   overflow: clip;
   padding-block: clamp(2rem, 7svh, 6rem) 0;
+  /* O par de contraste vem junto do fundo. O `body` deste site é escuro
+     (`color: #f8fafc`), então um bloco que pinta o fundo de branco e não
+     redefine a cor herda texto branco: o titulo e o lead ficavam
+     branco-sobre-branco, invisiveis. O kicker escapava porque `.lp-tag` define
+     a propria cor. */
+  color: var(--ink);
   background: var(--paper);
 }
 
@@ -2126,3 +2132,139 @@ html.has-dialog {
   color: var(--stop-accent);
 }
 
+
+/* ---- 07. Sequência de montagem presa ao scroll ---- */
+
+/* Cópia de `.sequence*` de `app/styles/sections.css` da fonte. As utilidades
+   dentro da cópia levam o prefixo `lp-` (ver nota 1 no topo do arquivo). */
+
+/* A altura extra é o curso de scroll que o vídeo consome. Em `svh` para não
+   depender da barra de URL móvel, que mudaria o curso no meio do gesto. */
+.sequence {
+  position: relative;
+  height: 320svh;
+}
+
+.sequence-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  place-items: end start;
+  overflow: clip;
+  /* Camadas explícitas: `.sequence-visual` tem transform, então é contexto de
+     empilhamento e pinta DEPOIS de qualquer descendente em fluxo. Sem z-index
+     declarado, a copy — que não é posicionada — fica atrás do vídeo. */
+  isolation: isolate;
+}
+
+/* Cena e texto ocupam a mesma célula da grade: empilham sem position absolute,
+   então o texto continua no fluxo e define a altura mínima. */
+.sequence-sticky > * {
+  grid-area: 1 / 1;
+}
+
+/* A cena inteira: full bleed durante a montagem, card pequeno e arredondado
+   depois dela. Encolhe pelo próprio centro, que é o centro da tela.
+
+   `place-items` no sticky desliga o stretch do grid, então cada camada aqui
+   precisa dizer o próprio tamanho — sem isso o container fica 0x0. */
+.sequence-visual {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-shadow: 0 40px 90px -40px rgb(0 26 61 / 45%);
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.sequence-visual > * {
+  grid-area: 1 / 1;
+}
+
+.sequence-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* O clipe é claro nas bordas; sem isso o texto perde contraste no canto. */
+  filter: saturate(1.05) brightness(0.92);
+}
+
+/* Gradiente de leitura: escurece só o pé, onde o texto pousa. As paradas cobrem
+   todo o bloco de texto, não apenas a base — nos quadros claros da montagem um
+   gradiente curto já estaria fraco na altura do título e o branco sumiria. */
+.sequence-veil {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--ink) 92%, transparent) 0%,
+    color-mix(in srgb, var(--ink) 86%, transparent) 42%,
+    color-mix(in srgb, var(--ink) 58%, transparent) 64%,
+    transparent 88%
+  );
+  pointer-events: none;
+}
+
+.sequence-copy {
+  position: relative;
+  z-index: 2;
+  align-self: end;
+  padding-block: clamp(3rem, 7vw, 6rem);
+  color: var(--paper);
+}
+
+/* Halo nas letras, além do véu: sombra `0 0 Xpx` em vez de deslocamento, para a
+   borda de cima da letra não ficar exposta onde o gradiente já está fraco. */
+.sequence-copy .lp-eyebrow,
+.sequence-copy .lp-lead,
+.sequence-copy .lp-display {
+  text-shadow:
+    0 0 2px rgb(0 26 61 / 95%),
+    0 0 10px rgb(0 26 61 / 80%),
+    0 0 28px rgb(0 26 61 / 60%);
+}
+
+/* A cópia fica sobre o vídeo, ou seja, sobre fundo escuro: o chip volta a ser
+   vidro e o acento fica só no ponto. Branco, não `--signal`: dentro da moldura o
+   ciano cai a ~2:1 sobre os quadros azuis da montagem. */
+.sequence-copy .lp-tag {
+  color: var(--paper);
+  border-color: var(--line-dark);
+  background: rgb(255 255 255 / 5%);
+  box-shadow: none;
+}
+
+.sequence-copy .lp-tag::before {
+  background: var(--signal);
+  animation-name: lp-tag-pulse;
+}
+
+/* 78% de branco (padrão do `.lp-lead`) é pouco para um fundo que varia de quadro
+   a quadro: aqui o parágrafo é a explicação da seção e precisa ler inteiro. */
+.sequence-copy .lp-lead {
+  color: color-mix(in srgb, var(--paper) 94%, transparent);
+}
+
+.sequence-copy .lp-display {
+  /* Sem isso o título cabe numa linha só e cruza a tela de ponta a ponta por
+     cima da montagem. */
+  max-width: 26ch;
+  /* Honra o `\n` do título sem impedir a quebra automática: em telas estreitas
+     cada uma das duas linhas ainda pode se dividir de novo. */
+  white-space: pre-line;
+}
+
+/* Menos movimento: sem curso de scroll, sem seek. O quadro do pôster fica parado
+   e o texto continua no mesmo lugar — nada deixa de ser alcançável. */
+.sequence[data-static="true"] {
+  height: auto;
+}
+
+.sequence[data-static="true"] .sequence-sticky {
+  position: relative;
+  height: min(100svh, 46rem);
+}

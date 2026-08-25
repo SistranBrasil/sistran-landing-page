@@ -1,0 +1,249 @@
+[
+  {
+    "base": "sp-1-1",
+    "largura": 3000,
+    "altura": 4000,
+    "saidas": [
+      {
+        "nome": "sp-1-1-960.webp",
+        "largura": 960,
+        "altura": 1280,
+        "bytes": 114998
+      },
+      {
+        "nome": "sp-1-1-1600.webp",
+        "largura": 1600,
+        "altura": 2133,
+        "bytes": 268960
+      }
+    ]
+  },
+  {
+    "base": "sp-2",
+    "largura": 960,
+    "altura": 1280,
+    "saidas": [
+      {
+        "nome": "sp-2-960.webp",
+        "largura": 960,
+        "altura": 1280,
+        "bytes": 69858
+      },
+      {
+        "nome": "sp-2-1600.webp",
+        "largura": 960,
+        "altura": 1280,
+        "bytes": 69858
+      }
+    ]
+  },
+  {
+    "base": "sp-3",
+    "largura": 960,
+    "altura": 1280,
+    "saidas": [
+      {
+        "nome": "sp-3-960.webp",
+        "largura": 960,
+        "altura": 1280,
+        "bytes": 63274
+      },
+      {
+        "nome": "sp-3-1600.webp",
+        "largura": 960,
+        "altura": 1280,
+        "bytes": 63274
+      }
+    ]
+  },
+  {
+    "base": "sp-4",
+    "largura": 960,
+    "altura": 1280,
+    "saidas": [
+      {
+        "nome": "sp-4-960.webp",
+        "largura": 960,
+        "altura": 1280,
+        "bytes": 165414
+      },
+      {
+        "nome": "sp-4-1600.webp",
+        "largura": 960,
+        "altura": 1280,
+        "bytes": 165414
+      }
+    ]
+  },
+  {
+    "base": "sp-5",
+    "largura": 3060,
+    "altura": 4080,
+    "saidas": [
+      {
+        "nome": "sp-5-960.webp",
+        "largura": 960,
+        "altura": 1280,
+        "bytes": 91078
+      },
+      {
+        "nome": "sp-5-1600.webp",
+        "largura": 1600,
+        "altura": 2133,
+        "bytes": 157266
+      }
+    ]
+  },
+  {
+    "base": "sp-6",
+    "largura": 3060,
+    "altura": 4080,
+    "saidas": [
+      {
+        "nome": "sp-6-960.webp",
+        "largura": 960,
+        "altura": 1280,
+        "bytes": 122018
+      },
+      {
+        "nome": "sp-6-1600.webp",
+        "largura": 1600,
+        "altura": 2133,
+        "bytes": 280482
+      }
+    ]
+  },
+  {
+    "base": "sp-7",
+    "largura": 3060,
+    "altura": 4080,
+    "saidas": [
+      {
+        "nome": "sp-7-960.webp",
+        "largura": 960,
+        "altura": 1280,
+        "bytes": 105134
+      },
+      {
+        "nome": "sp-7-1600.webp",
+        "largura": 1600,
+        "altura": 2133,
+        "bytes": 245990
+      }
+    ]
+  },
+  {
+    "base": "sp-8",
+    "largura": 3060,
+    "altura": 4080,
+    "saidas": [
+      {
+        "nome": "sp-8-960.webp",
+        "largura": 960,
+        "altura": 1280,
+        "bytes": 119992
+      },
+      {
+        "nome": "sp-8-1600.webp",
+        "largura": 1600,
+        "altura": 2133,
+        "bytes": 262820
+      }
+    ]
+  },
+  {
+    "base": "pb-0",
+    "largura": 2383,
+    "altura": 1788,
+    "saidas": [
+      {
+        "nome": "pb-0-960.webp",
+        "largura": 960,
+        "altura": 720,
+        "bytes": 61058
+      },
+      {
+        "nome": "pb-0-1600.webp",
+        "largura": 1600,
+        "altura": 1201,
+        "bytes": 116986
+      }
+    ]
+  },
+  {
+    "base": "pb-1-1",
+    "largura": 713,
+    "altura": 531,
+    "saidas": [
+      {
+        "nome": "pb-1-1-960.webp",
+        "largura": 713,
+        "altura": 531,
+        "bytes": 38358
+      },
+      {
+        "nome": "pb-1-1-1600.webp",
+        "largura": 713,
+        "altura": 531,
+        "bytes": 38358
+      }
+    ]
+  },
+  {
+    "base": "pb-2",
+    "largura": 1024,
+    "altura": 768,
+    "saidas": [
+      {
+        "nome": "pb-2-960.webp",
+        "largura": 960,
+        "altura": 720,
+        "bytes": 87602
+      },
+      {
+        "nome": "pb-2-1600.webp",
+        "largura": 1024,
+        "altura": 768,
+        "bytes": 100786
+      }
+    ]
+  },
+  {
+    "base": "pb-3",
+    "largura": 1280,
+    "altura": 960,
+    "saidas": [
+      {
+        "nome": "pb-3-960.webp",
+        "largura": 960,
+        "altura": 720,
+        "bytes": 67210
+      },
+      {
+        "nome": "pb-3-1600.webp",
+        "largura": 1280,
+        "altura": 960,
+        "bytes": 103042
+      }
+    ]
+  },
+  {
+    "base": "pb-4-1-2",
+    "largura": 2383,
+    "altura": 1788,
+    "saidas": [
+      {
+        "nome": "pb-4-1-2-960.webp",
+        "largura": 960,
+        "altura": 720,
+        "bytes": 39070
+      },
+      {
+        "nome": "pb-4-1-2-1600.webp",
+        "largura": 1600,
+        "altura": 1201,
+        "bytes": 68800
+      }
+    ]
+  }
+]

@@ -300,7 +300,7 @@ export default function EventsGrid() {
        abaixo. Os cards de evento seguem navy via .on-dark. */
     <section
       id="eventos"
-      className="section-light section-light-blue section-py relative overflow-hidden"
+      className="cv-auto section-light section-light-blue section-py relative overflow-hidden"
     >
       {/* z-0, nao -z-10: .section-light aplica isolation:isolate e o fundo esta
           nesta section — z negativo esconderia os orbs atras do background. */}
@@ -354,7 +354,7 @@ export default function EventsGrid() {
             <button
               type="button"
               onClick={() => scrollBy(-1)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#0079CB]/22 bg-white/75 !text-[#0060a8] shadow-[0_8px_20px_-16px_rgba(0,121,203,0.7)] transition-colors hover:border-[#0079CB]/50 hover:bg-white"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#0079CB]/22 bg-white/75 !text-[#0060a8] shadow-[0_8px_20px_-16px_rgba(0,121,203,0.7)] transition-colors hover:border-[#0079CB]/50 hover:bg-white"
               aria-label="Evento anterior"
             >
               <ArrowLeft className="h-4 w-4" strokeWidth={1.8} />
@@ -367,7 +367,7 @@ export default function EventsGrid() {
                   return !p;
                 })
               }
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#0079CB]/60 bg-[#0079CB] !text-white transition-colors hover:bg-[#0060A8]"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#0079CB]/60 bg-[#0079CB] !text-white transition-colors hover:bg-[#0060A8]"
               aria-label={playing ? 'Pausar carrossel' : 'Reproduzir carrossel'}
             >
               {playing ? <Pause className="h-4 w-4" strokeWidth={1.8} /> : <Play className="h-4 w-4" strokeWidth={1.8} />}
@@ -375,7 +375,7 @@ export default function EventsGrid() {
             <button
               type="button"
               onClick={() => scrollBy(1)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-[#0079CB]/22 bg-white/75 !text-[#0060a8] shadow-[0_8px_20px_-16px_rgba(0,121,203,0.7)] transition-colors hover:border-[#0079CB]/50 hover:bg-white"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#0079CB]/22 bg-white/75 !text-[#0060a8] shadow-[0_8px_20px_-16px_rgba(0,121,203,0.7)] transition-colors hover:border-[#0079CB]/50 hover:bg-white"
               aria-label="Próximo evento"
             >
               <ArrowRight className="h-4 w-4" strokeWidth={1.8} />

@@ -1,3 +1,4 @@
+import { Instrument_Serif } from 'next/font/google';
 import Header from '@/components/Header';
 import HeroCinematic from '@/components/HeroCinematic';
 import About from '@/components/About';
@@ -11,17 +12,58 @@ import Footer from '@/components/Footer';
 import ScrollSpy from '@/components/ui/ScrollSpy';
 import BackToTop from '@/components/ui/BackToTop';
 import SectionReveal from '@/components/ui/SectionReveal';
+import OptionalMorphIntro from '@/components/intro/OptionalMorphIntro';
+import { StackScenes } from '@/components/legacy/StackScenes';
+import { ImpactSequence } from '@/components/legacy/ImpactSequence';
+
+/* A serifa editorial existe só para o mosaico (e para /transformacao-legado) —
+   o layout raiz continua com Inter + Sora. Exposta como `--font-legacy-serif`,
+   nome que `legacy.css` consome em `--font-editorial`. */
+const editorial = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-legacy-serif',
+  display: 'swap',
+});
 
 export default function Page() {
   return (
     <>
+      {/* Abertura opcional: so na home, so uma vez por sessao, e sempre por
+          cima de uma pagina que ja terminou de renderizar por baixo. */}
+      <OptionalMorphIntro />
       <Header />
       <ScrollSpy />
-      <main>
+      <main id="conteudo" tabIndex={-1}>
         <HeroCinematic />
-        {/* Bloco claro único: sobre + diferenciais + resultados */}
+        {/* Sem separador aqui: o hero encolhe em card sobre fundo claro e já
+            entrega a cor do mosaico.
+
+            Mosaico e Método num bloco só, e não em duas seções: o tile
+            "Arquitetura modular e escalável" sai do mosaico, desce e se expande
+            até virar a caixa de vídeo do Método. Separar cortaria o percurso na
+            emenda. Conteúdo em `src/data/legacy.ts`. */}
+        <div className={editorial.variable}>
+          <StackScenes />
+        </div>
+        {/* O bloco claro era um só (sobre + diferenciais + resultados) e agora é
+            dois, porque a montagem entra no meio: ela é full bleed e tem fundo
+            próprio, e dentro de `.section-light` (que tem `isolation: isolate` e
+            degradê) o degradê pintaria por cima dela. Cada bloco desenha o seu
+            próprio degradê, então há uma emenda de tom entre eles. */}
         <div className="section-light">
           <SectionReveal><About /></SectionReveal>
+        </div>
+        {/* Montagem presa ao scroll, logo abaixo de "Sobre nós". Portada da
+            apresentação de legado junto com o vídeo; o wrapper da serifa é o que
+            fornece `--font-legacy-serif`, que o `legacy.css` consome no título.
+            Conteúdo em `src/data/legacy.ts` (`impactSequence`). Fora do
+            `SectionReveal`: a seção já tem o próprio percurso de scroll. */}
+        <div className={editorial.variable}>
+          <ImpactSequence />
+        </div>
+        <div className="section-light">
           <SectionReveal><Differentials /></SectionReveal>
           <SectionReveal><Metrics /></SectionReveal>
         </div>
@@ -32,7 +74,10 @@ export default function Page() {
           <SectionReveal><Contact /></SectionReveal>
         </div>
         <SectionReveal><Social /></SectionReveal>
-        <SectionReveal><ContactCTA /></SectionReveal>
+        {/* `motionShowcase`: digitacao do titulo, entrada encadeada e grafismo
+            tecnico. Só aqui — o mesmo ContactCTA fecha outras nove paginas e
+            elas continuam como estavam. */}
+        <SectionReveal><ContactCTA motionShowcase /></SectionReveal>
       </main>
       <Footer />
       <BackToTop />

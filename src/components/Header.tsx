@@ -28,15 +28,32 @@ export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [compacto, setCompacto] = useState(false);
   const [activeHash, setActiveHash] = useState('');
   const [contactOpen, setContactOpen] = useState(false);
 
+  /* Duas leituras do mesmo scroll, com limiares diferentes de proposito:
+     `scrolled` (40px) so intensifica o fundo — mudanca barata, pode ser cedo.
+     `compacto` (80px) reduz a altura do cabecalho, o que reposiciona a pagina
+     inteira: mais tarde para nao disparar num toque acidental do trackpad
+     (relatorio de UX, p13 — cabecalho de 88px come a primeira dobra). */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 40);
+      setCompacto(y > 80);
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  /* `--header-h` alimenta o `scroll-margin-top` das seccoes ancoraveis
+     (globals.css). Se a altura muda e a variavel nao, toda ancora passa a
+     parar 20px errada — ou escondida atras do proprio cabecalho. */
+  useEffect(() => {
+    document.documentElement.style.setProperty('--header-h', compacto ? '68px' : '88px');
+  }, [compacto]);
 
   const isHome = pathname === '/';
   // hidden apenas no topo absoluto da home
@@ -68,6 +85,19 @@ export default function Header() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
+  /* Com o menu aberto, o resto da pagina sai de circulacao. So esconder
+     visualmente nao basta: o Tab continuava passando pelos links atras do
+     drawer e o leitor de tela lia a pagina inteira por baixo do menu
+     (relatorio de UX, p13). `inert` resolve os dois de uma vez. */
+  useEffect(() => {
+    if (!open) return;
+    const fora = Array.from(
+      document.querySelectorAll<HTMLElement>('#conteudo, footer'),
+    ).filter((el) => !el.contains(document.activeElement));
+    fora.forEach((el) => el.setAttribute('inert', ''));
+    return () => fora.forEach((el) => el.removeAttribute('inert'));
   }, [open]);
 
   // Body no-scroll enquanto menu aberto
@@ -108,14 +138,18 @@ export default function Header() {
   return (
     <>
     <header
-      className="fixed inset-x-0 top-4 z-50 mx-auto flex h-[72px] w-[min(1240px,calc(100%-32px))] items-center justify-between rounded-[20px] px-3 pl-5 text-white md:h-[88px]"
+      className={clsx(
+        'fixed inset-x-0 z-50 mx-auto flex w-[min(1240px,calc(100%-32px))] items-center justify-between rounded-[20px] px-3 pl-5 text-white',
+        compacto ? 'top-2 h-[64px] md:h-[68px]' : 'top-4 h-[72px] md:h-[88px]',
+      )}
       style={{
         border: PILL_BORDER,
         background: scrolled ? PILL_BG_STRONG : PILL_BG,
         boxShadow: PILL_SHADOW,
         backdropFilter: 'blur(28px) saturate(1.4)',
         WebkitBackdropFilter: 'blur(28px) saturate(1.4)',
-        transition: 'background 300ms ease, box-shadow 300ms ease',
+        transition:
+          'background var(--dur-base, 300ms) ease, box-shadow var(--dur-base, 300ms) ease, height var(--dur-base, 300ms) var(--ease-out, ease), top var(--dur-base, 300ms) var(--ease-out, ease)',
       }}
     >
       {/* borda inferior gradient sutil */}
@@ -136,13 +170,20 @@ export default function Header() {
         aria-label="Sistran, ir para a página inicial"
         className="inline-flex flex-shrink-0 items-center gap-4"
       >
+        {/* `data-morph-target`: destino da abertura opcional da home
+            (OptionalMorphIntro). O atributo e so uma marca de medicao — o logo
+            continua correto e visivel sem o efeito. */}
         <Image
+          data-morph-target=""
           src="/images/sistran-corp-logo.png"
           alt="Sistran"
           width={280}
           height={96}
           priority
-          className="logo-glow h-[4.5rem] w-auto object-contain md:h-[5.5rem]"
+          className={clsx(
+            'logo-glow w-auto object-contain transition-[height] duration-300',
+            compacto ? 'h-[3.1rem] md:h-[3.4rem]' : 'h-[4.5rem] md:h-[5.5rem]',
+          )}
         />
       </Link>
 
@@ -192,7 +233,7 @@ export default function Header() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? 'Fechar menu' : 'Abrir menu'}
         aria-expanded={open}
-        className="ml-2 inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border border-white/12 bg-white/5 [@media(min-width:1440px)]:hidden"
+        className="ml-2 inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-white/12 bg-white/5 [@media(min-width:1440px)]:hidden"
       >
         {open ? <X className="h-5 w-5" strokeWidth={1.8} /> : <Menu className="h-5 w-5" strokeWidth={1.8} />}
       </button>
@@ -241,6 +282,19 @@ export default function Header() {
         </nav>
       </div>
     </header>
+
+    {/* Escurece o conteudo por tras do drawer: o menu antes flutuava sobre a
+        pagina com contraste insuficiente entre texto e fundo em rolagem
+        (relatorio de UX, p13). Decorativo — o Escape e o proprio botao ja
+        fecham o menu pelo teclado. */}
+    <div
+      aria-hidden
+      onClick={() => setOpen(false)}
+      className={clsx(
+        'fixed inset-0 z-40 bg-[#031326]/70 backdrop-blur-[2px] transition-opacity duration-300 [@media(min-width:1440px)]:hidden',
+        open ? 'opacity-100' : 'pointer-events-none opacity-0',
+      )}
+    />
 
     {/* Fora do <header>: o header tem backdrop-filter, que cria um containing
         block e faria o `position: fixed` do modal se ancorar nele em vez de na

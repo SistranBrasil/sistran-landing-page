@@ -30,7 +30,7 @@ function MetricBig({ m, index }: { m: (typeof METRICS)[number]; index: number })
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/2 hidden h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full transition-transform duration-500 group-hover:scale-150 md:block"
         style={{
-          background: 'linear-gradient(135deg, #0ed8f6, #7c3aed)',
+          background: 'linear-gradient(135deg, #0ed8f6, #a5f0ff)',
           boxShadow: '0 0 12px rgba(14,216,246,0.7)',
         }}
       />
@@ -52,7 +52,7 @@ function MetricBig({ m, index }: { m: (typeof METRICS)[number]; index: number })
             fontVariantNumeric: 'tabular-nums',
             fontSize: 'clamp(2.25rem, 4.6vw, 4rem)',
             letterSpacing: '-0.055em',
-            background: 'linear-gradient(135deg, #0079CB 0%, #0ed8f6 55%, #7c3aed 100%)',
+            background: 'linear-gradient(135deg, #0079CB 0%, #0ed8f6 55%, #a5f0ff 100%)',
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             WebkitTextFillColor: 'transparent',

@@ -52,7 +52,7 @@ export function RoadmapStopMedia({
         <div className="stop-media-frame">
           {stop.logo ? (
             /* eslint-disable-next-line @next/next/no-img-element */
-            <img src={stop.logo} alt={`Marca de ${stop.client}`} decoding="async" />
+            <img src={stop.logo} alt={`Marca de ${stop.client}`} loading="lazy" decoding="async" />
           ) : (
             <b aria-hidden="true">{stop.monogram}</b>
           )}

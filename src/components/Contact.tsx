@@ -73,12 +73,7 @@ export default function Contact() {
           </motion.span>
           <motion.h2
             variants={vTitle}
-            className="mt-4 font-display font-bold text-ink"
-            style={{
-              fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-              lineHeight: 1.02,
-              letterSpacing: '-0.035em',
-            }}
+            className="mt-5 font-display text-section font-bold text-ink"
           >
             Entre em <span className="text-gradient-brand">contato</span> conosco
           </motion.h2>

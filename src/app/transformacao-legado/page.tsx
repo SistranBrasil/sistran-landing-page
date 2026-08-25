@@ -29,6 +29,8 @@ export default function Page() {
     <PageShell>
       <div className={editorial.variable}>
         <StackScenes />
+        {/* A montagem (`ImpactSequence`) vive na home, emendada no hero: o mesmo
+            texto em duas páginas faria o leitor achar que já leu e pular. */}
         <RoadmapTrail />
       </div>
     </PageShell>

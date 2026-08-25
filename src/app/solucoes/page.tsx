@@ -142,7 +142,7 @@ function AnchorPill({ href, label }: { href: string; label: string }) {
        hover so intensifica. Antes o link so existia visualmente no hover. */
     <a
       href={href}
-      className="group inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.07] px-4 py-2 text-sm font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-[#0ed8f6]/60 hover:bg-[#0ed8f6]/12"
+      className="group inline-flex items-center gap-2 rounded-xl border border-white/12 bg-white/[0.07] px-4 py-2.5 text-sm min-h-[44px] font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-[#0ed8f6]/60 hover:bg-[#0ed8f6]/12"
     >
       <span
         className="h-1.5 w-1.5 rounded-full bg-[#0ed8f6] transition-transform duration-300 group-hover:scale-150"

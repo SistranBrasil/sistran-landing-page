@@ -4,6 +4,8 @@ import './globals.css';
 import Background from '@/components/Background';
 import SmoothScroll from '@/components/ui/SmoothScroll';
 import PageTransition from '@/components/ui/PageTransition';
+import AnchorFocus from '@/components/ui/AnchorFocus';
+import MotionPolicyProvider from '@/components/layout/MotionPolicyProvider';
 import { MotionPreferenceIntro } from '@/components/layout/MotionPreferenceIntro';
 import { MOTION_PREFERENCE_STORAGE_KEY } from '@/lib/motionPreference';
 
@@ -180,10 +182,22 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script dangerouslySetInnerHTML={{ __html: REDUCED_MOTION_OVERRIDE_SCRIPT }} />
       </head>
       <body className="font-sans antialiased">
+        {/* Primeiro foco do documento, antes de qualquer coisa: quem navega por
+            teclado ou leitor de tela pula o header e o menu de uma vez.
+            Aponta para o `<main id="conteudo" tabIndex={-1}>` de cada rota
+            (`PageShell` e a home) — sem o tabIndex o navegador move o foco para
+            o body e o Tab seguinte volta ao topo. O `<main>` fica na rota, e
+            nao aqui, para nao aninhar dois. */}
+        <a href="#conteudo" className="skip-link">
+          Pular para o conteúdo
+        </a>
         <MotionPreferenceIntro />
         <Background />
         <SmoothScroll />
-        <PageTransition>{children}</PageTransition>
+        <AnchorFocus />
+        <MotionPolicyProvider>
+          <PageTransition>{children}</PageTransition>
+        </MotionPolicyProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

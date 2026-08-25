@@ -8,7 +8,7 @@ import { DIFFERENTIALS } from '@/data/differentials';
 import { getIcon } from '@/lib/icons';
 import { vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '@/lib/motion';
 
-const CARD_COLORS = ['#0ed8f6', '#0079CB', '#7c3aed', '#B8DDF6'] as const;
+const CARD_COLORS = ['#0ed8f6', '#0079CB', '#a5f0ff', '#B8DDF6'] as const;
 
 /* Numeracao em azul escuro fixo, nao no `color` do card: dois dos quatro tons
    (#0ed8f6, #B8DDF6) sao claros e sumiam sobre o card claro. Um navy unico
@@ -71,7 +71,7 @@ export default function Differentials() {
             initial={rm ? false : 'hidden'}
             whileInView="visible"
             viewport={VP}
-            className="mb-12 max-w-2xl"
+            className="mb-14 max-w-2xl"
           >
             {/* Titulo e texto verbatim do bloco de diferenciais da home.
                 Fonte: .claude/conteudo-site/00-home.md (secao 3) */}
@@ -79,7 +79,7 @@ export default function Differentials() {
               Entrega com <span className="text-gradient-brand">Alta Performance</span> e
               Comprometimento
             </motion.h2>
-            <motion.p variants={vSubtitle} className="mt-4 text-lg leading-relaxed text-ink-muted">
+            <motion.p variants={vSubtitle} className="mt-6 text-lg leading-relaxed text-ink-muted">
               Empresas que aderem a tecnologia em seus processos estão sempre a frente no mercado!
             </motion.p>
           </motion.div>
@@ -122,12 +122,36 @@ export default function Differentials() {
     );
   }
 
+  /* Rolar ate a janela do passo. O percurso e o proprio wrapper: cada passo
+     ocupa 1/N dele, e o alvo cai no meio da janela para nao encostar na borda,
+     onde o indice oscila. */
+  const irParaPasso = (i: number) => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const passo = 1 / DIFFERENTIALS.length;
+    const alvo = el.offsetTop + (el.offsetHeight - window.innerHeight) * (passo * (i + 0.5));
+    const lenis = (window as unknown as { __lenis?: { scrollTo: (t: number, o?: object) => void } })
+      .__lenis;
+    if (lenis) lenis.scrollTo(alvo, { duration: rm ? 0 : 0.9 });
+    else window.scrollTo({ top: alvo, behavior: rm ? 'auto' : 'smooth' });
+  };
+
   const wrapperHeight = `${DIFFERENTIALS.length * 100}vh`;
 
   return (
     <section id="diferenciais" className="relative">
       <div ref={wrapperRef} className="relative" style={{ height: wrapperHeight }}>
-        <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+        {/* Encosta abaixo do cabecalho, nao no topo da viewport: com `top: 0` a
+            tag e o titulo da seccao ficavam por tras do header fixo e o card
+            tinha de ser encurtado para compensar (relatorio de UX, p15).
+            `--header-h` e escrito pelo Header e acompanha a compactacao. */}
+        <div
+          className="sticky flex items-center overflow-hidden"
+          style={{
+            top: 'calc(var(--header-h) + 1.5rem)',
+            height: 'calc(100svh - var(--header-h) - 1.5rem)',
+          }}
+        >
           <div className="container-lp relative w-full">
             {/* Header */}
             <div className="mb-8 flex items-end justify-between gap-6">
@@ -142,22 +166,43 @@ export default function Differentials() {
                   mercado!
                 </p>
               </div>
-              {/* Dots de progresso lateral */}
-              <div aria-hidden className="hidden shrink-0 md:flex md:flex-col md:items-center md:gap-3">
-                {DIFFERENTIALS.map((_, i) => {
+              {/* Passos 01-04. Eram pontos `aria-hidden`: informavam a posicao
+                  a quem ve e nada a quem navega por teclado, e nao davam acesso
+                  aos passos sem rolar o percurso inteiro (relatorio de UX,
+                  p15). Agora sao botoes — o ponto continua do mesmo tamanho,
+                  a area de toque e que cresceu para 44px. */}
+              <div
+                role="group"
+                aria-label="Passos dos diferenciais"
+                className="hidden shrink-0 md:flex md:flex-col md:items-center"
+              >
+                {DIFFERENTIALS.map((d, i) => {
                   const isActive = i === activeIdx;
                   return (
-                    <span
-                      key={i}
-                      className="relative block rounded-full transition-all duration-500"
-                      style={{
-                        width: isActive ? 14 : 6,
-                        height: isActive ? 14 : 6,
-                        background: isActive ? CARD_COLORS[i] : 'rgba(16, 91, 154,0.25)',
-                        boxShadow: isActive ? `0 0 18px ${CARD_COLORS[i]}, 0 0 0 4px ${CARD_COLORS[i]}22` : undefined,
-                        opacity: isActive ? 1 : 0.6,
-                      }}
-                    />
+                    <button
+                      key={d.id}
+                      type="button"
+                      onClick={() => irParaPasso(i)}
+                      aria-current={isActive ? 'true' : undefined}
+                      className="inline-flex h-11 w-11 items-center justify-center"
+                    >
+                      <span
+                        aria-hidden
+                        className="relative block rounded-full transition-all duration-300"
+                        style={{
+                          width: isActive ? 14 : 6,
+                          height: isActive ? 14 : 6,
+                          background: isActive ? CARD_COLORS[i] : 'rgba(16, 91, 154,0.25)',
+                          boxShadow: isActive
+                            ? `0 0 18px ${CARD_COLORS[i]}, 0 0 0 4px ${CARD_COLORS[i]}22`
+                            : undefined,
+                          opacity: isActive ? 1 : 0.6,
+                        }}
+                      />
+                      <span className="sr-only">
+                        {String(i + 1).padStart(2, '0')} {d.title}
+                      </span>
+                    </button>
                   );
                 })}
               </div>
@@ -166,7 +211,7 @@ export default function Differentials() {
             {/* 52vh: com 62vh o bloco (header + card) passava da altura da
                 viewport e o topo — onde fica a tag "Diferenciais" — era cortado
                 pelo header fixo. min-h menor pela mesma razao. */}
-            <div className="relative h-[52vh] min-h-[360px]">
+            <div className="relative h-[58vh] min-h-[380px]">
               {DIFFERENTIALS.map((d, i) => {
                 const Icon = getIcon(d.icon);
                 const color = CARD_COLORS[i] ?? d.color;
@@ -179,7 +224,7 @@ export default function Differentials() {
                 const y = isBelow ? '100%' : isDone ? '0%' : `${(1 - localP) * 6}%`;
                 const scale = isBelow ? 0.95 : isDone ? 0.96 : 1;
                 const opacity = isDone ? 0 : 1;
-                const blur = isBelow ? 6 : 0;
+                const blur = isBelow ? 4 : 0; // era 6px: acima de ~4px o card de baixo vira mancha
                 return (
                   <article
                     key={d.id}
@@ -189,8 +234,12 @@ export default function Differentials() {
                       transform: `translateY(${y}) scale(${scale})`,
                       opacity,
                       filter: `blur(${blur}px)`,
+                      /* Era 750/500ms. O estado intermediario (card meio
+                         desfocado, meio subindo) e ruido: quanto mais tempo ele
+                         dura, mais a seccao parece lenta. O relatorio (p15) pede
+                         o intermediario em 250-350ms. */
                       transition:
-                        'transform 750ms var(--ease-out), opacity 500ms var(--ease-out), filter 500ms var(--ease-out)',
+                        'transform var(--motion-base, 320ms) var(--motion-ease), opacity 260ms var(--motion-ease), filter 260ms var(--motion-ease)',
                       zIndex: 10 + i,
                       boxShadow: `0 40px 80px -30px ${color}66, 0 0 0 1px ${color}55 inset`,
                     }}

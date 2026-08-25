@@ -1,0 +1,20 @@
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\ui\PillarsCarousel.tsx:88:16
+  86 |               }}
+  87 |             >
+> 88 |               <Icon className="h-7 w-7" style={{ color: current.color }} strokeWidth={1.8} />
+     |                ^^^^ This component is created during render
+  89 |             </div>
+  90 |             <h3 className="font-display text-xl font-bold leading-tight text-white md:text-2xl">
+  91 |               {current.title}
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\ui\PillarsCarousel.tsx:29:16
+  27 |
+  28 |   const current = DIFFERENTIALS[i];
+> 29 |   const Icon = getIcon(current.icon);
+     |                ^^^^^^^^^^^^^^^^^^^^^ The component is created during render here
+  30 |
+  31 |   return (
+  32 |     <div  react-hooks/static-components
+
+✖ 21 problems (3 errors, 18 warnings)
+

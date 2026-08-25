@@ -62,7 +62,7 @@ export default function ScrollSpy() {
             href={`#${s.id}`}
             aria-label={`Ir para ${s.label}`}
             aria-current={isActive ? 'true' : undefined}
-            className="group relative flex h-6 items-center"
+            className="group relative flex h-11 items-center"
           >
             <span
               className={`h-1.5 rounded-full transition-all duration-300 ${

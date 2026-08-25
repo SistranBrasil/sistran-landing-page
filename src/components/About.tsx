@@ -18,10 +18,10 @@ const HIGHLIGHTS = [
     color: '#0ed8f6',
   },
   {
-    value: '130+',
+    value: '150+',
     label: 'Clientes',
-    detail: 'Ampla presença na América do Sul, com mais de 130 clientes e 850 colaboradores.',
-    num: 130,
+    detail: 'Ampla presença na América do Sul, com mais de 150 clientes e 850 colaboradores.',
+    num: 150,
     suffix: '+',
     start: 0,
     color: '#0079CB',
@@ -34,7 +34,7 @@ const HIGHLIGHTS = [
     num: 18,
     suffix: '',
     start: 0,
-    color: '#7c3aed',
+    color: '#57B7EE',
   },
 ];
 
@@ -90,7 +90,7 @@ function CountUpNumber({
       style={{
         fontSize: 'clamp(3.25rem, 7.5vw, 6rem)',
         letterSpacing: '-0.05em',
-        background: `linear-gradient(135deg, ${color} 0%, #0ed8f6 55%, #7c3aed 100%)`,
+        background: `linear-gradient(135deg, ${color} 0%, #0ed8f6 55%, #a5f0ff 100%)`,
         WebkitBackgroundClip: 'text',
         backgroundClip: 'text',
         WebkitTextFillColor: 'transparent',
@@ -140,12 +140,7 @@ export default function About() {
             </motion.span>
             <motion.h2
               variants={vTitle}
-              className="mt-5 font-display font-bold text-ink"
-              style={{
-                fontSize: 'clamp(2.25rem, 4.6vw, 4rem)',
-                lineHeight: 1.02,
-                letterSpacing: '-0.032em',
-              }}
+              className="mt-5 font-display text-section font-bold text-ink"
             >
               A <span className="text-gradient-brand">Sistran</span>
             </motion.h2>
@@ -156,7 +151,7 @@ export default function About() {
               className="mt-8 block h-[3px] w-24 origin-left rounded-full"
               style={{
                 background:
-                  'linear-gradient(90deg, #0ed8f6, #0079CB 55%, #7c3aed)',
+                  'linear-gradient(90deg, #0ed8f6, #0079CB 55%, #a5f0ff)',
                 boxShadow: '0 0 18px rgba(14,216,246,0.45)',
               }}
             />
@@ -180,7 +175,7 @@ export default function About() {
               }}
             >
               <span className="font-semibold text-ink">
-                Com ampla presença na América do Sul, contando com mais de 130 clientes e 850
+                Com ampla presença na América do Sul, contando com mais de 150 clientes e 850
                 colaboradores, a Sistran é referência em soluções tecnológicas para o setor de
                 Seguros.
               </span>{' '}
@@ -229,7 +224,7 @@ export default function About() {
             className="pointer-events-none absolute left-8 right-8 top-1/2 hidden h-[2px] -translate-y-1/2 sm:block"
             style={{
               background:
-                'linear-gradient(90deg, transparent, rgba(14,216,246,0.55), rgba(0,121,203,0.75), rgba(124,58,237,0.55), transparent)',
+                'linear-gradient(90deg, transparent, rgba(14,216,246,0.55), rgba(0,121,203,0.75), rgba(165,240,255,0.55), transparent)',
               boxShadow: '0 0 20px rgba(14,216,246,0.25)',
             }}
           />
@@ -258,7 +253,7 @@ export default function About() {
                     // cascata: cada card entra depois do anterior
                     delay: rm ? 0 : 0.14 * i,
                   }}
-                  className="group relative flex flex-col overflow-hidden rounded-2xl border border-[#0079CB]/15 bg-white/70 p-7 backdrop-blur-sm transition-transform duration-500 hover:-translate-y-1.5"
+                  className="group relative flex flex-col overflow-hidden rounded-[26px] border border-[#0079CB]/15 bg-white/75 p-8 backdrop-blur-sm transition-transform duration-500 hover:-translate-y-1.5"
                   style={{ boxShadow: `0 20px 40px -30px ${color}66` }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.boxShadow = `0 30px 60px -24px ${color}88, 0 0 0 1px ${color}55 inset`;
@@ -273,11 +268,9 @@ export default function About() {
                     className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-70"
                     style={{ background: color }}
                   />
-                  {/* corner-accents */}
-                  <span aria-hidden className="pointer-events-none absolute left-2 top-2 h-3 w-3 border-l-2 border-t-2 transition-all duration-500 group-hover:h-5 group-hover:w-5" style={{ borderColor: color }} />
-                  <span aria-hidden className="pointer-events-none absolute right-2 top-2 h-3 w-3 border-r-2 border-t-2 transition-all duration-500 group-hover:h-5 group-hover:w-5" style={{ borderColor: color }} />
-                  <span aria-hidden className="pointer-events-none absolute left-2 bottom-2 h-3 w-3 border-l-2 border-b-2 transition-all duration-500 group-hover:h-5 group-hover:w-5" style={{ borderColor: color }} />
-                  <span aria-hidden className="pointer-events-none absolute right-2 bottom-2 h-3 w-3 border-r-2 border-b-2 transition-all duration-500 group-hover:h-5 group-hover:w-5" style={{ borderColor: color }} />
+                  {/* Uma marca de canto, nao quatro: o numero e a informacao
+                      do card e as quatro molduras em L disputavam com ele. */}
+                  <span aria-hidden className="pointer-events-none absolute left-0 top-0 h-10 w-10 rounded-tl-[26px] border-l-2 border-t-2 transition-all duration-500 group-hover:h-14 group-hover:w-14" style={{ borderColor: `${color}66` }} />
 
                   <div className="relative flex items-start gap-3">
                     <CountUpNumber
@@ -308,7 +301,7 @@ export default function About() {
                   <span aria-hidden className="relative mt-4 block h-[2px] w-full overflow-hidden rounded-full bg-[#0079CB]/10">
                     <span
                       className="block h-full w-full origin-left scale-x-0 rounded-full transition-transform duration-700 group-hover:scale-x-100"
-                      style={{ background: `linear-gradient(90deg, ${color}, #7c3aed)` }}
+                      style={{ background: `linear-gradient(90deg, ${color}, #a5f0ff)` }}
                     />
                   </span>
 

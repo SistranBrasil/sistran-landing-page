@@ -20,7 +20,7 @@ export const OFFICES = [
 export const DIFERENCIAIS_6 = [
   'Especialização em Seguradoras',
   'Atendimento de nível global, custo local',
-  'Estrutura sólida e perene: mais de 30 anos de vida',
+  'Estrutura sólida e perene: mais de 45 anos de vida',
   'Clientes Sistran processam 1/3 dos prêmios de Seguro de Vida no Brasil',
   'Conhecimento de regulações da Susep',
   'Metodologias e frameworks mundiais',

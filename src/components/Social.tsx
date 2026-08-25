@@ -59,12 +59,7 @@ export default function Social() {
           </motion.span>
           <motion.h2
             variants={vTitle}
-            className="mt-4 font-display font-bold text-white"
-            style={{
-              fontSize: 'clamp(2.25rem, 5vw, 4.25rem)',
-              lineHeight: 1.04,
-              letterSpacing: '-0.03em',
-            }}
+            className="mt-5 font-display text-section font-bold text-white"
           >
             Siga a Sistran no LinkedIn{' '}
             <span className="text-gradient-brand">#SomosSistraners</span>

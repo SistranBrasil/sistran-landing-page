@@ -31,8 +31,26 @@ const EXIT_MS = 260;
  */
 export function MotionPreferenceDialog({ mode, onClose }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
+  /* Escrita em ref durante o render é proibida (era o erro de lint): num render
+     descartado pelo React o valor vazaria para a arvore que ficou. */
   const onCloseRef = useRef(onClose);
-  onCloseRef.current = onClose;
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  /* Quem abriu o painel de preferencias, para devolver o foco ao fechar. O
+     banner nao é modal, mas o foco entra nele de qualquer forma (efeito abaixo)
+     e sem devolucao o Tab seguinte reiniciava do topo. */
+  const gatilhoRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    const ativo = document.activeElement;
+    if (ativo instanceof HTMLElement) gatilhoRef.current = ativo;
+    return () => {
+      const gatilho = gatilhoRef.current;
+      gatilhoRef.current = null;
+      if (gatilho?.isConnected) gatilho.focus({ preventScroll: true });
+    };
+  }, []);
 
   const [montado, setMontado] = useState(false);
   useEffect(() => setMontado(true), []);

@@ -1,0 +1,46 @@
+▲ Next.js 16.3.0 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.mjs took 24ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.5s
+  Running TypeScript ...
+  Finished TypeScript in 3.8s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/26) ...
+  Generating static pages using 7 workers (6/26) 
+  Generating static pages using 7 workers (12/26) 
+  Generating static pages using 7 workers (19/26) 
+✓ Generating static pages using 7 workers (26/26) in 1828ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /blog
+├   /blog/[slug]
+│ └ ● /blog/webinar-suitability-e-ai-em-seguros-ruptura-ou-inovacao
+├ ○ /contato
+├ ○ /esg
+├ ○ /eventos-inovacao
+├ ○ /parceiros-e-implementacoes
+├ ○ /politica-de-privacidade
+├ ○ /quem-somos
+├ ○ /relatorio-de-transparencia-salarial
+├ ○ /robots.txt
+├ ○ /sistran-labs
+├ ○ /sistran-university
+├ ○ /sitemap.xml
+├ ○ /solucoes
+├   /solucoes/[slug]
+│ ├ ● /solucoes/match-ai
+│ ├ ● /solucoes/lumina-ai
+│ ├ ● /solucoes/fast
+│ └ ● [+4 more paths]
+├ ○ /trabalhe-conosco
+└ ○ /transformacao-legado
+
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses generateStaticParams)
+

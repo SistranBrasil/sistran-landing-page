@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useActionState } from 'react';
 import { Check } from 'lucide-react';
+import { enviarFormulario, ESTADO_INICIAL } from '@/app/actions/contato';
 
 export type DemoField =
   | { kind: 'name-pair'; id: string; label: string; required?: boolean }
@@ -24,7 +25,11 @@ export default function DemoForm({
   fields: readonly DemoField[];
   submitLabel?: string;
 }) {
-  const [sent, setSent] = useState(false);
+  /* Server action = POST. Antes era `onSubmit` sem `method`/`action`: sem JS o
+     navegador enviava GET e publicava nome, e-mail, telefone, mensagem e todo o
+     resto na barra de endereços (relatorio de UX, p12, P0). */
+  const [estado, enviar, pendente] = useActionState(enviarFormulario, ESTADO_INICIAL);
+  const sent = estado.status === 'sucesso';
 
   if (sent) {
     return (
@@ -41,13 +46,7 @@ export default function DemoForm({
   }
 
   return (
-    <form
-      className="glass-card space-y-5 p-7 md:p-8"
-      onSubmit={(e) => {
-        e.preventDefault();
-        setSent(true);
-      }}
-    >
+    <form className="glass-card space-y-5 p-7 md:p-8" action={enviar}>
       {fields.map((f) => {
         if (f.kind === 'name-pair') {
           return (
@@ -123,7 +122,21 @@ export default function DemoForm({
         );
       })}
 
-      <button type="submit" className="btn-primary w-full">
+      {/* Estado tecnico do envio (enviando/erro), nao copy do site. Criada junto
+          com o formulario para que `aria-live` de fato anuncie a mudanca. */}
+      <p
+        role="status"
+        aria-live="polite"
+        className={
+          estado.status === 'erro'
+            ? 'text-sm font-semibold text-[#ffb4b4]'
+            : 'text-sm text-ink-muted'
+        }
+      >
+        {pendente ? 'Enviando…' : estado.mensagem}
+      </p>
+
+      <button type="submit" className="btn-primary w-full" disabled={pendente}>
         {submitLabel}
       </button>
     </form>

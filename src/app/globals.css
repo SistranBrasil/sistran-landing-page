@@ -9,13 +9,13 @@
 
 :root {
   /* Paleta SISTRAN — dark navy sofisticado */
-  --color-bg: #1273BC;
-  --color-bg-alt: #2A9BE0;
-  --color-bg-deep: #1885CE;
+  --color-bg: #1273bc;
+  --color-bg-alt: #2a9be0;
+  --color-bg-deep: #1885ce;
   --color-grid: rgba(255, 255, 255, 0.06);
-  --color-cyan: #0099E6;
+  --color-cyan: #0099e6;
   --color-sky: #0ed8f6;
-  --color-blue: #0079CB;
+  --color-blue: #0079cb;
   --color-violet: #7c3aed;
   --color-purple: #a855f7;
   --radius-card: 24px;
@@ -45,16 +45,27 @@ html.no-scroll body {
 html {
   scroll-padding-top: 120px;
 }
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-.lenis.lenis-stopped { overflow: hidden; }
-.lenis.lenis-scrolling iframe { pointer-events: none; }
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
 
 body {
-  background-color: #1273BC;
+  background-color: #1273bc;
   color: #f8fafc;
-  font-feature-settings: 'cv11', 'ss01';
+  font-feature-settings: "cv11", "ss01";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   /* `clip` (nao `hidden`): hidden cria um scroll container e quebra o
@@ -67,29 +78,47 @@ body {
 
 /* Fundo global Luminna: navy profundo + orbs azuis suaves */
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   z-index: -2;
   background:
-    radial-gradient(ellipse at 80% 10%,  rgba(0, 121, 203, 0.18), transparent 45%),
-    radial-gradient(ellipse at 10% 20%,  rgba(16, 95, 159,0.55), transparent 40%),
-    radial-gradient(ellipse at 50% 100%, rgba(124, 58, 237, 0.14), transparent 50%),
-    linear-gradient(180deg, #1273BC 0%, #1885CE 55%, #1273BC 100%);
+    radial-gradient(
+      ellipse at 80% 10%,
+      rgba(0, 121, 203, 0.18),
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse at 10% 20%,
+      rgba(16, 95, 159, 0.55),
+      transparent 40%
+    ),
+    radial-gradient(
+      ellipse at 50% 100%,
+      rgba(124, 58, 237, 0.14),
+      transparent 50%
+    ),
+    linear-gradient(180deg, #1273bc 0%, #1885ce 55%, #1273bc 100%);
   pointer-events: none;
 }
 
 body::after {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
   background-image:
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
-  background-size: 56px 56px, 56px 56px;
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size:
+    56px 56px,
+    56px 56px;
   mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(
+    ellipse at 50% 0%,
+    #000 0%,
+    transparent 70%
+  );
   pointer-events: none;
 }
 
@@ -111,28 +140,42 @@ body::after {
   .glass-card {
     position: relative;
     background:
-      radial-gradient(120% 80% at 0% 0%, rgba(14, 216, 246, 0.10), transparent 55%),
-      radial-gradient(120% 80% at 100% 100%, rgba(124, 58, 237, 0.10), transparent 55%),
-      linear-gradient(135deg, rgba(15, 90, 151,0.88), rgba(17, 95, 160,0.55));
+      radial-gradient(
+        120% 80% at 0% 0%,
+        rgba(14, 216, 246, 0.1),
+        transparent 55%
+      ),
+      radial-gradient(
+        120% 80% at 100% 100%,
+        rgba(124, 58, 237, 0.1),
+        transparent 55%
+      ),
+      linear-gradient(135deg, rgba(15, 90, 151, 0.88), rgba(17, 95, 160, 0.55));
     border: 1px solid var(--border-soft);
     border-radius: var(--radius-card);
     backdrop-filter: blur(22px) saturate(1.2);
     -webkit-backdrop-filter: blur(22px) saturate(1.2);
     box-shadow:
-      0 24px 50px -22px rgba(13, 88, 149,0.9),
-      0 2px 10px -4px rgba(13, 88, 151,0.5),
+      0 24px 50px -22px rgba(13, 88, 149, 0.9),
+      0 2px 10px -4px rgba(13, 88, 151, 0.5),
       inset 0 1px 0 rgba(255, 255, 255, 0.08),
       inset 0 -1px 0 rgba(0, 0, 0, 0.25);
     overflow: hidden;
     isolation: isolate;
   }
   .glass-card::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, rgba(120, 201, 248, 0.55), rgba(124, 58, 237, 0.35) 45%, rgba(14, 216, 246, 0.12) 75%, transparent 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(120, 201, 248, 0.55),
+      rgba(124, 58, 237, 0.35) 45%,
+      rgba(14, 216, 246, 0.12) 75%,
+      transparent 100%
+    );
     -webkit-mask:
       linear-gradient(#000 0 0) content-box,
       linear-gradient(#000 0 0);
@@ -140,22 +183,28 @@ body::after {
       linear-gradient(#000 0 0) content-box,
       linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
-            mask-composite: exclude;
+    mask-composite: exclude;
     pointer-events: none;
     opacity: 0.75;
     transition: opacity 0.35s ease;
   }
   .glass-card::after {
-    content: '';
+    content: "";
     position: absolute;
     top: -40%;
     left: -20%;
     width: 80%;
     height: 80%;
-    background: radial-gradient(circle at center, rgba(14, 216, 246, 0.18), transparent 60%);
+    background: radial-gradient(
+      circle at center,
+      rgba(14, 216, 246, 0.18),
+      transparent 60%
+    );
     filter: blur(30px);
     opacity: 0;
-    transition: opacity 0.4s ease, transform 0.6s ease;
+    transition:
+      opacity 0.4s ease,
+      transform 0.6s ease;
     pointer-events: none;
     z-index: -1;
   }
@@ -170,35 +219,48 @@ body::after {
     border-color: var(--border-active);
     box-shadow:
       0 34px 70px -22px rgba(0, 121, 203, 0.55),
-      0 0 0 1px rgba(120, 201, 248, 0.30) inset,
+      0 0 0 1px rgba(120, 201, 248, 0.3) inset,
       inset 0 1px 0 rgba(255, 255, 255, 0.14);
   }
-  .glass-card-hover:hover::before { opacity: 1; }
-  .glass-card-hover:hover::after { opacity: 1; transform: translate(10%, 10%); }
+  .glass-card-hover:hover::before {
+    opacity: 1;
+  }
+  .glass-card-hover:hover::after {
+    opacity: 1;
+    transform: translate(10%, 10%);
+  }
 
   /* Textos de destaque (sem gradiente) */
-  .text-gradient { color: #a5f3fc; }
-  .text-gradient-accent { color: #D6ECFB; }
+  .text-gradient {
+    color: #a5f3fc;
+  }
+  .text-gradient-accent {
+    color: #d6ecfb;
+  }
 
   /* Botão primário */
   .btn-primary {
     @apply relative inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all duration-300;
-    background:
-      linear-gradient(135deg, #0ed8f6 0%, #0099E6 40%, #0079CB 100%);
+    background: linear-gradient(135deg, #0ed8f6 0%, #0099e6 40%, #0079cb 100%);
     box-shadow:
-      0 14px 34px -10px rgba(0, 121, 203, 0.60),
+      0 14px 34px -10px rgba(0, 121, 203, 0.6),
       0 2px 6px -2px rgba(0, 60, 120, 0.35),
       inset 0 1px 0 rgba(255, 255, 255, 0.35),
-      inset 0 -1px 0 rgba(13, 94, 161,0.35);
+      inset 0 -1px 0 rgba(13, 94, 161, 0.35);
     overflow: hidden;
     isolation: isolate;
   }
   .btn-primary::before {
-    content: '';
+    content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.28) 50%, transparent 70%);
+    background: linear-gradient(
+      120deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.28) 50%,
+      transparent 70%
+    );
     transform: translateX(-120%);
     transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     pointer-events: none;
@@ -210,23 +272,33 @@ body::after {
       0 4px 12px -2px rgba(14, 216, 246, 0.35),
       inset 0 1px 0 rgba(255, 255, 255, 0.45);
   }
-  .btn-primary:hover::before { transform: translateX(120%); }
-  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:hover::before {
+    transform: translateX(120%);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
 
   /* Botão secundário / outline glass */
   .btn-ghost {
     @apply relative inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold text-ink transition-all duration-300;
     border: 1px solid var(--border-soft);
-    background:
-      linear-gradient(135deg, rgba(13, 98, 163,0.55), rgba(0, 77, 138, 0.35));
+    background: linear-gradient(
+      135deg,
+      rgba(13, 98, 163, 0.55),
+      rgba(0, 77, 138, 0.35)
+    );
     backdrop-filter: blur(14px) saturate(1.1);
     -webkit-backdrop-filter: blur(14px) saturate(1.1);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
   .btn-ghost:hover {
     border-color: var(--border-active);
-    background:
-      linear-gradient(135deg, rgba(0, 77, 138, 0.85), rgba(0, 121, 203, 0.60));
+    background: linear-gradient(
+      135deg,
+      rgba(0, 77, 138, 0.85),
+      rgba(0, 121, 203, 0.6)
+    );
     color: #ffffff;
     transform: translateY(-2px);
     box-shadow:
@@ -237,7 +309,7 @@ body::after {
   /* Pill / chip */
   .pill {
     @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium;
-    background: rgba(13, 98, 163,0.70);
+    background: rgba(13, 98, 163, 0.7);
     border: 1px solid var(--border-soft);
     color: #cbd5e1;
   }
@@ -245,9 +317,9 @@ body::after {
   /* Pill de categoria com tom acentuado */
   .pill-accent {
     @apply pill;
-    color: #D6ECFB;
-    border-color: rgba(13, 95, 161,0.40);
-    background: rgba(13, 95, 161,0.14);
+    color: #d6ecfb;
+    border-color: rgba(13, 95, 161, 0.4);
+    background: rgba(13, 95, 161, 0.14);
   }
 
   /* Eyebrow (rótulo acima de título) */
@@ -256,36 +328,49 @@ body::after {
     color: #7dd3fc;
   }
   .eyebrow::before {
-    content: '';
+    content: "";
     width: 6px;
     height: 6px;
     border-radius: 999px;
     background: #0ed8f6;
-    box-shadow: 0 0 0 3px rgba(14, 216, 246, 0.18), 0 0 12px rgba(14, 216, 246, 0.55);
+    box-shadow:
+      0 0 0 3px rgba(14, 216, 246, 0.18),
+      0 0 12px rgba(14, 216, 246, 0.55);
     animation: eyebrow-pulse 2.6s ease-in-out infinite;
   }
   @keyframes eyebrow-pulse {
-    0%, 100% { box-shadow: 0 0 0 3px rgba(14, 216, 246, 0.18), 0 0 8px rgba(14, 216, 246, 0.45); }
-    50%       { box-shadow: 0 0 0 5px rgba(14, 216, 246, 0.10), 0 0 18px rgba(14, 216, 246, 0.75); }
+    0%,
+    100% {
+      box-shadow:
+        0 0 0 3px rgba(14, 216, 246, 0.18),
+        0 0 8px rgba(14, 216, 246, 0.45);
+    }
+    50% {
+      box-shadow:
+        0 0 0 5px rgba(14, 216, 246, 0.1),
+        0 0 18px rgba(14, 216, 246, 0.75);
+    }
   }
 
   /* Tag de seção — versão "chip" do eyebrow, com moldura e fundo.
      Usar quando o rótulo precisa de mais presença acima do título. */
   .tag-section {
     @apply relative inline-flex items-center gap-2.5 rounded-full border px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em];
-    color: #B8DDF6;
+    color: #b8ddf6;
     border-color: rgba(255, 255, 255, 0.14);
     background: rgba(255, 255, 255, 0.04);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
   .tag-section::before {
-    content: '';
+    content: "";
     width: 6px;
     height: 6px;
     border-radius: 999px;
     background: #0ed8f6;
-    box-shadow: 0 0 0 3px rgba(14, 216, 246, 0.18), 0 0 12px rgba(14, 216, 246, 0.55);
+    box-shadow:
+      0 0 0 3px rgba(14, 216, 246, 0.18),
+      0 0 12px rgba(14, 216, 246, 0.55);
     animation: eyebrow-pulse 2.6s ease-in-out infinite;
   }
   /* Sobre fundo claro a moldura inverte para azul da marca */
@@ -313,7 +398,13 @@ body::after {
   /* Divider sutil azul->violeta */
   .divider-accent {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(14, 216, 246, 0.55), rgba(124, 58, 237, 0.45), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(14, 216, 246, 0.55),
+      rgba(124, 58, 237, 0.45),
+      transparent
+    );
     border: 0;
   }
 }
@@ -323,15 +414,28 @@ body::after {
    =========================================================== */
 
 /* A seção seguinte "sobe" por cima do hero enquanto ele afunda */
-#top { z-index: 0; }
-#top + * { position: relative; z-index: 1; }
+#top {
+  z-index: 0;
+}
+#top + * {
+  position: relative;
+  z-index: 1;
+}
 
 /* Seção clara — sobrepõe o fundo escuro do body */
 .section-light {
   background:
-    radial-gradient(70% 60% at 20% 10%, rgba(0, 121, 203, 0.08), transparent 60%),
-    radial-gradient(50% 60% at 90% 90%, rgba(124, 58, 237, 0.08), transparent 60%),
-    radial-gradient(70% 80% at 50% 50%, #FFFFFF 0%, #F2F7FC 55%, #E4EDF7 100%);
+    radial-gradient(
+      70% 60% at 20% 10%,
+      rgba(0, 121, 203, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(
+      50% 60% at 90% 90%,
+      rgba(124, 58, 237, 0.08),
+      transparent 60%
+    ),
+    radial-gradient(70% 80% at 50% 50%, #ffffff 0%, #f2f7fc 55%, #e4edf7 100%);
   position: relative;
   isolation: isolate;
 }
@@ -340,13 +444,21 @@ body::after {
    quando a secao precisa se separar das vizinhas escuras sem ir a branco. */
 .section-light.section-light-blue {
   background:
-    radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), transparent 62%),
-    radial-gradient(55% 60% at 92% 88%, rgba(124, 58, 237, 0.10), transparent 62%),
-    linear-gradient(160deg, #F2F9FE 0%, #E3F1FB 45%, #CFE7F7 100%);
+    radial-gradient(
+      70% 60% at 18% 8%,
+      rgba(0, 121, 203, 0.14),
+      transparent 62%
+    ),
+    radial-gradient(
+      55% 60% at 92% 88%,
+      rgba(124, 58, 237, 0.1),
+      transparent 62%
+    ),
+    linear-gradient(160deg, #f2f9fe 0%, #e3f1fb 45%, #cfe7f7 100%);
 }
 
 .section-light::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background-image:
@@ -354,7 +466,11 @@ body::after {
     linear-gradient(90deg, rgba(0, 121, 203, 0.04) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, transparent 75%);
+  -webkit-mask-image: radial-gradient(
+    ellipse at 50% 50%,
+    #000 0%,
+    transparent 75%
+  );
   pointer-events: none;
   z-index: -1;
 }
@@ -392,18 +508,22 @@ body::after {
 }
 /* dot da tag-section sobre fundo claro: azul da marca */
 .section-light .tag-section::before {
-  background: #0079CB;
-  box-shadow: 0 0 0 3px rgba(0, 121, 203, 0.16), 0 0 10px rgba(0, 121, 203, 0.45);
+  background: #0079cb;
+  box-shadow:
+    0 0 0 3px rgba(0, 121, 203, 0.16),
+    0 0 10px rgba(0, 121, 203, 0.45);
 }
 .section-light .eyebrow,
 .section-light [class*="eyebrow"],
 .section-light .text-cyan-glow {
-  color: #024E86 !important;
+  color: #024e86 !important;
 }
 /* dot do eyebrow: ciano puro quase invisivel sobre fundo claro */
 .section-light .eyebrow::before {
-  background: #0079CB;
-  box-shadow: 0 0 0 3px rgba(0, 121, 203, 0.16), 0 0 10px rgba(0, 121, 203, 0.45);
+  background: #0079cb;
+  box-shadow:
+    0 0 0 3px rgba(0, 121, 203, 0.16),
+    0 0 10px rgba(0, 121, 203, 0.45);
   animation: none;
 }
 .section-light .text-ink-muted,
@@ -412,19 +532,24 @@ body::after {
 }
 .section-light .text-ink-faint,
 .section-light [class*="text-ink-faint"] {
-  color: #5c7a9e !important;
+  color: #4c6a8e !important;
 }
 
 /* Gradiente/acentos claros ficariam invisiveis sobre fundo claro */
 .section-light .text-gradient-brand {
   /* usar background-image (nao o shorthand) para nao resetar background-clip */
-  background-image: linear-gradient(120deg, #0079CB 0%, #1885CE 45%, #7c3aed 100%) !important;
+  background-image: linear-gradient(
+    120deg,
+    #0079cb 0%,
+    #1885ce 45%,
+    #7c3aed 100%
+  ) !important;
   -webkit-background-clip: text !important;
-          background-clip: text !important;
+  background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
 }
 .section-light .text-gradient {
-  color: #0079CB !important;
+  color: #0079cb !important;
 }
 /* Ilha escura dentro de uma secao clara.
    Os overrides acima pintam h2/h3/p/span de navy — o que quebraria os cards de
@@ -461,13 +586,17 @@ body::after {
 
 .section-light .glass-card,
 .section-light .glass-card-hover {
-  background: linear-gradient(135deg, rgba(255,255,255,0.75), rgba(255,255,255,0.45));
-  border-color: rgba(0,121,203,0.14);
-  box-shadow: 0 8px 32px -8px rgba(0,121,203,0.12);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.75),
+    rgba(255, 255, 255, 0.45)
+  );
+  border-color: rgba(0, 121, 203, 0.14);
+  box-shadow: 0 8px 32px -8px rgba(0, 121, 203, 0.12);
 }
 .section-light .glass-card-hover:hover {
-  box-shadow: 0 16px 40px -8px rgba(0,121,203,0.22);
-  border-color: rgba(0,121,203,0.30);
+  box-shadow: 0 16px 40px -8px rgba(0, 121, 203, 0.22);
+  border-color: rgba(0, 121, 203, 0.3);
 }
 
 /* ===========================================================
@@ -477,7 +606,8 @@ body::after {
   opacity: 0;
   transform: translateY(34px);
   filter: blur(10px);
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -492,19 +622,40 @@ body::after {
   opacity: 0;
   transform: translateY(34px);
   filter: blur(10px);
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-              filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.reveal-stagger.is-visible > * { opacity: 1; transform: translateY(0); filter: blur(0px); }
-.reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0.0s; }
-.reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.12s; }
-.reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.24s; }
-.reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.36s; }
-.reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.48s; }
-.reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.6s; }
-.reveal-stagger.is-visible > *:nth-child(7) { transition-delay: 0.72s; }
-.reveal-stagger.is-visible > *:nth-child(8) { transition-delay: 0.84s; }
+.reveal-stagger.is-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0px);
+}
+.reveal-stagger.is-visible > *:nth-child(1) {
+  transition-delay: 0s;
+}
+.reveal-stagger.is-visible > *:nth-child(2) {
+  transition-delay: 0.12s;
+}
+.reveal-stagger.is-visible > *:nth-child(3) {
+  transition-delay: 0.24s;
+}
+.reveal-stagger.is-visible > *:nth-child(4) {
+  transition-delay: 0.36s;
+}
+.reveal-stagger.is-visible > *:nth-child(5) {
+  transition-delay: 0.48s;
+}
+.reveal-stagger.is-visible > *:nth-child(6) {
+  transition-delay: 0.6s;
+}
+.reveal-stagger.is-visible > *:nth-child(7) {
+  transition-delay: 0.72s;
+}
+.reveal-stagger.is-visible > *:nth-child(8) {
+  transition-delay: 0.84s;
+}
 
 /* Orbs decorativos reutilizáveis */
 .decor-orb {
@@ -514,16 +665,36 @@ body::after {
   pointer-events: none;
   z-index: 0;
 }
-.decor-orb-cyan   { background: radial-gradient(circle, rgba(14, 216, 246, 0.35), transparent 70%); }
-.decor-orb-blue   { background: radial-gradient(circle, rgba(0, 121, 203, 0.35), transparent 70%); }
-.decor-orb-violet { background: radial-gradient(circle, rgba(124, 58, 237, 0.30), transparent 70%); }
+.decor-orb-cyan {
+  background: radial-gradient(
+    circle,
+    rgba(14, 216, 246, 0.35),
+    transparent 70%
+  );
+}
+.decor-orb-blue {
+  background: radial-gradient(circle, rgba(0, 121, 203, 0.35), transparent 70%);
+}
+.decor-orb-violet {
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.3), transparent 70%);
+}
 
 /* Glow ring animado (para hero e detalhes) */
 @keyframes glow-drift {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.7; }
-  50%      { transform: translate3d(2%, -2%, 0) scale(1.06); opacity: 1; }
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate3d(2%, -2%, 0) scale(1.06);
+    opacity: 1;
+  }
 }
-.glow-drift { animation: glow-drift 9s ease-in-out infinite; will-change: transform, opacity; }
+.glow-drift {
+  animation: glow-drift 9s ease-in-out infinite;
+  will-change: transform, opacity;
+}
 
 /* ===========================================================
    Hero cinematográfico — percurso de scroll e estado inicial
@@ -535,37 +706,52 @@ body::after {
    medidas e a cena ficaria congelada. O browser resolve a media query na
    primeira leitura da folha de estilo, antes de qualquer JS.
    =========================================================== */
+/* Percurso do hero. Era 200vh/320vh: o relatorio de UX (p13) aponta que a
+   primeira dobra cobrava rolagem demais antes de entregar a proxima seccao.
+   Encurtado sem perder capitulo — os tres capitulos ocupam 0 -> 0.55 do
+   percurso e agora ha botoes de capitulo (01/03) para chegar a qualquer um
+   deles direto, inclusive no toque. */
 #top {
-  height: 200vh;
+  height: 170vh;
 }
 @media (min-width: 1024px) {
   #top {
-    height: 320vh;
+    height: 260vh;
   }
+}
+
+/* Folha clara por trás do card do hero. Também sticky, e com `margin-bottom:
+   -100svh` ela divide a mesma vaga da cena sem somar altura ao percurso — sem
+   isso o hero ficaria 100svh mais longo e a cena sairia do sticky antes de o
+   card fechar. A cor é a mesma do mosaico logo abaixo (`--paper`, #fff): é ela
+   que faz o hero desprender já emendado, sem faixa navy ao redor do card. */
+.hero-sheet {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  height: 100svh;
+  margin-bottom: -100svh;
+  background: #ffffff;
+  pointer-events: none;
+}
+
+/* O trilho inteiro do hero fica sobre a mesma cor clara. A folha é sticky e
+   cobre 100svh; esta regra cuida do resto do percurso (e de janelas mais altas
+   que o `min-height` da cena), para que o azul do body nunca apareca em volta
+   do card e nao haja corte de cor contra o mosaico da secao seguinte. */
+#top {
+  background: #ffffff;
 }
 
 .hero-scene {
   position: sticky;
   top: 0;
-}
-
-/* Estado inicial oculto dos blocos que a timeline do GSAP revela no mount.
-   [data-hero-evolve] fica de fora de propósito: o painel institucional nunca
-   deve depender do JS para ficar visível. */
-[data-hero-chip],
-[data-hero-headline],
-[data-hero-paragraph],
-[data-hero-ctas],
-[data-hero-indicators],
-[data-hero-mobilechips] {
-  opacity: 0;
-  transform: translateY(34px);
-  filter: blur(10px);
-  will-change: transform, opacity, filter;
-}
-[data-hero-peek] {
-  opacity: 0;
-  transform: translateY(10px);
+  /* Acima da folha. */
+  z-index: 1;
+  /* O card final fica centrado na tela, não colado no topo nem no rodapé. */
+  transform-origin: 50% 50%;
+  /* Só aparece quando o raio cresce; full bleed ela é imperceptível. */
+  box-shadow: 0 40px 90px -40px rgb(0 26 61 / 55%);
 }
 
 /* Acessibilidade: respeitar redução de movimento */
@@ -588,13 +774,7 @@ body::after {
      pagina com blocos permanentemente invisiveis, nao apenas sem animacao. */
   .reveal-stagger > *,
   .reveal-stagger.is-visible > *,
-  [data-reveal],
-  [data-hero-chip],
-  [data-hero-headline],
-  [data-hero-paragraph],
-  [data-hero-ctas],
-  [data-hero-indicators],
-  [data-hero-mobilechips] {
+  [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
@@ -620,7 +800,21 @@ body::after {
   .hero-scene {
     position: relative !important;
   }
-  [data-hero-peek] {
+
+  /* Sem percurso de scroll as tres legendas nao tem como se alternar: se
+     ficassem empilhadas na mesma celula do grid, uma cobriria a outra e o texto
+     seria ILEGIVEL. Aqui elas viram uma lista em fluxo — o conteudo continua
+     todo alcancavel, e nada se move sozinho. */
+  .hero-captions {
+    display: block !important;
+    padding-block: clamp(3rem, 8vw, 6rem) !important;
+  }
+  .hero-caption + .hero-caption {
+    margin-top: clamp(2.5rem, 6vw, 4.5rem) !important;
+  }
+  /* Sem percurso de scroll não há card nem emenda: a folha só teria função de
+     tapar a cena. */
+  .hero-sheet {
     display: none !important;
   }
   /* O track para de vez: quem garante o acesso ao conteudo aqui e a rolagem
@@ -631,7 +825,7 @@ body::after {
     transform: none !important;
     width: auto !important;
   }
-  .marquee-copy[aria-hidden='true'] {
+  .marquee-copy[aria-hidden="true"] {
     display: none !important;
   }
   .marquee-copy > * {
@@ -658,9 +852,71 @@ body::after {
 
 /* Foco visível acessível */
 :focus-visible {
-  outline: 2px solid #0079CB;
+  outline: 2px solid #0079cb;
   outline-offset: 2px;
   border-radius: 6px;
+}
+
+/* `<main>` recebe foco programático pelo skip link; não deve desenhar contorno,
+   só rolar até o topo do conteúdo. */
+main:focus {
+  outline: none;
+}
+
+/* ── Skip link ───────────────────────────────────────────────────────────────
+   Primeiro elemento focável do documento. Fica fora da tela até receber foco —
+   nunca `display: none`, que o tiraria da ordem de tabulação. */
+.skip-link {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 100;
+  transform: translate(-50%, -120%);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 1.25rem;
+  border-radius: 0 0 12px 12px;
+  background: #0a1f44;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  box-shadow: 0 10px 30px -12px rgba(3, 26, 52, 0.7);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.skip-link:focus {
+  transform: translate(-50%, 0);
+}
+
+/* ── Âncoras sob o header fixo ───────────────────────────────────────────────
+   O header é fixo (72px no mobile, 88px no desktop, com 16px de folga acima).
+   Sem isto, todo link de âncora entrega a seção escondida atrás dele. */
+:root {
+  --header-h: 88px;
+
+  /* Tokens de movimento do relatorio de UX (p19). Reaproveitam os --dur-*/
+  /* e --ease-out que ja existiam; nomes novos para o vocabulario do relatorio. */
+  --motion-fast: 180ms;
+  --motion-base: 420ms;
+  --motion-scene: 650ms;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+section[id],
+[id][data-anchor],
+h2[id],
+h3[id] {
+  scroll-margin-top: calc(var(--header-h) + 24px);
+}
+
+/* ── Alvo de toque mínimo (WCAG 2.5.8) ──────────────────────────────────────
+   44×44px em qualquer controle apontado. `inline-flex` + `align-items` para o
+   rótulo continuar centrado depois de crescer. */
+.touch-44 {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Scrollbar global discreta */
@@ -669,10 +925,10 @@ body::after {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #004D8A;
+  background: #004d8a;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 121, 203, 0.40);
+  background: rgba(0, 121, 203, 0.4);
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -709,12 +965,22 @@ body::after {
   padding-right: 0.75rem;
 }
 .marquee-track:hover,
-.marquee-track:focus-within { animation-play-state: paused; }
-.marquee-left { animation-direction: normal; }
-.marquee-right { animation-direction: reverse; }
+.marquee-track:focus-within {
+  animation-play-state: paused;
+}
+.marquee-left {
+  animation-direction: normal;
+}
+.marquee-right {
+  animation-direction: reverse;
+}
 @keyframes marquee-scroll {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
 }
 /* Ticker de indicadores (TrustTicker). O degradê nas bordas sugere que há mais
    conteúdo rolando. Segue animando em reduced-motion pelo mesmo motivo do
@@ -723,13 +989,30 @@ body::after {
   position: relative;
   width: 100%;
   overflow-x: hidden;
-  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
 }
 
 /* Utility: hide scrollbar (para carrosséis) */
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 /* ===========================================================
    Upgrade visual agressivo — utilities de marca
@@ -737,33 +1020,47 @@ body::after {
 
 /* Gradiente de texto marca (ciano → azul → violeta) */
 .text-gradient-brand {
-  background: linear-gradient(120deg, #a5f3fc 0%, #FFFFFF 45%, #e9d5ff 100%);
+  background: linear-gradient(120deg, #a5f3fc 0%, #ffffff 45%, #e9d5ff 100%);
   -webkit-background-clip: text;
-          background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
   background-size: 200% 200%;
   animation: gradient-shift 8s ease-in-out infinite;
 }
 @keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50%      { background-position: 100% 50%; }
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* Gradiente saturado para a palavra em destaque do hero. O text-gradient-brand
    é quase branco de propósito (funciona sobre fundo claro); aqui queremos que a
    palavra que troca puxe o ciano e o violeta da marca. */
 .text-gradient-hero {
-  background: linear-gradient(105deg, #0ed8f6 0%, #7dd3fc 30%, #ffffff 52%, #c4b5fd 78%, #a855f7 100%);
+  background: linear-gradient(
+    105deg,
+    #0ed8f6 0%,
+    #7dd3fc 30%,
+    #ffffff 52%,
+    #c4b5fd 78%,
+    #a855f7 100%
+  );
   -webkit-background-clip: text;
-          background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
   background-size: 220% 220%;
   animation: gradient-shift 7s ease-in-out infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-  .text-gradient-hero { animation: none; }
+  .text-gradient-hero {
+    animation: none;
+  }
 }
 
 /* Orbs animados posicionáveis */
@@ -775,21 +1072,50 @@ body::after {
   z-index: 0;
   will-change: transform, opacity;
 }
-.orb-cyan   { background: radial-gradient(circle, rgba(14,216,246,0.45), transparent 70%); }
-.orb-blue   { background: radial-gradient(circle, rgba(0,121,203,0.40), transparent 70%); }
-.orb-violet { background: radial-gradient(circle, rgba(168,85,247,0.35), transparent 70%); }
+.orb-cyan {
+  background: radial-gradient(
+    circle,
+    rgba(14, 216, 246, 0.45),
+    transparent 70%
+  );
+}
+.orb-blue {
+  background: radial-gradient(circle, rgba(0, 121, 203, 0.4), transparent 70%);
+}
+.orb-violet {
+  background: radial-gradient(
+    circle,
+    rgba(168, 85, 247, 0.35),
+    transparent 70%
+  );
+}
 
 @keyframes drift {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  33%      { transform: translate3d(4%, -3%, 0) scale(1.08); }
-  66%      { transform: translate3d(-3%, 4%, 0) scale(0.95); }
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(4%, -3%, 0) scale(1.08);
+  }
+  66% {
+    transform: translate3d(-3%, 4%, 0) scale(0.95);
+  }
 }
-.orb-drift { animation: drift 14s ease-in-out infinite; }
-.orb-drift-slow { animation: drift 22s ease-in-out infinite; }
+.orb-drift {
+  animation: drift 14s ease-in-out infinite;
+}
+.orb-drift-slow {
+  animation: drift 22s ease-in-out infinite;
+}
 
 @keyframes shine {
-  0%   { transform: translateX(-120%) skewX(-18deg); }
-  100% { transform: translateX(220%)  skewX(-18deg); }
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(220%) skewX(-18deg);
+  }
 }
 .shine-badge {
   position: relative;
@@ -797,45 +1123,90 @@ body::after {
   isolation: isolate;
 }
 .shine-badge::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.28) 50%, transparent 70%);
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 70%
+  );
   transform: translateX(-120%) skewX(-18deg);
   animation: shine 3.5s ease-in-out 1s infinite;
   pointer-events: none;
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(14,216,246,0.55), 0 0 24px rgba(14,216,246,0.35); }
-  50%      { box-shadow: 0 0 0 8px rgba(14,216,246,0), 0 0 40px rgba(14,216,246,0.55); }
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(14, 216, 246, 0.55),
+      0 0 24px rgba(14, 216, 246, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 0 8px rgba(14, 216, 246, 0),
+      0 0 40px rgba(14, 216, 246, 0.55);
+  }
 }
-.pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+.pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
 
 /* Máscara em grid — para hero backdrops */
 .grid-mask {
   background-image:
-    linear-gradient(rgba(120,201,248,0.10) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(120,201,248,0.10) 1px, transparent 1px);
+    linear-gradient(rgba(120, 201, 248, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 201, 248, 0.1) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(ellipse at 50% 40%, #000 0%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at 50% 40%, #000 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(
+    ellipse at 50% 40%,
+    #000 0%,
+    transparent 70%
+  );
 }
 
 /* Linha decorativa horizontal (gradient de marca) */
 .brand-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(14,216,246,0.6), rgba(0,121,203,0.8), rgba(168,85,247,0.5), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(14, 216, 246, 0.6),
+    rgba(0, 121, 203, 0.8),
+    rgba(168, 85, 247, 0.5),
+    transparent
+  );
 }
 .brand-line-v {
   width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(14,216,246,0.6), rgba(168,85,247,0.5), transparent);
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgba(14, 216, 246, 0.6),
+    rgba(168, 85, 247, 0.5),
+    transparent
+  );
 }
 
 /* Fade lateral (para marquees) */
 .fade-x {
-  mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 8%,
+    #000 92%,
+    transparent 100%
+  );
 }
 
 /* Underline animado gradient */
@@ -843,27 +1214,38 @@ body::after {
   position: relative;
 }
 .underline-brand::after {
-  content: '';
+  content: "";
   position: absolute;
-  left: 0; right: 0; bottom: -4px;
+  left: 0;
+  right: 0;
+  bottom: -4px;
   height: 2px;
-  background: linear-gradient(90deg, #0ed8f6, #0079CB, #a855f7);
+  background: linear-gradient(90deg, #0ed8f6, #0079cb, #a855f7);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   border-radius: 2px;
 }
-.underline-brand:hover::after { transform: scaleX(1); }
+.underline-brand:hover::after {
+  transform: scaleX(1);
+}
 
 /* Section-light dots pattern reforço */
 .section-light::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(0,121,203,0.14) 1px, transparent 1px);
+  background-image: radial-gradient(
+    rgba(0, 121, 203, 0.14) 1px,
+    transparent 1px
+  );
   background-size: 22px 22px;
   mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, transparent 60%);
-  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, transparent 60%);
+  -webkit-mask-image: radial-gradient(
+    ellipse at 50% 50%,
+    #000 0%,
+    transparent 60%
+  );
   pointer-events: none;
   z-index: -1;
   opacity: 0.6;
@@ -872,43 +1254,69 @@ body::after {
 /* Card corner accent (usado em Differentials/Solutions) */
 .corner-accent {
   position: absolute;
-  top: 0; right: 0;
-  width: 44px; height: 44px;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
   pointer-events: none;
   opacity: 0.35;
   transition: opacity 0.4s ease;
 }
 .corner-accent::before,
 .corner-accent::after {
-  content: '';
+  content: "";
   position: absolute;
   background: linear-gradient(135deg, #0ed8f6, transparent);
 }
-.corner-accent::before { top: 10px; right: 0;  width: 32px; height: 1.5px; }
-.corner-accent::after  { top: 0;    right: 10px; width: 1.5px; height: 32px; }
-.glass-card-hover:hover .corner-accent { opacity: 1; }
+.corner-accent::before {
+  top: 10px;
+  right: 0;
+  width: 32px;
+  height: 1.5px;
+}
+.corner-accent::after {
+  top: 0;
+  right: 10px;
+  width: 1.5px;
+  height: 32px;
+}
+.glass-card-hover:hover .corner-accent {
+  opacity: 1;
+}
 
 /* Chevron arrow reveal em cards */
 .chev-reveal {
   position: absolute;
   right: 22px;
   bottom: 22px;
-  width: 40px; height: 40px;
+  width: 40px;
+  height: 40px;
   display: inline-flex;
-  align-items: center; justify-content: center;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(14,216,246,0.18), rgba(0,121,203,0.12));
-  border: 1px solid rgba(14,216,246,0.35);
+  background: linear-gradient(
+    135deg,
+    rgba(14, 216, 246, 0.18),
+    rgba(0, 121, 203, 0.12)
+  );
+  border: 1px solid rgba(14, 216, 246, 0.35);
   color: #0ed8f6;
   opacity: 0;
   transform: translate(-6px, 6px) rotate(-8deg);
-  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
 }
 .section-light .chev-reveal {
-  color: #0079CB;
-  border-color: rgba(0,121,203,0.45);
-  background: linear-gradient(135deg, rgba(0,121,203,0.10), rgba(168,85,247,0.06));
+  color: #0079cb;
+  border-color: rgba(0, 121, 203, 0.45);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 121, 203, 0.1),
+    rgba(168, 85, 247, 0.06)
+  );
 }
 .glass-card-hover:hover .chev-reveal,
 .group:hover .chev-reveal {
@@ -919,21 +1327,34 @@ body::after {
 /* Gradient border animado para pills / futures */
 .pill-gradient {
   position: relative;
-  background: linear-gradient(135deg, rgba(14, 88, 147,0.6), rgba(15, 91, 152,0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(14, 88, 147, 0.6),
+    rgba(15, 91, 152, 0.4)
+  );
   border-radius: 999px;
   isolation: isolate;
 }
 .pill-gradient::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(120deg, rgba(14,216,246,0.55), rgba(168,85,247,0.40), rgba(14,216,246,0.15));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  background: linear-gradient(
+    120deg,
+    rgba(14, 216, 246, 0.55),
+    rgba(168, 85, 247, 0.4),
+    rgba(14, 216, 246, 0.15)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
-          mask-composite: exclude;
+  mask-composite: exclude;
   pointer-events: none;
 }
 
@@ -951,27 +1372,41 @@ body::after {
   font-weight: 900;
   line-height: 1;
   font-size: clamp(4rem, 8vw, 7rem);
-  background: linear-gradient(180deg, rgba(120,201,248,0.22), rgba(120,201,248,0.02));
+  background: linear-gradient(
+    180deg,
+    rgba(120, 201, 248, 0.22),
+    rgba(120, 201, 248, 0.02)
+  );
   -webkit-background-clip: text;
-          background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
   pointer-events: none;
   user-select: none;
 }
 .section-light .num-ghost {
-  background: linear-gradient(180deg, rgba(0,121,203,0.20), rgba(0,121,203,0.02));
+  background: linear-gradient(
+    180deg,
+    rgba(0, 121, 203, 0.2),
+    rgba(0, 121, 203, 0.02)
+  );
   -webkit-background-clip: text;
-          background-clip: text;
+  background-clip: text;
 }
 
 /* Logo hover glow (usado no header) */
-.logo-glow { transition: filter 0.35s ease; }
-.logo-glow:hover { filter: drop-shadow(0 0 12px rgba(14,216,246,0.55)); }
+.logo-glow {
+  transition: filter 0.35s ease;
+}
+.logo-glow:hover {
+  filter: drop-shadow(0 0 12px rgba(14, 216, 246, 0.55));
+}
 
 /* Card com escala sutil no hover (partners/clients) */
 .hover-lift {
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
 }
 .hover-lift:hover {
   transform: translateY(-4px) scale(1.03);
@@ -990,15 +1425,15 @@ body::after {
   margin: 12px 0;
 }
 .modal-scroll::-webkit-scrollbar-thumb {
-  background: rgba(120, 201, 248, 0.20);
+  background: rgba(120, 201, 248, 0.2);
   border-radius: 999px;
   transition: background 0.2s;
 }
 .modal-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(120, 201, 248, 0.50);
+  background: rgba(120, 201, 248, 0.5);
 }
 .modal-scroll::-webkit-scrollbar-thumb:active {
-  background: rgba(120, 201, 248, 0.70);
+  background: rgba(120, 201, 248, 0.7);
 }
 
 /* ===========================================================
@@ -1013,7 +1448,8 @@ body::after {
 }
 
 @keyframes halo-pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     filter: drop-shadow(0 0 6px currentColor);
     opacity: 0.85;
@@ -1029,37 +1465,54 @@ body::after {
 }
 
 @keyframes progress-line-flow {
-  0% { background-position: 0% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 .progress-line {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(90deg,
-    rgba(14,216,246,0.2) 0%,
-    rgba(0,121,203,0.85) 25%,
-    rgba(124,58,237,0.85) 50%,
-    rgba(0,121,203,0.85) 75%,
-    rgba(14,216,246,0.2) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(14, 216, 246, 0.2) 0%,
+    rgba(0, 121, 203, 0.85) 25%,
+    rgba(124, 58, 237, 0.85) 50%,
+    rgba(0, 121, 203, 0.85) 75%,
+    rgba(14, 216, 246, 0.2) 100%
+  );
   background-size: 200% 100%;
   animation: progress-line-flow 4s linear infinite;
 }
 .progress-line-v {
-  background: linear-gradient(180deg,
-    rgba(14,216,246,0.2),
-    rgba(0,121,203,0.85),
-    rgba(124,58,237,0.85),
-    rgba(14,216,246,0.2));
+  background: linear-gradient(
+    180deg,
+    rgba(14, 216, 246, 0.2),
+    rgba(0, 121, 203, 0.85),
+    rgba(124, 58, 237, 0.85),
+    rgba(14, 216, 246, 0.2)
+  );
   background-size: 100% 200%;
   animation: progress-line-flow 4s linear infinite;
 }
 
 /* Órbita do CompanySignature: o anel gira e cada nó contra-gira na mesma
    duração, mantendo os chips legíveis na horizontal. */
-@keyframes orbit-spin    { to { transform: rotate(360deg); } }
+@keyframes orbit-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 @keyframes orbit-counter {
-  from { transform: translate(-50%, -50%) rotate(var(--orbit-angle, 0deg)); }
-  to   { transform: translate(-50%, -50%) rotate(calc(var(--orbit-angle, 0deg) - 360deg)); }
+  from {
+    transform: translate(-50%, -50%) rotate(var(--orbit-angle, 0deg));
+  }
+  to {
+    transform: translate(-50%, -50%)
+      rotate(calc(var(--orbit-angle, 0deg) - 360deg));
+  }
 }
 /* Classes, não `animation` inline: a duração precisa vir de uma custom property
    consumida por uma classe para poder ser reafirmada com `!important` no bloco
@@ -1080,10 +1533,20 @@ body::after {
 }
 
 /* Linhas tracejadas em movimento (hero — receita skill sistran-labs) */
-@keyframes dash-march     { to { stroke-dashoffset: -40; } }
-@keyframes dash-march-rev { to { stroke-dashoffset: 40; } }
+@keyframes dash-march {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+@keyframes dash-march-rev {
+  to {
+    stroke-dashoffset: 40;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  [style*="dash-march"] { animation: none !important; }
+  [style*="dash-march"] {
+    animation: none !important;
+  }
 }
 
 /* ===========================================================
@@ -1104,6 +1567,137 @@ body::after {
      tudo — inclusive do conteúdo do hero. Qualquer valor abaixo de 1 tira o
      vídeo desse caminho e ele volta a respeitar a ordem normal do DOM. */
   opacity: 0.9999;
+}
+
+/* ── Legendas sobre o vídeo (ver src/components/ui/HeroCaptions.tsx) ─────────
+   As três ocupam a MESMA vaga, empilhadas: quem escolhe qual está visível é a
+   janela de rolagem, não o layout. Por isso `grid` com uma única célula em vez
+   de `absolute` — assim a altura da caixa é a da legenda mais alta e nenhuma
+   delas "salta" quando entra. */
+.hero-captions {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center start;
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: clamp(2.6rem, 7vw, 6rem);
+  /* Legenda de vídeo, não bloco clicável: nunca rouba o clique da página. */
+  pointer-events: none;
+}
+
+.hero-caption {
+  position: relative;
+  /* Garante contexto de empilhamento próprio: sem isto, o `z-index: -1` da
+     sombra abaixo escaparia da legenda e cairia atrás da vinheta — e nas fases
+     em que o motion não aplica transform nenhum (`transform: none`) ela
+     desapareceria. */
+  isolation: isolate;
+  grid-area: 1 / 1;
+  max-width: 46rem;
+  color: #fff;
+  /* Duas sombras: uma curta e fechada que cola no contorno das letras (é ela que
+     dá borda ao texto sobre pixels claros) e uma longa e difusa que assenta o
+     bloco. Só a longa não resolvia — ela espalha demais e o texto continuava
+     acinzentado contra o teto de luminárias do vídeo. */
+  text-shadow:
+    0 1px 3px rgb(2 12 28 / 85%),
+    0 4px 30px rgb(2 12 28 / 70%);
+  will-change: transform, opacity, filter;
+}
+
+/* Sombra ATRÁS do bloco — luz radial, nunca caixa.
+   A primeira versão era um gradiente linear numa caixa com `border-radius` e
+   `blur`. Não funcionou: desfocar um retângulo opaco continua entregando lados
+   retos, e a 48px de raio a curva é imperceptível num bloco desse tamanho — o
+   resultado lia como tarja cinza de legenda de vídeo.
+   Elipses radiais não têm aresta em direção nenhuma: elas se dissolvem por todos
+   os lados, então o que se vê é o vídeo escurecendo onde o texto está, não uma
+   forma sobreposta. Duas, deslocadas, para a mancha não ficar simétrica. */
+.hero-caption::before {
+  content: "";
+  position: absolute;
+  /* Muito maior que o texto de propósito: a queda do gradiente precisa de espaço
+     para acontecer fora da área lida. */
+  inset: -75% -60% -75% -55%;
+  z-index: -1;
+  background:
+    radial-gradient(
+      ellipse 46% 52% at 26% 42%,
+      rgb(2 12 28 / 88%),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 62% 40% at 34% 62%,
+      rgb(2 14 34 / 72%),
+      transparent 72%
+    );
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+/* Filete da marca à esquerda do título: âncora vertical que quebra o bloco de
+   texto e amarra a legenda à identidade (mesma ideia da `brand-line`). */
+.hero-caption-title::before {
+  content: "";
+  position: absolute;
+  top: 0.14em;
+  bottom: 0.14em;
+  left: -1.6rem;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(
+    180deg,
+    #7fd6ff,
+    rgb(0 153 230 / 55%) 62%,
+    transparent
+  );
+  box-shadow: 0 0 18px rgb(14 216 246 / 55%);
+}
+
+.hero-caption-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.05rem;
+  font-size: clamp(0.7rem, 0.9vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9fdcff;
+}
+
+.hero-caption-title {
+  position: relative;
+  font-size: clamp(2rem, 4.4vw, 3.7rem);
+  font-weight: 700;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  /* Quebra as duas linhas em comprimentos parecidos em vez de deixar uma órfã. */
+  text-wrap: balance;
+}
+
+/* Traço antes do sobretítulo: o mesmo desenho dos rótulos de seção do site. */
+.hero-caption-eyebrow::before {
+  content: "";
+  width: clamp(1.4rem, 3vw, 2.6rem);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #7fd6ff);
+}
+
+/* A segunda linha do título em ciano: o olho pega o começo da frase no branco e
+   termina no azul da marca. */
+.hero-caption-title span {
+  color: #a8e0ff;
+}
+
+.hero-caption-lead {
+  margin-top: clamp(1rem, 1.8vw, 1.6rem);
+  max-width: 38rem;
+  font-size: clamp(0.95rem, 1.15vw, 1.1rem);
+  line-height: 1.65;
+  color: rgb(255 255 255 / 88%);
 }
 
 /* Camada da pastilha: `position: fixed` num irmão da cena, nunca dentro dela —
@@ -1135,12 +1729,13 @@ body::after {
   background: rgb(0 26 61 / 55%);
   backdrop-filter: blur(8px);
   opacity: 0;
-  transition: opacity var(--dur-base, 0.4s) var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+  transition: opacity var(--dur-base, 0.4s)
+    var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
 }
 
 /* Só aparece depois do primeiro movimento do ponteiro: antes disso não há
    posição conhecida, e a pastilha piscaria no canto da tela. */
-.scroll-cue[data-awake='true'] {
+.scroll-cue[data-awake="true"] {
   opacity: 1;
 }
 
@@ -1195,83 +1790,88 @@ body::after {
    condicionada por seletor de atributo, então a duplicação é obrigatória.
    Mudar uma exige mudar a outra.
    =========================================================== */
-html[data-motion='reduce'],
-html[data-motion='reduce'] *,
-html[data-motion='reduce'] *::before,
-html[data-motion='reduce'] *::after {
+html[data-motion="reduce"],
+html[data-motion="reduce"] *,
+html[data-motion="reduce"] *::before,
+html[data-motion="reduce"] *::after {
   animation-duration: 0.01ms !important;
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;
   scroll-behavior: auto !important;
 }
 
-html[data-motion='reduce'] .reveal {
+html[data-motion="reduce"] .reveal {
   opacity: 1;
   transform: none;
 }
 
 /* Estado final VISÍVEL de tudo que o JS esconde para depois revelar. */
-html[data-motion='reduce'] .reveal-stagger > *,
-html[data-motion='reduce'] .reveal-stagger.is-visible > *,
-html[data-motion='reduce'] [data-reveal],
-html[data-motion='reduce'] [data-hero-chip],
-html[data-motion='reduce'] [data-hero-headline],
-html[data-motion='reduce'] [data-hero-paragraph],
-html[data-motion='reduce'] [data-hero-ctas],
-html[data-motion='reduce'] [data-hero-indicators],
-html[data-motion='reduce'] [data-hero-mobilechips] {
+html[data-motion="reduce"] .reveal-stagger > *,
+html[data-motion="reduce"] .reveal-stagger.is-visible > *,
+html[data-motion="reduce"] [data-reveal] {
   opacity: 1 !important;
   transform: none !important;
   filter: none !important;
 }
 
-html[data-motion='reduce'] #top {
+html[data-motion="reduce"] #top {
   height: auto !important;
 }
 
-html[data-motion='reduce'] .hero-scene {
+html[data-motion="reduce"] .hero-scene {
   position: relative !important;
 }
 
-html[data-motion='reduce'] [data-hero-peek] {
+/* Idem: empilhadas na mesma celula uma cobriria a outra. Em fluxo, as tres se
+   leem. */
+html[data-motion="reduce"] .hero-captions {
+  display: block !important;
+  padding-block: clamp(3rem, 8vw, 6rem) !important;
+}
+
+html[data-motion="reduce"] .hero-caption + .hero-caption {
+  margin-top: clamp(2.5rem, 6vw, 4.5rem) !important;
+}
+
+html[data-motion="reduce"] .hero-sheet {
   display: none !important;
 }
 
 /* Marquee: o movimento rola CONTEÚDO. Em vez de congelar (deixando os itens
    fora da tela inalcançáveis), troca-se o mecanismo por rolagem nativa. */
-html[data-motion='reduce'] .marquee-viewport {
+html[data-motion="reduce"] .marquee-viewport {
   overflow-x: auto !important;
   scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
 }
 
-html[data-motion='reduce'] .marquee-track {
+html[data-motion="reduce"] .marquee-track {
   animation: none !important;
   transform: none !important;
   width: auto !important;
 }
 
-html[data-motion='reduce'] .marquee-copy[aria-hidden='true'] {
+html[data-motion="reduce"] .marquee-copy[aria-hidden="true"] {
   display: none !important;
 }
 
-html[data-motion='reduce'] .marquee-copy > * {
+html[data-motion="reduce"] .marquee-copy > * {
   scroll-snap-align: start;
 }
 
-html[data-motion='reduce'] .text-gradient-hero {
+html[data-motion="reduce"] .text-gradient-hero {
   animation: none !important;
 }
 
-html[data-motion='reduce'] [style*='dash-march'] {
+html[data-motion="reduce"] [style*="dash-march"] {
   animation: none !important;
 }
 
 /* Isenção cirúrgica: a órbita carrega conteúdo em rotação e não tem
    equivalente rolável — congelada, os itens fora de vista ficam inalcançáveis.
    Segue animando, como no bloco @media. */
-html[data-motion='reduce'] .orbit-spin,
-html[data-motion='reduce'] .orbit-counter {
+html[data-motion="reduce"] .orbit-spin,
+html[data-motion="reduce"] .orbit-counter {
   animation-duration: var(--orbit-duration, 44s) !important;
   animation-iteration-count: infinite !important;
 }
@@ -1289,7 +1889,7 @@ html[data-motion='reduce'] .orbit-counter {
   transition: transform var(--dur-base) var(--ease-out);
 }
 
-.motion-banner[data-open='true'] {
+.motion-banner[data-open="true"] {
   transform: translate(-50%, 0);
 }
 
@@ -1366,7 +1966,7 @@ html[data-motion='reduce'] .orbit-counter {
   transition: grid-template-rows 350ms var(--ease-out);
 }
 
-.motion-dialog-panel[data-open='true'] {
+.motion-dialog-panel[data-open="true"] {
   grid-template-rows: 1fr;
 }
 
@@ -1376,7 +1976,7 @@ html[data-motion='reduce'] .orbit-counter {
   transition: opacity var(--dur-base) var(--ease-out);
 }
 
-.motion-dialog-panel[data-open='true'] > div {
+.motion-dialog-panel[data-open="true"] > div {
   opacity: 1;
   padding-top: 1.4rem;
 }
@@ -1412,7 +2012,7 @@ html[data-motion='reduce'] .orbit-counter {
   accent-color: var(--color-sky);
 }
 
-.motion-choice[data-checked='true'] {
+.motion-choice[data-checked="true"] {
   border-color: var(--color-sky);
   background: rgba(14, 216, 246, 0.14);
 }
@@ -1470,11 +2070,1592 @@ html[data-motion='reduce'] .orbit-counter {
 }
 
 @keyframes contact-dialog-veil {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes contact-dialog-in {
-  from { opacity: 0; transform: translateY(20px) scale(0.98); }
-  to   { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===========================================================
+   Aba oculta: nada de movimento decorativo rodando as escondidas.
+   `data-hidden` e escrito por MotionPolicyProvider. Vale para animacao CSS
+   (o navegador nao para essas por conta propria); video e pausado no JS.
+   =========================================================== */
+html[data-hidden] .marquee-track,
+html[data-hidden] .orb-drift,
+html[data-hidden] .orb-drift-slow,
+html[data-hidden] [style*="dash-march"] {
+  animation-play-state: paused !important;
+}
+
+/* ===========================================================
+   Fase 4 — orcamento de render.
+
+   `content-visibility: auto` deixa o navegador pular layout e paint do que
+   esta longe da viewport. `contain-intrinsic-size` e obrigatorio junto: sem
+   ele a seccao colapsa para zero enquanto esta pulada e a barra de rolagem
+   pula (CLS).
+
+   Aplicado por classe, e NAO em `.section-py` inteiro, de proposito: seccao
+   com `position: sticky`/pin de ScrollTrigger nao pode ser pulada — o GSAP
+   mediria altura zero e o pin quebraria. Por isso as cenas do hero,
+   Diferenciais e Solucoes ficam fora.
+   =========================================================== */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+/* Transicao de rota: sem View Transitions nativa (exigiria React canary), o
+   cross-fade e o de PageTransition. Aqui so garantimos que nada anime quando
+   a preferencia e de movimento reduzido, caso o navegador use a API por conta
+   propria numa navegacao de historico. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+html[data-motion="reduce"] ::view-transition-group(*) {
+  animation: none !important;
+}
+
+/* ── Abertura opcional da home (OptionalMorphIntro, Fase 5) ─────────────────
+   Toda a coreografia vive aqui, e nao no componente, por dois motivos: o
+   reduced-motion do projeto e resolvido em CSS (o React nao ramifica a arvore
+   por preferencia) e transform/opacity em transicao CSS ficam no compositor.
+   O overlay some do DOM no fim; nada disto persiste. */
+.mmi-root {
+  position: fixed;
+  inset: 0;
+  z-index: 90; /* acima do header (50) e do scrim (40), abaixo de modais */
+  display: grid;
+  place-items: center;
+  pointer-events: none; /* decorativo: nunca intercepta clique nem foco */
+}
+.mmi-root[hidden] {
+  display: none;
+}
+
+.mmi-cena {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      120% 90% at 50% 0%,
+      rgba(14, 88, 147, 0.55),
+      transparent 62%
+    ),
+    #031326;
+  transition: opacity var(--motion-scene, 650ms) var(--motion-ease, ease);
+}
+
+.mmi-cartao {
+  position: relative;
+  display: grid;
+  place-items: center;
+  gap: 0.75rem;
+  width: min(420px, 78vw);
+  height: 260px;
+  padding: 1.5rem;
+  background: #f4f8fc;
+  border-radius: 22px;
+  box-shadow: 0 40px 120px rgba(3, 19, 38, 0.55);
+  transition:
+    width var(--motion-scene, 650ms) var(--motion-ease, ease),
+    height var(--motion-scene, 650ms) var(--motion-ease, ease),
+    border-radius var(--motion-scene, 650ms) var(--motion-ease, ease),
+    transform 900ms var(--motion-ease, ease),
+    opacity 420ms var(--motion-ease, ease),
+    background 420ms var(--motion-ease, ease),
+    box-shadow 900ms var(--motion-ease, ease);
+}
+
+/* Quatro geometrias, uma por quarto do progresso: o bloco vai de retrato a
+   faixa larga, antecipando a proporcao final da marca no cabecalho. */
+.mmi-cartao[data-etapa="1"] {
+  width: min(460px, 82vw);
+  height: 220px;
+  border-radius: 20px;
+}
+.mmi-cartao[data-etapa="2"] {
+  width: min(520px, 86vw);
+  height: 180px;
+  border-radius: 18px;
+}
+.mmi-cartao[data-etapa="3"] {
+  width: min(560px, 88vw);
+  height: 148px;
+  border-radius: 16px;
+}
+
+.mmi-marca {
+  width: auto;
+  height: 3.4rem;
+  object-fit: contain;
+  transition: height var(--motion-scene, 650ms) var(--motion-ease, ease);
+}
+.mmi-cartao[data-etapa="3"] .mmi-marca {
+  height: 3rem;
+}
+
+.mmi-leitura {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #0b2550;
+}
+
+/* Peças anexas: contorno escalonado que se recolhe na morfagem. Decorativas —
+   a prontidao tambem e comunicada pelo numero, nao so por elas. */
+.mmi-peca {
+  position: absolute;
+  background: rgba(11, 37, 80, 0.14);
+  transition:
+    transform 900ms var(--motion-ease, ease),
+    opacity 420ms var(--motion-ease, ease);
+}
+.mmi-peca:nth-of-type(1) {
+  left: -14px;
+  top: 22px;
+  width: 14px;
+  height: 56px;
+  border-radius: 6px 0 0 6px;
+}
+.mmi-peca:nth-of-type(2) {
+  right: -14px;
+  bottom: 22px;
+  width: 14px;
+  height: 56px;
+  border-radius: 0 6px 6px 0;
+}
+
+/* Morfagem: o cartao assume o retangulo medido do alvo do hero. Posiciona por
+   `position: fixed` + left/top para casar com getBoundingClientRect(). */
+.mmi-root[data-estado="morphing"] .mmi-cena {
+  opacity: 0;
+}
+.mmi-root[data-estado="morphing"] .mmi-peca {
+  opacity: 0;
+  transform: scaleX(0.2);
+}
+.mmi-root[data-estado="morphing"] .mmi-leitura {
+  opacity: 0;
+}
+.mmi-root[data-estado="morphing"] .mmi-cartao {
+  position: fixed;
+  left: var(--mmi-left, 0px);
+  top: var(--mmi-top, 0px);
+  width: var(--mmi-width, 280px);
+  height: var(--mmi-height, 88px);
+  padding: 0;
+  gap: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+.mmi-root[data-estado="morphing"] .mmi-marca {
+  height: 100%;
+}
+
+.mmi-root[data-estado="saindo"] {
+  opacity: 0;
+  transition: opacity 420ms var(--motion-ease, ease);
+}
+
+/* Reduced motion: sem geometria e sem morfagem — marca sobre a cena e uma
+   dissolucao de 420ms, dentro do limite de 500ms pedido. */
+@media (prefers-reduced-motion: reduce) {
+  .mmi-cartao,
+  .mmi-marca,
+  .mmi-peca,
+  .mmi-cena {
+    transition: none !important;
+  }
+  .mmi-cartao[data-etapa] {
+    width: min(420px, 78vw);
+    height: 200px;
+    border-radius: 22px;
+  }
+  .mmi-peca {
+    display: none;
+  }
+  .mmi-root[data-estado="morphing"] .mmi-cartao {
+    position: relative;
+    left: auto;
+    top: auto;
+  }
+}
+html[data-motion="reduce"] .mmi-cartao,
+html[data-motion="reduce"] .mmi-marca,
+html[data-motion="reduce"] .mmi-peca,
+html[data-motion="reduce"] .mmi-cena {
+  transition: none !important;
+}
+html[data-motion="reduce"] .mmi-cartao[data-etapa] {
+  width: min(420px, 78vw);
+  height: 200px;
+  border-radius: 22px;
+}
+html[data-motion="reduce"] .mmi-peca {
+  display: none;
+}
+html[data-motion="reduce"] .mmi-root[data-estado="morphing"] .mmi-cartao {
+  position: relative;
+  left: auto;
+  top: auto;
+}
+
+/* Emenda entre faixa clara e fundo navy: linha de luz no topo, sombra azul da
+   marca na base. Sem isso o corte entre as duas era um degrau seco. */
+.section-light {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    inset 0 -1px 0 rgba(0, 121, 203, 0.14);
+}
+
+/* ══ CTA "Fale com a Gente!" — digitacao e entrada complementar ═══════════════
+   Tres camadas ocupando o MESMO espaco (ver TypewriterOnView.tsx):
+   `.tw-espelho` reserva as medidas finais, `.tw-camada` sobrepoe os grafemas
+   animados e o texto acessivel completo fica num `sr-only`. Como a camada
+   animada é `position: absolute`, digitar nao muda altura nem largura da secao:
+   paragrafo e botao ficam parados.
+
+   Estado inicial = texto completo visivel. Quem esconde é o atributo
+   `data-tw`, escrito por JS somente quando o movimento esta liberado — sem
+   JavaScript, ou com movimento reduzido, o titulo simplesmente esta la. */
+.tw-raiz {
+  position: relative;
+  display: block;
+}
+.tw-espelho {
+  visibility: hidden;
+}
+.tw-camada {
+  position: absolute;
+  inset: 0;
+}
+/* Sem isso o navegador pode quebrar a linha entre dois grafemas da mesma
+   palavra, e a camada deixa de coincidir com o espelho. */
+.tw-palavra {
+  white-space: nowrap;
+}
+.tw-char {
+  opacity: 1;
+  transition: opacity 90ms var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.tw-raiz[data-tw="armado"] .tw-char,
+.tw-raiz[data-tw="digitando"] .tw-char[data-tw-visivel="0"] {
+  opacity: 0;
+}
+
+/* Cursor: 2px de largura com margem lateral negativa que anula o proprio
+   espaco, para que caminhar pelo texto nao empurre grafema nenhum. */
+.tw-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin: 0 -1px;
+  vertical-align: -0.12em;
+  background: #0ed8f6;
+  opacity: 0;
+  transition: opacity 220ms var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.tw-raiz[data-tw="armado"] .tw-cursor,
+.tw-raiz[data-tw="digitando"] .tw-cursor {
+  opacity: 1;
+  animation: tw-piscar 750ms steps(1, end) infinite;
+}
+@keyframes tw-piscar {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0.15;
+  }
+}
+
+/* Entrada de paragrafo e botao, encadeada depois do titulo. Enquanto o
+   atributo nao existe (SSR, sem JS, movimento reduzido) tudo esta visivel. */
+.cta-entrada {
+  transition:
+    opacity 520ms var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    transform 520ms var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+[data-cta-etapa="armado"] .cta-entrada,
+[data-cta-etapa="paragrafo"] .cta-entrada,
+[data-cta-etapa="botao"] .cta-entrada {
+  opacity: 0;
+  transform: translateY(16px);
+}
+[data-cta-etapa="paragrafo"] .cta-entrada-p,
+[data-cta-etapa="botao"] .cta-entrada-p,
+[data-cta-etapa="botao"] .cta-entrada-b {
+  opacity: 1;
+  transform: none;
+}
+
+/* Movimento reduzido: titulo completo na hora, sem cursor, sem deslocamento.
+   Dobrado no atributo porque o controle "Preferencias de movimento" do site
+   tem prioridade sobre a media query. */
+@media (prefers-reduced-motion: reduce) {
+  .tw-char {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+  .tw-cursor {
+    display: none !important;
+  }
+  .cta-entrada {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+html[data-motion="reduce"] .tw-char {
+  opacity: 1 !important;
+  transition: none !important;
+}
+html[data-motion="reduce"] .tw-cursor {
+  display: none !important;
+}
+html[data-motion="reduce"] .cta-entrada {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+/* Grafismo tecnico do CTA (TechnicalCursorReveal). Sempre atras do conteudo,
+   sempre fora da arvore acessivel, nunca captando ponteiro. */
+.tcr-raiz {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+}
+.tcr-svg,
+.tcr-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.tcr-svg {
+  opacity: 0.9;
+}
+/* No celular fica so o estatico, e mais apagado. */
+@media (max-width: 699px) {
+  .tcr-svg {
+    opacity: 0.55;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tcr-canvas {
+    display: none;
+  }
+}
+html[data-motion="reduce"] .tcr-canvas {
+  display: none;
+}
+
+/* ==========================================================================
+   Explorador arquitetonico 360° (BuildingShowcase + BuildingExplorer)
+   Estilos proprios: o material entregue trazia um `globals.css` inteiro de
+   outro projeto, e aqui só entra o que a moldura da cena precisa.
+   ========================================================================== */
+/* Trilha de rolagem: a secao fica alta e o interior gruda na tela enquanto a
+   rolagem monta os modulos e gira a camera. `sticky` em vez de `pin: true` do
+   ScrollTrigger porque pin remonta o no e desalinha com o scroll suave.
+   A classe só é aplicada quando o JavaScript decide dirigir a cena (tela larga
+   e movimento permitido); sem ela isto aqui é um par de divs comuns. */
+.building-scroll {
+  height: 300svh;
+}
+.building-scroll > .building-scroll-inner {
+  position: sticky;
+  top: 0;
+  display: flex;
+  min-height: 100svh;
+  align-items: center;
+}
+
+.building-stage {
+  position: relative;
+  width: 100%;
+  isolation: isolate;
+  border-radius: 24px;
+  border: 1px solid rgba(165, 240, 255, 0.3);
+  /* Palco nos azuis da marca, nao no quase-preto do material de referencia: o
+     degrade vai do azul medio (--color-bg-alt) ao azul profundo, com um halo de
+     gelo no topo para a torre nao nascer de um fundo chapado. */
+  background:
+    radial-gradient(
+      120% 90% at 50% 0%,
+      rgba(165, 240, 255, 0.3),
+      transparent 64%
+    ),
+    radial-gradient(
+      90% 70% at 50% 100%,
+      rgba(14, 216, 246, 0.16),
+      transparent 60%
+    ),
+    linear-gradient(180deg, #2a9be0 0%, #1273bc 48%, #0f5a95 100%);
+  overflow: hidden;
+}
+
+/* A altura é reservada no container, nao no canvas: o 3D chega depois e nao
+   pode empurrar a pagina (zero layout shift). */
+.three-explorer-shell {
+  position: relative;
+  width: 100%;
+  height: clamp(360px, 62svh, 640px);
+}
+.three-explorer {
+  position: absolute;
+  inset: 0;
+}
+.three-explorer canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+}
+
+.three-fallback {
+  position: absolute;
+  inset: auto 1.5rem 1.5rem;
+  max-width: 34rem;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(248, 250, 252, 0.82);
+}
+
+/* --- seletor de modelo ---------------------------------------------------- */
+.model-switch {
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.model-switch button,
+.camera-presets button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid rgba(165, 240, 255, 0.34);
+  border-radius: 999px;
+  background: rgba(6, 62, 105, 0.66);
+  backdrop-filter: blur(8px);
+  color: rgba(248, 250, 252, 0.86);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    border-color 220ms var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    color 220ms var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1)),
+    background-color 220ms var(--motion-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.model-switch button span {
+  color: #0ed8f6;
+  font-variant-numeric: tabular-nums;
+}
+.model-switch button:hover,
+.camera-presets button:hover {
+  border-color: rgba(14, 216, 246, 0.55);
+  color: #fff;
+}
+.model-switch button.active {
+  border-color: rgba(14, 216, 246, 0.7);
+  background: rgba(14, 216, 246, 0.14);
+  color: #fff;
+}
+.model-switch button:focus-visible,
+.camera-presets button:focus-visible {
+  outline: 2px solid #0ed8f6;
+  outline-offset: 2px;
+}
+
+/* --- bussola ------------------------------------------------------------- */
+.compass-hud {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid rgba(165, 240, 255, 0.3);
+  border-radius: 14px;
+  background: rgba(6, 62, 105, 0.66);
+  backdrop-filter: blur(8px);
+}
+.compass-hud small,
+.location-card small {
+  display: block;
+  color: rgba(165, 240, 255, 0.72);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.compass-hud strong,
+.location-card strong {
+  display: block;
+  color: #f8fafc;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.compass-ring {
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(14, 216, 246, 0.55);
+  border-radius: 50%;
+}
+.compass-ring i {
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  width: 2px;
+  height: 8px;
+  margin-left: -1px;
+  background: #0ed8f6;
+}
+
+/* --- vistas rapidas ------------------------------------------------------ */
+.camera-presets {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  transform: translateX(-50%);
+}
+.camera-presets .reset-view {
+  font-size: 0.85rem;
+}
+
+.gesture-hint {
+  position: absolute;
+  bottom: 1.35rem;
+  right: 1.25rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  color: rgba(248, 250, 252, 0.6);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+}
+.gesture-icon {
+  color: #0ed8f6;
+}
+
+/* --- cartao de local, rotulo vertical, numero --------------------------- */
+.location-card {
+  position: absolute;
+  bottom: 4.6rem;
+  left: 1.25rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.95rem;
+  border: 1px solid rgba(165, 240, 255, 0.3);
+  border-radius: 14px;
+  background: rgba(6, 62, 105, 0.7);
+  backdrop-filter: blur(8px);
+}
+.location-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #0ed8f6;
+  box-shadow: 0 0 0 4px rgba(14, 216, 246, 0.18);
+  animation: location-pulsar 2.4s ease-in-out infinite;
+}
+@keyframes location-pulsar {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(14, 216, 246, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 0 9px rgba(14, 216, 246, 0.04);
+  }
+}
+.location-code {
+  color: rgba(165, 240, 255, 0.75);
+  font-size: 0.66rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+}
+
+.vertical-label {
+  position: absolute;
+  top: 50%;
+  right: 0.35rem;
+  z-index: 1;
+  color: rgba(230, 249, 255, 0.55);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  white-space: nowrap;
+  transform: translateY(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  pointer-events: none;
+}
+
+.building-stat {
+  position: absolute;
+  top: 5.2rem;
+  right: 1.25rem;
+  z-index: 2;
+  text-align: right;
+}
+.building-stat .stat-value {
+  display: block;
+  color: #eaf9ff;
+  font-size: clamp(1.9rem, 3.4vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.building-stat .stat-label {
+  display: block;
+  margin-top: 0.25rem;
+  color: rgba(248, 250, 252, 0.82);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Em tela estreita a moldura sai de cima da cena e vira empilhamento: com
+   pouca largura os HUDs se sobrepunham ao modelo. */
+@media (max-width: 767px) {
+  .vertical-label,
+  .gesture-hint {
+    display: none;
+  }
+  .building-stat {
+    top: auto;
+    bottom: 1.1rem;
+    right: 1rem;
+  }
+  .location-card {
+    bottom: 4.4rem;
+    left: 1rem;
+    right: 1rem;
+  }
+  .camera-presets {
+    bottom: 8.4rem;
+  }
+  .compass-hud {
+    top: auto;
+    bottom: 12rem;
+    right: 1rem;
+  }
+  .model-switch {
+    position: static;
+    padding: 1rem 1rem 0;
+  }
+}
+
+/* Movimento reduzido: o pulso do cartao para. O giro automatico da cena ja é
+   desligado no componente, via `prefersReducedMotion()`. */
+@media (prefers-reduced-motion: reduce) {
+  .location-pulse {
+    animation: none !important;
+  }
+}
+html[data-motion="reduce"] .location-pulse {
+  animation: none !important;
+}
+
+/* Rede de seguranca da trilha de rolagem: o componente ja nao aplica
+   `.building-scroll` com movimento reduzido, mas se a preferencia mudar com a
+   pagina aberta, a secao volta a ter altura normal na hora — o edificio ja
+   nasce completo nesse caso, entao 300svh de rolagem nao teria funcao. */
+@media (prefers-reduced-motion: reduce) {
+  .building-scroll {
+    height: auto;
+  }
+  .building-scroll > .building-scroll-inner {
+    position: static;
+    min-height: 0;
+  }
+}
+html[data-motion="reduce"] .building-scroll {
+  height: auto;
+}
+html[data-motion="reduce"] .building-scroll > .building-scroll-inner {
+  position: static;
+  min-height: 0;
+}
+
+/* ==========================================================================
+   Mapa dos escritorios do Brasil (BrazilOfficesMap)
+   Portado de `mapa-conexoes-azul.html`, com prefixo `bm-`: os nomes originais
+   (`.card`, `.map`, `.label`, `.ring`, `.core`) colidiriam com o CSS global.
+   ========================================================================== */
+.bm-palco {
+  position: relative;
+  border-radius: 24px;
+  border: 1px solid rgba(142, 204, 255, 0.14);
+  background:
+    radial-gradient(
+      circle at 67% 42%,
+      rgba(22, 115, 224, 0.16),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 25% 76%,
+      rgba(22, 115, 224, 0.1),
+      transparent 30%
+    ),
+    linear-gradient(138deg, #02070e 0%, #061225 52%, #020813 100%);
+  overflow: hidden;
+}
+/* Grade tecnica de fundo, apagada nas bordas. */
+.bm-palco::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.62;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 84px 84px;
+  mask-image: radial-gradient(circle at 55% 50%, #000, transparent 72%);
+  pointer-events: none;
+}
+/* Dentro da cena dos escritorios o mapa nao é um cartao: ele é o fundo da
+   secao. A moldura toda sai — borda, canto arredondado, fundo em degrade e a
+   grade tecnica —, em qualquer modo. Em modo lista era ela que desenhava aquele
+   retangulo escuro solto no meio da folha clara. */
+.os-mapa .bm-palco {
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.os-mapa .bm-palco::before {
+  content: none;
+}
+.bm-mapa {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  /* O viewBox é 720x640: sem a proporcao declarada a altura do elemento e a
+     escala do desenho discordam, e o mapa entra num tamanho arbitrario. */
+  aspect-ratio: 720 / 640;
+  padding: clamp(0.75rem, 2vw, 1.5rem);
+  /* NAO pode ser `visible`: o contorno da America do Sul vai de y -45 a 945 e de
+     x -71 a 570, bem alem do viewBox. Com overflow visivel o SVG pintava esse
+     excedente FORA da propria caixa — era isso que jogava um pedaco gigante do
+     continente por cima da secao. O recorte pelo viewBox é o comportamento
+     padrao do SVG; aqui ele volta a valer. */
+  overflow: hidden;
+}
+
+/* Camadas da America do Sul, atras do Brasil: da mais difusa para a mais
+   definida. Ficam em azul apagado para o pais em destaque seguir lendo primeiro. */
+.bm-latam-aura {
+  fill: rgba(24, 112, 202, 0.14);
+  stroke: rgba(128, 200, 252, 0.22);
+  stroke-width: 8;
+  opacity: 0.58;
+  filter: blur(8px);
+  vector-effect: non-scaling-stroke;
+}
+.bm-latam-contorno {
+  fill: rgba(12, 54, 101, 0.3);
+  stroke: rgba(137, 206, 255, 0.38);
+  stroke-width: 1.4;
+  opacity: 0.78;
+  vector-effect: non-scaling-stroke;
+}
+.bm-latam-divisas {
+  fill: none;
+  stroke: rgba(160, 216, 255, 0.52);
+  stroke-width: 1.05;
+  opacity: 0.92;
+  vector-effect: non-scaling-stroke;
+}
+
+.bm-pais-brilho {
+  fill: #1479ec;
+  opacity: 0.48;
+  filter: url(#bm-brilho-pais);
+}
+.bm-pais {
+  fill: url(#bm-preenchimento);
+  stroke: rgba(184, 228, 255, 0.88);
+  stroke-width: 1.55;
+  vector-effect: non-scaling-stroke;
+}
+.bm-relevo {
+  fill: none;
+  stroke: rgba(100, 180, 244, 0.1);
+  stroke-width: 1;
+}
+
+.bm-rota {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.bm-rota-base {
+  stroke: rgba(48, 162, 255, 0.5);
+  stroke-width: 2.4;
+}
+.bm-rota-pulso {
+  stroke: url(#bm-traco);
+  stroke-width: 2.1;
+  stroke-dasharray: 0.16 0.84;
+  animation: bm-fluxo 4.8s linear infinite;
+}
+@keyframes bm-fluxo {
+  to {
+    stroke-dashoffset: -1;
+  }
+}
+
+.bm-chamadas {
+  fill: none;
+  stroke: rgba(176, 222, 255, 0.62);
+  stroke-width: 0.8;
+  vector-effect: non-scaling-stroke;
+}
+.bm-halo {
+  fill: rgba(37, 154, 255, 0.08);
+  stroke: rgba(65, 176, 255, 0.14);
+  animation: bm-pulsar 2.7s ease-out infinite;
+}
+@keyframes bm-pulsar {
+  0% {
+    r: 11;
+    opacity: 0.9;
+  }
+  75%,
+  100% {
+    r: 26;
+    opacity: 0;
+  }
+}
+.bm-anel {
+  fill: #07162b;
+  stroke: #bfe8ff;
+  stroke-width: 2;
+  filter: url(#bm-brilho-rota);
+}
+.bm-nucleo {
+  fill: #fff;
+  filter: url(#bm-brilho-rota);
+}
+
+.bm-rotulo text {
+  fill: #f4fbff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+.bm-rotulo .bm-coord {
+  fill: #6695ba;
+  font-size: 7px;
+  letter-spacing: 0.16em;
+}
+/* Em tela estreita os rotulos de 12px ficam ilegiveis depois da reducao do
+   viewBox: sobem de tamanho junto com a escala. */
+@media (max-width: 767px) {
+  .bm-rotulo text {
+    font-size: 15px;
+  }
+  .bm-rotulo .bm-coord {
+    font-size: 9px;
+  }
+  /* Em tela estreita o contorno do continente perde presenca: reforca. */
+  .bm-latam-contorno {
+    opacity: 0.74;
+  }
+}
+
+/* Movimento reduzido: o mapa fica parado. O traco de base e os pontos continuam
+   visiveis — nenhuma cidade depende da animacao para aparecer. */
+@media (prefers-reduced-motion: reduce) {
+  .bm-rota-pulso,
+  .bm-halo {
+    animation: none !important;
+  }
+}
+html[data-motion="reduce"] .bm-rota-pulso,
+html[data-motion="reduce"] .bm-halo {
+  animation: none !important;
+}
+
+/* ==========================================================================
+   Cena dos escritorios (OfficesScene)
+   O mapa ocupa a tela inteira e se desenha com a rolagem; depois cada cidade
+   acende e as fotos daquele escritorio pousam do lado em que a linha de chamada
+   do mapa aponta. Tudo o que a rolagem muda chega aqui por variavel CSS
+   (--os-contorno, --os-entrada, --os-rota, --os-p) e por data-ativa, escritos
+   direto no no pelo componente.
+
+   Todos os valores padrao sao o estado final: sem JavaScript, em tela estreita
+   ou com movimento reduzido, o mapa aparece desenhado, a rota inteira, as tres
+   cidades acesas e todas as fotos visiveis.
+   ========================================================================== */
+
+/* --- estado das cidades no mapa ------------------------------------------- */
+/* O mapa continua sem JavaScript: quem escreve data-ativa é a cena em volta, e
+   o realce todo mora aqui. O valor nenhuma é o trecho da revelacao, em que o
+   mapa ainda esta se desenhando. */
+.os-palco[data-ativa] .bm-mapa g[data-cidade],
+.os-palco[data-ativa] .bm-chamadas path[data-cidade] {
+  opacity: 0;
+  transition: opacity 0.6s ease-out;
+}
+.os-palco[data-ativa="pr"] .bm-mapa g[data-cidade="pr"],
+.os-palco[data-ativa="pr"] .bm-chamadas path[data-cidade="pr"],
+.os-palco[data-ativa="sp"] .bm-mapa g[data-cidade="sp"],
+.os-palco[data-ativa="sp"] .bm-chamadas path[data-cidade="sp"],
+.os-palco[data-ativa="rj"] .bm-mapa g[data-cidade="rj"],
+.os-palco[data-ativa="rj"] .bm-chamadas path[data-cidade="rj"] {
+  opacity: 1;
+}
+/* Cidade que ja passou continua marcada, discreta: o percurso fica legivel. */
+.os-palco[data-ativa="sp"] .bm-mapa g[data-cidade="pr"],
+.os-palco[data-ativa="rj"] .bm-mapa g[data-cidade="pr"] {
+  opacity: 0.4;
+}
+
+/* --- Sao Paulo fica marcada ---------------------------------------------- */
+/* Depois de o mapa se desenhar, Sao Paulo continua acesa em todos os trechos —
+   é a sede, e a secao existe para mostra-la. As outras duas cidades acendem no
+   seu trecho e depois recuam; esta nao. Vem DEPOIS das regras acima de proposito,
+   para vencer o recuo para 0.4. */
+.os-palco[data-ativa] .bm-mapa g[data-cidade="sp"] {
+  opacity: 1;
+}
+/* Unica excecao: durante a revelacao ela chega junto com o corpo do pais, em vez
+   de aparecer sobre um mapa ainda vazio. */
+.os-palco[data-ativa="nenhuma"] .bm-mapa g[data-cidade="sp"] {
+  opacity: var(--os-entrada, 1);
+}
+/* E marcada tambem no desenho, nao só pela opacidade: anel e nucleo maiores. */
+.bm-mapa g[data-cidade="sp"] .bm-anel {
+  r: 12.5;
+  stroke-width: 2.6;
+}
+.bm-mapa g[data-cidade="sp"] .bm-nucleo {
+  r: 5;
+}
+.bm-mapa g[data-cidade="sp"] .bm-halo {
+  fill: rgba(37, 154, 255, 0.14);
+  stroke: rgba(120, 205, 255, 0.28);
+}
+.bm-rotulo[data-cidade="sp"] text {
+  fill: #fff;
+}
+
+/* --- tracos que se desenham ---------------------------------------------- */
+/* Contorno do pais e rota: pathLength de 1 no SVG deixa o traco ser medido em
+   fracao, sem getTotalLength em JavaScript. Padrao 1 = desenhado inteiro. */
+.bm-pais-contorno {
+  fill: none;
+  stroke: rgba(191, 232, 255, 0.85);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--os-contorno, 1));
+}
+.bm-rota-desenho {
+  stroke: url(#bm-traco);
+  stroke-width: 3.2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--os-rota, 1));
+}
+
+/* --- fotos ---------------------------------------------------------------- */
+.os-fotos {
+  margin-top: 1.1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.os-foto {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(142, 204, 255, 0.16);
+  background: #061225;
+  aspect-ratio: 4 / 3;
+  margin: 0;
+}
+/* A primeira foto ocupa a linha inteira: é a fachada, e é ela que apresenta o
+   escritorio. */
+.os-foto[data-ordem="0"] {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 10;
+}
+.os-foto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- modo lista: tela estreita, movimento reduzido, sem JavaScript -------- */
+/* A cena mora fora do container da pagina para o mapa poder ocupar a janela
+   inteira; no modo lista ela devolve a margem lateral que o container daria. */
+.os-trilha {
+  position: relative;
+  margin-inline: auto;
+  width: 100%;
+  max-width: theme("maxWidth.container");
+  padding-inline: 1.25rem;
+}
+@media (min-width: 640px) {
+  .os-trilha {
+    padding-inline: 1.5rem;
+  }
+}
+.os-palco {
+  position: relative;
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 2.75rem);
+}
+.os-cidades {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 2.5rem);
+}
+.os-cidade-nome {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-weight: 700;
+  color: #0b1a2b;
+}
+.os-cidade-texto {
+  margin-top: 0.65rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #4a5a6b;
+}
+
+.os-abas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.os-abas button {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(142, 204, 255, 0.28);
+  background: rgba(4, 12, 24, 0.5);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(226, 243, 255, 0.72);
+  cursor: pointer;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+}
+.os-abas button.active {
+  color: #f4fbff;
+  border-color: rgba(65, 176, 255, 0.65);
+  background: linear-gradient(120deg, #0b2548, #1479ec);
+}
+.os-abas button:hover {
+  color: #f4fbff;
+}
+
+/* --- modo lista: o mapa tambem surge com a rolagem ----------------------- */
+/* Sem a tela cheia e sem o sticky, mas com a mesma partitura: o contorno se
+   desenha, o corpo do pais entra atras dele e a rota corre depois. Quem escreve
+   as variaveis é a propria cena (ver `OfficesScene`), e o valor padrao de todas
+   é 1 — sem JavaScript o mapa aparece pronto, nada some. */
+.os-palco[data-modo="lista"] .bm-mapa {
+  opacity: calc(0.2 + 0.8 * var(--os-entrada, 1));
+  transform: translate3d(0, calc((1 - var(--os-entrada, 1)) * 28px), 0);
+  will-change: opacity, transform;
+}
+.os-palco[data-modo="lista"] .bm-pais,
+.os-palco[data-modo="lista"] .bm-pais-brilho,
+.os-palco[data-modo="lista"] .bm-relevo {
+  opacity: var(--os-entrada, 1);
+}
+.os-palco[data-modo="lista"] .bm-rota-base,
+.os-palco[data-modo="lista"] .bm-rota-pulso {
+  opacity: var(--os-rota, 1);
+}
+
+/* --- modo scroll: tela inteira ------------------------------------------- */
+@media (min-width: 1024px) {
+  /* Quatro trechos: revelacao do mapa + uma cidade cada. */
+  .os-trilha[data-modo="scroll"] {
+    height: 420svh;
+    max-width: none;
+    padding-inline: 0;
+  }
+  .os-trilha[data-modo="scroll"] > .os-inner {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+  }
+  .os-palco[data-modo="scroll"] {
+    position: absolute;
+    inset: 0;
+    display: block;
+    overflow: hidden;
+    background:
+      radial-gradient(
+        circle at 62% 46%,
+        rgba(22, 115, 224, 0.2),
+        transparent 42%
+      ),
+      linear-gradient(140deg, #02070e 0%, #061225 55%, #020813 100%);
+  }
+  .os-palco[data-modo="scroll"] .os-mapa {
+    position: absolute;
+    inset: 0;
+  }
+  /* O palco proprio do mapa perde moldura: aqui ele é a tela, nao um cartao. */
+  .os-palco[data-modo="scroll"] .bm-palco {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+  }
+  .os-palco[data-modo="scroll"] .bm-mapa {
+    height: 100%;
+    /* Com altura de 100% a proporcao declarada na regra base nao vale mais: aqui
+       quem manda é a caixa sticky, e o `preserveAspectRatio` do SVG encaixa o
+       desenho dentro dela. */
+    aspect-ratio: auto;
+    padding: clamp(0.5rem, 2vh, 2rem) 0;
+    /* A cena inteira aproxima alguns por cento durante a revelacao: o mapa
+       chega, nao aparece de repente. */
+    transform: scale(calc(1.06 - 0.06 * var(--os-entrada, 1)));
+    transform-origin: 58% 62%;
+  }
+  /* O corpo do pais entra atras do contorno que se desenha. */
+  .os-palco[data-modo="scroll"] .bm-pais,
+  .os-palco[data-modo="scroll"] .bm-pais-brilho,
+  .os-palco[data-modo="scroll"] .bm-relevo {
+    opacity: var(--os-entrada, 1);
+  }
+  /* A rota só existe depois das cidades comecarem a acender. */
+  .os-palco[data-modo="scroll"] .bm-rota-base,
+  .os-palco[data-modo="scroll"] .bm-rota-pulso {
+    opacity: var(--os-rota, 1);
+  }
+
+  /* Paineis pousados sobre o mapa, cada um do lado em que a linha de chamada
+     daquela cidade aponta: Pato Branco à esquerda e embaixo, Sao Paulo à
+     direita e embaixo, Rio à direita e acima. */
+  .os-palco[data-modo="scroll"] .os-cidades {
+    position: absolute;
+    inset: 0;
+    display: block;
+    pointer-events: none;
+  }
+  .os-palco[data-modo="scroll"] .os-painel {
+    position: absolute;
+    width: clamp(20rem, 26vw, 26rem);
+    padding: clamp(1rem, 1.6vw, 1.5rem);
+    border-radius: 22px;
+    border: 1px solid rgba(142, 204, 255, 0.2);
+    background: rgba(3, 10, 20, 0.62);
+    backdrop-filter: blur(16px) saturate(1.15);
+    -webkit-backdrop-filter: blur(16px) saturate(1.15);
+    box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.9);
+    opacity: 0;
+    transform: translateY(26px) scale(0.985);
+    transition:
+      opacity 0.7s ease-out,
+      transform 0.7s ease-out;
+  }
+  .os-palco[data-modo="scroll"] .os-painel[data-cidade="pr"] {
+    left: clamp(1rem, 3vw, 3.5rem);
+    bottom: clamp(1rem, 6vh, 4.5rem);
+  }
+  .os-palco[data-modo="scroll"] .os-painel[data-cidade="sp"] {
+    right: clamp(1rem, 3vw, 3.5rem);
+    bottom: clamp(1rem, 6vh, 4.5rem);
+  }
+  /* O Rio nao tem descricao nem foto no material do site: entra só com o nome,
+     e por isso o painel é estreito. Nada foi inventado para preencher. */
+  .os-palco[data-modo="scroll"] .os-painel[data-cidade="rj"] {
+    right: clamp(1rem, 3vw, 3.5rem);
+    top: clamp(4rem, 12vh, 8rem);
+    width: auto;
+  }
+  .os-palco[data-modo="scroll"][data-ativa="pr"] .os-painel[data-cidade="pr"],
+  .os-palco[data-modo="scroll"][data-ativa="sp"] .os-painel[data-cidade="sp"],
+  .os-palco[data-modo="scroll"][data-ativa="rj"] .os-painel[data-cidade="rj"] {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  /* Sobre o mapa escuro o texto inverte. */
+  .os-palco[data-modo="scroll"] .os-cidade-nome {
+    color: #f4fbff;
+  }
+  .os-palco[data-modo="scroll"] .os-cidade-texto {
+    color: rgba(226, 243, 255, 0.82);
+  }
+  /* Parallax leve: as fotos de apoio andam alguns pixels a mais que a fachada. */
+  .os-palco[data-modo="scroll"] .os-foto[data-ordem="1"] img {
+    transform: translate3d(0, calc(var(--os-p, 0) * -20px), 0) scale(1.06);
+  }
+  .os-palco[data-modo="scroll"] .os-foto[data-ordem="2"] img {
+    transform: translate3d(0, calc(var(--os-p, 0) * -11px), 0) scale(1.06);
+  }
+
+  .os-palco[data-modo="scroll"] .os-abas {
+    position: absolute;
+    left: clamp(1rem, 3vw, 3.5rem);
+    top: clamp(1.5rem, 5vh, 3rem);
+    z-index: 2;
+  }
+}
+
+/* --- movimento reduzido -------------------------------------------------- */
+/* Mesmo que a preferencia mude com a pagina aberta: a cena volta a ser lista,
+   nenhuma foto escondida, nenhum traco pela metade. */
+@media (prefers-reduced-motion: reduce) {
+  .os-trilha[data-modo="scroll"] {
+    height: auto;
+  }
+  .os-trilha[data-modo="scroll"] > .os-inner {
+    position: static;
+    height: auto;
+  }
+  .os-palco[data-modo="scroll"],
+  .os-palco[data-modo="scroll"] .os-mapa,
+  .os-palco[data-modo="scroll"] .bm-palco,
+  .os-palco[data-modo="scroll"] .os-cidades,
+  .os-palco[data-modo="scroll"] .os-painel {
+    position: relative;
+    inset: auto;
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    width: auto;
+    overflow: visible;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto;
+  }
+  .os-palco[data-modo="scroll"] .bm-mapa {
+    height: auto;
+  }
+  /* O mapa em modo lista nao depende da rolagem para existir: chega inteiro. */
+  .os-palco[data-modo="lista"] .bm-mapa,
+  .os-palco[data-modo="lista"] .bm-pais,
+  .os-palco[data-modo="lista"] .bm-pais-brilho,
+  .os-palco[data-modo="lista"] .bm-relevo,
+  .os-palco[data-modo="lista"] .bm-rota-base,
+  .os-palco[data-modo="lista"] .bm-rota-pulso {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .os-palco[data-ativa] .bm-mapa g[data-cidade],
+  .os-palco[data-ativa] .bm-chamadas path[data-cidade] {
+    opacity: 1 !important;
+  }
+  .os-palco .os-foto img {
+    transform: none !important;
+  }
+  .bm-pais-contorno,
+  .bm-rota-desenho {
+    stroke-dashoffset: 0 !important;
+  }
+}
+html[data-motion="reduce"] .os-trilha[data-modo="scroll"] {
+  height: auto;
+}
+html[data-motion="reduce"] .os-trilha[data-modo="scroll"] > .os-inner {
+  position: static;
+  height: auto;
+}
+html[data-motion="reduce"] .os-palco[data-modo="scroll"],
+html[data-motion="reduce"] .os-palco[data-modo="scroll"] .os-mapa,
+html[data-motion="reduce"] .os-palco[data-modo="scroll"] .bm-palco,
+html[data-motion="reduce"] .os-palco[data-modo="scroll"] .os-cidades,
+html[data-motion="reduce"] .os-palco[data-modo="scroll"] .os-painel {
+  position: relative;
+  inset: auto;
+  left: auto;
+  right: auto;
+  top: auto;
+  bottom: auto;
+  width: auto;
+  overflow: visible;
+  opacity: 1 !important;
+  transform: none !important;
+  pointer-events: auto;
+}
+html[data-motion="reduce"] .os-palco[data-modo="scroll"] .bm-mapa {
+  height: auto;
+}
+html[data-motion="reduce"] .os-palco[data-modo="lista"] .bm-mapa,
+html[data-motion="reduce"] .os-palco[data-modo="lista"] .bm-pais,
+html[data-motion="reduce"] .os-palco[data-modo="lista"] .bm-pais-brilho,
+html[data-motion="reduce"] .os-palco[data-modo="lista"] .bm-relevo,
+html[data-motion="reduce"] .os-palco[data-modo="lista"] .bm-rota-base,
+html[data-motion="reduce"] .os-palco[data-modo="lista"] .bm-rota-pulso {
+  opacity: 1 !important;
+  transform: none !important;
+}
+html[data-motion="reduce"] .os-palco[data-ativa] .bm-mapa g[data-cidade],
+html[data-motion="reduce"]
+  .os-palco[data-ativa]
+  .bm-chamadas
+  path[data-cidade] {
+  opacity: 1 !important;
+}
+html[data-motion="reduce"] .os-palco .os-foto img {
+  transform: none !important;
+}
+html[data-motion="reduce"] .bm-pais-contorno,
+html[data-motion="reduce"] .bm-rota-desenho {
+  stroke-dashoffset: 0 !important;
+}
+
+/* ---- Quem somos: formatos e dinamica de rolagem ------------------------- */
+
+/* Cartao com canto chanfrado (notch). Vem do vocabulario industrial das skills
+   `build-industrial-intro-effect` / `build-terminal-industrial-sites`: o corte
+   reto substitui o raio uniforme e da uma silhueta propria a pagina, sem
+   depender de imagem nem de JavaScript. O `--notch` cai em tela pequena para o
+   corte nao comer a primeira linha do texto. */
+.notch-card {
+  --notch: 20px;
+  border-radius: 0;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--notch)) 0,
+    100% var(--notch),
+    100% 100%,
+    var(--notch) 100%,
+    0 calc(100% - var(--notch))
+  );
+}
+@media (max-width: 640px) {
+  .notch-card {
+    --notch: 13px;
+  }
+}
+
+/* Numero da etapa em versao monumental: o mesmo texto que ja existia, agora com
+   peso de titulo e um risco de sinal ciano ao lado. `tabular-nums` mantem 01 e
+   04 com a mesma largura, entao a coluna nao dança. */
+.etapa-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.14em;
+}
+.etapa-num::after {
+  content: "";
+  width: 2.25rem;
+  height: 1px;
+  background: linear-gradient(90deg, #0ed8f6, transparent);
+}
+
+/* Grade tecnica decorativa de fundo. Duas linhas de 1px em gradiente, com
+   mascara nas bordas para a grade nascer e morrer sem corte seco. Opacidade
+   baixa de proposito (a skill pede no maximo 18%); `pointer-events: none` e
+   `aria-hidden` no elemento garantem que é so pintura. Sem canvas e sem RAF:
+   nao ha o que pausar fora da viewport. */
+.grade-tecnica {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(14, 216, 246, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 216, 246, 0.14) 1px, transparent 1px);
+  background-size: 6rem 6rem;
+  -webkit-mask-image: linear-gradient(
+    transparent,
+    #000 18%,
+    #000 82%,
+    transparent
+  );
+  mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+}
+
+/* Barra de sinal no topo do cartao: cresce da esquerda no hover/foco. É so
+   `transform`, e o estado de repouso ja é legivel — a barra é enfase, nao
+   informacao. */
+.barra-sinal {
+  position: relative;
+}
+.barra-sinal::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, #0079cb, #0ed8f6 55%, #a5f0ff);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.barra-sinal:hover::before,
+.barra-sinal:focus-within::before {
+  transform: scaleX(1);
+}
+
+/* Com preferencia por menos movimento nada aqui precisa desaparecer: a grade e
+   o chanfro sao estaticos, e o que se anima é apenas a barra de enfase — ela
+   passa a aparecer inteira, sem crescer. */
+@media (prefers-reduced-motion: reduce) {
+  .barra-sinal::before {
+    transition: none !important;
+  }
+}
+html[data-motion="reduce"] .barra-sinal::before {
+  transition: none !important;
+}
+
+/* ---- Quem somos: titulo aceso, trilho, separador ------------------------ */
+
+/* O risco fica preso ao titulo e cresce da esquerda com a rolagem. `scaleX`
+   sobre uma largura ja definida: nada de animar `width`. */
+.titulo-aceso {
+  position: relative;
+}
+.titulo-risco {
+  display: block;
+  margin-top: 0.9rem;
+  height: 2px;
+  width: min(220px, 45%);
+  background: linear-gradient(90deg, #0079cb, #0ed8f6 55%, #a5f0ff);
+  transform-origin: left center;
+}
+.section-light .titulo-risco {
+  background: linear-gradient(90deg, #004d8a, #0079cb 60%, #0ed8f6);
+}
+
+/* Trilho de progresso da pagina. Fora do fluxo, na borda, sem capturar
+   ponteiro. Desaparece em tela estreita: ali a barra do navegador basta e a
+   faixa disputaria o gesto de arrastar da borda. */
+.progresso-lateral {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  z-index: 40;
+  pointer-events: none;
+  transform-origin: top center;
+  background: linear-gradient(180deg, #0ed8f6, #0079cb 60%, #004d8a);
+}
+@media (max-width: 1023px) {
+  .progresso-lateral {
+    display: none;
+  }
+}
+
+/* Separador em chanfro: ocupa a largura toda e encosta nas duas secoes, sem
+   deixar fio de fundo entre elas. */
+.notch-divider {
+  display: block;
+  width: 100%;
+  height: clamp(28px, 3.4vw, 48px);
+  /* Fecha a costura em qualquer um dos dois lados: o separador aparece tanto
+     antes quanto depois de um bloco claro. */
+  margin-top: -1px;
+  margin-bottom: -1px;
+}
+
+/* Numero monumental das etapas. O mesmo texto que ja existia, agora com peso de
+   titulo — é forma, nao escrita nova. */
+.num-monumental {
+  display: block;
+  font-family: var(--font-sora), system-ui, sans-serif;
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: #0ed8f6;
+  opacity: 0.55;
+}
+.section-light .num-monumental {
+  color: #0079cb;
+  opacity: 0.5;
+}
+/* O ordinal grande mantem o risco de sinal ao lado: `.etapa-num` precisa
+   continuar inline-flex, senao o `::after` cai para a linha de baixo. */
+.etapa-num.num-monumental {
+  display: inline-flex;
+  align-items: center;
+}
+/* Numero que é conteudo (premiacoes), nao ordinal decorativo: sem rebaixar o
+   contraste. */
+.num-forte {
+  opacity: 1;
+}
+.section-light .num-forte {
+  opacity: 1;
+}
+
+/* Cartao em duas colunas deslocadas: a segunda coluna desce um degrau em tela
+   larga. Layout editorial, sem mexer na ordem de leitura do DOM. */
+@media (min-width: 1024px) {
+  .degrau-2 {
+    transform: translateY(2.25rem);
+  }
+  .degrau-3 {
+    transform: translateY(4.5rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .degrau-2,
+  .degrau-3 {
+    transform: none;
+  }
 }

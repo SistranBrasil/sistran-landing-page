@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "copy-lock": "node scripts/copy-lock.mjs",
+    "test:copy": "node scripts/copy-lock.mjs --check"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -16,12 +18,14 @@
     "motion": "^12.43.0",
     "next": "16.3.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "three": "^0.180.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.185.4",
     "autoprefixer": "^10.4.20",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",

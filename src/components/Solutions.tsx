@@ -342,6 +342,8 @@ export default function Solutions() {
                       <button
                         type="button"
                         role="tab"
+                        id={`solucao-tab-${s.id}`}
+                        aria-controls={`solucao-painel-${s.id}`}
                         aria-selected={isActive}
                         tabIndex={isActive ? 0 : -1}
                         onClick={() => {
@@ -438,20 +440,33 @@ export default function Solutions() {
                   return (
                     <div
                       key={s.id}
+                      /* Fecha o par tablist/tabpanel: sem `role`/`aria-labelledby`
+                         a lista tinha abas apontando para nada e o leitor de tela
+                         nao relacionava a selecao ao painel (relatorio de UX,
+                         p16). `hidden` nos inativos tira do Tab e da leitura o
+                         que ja esta invisivel. */
+                      role="tabpanel"
+                      id={`solucao-painel-${s.id}`}
+                      aria-labelledby={`solucao-tab-${s.id}`}
+                      aria-hidden={i === active ? undefined : true}
                       className={i === active ? 'relative' : 'absolute inset-x-0 top-0'}
                       style={{
                         zIndex: SOLUTIONS.length - Math.abs(offset),
+                        /* Deslocamentos curtos (relatorio de UX, p16: 12-20px).
+                           Eram 34px por camada e 40px para os futuros: o baralho
+                           viajava mais que o conteudo mudava, e a troca parecia
+                           um carrossel em vez de uma revelacao. */
                         transform: passed
-                          ? `translateY(${-depth * 34}px) scale(${1 - depth * 0.055})`
+                          ? `translateY(${-depth * 18}px) scale(${1 - depth * 0.04})`
                           : offset > 0
-                            ? 'translateY(40px) scale(0.96)'
+                            ? 'translateY(18px) scale(0.98)'
                             : 'none',
                         opacity: offset === 0 ? 1 : passed ? Math.max(0, 0.78 - depth * 0.16) : 0,
                         filter: passed ? `blur(${depth * 0.4}px)` : 'none',
                         pointerEvents: offset === 0 ? 'auto' : 'none',
                         transition: rm
                           ? 'none'
-                          : 'transform .7s cubic-bezier(.22,1,.36,1), opacity .6s ease, filter .6s ease',
+                          : 'transform var(--motion-base, 420ms) var(--motion-ease), opacity var(--motion-base, 420ms) var(--motion-ease), filter 300ms var(--motion-ease)',
                         willChange: 'transform, opacity',
                       }}
                     >

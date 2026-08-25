@@ -177,6 +177,32 @@ export const mosaicTiles: MosaicTile[] = [
   { id: "ela", label: "ELA | análise visual de documentos", layer: "fast", image: "/imagens/ela.png" },
 ]
 
+/* Sequência de montagem presa ao scroll. A montagem é ilustração do método, não
+   medição de resultado: o texto não promete número que a sequência não sustenta.
+
+   `impacto-assembly-scroll.mp4` é o reencode all-intra do arquivo original —
+   todo quadro é keyframe, senão cada seek do scroll obriga o decodificador a
+   recomeçar do keyframe anterior e a imagem trava em degraus:
+
+     ffmpeg -i impacto-assembly.mp4 -an \
+       -vf "trim=start_frame=1,setpts=PTS-STARTPTS" \
+       -c:v libx264 -preset slow \
+       -crf 28 -g 1 -keyint_min 1 -sc_threshold 0 -pix_fmt yuv420p \
+       -movflags +faststart impacto-assembly-scroll.mp4
+
+   O pôster é o quadro de 8,6s (montagem concluída), não o primeiro: o primeiro
+   é quase vazio, e é ele que aparece com movimento reduzido, quando não há seek.
+*/
+export const impactSequence = {
+  kicker: "Impacto | conhecimento convertido em capacidade",
+  /* A quebra é explícita: o `\n` é respeitado porque `.sequence-copy .lp-display`
+     tem `white-space: pre-line`. Sem ponto final. */
+  title: "Do conhecimento implícito\nà operação moderna",
+  text: "Modernizar legado é reconstruir conhecimento, decidir o destino e validar cada camada sem interromper a operação. O resultado é um sistema compreendido, testado, documentado e preparado para evoluir.",
+  src: "/videos/impacto-assembly-scroll.mp4",
+  poster: "/videos/impacto-assembly-poster.jpg",
+}
+
 export const roadmapIntro = {
   kicker: "Casos e etapas | da análise à evolução",
   title: "Do método às evidências, etapa por etapa.",

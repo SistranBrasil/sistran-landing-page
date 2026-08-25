@@ -59,7 +59,7 @@ const config: Config = {
       },
       fontSize: {
         hero: ['clamp(2.8rem, 7vw, 5.8rem)', { lineHeight: '0.98', letterSpacing: '-0.02em' }],
-        section: ['clamp(2rem, 4vw, 3.6rem)', { lineHeight: '1.08', letterSpacing: '-0.015em' }],
+        section: ['clamp(2.2rem, 4.6vw, 4.1rem)', { lineHeight: '1.04', letterSpacing: '-0.03em' }],
       },
       borderRadius: {
         '2xl': '18px',

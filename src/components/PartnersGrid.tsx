@@ -165,6 +165,12 @@ function PartnerCard({ p, index }: { p: Partner; index: number }) {
               alt={p.logoAlt ?? ''}
               width={320}
               height={96}
+              /* 76 logos nesta pagina: `lazy` explicito (é o padrao do
+                 next/image, declarado para nao se perder num refactor) e
+                 `sizes` para o navegador nao baixar a variante 2x num card
+                 estreito. */
+              loading="lazy"
+              sizes="(max-width: 640px) 60vw, 320px"
               className="max-h-16 w-auto object-contain"
             />
           </div>
@@ -201,7 +207,7 @@ export default function PartnersGrid() {
   ];
 
   return (
-    <section className="section-py relative overflow-hidden">
+    <section className="cv-auto section-py relative overflow-hidden">
       {/* Ambient orbs */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-0 top-40 h-[400px] w-[400px] rounded-full bg-[#0079CB]/14 blur-[130px]" />

@@ -44,8 +44,16 @@ export function RoadmapStopDialog({ stop, index, total, onClose }: Props) {
 
   // O efeito de abertura roda uma única vez; a referência mantém o callback
   // atual sem religar o listener a cada render do pai.
+  // Escrita em ref durante o render é proibida: num render que o React
+  // descarta, o valor vazaria para a árvore que ficou. Em efeito, só depois de
+  // o render virar DOM.
   const onCloseRef = useRef(onClose)
-  onCloseRef.current = onClose
+  useEffect(() => {
+    onCloseRef.current = onClose
+  }, [onClose])
+
+  // Quem abriu o diálogo, para devolver o foco ao fechar (relatório de UX, p17).
+  const gatilhoRef = useRef<HTMLElement | null>(null)
 
   // O portal só existe no cliente. Sem esta guarda o primeiro render no servidor
   // teria uma árvore diferente da hidratação.
@@ -80,6 +88,12 @@ export function RoadmapStopDialog({ stop, index, total, onClose }: Props) {
     const top = window.scrollY
 
     if (!dialog.open) {
+      // Antes do showModal(): aqui o foco ainda está no card que abriu a parada.
+      const ativo = document.activeElement
+      if (ativo instanceof HTMLElement && !dialog.contains(ativo)) {
+        gatilhoRef.current = ativo
+      }
+
       dialog.showModal()
 
       // Foco explícito e sem rolagem: `preventScroll` impede o navegador de
@@ -131,6 +145,12 @@ export function RoadmapStopDialog({ stop, index, total, onClose }: Props) {
       syncSmoothScroll(top)
 
       if (dialog.open) dialog.close()
+
+      // Depois do close(): com o diálogo ainda modal o navegador recusa foco
+      // fora dele. Se o gatilho saiu do DOM, não há para onde voltar.
+      const gatilho = gatilhoRef.current
+      gatilhoRef.current = null
+      if (gatilho?.isConnected) gatilho.focus({ preventScroll: true })
     }
     // `montado` na lista porque o diálogo só entra no DOM depois do portal: no
     // primeiro passe `ref.current` ainda é null e o efeito sai pela guarda.
@@ -181,7 +201,7 @@ export function RoadmapStopDialog({ stop, index, total, onClose }: Props) {
               <span className="roadmap-badge" aria-hidden="true">
                 {stop.logo ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={stop.logo} alt="" decoding="async" />
+                  <img src={stop.logo} alt="" loading="lazy" decoding="async" />
                 ) : (
                   <b>{stop.monogram}</b>
                 )}

@@ -6,7 +6,7 @@ import { Award, Users, Clock, Building2, ShieldCheck } from 'lucide-react';
 const ITEMS = [
   { icon: Clock, text: '+35 anos no mercado segurador' },
   { icon: Users, text: '+850 profissionais' },
-  { icon: Building2, text: '+130 clientes' },
+  { icon: Building2, text: '+150 clientes' },
   { icon: Award, text: '+23 prêmios e reconhecimentos' },
   { icon: ShieldCheck, text: '+25 implantações de sinistro' },
 ];

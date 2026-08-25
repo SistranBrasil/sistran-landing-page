@@ -9,8 +9,11 @@ import type { Unit } from './types';
 export const CONTACT_PHONE = '+55 11 2192-4400';
 export const CONTACT_EMAIL = 'comercial@sistran.com.br';
 export const LINKEDIN_URL = 'https://www.linkedin.com/company/sistran/';
-// TODO: confirmar URL oficial do YouTube (o site linka "Youtube" no footer)
-export const YOUTUBE_URL = '#';
+/* Canal oficial confirmado pela Sistran. Antes era '#': o icone do footer era
+   um link morto (relatorio de UX, p12). O `?view_as=subscriber` do link enviado
+   é parametro de pre-visualizacao do proprio YouTube e nao faz parte do
+   endereco publico — fica fora. */
+export const YOUTUBE_URL = 'https://www.youtube.com/channel/UC-4NqY5lFD3e1cNwlUemj2g';
 
 /** Endereco completo da matriz, como escrito na pagina Contato. */
 export const HQ_ADDRESS =

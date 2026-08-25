@@ -37,7 +37,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Linkedin da Sistran"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors duration-300 hover:border-[#0ed8f6]/60 hover:bg-white/10"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors duration-300 hover:border-[#0ed8f6]/60 hover:bg-white/10"
             >
               <Linkedin className="h-4 w-4" strokeWidth={1.8} />
             </a>
@@ -48,7 +48,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Youtube da Sistran"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors duration-300 hover:border-[#0ed8f6]/60 hover:bg-white/10"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors duration-300 hover:border-[#0ed8f6]/60 hover:bg-white/10"
             >
               <Youtube className="h-4 w-4" strokeWidth={1.8} />
             </a>
