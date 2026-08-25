@@ -3867,6 +3867,50 @@ html[data-motion="reduce"] .bm-halo {
   opacity: 0.4;
 }
 
+/* O marcador nao só aparece: ele pousa. Anel e nucleo entram de 45% ao tamanho
+   cheio com uma sobra de mola no fim, o que da o estalo do pin fincando no mapa.
+   `transform-box: fill-box` é obrigatorio num circulo: sem ele a origem da
+   escala é o canto do SVG e o circulo escapa da tela em vez de crescer no lugar.
+   A escala mora nos circulos e nao no `g` porque o grupo da cidade ja carrega um
+   `translate` inline — uma segunda `transform` apagaria a posicao. */
+.os-palco[data-ativa] .bm-mapa g[data-cidade] > circle {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0.45);
+  transition: transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.os-palco[data-ativa="pr"] .bm-mapa g[data-cidade="pr"] > circle,
+.os-palco[data-ativa="sp"] .bm-mapa g[data-cidade="sp"] > circle,
+.os-palco[data-ativa="sp"] .bm-mapa g[data-cidade="pr"] > circle,
+/* Sao Paulo segue fincada depois de fincar, como acontece com a opacidade. */
+.os-palco[data-ativa] .bm-mapa g[data-cidade="sp"] > circle {
+  transform: scale(1);
+}
+/* Durante a revelacao Sao Paulo cresce junto com o corpo do pais, em vez de
+   estalar sobre um mapa ainda vazio. */
+.os-palco[data-ativa="nenhuma"] .bm-mapa g[data-cidade="sp"] > circle {
+  transform: scale(calc(0.45 + 0.55 * var(--os-entrada, 1)));
+}
+/* O halo pulsa por keyframes que animam o proprio `r`: escalar por cima
+   brigaria com a animacao, entao ele fica de fora. */
+.os-palco[data-ativa] .bm-mapa g[data-cidade] > .bm-halo {
+  transform: none;
+}
+
+/* A linha de chamada corre do marcador até o rotulo, com um respiro depois de o
+   pin pousar. `pathLength` de 1 no SVG deixa medir o traco em fracao. */
+.os-palco[data-ativa] .bm-chamadas path[data-cidade] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition:
+    opacity 0.6s ease-out,
+    stroke-dashoffset 0.9s 0.18s var(--ease-out);
+}
+.os-palco[data-ativa="pr"] .bm-chamadas path[data-cidade="pr"],
+.os-palco[data-ativa="sp"] .bm-chamadas path[data-cidade="sp"] {
+  stroke-dashoffset: 0;
+}
+
 /* --- Sao Paulo fica marcada ---------------------------------------------- */
 /* Depois de o mapa se desenhar, Sao Paulo continua acesa em todos os trechos —
    é a sede, e a secao existe para mostra-la. Pato Branco acende no seu trecho e
@@ -3912,6 +3956,22 @@ html[data-motion="reduce"] .bm-halo {
   stroke-width: 3.2;
   stroke-dasharray: 1;
   stroke-dashoffset: calc(1 - var(--os-rota, 1));
+}
+/* Ponta que corre a frente do contorno: um tracejado de 1,2% do traco, levado
+   pela mesma fracao. A opacidade é uma parabola (4p(1-p)): zero nas duas
+   extremidades e cheia no meio, entao a ponta nasce com o desenho, acompanha e
+   sai sozinha no fim. Com o padrao 1 (sem rolagem) o produto é zero e ela nao
+   aparece: no estado final nao ha desenho em andamento para marcar. */
+.bm-pais-cabeca {
+  fill: none;
+  stroke: #eafaff;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 0.012 0.988;
+  stroke-dashoffset: calc(1 - var(--os-contorno, 1));
+  opacity: calc(4 * var(--os-contorno, 1) * (1 - var(--os-contorno, 1)));
+  pointer-events: none;
 }
 
 /* --- fotos ---------------------------------------------------------------- */
@@ -4030,11 +4090,33 @@ html[data-motion="reduce"] .bm-halo {
   opacity: var(--os-rota, 1);
 }
 
+/* --- camera do mapa ------------------------------------------------------ */
+/* Aproximacao e enquadramento por cidade. Vao registrados com `@property` para o
+   navegador saber INTERPOLAR os tres valores: variavel CSS comum é texto e pula
+   de um estado para o outro, e é a transicao delas que faz o movimento de
+   camera. Interpolar as variaveis, e nao a `transform`, é o que mantem a
+   aproximacao da revelacao presa a rolagem, quadro a quadro, sem atraso. */
+@property --os-foco-escala {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+@property --os-foco-x {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+@property --os-foco-y {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+
 /* --- modo scroll: tela inteira ------------------------------------------- */
 @media (min-width: 1024px) {
-  /* Quatro trechos: revelacao do mapa + uma cidade cada. */
+  /* Tres trechos: revelacao do mapa + uma cidade cada. */
   .os-trilha[data-modo="scroll"] {
-    height: 420svh;
+    height: 340svh;
     max-width: none;
     padding-inline: 0;
   }
@@ -4075,16 +4157,63 @@ html[data-motion="reduce"] .bm-halo {
        desenho dentro dela. */
     aspect-ratio: auto;
     padding: clamp(0.5rem, 2vh, 2rem) 0;
-    /* A cena inteira aproxima alguns por cento durante a revelacao: o mapa
-       chega, nao aparece de repente. */
-    transform: scale(calc(1.06 - 0.06 * var(--os-entrada, 1)));
+    /* Camera: a cena aproxima alguns por cento durante a revelacao — o mapa
+       chega, nao aparece de repente — e depois avanca sobre a cidade do trecho.
+       Os dois movimentos se multiplicam numa unica `transform`, porque duas
+       declaracoes de `transform` no mesmo elemento nao somam: a ultima ganha. */
+    transform: translate3d(var(--os-foco-x), var(--os-foco-y), 0)
+      scale(calc((1.06 - 0.06 * var(--os-entrada, 1)) * var(--os-foco-escala)));
     transform-origin: 58% 62%;
+    will-change: transform;
+  }
+  /* Quem transiciona é o palco, onde os valores mudam; as variaveis herdam daqui
+     para o mapa. A `transform` em si continua sem transicao: ela precisa
+     acompanhar a rolagem sem atraso durante a revelacao. */
+  .os-palco[data-modo="scroll"] {
+    transition:
+      --os-foco-escala 1.1s var(--ease-out),
+      --os-foco-x 1.1s var(--ease-out),
+      --os-foco-y 1.1s var(--ease-out);
+  }
+  /* Pato Branco fica no sul, quase no rodape do desenho: a camera desce um
+     pouco. Sao Paulo é a sede e leva a aproximacao maior da secao. */
+  .os-palco[data-modo="scroll"][data-ativa="pr"] {
+    --os-foco-escala: 1.14;
+    --os-foco-x: 3%;
+    --os-foco-y: -5%;
+  }
+  .os-palco[data-modo="scroll"][data-ativa="sp"] {
+    --os-foco-escala: 1.22;
+    --os-foco-x: -5%;
+    --os-foco-y: -2%;
   }
   /* O corpo do pais entra atras do contorno que se desenha. */
   .os-palco[data-modo="scroll"] .bm-pais,
-  .os-palco[data-modo="scroll"] .bm-pais-brilho,
-  .os-palco[data-modo="scroll"] .bm-relevo {
+  .os-palco[data-modo="scroll"] .bm-pais-brilho {
     opacity: var(--os-entrada, 1);
+  }
+  /* As linhas de relevo entram em cascata, de norte para sul: cada uma espera um
+     pouco mais da fracao de entrada. O fator 3,4 faz cada linha levar menos de
+     um terco do trecho, entao as quatro cabem antes do fim da revelacao. */
+  .os-palco[data-modo="scroll"] .bm-relevo path {
+    opacity: clamp(0, calc(var(--os-entrada, 1) * 3.4), 1);
+  }
+  .os-palco[data-modo="scroll"] .bm-relevo path:nth-child(2) {
+    opacity: clamp(0, calc((var(--os-entrada, 1) - 0.1) * 3.4), 1);
+  }
+  .os-palco[data-modo="scroll"] .bm-relevo path:nth-child(3) {
+    opacity: clamp(0, calc((var(--os-entrada, 1) - 0.2) * 3.4), 1);
+  }
+  .os-palco[data-modo="scroll"] .bm-relevo path:nth-child(4) {
+    opacity: clamp(0, calc((var(--os-entrada, 1) - 0.3) * 3.4), 1);
+  }
+  /* O continente ao fundo anda menos que o pais ao longo da secao inteira: é o
+     que separa as duas camadas em profundidade. Poucos pixels, e sempre em
+     `transform`. */
+  .os-palco[data-modo="scroll"] .bm-latam-aura,
+  .os-palco[data-modo="scroll"] .bm-latam-contorno,
+  .os-palco[data-modo="scroll"] .bm-latam-divisas {
+    transform: translate3d(0, calc(var(--os-p, 0) * -14px), 0);
   }
   /* A rota só existe depois das cidades comecarem a acender. */
   .os-palco[data-modo="scroll"] .bm-rota-base,
@@ -4203,8 +4332,25 @@ html[data-motion="reduce"] .bm-halo {
     transform: none !important;
   }
   .bm-pais-contorno,
-  .bm-rota-desenho {
+  .bm-rota-desenho,
+  .os-palco[data-ativa] .bm-chamadas path[data-cidade] {
     stroke-dashoffset: 0 !important;
+  }
+  /* Camera, cascata do relevo, parallax do continente e estalo dos marcadores:
+     tudo enfeite, e o estado final de todos é o mapa pronto. A ponta acesa só
+     marca desenho em andamento, e aqui nao ha nenhum. */
+  .os-palco[data-modo="scroll"] .bm-mapa,
+  .os-palco[data-modo="scroll"] .bm-latam-aura,
+  .os-palco[data-modo="scroll"] .bm-latam-contorno,
+  .os-palco[data-modo="scroll"] .bm-latam-divisas,
+  .os-palco[data-ativa] .bm-mapa g[data-cidade] > circle {
+    transform: none !important;
+  }
+  .os-palco[data-modo="scroll"] .bm-relevo path {
+    opacity: 1 !important;
+  }
+  .bm-pais-cabeca {
+    display: none;
   }
 }
 html[data-motion="reduce"] .os-trilha[data-modo="scroll"] {
@@ -4254,8 +4400,29 @@ html[data-motion="reduce"] .os-palco .os-foto img {
   transform: none !important;
 }
 html[data-motion="reduce"] .bm-pais-contorno,
-html[data-motion="reduce"] .bm-rota-desenho {
+html[data-motion="reduce"] .bm-rota-desenho,
+html[data-motion="reduce"]
+  .os-palco[data-ativa]
+  .bm-chamadas
+  path[data-cidade] {
   stroke-dashoffset: 0 !important;
+}
+html[data-motion="reduce"] .os-palco[data-modo="scroll"] .bm-mapa,
+html[data-motion="reduce"] .os-palco[data-modo="scroll"] .bm-latam-aura,
+html[data-motion="reduce"] .os-palco[data-modo="scroll"] .bm-latam-contorno,
+html[data-motion="reduce"] .os-palco[data-modo="scroll"] .bm-latam-divisas,
+html[data-motion="reduce"]
+  .os-palco[data-ativa]
+  .bm-mapa
+  g[data-cidade]
+  > circle {
+  transform: none !important;
+}
+html[data-motion="reduce"] .os-palco[data-modo="scroll"] .bm-relevo path {
+  opacity: 1 !important;
+}
+html[data-motion="reduce"] .bm-pais-cabeca {
+  display: none;
 }
 
 /* ---- Quem somos: formatos e dinamica de rolagem ------------------------- */

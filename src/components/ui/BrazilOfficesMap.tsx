@@ -103,6 +103,16 @@ export default function BrazilOfficesMap() {
             em fracao de 0 a 1 sem calcular comprimento em JavaScript. Sem a
             rolagem fica desenhado inteiro, entao nao esconde nada. */}
         <path className="bm-pais-contorno" pathLength="1" d={BRAZIL_PATH} />
+        {/* Ponta acesa que corre a frente do traco enquanto ele se desenha: é o
+            mesmo contorno com um tracejado curto levado pela mesma fracao. Sem a
+            rolagem a fracao vale 1 e o CSS apaga a ponta — no estado final nao
+            existe desenho em andamento para marcar. */}
+        <path
+          className="bm-pais-cabeca"
+          pathLength="1"
+          d={BRAZIL_PATH}
+          filter="url(#bm-brilho-rota)"
+        />
 
         <g className="bm-relevo" clipPath="url(#bm-recorte)">
           <path d="M32 320C190 233 300 285 389 201S616 91 718 127" />
@@ -117,9 +127,11 @@ export default function BrazilOfficesMap() {
           <path className="bm-rota bm-rota-pulso" pathLength="1" d={ROTA} />
         </g>
 
+        {/* `pathLength` aqui tambem: a linha de chamada nao aparece de uma vez,
+            ela corre do marcador até o rotulo quando a cidade acende. */}
         <g className="bm-chamadas">
-          <path data-cidade="pr" d="M337 448H186L152 476H55" />
-          <path data-cidade="sp" d="M432 411H560L592 444H690" />
+          <path data-cidade="pr" pathLength="1" d="M337 448H186L152 476H55" />
+          <path data-cidade="sp" pathLength="1" d="M432 411H560L592 444H690" />
         </g>
 
         {PONTOS.map((p) => (
