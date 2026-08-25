@@ -2136,9 +2136,15 @@ html[data-motion="reduce"] .orbit-counter {
 .section-light .contact-inline .contact-dialog-fone-nota {
   color: var(--contact-muted) !important;
 }
-/* O endereco NAO reaparece aqui: a excecao generica acima ja devolve
-   `--contact-text` cheio, e repetir a versao a 86% era justamente o que mantinha
-   o texto lavado na secao inline mesmo depois de corrigir a regra base. */
+/* O endereco PRECISA reaparecer aqui — mas para SUBIR de tom, nao para baixar.
+   A excecao generica acima (`.section-light .contact-inline span:not(eyebrow)`,
+   tres classes + elemento) vence a regra base do endereco (uma classe) e
+   reescrevia o branco puro de volta para `--contact-text` (#f7fbff, azulado),
+   que é justamente o tom que se aproximava do fundo e mantinha o endereco lendo
+   como apagado na secao inline. Aqui ele volta ao branco cheio do cartao. */
+.section-light .contact-inline .contact-dialog-endereco-texto {
+  color: #ffffff;
+}
 .section-light .contact-inline .contact-dialog-campo label {
   color: rgba(247, 251, 255, 0.7);
 }
@@ -2468,16 +2474,27 @@ html[data-motion="reduce"] .orbit-counter {
   gap: 0.75rem;
   padding: 0.85rem 1rem;
   border-radius: 16px;
-  border: 1px solid var(--contact-border);
-  /* 0.92 e nao 0.62: o cartao fica sobre a fachada iluminada do edificio, e com
-     o navy quase transparente o endereco ficava lavado — o `backdrop-filter`
-     desfoca a foto mas nao escurece o que passa por baixo. Mesmo navy do painel
-     (`--contact-bg`), so mais denso, entao o cartao continua sendo vidro sobre a
-     foto em vez de virar uma caixa cega. Garante contraste do texto mesmo no
-     pior caso (foto branca): ~13:1. */
-  background: rgba(3, 24, 47, 0.92);
+  /* Borda em ciano da marca, e nao no azul-acinzentado de `--contact-border`: o
+     cartao precisa se descolar da fachada, e um traco frio marcado é o que
+     fecha a silhueta do plaque sobre a foto. */
+  border: 1px solid rgba(14, 200, 245, 0.34);
+  /* TOM, nao opacidade. A densidade ja estava em 0.92 e o texto ja estava em cor
+     cheia, mas `#03182f` é um navy quase preto-esverdeado: composto sobre a
+     fachada iluminada ele virava cinza-chumbo, e o cartao inteiro — nao so o
+     texto — lia como apagado. Aqui o fundo passa para a familia azul
+     institucional da marca (`#001A3D` -> `#002D5C`), que é saturada: o cartao
+     lê como azul Sistran em vez de mancha cinza, e o branco em cima ganha
+     contraste ~14:1 mesmo no pior caso (trecho branco da fachada).
+     O degrade diagonal segue a luz da foto, do canto escuro para o claro. */
+  background:
+    linear-gradient(135deg, rgba(0, 26, 61, 0.96) 0%, rgba(0, 45, 92, 0.93) 100%);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  /* Sombra externa para o cartao nao encostar visualmente na foto, e halo interno
+     de 1px para o degrade nao parecer chapado na borda superior. */
+  box-shadow:
+    0 18px 38px -22px rgba(0, 12, 28, 0.85),
+    inset 0 1px 0 0 rgba(165, 240, 255, 0.14);
 }
 .contact-dialog-endereco svg {
   flex: none;
@@ -2499,7 +2516,11 @@ html[data-motion="reduce"] .orbit-counter {
 .contact-dialog-endereco-texto {
   font-size: 0.78rem;
   line-height: 1.55;
-  color: var(--contact-text);
+  /* Branco puro, nao `--contact-text` (#f7fbff, levemente azulado): sobre o azul
+     institucional o branco frio se aproxima do fundo. 450 em vez de 400 engrossa
+     o traco o suficiente para o endereco nao afinar em tela de alta densidade. */
+  color: #ffffff;
+  font-weight: 450;
 }
 
 /* Em tela larga o cartao fica na parte reta da silhueta: perto da base a curva
