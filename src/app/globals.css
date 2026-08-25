@@ -5000,7 +5000,16 @@ html[data-motion="reduce"] .ct-veu {
 /* ===========================================================
    "Sistran em números" — scrollytelling horizontal (.impact-*)
    Ver src/components/Metrics.tsx para a partitura e para quem escreve as
-   variáveis (--impact-p, --impact-pos, --impact-aceso, --impact-pulso-*).
+   variáveis. Duas famílias, e a distinção importa:
+     · GEOMETRIA, escrita pelo React no `.impact-cena` e só em resize —
+       --impact-vao, --impact-centro, --impact-linha (todas em px);
+     · PROGRESSO, escrita pelo ScrollTrigger no `.impact-sticky` a cada quadro —
+       --impact-p, --impact-entrada, --impact-etapa, --impact-aceso-x,
+       --impact-pulso-*.
+   Tudo na MESMA unidade (pixel do palco): posição do conteúdo, dos nodes, a
+   largura do SVG, o deslocamento da trilha e o path saem do mesmo `--impact-vao`.
+   Antes havia três referências (caixa esticada, % da trilha, % da tela) e nada
+   podia ser alinhado.
 
    REGRA DESTE BLOCO: tudo o que este CSS declara por padrão já é o ESTADO
    FINAL — lista vertical completa, sete números legíveis, nada escondido.
@@ -5011,9 +5020,15 @@ html[data-motion="reduce"] .ct-veu {
    seção é uma lista — nunca uma seção alta e travada.
    =========================================================== */
 
+/* `isolation: isolate` + `z-index` + fundo opaco: a seção é uma camada fechada.
+   Nada de fora dela pinta por cima do palco, e nada de dentro dela escapa para as
+   vizinhas. O fundo é o navy do palco — em modo lista ele fica atrás da faixa
+   clara e do palco, ambos opacos, então não aparece. */
 .impact-scroll {
   position: relative;
+  z-index: 30;
   isolation: isolate;
+  background: #041a33;
 }
 
 /* ── Faixa clara: sobretitulo, titulo e marcador ─────────────────────────── */
@@ -5163,16 +5178,20 @@ html[data-motion="reduce"] .ct-veu {
   display: none;
 }
 
-/* A curva só faz sentido quando os indicadores estão distribuídos nela; no modo
-   lista seria uma linha solta atravessando texto. */
+/* A curva e a lente só fazem sentido quando os indicadores estão distribuídos
+   nela; no modo lista seriam grafismos soltos atravessando texto. */
+.impact-caminho,
+.impact-lente,
 .impact-curva,
 .impact-curva-recorte,
 .impact-pulso,
-.impact-no {
+.impact-no,
+.impact-chegada {
   display: none;
 }
 
 /* ── Modo lista (default: sem JS, mobile, movimento reduzido) ────────────── */
+.impact-cena,
 .impact-track {
   position: relative;
   z-index: 1;
@@ -5195,9 +5214,6 @@ html[data-motion="reduce"] .ct-veu {
   position: relative;
   padding-left: 1.25rem;
   border-left: 1px solid rgba(120, 200, 255, 0.22);
-}
-.impact-lente {
-  display: none;
 }
 .impact-indice {
   font-size: 0.7rem;
@@ -5256,20 +5272,44 @@ html[data-motion="reduce"] .ct-veu {
        entrada e fechamento. Menos que isso e a passagem fica apressada. */
     min-height: 520vh;
   }
+  /* Duas faixas de altura conhecida: cabeçalho e palco. O cabeçalho tem altura
+     TRAVADA (não `auto`) porque é dela que sai a linha-base da curva — com
+     `auto` o palco mudava de altura conforme o título quebrava, e a curva subia
+     ou descia junto. `overflow: clip` fecha a caixa: nada da seção pinta fora
+     dela, e o fundo opaco garante que nada de fora apareça por baixo. */
   .impact-scroll[data-dirigindo] .impact-sticky {
     position: sticky;
     top: 0;
+    z-index: 1;
     height: 100svh;
     display: grid;
-    grid-template-rows: auto 1fr;
-    overflow: hidden;
+    grid-template-rows: clamp(170px, 24svh, 220px) minmax(0, 1fr);
+    overflow: clip;
+    background: #041a33;
   }
   .impact-scroll[data-dirigindo] .impact-topo {
-    padding-block: clamp(2rem, 3.5vw, 3rem) clamp(2.5rem, 4vw, 3.5rem);
+    padding-block: clamp(1.25rem, 2.5vw, 2rem);
+    display: flex;
+    align-items: center;
+  }
+  .impact-scroll[data-dirigindo] .impact-topo-inner {
+    width: 100%;
+  }
+  .impact-scroll[data-dirigindo] .impact-titulo {
+    font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+    max-width: 26ch;
   }
   .impact-scroll[data-dirigindo] .impact-palco {
     padding-block: 0;
     min-height: 0;
+    overflow: clip;
+  }
+  /* A cena ocupa o palco inteiro e é a caixa de referência de TODAS as camadas:
+     `--impact-linha` (a linha-base da curva) é medida a partir da altura dela. */
+  .impact-scroll[data-dirigindo] .impact-cena {
+    position: absolute;
+    inset: 0;
+    overflow: clip;
   }
 
   .impact-scroll[data-dirigindo] .impact-grade {
@@ -5287,31 +5327,67 @@ html[data-motion="reduce"] .ct-veu {
       linear-gradient(270deg, #041a33 0%, rgba(4, 26, 51, 0) 14%);
   }
 
-  /* A trilha é o único elemento que se desloca, e só por `transform`: nenhuma
-     propriedade de layout anima aqui (skill performance-gpu). Não existe
-     `overflow-x: auto` em lugar nenhum — nunca há barra horizontal. */
-  .impact-scroll[data-dirigindo] .impact-track {
-    --impact-w: clamp(3500px, 380vw, 5600px);
+  /* As duas trilhas — a da curva e a do conteúdo — se deslocam com o MESMO
+     valor: um vão por etapa. É só `transform`; nenhuma propriedade de layout
+     anima aqui (skill performance-gpu). Não existe `overflow-x: auto` em lugar
+     nenhum — nunca há barra horizontal.
+
+     Em etapa inteira o deslocamento é exatamente `i * vão`, e como o item `i`
+     mora em `--impact-centro + i * vão`, ele cai no centro da tela ao pixel. */
+  .impact-scroll[data-dirigindo] .impact-track,
+  .impact-scroll[data-dirigindo] .impact-trilha-curva {
     position: absolute;
     inset: 0;
-    width: var(--impact-w);
     padding: 0;
-    /* O ponto `--impact-pos` da trilha é trazido para o centro da tela. */
     transform: translate3d(
-      calc(50vw - var(--impact-pos, 0.0714) * var(--impact-w)),
+      calc(-1 * var(--impact-etapa, 0) * var(--impact-vao)),
       0,
       0
     );
     will-change: transform;
   }
+  .impact-scroll[data-dirigindo] .impact-track {
+    z-index: 7;
+  }
 
-  .impact-scroll[data-dirigindo] .impact-curva {
+  /* O caminho fica PARADO e leva a máscara. O buraco circular no centro é o que
+     resolve "a curva atravessa o número": a curva chega na borda esquerda da
+     lente, desaparece e reaparece na direita.
+
+     Máscara em vez do disco opaco da especificação: o palco tem degradê radial,
+     e um disco de cor fixa apareceria como mancha sobre ele. O buraco não tem
+     cor — mostra o palco como ele é. */
+  /* Ordem das camadas, sem `z-index` avulso: 2 caminho (curva + nodes + pulso),
+     6 lente (anéis e contextual), 7 trilha do conteúdo (número, rótulo,
+     legenda). O texto por cima dos anéis é a razão de a trilha vir depois da
+     lente — os anéis são traço fino e o contextual tem opacidade baixa. */
+  .impact-scroll[data-dirigindo] .impact-caminho {
     display: block;
     position: absolute;
     inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: visible;
+    z-index: 2;
+    --impact-buraco: calc(clamp(380px, 30vw, 460px) / 2 + 21px);
+    mask-image: radial-gradient(
+      circle at var(--impact-centro) 55%,
+      transparent var(--impact-buraco),
+      #000 calc(var(--impact-buraco) + 1px)
+    );
+    -webkit-mask-image: radial-gradient(
+      circle at var(--impact-centro) 55%,
+      transparent var(--impact-buraco),
+      #000 calc(var(--impact-buraco) + 1px)
+    );
+  }
+
+  /* `viewBox` e `width`/`height` em pixels iguais: 1 unidade = 1 px. Sem
+     `preserveAspectRatio="none"` e sem `non-scaling-stroke` — não há mais
+     esticamento a compensar. Sem `overflow: visible`: o halo do traço não deve
+     poder desenhar fora da caixa. */
+  .impact-scroll[data-dirigindo] .impact-curva {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
   .impact-scroll[data-dirigindo] .impact-curva-base {
     fill: none;
@@ -5326,15 +5402,16 @@ html[data-motion="reduce"] .ct-veu {
     stroke-linecap: round;
     filter: drop-shadow(0 0 10px rgba(14, 216, 246, 0.45));
   }
-  /* O trecho aceso é revelado por corte geométrico, não por `stroke-dasharray`:
-     com a caixa esticada (`preserveAspectRatio="none"`) e traço de espessura
-     fixa (`non-scaling-stroke`), o comprimento do dash não corresponde ao
-     comprimento desenhado na tela e o fim do traço ficaria errado. */
+  /* O trecho aceso é revelado por corte geométrico, em pixels da trilha. A borda
+     dura do corte cai sempre no ponto da vez — que é o centro da tela — e
+     portanto DENTRO do buraco da máscara: ela nunca aparece como risco vertical.
+     `stroke-dasharray` não serviria: o comprimento do dash não corresponde ao
+     comprimento visível de um path com halo. */
   .impact-scroll[data-dirigindo] .impact-curva-recorte {
     display: block;
     position: absolute;
     inset: 0;
-    clip-path: inset(0 calc((1 - var(--impact-aceso, 0)) * 100%) 0 0);
+    clip-path: inset(0 calc(100% - var(--impact-aceso-x, 0px)) 0 0);
   }
 
   /* Pulso viajando pela curva durante a passagem. Não é laço: quem acende e
@@ -5342,8 +5419,8 @@ html[data-motion="reduce"] .ct-veu {
   .impact-scroll[data-dirigindo] .impact-pulso {
     display: block;
     position: absolute;
-    left: calc(var(--impact-pulso-x, 0) * 1%);
-    top: calc(var(--impact-pulso-y, 50) * 1%);
+    left: var(--impact-pulso-x, 0px);
+    top: var(--impact-pulso-y, 50%);
     width: 14px;
     height: 14px;
     margin: -7px 0 0 -7px;
@@ -5365,34 +5442,47 @@ html[data-motion="reduce"] .ct-veu {
     padding: 0;
   }
 
+  /* Uma única regra posiciona os sete: `centro + i * vão`. Nada de deslocamento
+     independente por etapa e nenhuma margem negativa — o recuo de meia largura é
+     `transform`, que não afeta layout. Os vizinhos alternam acima e abaixo da
+     curva (`--impact-desvio`), então não brigam com a lente nem entre si. */
   .impact-scroll[data-dirigindo] .impact-item {
     position: absolute;
-    left: calc(var(--impact-x, 50) * 1%);
-    top: calc(var(--impact-y, 50) * 1%);
-    width: clamp(20rem, 26vw, 27rem);
+    left: calc(var(--impact-centro) + var(--impact-i, 0) * var(--impact-vao));
+    top: calc(var(--impact-linha) + var(--impact-desvio, 0px));
+    width: clamp(170px, 15vw, 230px);
     padding: 0;
     border: 0;
     text-align: center;
     transform: translate3d(-50%, -50%, 0);
-    transition: opacity var(--dur-base) var(--ease-out);
+    transition:
+      opacity var(--dur-base) var(--ease-out),
+      top var(--dur-base) var(--ease-out),
+      width var(--dur-base) var(--ease-out);
   }
   /* Vizinhos: presentes, legíveis em tamanho menor, apagados. Nunca
      `display: none` — o leitor de tela percorre a lista inteira em qualquer
      estado. */
   .impact-scroll[data-dirigindo] .impact-item[data-estado="feito"],
   .impact-scroll[data-dirigindo] .impact-item[data-estado="proximo"] {
-    opacity: 0.34;
+    opacity: 0.42;
   }
+  /* O ativo sobe para a linha-base — ou seja, para o centro da lente, que está
+     nessa mesma altura — e ganha a largura da lente. */
   .impact-scroll[data-dirigindo] .impact-item[data-estado="ativo"] {
+    top: var(--impact-linha);
+    width: clamp(380px, 30vw, 460px);
     opacity: 1;
-    z-index: 2;
+    z-index: 7;
   }
 
+  /* Nodes: moram na trilha da CURVA, na linha-base, e não no item — é assim que
+     eles ficam sobre a curva enquanto o conteúdo do vizinho fica deslocado. */
   .impact-scroll[data-dirigindo] .impact-no {
     display: block;
     position: absolute;
-    left: 50%;
-    top: 50%;
+    left: calc(var(--impact-centro) + var(--impact-i, 0) * var(--impact-vao));
+    top: var(--impact-linha);
     width: 9px;
     height: 9px;
     margin: -4.5px 0 0 -4.5px;
@@ -5402,35 +5492,46 @@ html[data-motion="reduce"] .ct-veu {
       background var(--dur-fast) var(--ease-out),
       box-shadow var(--dur-fast) var(--ease-out);
   }
-  .impact-scroll[data-dirigindo] .impact-item[data-estado="ativo"] .impact-no {
-    background: #0ed8f6;
-    box-shadow: 0 0 0 6px rgba(14, 216, 246, 0.14);
+  .impact-scroll[data-dirigindo] .impact-no[data-estado="feito"] {
+    background: rgba(14, 216, 246, 0.65);
   }
 
   /* ── A lente ────────────────────────────────────────────────────────────
      Não é um card e não tem fundo opaco: é um conjunto de anéis incompletos em
-     volta do número, com o componente contextual atrás. Quem amplia o
-     indicador é o próprio item ativo — não existe cópia do número em outro
-     lugar, ou o leitor de tela leria tudo duas vezes. */
+     volta do número, com o componente contextual atrás.
+
+     Ela FICA PARADA no centro da cena. Antes pertencia ao `<li>` ativo e herdava
+     o deslocamento da trilha — por isso nunca caía no centro da tela. O número,
+     o rótulo e a legenda continuam no `<li>` (que se alinha à lente quando fica
+     ativo): duplicá-los aqui faria o leitor de tela ler cada indicador duas
+     vezes e obrigaria a reescrever o contador. */
   .impact-scroll[data-dirigindo] .impact-lente {
     display: block;
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: clamp(19rem, 25vw, 25rem);
+    left: var(--impact-centro);
+    top: 55%;
+    width: clamp(380px, 30vw, 460px);
     aspect-ratio: 1;
-    transform: translate3d(-50%, -50%, 0) scale(0.72);
-    opacity: 0;
+    transform: translate3d(-50%, -50%, 0);
+    z-index: 6;
     pointer-events: none;
-    transition:
-      transform var(--dur-chapter) var(--ease-out),
-      opacity var(--dur-base) var(--ease-out);
   }
-  .impact-scroll[data-dirigindo]
-    .impact-item[data-estado="ativo"]
-    .impact-lente {
-    transform: translate3d(-50%, -50%, 0) scale(1);
-    opacity: 1;
+  /* Node de chegada: onde a curva entra na máscara, na borda esquerda da lente.
+     O node original da trilha fica escondido pelo buraco da máscara. */
+  .impact-scroll[data-dirigindo] .impact-chegada {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+    border-radius: 999px;
+    border: 2px solid #0ed8f6;
+    background: #ffffff;
+    box-shadow:
+      0 0 0 7px rgba(14, 216, 246, 0.1),
+      0 0 22px rgba(14, 216, 246, 0.65);
   }
   .impact-scroll[data-dirigindo] .impact-aneis,
   .impact-scroll[data-dirigindo] .impact-contextual,
@@ -5459,36 +5560,23 @@ html[data-motion="reduce"] .ct-veu {
   }
   /* Movimento interno só no indicador ativo E só com a seção na tela: fora dela
      `[data-visivel]` sai e o compositor descansa. */
-  .impact-sticky[data-visivel="1"]
-    .impact-item[data-estado="ativo"]
-    .impact-anel-1 {
+  .impact-sticky[data-visivel="1"] .impact-lente .impact-anel-1 {
     animation: impact-gira 26s linear infinite;
   }
-  .impact-sticky[data-visivel="1"]
-    .impact-item[data-estado="ativo"]
-    .impact-anel-2 {
+  .impact-sticky[data-visivel="1"] .impact-lente .impact-anel-2 {
     animation: impact-gira 38s linear infinite reverse;
   }
-  .impact-sticky[data-visivel="1"]
-    .impact-item[data-estado="ativo"]
-    .impact-ticks {
+  .impact-sticky[data-visivel="1"] .impact-lente .impact-ticks {
     animation: impact-respira 6s ease-in-out infinite;
   }
 
-  /* Componente contextual: entra atrás do número, com opacidade baixa, e só no
-     ativo. É contexto, não ilustração principal. */
+  /* Componente contextual: entra atrás do número, com opacidade baixa. É
+     contexto, não ilustração principal. Só existe um, o do indicador da vez — a
+     `key` no React remonta o nó a cada troca, e é a animação de entrada abaixo
+     que faz a transição. */
   .impact-scroll[data-dirigindo] .impact-contextual {
-    opacity: 0;
-    transform: scale(0.9);
-    transition:
-      opacity var(--dur-chapter) var(--ease-out),
-      transform var(--dur-chapter) var(--ease-out);
-  }
-  .impact-scroll[data-dirigindo]
-    .impact-item[data-estado="ativo"]
-    .impact-contextual {
     opacity: 0.55;
-    transform: scale(1);
+    animation: impact-contextual-entra var(--dur-chapter) var(--ease-out) both;
   }
   .iv {
     overflow: visible;
@@ -5531,34 +5619,19 @@ html[data-motion="reduce"] .ct-veu {
   }
   /* `--iv-i` vem do markup e serve de atraso: a cascata é do CSS, o SVG é
      estático. */
-  .impact-sticky[data-visivel="1"]
-    .impact-item[data-estado="ativo"]
-    .iv-nos
-    circle,
-  .impact-sticky[data-visivel="1"]
-    .impact-item[data-estado="ativo"]
-    .iv-esferas
-    circle {
+  .impact-sticky[data-visivel="1"] .impact-lente .iv-nos circle,
+  .impact-sticky[data-visivel="1"] .impact-lente .iv-esferas circle {
     animation: impact-brilha 4.5s ease-in-out infinite;
     animation-delay: calc(var(--iv-i, 0) * 0.12s);
   }
-  .impact-sticky[data-visivel="1"]
-    .impact-item[data-estado="ativo"]
-    .iv-barras
-    line {
+  .impact-sticky[data-visivel="1"] .impact-lente .iv-barras line {
     animation: impact-barra 3.6s ease-in-out infinite;
     animation-delay: calc(var(--iv-i, 0) * 0.06s);
   }
-  .impact-sticky[data-visivel="1"]
-    .impact-item[data-estado="ativo"]
-    .iv-ondas
-    circle {
+  .impact-sticky[data-visivel="1"] .impact-lente .iv-ondas circle {
     animation: impact-onda 3.2s ease-out infinite;
   }
-  .impact-sticky[data-visivel="1"]
-    .impact-item[data-estado="ativo"]
-    .iv-planos
-    g {
+  .impact-sticky[data-visivel="1"] .impact-lente .iv-planos g {
     animation: impact-flutua 7s ease-in-out infinite;
     animation-delay: calc(var(--iv-i, 0) * 0.35s);
   }
@@ -5573,17 +5646,34 @@ html[data-motion="reduce"] .ct-veu {
   }
   .impact-scroll[data-dirigindo] .impact-valor {
     justify-content: center;
-    font-size: clamp(2.5rem, 4.6vw, 4rem);
+    font-size: clamp(1.9rem, 2.6vw, 2.4rem);
+    line-height: 0.84;
+    letter-spacing: -0.045em;
     transition: font-size var(--dur-base) var(--ease-out);
   }
   .impact-scroll[data-dirigindo]
     .impact-item[data-estado="ativo"]
     .impact-valor {
-    font-size: clamp(4.5rem, 8.5vw, 7.5rem);
+    font-size: clamp(5.5rem, 7.5vw, 8rem);
+  }
+  .impact-scroll[data-dirigindo] .impact-mais {
+    font-size: 0.45em;
   }
   .impact-scroll[data-dirigindo] .impact-rotulo,
   .impact-scroll[data-dirigindo] .impact-caption {
     margin-inline: auto;
+  }
+  .impact-scroll[data-dirigindo] .impact-rotulo {
+    font-size: 0.95rem;
+    max-width: 290px;
+  }
+  .impact-scroll[data-dirigindo]
+    .impact-item[data-estado="ativo"]
+    .impact-rotulo {
+    font-size: 1.1rem;
+  }
+  .impact-scroll[data-dirigindo] .impact-caption {
+    max-width: 320px;
   }
   /* A frase de contexto pertence ao indicador da vez. Continua no DOM sempre —
      só a opacidade muda, nunca `display`, para não mudar a altura do bloco no
@@ -5603,6 +5693,19 @@ html[data-motion="reduce"] .ct-veu {
   }
 }
 
+/* Entrada do contextual quando a lente troca de indicador. Como só existe um
+   contextual (o do ativo) e a `key` do React remonta o nó, a transição de opacity
+   não teria de onde partir — daí a animação. */
+@keyframes impact-contextual-entra {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+}
 @keyframes impact-gira {
   to {
     transform: rotate(360deg);
