@@ -6,7 +6,10 @@ type Section = { id: string; label: string };
 
 const SECTIONS: Section[] = [
   { id: 'top', label: 'Início' },
-  { id: 'quem-somos', label: 'Quem somos' },
+  /* `quem-somos` saiu daqui junto com o `<About />` da home: sem a seção, o
+     indicador apontava para uma âncora inexistente — o `IntersectionObserver`
+     nunca o acendia e o clique não levava a lugar nenhum. O texto institucional
+     está em `/quem-somos`, alcançável pelo menu do header (`src/data/nav.ts`). */
   { id: 'diferenciais', label: 'Diferenciais' },
   { id: 'resultados', label: 'Resultados' },
   { id: 'solucoes', label: 'Soluções' },

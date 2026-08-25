@@ -1,7 +1,6 @@
 import { Instrument_Serif } from 'next/font/google';
 import Header from '@/components/Header';
 import HeroCinematic from '@/components/HeroCinematic';
-import About from '@/components/About';
 import Differentials from '@/components/Differentials';
 import Metrics from '@/components/Metrics';
 import Solutions from '@/components/Solutions';
@@ -67,15 +66,12 @@ export default function Page() {
           <NotchDivider cor="var(--deep)" />
           <SignalMarquee />
         </div>
-        {/* O bloco claro era um só (sobre + diferenciais + resultados) e agora é
-            dois, porque a montagem entra no meio: ela é full bleed e tem fundo
-            próprio, e dentro de `.section-light` (que tem `isolation: isolate` e
-            degradê) o degradê pintaria por cima dela. Cada bloco desenha o seu
-            próprio degradê, então há uma emenda de tom entre eles. */}
-        <div className="section-light">
-          <SectionReveal><About /></SectionReveal>
-        </div>
-        {/* Montagem presa ao scroll, logo abaixo de "Sobre nós". Portada da
+        {/* "Sobre nós / A Sistran" saiu da home a pedido: o texto institucional
+            agora vive só em `/quem-somos`, que já monta o mesmo `<About />`.
+            Duplicá-lo aqui repetia a apresentação da empresa duas vezes no
+            mesmo funil — e era a cópia da home que ainda dizia "150 clientes"
+            em vez de 130. Componente preservado; só o consumo daqui saiu. */}
+        {/* Montagem presa ao scroll. Portada da
             apresentação de legado junto com o vídeo; o wrapper da serifa é o que
             fornece `--font-legacy-serif`, que o `legacy.css` consome no título.
             Conteúdo em `src/data/legacy.ts` (`impactSequence`). Fora do
