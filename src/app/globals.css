@@ -6546,8 +6546,10 @@ html[data-motion="reduce"] .social-card-reativo {
    que arrancaria a seção do fluxo e brigaria com o Lenis.
 
    Todo o movimento consome duas variáveis publicadas pelo único ScrollTrigger
-   em `.solutions-sticky`: `--sol-p` (0..1 na seção) e `--sol-passo-p` (0..1
-   dentro da etapa da vez). Fora do palco dirigido — mobile, tablet estreito ou
+   em `.solutions-sticky`: `--sol-p` (0..1 na seção) e `--sol-total` (o número de
+   etapas, divisor do parallax por cena). Havia também `--sol-passo-p` (0..1
+   dentro da etapa da vez), removida em SIS-42: sendo dente de serra, ela dava um
+   tranco no parallax na fronteira de cada etapa. Fora do palco dirigido — mobile, tablet estreito ou
    movimento reduzido — o seletor `[data-dirigindo]` simplesmente não casa e as
    quatro cenas empilham na vertical, sem pin e sem varredura.
    ========================================================================== */
@@ -7214,11 +7216,25 @@ html[data-motion="reduce"] .social-card-reativo {
     filter: blur(2px);
   }
 
-  /* Parallax com teto de 14px. O valor vem de `--sol-passo-p`, escrito pelo
-     trigger em `.solutions-sticky`. */
+  /* Parallax com teto de 14px, agora CONTÍNUO — foi ele que dava os "pulinhos".
+     Antes vinha de `--sol-passo-p`, o progresso dentro da etapa: um dente de
+     serra que caía de 1 para 0 na fronteira de cada uma das quatro etapas. Cada
+     queda era um tranco de 14px na foto, e a transição de 850ms transformava o
+     tranco num balanço bem visível — quatro vezes por percurso.
+
+     A fase agora é por cena: `--sol-p` (monotônica em toda a seção) vezes o
+     número de etapas, menos o índice da cena. Para a cena da vez isso percorre
+     0..1 exatamente como antes, mas NUNCA retorna: fora da janela dela o valor
+     simplesmente passa de 1 ou fica abaixo de 0, e a cena já não está visível.
+
+     Sem `transition`: o relógio é o scroll e o valor é reescrito a cada quadro.
+     Uma transição aqui só somaria borracha — e era metade do efeito de balanço. */
   .solutions-scroll[data-dirigindo] .solution-image {
-    transform: translate3d(0, calc((var(--sol-passo-p, 0.5) - 0.5) * -14px), 0);
-    transition: transform 850ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translate3d(
+      0,
+      calc((var(--sol-p, 0) * var(--sol-total, 4) - var(--sol-i, 0) - 0.5) * -14px),
+      0
+    );
   }
 
   /* --- Cartao descritivo: cobre so o terco inferior da foto --- */
@@ -7236,7 +7252,12 @@ html[data-motion="reduce"] .social-card-reativo {
     min-height: 176px;
     padding: clamp(24px, 1.9vw, 32px);
     z-index: 4;
-    transform: translate3d(0, calc((var(--sol-passo-p, 0.5) - 0.5) * -4px), 0);
+    /* O parallax de 4px que existia aqui saiu junto com `--sol-passo-p`: além do
+       mesmo dente de serra da foto, ele disputava a MESMA propriedade com os
+       deslocamentos de estado logo abaixo (-10px ao sair, 22px ao entrar), que
+       têm transição própria. Ou seja: um valor reescrito a cada quadro brigando
+       com uma transição de 460ms na mesma `transform` — receita de tremor. Os 4px
+       não estavam fazendo falta nenhuma; a profundidade quem dá é a foto. */
     transition:
       opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
       transform 460ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -7357,6 +7378,12 @@ html[data-motion="reduce"] .social-card-reativo {
     opacity: 0;
     animation: solutions-no-entra 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
     animation-delay: calc(360ms + var(--no-i, 0) * 85ms);
+    /* A troca de etapa é transição, nunca animação: reanimar o nó fazia-o sumir
+       e voltar. A cascata de entrada acima roda UMA vez, na montagem do fio. */
+    transition:
+      border-color 380ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 380ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 380ms cubic-bezier(0.22, 1, 0.36, 1);
   }
   .solutions-fio-no svg {
     height: 20px;
@@ -7369,7 +7396,12 @@ html[data-motion="reduce"] .social-card-reativo {
       0 0 0 6px rgba(14, 216, 246, 0.1),
       0 0 22px rgba(14, 216, 246, 0.35);
   }
-  /* Anel secundario: so no no aceso. */
+  /* Anel secundario: so no no aceso, e e ELE que pulsa.
+     Antes o pulso ia no proprio no, redeclarando a `animation` shorthand — e
+     redeclarar a shorthand REINICIA a `solutions-no-entra` que estava na regra
+     base, com os seus 360ms+ de atraso. Resultado: a cada troca de etapa o no
+     que acabava de acender sumia e reentrava. Era o terceiro dos "pulinhos".
+     No pseudo-elemento o pulso nao encosta na animacao de entrada do no. */
   .solutions-fio-no[data-estado="ativo"]::after {
     content: "";
     position: absolute;
@@ -7377,11 +7409,9 @@ html[data-motion="reduce"] .social-card-reativo {
     border-radius: 999px;
     border: 1px solid rgba(14, 216, 246, 0.28);
   }
-  /* Unica animacao continua da secao, e so no no da vez. */
-  .solutions-scroll[data-dirigindo] .solutions-fio-no[data-estado="ativo"] {
-    animation:
-      solutions-no-entra 320ms cubic-bezier(0.22, 1, 0.36, 1) both,
-      solutions-no-pulso 2800ms cubic-bezier(0.22, 1, 0.36, 1) 1200ms infinite;
+  /* Unica animacao continua da secao, e so no anel do no da vez. */
+  .solutions-scroll[data-dirigindo] .solutions-fio-no[data-estado="ativo"]::after {
+    animation: solutions-no-pulso 2800ms cubic-bezier(0.22, 1, 0.36, 1) 1200ms infinite;
   }
 
   /* --- Regua lateral: quatro nos, sem texto --- */
@@ -7491,13 +7521,18 @@ html[data-motion="reduce"] .social-card-reativo {
     transform: translate(-50%, -50%) scale(1);
   }
 }
+/* Pulso do anel do no aceso. Sem o `translate(-50%, -50%)` que existia aqui: ele
+   servia ao no, que se centra na linha por translacao; o anel e um `::after`
+   posicionado por `inset`, entao a sua unica transformacao e a escala. */
 @keyframes solutions-no-pulso {
   0%,
   100% {
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1);
+    opacity: 1;
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.035);
+    transform: scale(1.06);
+    opacity: 0.72;
   }
 }
 

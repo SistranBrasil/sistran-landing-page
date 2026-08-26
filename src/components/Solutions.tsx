@@ -96,6 +96,9 @@ export default function Solutions() {
 
     gsap.registerPlugin(ScrollTrigger);
 
+    // Divisor do parallax contínuo (ver o `onUpdate`). Escrito uma vez.
+    palco.style.setProperty('--sol-total', String(total));
+
     /* UM trigger. O progresso vai para o DOM por `ref` (uma escrita de custom
        property por quadro, sem re-render); o índice vai para o estado, e só
        quando muda de fato. `0.999999` impede que o último quadro (progress === 1)
@@ -110,8 +113,16 @@ export default function Solutions() {
       onUpdate: (self) => {
         const p = self.progress;
         palco.style.setProperty('--sol-p', p.toFixed(4));
-        // Progresso dentro da etapa da vez: alimenta o parallax e a varredura.
-        palco.style.setProperty('--sol-passo-p', ((p * total) % 1).toFixed(4));
+        /* `--sol-passo-p` (progresso DENTRO da etapa, `(p * total) % 1`) saiu
+           daqui: era a origem dos "pulinhos". Sendo dente de serra, ela voltava
+           de 1 para 0 na fronteira de cada etapa, e o parallax que a consumia
+           levava um tranco de 14px a cada quarto do percurso — amaciado pela
+           transição de 850ms, o que transformava o salto num balanço.
+
+           O parallax agora deriva de `--sol-p` (monotônica) e de `--sol-i` de
+           cada cena, o que dá a mesma amplitude por etapa sem nenhum retorno.
+           `--sol-total` é o divisor dessa conta, publicado aqui para o CSS não
+           precisar repetir o 4 na mão. */
         const seguro = Math.min(p, 0.999999);
         const idx = Math.min(total - 1, Math.max(0, Math.floor(seguro * total)));
         setAtivo((prev) => (prev === idx ? prev : idx));
@@ -430,11 +441,16 @@ export default function Solutions() {
                 para ligar. É decoração `aria-hidden` — nada de conteúdo sai com
                 ela. */}
             {dirigindo && geo ? (
-              /* `key={ativo}` remonta o fio a cada etapa, e é isso que faz o
-                 desenho da linha e a cascata dos nós rodarem UMA vez por troca
-                 em vez de reiniciarem sem parar. Mudança de geometria (resize,
-                 fonte) não remonta: a chave não muda. */
-              <div aria-hidden key={ativo} className="solutions-fio">
+              /* O `key={ativo}` vivia AQUI, no container, e era um dos
+                 "pulinhos": remontar o fio inteiro a cada etapa destruía também
+                 os nós, que voltavam do zero com a cascata de entrada (até
+                 785ms de atraso no último). Em scroll normal isso já piscava; em
+                 scroll rápido, quatro vezes seguidas.
+
+                 Agora a chave está só no traço aceso, que é o único elemento que
+                 precisa mesmo redesenhar por etapa. Os nós persistem e trocam de
+                 estado por transição. */
+              <div aria-hidden className="solutions-fio">
                 <svg
                   className="solutions-fio-svg"
                   viewBox={`0 0 ${geo.w.toFixed(0)} ${geo.h.toFixed(0)}`}
@@ -443,7 +459,12 @@ export default function Solutions() {
                   <path className="solutions-fio-calha" d={caminho} pathLength={1} />
                   {/* Trecho aceso: o desenho progressivo vive no CSS
                       (`stroke-dashoffset` com `pathLength=1`). */}
-                  <path className="solutions-fio-vivo" d={caminho} pathLength={1} />
+                  <path
+                    key={ativo}
+                    className="solutions-fio-vivo"
+                    d={caminho}
+                    pathLength={1}
+                  />
                 </svg>
                 {nos.map((x, i) => {
                   const IconeNo = ICONES_NO[i];
