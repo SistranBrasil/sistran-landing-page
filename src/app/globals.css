@@ -4947,7 +4947,12 @@ html[data-motion="reduce"] .barra-sinal::before {
   display: flex;
   height: 100svh;
   align-items: center;
-  overflow: hidden;
+  /* `clip`, não `hidden`: os dois recortam igual, mas `hidden` faz do elemento
+     um contêiner de scroll — ele passa a ser o scrollport mais próximo de
+     qualquer `sticky` que venha a existir aqui dentro, e recorta o fio condutor
+     que atravessa a página. Como este nó é ele mesmo o `sticky`, hoje nada
+     quebra; `clip` fecha a porta para quem adicionar um filho depois. */
+  overflow: clip;
   /* Atmosfera do fundo. Duas luzes largas da paleta: a fria enche a metade
      esquerda, que antes era chapada e vazia, e a azul fica por baixo de onde o
      cartao pousa, dando a ele um chao em vez de deixa-lo flutuando. Fica AQUI e
@@ -5270,7 +5275,10 @@ html[data-motion="reduce"] .ct-veu {
 /* ── Palco escuro ───────────────────────────────────────────────────────── */
 .impact-palco {
   position: relative;
-  overflow: hidden;
+  /* `clip` pelo mesmo motivo do `.ct-inner`: este é o palco escuro dentro da
+     seção que tem percurso próprio, e `hidden` o tornaria scrollport dos
+     `sticky` que vivem aqui. */
+  overflow: clip;
   background:
     radial-gradient(
       ellipse 70% 60% at 50% 42%,
@@ -7255,8 +7263,14 @@ html[data-motion="reduce"] .solution-info {
   /* Decoração: não intercepta clique nem toque em nada por baixo. */
   pointer-events: none;
   /* Acima das seções e ABAIXO do header (que fica em 50): o fio não deve
-     atravessar a barra fixa nem competir com o menu. */
-  z-index: 20;
+     atravessar a barra fixa nem competir com o menu.
+
+     45, e não 20: `.impact-scroll` ("Sistran em números") é uma camada fechada
+     com `isolation: isolate`, `z-index: 30` e fundo OPACO — em 20 o fio
+     desaparecia justamente ao cruzar uma das suas cinco paradas. Precisa ficar
+     acima também de `.progresso-lateral` (40), que é fixa na borda esquerda em
+     /quem-somos. */
+  z-index: 45;
 
   /* Só aparece quando há margem de sobra para ele. Abaixo de 1280px o
      conteúdo já ocupa a largura útil e um fio na lateral viraria estorvo —
