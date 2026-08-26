@@ -500,17 +500,30 @@ export default function Solutions() {
               `--sol-p`, o mesmo progresso que o trigger já escreve, então não há
               estado novo nem listener extra. Decorativo e `aria-hidden`: quem
               não vê continua com a navegação lateral e as setas do teclado. */}
-          {dirigindo ? (
-            <p aria-hidden className="solutions-convite">
-              <span className="solutions-convite-texto">
-                Role para percorrer as {String(total).padStart(2, '0')} soluções
-              </span>
-              <span className="solutions-convite-calha">
-                <span className="solutions-convite-ponto" />
-              </span>
-            </p>
-          ) : null}
         </div>
+
+        {/* Convite ao scroll: o palco fica preso e, sem uma pista, dá a impressão
+            de página travada. Aparece só no palco dirigido e se apaga sozinho
+            quando o percurso começa — a opacidade sai de `--sol-p`, o mesmo
+            progresso que o trigger já escreve, então não há estado novo nem
+            listener extra. Decorativo e `aria-hidden`: quem não vê continua com a
+            navegação lateral e as setas do teclado.
+
+            Ele vivia DENTRO da `.solutions-caixa`, como último item da coluna, e
+            era por isso que não aparecia: a caixa é mais alta que a tela (a foto
+            sozinha vai a 620px) e o sticky é `overflow: clip`, então o convite
+            caía justamente na parte recortada. Aqui, irmão da caixa e ancorado no
+            rodapé do próprio sticky, ele está sempre dentro da área visível. */}
+        {dirigindo ? (
+          <p aria-hidden className="solutions-convite">
+            <span className="solutions-convite-texto">
+              Role para percorrer as {String(total).padStart(2, '0')} soluções
+            </span>
+            <span className="solutions-convite-calha">
+              <span className="solutions-convite-ponto" />
+            </span>
+          </p>
+        ) : null}
       </div>
 
       {/* Trilha do pin: fica FORA do bloco fixado e é ela que dá altura à seção.

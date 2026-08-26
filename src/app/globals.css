@@ -6971,11 +6971,33 @@ html[data-motion="reduce"] .social-card-reativo {
    ~12% do percurso, sem estado novo, sem listener e sem re-render. Renderizado
    so no palco dirigido (ver `Solutions.tsx`), entao nao ha regra para desligar
    em mobile. */
+/* Ancorado no rodape do sticky, e nao no fim da coluna de conteudo: a
+   `.solutions-caixa` e mais alta que a tela e o sticky recorta (`overflow:
+   clip`), entao no fim da coluna o convite caia fora da area visivel — era esse
+   o motivo de ele nao aparecer. Absoluto sobre o proprio sticky, que ja e
+   elemento posicionado, ele fica sempre dentro do recorte.
+
+   `column` em vez de `row`: a pista aponta para baixo, e ler o texto com a calha
+   embaixo dele diz "continue descendo" sem precisar de seta. */
 .solutions-convite {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(14px, 2.4vh, 30px);
+  transform: translateX(-50%);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.85rem;
-  margin-top: clamp(18px, 2.2vh, 30px);
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0.7rem 1.2rem 0.85rem;
+  border-radius: 18px;
+  /* Placa de vidro discreta: o degrade do palco varia atras do convite, e texto
+     solto sobre ele perdia contraste em parte do percurso. */
+  border: 1px solid rgba(165, 240, 255, 0.18);
+  background: rgba(4, 26, 51, 0.42);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 7;
   opacity: clamp(0, calc(1 - var(--sol-p, 0) * 8), 1);
   transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1);
   pointer-events: none;
@@ -6985,7 +7007,8 @@ html[data-motion="reduce"] .social-card-reativo {
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: rgba(226, 245, 255, 0.62);
+  /* Era 0.62 de alfa e nao se lia sobre o azul do palco. */
+  color: rgba(234, 247, 255, 0.92);
 }
 .solutions-convite-calha {
   position: relative;
