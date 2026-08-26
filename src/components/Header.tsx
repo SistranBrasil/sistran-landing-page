@@ -157,8 +157,13 @@ export default function Header() {
         aria-hidden
         className="pointer-events-none absolute inset-x-6 bottom-0 h-px"
         style={{
+          /* A segunda parada era `rgba(124,58,237,0.35)`, violeta. A paleta da
+             marca é branco + azuis e não admite roxo
+             (`.claude/skills/sistran-marca`): agora o fio vai do ciano ao azul
+             da marca, que é a mesma leitura de degradê dentro da família de cor
+             certa. Vale para todas as páginas — o header é único. */
           background:
-            'linear-gradient(90deg, transparent, rgba(14,216,246,0.55), rgba(124,58,237,0.35), transparent)',
+            'linear-gradient(90deg, transparent, rgba(14,216,246,0.55), rgba(0,121,203,0.35), transparent)',
           opacity: scrolled ? 1 : 0.5,
           transition: 'opacity 300ms ease',
         }}
