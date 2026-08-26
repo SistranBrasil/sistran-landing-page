@@ -6,7 +6,10 @@ import Image from 'next/image';
    dele aqui, e um import sem uso quebra o lint. */
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Boxes, Check, Code2, ShieldCheck, UserPlus, Workflow } from 'lucide-react';
+/* Os seis ícones decorativos do percurso (`Boxes`, `Check`, `Code2`,
+   `ShieldCheck`, `UserPlus`, `Workflow`) saíram com a lista `ICONES_NO`: os nós
+   agora são quatro, um por solução, e cada um usa o ícone da própria solução via
+   `getIcon(s.icon)`. */
 import { SOLUTIONS } from '@/data/solutions';
 import { getIcon } from '@/lib/icons';
 import { useReducedMotion } from '@/lib/motion';
@@ -34,8 +37,10 @@ import { useReducedMotion } from '@/lib/motion';
  * o que mantém a emenda certa em qualquer largura, zoom ou fonte.
  */
 
-/** Ícones dos seis nós do percurso. Decorativos: o significado está no cartão. */
-const ICONES_NO = [Code2, Workflow, Boxes, UserPlus, ShieldCheck, Check] as const;
+/* A lista `ICONES_NO` de seis ícones decorativos saiu: os nós passaram a ser
+   quatro, um por solução, e cada um carrega o ícone da solução que representa
+   (`getIcon(s.icon)`, o mesmo do cartão). Antes eram seis nós para quatro etapas,
+   então dois nunca correspondiam a nada e o nó aceso não era o da etapa. */
 
 /** Geometria medida, em px relativos ao `.solutions-layout`. */
 type Geo = {
@@ -215,11 +220,28 @@ export default function Solutions() {
 
   /* Percurso e nós derivados da medição. Um caminho só: sai do item ativo, corre
      pela calha entre as colunas, faz a curva de entrada na foto e segue reto por
-     cima dela ligando os seis nós. `pathLength={1}` deixa o desenho progressivo
+     cima dela ligando os nós. `pathLength={1}` deixa o desenho progressivo
      em unidades de 1, então o `stroke-dashoffset` do CSS não precisa saber o
-     comprimento real. */
+     comprimento real.
+
+     UM nó por solução, e não os seis de antes: seis nós para quatro etapas
+     obrigavam a acender o `ativo + 1` e deixavam dois nós sem etapa nenhuma para
+     representar. Com `total`, o nó aceso é o da etapa, sem correção de índice.
+
+     Distribuição em fração da largura MEDIDA da foto, de 0.14 a 0.86: as margens
+     de 14% em cada ponta impedem que o primeiro e o último encostem na borda da
+     janela. O passo é derivado de `total`, não escrito na mão, para a linha
+     continuar distribuída se um dia entrar ou sair uma solução. */
+  const PRIMEIRO_NO = 0.14;
+  const ULTIMO_NO = 0.86;
   const nos = geo
-    ? Array.from({ length: 6 }, (_, i) => geo.px + geo.pw * (0.135 + i * 0.146))
+    ? Array.from({ length: total }, (_, i) => {
+        const fracao =
+          total > 1
+            ? PRIMEIRO_NO + (i * (ULTIMO_NO - PRIMEIRO_NO)) / (total - 1)
+            : (PRIMEIRO_NO + ULTIMO_NO) / 2;
+        return geo.px + geo.pw * fracao;
+      })
     : [];
   /* Altura da linha dentro da foto: 0.56, e não os 0.44 de antes — a pedido, um
      pouco mais para baixo. Mais que isso e ela encosta no cartão descritivo, que
@@ -233,12 +255,11 @@ export default function Solutions() {
       ` C ${(dobra + 30).toFixed(1)} ${geo.sy.toFixed(1)},` +
       ` ${(entrada - 22).toFixed(1)} ${linhaY.toFixed(1)},` +
       ` ${entrada.toFixed(1)} ${linhaY.toFixed(1)}` +
-      ` H ${(nos[5] + geo.pw * 0.05).toFixed(1)}`
+      ` H ${(nos[nos.length - 1] + geo.pw * 0.05).toFixed(1)}`
     : '';
-  /* Quatro etapas, seis nós: o nó aceso acompanha a etapa a partir do segundo,
-     de modo que a cabeça do percurso avança sem nunca acender dois ao mesmo
-     tempo. */
-  const noAtivo = ativo + 1;
+  /* `noAtivo = ativo + 1` saiu: era a correção que os seis nós exigiam para a
+     cabeça do percurso não acender no nó errado. Com um nó por solução, o nó da
+     etapa é o próprio `ativo`. */
 
   return (
     <section
@@ -467,12 +488,15 @@ export default function Solutions() {
                   />
                 </svg>
                 {nos.map((x, i) => {
-                  const IconeNo = ICONES_NO[i];
+                  /* O ícone é o da própria solução, o mesmo que o cartão mostra:
+                     o nó passou a representar uma etapa, então decorá-lo com um
+                     ícone alheio confundiria em vez de orientar. */
+                  const IconeNo = getIcon(SOLUTIONS[i].icon);
                   return (
                     <span
-                      key={i}
+                      key={SOLUTIONS[i].id}
                       className="solutions-fio-no"
-                      data-estado={i === noAtivo ? 'ativo' : i < noAtivo ? 'feito' : 'proximo'}
+                      data-estado={i === ativo ? 'ativo' : i < ativo ? 'feito' : 'proximo'}
                       /* Nós em HTML, e não `<circle>`: o svg da linha usa
                          `preserveAspectRatio="none"` para casar com a caixa
                          medida, e sob escala não uniforme um círculo viraria

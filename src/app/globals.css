@@ -7344,7 +7344,7 @@ html[data-motion="reduce"] .social-card-reativo {
     transform: translate3d(42px, -42px, 0) rotate(-2deg);
   }
 
-  /* --- Linha de processo: um caminho medido + seis nos em HTML --- */
+  /* --- Linha de processo: um caminho medido + um no por solucao, em HTML --- */
   .solutions-scroll[data-dirigindo] .solutions-fio {
     display: block;
     position: absolute;
