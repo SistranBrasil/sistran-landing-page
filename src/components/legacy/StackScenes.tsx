@@ -11,7 +11,7 @@ import { useRef } from "react"
 // os módulos seguem intactos.
 // import { ScrollVideo } from "@/components/primitives/ScrollVideo"
 // import { SectionIntro } from "./SectionIntro"
-import { TechnicalBackdrop } from "./TechnicalBackdrop"
+// import { TechnicalBackdrop } from "./TechnicalBackdrop"
 // import { useActiveStep } from "@/lib/useActiveStep"
 import { useReducedMotion } from "@/lib/motion"
 // `scenes` e `scenesIntro` saíram do import junto com o JSX que os consumia.
@@ -401,14 +401,29 @@ export function StackScenes() {
       </motion.div>
       */}
 
-      {/* `aria-label` no lugar de `aria-labelledby="sistema-title"`: o título que
+      {/* Seção do Método comentada por inteiro. Depois da SIS-26 (texto e os
+          quatro movimentos) e da SIS-27 (vídeo e tile viajante) ela não tinha
+          mais conteúdo: sobrava uma faixa escura com grafismo de fundo e um
+          container vazio. O lugar dela na página passou a ser ocupado pelo teatro
+          de "Soluções de Negócios", renderizado logo depois deste componente em
+          `src/app/page.tsx`.
+
+          A âncora `#sistema` sai com ela. Ninguém aponta para lá — nem o menu
+          (`src/data/nav.ts`), nem o `ScrollSpy`, nem link interno algum; só um
+          comentário de referência no `MetricsStrip`.
+
+          Um comentário só, e não vários aninhados: em JSX o primeiro fechamento
+          de bloco encerra tudo, então os marcadores internos foram achatados em
+          texto. Religar é restaurar este bloco (e, dentro dele, o `SectionIntro`
+          e a `.scene-story`), mais a plumbing e os imports no topo do arquivo.
+          `aria-label` no lugar de `aria-labelledby="sistema-title"`: o título que
           carregava esse `id` foi comentado, e apontar para um nó inexistente
           deixaria a seção sem nome acessível. Ao religar o `SectionIntro`, voltar
-          para o `aria-labelledby`. */}
+          para o `aria-labelledby`.    
       <section id="sistema" className="lp-section lp-section--dark" aria-label="Método">
         <TechnicalBackdrop density={12} />
         <div className="lp-container" style={{ position: "relative" }}>
-          {/* Abertura do Método comentada a pedido — o kicker "Método | quatro
+              Abertura do Método comentada a pedido — o kicker "Método | quatro
               movimentos", o título "A transformação começa quando o legado se
               torna explicável." e o parágrafo "Quatro movimentos organizam a
               transformação...". Comentada, e não removida: `scenesIntro`
@@ -422,9 +437,9 @@ export function StackScenes() {
             text={scenesIntro.text}
             progressive
           />
-          */}
+             
 
-          {/* `.scene-story` inteira comentada: a caixa de vídeo (SIS-27) e os
+              `.scene-story` inteira comentada: a caixa de vídeo (SIS-27) e os
               quatro movimentos (SIS-26) eram as duas colunas dela, e uma grade de
               duas colunas sem conteúdo em nenhuma delas só reservaria altura
               vazia.
@@ -469,9 +484,10 @@ export function StackScenes() {
               ))}
             </div>
           </div>
-          */}
+             
         </div>
       </section>
+      */}
     </div>
   )
 }

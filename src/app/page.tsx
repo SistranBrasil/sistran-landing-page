@@ -49,13 +49,28 @@ export default function Page() {
         {/* Sem separador aqui: o hero encolhe em card sobre fundo claro e já
             entrega a cor do mosaico.
 
-            Mosaico e Método num bloco só, e não em duas seções: o tile
-            "Arquitetura modular e escalável" sai do mosaico, desce e se expande
-            até virar a caixa de vídeo do Método. Separar cortaria o percurso na
-            emenda. Conteúdo em `src/data/legacy.ts`. */}
+            O `StackScenes` era mosaico e Método num bloco só, porque o tile
+            "Arquitetura modular e escalável" saía do mosaico, descia e se
+            expandia até virar a caixa de vídeo do Método — separar cortaria o
+            percurso na emenda. Com o Método comentado (texto, quatro movimentos
+            e vídeo saíram a pedido), sobrou só o mosaico, e a travessia foi
+            comentada junto: sem caixa de destino ela não tinha onde pousar.
+            Conteúdo em `src/data/legacy.ts`. */}
         <div className={editorial.variable}>
           <StackScenes />
         </div>
+        {/* Soluções ocupa agora o lugar do Método, a pedido: é o teatro preso ao
+            scroll com a pílula "Veja como a Sistran pode ajudar sua Seguradora
+            nos mais variados desafios de negócios." e o título "Soluções de
+            Negócios". Só esse cabeçalho fica — o kicker "Método | quatro
+            movimentos" foi embora com o `SectionIntro`, então não há título
+            duplicado no lugar.
+
+            Fora do wrapper da serifa editorial e fora do `SectionReveal`, pelo
+            mesmo motivo de "Sistran em números": a seção é palco preso ao scroll
+            (sticky + trilha de 400vh), e um ancestral com `transform` cria
+            contexto e faz o sticky perder a referência da viewport. */}
+        <Solutions />
         {/* Resultados logo DEPOIS do método, como na apresentação de legado:
             primeiro os quatro movimentos, depois as evidências que os comprovam.
             Antes eles fechavam o percurso do hero, e saíram de lá a pedido.
@@ -103,12 +118,10 @@ export default function Page() {
             embaixo. Dentro do `.section-light` o degradê do bloco pintaria por
             cima do palco e o repinte de texto navy apagaria os números. */}
         <Metrics />
-        {/* Bloco escuro de destaque: soluções (CTA-mor). Fora do `SectionReveal`
-            pela mesma razão de "Sistran em números": a seção virou palco preso ao
-            scroll (sticky + trilha), e o reveal do wrapper brigaria com o
-            sticky — o `transform` do wrapper cria contexto e o pin perde a
-            referência da viewport. */}
-        <Solutions />
+        {/* `<Solutions />` saía daqui: subiu para o lugar do Método, logo depois
+            do mosaico. "Sistran em números" emenda direto no bloco claro de
+            Contato — as duas já resolvem a própria costura de cor (a Metrics
+            desenha faixa clara em cima e palco escuro embaixo). */}
         {/* Ordem da home do site: contato -> LinkedIn -> "Fale com a Gente!" */}
         <div className="section-light">
           <SectionReveal><Contact /></SectionReveal>

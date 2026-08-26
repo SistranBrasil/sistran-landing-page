@@ -263,7 +263,13 @@ export default function Solutions() {
 
   return (
     <section
-      id="servicos"
+      /* `solucoes`, e não mais `servicos`: o `ScrollSpy` sempre listou
+         `solucoes` e o hero sempre linkou para `#solucoes`, mas nenhum
+         elemento da página carregava esse `id` — o indicador nunca acendia e
+         o botão "Veja como a Sistran pode ajudar" não levava a lugar nenhum.
+         Ninguém apontava para `#servicos` (o `#servicos-diferenciais` de
+         `/solucoes` é outro id), então renomear conserta os dois de uma vez. */
+      id="solucoes"
       ref={secaoRef}
       aria-labelledby="solucoes-titulo"
       className="solutions-scroll"
