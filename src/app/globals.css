@@ -432,7 +432,12 @@ body::after {
     ),
     radial-gradient(
       50% 60% at 90% 90%,
-      rgba(124, 58, 237, 0.08),
+      /* Era `rgba(124, 58, 237, 0.08)` — violeta. A paleta da marca é branco
+         + azuis e não admite roxo (`.claude/skills/sistran-marca`); trocado
+         pelo ciano da marca na mesma opacidade, então o brilho do canto
+         inferior direito continua existindo, só deixou de ser de outra
+         família de cor. */
+      rgba(14, 216, 246, 0.08),
       transparent 60%
     ),
     radial-gradient(70% 80% at 50% 50%, #ffffff 0%, #f2f7fc 55%, #e4edf7 100%);
@@ -7272,6 +7277,18 @@ html[data-motion="reduce"] .solution-info {
      /quem-somos. */
   z-index: 45;
 
+  /* FECHAMENTO do percurso: o fio não termina com um corte, ele se dissolve.
+     Nos últimos ~12% da página a opacidade cai de 1 a 0, então a linha se
+     apaga dentro da faixa clara do contato — que é onde o percurso acaba.
+     Sem isso ele ficava aceso até o rodapé, sugerindo que ainda havia
+     caminho, e o traço ciano sobre branco era o elemento mais forte da tela
+     justamente na hora em que quem lê deve olhar para o formulário.
+
+     O UA já limita `opacity` ao intervalo [0, 1], então o valor 8 do começo
+     do scroll não precisa de `clamp()` — e assim o fecho não custa uma linha
+     de JavaScript. */
+  opacity: calc((1 - var(--scroll-p, 0)) * 8);
+
   /* Só aparece quando há margem de sobra para ele. Abaixo de 1280px o
      conteúdo já ocupa a largura útil e um fio na lateral viraria estorvo —
      e o percurso continua legível sem ele, porque o fio nunca carregou
@@ -7354,6 +7371,19 @@ html[data-motion="reduce"] .solution-info {
   box-shadow:
     0 0 0 4px rgba(14, 216, 246, 0.16),
     0 0 14px rgba(14, 216, 246, 0.55);
+}
+
+/* Última parada (`#contato`): o fim do percurso é anunciado, não apenas
+   alcançado. O nó de chegada ganha um anel a mais e um pouco mais de corpo
+   que as paradas intermediárias — é o único momento em que o fio diz "aqui
+   acaba". Combina com a dissolução da linha declarada em `.spine`: o nó
+   acende enquanto o traço se apaga. */
+.spine-no:last-child[data-estado='ativo'] {
+  transform: translate(-50%, -50%) scale(1.7);
+  box-shadow:
+    0 0 0 4px rgba(14, 216, 246, 0.18),
+    0 0 0 10px rgba(14, 216, 246, 0.08),
+    0 0 20px rgba(14, 216, 246, 0.6);
 }
 
 /* Movimento reduzido: o fio aparece INTEIRO, em vez de congelar num traço

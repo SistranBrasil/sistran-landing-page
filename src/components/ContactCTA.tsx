@@ -84,8 +84,13 @@ export default function ContactCTA({
           viewport={VP}
           className="relative overflow-hidden rounded-3xl border border-white/12 p-10 md:p-14"
           style={{
+            /* A terceira parada do degradê era `rgba(124,58,237,0.5)`, violeta.
+               A paleta da marca é branco + azuis e não admite roxo
+               (`.claude/skills/sistran-marca`) — trocada pelo ciano da marca na
+               mesma opacidade: o cartão continua clareando na diagonal, dentro
+               da família de cor certa. */
             background:
-              'linear-gradient(135deg, rgba(0,77,138,0.9) 0%, rgba(0,121,203,0.75) 50%, rgba(124,58,237,0.5) 100%)',
+              'linear-gradient(135deg, rgba(0,77,138,0.9) 0%, rgba(0,121,203,0.75) 50%, rgba(14,216,246,0.5) 100%)',
             boxShadow: '0 30px 80px -30px rgba(0,77,138,0.8)',
           }}
         >
