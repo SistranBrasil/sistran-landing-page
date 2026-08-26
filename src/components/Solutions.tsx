@@ -385,11 +385,17 @@ export default function Solutions() {
                       <span className="solution-info-icone">
                         <Icon strokeWidth={1.6} aria-hidden />
                       </span>
-                      <span className="solution-info-indice">{num}</span>
+                      {/* O "03" pequeno acima do título saiu a pedido: o número
+                          grande à direita (`solution-info-marca`) e o "03 / 04"
+                          da navegação já dizem em que etapa se está, e o
+                          eyebrow empurrava o título para baixo sem informar
+                          nada de novo. O selo "Ativo" saiu junto, pelo mesmo
+                          motivo: o cartão só é exibido na cena ativa, então
+                          dizê-lo era redundante. A barrinha ficou como remate
+                          inferior do cartão. */}
                       <h3 className="solution-info-titulo">{s.title}</h3>
                       <p className="solution-info-texto">{s.description}</p>
                       <span aria-hidden className="solution-info-linha" />
-                      <span className="solution-info-estado">Ativo</span>
                     </div>
                   </article>
                 );
@@ -461,6 +467,7 @@ export default function Solutions() {
               </div>
             ) : null}
           </div>
+
         </div>
       </div>
 

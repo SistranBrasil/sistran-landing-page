@@ -6923,19 +6923,17 @@ html[data-motion="reduce"] .social-card-reativo {
   height: 19px;
   width: 19px;
 }
-.solution-info-indice {
-  position: relative;
-  display: block;
-  margin-top: 0.9rem;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.28em;
-  color: #0193b4;
-  font-variant-numeric: tabular-nums;
-}
+/* `.solution-info-indice` (o "03" pequeno acima do titulo) e
+   `.solution-info-estado` (o selo "Ativo") sairam do cartao a pedido: o numero
+   grande a direita e o "03 / 04" da navegacao ja dizem a etapa, e o cartao so
+   aparece na cena ativa. As regras foram removidas junto com o markup para nao
+   deixar CSS morto — religar e devolver os dois `<span>` em `Solutions.tsx` e
+   dois blocos de tipografia como os vizinhos daqui. */
 .solution-info-titulo {
   position: relative;
-  margin-top: 0.45rem;
+  /* Era 0.45rem, medido a partir do "03" pequeno que existia acima. Sem ele o
+     titulo passou a encostar no icone. */
+  margin-top: 0.95rem;
   font-family: var(--font-display, inherit);
   font-size: clamp(1.05rem, 1.24vw, 1.34rem);
   font-weight: 700;
@@ -6962,16 +6960,6 @@ html[data-motion="reduce"] .social-card-reativo {
   width: 56px;
   border-radius: 999px;
   background: linear-gradient(90deg, #0079cb, #0ed8f6);
-}
-.solution-info-estado {
-  position: relative;
-  display: inline-block;
-  margin-top: 0.6rem;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: #0193b4;
 }
 
 .solutions-rodape {
@@ -7195,28 +7183,27 @@ html[data-motion="reduce"] .social-card-reativo {
     opacity: 1;
     transition-delay: 140ms;
   }
-  /* Cascata interna do cartao: icone -> numero -> titulo -> texto -> estado. */
+  /* Cascata interna do cartao: icone -> titulo -> texto -> remate. O numero
+     pequeno e o selo "Ativo" sairam do markup, e com eles os dois degraus que
+     ocupavam aqui — os atrasos foram reaproximados para a cascata nao ficar com
+     buracos de tempo. */
   .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info-icone,
-  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info-indice,
   .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info-titulo,
   .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info-texto,
-  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info-estado {
+  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info-linha {
     animation: solution-entra 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info-icone {
     animation-delay: 160ms;
   }
-  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info-indice {
-    animation-delay: 215ms;
-  }
   .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info-titulo {
-    animation-delay: 270ms;
+    animation-delay: 225ms;
   }
   .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info-texto {
-    animation-delay: 325ms;
+    animation-delay: 290ms;
   }
-  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info-estado {
-    animation-delay: 380ms;
+  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info-linha {
+    animation-delay: 350ms;
   }
 
   /* --- Molduras vazias atras da janela: so borda, sem preenchimento --- */
