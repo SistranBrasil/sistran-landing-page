@@ -146,7 +146,14 @@ export default function Page() {
             elemento. O componente `ui/SectionReveal.tsx` fica no lugar, intacto,
             para quem precisar de reveal em bloco numa seção que não tenha o
             próprio. */}
-        <div className="section-light">
+        {/* `emenda-de-escuro`: "Sistran em números" fecha em palco escuro
+            (`#041a33`) e o Contato abre em branco — era corte reto. A classe
+            pinta o navy da seção anterior na borda de cima deste bloco e o
+            dissolve para baixo, então a cor de saída de uma é a cor de entrada
+            da outra. Fica do lado do Contato, e não no fim da Metrics, porque
+            lá embaixo há números claros sobre o escuro: clarear aquele fundo
+            arruinaria o contraste do texto. */}
+        <div className="section-light emenda-de-escuro">
           <Contact />
         </div>
         <Social />

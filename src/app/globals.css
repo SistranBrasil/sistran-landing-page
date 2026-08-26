@@ -6545,6 +6545,22 @@ html[data-motion="reduce"] .social-card-reativo {
   isolation: isolate;
   padding-block: clamp(72px, 10vh, 132px);
   background:
+    /* EMENDA 2 — mosaico (#fff) -> Soluções. Era o corte mais duro da home:
+       branco puro encostando em azul médio numa linha reta. O branco do mosaico
+       entra aqui e se dissolve na primeira tela de rolagem.
+
+       Resolvido como CAMADA DE BACKGROUND, e não como pseudo-elemento: camada de
+       fundo pinta sempre abaixo de todo o conteúdo, então não há `z-index` para
+       acertar, não há risco de cobrir texto e não há `pointer-events` para
+       lembrar. A seção tem `isolation: isolate` e um `.solutions-fundo` em
+       `z-index: 0` — um `::before` teria de se equilibrar entre os dois. */
+    linear-gradient(to bottom, #ffffff 0, rgba(255, 255, 255, 0) 220px),
+    /* EMENDA 3 — Soluções -> MetricsStrip. O fim do degradê é `#0756a0` e a
+       seção seguinte abre em `--deep` (`#004d8a`): tons vizinhos, mas a troca
+       ainda marcava um degrau. A cor de saída passa a ser exatamente a cor de
+       entrada. O `NotchDivider` vem DEPOIS do MetricsStrip, não antes, então
+       esta emenda não tinha nada resolvendo por ela. */
+      linear-gradient(to top, #004d8a 0, rgba(0, 77, 138, 0) 200px),
     radial-gradient(circle at 68% 54%, rgba(40, 216, 243, 0.13), transparent 34%),
     linear-gradient(125deg, #087fc7 0%, #0872ba 46%, #0756a0 100%);
 }
@@ -7338,4 +7354,59 @@ html[data-motion="reduce"] .solution-info {
 
 .spine[data-rm] .spine-no {
   transition: none;
+}
+
+/* ==========================================================================
+   Emendas entre seções
+   --------------------------------------------------------------------------
+   Regra única: a cor de SAÍDA de uma seção tem de ser a cor de ENTRADA da
+   seguinte. Nenhuma troca de fundo com corte reto.
+
+   Quatro das seis emendas da home precisaram de camada nova. As outras duas já
+   estavam resolvidas e por isso não receberam nada — duas soluções empilhadas
+   pintariam uma por cima da outra:
+
+     1. hero -> mosaico ....... o hero encolhe em card sobre fundo claro e já
+                                entrega o branco do mosaico
+     2. mosaico -> Soluções ... resolvida em `.solutions-scroll` (background)
+     3. Soluções -> MetricsStrip .. resolvida em `.solutions-scroll` (background)
+     4. parceiros -> ImpactSequence .. resolvida em `.sequence` (legacy.css)
+     5. ImpactSequence -> Metrics .... a Metrics já desenha faixa clara no topo
+     6. Metrics -> Contato ........... abaixo
+
+   Emenda é COR, não movimento: nada aqui muda com `prefers-reduced-motion`.
+   ========================================================================== */
+
+/* EMENDA 6 — palco escuro da Metrics (`#041a33`) para o bloco claro do Contato.
+   Aplicada no lado do Contato de propósito: no fim da Metrics há números claros
+   sobre o escuro, e clarear aquele fundo arruinaria o contraste do texto.
+
+   Pseudo-elemento e não camada de background porque `.section-light` já define
+   um `background` de três gradientes que não convém reescrever aqui — e ele é
+   compartilhado com outras páginas.
+
+   `z-index: -1` espelha o `.section-light::before` (a grade técnica): o pai tem
+   `isolation: isolate`, então o valor negativo fica contido no bloco e pinta
+   acima do fundo dele, mas abaixo de todo o conteúdo. O `.ct-trilha` é
+   `position: relative` sem `z-index`, logo passa por cima sem disputa. */
+.emenda-de-escuro {
+  position: relative;
+}
+
+.emenda-de-escuro::after {
+  content: "";
+  position: absolute;
+  /* Só a borda de cima: `inset: 0` com gradiente daria na mesma, mas uma caixa
+     de altura fixa deixa explícito quanto da seção a emenda ocupa. */
+  inset: 0 0 auto 0;
+  height: 260px;
+  background: linear-gradient(
+    to bottom,
+    #041a33 0,
+    rgba(4, 26, 51, 0.55) 38%,
+    rgba(4, 26, 51, 0) 100%
+  );
+  /* Toda camada de emenda: sem isto ela comeria cliques do conteúdo por baixo. */
+  pointer-events: none;
+  z-index: -1;
 }

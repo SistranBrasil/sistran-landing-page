@@ -2143,6 +2143,18 @@ html.has-dialog {
 .sequence {
   position: relative;
   height: 320svh;
+  /* EMENDA 4 — `.lp-signals` (faixa de parceiros, `--paper`) -> ImpactSequence
+     (`--cream`). O passo é curto (branco para azul-claríssimo), mas a faixa tem
+     `border-block` e o encontro das duas linhas retas fazia ler como corte. O
+     branco entra e se resolve na primeira tela.
+
+     Camada de background em vez de pseudo-elemento: a seção é alta com interior
+     `sticky` e `.sequence-visual` tem `transform` — mexer em `z-index` aqui é
+     onde os problemas nascem. `.lp-section--cream` já define `background`, e
+     esta regra vem depois na folha, então é ela que vale. */
+  background:
+    linear-gradient(to bottom, var(--paper) 0, rgb(255 255 255 / 0%) 40svh),
+    var(--cream);
 }
 
 .sequence-sticky {
