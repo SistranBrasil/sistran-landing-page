@@ -1,181 +1,78 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Boxes, Check, Code2, ShieldCheck, UserPlus, Workflow } from 'lucide-react';
 import { SOLUTIONS } from '@/data/solutions';
 import { getIcon } from '@/lib/icons';
 import { useReducedMotion } from '@/lib/motion';
 
 /**
  * Teatro de soluções: um palco só, preso ao scroll, onde as quatro soluções se
- * revelam uma a uma — janela de imagem, desenho técnico por cima dela e painel
- * de informação em vidro.
+ * revelam uma a uma — foto dominante, linha de processo por cima dela e cartão
+ * descritivo em vidro sobre o terço inferior da imagem.
  *
  * Duas leis da receita `.claude/skills/scroll-orchestrated-lp`:
  *
  * 1. O scroll é o relógio. Existe UM `ScrollTrigger` na seção; dele saem o
  *    progresso (`--sol-p`, publicado por `ref`, sem re-render) e o índice ativo
  *    (`setState`, e só quando o índice realmente muda). Todo o resto — varredura,
- *    parallax, conector, painel — é CSS consumindo esses dois valores.
+ *    parallax, cartão — é CSS consumindo esses dois valores.
  * 2. Nenhum conteúdo depende do movimento para existir. A mesma árvore de DOM
  *    serve o palco dirigido e o fluxo natural; o que muda é o atributo
  *    `data-dirigindo` na seção. Sem ele (mobile ou movimento reduzido) as quatro
  *    cenas simplesmente empilham na vertical, legíveis e sem pin.
  *
- * As janelas de imagem ficam EM BRANCO de propósito: as fotos entram na SIS-20.
+ * A linha de processo é UM caminho SVG só, com as coordenadas MEDIDAS do item
+ * ativo e da janela da foto (`geo`). Antes eram quatro ilustrações diferentes e
+ * um conector posicionado por número mágico — `(indice - 1.5) * 63px` —, que
+ * errava a altura assim que o título do item 01 quebrava em três linhas. Medir é
+ * o que mantém a emenda certa em qualquer largura, zoom ou fonte.
  */
 
-/** Ilustração técnica sobre a janela. Uma variante por solução, escolhida pelo
- *  índice — linhas de 1 a 1.5px, nós circulares e brilho só no nó ativo. É
- *  decorativa: `aria-hidden`, o significado está no painel de texto. */
-function CenaOverlay({ indice }: { indice: number }) {
-  const comum = {
-    className: 'solution-overlay',
-    viewBox: '0 0 800 440',
-    preserveAspectRatio: 'xMidYMid meet',
-    'aria-hidden': true as const,
-  };
+/** Ícones dos seis nós do percurso. Decorativos: o significado está no cartão. */
+const ICONES_NO = [Code2, Workflow, Boxes, UserPlus, ShieldCheck, Check] as const;
 
-  // 01 — esteira de entrega: seis nós numa linha que sobe em degraus.
-  if (indice === 0) {
-    const nos = [
-      [120, 300],
-      [240, 262],
-      [360, 286],
-      [480, 214],
-      [600, 238],
-      [700, 166],
-    ] as const;
-    return (
-      <svg {...comum}>
-        <polyline
-          className="solution-overlay-linha"
-          points={nos.map(([x, y]) => `${x},${y}`).join(' ')}
-        />
-        {nos.map(([x, y], i) => (
-          <circle
-            key={i}
-            className="solution-overlay-no"
-            cx={x}
-            cy={y}
-            r={i === nos.length - 1 ? 7 : 5}
-            data-vivo={i === nos.length - 1 ? '1' : undefined}
-            style={{ '--ov-i': i } as React.CSSProperties}
-          />
-        ))}
-      </svg>
-    );
-  }
+/** Geometria medida, em px relativos ao `.solutions-layout`. */
+type Geo = {
+  /** largura/altura da caixa de referência (o `viewBox` é 1:1 com ela) */
+  w: number;
+  h: number;
+  /** saída da linha: borda direita e centro vertical do item ativo */
+  sx: number;
+  sy: number;
+  /** janela da foto */
+  px: number;
+  py: number;
+  pw: number;
+  ph: number;
+};
 
-  // 02 — processo de negócio: seis etapas ligadas por uma linha em arco.
-  if (indice === 1) {
-    const nos = [
-      [110, 240],
-      [228, 190],
-      [346, 226],
-      [464, 176],
-      [582, 212],
-      [694, 158],
-    ] as const;
-    return (
-      <svg {...comum}>
-        <path
-          className="solution-overlay-linha"
-          d={`M110 240 Q 169 176 228 190 T 346 226 Q 405 160 464 176 T 582 212 Q 640 150 694 158`}
-        />
-        {nos.map(([x, y], i) => (
-          <g key={i} style={{ '--ov-i': i } as React.CSSProperties}>
-            <circle
-              className="solution-overlay-no"
-              cx={x}
-              cy={y}
-              r={5}
-              data-vivo={i === 3 ? '1' : undefined}
-            />
-            <line className="solution-overlay-guia" x1={x} y1={y + 10} x2={x} y2={y + 34} />
-          </g>
-        ))}
-      </svg>
-    );
-  }
-
-  // 03 — módulos de serviço: quatro blocos pendurados numa linha mestra.
-  if (indice === 2) {
-    const mods = [140, 320, 500, 660] as const;
-    return (
-      <svg {...comum}>
-        <line className="solution-overlay-linha" x1={100} y1={150} x2={700} y2={150} />
-        {mods.map((x, i) => (
-          <g key={i} style={{ '--ov-i': i } as React.CSSProperties}>
-            <line className="solution-overlay-guia" x1={x} y1={150} x2={x} y2={212} />
-            <rect
-              className="solution-overlay-modulo"
-              x={x - 46}
-              y={212}
-              width={92}
-              height={64}
-              rx={10}
-              data-vivo={i === 1 ? '1' : undefined}
-            />
-            <circle
-              className="solution-overlay-no"
-              cx={x}
-              cy={150}
-              r={5}
-              data-vivo={i === 1 ? '1' : undefined}
-            />
-          </g>
-        ))}
-      </svg>
-    );
-  }
-
-  // 04 — rede de pessoas: constelação pequena em volta de um nó central.
-  const centro = [400, 220] as const;
-  const orbita = [
-    [268, 148],
-    [546, 152],
-    [230, 286],
-    [566, 292],
-    [400, 340],
-  ] as const;
-  return (
-    <svg {...comum}>
-      {orbita.map(([x, y], i) => (
-        <line
-          key={`l${i}`}
-          className="solution-overlay-guia"
-          x1={centro[0]}
-          y1={centro[1]}
-          x2={x}
-          y2={y}
-        />
-      ))}
-      <circle className="solution-overlay-no" cx={centro[0]} cy={centro[1]} r={9} data-vivo="1" />
-      {orbita.map(([x, y], i) => (
-        <circle
-          key={`c${i}`}
-          className="solution-overlay-no"
-          cx={x}
-          cy={y}
-          r={5}
-          style={{ '--ov-i': i + 1 } as React.CSSProperties}
-        />
-      ))}
-    </svg>
-  );
-}
+const MESMA_GEO = (a: Geo | null, b: Geo): boolean =>
+  a !== null &&
+  Math.abs(a.w - b.w) < 0.5 &&
+  Math.abs(a.h - b.h) < 0.5 &&
+  Math.abs(a.sx - b.sx) < 0.5 &&
+  Math.abs(a.sy - b.sy) < 0.5 &&
+  Math.abs(a.px - b.px) < 0.5 &&
+  Math.abs(a.py - b.py) < 0.5 &&
+  Math.abs(a.pw - b.pw) < 0.5 &&
+  Math.abs(a.ph - b.ph) < 0.5;
 
 export default function Solutions() {
   const rm = useReducedMotion();
   const [isDesktop, setIsDesktop] = useState(false);
   const [ativo, setAtivo] = useState(0);
+  const [geo, setGeo] = useState<Geo | null>(null);
   const secaoRef = useRef<HTMLElement>(null);
   const palcoRef = useRef<HTMLDivElement>(null);
-  const trilhaRef = useRef<HTMLDivElement>(null);
+  const layoutRef = useRef<HTMLDivElement>(null);
   const passoRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const janelaRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   const total = SOLUTIONS.length;
   /* Palco dirigido só onde há espaço e o movimento é bem-vindo. Fora daí a mesma
@@ -234,6 +131,49 @@ export default function Solutions() {
     };
   }, [dirigindo, total]);
 
+  /* Medição da linha de processo. Nada aqui é constante escolhida a olho: a
+     saída sai do retângulo real do item ativo e a chegada do retângulo real da
+     janela da foto. A guarda de 0.5px evita re-render infinito, porque
+     `getBoundingClientRect` devolve float. */
+  const medir = useCallback(() => {
+    const layout = layoutRef.current;
+    const item = itemRefs.current[ativo];
+    const janela = janelaRefs.current[ativo];
+    if (!layout || !item || !janela) return;
+    const L = layout.getBoundingClientRect();
+    const B = item.getBoundingClientRect();
+    const J = janela.getBoundingClientRect();
+    if (L.width === 0 || J.width === 0) return;
+    const proxima: Geo = {
+      w: L.width,
+      h: L.height,
+      sx: B.right - L.left,
+      sy: B.top - L.top + B.height / 2,
+      px: J.left - L.left,
+      py: J.top - L.top,
+      pw: J.width,
+      ph: J.height,
+    };
+    setGeo((prev) => (MESMA_GEO(prev, proxima) ? prev : proxima));
+  }, [ativo]);
+
+  useEffect(() => {
+    /* Fora do palco dirigido não medimos — e também não zeramos `geo`: a
+       renderização já exige `dirigindo && geo`, e um `setGeo(null)` aqui seria
+       setState sincrono dentro de efeito (renderização em cascata). Ao voltar
+       para desktop o observer remede antes de a linha aparecer. */
+    if (!dirigindo) return;
+    const layout = layoutRef.current;
+    if (!layout) return;
+    medir();
+    // ResizeObserver em vez de listener de scroll/resize solto: a medição só
+    // acontece quando a caixa realmente muda de tamanho.
+    const ro = new ResizeObserver(medir);
+    ro.observe(layout);
+    document.fonts?.ready.then(medir).catch(() => {});
+    return () => ro.disconnect();
+  }, [dirigindo, medir]);
+
   /* Clique na navegação não cria estado paralelo ao scroll: ele rola até a
      fatia da trilha correspondente e o próprio trigger recalcula o índice. */
   const irPara = useCallback(
@@ -261,6 +201,29 @@ export default function Solutions() {
     [ativo, irPara, total],
   );
 
+  /* Percurso e nós derivados da medição. Um caminho só: sai do item ativo, corre
+     pela calha entre as colunas, faz a curva de entrada na foto e segue reto por
+     cima dela ligando os seis nós. `pathLength={1}` deixa o desenho progressivo
+     em unidades de 1, então o `stroke-dashoffset` do CSS não precisa saber o
+     comprimento real. */
+  const nos = geo
+    ? Array.from({ length: 6 }, (_, i) => geo.px + geo.pw * (0.135 + i * 0.146))
+    : [];
+  const linhaY = geo ? geo.py + geo.ph * 0.44 : 0;
+  const entrada = geo ? geo.px + geo.pw * 0.045 : 0;
+  const dobra = geo ? geo.px - 20 : 0;
+  const caminho = geo
+    ? `M ${geo.sx.toFixed(1)} ${geo.sy.toFixed(1)} H ${dobra.toFixed(1)}` +
+      ` C ${(dobra + 30).toFixed(1)} ${geo.sy.toFixed(1)},` +
+      ` ${(entrada - 22).toFixed(1)} ${linhaY.toFixed(1)},` +
+      ` ${entrada.toFixed(1)} ${linhaY.toFixed(1)}` +
+      ` H ${(nos[5] + geo.pw * 0.05).toFixed(1)}`
+    : '';
+  /* Quatro etapas, seis nós: o nó aceso acompanha a etapa a partir do segundo,
+     de modo que a cabeça do percurso avança sem nunca acender dois ao mesmo
+     tempo. */
+  const noAtivo = ativo + 1;
+
   return (
     <section
       /* `solucoes`, e não mais `servicos`: o `ScrollSpy` sempre listou
@@ -276,8 +239,9 @@ export default function Solutions() {
       data-dirigindo={dirigindo ? '' : undefined}
     >
       {/* Atmosfera do palco: degradê da marca, grade técnica quase invisível,
-          brilho ciano discreto e duas linhas finas. Nada disso passa por cima de
-          texto — fica atrás de tudo e não capta ponteiro. */}
+          brilho ciano discreto, duas linhas finas, uma curva técnica no canto e
+          coordenadas em opacidade mínima. Nada disso passa por cima de texto —
+          fica atrás de tudo e não capta ponteiro. */}
       <div aria-hidden className="solutions-fundo">
         <span className="solutions-grade" />
         <span className="solutions-brilho" />
@@ -290,6 +254,13 @@ export default function Solutions() {
           <line x1="0" y1="640" x2="1440" y2="300" />
           <line x1="0" y1="220" x2="1440" y2="700" />
         </svg>
+        {/* Curva técnica do canto inferior esquerdo: preserva a razão de aspecto
+            para não virar um arco esticado. */}
+        <svg className="solutions-curva" viewBox="0 0 260 200" aria-hidden>
+          <path d="M-10 190 C 70 190, 150 150, 200 60" />
+          <path d="M-10 160 C 60 160, 130 126, 172 44" />
+        </svg>
+        <span className="solutions-coord">41°23′S · 2°11′E / -23.55 · -46.63</span>
       </div>
 
       <div ref={palcoRef} className="solutions-sticky">
@@ -298,6 +269,7 @@ export default function Solutions() {
             {/* Sobretítulo e título verbatim do bloco "Soluções de Negócios" da
                 home. Fonte: .claude/conteudo-site/00-home.md (seção 5). */}
             <span className="solutions-eyebrow">
+              <span aria-hidden className="solutions-eyebrow-ponto" />
               Veja como a Sistran pode ajudar sua Seguradora nos mais variados desafios de
               negócios.
             </span>
@@ -306,13 +278,20 @@ export default function Solutions() {
             </h2>
           </div>
 
-          <div className="solutions-layout">
+          <div ref={layoutRef} className="solutions-layout">
             <nav className="solutions-nav" aria-label="Soluções de negócios">
+              <p className="solutions-nav-rotulo">
+                <span aria-hidden className="solutions-nav-rotulo-linha" />
+                Diferenciais
+              </p>
               <ol className="solutions-nav-lista" onKeyDown={onKey}>
                 {SOLUTIONS.map((s, i) => (
                   <li key={s.id}>
                     <button
                       type="button"
+                      ref={(el) => {
+                        itemRefs.current[i] = el;
+                      }}
                       onClick={() => irPara(i)}
                       aria-current={i === ativo ? 'step' : undefined}
                       data-estado={i === ativo ? 'ativo' : 'inativo'}
@@ -353,22 +332,6 @@ export default function Solutions() {
               <span aria-hidden className="solution-frame solution-frame-1" />
               <span aria-hidden className="solution-frame solution-frame-2" />
 
-              {/* Conector: sai da borda direita do item ativo e entra no primeiro
-                  nó da janela. Calha estática + linha viva ciano; o pulso só
-                  acende durante a troca de cena. */}
-              <svg
-                aria-hidden
-                className="solution-conector"
-                viewBox="0 0 120 40"
-                preserveAspectRatio="none"
-                style={{ '--sol-ativo': ativo } as React.CSSProperties}
-              >
-                <path className="solution-conector-calha" d="M0 20 H 92" />
-                <path className="solution-conector-vivo" d="M0 20 H 92" />
-                <circle className="solution-conector-pulso" cx="0" cy="20" r="3" />
-                <circle className="solution-conector-alvo" cx="104" cy="20" r="4" />
-              </svg>
-
               {SOLUTIONS.map((s, i) => {
                 const Icon = getIcon(s.icon);
                 const num = String(i + 1).padStart(2, '0');
@@ -382,13 +345,31 @@ export default function Solutions() {
                     data-sentido={i % 2 === 0 ? 'direita' : 'esquerda'}
                     style={{ '--sol-i': i } as React.CSSProperties}
                   >
-                    <div className="solution-viewport">
-                      {/* Janela EM BRANCO: o lugar da foto de cada solução, que
-                          entra na SIS-20. O nó já existe com o enquadramento
-                          final (`object-fit: cover`), então a foto só precisa
-                          ser plugada aqui. */}
-                      <div className="solution-image" role="presentation" />
-                      <CenaOverlay indice={i} />
+                    <div
+                      className="solution-viewport"
+                      ref={(el) => {
+                        janelaRefs.current[i] = el;
+                      }}
+                    >
+                      {/* A janela ficou VAZIA por muito tempo porque aqui havia
+                          um `<div className="solution-image">` — placeholder com
+                          degradê navy, nunca um elemento de imagem. Agora é
+                          `next/image` com `fill`, e o pai tem `position:
+                          relative; overflow: hidden` (ver `.solution-viewport`),
+                          que é o que o `fill` exige para enquadrar. */}
+                      {s.image ? (
+                        <Image
+                          className="solution-image"
+                          src={s.image}
+                          alt={s.imageAlt ?? ''}
+                          fill
+                          sizes="(max-width: 1023px) 92vw, 68vw"
+                          priority={i === 0}
+                        />
+                      ) : null}
+                      {/* Véu navy só nas bordas: dá contraste ao traço e ao
+                          cartão sem apagar as pessoas no centro. */}
+                      <span aria-hidden className="solution-veu" />
                     </div>
 
                     <div className="solution-info">
@@ -407,27 +388,80 @@ export default function Solutions() {
                   </article>
                 );
               })}
-            </div>
-          </div>
 
-          {/* Régua lateral: quatro nós, sem texto (o "02 / 04" já está na
-              navegação). Puramente indicativa. */}
-          <span aria-hidden className="solutions-lateral">
-            {SOLUTIONS.map((s, i) => (
-              <span
-                key={s.id}
-                className="solutions-lateral-no"
-                data-estado={i === ativo ? 'ativo' : i < ativo ? 'feito' : 'proximo'}
-              />
-            ))}
-          </span>
+              {/* Régua lateral: quatro nós, sem texto (o "02 / 04" já está na
+                  navegação). Puramente indicativa. */}
+              <span aria-hidden className="solutions-lateral">
+                {SOLUTIONS.map((s, i) => (
+                  <span
+                    key={s.id}
+                    className="solutions-lateral-no"
+                    data-estado={i === ativo ? 'ativo' : i < ativo ? 'feito' : 'proximo'}
+                  />
+                ))}
+              </span>
+            </div>
+
+            {/* Linha de processo: UM svg, medido, por cima da coluna toda — sai
+                do item ativo, atravessa a calha e corre por cima da foto. Fica
+                depois das cenas na árvore para pintar acima delas sem `z-index`
+                disputado, e `pointer-events: none` no CSS o mantém fora do
+                caminho do clique.
+
+                Só no palco dirigido: em fluxo natural (mobile e movimento
+                reduzido) as cenas empilham e a linha não teria dois pontos fixos
+                para ligar. É decoração `aria-hidden` — nada de conteúdo sai com
+                ela. */}
+            {dirigindo && geo ? (
+              /* `key={ativo}` remonta o fio a cada etapa, e é isso que faz o
+                 desenho da linha e a cascata dos nós rodarem UMA vez por troca
+                 em vez de reiniciarem sem parar. Mudança de geometria (resize,
+                 fonte) não remonta: a chave não muda. */
+              <div aria-hidden key={ativo} className="solutions-fio">
+                <svg
+                  className="solutions-fio-svg"
+                  viewBox={`0 0 ${geo.w.toFixed(0)} ${geo.h.toFixed(0)}`}
+                  preserveAspectRatio="none"
+                >
+                  <path className="solutions-fio-calha" d={caminho} pathLength={1} />
+                  {/* Trecho aceso: o desenho progressivo vive no CSS
+                      (`stroke-dashoffset` com `pathLength=1`). */}
+                  <path className="solutions-fio-vivo" d={caminho} pathLength={1} />
+                </svg>
+                {nos.map((x, i) => {
+                  const IconeNo = ICONES_NO[i];
+                  return (
+                    <span
+                      key={i}
+                      className="solutions-fio-no"
+                      data-estado={i === noAtivo ? 'ativo' : i < noAtivo ? 'feito' : 'proximo'}
+                      /* Nós em HTML, e não `<circle>`: o svg da linha usa
+                         `preserveAspectRatio="none"` para casar com a caixa
+                         medida, e sob escala não uniforme um círculo viraria
+                         elipse. Posição em % da mesma caixa, então acompanham o
+                         svg em qualquer largura. */
+                      style={
+                        {
+                          left: `${((x / geo.w) * 100).toFixed(3)}%`,
+                          top: `${((linhaY / geo.h) * 100).toFixed(3)}%`,
+                          '--no-i': i,
+                        } as React.CSSProperties
+                      }
+                    >
+                      <IconeNo strokeWidth={1.5} aria-hidden />
+                    </span>
+                  );
+                })}
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
 
       {/* Trilha do pin: fica FORA do bloco fixado e é ela que dá altura à seção.
           Quatro fatias IGUAIS — o índice vem de floor(progress * 4), logo cada
           solução precisa ocupar exatamente um quarto do percurso. */}
-      <div ref={trilhaRef} aria-hidden className="solutions-trilha">
+      <div aria-hidden className="solutions-trilha">
         {SOLUTIONS.map((s, i) => (
           <div
             key={s.id}
