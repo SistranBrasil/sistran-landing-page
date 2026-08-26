@@ -103,8 +103,12 @@ export default function Page() {
             embaixo. Dentro do `.section-light` o degradê do bloco pintaria por
             cima do palco e o repinte de texto navy apagaria os números. */}
         <Metrics />
-        {/* Bloco escuro de destaque: soluções (CTA-mor) */}
-        <SectionReveal><Solutions /></SectionReveal>
+        {/* Bloco escuro de destaque: soluções (CTA-mor). Fora do `SectionReveal`
+            pela mesma razão de "Sistran em números": a seção virou palco preso ao
+            scroll (sticky + trilha), e o reveal do wrapper brigaria com o
+            sticky — o `transform` do wrapper cria contexto e o pin perde a
+            referência da viewport. */}
+        <Solutions />
         {/* Ordem da home do site: contato -> LinkedIn -> "Fale com a Gente!" */}
         <div className="section-light">
           <SectionReveal><Contact /></SectionReveal>

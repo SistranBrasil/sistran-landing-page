@@ -6524,3 +6524,692 @@ html[data-motion="reduce"] .social-card-reativo {
     transition: none !important;
   }
 }
+
+/* ==========================================================================
+   SIS-19 — Teatro de soluções ("Soluções de Negócios")
+   --------------------------------------------------------------------------
+   Um palco só, preso ao scroll. `.solutions-sticky` é `position: sticky` e a
+   altura vem da trilha irmã (`.solutions-trilha`) — nunca `pin: true` do GSAP,
+   que arrancaria a seção do fluxo e brigaria com o Lenis.
+
+   Todo o movimento consome duas variáveis publicadas pelo único ScrollTrigger
+   em `.solutions-sticky`: `--sol-p` (0..1 na seção) e `--sol-passo-p` (0..1
+   dentro da etapa da vez). Fora do palco dirigido — mobile, tablet estreito ou
+   movimento reduzido — o seletor `[data-dirigindo]` simplesmente não casa e as
+   quatro cenas empilham na vertical, sem pin e sem varredura.
+   ========================================================================== */
+
+.solutions-scroll {
+  position: relative;
+  overflow: clip; /* clip, nao hidden: hidden viraria scrollport e mataria o sticky */
+  isolation: isolate;
+  padding-block: clamp(72px, 10vh, 132px);
+  background:
+    radial-gradient(circle at 68% 54%, rgba(40, 216, 243, 0.13), transparent 34%),
+    linear-gradient(125deg, #087fc7 0%, #0872ba 46%, #0756a0 100%);
+}
+
+/* Atmosfera: grade tecnica quase invisivel, brilho ciano e duas linhas finas. */
+.solutions-fundo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.solutions-grade {
+  position: absolute;
+  inset: 0;
+  opacity: 0.07; /* < 0.08: a grade e textura, nao elemento */
+  background-image:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.5) 0 1px, transparent 1px 72px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.5) 0 1px, transparent 1px 72px);
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 45%, #000 30%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 45%, #000 30%, transparent 78%);
+}
+.solutions-brilho {
+  position: absolute;
+  right: -6%;
+  top: 18%;
+  width: 46vw;
+  height: 46vw;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(40, 216, 243, 0.16), transparent 68%);
+}
+.solutions-linhas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.solutions-linhas line {
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 1;
+}
+
+.solutions-sticky {
+  position: relative;
+  z-index: 1;
+}
+.solutions-caixa {
+  width: min(1400px, calc(100% - 96px));
+  margin-inline: auto;
+}
+
+/* ---------- Cabecalho ---------- */
+.solutions-cabecalho {
+  max-width: 62ch;
+}
+.solutions-eyebrow {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(165, 240, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #eaf7ff;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.solutions-titulo {
+  margin-top: 1.25rem;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(2.4rem, 5vw, 5.4rem);
+  font-weight: 760;
+  letter-spacing: -0.055em;
+  line-height: 0.95;
+  color: #ffffff;
+}
+
+/* ---------- Layout ---------- */
+.solutions-layout {
+  margin-top: clamp(32px, 4vh, 56px);
+  display: grid;
+  gap: clamp(32px, 6vw, 96px);
+}
+
+/* ---------- Navegacao ---------- */
+.solutions-nav-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.solutions-nav-item {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.85rem 0.75rem 0.85rem 1.15rem;
+  border: 1px solid transparent;
+  border-left: 4px solid transparent;
+  border-radius: 12px;
+  text-align: left;
+  color: #ffffff;
+  cursor: pointer;
+  opacity: 0.52;
+  transition:
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.solutions-nav-item:hover,
+.solutions-nav-item:focus-visible {
+  opacity: 0.9;
+}
+.solutions-nav-item:focus-visible {
+  outline: 2px solid #28d8f3;
+  outline-offset: 2px;
+}
+.solutions-nav-item[data-estado="ativo"] {
+  opacity: 1;
+  background: linear-gradient(90deg, rgba(40, 216, 243, 0.16), rgba(255, 255, 255, 0.025));
+  border: 1px solid rgba(94, 209, 247, 0.22);
+  border-left: 4px solid #28d8f3;
+  box-shadow: 0 0 26px rgba(40, 216, 243, 0.1);
+}
+.solutions-nav-num {
+  font-family: var(--font-display, inherit);
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: rgba(165, 240, 255, 0.7);
+}
+.solutions-nav-item[data-estado="ativo"] .solutions-nav-num {
+  color: #28d8f3;
+}
+.solutions-nav-titulo {
+  flex: 1;
+  font-family: var(--font-display, inherit);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.solutions-nav-seta {
+  align-self: center;
+  color: #28d8f3;
+  /* Hover move a seta 4px sem tocar no indice ativo: e pista de clique. */
+  transform: translateX(-4px);
+  opacity: 0;
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 300ms ease;
+}
+.solutions-nav-item:hover .solutions-nav-seta,
+.solutions-nav-item:focus-visible .solutions-nav-seta,
+.solutions-nav-item[data-estado="ativo"] .solutions-nav-seta {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.solutions-progresso {
+  margin-top: 1.75rem;
+}
+.solutions-progresso-calha {
+  display: block;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+.solutions-progresso-viva {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  width: calc(var(--sol-frac, 0.25) * 100%);
+  background: linear-gradient(90deg, #0079cb, #28d8f3);
+  transition: width 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.solutions-progresso-texto {
+  margin-top: 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Teatro ---------- */
+.solution-teatro {
+  position: relative;
+}
+.solution-frame,
+.solution-conector,
+.solutions-lateral {
+  display: none; /* decoracao: so no palco dirigido */
+}
+
+.solution-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 30px;
+  overflow: hidden;
+  background: #03142d;
+  box-shadow: 0 28px 80px rgba(3, 20, 45, 0.32);
+}
+/* Janela em branco: enquadramento final ja definido, esperando a foto (SIS-20). */
+.solution-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background:
+    radial-gradient(circle at 62% 38%, rgba(40, 216, 243, 0.1), transparent 58%),
+    linear-gradient(140deg, #062a4d 0%, #03142d 100%);
+}
+.solution-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.solution-overlay-linha {
+  fill: none;
+  stroke: rgba(190, 232, 255, 0.42);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.solution-overlay-guia {
+  stroke: rgba(190, 232, 255, 0.22);
+  stroke-width: 1;
+}
+.solution-overlay-modulo {
+  fill: rgba(255, 255, 255, 0.04);
+  stroke: rgba(190, 232, 255, 0.28);
+  stroke-width: 1;
+}
+.solution-overlay-modulo[data-vivo] {
+  stroke: rgba(40, 216, 243, 0.75);
+}
+.solution-overlay-no {
+  fill: #062a4d;
+  stroke: rgba(190, 232, 255, 0.5);
+  stroke-width: 1.2;
+}
+.solution-overlay-no[data-vivo] {
+  fill: #28d8f3;
+  stroke: rgba(210, 244, 255, 0.9);
+  filter: drop-shadow(0 0 8px rgba(40, 216, 243, 0.6));
+}
+
+/* ---------- Painel de informacao ---------- */
+.solution-info {
+  position: relative;
+  margin-top: -28px;
+  margin-inline: clamp(12px, 4vw, 40px);
+  padding: clamp(20px, 2.4vw, 30px);
+  min-height: 170px;
+  overflow: hidden;
+  border-radius: 26px;
+  background: rgba(244, 250, 253, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 24px 54px rgba(3, 20, 45, 0.26);
+}
+.solution-info-marca {
+  position: absolute;
+  right: 0.4em;
+  bottom: -0.28em;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(4rem, 9vw, 9rem);
+  font-weight: 760;
+  line-height: 1;
+  color: rgba(7, 120, 180, 0.1);
+  pointer-events: none;
+  user-select: none;
+}
+.solution-info-icone {
+  position: relative;
+  display: inline-flex;
+  height: 44px;
+  width: 44px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 121, 203, 0.25);
+  background: linear-gradient(135deg, rgba(0, 121, 203, 0.14), rgba(0, 121, 203, 0.04));
+  color: #0067af;
+}
+.solution-info-icone svg {
+  height: 22px;
+  width: 22px;
+}
+.solution-info-indice {
+  position: relative;
+  display: block;
+  margin-top: 0.9rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: #0193b4;
+  font-variant-numeric: tabular-nums;
+}
+.solution-info-titulo {
+  position: relative;
+  margin-top: 0.45rem;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.15rem, 1.5vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #062b52;
+  max-width: 46ch;
+}
+.solution-info-texto {
+  position: relative;
+  margin-top: 0.6rem;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: #3c5a7a;
+  max-width: 56ch;
+}
+.solution-info-linha {
+  position: relative;
+  display: block;
+  margin-top: 1.1rem;
+  height: 2px;
+  width: 56px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0079cb, #28d8f3);
+}
+.solution-info-estado {
+  position: relative;
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #0193b4;
+}
+
+.solutions-rodape {
+  position: relative;
+  z-index: 1;
+  width: min(1400px, calc(100% - 96px));
+  margin-inline: auto;
+  margin-top: clamp(32px, 5vh, 64px);
+}
+
+/* Fluxo natural (mobile, tablet estreito, movimento reduzido): cada cena e um
+   bloco; a trilha do pin nao existe. */
+.solutions-trilha {
+  display: none;
+}
+.solution-cena + .solution-cena {
+  margin-top: clamp(40px, 6vh, 72px);
+}
+@media (max-width: 400px) {
+  .solutions-caixa,
+  .solutions-rodape {
+    width: calc(100% - 40px); /* minimo 20px de cada lado */
+  }
+}
+
+/* ==========================================================================
+   Palco dirigido — so em telas largas e com movimento permitido
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .solutions-scroll[data-dirigindo] {
+    padding-block: 0;
+  }
+  .solutions-scroll[data-dirigindo] .solutions-sticky {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: clip;
+    isolation: isolate;
+  }
+  /* A trilha da a altura da secao (4 fatias iguais) e o -100svh devolve a tela
+     consumida pelo sticky: a secao fica com exatamente 400vh. */
+  .solutions-scroll[data-dirigindo] .solutions-trilha {
+    display: block;
+    margin-top: -100svh;
+  }
+  .solutions-scroll[data-dirigindo] .solutions-passo {
+    min-height: 100vh;
+  }
+
+  .solutions-scroll[data-dirigindo] .solutions-layout {
+    grid-template-columns: minmax(320px, 0.36fr) minmax(0, 0.64fr);
+    align-items: center;
+  }
+
+  /* --- Cenas empilhadas: uma so na frente por vez --- */
+  .solutions-scroll[data-dirigindo] .solution-cena {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+  }
+  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] {
+    position: relative;
+    z-index: 3;
+  }
+  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="feito"] {
+    z-index: 2;
+  }
+  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="proximo"] {
+    z-index: 1;
+  }
+
+  .solutions-scroll[data-dirigindo] .solution-viewport {
+    aspect-ratio: 16 / 8.7;
+    /* Varredura: a janela entra com um `inset` que se abre. So clip-path e
+       opacity/transform — nada de layout. */
+    clip-path: inset(0 100% 0 0 round 30px);
+    opacity: 0;
+    transform: scale(1.02);
+    transition:
+      clip-path 600ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 280ms ease,
+      transform 850ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* Sentido alternado entre etapas, para a troca nao virar repeticao. */
+  .solutions-scroll[data-dirigindo] .solution-cena[data-sentido="esquerda"] .solution-viewport {
+    clip-path: inset(0 0 0 100% round 30px);
+  }
+  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-viewport {
+    clip-path: inset(0 0 0 0 round 30px);
+    opacity: 1;
+    transform: scale(1);
+  }
+  /* Saida: escala 1 -> 1.035 e desaparece; nunca quatro camadas opacas juntas. */
+  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="feito"] .solution-viewport {
+    clip-path: inset(0 0 0 0 round 30px);
+    opacity: 0;
+    transform: scale(1.035);
+  }
+
+  /* Parallax por camada, com teto: imagem 14px, overlay 8px, painel 4px. O
+     valor vem de `--sol-passo-p`, escrito pelo trigger em `.solutions-sticky`. */
+  .solutions-scroll[data-dirigindo] .solution-image {
+    transform: translate3d(0, calc((var(--sol-passo-p, 0.5) - 0.5) * -14px), 0);
+    scale: 1.065;
+    transition:
+      transform 850ms cubic-bezier(0.22, 1, 0.36, 1),
+      scale 850ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-image {
+    scale: 1;
+  }
+  .solutions-scroll[data-dirigindo] .solution-overlay {
+    transform: translate3d(0, calc((var(--sol-passo-p, 0.5) - 0.5) * -8px), 0);
+  }
+
+  /* --- Painel de vidro: transborda a janela, como no preview --- */
+  .solutions-scroll[data-dirigindo] .solution-info {
+    position: absolute;
+    left: clamp(-60px, -4vw, -28px);
+    right: clamp(44px, 5vw, 80px);
+    bottom: clamp(-52px, -5vh, -28px);
+    margin: 0;
+    min-height: 190px;
+    z-index: 4;
+    transform: translate3d(0, calc((var(--sol-passo-p, 0.5) - 0.5) * -4px), 0);
+    transition:
+      opacity 220ms ease,
+      transform 460ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .solutions-scroll[data-dirigindo] .solution-cena:not([data-estado="ativo"]) .solution-info {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+    pointer-events: none;
+  }
+  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="proximo"] .solution-info {
+    transform: translate3d(0, 24px, 0);
+  }
+  .solutions-scroll[data-dirigindo] .solution-cena[data-estado="ativo"] .solution-info {
+    opacity: 1;
+    transition-delay: 120ms;
+  }
+
+  /* --- Molduras vazias atras da janela --- */
+  .solutions-scroll[data-dirigindo] .solution-frame {
+    display: block;
+    position: absolute;
+    inset: 0;
+    aspect-ratio: 16 / 8.7;
+    border-radius: 30px;
+    border: 1px solid rgba(210, 244, 255, 0.3);
+    background: rgba(218, 245, 255, 0.08);
+    pointer-events: none;
+    transition: transform 850ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .solutions-scroll[data-dirigindo] .solution-frame-1 {
+    opacity: 0.55;
+    transform: translate3d(22px, calc(-24px + (var(--sol-passo-p, 0.5) - 0.5) * -4px), 0);
+  }
+  .solutions-scroll[data-dirigindo] .solution-frame-2 {
+    opacity: 0.26;
+    transform: translate3d(42px, calc(-44px + (var(--sol-passo-p, 0.5) - 0.5) * -10px), 0);
+  }
+
+  /* --- Conector: do item ativo ate o primeiro no da janela --- */
+  .solutions-scroll[data-dirigindo] .solution-conector {
+    display: block;
+    position: absolute;
+    left: clamp(-96px, -6vw, -40px);
+    width: clamp(40px, 6vw, 96px);
+    height: 40px;
+    /* Segue o item ativo: a lista esta centrada na mesma altura do teatro, entao
+       o deslocamento e (indice - 1.5) passos a partir do centro. */
+    top: calc(50% - 20px + (var(--sol-ativo, 0) - 1.5) * 63px);
+    z-index: 5;
+    pointer-events: none;
+    transition: top 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .solution-conector-calha {
+    fill: none;
+    stroke: rgba(210, 244, 255, 0.22);
+    stroke-width: 1;
+  }
+  .solution-conector-vivo {
+    fill: none;
+    stroke: #28d8f3;
+    stroke-width: 1.4;
+    filter: drop-shadow(0 0 6px rgba(40, 216, 243, 0.5));
+  }
+  .solution-conector-alvo {
+    fill: #28d8f3;
+    filter: drop-shadow(0 0 8px rgba(40, 216, 243, 0.6));
+  }
+  /* O pulso corre pela linha enquanto o palco esta em cena. */
+  .solution-conector-pulso {
+    fill: rgba(210, 244, 255, 0.9);
+    opacity: 0;
+  }
+  .solutions-sticky[data-visivel="1"] .solution-conector-pulso {
+    animation: solution-pulso 1600ms cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  }
+
+  /* --- Regua lateral: quatro nos, sem texto --- */
+  .solutions-scroll[data-dirigindo] .solutions-lateral {
+    display: flex;
+    position: absolute;
+    right: clamp(18px, 2vw, 34px);
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: column;
+    gap: 12px;
+    z-index: 4;
+    pointer-events: none;
+  }
+  .solutions-lateral-no {
+    height: 6px;
+    width: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.25);
+    transition:
+      background 420ms ease,
+      box-shadow 420ms ease,
+      transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .solutions-lateral-no[data-estado="feito"] {
+    background: rgba(40, 216, 243, 0.5);
+  }
+  .solutions-lateral-no[data-estado="ativo"] {
+    background: #28d8f3;
+    box-shadow: 0 0 14px rgba(40, 216, 243, 0.7);
+    transform: scale(1.5);
+  }
+
+  /* Entrada da secao: sobretitulo -> titulo -> itens da navegacao. A opacidade
+     final e 1 em todos os casos, entao nada some se a animacao nao rodar. */
+  .solutions-sticky[data-visivel="1"] .solutions-eyebrow,
+  .solutions-sticky[data-visivel="1"] .solutions-titulo {
+    animation: solution-entra 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .solutions-sticky[data-visivel="1"] .solutions-titulo {
+    animation-delay: 90ms;
+  }
+  .solutions-sticky[data-visivel="1"] .solutions-nav-lista li {
+    animation: solution-entra 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .solutions-sticky[data-visivel="1"] .solutions-nav-lista li:nth-child(1) {
+    animation-delay: 180ms;
+  }
+  .solutions-sticky[data-visivel="1"] .solutions-nav-lista li:nth-child(2) {
+    animation-delay: 240ms;
+  }
+  .solutions-sticky[data-visivel="1"] .solutions-nav-lista li:nth-child(3) {
+    animation-delay: 300ms;
+  }
+  .solutions-sticky[data-visivel="1"] .solutions-nav-lista li:nth-child(4) {
+    animation-delay: 360ms;
+  }
+}
+
+/* Tablet: mesma partitura, colunas mais proximas de 32/68. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .solutions-scroll[data-dirigindo] .solutions-layout {
+    grid-template-columns: minmax(280px, 0.32fr) minmax(0, 0.68fr);
+  }
+  .solutions-caixa,
+  .solutions-rodape {
+    width: min(1400px, calc(100% - 56px));
+  }
+}
+
+@keyframes solution-entra {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes solution-pulso {
+  from {
+    opacity: 0.9;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(92px);
+  }
+}
+
+/* Movimento reduzido: fluxo natural das quatro solucoes. O `data-dirigindo` ja
+   nao e aplicado pelo componente (o hook resolve no cliente), mas o reset
+   global mata loops com `iteration-count: 1` — entao o pulso do conector e as
+   entradas precisam terminar em estado visivel, e a decoracao puramente
+   ornamental sai de cena. */
+html[data-motion="reduce"] .solution-conector-pulso,
+html[data-motion="reduce"] .solutions-linhas {
+  display: none !important;
+}
+html[data-motion="reduce"] .solutions-eyebrow,
+html[data-motion="reduce"] .solutions-titulo,
+html[data-motion="reduce"] .solutions-nav-lista li,
+html[data-motion="reduce"] .solution-viewport,
+html[data-motion="reduce"] .solution-info {
+  animation: none !important;
+  opacity: 1 !important;
+  clip-path: none !important;
+  transform: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .solution-conector-pulso,
+  .solutions-linhas {
+    display: none !important;
+  }
+  .solutions-eyebrow,
+  .solutions-titulo,
+  .solutions-nav-lista li,
+  .solution-viewport,
+  .solution-info {
+    animation: none !important;
+    opacity: 1 !important;
+    clip-path: none !important;
+    transform: none !important;
+  }
+}
