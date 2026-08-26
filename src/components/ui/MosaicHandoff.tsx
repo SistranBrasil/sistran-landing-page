@@ -58,9 +58,10 @@ export default function MosaicHandoff() {
     if (!caixa) return;
 
     let quadro = 0;
-    /* Última opacidade escrita na origem. Guardada para escrever no DOM só
-       quando o valor muda de fato, em vez de a cada quadro. */
+    /* Últimas opacidades escritas nas duas pontas. Guardadas para escrever no
+       DOM só quando o valor muda de fato, em vez de a cada quadro. */
     let fonteAnterior = -1;
+    let destinoAnterior = '';
 
     const esconderOrigem = (valor: number) => {
       if (valor === fonteAnterior) return;
@@ -68,10 +69,21 @@ export default function MosaicHandoff() {
       document.documentElement.style.setProperty('--carrier-fonte', String(valor));
     };
 
+    /* A foto de destino fica escondida durante a viagem: sem isso ela aparece
+       no palco enquanto o viajante ainda está no caminho, e vê-se a MESMA
+       imagem duas vezes, em dois tamanhos. Ela só acende na emenda final, no
+       mesmo intervalo em que o viajante se apaga. */
+    const esconderDestino = (valor: string) => {
+      if (valor === destinoAnterior) return;
+      destinoAnterior = valor;
+      document.documentElement.style.setProperty('--carrier-destino', valor);
+    };
+
     const desligar = () => {
       caixa.style.opacity = '0';
       caixa.style.visibility = 'hidden';
       esconderOrigem(1);
+      esconderDestino('1');
     };
 
     const medir = () => {
@@ -127,6 +139,10 @@ export default function MosaicHandoff() {
          já está debaixo dele mostrando a mesma imagem. */
       caixa.style.opacity =
         p < 0.04 ? (p / 0.04).toFixed(3) : p > 0.94 ? ((1 - p) / 0.06).toFixed(3) : '1';
+      /* Contraparte exata: a foto real acende no mesmo intervalo em que o
+         viajante se apaga, e as duas caixas já coincidem ali — a troca é uma
+         só imagem trocando de dono. */
+      esconderDestino(p > 0.94 ? Math.min(1, (p - 0.94) / 0.06).toFixed(3) : '0');
 
       // O rótulo sai cedo: a caixa muda de proporção e o texto ficaria à deriva.
       if (rotulo) rotulo.style.opacity = Math.max(0, 1 - p / 0.22).toFixed(3);

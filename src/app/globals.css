@@ -7029,6 +7029,17 @@ html[data-motion="reduce"] .social-card-reativo {
 [data-carrier-origem] {
   opacity: var(--carrier-fonte, 1);
 }
+/* A foto de destino espera o viajante. Sem isso as duas aparecem juntas durante
+   a descida — a mesma imagem em dois tamanhos, uma dentro da outra.
+   A opacidade vai na FOTO e no veu, nunca na `.solution-viewport`: a opacidade
+   da janela pertence a entrada em foco da cena (ativo/feito/proximo) no palco
+   dirigido, e sobrescreve-la mataria aquela transicao. A caixa navy continua
+   desenhada — fica debaixo do viajante, invisivel, e e ela que garante que nao
+   haja buraco se o efeito for interrompido no meio. */
+[data-carrier-alvo] .solution-image,
+[data-carrier-alvo] .solution-veu {
+  opacity: var(--carrier-destino, 1);
+}
 
 /* Fluxo natural (mobile, tablet estreito, movimento reduzido): cada cena e um
    bloco; a trilha do pin nao existe. */
