@@ -15,20 +15,20 @@ import { MotionPreferenceTrigger } from '@/components/layout/MotionPreferenceTri
    Fonte: .claude/conteudo-site/00-home.md (secao 9) */
 export default function Footer() {
   return (
-    <footer className="relative border-t border-white/10 bg-[#1273BC]/85 py-14">
+    <footer className="lp-rodape relative border-t border-white/10 bg-[#1273BC]/85 py-14">
       <span aria-hidden className="brand-line pointer-events-none absolute inset-x-0 top-0" />
 
       <div className="container-lp relative grid grid-cols-1 gap-10 md:grid-cols-4">
         {/* Coluna 1: Logo + institucional */}
-        <div className="md:col-span-1">
+        <div className="lp-rodape-bloco md:col-span-1">
           <Image
             src="/images/sistran-corp-logo.png"
             alt="Sistran"
             width={360}
             height={124}
-            className="h-20 w-auto md:h-24"
+            className="lp-rodape-logo h-20 w-auto md:h-24"
           />
-          <h4 className="mt-6 text-xs font-semibold uppercase tracking-[0.18em] text-[#0ed8f6]">
+          <h4 className="lp-rodape-titulo mt-6 text-xs font-semibold uppercase tracking-[0.18em] text-[#0ed8f6]">
             Conheça nossas redes
           </h4>
           <div className="mt-3 flex gap-3">
@@ -37,9 +37,15 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Linkedin da Sistran"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors duration-300 hover:border-[#0ed8f6]/60 hover:bg-white/10"
+              className="lp-rodape-rede inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors duration-300 hover:border-[#0ed8f6]/60 hover:bg-white/10"
             >
               <Linkedin className="h-4 w-4" strokeWidth={1.8} />
+              {/* Nome da rede, que hoje só existia no `aria-label`. `aria-hidden`
+                  porque o nome acessível já vem do `aria-label` — sem isso o
+                  leitor de tela leria "Linkedin da Sistran Linkedin". */}
+              <span aria-hidden className="lp-rodape-rede-nome">
+                Linkedin
+              </span>
             </a>
             {/* TODO: trocar YOUTUBE_URL pelo canal oficial (o site linka
                 "Youtube" no rodape). */}
@@ -48,19 +54,22 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Youtube da Sistran"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors duration-300 hover:border-[#0ed8f6]/60 hover:bg-white/10"
+              className="lp-rodape-rede inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors duration-300 hover:border-[#0ed8f6]/60 hover:bg-white/10"
             >
               <Youtube className="h-4 w-4" strokeWidth={1.8} />
+              <span aria-hidden className="lp-rodape-rede-nome">
+                Youtube
+              </span>
             </a>
           </div>
         </div>
 
         {/* Coluna 2: Navegação */}
-        <div>
-          <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#0ed8f6]">
+        <div className="lp-rodape-bloco">
+          <h4 className="lp-rodape-titulo mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#0ed8f6]">
             Navegação
           </h4>
-          <ul className="space-y-2">
+          <ul className="lp-rodape-nav space-y-2">
             {NAV_ITEMS.map((n) => (
               <li key={n.href}>
                 <Link href={n.href} className="text-sm text-ink-muted transition-colors hover:text-white">
@@ -72,23 +81,25 @@ export default function Footer() {
         </div>
 
         {/* Coluna 3: Dados */}
-        <div>
-          <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#0ed8f6]">
+        <div className="lp-rodape-bloco">
+          <h4 className="lp-rodape-titulo mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#0ed8f6]">
             Contato
           </h4>
           <ul className="space-y-4 text-sm text-ink-muted">
             {UNITS.map((u) => (
-              <li key={u.id}>
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white">
+              <li key={u.id} className="lp-rodape-unidade">
+                <p className="lp-rodape-unidade-cidade text-xs font-semibold uppercase tracking-[0.16em] text-white">
                   {u.city} – {u.state}
                 </p>
                 {/* Pato Branco e Rio de Janeiro nao tem endereco nem telefone no
                     site; ficam so com o nome, sem dado inventado. */}
-                {u.address && <p className="mt-1 leading-relaxed">{u.address}</p>}
+                {u.address && (
+                  <p className="lp-rodape-unidade-dado mt-1 leading-relaxed">{u.address}</p>
+                )}
                 {u.phone && (
                   <a
                     href={`tel:${u.phone.replace(/\D/g, '')}`}
-                    className="mt-1 inline-block transition-colors hover:text-white"
+                    className="lp-rodape-unidade-dado mt-1 inline-block transition-colors hover:text-white"
                   >
                     {u.phone}
                   </a>
@@ -99,11 +110,11 @@ export default function Footer() {
         </div>
 
         {/* Coluna 4: Legais */}
-        <div>
-          <h4 className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#0ed8f6]">
+        <div className="lp-rodape-bloco">
+          <h4 className="lp-rodape-titulo mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#0ed8f6]">
             Institucional
           </h4>
-          <ul className="space-y-2">
+          <ul className="lp-rodape-nav space-y-2">
             <li>
               <Link
                 href="/politica-de-privacidade"

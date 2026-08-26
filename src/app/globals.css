@@ -2150,6 +2150,43 @@ html[data-motion="reduce"] .orbit-counter {
 .section-light .contact-inline .contact-dialog-endereco-texto {
   color: #ffffff;
 }
+
+/* ---------------------------------------------------------------------------
+   SIS-55 — por que o endereco continuava apagado depois de DUAS correcoes de cor
+   ---------------------------------------------------------------------------
+   Nao era cor. A cor ja estava certa (branco puro, na regra logo acima). O
+   suspeito confirmado é o de numero 3 da issue: o `backdrop-filter: blur(10px)`
+   do cartao (`.contact-dialog-endereco`, regra base) sob um ancestral que é
+   ESCALADO por quadro.
+
+   `.ct-palco[data-modo="scroll"] .ct-painel` aplica
+   `scale(0.84 -> 1)` + `will-change: transform` durante todo o percurso de
+   entrada. Isso promove o painel a uma camada de compositor propria e, dentro
+   dela, o `backdrop-filter` do cartao passa a ler um backdrop ja rasterizado e
+   reescalado: o desfoque deixa de separar o cartao da fachada e passa a lavar o
+   proprio corpo do cartao. O rotulo `SEDE · SÃO PAULO` sobrevive porque é 700,
+   caixa alta e com 0.16em de entreletra; o endereco, 450 em 0.78rem, dissolve.
+
+   É exatamente por isso que trocar a cor nunca resolveu: o texto nao estava
+   escuro, estava sendo lavado na composicao.
+
+   A correcao troca o desfoque por DENSIDADE — o cartao nao depende mais do
+   backdrop para se separar da foto — e engrossa um pouco o endereco, que agora
+   é renderizado sem blur por cima. Escopado em `.contact-inline`: o modal
+   (`.contact-dialog`) NAO tem ancestral escalado, o desfoque ali funciona, e a
+   regra permanente do projeto é nao alterar o modal de contato.
+   --------------------------------------------------------------------------- */
+.contact-inline .contact-dialog-endereco {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  /* Fundo praticamente opaco: sem o blur, é a densidade que garante o contraste
+     sobre o trecho claro da fachada. Mesma familia azul institucional. */
+  background: linear-gradient(135deg, rgba(0, 26, 61, 0.985) 0%, rgba(0, 45, 92, 0.97) 100%);
+}
+.contact-inline .contact-dialog-endereco-texto {
+  font-size: 0.82rem;
+  font-weight: 500;
+}
 .section-light .contact-inline .contact-dialog-campo label {
   color: rgba(247, 251, 255, 0.7);
 }
@@ -2859,6 +2896,227 @@ html[data-motion="reduce"] .orbit-counter {
 .contact-dialog-enviar:disabled {
   opacity: 0.65;
   cursor: progress;
+}
+
+/* ===========================================================================
+   SIS-57 — micro-interacoes dos componentes internos do painel
+   ===========================================================================
+   Cinco alvos: cartao de endereco (era inerte), cartao do telefone, campos do
+   formulario, botao Enviar e a foto da sede.
+
+   ESCOLHA DE ESCOPO, feita uma vez e valendo para o bloco inteiro: tudo aqui
+   esta sob `.contact-inline`, nunca na regra base. O `ContactPanel` é o MESMO
+   componente da secao da home e do modal de contato, e o modal é intocavel por
+   regra permanente do projeto. Como varias destas reacoes aprofundam hovers que
+   o modal ja tem (telefone, campos, botao), por-las na base seria alterar o
+   modal por tabela. Se algum dia estas reacoes forem desejadas no modal tambem,
+   basta trocar `.contact-inline` por nada — mas isso é decisao de quem pedir.
+
+   Restricoes respeitadas: so `transform`, `opacity`, `filter`, `box-shadow`,
+   `border-color` e `background`; nada de `width`/`height`/`padding`/`font-size`,
+   portanto nenhum salto de layout. Curva unica
+   `cubic-bezier(0.22, 1, 0.36, 1)` em <=200ms. Nada que seja puro enfeite sai do
+   `@media (hover: hover)`, porque no toque o hover cola e ficaria preso ligado.
+   Nenhuma reacao move o campo que esta sendo escrito: quem se desloca é sempre o
+   icone, o rotulo ou o cartao vizinho — a caixa de texto so muda cor, borda e
+   halo. */
+
+/* Pulso curto do alfinete, e nao infinito: é resposta ao ponteiro, nao
+   decoracao permanente. Declarado fora do `@media` que o consome — `@keyframes`
+   dentro de regra condicional é valido, mas nao vale o risco. */
+@keyframes cd-pin-pulso {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (hover: hover) {
+  /* --- 1. cartao de endereco (o unico alvo que nao tinha NENHUMA reacao) --- */
+  .contact-inline .contact-dialog-endereco {
+    transition:
+      transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .contact-inline .contact-dialog-endereco:hover {
+    transform: translate3d(0, -3px, 0);
+    border-color: rgba(14, 200, 245, 0.72);
+    box-shadow:
+      0 24px 46px -22px rgba(0, 12, 28, 0.9),
+      inset 0 1px 0 0 rgba(165, 240, 255, 0.22),
+      0 0 0 1px rgba(14, 200, 245, 0.18);
+  }
+  .contact-inline .contact-dialog-endereco:hover svg {
+    animation: cd-pin-pulso 460ms cubic-bezier(0.22, 1, 0.36, 1) 1;
+  }
+
+  /* --- 2. cartao do telefone: varredura + icone acendendo -----------------
+     A varredura vai no `::before` porque o `::after` ja é o respiro do brilho
+     lateral — dois valores no mesmo pseudo disputariam o mesmo `transform`. */
+  .contact-inline .contact-dialog-fone::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 45%;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate3d(-120%, 0, 0) skewX(-12deg);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(180, 240, 255, 0.16),
+      transparent
+    );
+    transition:
+      transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .contact-inline .contact-dialog-fone:hover::before {
+    opacity: 1;
+    transform: translate3d(260%, 0, 0) skewX(-12deg);
+  }
+  .contact-inline .contact-dialog-fone-icone {
+    transition:
+      transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* Acende no hover do bloco inteiro, nao so do icone: o alvo real é o cartao. */
+  .contact-inline .contact-dialog-fone:hover .contact-dialog-fone-icone {
+    transform: translate3d(0, -2px, 0);
+    border-color: rgba(20, 200, 245, 0.55);
+    box-shadow: 0 0 0 4px rgba(20, 200, 245, 0.1);
+  }
+
+  /* --- 3. campos: icone desliza e esfria para ciano, rotulo sobe de tom --- */
+  .contact-inline .contact-dialog-caixa > svg {
+    transition:
+      color 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .contact-inline .contact-dialog-campo:hover .contact-dialog-caixa > svg,
+  .contact-inline .contact-dialog-caixa:focus-within > svg {
+    transform: translate3d(2px, 0, 0);
+    color: var(--contact-cyan);
+  }
+  .contact-inline .contact-dialog-campo label {
+    transition: color 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .contact-inline .contact-dialog-campo:hover label,
+  .contact-inline .contact-dialog-campo:focus-within label {
+    color: rgba(247, 251, 255, 0.95);
+  }
+
+  /* --- 4. Enviar: degrade se desloca e um lampejo atravessa ---------------
+     A caixa nao muda — `background-size`/`background-position` deslocam a
+     pintura dentro dela, e o lampejo é um pseudo sob `overflow: hidden`. */
+  .contact-inline .contact-dialog-enviar {
+    background-size: 160% 100%;
+    background-position: 0% 50%;
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out),
+      filter var(--dur-fast) var(--ease-out),
+      background-position 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .contact-inline .contact-dialog-enviar:hover:not(:disabled) {
+    background-position: 100% 50%;
+  }
+  .contact-inline .contact-dialog-enviar::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40%;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate3d(-140%, 0, 0) skewX(-16deg);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transition:
+      transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .contact-inline .contact-dialog-enviar:hover:not(:disabled)::after {
+    opacity: 1;
+    transform: translate3d(300%, 0, 0) skewX(-16deg);
+  }
+
+  /* --- 5. foto da sede ----------------------------------------------------
+     Aqui NAO entra `scale`: desde o SIS-56 o `transform` da imagem pertence ao
+     paralaxe escrito por quadro, e um `transition` de escala no mesmo lugar é
+     exatamente a colisao que o SIS-42 proibiu. A reacao vem por `filter`, que
+     esta livre — a fachada ganha luz em vez de crescer. */
+  .contact-inline .contact-dialog-foto-recorte {
+    transition: filter 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .contact-inline .contact-dialog-foto:hover .contact-dialog-foto-recorte {
+    filter: brightness(1.07) saturate(1.08);
+  }
+}
+
+/* O halo de foco fica MAIS forte, nunca mais fraco: é o unico indicador de onde
+   o teclado esta. Fora do `@media (hover: hover)` de proposito — foco visivel
+   nao é enfeite e existe em qualquer dispositivo. */
+.contact-inline .contact-dialog-campo input:focus-visible,
+.contact-inline .contact-dialog-campo textarea:focus-visible {
+  border-color: var(--contact-cyan);
+  box-shadow:
+    0 0 0 4px rgba(20, 200, 245, 0.26),
+    0 8px 22px -14px rgba(20, 200, 245, 0.5);
+}
+
+/* Com movimento reduzido as reacoes SOBREVIVEM como cor, borda e sombra — o que
+   sai é deslocamento, varredura e pulso. Nada fica preso em `opacity: 0`: os dois
+   pseudos varredores voltam a ser invisiveis e imoveis, que é o estado de
+   repouso deles. */
+@media (prefers-reduced-motion: reduce) {
+  .contact-inline .contact-dialog-endereco:hover,
+  .contact-inline .contact-dialog-fone:hover .contact-dialog-fone-icone,
+  .contact-inline .contact-dialog-campo:hover .contact-dialog-caixa > svg,
+  .contact-inline .contact-dialog-caixa:focus-within > svg {
+    transform: none !important;
+  }
+  .contact-inline .contact-dialog-endereco:hover svg {
+    animation-name: none !important;
+  }
+  .contact-inline .contact-dialog-fone:hover::before,
+  .contact-inline .contact-dialog-enviar:hover:not(:disabled)::after {
+    opacity: 0 !important;
+    transform: none !important;
+  }
+}
+html[data-motion="reduce"] .contact-inline .contact-dialog-endereco:hover,
+html[data-motion="reduce"]
+  .contact-inline
+  .contact-dialog-fone:hover
+  .contact-dialog-fone-icone,
+html[data-motion="reduce"]
+  .contact-inline
+  .contact-dialog-campo:hover
+  .contact-dialog-caixa
+  > svg,
+html[data-motion="reduce"] .contact-inline .contact-dialog-caixa:focus-within > svg {
+  transform: none !important;
+}
+html[data-motion="reduce"] .contact-inline .contact-dialog-endereco:hover svg {
+  animation-name: none !important;
+}
+html[data-motion="reduce"] .contact-inline .contact-dialog-fone:hover::before,
+html[data-motion="reduce"]
+  .contact-inline
+  .contact-dialog-enviar:hover:not(:disabled)::after {
+  opacity: 0 !important;
+  transform: none !important;
 }
 
 /* Entrada do conteudo: painel, cabecalho e campos em cascata muito curta. Todos
@@ -5108,11 +5366,88 @@ html[data-motion="reduce"] .barra-sinal::before {
 /* Só `transform` e `opacity`: as duas propriedades que o compositor resolve sem
    recalcular layout. Nada de `filter: blur()` — desfocar um painel deste tamanho
    a cada quadro de rolagem derruba o quadro por quadro (skill `performance-gpu`). */
+/* ---------------------------------------------------------------------------
+   SIS-56 — vida continua do painel
+   ---------------------------------------------------------------------------
+   Antes o painel tinha SÓ entrada: `--ct-surgir` o trazia nos primeiros 34% do
+   percurso e nos 66% restantes ele ficava completamente imovel. Agora sao tres
+   movimentos, e cada um mora numa CAMADA DIFERENTE de proposito — a licao de
+   SIS-42 é que valor por quadro e animacao discreta nao podem disputar o mesmo
+   `transform`:
+
+     1. entrada + deriva  -> `transform` do `.ct-painel` (uma composicao so,
+        ambas vindas do relogio do scroll: `--ct-surgir` e `--ct-p`);
+     2. flutuacao propria -> `transform` do `.contact-dialog-inner`, animacao
+        CSS de 11s que continua com a pagina parada;
+     3. paralaxe interno  -> `transform` da foto e do corpo, com fatores
+        diferentes, tambem vindos de `--ct-p`.
+
+   `--ct-vida` é o interruptor comum: vale 1 normalmente e 0 com algum campo em
+   foco, porque escrever num alvo que oscila é hostil e o formulario é a
+   conversao da pagina. Ele é registrado por `@property` logo abaixo — é isso
+   que permite uma transicao suave no congelamento sem por `transition` em
+   nenhuma propriedade reescrita por quadro (o `transform` continua sem
+   transicao; quem transiciona é o multiplicador). */
+@property --ct-vida {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
 .ct-palco[data-modo="scroll"] .ct-painel {
-  transform: translate3d(0, calc((1 - var(--ct-surgir, 1)) * 12vh), 0)
-    scale(calc(0.84 + 0.16 * var(--ct-surgir, 1)));
+  --ct-vida: 1;
+  transition: --ct-vida 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translate3d(
+      0,
+      calc(
+        (1 - var(--ct-surgir, 1)) * 12vh - var(--ct-p, 0) * var(--ct-vida) * 16px
+      )
+    )
+    scale(calc(0.84 + 0.16 * var(--ct-surgir, 1)))
+    rotate(calc(var(--ct-p, 0) * var(--ct-vida) * -0.25deg));
   opacity: clamp(0, calc(var(--ct-surgir, 1) * 1.5), 1);
   will-change: transform, opacity;
+  /* Texto grande sob `scale` composto tende a chuviscar; ver tambem SIS-55. */
+  backface-visibility: hidden;
+}
+/* Campo em foco: painel imovel. Zera a deriva e o paralaxe (por `--ct-vida`) e
+   pausa a flutuacao. */
+.ct-palco[data-modo="scroll"] .ct-painel:focus-within {
+  --ct-vida: 0;
+}
+.ct-palco[data-modo="scroll"] .ct-painel:focus-within .contact-dialog-inner {
+  animation-play-state: paused;
+}
+
+/* Flutuacao independente do scroll: sem ela o painel congela quando a rolagem
+   para, que é metade da queixa. Amplitude MENOR que a da deriva, para nao
+   competir com ela. Camada propria — nao ha `transform` do relogio aqui. */
+@keyframes ct-flutuar {
+  from {
+    transform: translate3d(0, -4px, 0);
+  }
+  to {
+    transform: translate3d(0, 4px, 0);
+  }
+}
+.ct-palco[data-modo="scroll"] .contact-dialog-inner {
+  animation: ct-flutuar 11s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+  backface-visibility: hidden;
+}
+
+/* Paralaxe interno: a foto anda mais que o corpo. Profundidade sem mover nada
+   que esteja sendo lido — o corpo, que tem o texto e os campos, é o que menos se
+   desloca.
+
+   Quem se move na coluna da foto é a IMAGEM, nunca o `<figure>`: o recorte é um
+   absoluto em `inset: 0` sobre a coluna inteira, e deslocar o figure abriria uma
+   faixa do fundo do painel na base. O `scale(1.06)` é a folga que o
+   deslocamento consome — sem ele o `object-fit: cover` acaba antes do curso. */
+.ct-palco[data-modo="scroll"] .contact-dialog-foto img {
+  transform: scale(1.06)
+    translate3d(0, calc(var(--ct-p, 0) * var(--ct-vida, 1) * -14px), 0);
+}
+.ct-palco[data-modo="scroll"] .contact-dialog-corpo {
+  transform: translate3d(0, calc(var(--ct-p, 0) * var(--ct-vida, 1) * -6px), 0);
 }
 
 /* Com preferencia por menos movimento a secao ja nasce em modo lista (o
@@ -5132,6 +5467,18 @@ html[data-motion="reduce"] .barra-sinal::before {
     transform: none !important;
     opacity: 1 !important;
   }
+  /* SIS-56: as tres camadas de vida morrem aqui. `animation-name`, e nao o
+     atalho `animation`, para nao reescrever duracao e direcao de uma regra
+     derivada. O estado final da flutuacao é um deslocamento de 4px — nada fica
+     invisivel nem fora de lugar depois do reset. */
+  .ct-palco .contact-dialog-inner {
+    animation-name: none !important;
+    transform: none !important;
+  }
+  .ct-palco .contact-dialog-foto img,
+  .ct-palco .contact-dialog-corpo {
+    transform: none !important;
+  }
   .ct-veu {
     display: none !important;
   }
@@ -5148,6 +5495,15 @@ html[data-motion="reduce"] .ct-trilha .ct-inner {
 html[data-motion="reduce"] .ct-painel {
   transform: none !important;
   opacity: 1 !important;
+}
+/* Espelho do bloco `@media` acima para o interruptor em tempo de execucao. */
+html[data-motion="reduce"] .ct-palco .contact-dialog-inner {
+  animation-name: none !important;
+  transform: none !important;
+}
+html[data-motion="reduce"] .ct-palco .contact-dialog-foto img,
+html[data-motion="reduce"] .ct-palco .contact-dialog-corpo {
+  transform: none !important;
 }
 html[data-motion="reduce"] .ct-veu {
   display: none !important;
@@ -5196,6 +5552,25 @@ html[data-motion="reduce"] .ct-veu {
   color: #0a1f44;
 }
 
+/* Emenda de entrada: a seção acima ("Soluções de Negócios") fecha em palco
+   escuro e esta faixa é clara. `z-index: -1` pinta por cima do fundo da faixa e
+   por baixo do texto — mesmo truque de `.emenda-de-escuro`, e por isso o
+   conteúdo não precisa ser empilhado. No modo lista é estática; no modo dirigido
+   ela se dissipa conforme a seção entra (ver `--impact-entrada` abaixo). */
+.impact-emenda {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 150px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    #041a33 0,
+    rgba(4, 26, 51, 0.5) 40%,
+    rgba(4, 26, 51, 0) 100%
+  );
+}
+
 .impact-topo-inner {
   display: flex;
   flex-direction: column;
@@ -5210,13 +5585,17 @@ html[data-motion="reduce"] .ct-veu {
   }
 }
 
+/* Ciano, e não o azul `#0079cb` de antes: o sobretítulo é o que abre a seção e
+   precisava ler como ciano da marca. `#0ed8f6` puro sobre a faixa clara não
+   passa de contraste (fica quase branco), então o tom é o ciano escurecido —
+   mesma família, legível sobre `#f2f7fc`. */
 .impact-eyebrow {
   font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.24em;
+  font-weight: 700;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: #0079cb;
-  margin-bottom: 0.75rem;
+  color: #00819f;
+  margin-bottom: 0.6rem;
 }
 
 .impact-titulo {
@@ -5226,6 +5605,12 @@ html[data-motion="reduce"] .ct-veu {
   letter-spacing: -0.02em;
   max-width: 22ch;
   color: #0a1f44;
+  /* Duas linhas equilibradas ("Escala que transforma / o mercado de seguros.")
+     em vez do "…mercado de / seguros." que o `max-width` sozinho produzia. É o
+     que `text-wrap: balance` faz — distribui as linhas em vez de encher a
+     primeira. Sem `<br>` no markup: a quebra tem de acompanhar a largura, e o
+     mesmo título serve o modo lista e o modo dirigido, com corpos diferentes. */
+  text-wrap: balance;
 }
 .impact-ponto {
   color: #0ed8f6;
@@ -5443,21 +5828,67 @@ html[data-motion="reduce"] .ct-veu {
     z-index: 1;
     height: 100svh;
     display: grid;
-    grid-template-rows: clamp(170px, 24svh, 220px) minmax(0, 1fr);
+    /* Faixa BAIXA e cheia (era `clamp(170px, 24svh, 220px)`): sobrava branco
+       porque a altura foi dimensionada para um título em duas linhas largas e o
+       marcador na horizontal ao lado. Com o marcador no canto e o trilho na
+       vertical, esta é a altura que o conteúdo de facto ocupa — e o que ela
+       devolve vai todo para o palco, onde os sete indicadores precisam de espaço.
+       Continua TRAVADA (não `auto`): é dela que sai a linha-base da curva. */
+    grid-template-rows: clamp(140px, 19svh, 178px) minmax(0, 1fr);
     overflow: clip;
     background: #041a33;
   }
   .impact-scroll[data-dirigindo] .impact-topo {
-    padding-block: clamp(1.25rem, 2.5vw, 2rem);
+    padding-block: clamp(1rem, 2vw, 1.5rem);
     display: flex;
     align-items: center;
   }
+  /* A emenda de entrada se dissipa conforme a seção entra: no primeiro quadro
+     ela é o navy que vem de Soluções, e ao fim da entrada não existe mais. A
+     opacidade vem de `--impact-entrada`, que o único ScrollTrigger da seção já
+     escreve — nenhum gatilho novo, nenhuma segunda medição.
+
+     Sem `transition`: o valor é reescrito a cada quadro pelo relógio do scroll, e
+     transição numa propriedade dirigida por quadro é a colisão de SIS-42. */
+  .impact-scroll[data-dirigindo] .impact-emenda {
+    height: clamp(90px, 12svh, 130px);
+    /* Fallback 0, e não 1: antes do primeiro quadro do ScrollTrigger a seção
+       ainda está no topo, que é exactamente onde a emenda deve estar visível. */
+    opacity: calc(1 - var(--impact-entrada, 0));
+  }
+  /* Marcador no canto superior DIREITO, título à esquerda: `flex-start` alinha os
+     dois pelo topo da faixa, e é `space-between` que empurra o marcador para a
+     ponta. */
   .impact-scroll[data-dirigindo] .impact-topo-inner {
     width: 100%;
+    align-items: flex-start;
   }
   .impact-scroll[data-dirigindo] .impact-titulo {
     font-size: clamp(1.6rem, 2.6vw, 2.4rem);
     max-width: 26ch;
+  }
+  /* Trilho VERTICAL descendo do marcador (era horizontal ao lado dele). O número
+     fica em cima, os sete pontos descem alinhados à direita. */
+  .impact-scroll[data-dirigindo] .impact-marcador {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.6rem;
+  }
+  .impact-scroll[data-dirigindo] .impact-trilho {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.35rem;
+  }
+  /* Na vertical o ponto ativo cresce em ALTURA, não em largura: `width` viraria
+     um traço apontando para fora do trilho. */
+  .impact-scroll[data-dirigindo] .impact-trilho-ponto {
+    transition:
+      background var(--dur-fast) var(--ease-out),
+      height var(--dur-fast) var(--ease-out);
+  }
+  .impact-scroll[data-dirigindo] .impact-trilho-ponto[data-estado="ativo"] {
+    width: 7px;
+    height: 22px;
   }
   .impact-scroll[data-dirigindo] .impact-palco {
     padding-block: 0;
@@ -5470,6 +5901,31 @@ html[data-motion="reduce"] .ct-veu {
     position: absolute;
     inset: 0;
     overflow: clip;
+    /* Diâmetro da lente, DERIVADO do vão — e não um `clamp` independente como
+       antes. Era o desencontro entre os dois que punha o conteúdo dos vizinhos
+       dentro da lente: com o vão em 173px e a lente em `clamp(380px, 30vw,
+       460px)`, o vizinho imediato nascia atrás dos anéis.
+
+       Uma fonte só: o vão vem de `vaoEntreEtapas` e alimenta a posição dos
+       indicadores, dos nodes, o path, o deslocamento da trilha — e agora também a
+       lente, a largura do indicador ativo e o buraco da máscara. O teto de 400px
+       existe porque acima disso a lente passa a comer os vizinhos mesmo com o vão
+       largo. */
+    --impact-lente: clamp(260px, calc(var(--impact-vao) * 1.85), 400px);
+  }
+
+  /* Boca de entrada da onda: beira esquerda do palco, na altura da linha-base.
+     Ancora medida pela travessia (`ui/SolutionsToMetrics.tsx`) — nada é
+     desenhado aqui. Fora do palco dirigido ela nem tem posicao, e a travessia
+     tambem nao existe. */
+  .impact-scroll[data-dirigindo] .impact-chegada-fio {
+    position: absolute;
+    left: 0;
+    top: var(--impact-linha, 50%);
+    width: 1px;
+    height: 1px;
+    transform: translateY(-50%);
+    pointer-events: none;
   }
 
   .impact-scroll[data-dirigindo] .impact-grade {
@@ -5526,7 +5982,10 @@ html[data-motion="reduce"] .ct-veu {
     position: absolute;
     inset: 0;
     z-index: 2;
-    --impact-buraco: calc(clamp(380px, 30vw, 460px) / 2 + 21px);
+    /* Segue a lente, que agora vem do vão (`--impact-lente`, herdada da
+       `.impact-cena`). Com o valor duplicado em `clamp` aqui, mudar a lente
+       deixava o buraco no tamanho antigo e a curva reaparecia por cima dos anéis. */
+    --impact-buraco: calc(var(--impact-lente) / 2 + 18px);
     mask-image: radial-gradient(
       circle at var(--impact-centro) 55%,
       transparent var(--impact-buraco),
@@ -5552,10 +6011,14 @@ html[data-motion="reduce"] .ct-veu {
   /* O futuro do percurso é um fio fino e quase cinza; o trecho já percorrido é
      grosso e aceso. O contraste entre os dois é o que faz a curva contar quanto
      do caminho foi feito — antes eram duas espessuras parecidas. */
+  /* Um pouco mais presente que antes (`1.2` / `0.16`): a curva é o que costura os
+     sete indicadores e passava invisível no palco escuro, então o percurso não se
+     lia como percurso. Continua bem mais fina e apagada que o trecho aceso — é o
+     contraste entre as duas que conta quanto do caminho foi feito. */
   .impact-scroll[data-dirigindo] .impact-curva-base {
     fill: none;
-    stroke: rgba(196, 216, 238, 0.16);
-    stroke-width: 1.2;
+    stroke: rgba(196, 216, 238, 0.26);
+    stroke-width: 1.6;
     stroke-linecap: round;
   }
   .impact-scroll[data-dirigindo] .impact-curva-viva {
@@ -5618,7 +6081,11 @@ html[data-motion="reduce"] .ct-veu {
     position: absolute;
     left: calc(var(--impact-centro) + var(--impact-i, 0) * var(--impact-vao));
     top: calc(var(--impact-linha) + var(--impact-desvio, 0px));
-    width: clamp(170px, 15vw, 230px);
+    /* Largura do vizinho = um vão menos a folga. Antes era `clamp(170px, 15vw,
+       230px)`, independente do vão: com o vão de ~173px que faz os sete caberem,
+       230px de conteúdo se sobrepunham ao vizinho seguinte. Derivar do vão garante
+       que nunca encostem, em qualquer largura de tela. */
+    width: min(calc(var(--impact-vao) - 16px), 210px);
     padding: 0;
     border: 0;
     text-align: center;
@@ -5639,7 +6106,9 @@ html[data-motion="reduce"] .ct-veu {
      nessa mesma altura — e ganha a largura da lente. */
   .impact-scroll[data-dirigindo] .impact-item[data-estado="ativo"] {
     top: var(--impact-linha);
-    width: clamp(380px, 30vw, 460px);
+    /* A largura da lente, pela variável e não por um `clamp` repetido: o ativo
+       tem de coincidir com a moldura, senão o rótulo sai por fora dos anéis. */
+    width: var(--impact-lente);
     opacity: 1;
     z-index: 7;
   }
@@ -5768,7 +6237,7 @@ html[data-motion="reduce"] .ct-veu {
     position: absolute;
     left: var(--impact-centro);
     top: 55%;
-    width: clamp(380px, 30vw, 460px);
+    width: var(--impact-lente);
     aspect-ratio: 1;
     transform: translate3d(-50%, -50%, 0);
     z-index: 6;
@@ -5816,6 +6285,32 @@ html[data-motion="reduce"] .ct-veu {
     stroke: rgba(155, 220, 255, 0.14);
     stroke-width: 0.8;
   }
+  /* ── Resposta da lente à passagem ────────────────────────────────────────
+     `--impact-passagem` vale 0 com a etapa parada e 1 no meio do caminho entre
+     duas (ver `Metrics.tsx`). É o que resolve o sintoma de "lente travada": ela
+     continua CENTRADA por desenho — é ela que define o centro da cena, e o que se
+     move é a trilha por baixo — mas agora reage ao avanço em vez de só assistir o
+     conteúdo trocar.
+
+     A escala vai no `<svg>` da moldura, e NÃO nos `<path>` dos anéis: aqueles têm
+     `animation: impact-gira` na mesma propriedade `transform`, e valor por quadro
+     disputando `transform` com giro contínuo é exactamente a colisão que SIS-42
+     corrigiu em Soluções — um sobrescreve o outro. Nós diferentes, propriedades
+     que não se cruzam.
+
+     Sem `transition`: o valor é reescrito a cada quadro pelo relógio do scroll. */
+  .impact-scroll[data-dirigindo] .impact-aneis {
+    transform: scale(calc(1 + 0.045 * var(--impact-passagem, 0)));
+    transform-origin: 50% 50%;
+    opacity: calc(0.82 + 0.18 * var(--impact-passagem, 0));
+    will-change: transform;
+  }
+  /* O node de chegada abre quando a curva está atravessando e fecha ao pousar: é
+     o ponto onde a curva entra na máscara, então é ele que traduz "está a
+     acontecer algo" na borda da lente. */
+  .impact-scroll[data-dirigindo] .impact-chegada {
+    transform: scale(calc(1 + 0.55 * var(--impact-passagem, 0)));
+  }
   /* Arco de progresso. A calha é o círculo inteiro, apagado; o vivo é o mesmo
      círculo com `stroke-dashoffset` proporcional à etapa.
 
@@ -5831,15 +6326,38 @@ html[data-motion="reduce"] .ct-veu {
     transform-origin: 100px 100px;
   }
   .impact-arco-calha {
-    stroke: rgba(196, 216, 238, 0.1);
-    stroke-width: 1.6;
+    stroke: rgba(196, 216, 238, 0.14);
+    stroke-width: 2.4;
   }
+  /* Mais grosso e mais aceso que antes (`1.6` / `0.8`). Em unidades de `viewBox`
+     de 200 dentro de uma lente de ~320px, 1.6 dava ~2,5px de traço — o único
+     indicador contínuo da moldura era quase invisível, e é daí que vinha boa parte
+     da sensação de lente estática. */
   .impact-arco-vivo {
-    stroke: rgba(14, 216, 246, 0.8);
-    stroke-width: 1.6;
+    stroke: #0ed8f6;
+    stroke-width: 2.4;
     stroke-dasharray: 578.053;
     stroke-dashoffset: calc(578.053 * (1 - var(--impact-etapa, 0) / 6));
-    filter: drop-shadow(0 0 6px rgba(14, 216, 246, 0.45));
+    filter:
+      drop-shadow(0 0 4px rgba(14, 216, 246, 0.6))
+      drop-shadow(0 0 12px rgba(14, 216, 246, 0.3));
+  }
+  /* Cabeça do arco: a marca que ANDA pela borda da lente. 60deg por etapa porque
+     `--impact-etapa` vai de 0 a 6 (sete indicadores) e a volta é de 360deg; o
+     `-90deg` põe o zero no topo, como no arco.
+
+     `transform` dirigido por quadro e SEM `transition` e SEM `animation` — este nó
+     não tem nada a disputar a propriedade com ele (a lição de SIS-42). O brilho
+     que pulsa fica na `opacity`, que é outra propriedade. */
+  .impact-arco-cabeca {
+    transform: rotate(calc(-90deg + var(--impact-etapa, 0) * 60deg));
+    transform-origin: 100px 100px;
+  }
+  .impact-arco-cabeca circle {
+    fill: #ffffff;
+    stroke: #0ed8f6;
+    stroke-width: 1.6;
+    filter: drop-shadow(0 0 7px rgba(14, 216, 246, 0.85));
   }
   .impact-ticks line {
     stroke: rgba(155, 220, 255, 0.28);
@@ -6182,6 +6700,23 @@ html[data-motion="reduce"] .ct-veu {
     height: auto !important;
     padding: 0 clamp(1.25rem, 5vw, 2rem) !important;
   }
+  /* A emenda de entrada é forma, não movimento: no modo lista a seção continua a
+     vir depois do palco escuro de Soluções, então o degradê fica — mas parado, e
+     não pendurado no progresso do scroll. */
+  .impact-scroll[data-dirigindo] .impact-emenda {
+    height: 150px !important;
+    opacity: 1 !important;
+  }
+  /* O marcador volta à horizontal junto com a faixa alta do modo lista. */
+  .impact-scroll[data-dirigindo] .impact-marcador,
+  .impact-scroll[data-dirigindo] .impact-trilho {
+    flex-direction: row !important;
+    align-items: center !important;
+  }
+  .impact-scroll[data-dirigindo] .impact-trilho-ponto[data-estado="ativo"] {
+    width: 26px !important;
+    height: 7px !important;
+  }
   .impact-scroll[data-dirigindo] .impact-item {
     position: relative !important;
     left: auto !important;
@@ -6267,6 +6802,24 @@ html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-caption {
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-rotulo,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-caption {
   margin-inline: 0 !important;
+}
+/* Espelho das mesmas tres reposicoes do bloco `@media (prefers-reduced-motion)`
+   logo acima: sem elas o interruptor em tempo de execucao entregaria a faixa e o
+   marcador na versao do palco dirigido, que a lista vertical nao usa. */
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-emenda {
+  height: 150px !important;
+  opacity: 1 !important;
+}
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-marcador,
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-trilho {
+  flex-direction: row !important;
+  align-items: center !important;
+}
+html[data-motion="reduce"]
+  .impact-scroll[data-dirigindo]
+  .impact-trilho-ponto[data-estado="ativo"] {
+  width: 26px !important;
+  height: 7px !important;
 }
 
 /* ===========================================================================
@@ -6437,8 +6990,14 @@ html[data-motion="reduce"] .linkedin-card-verso {
   background:
     radial-gradient(70% 60% at 20% 20%, rgba(14, 216, 246, 0.18), transparent 65%),
     radial-gradient(60% 60% at 80% 80%, rgba(0, 77, 138, 0.55), transparent 65%),
-    linear-gradient(180deg, #0b4e86 0%, #0f63a8 55%, #0b4e86 100%);
+    linear-gradient(180deg, #0b4e86 0%, #0f63a8 55%, #0b4e86 82%, #1273bc 100%);
 }
+/* A ultima parada do degrade é `#1273bc`, e nao mais `#0b4e86`: com o bloco
+   "Fale com a Gente!" comentado (SIS-54), quem encosta no rodape agora é esta
+   secao — e o rodape é exatamente `#1273bc` (`bg-[#1273BC]/85` sobre um `body`
+   da mesma cor, logo opaco na pratica). Fechar em `#0b4e86` punha um degrau de
+   azul escuro para azul medio na emenda. O cartao azul do CTA fazia essa ponte
+   cromatica antes; agora ela é feita aqui. */
 .social-luz {
   position: absolute;
   top: 50%;
@@ -6536,6 +7095,148 @@ html[data-motion="reduce"] .social-card-reativo {
     translate: 0 0 !important;
     transition: none !important;
   }
+}
+
+/* ===========================================================================
+   SIS-58 — vida continua da secao #SomosSistraners
+   ===========================================================================
+   A secao entrava uma vez (`whileInView` no bloco de copy) e depois so as duas
+   luzes e os orbs se moviam. Tres gestos novos, e o cuidado inteiro esta em qual
+   PROPRIEDADE cada um ocupa — este arquivo ja usa `translate` para o ponteiro e
+   `transform` para as animacoes, e a regra da casa (SIS-42) é que valor por
+   quadro e `transition`/`animation` nao dividem propriedade:
+
+     marca d'agua  -> `translate` = ponteiro (transicionado, ja existia)
+                      `transform` = deriva do scroll por quadro (novo, SEM
+                                    transicao)
+     card LinkedIn -> `translate` = ponteiro (ja existia)
+                      `rotate`    = inclinacao pelo ponteiro (novo,
+                                    transicionado — `rotate` é longhand
+                                    independente, nao entra no `transform`)
+                      `transform` = flutuacao lenta (novo)
+                      e as FACES continuam com o `transform` delas para a
+                      revelacao em duas metades, que é intocada: camadas
+                      separadas, wrapper flutua, interior abre.
+
+   Ficaram de fora, de proposito: a entrada do titulo palavra por palavra com
+   mascara por linha (o titulo ja entra por `vTitle` e uma segunda encenacao
+   disputaria o mesmo elemento) e o paralaxe dos orbs com o scroll (eles ja tem
+   `orb-drift` no `transform` e o ponteiro no `translate` — nao sobra propriedade
+   livre sem reescrever a animacao). O pulso do ponto ciano da pilha `#sistran`
+   tambem nao foi refeito: `.tag-section::before` ja pulsa com `eyebrow-pulse`. */
+
+/* --- 1. marca d'agua deslizando com o scroll -----------------------------
+   O gesto de maior retorno pelo menor custo: o tipo gigante atravessa a faixa
+   na horizontal enquanto a copy anda quase nada, e a diferenca de velocidade é
+   o que da profundidade. Sem `transition` aqui — o valor vem pronto por quadro. */
+.social-fantasma {
+  transform: translate3d(calc((0.5 - var(--sp, 0.5)) * 16vw), 0, 0);
+  will-change: transform;
+}
+
+/* --- 2. card do LinkedIn com vida propria ---------------------------------
+   Flutuacao lenta e de amplitude pequena: o card precisa parecer vivo com a
+   pagina parada, sem competir com a abertura das duas faces no hover. */
+@keyframes social-card-flutuar {
+  from {
+    transform: translate3d(0, -6px, 0);
+  }
+  to {
+    transform: translate3d(0, 6px, 0);
+  }
+}
+.social-card-reativo {
+  animation: social-card-flutuar 9s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+  /* Inclinacao pelo ponteiro, no maximo ~2°: sugere um objeto solido em vez de
+     um retangulo colado na tela. `rotate` proprio, nunca dentro do `transform`
+     da flutuacao. */
+  rotate: calc((var(--sx, 0.5) - 0.5) * 2.4deg);
+  transition:
+    translate 1000ms cubic-bezier(0.22, 1, 0.36, 1),
+    rotate 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+  backface-visibility: hidden;
+}
+/* Com o card em foco ou sob o cursor a flutuacao para: o gesto das duas faces é
+   o que importa naquele instante, e ler o verso de um alvo que oscila é ruim. */
+.social-card-reativo:hover,
+.social-card-reativo:focus-visible {
+  animation-play-state: paused;
+}
+
+/* --- 3. botao "Siga nossa página no Linkedin" -----------------------------
+   Escopado em `.social-palco`: `.btn-primary` é o botao de toda a landing e
+   mexer nele aqui mudaria a pagina inteira. */
+@media (hover: hover) {
+  .social-palco .btn-primary {
+    position: relative;
+    overflow: hidden;
+    transition:
+      transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .social-palco .btn-primary:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 18px 38px -18px rgba(14, 216, 246, 0.7);
+  }
+  .social-palco .btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40%;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate3d(-140%, 0, 0) skewX(-16deg);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.28),
+      transparent
+    );
+    transition:
+      transform 560ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .social-palco .btn-primary:hover::after {
+    opacity: 1;
+    transform: translate3d(300%, 0, 0) skewX(-16deg);
+  }
+}
+
+/* Movimento reduzido: a decoracao para e TERMINA VISIVEL. A marca d'agua volta
+   ao centro, o card para de flutuar e de inclinar (nada disso carregava
+   conteudo), e o lampejo do botao volta ao repouso invisivel — o botao continua
+   reagindo por sombra. */
+@media (prefers-reduced-motion: reduce) {
+  .social-fantasma {
+    transform: none !important;
+  }
+  .social-card-reativo {
+    animation-name: none !important;
+    transform: none !important;
+    rotate: 0deg !important;
+  }
+  .social-palco .btn-primary:hover {
+    transform: none !important;
+  }
+  .social-palco .btn-primary:hover::after {
+    opacity: 0 !important;
+    transform: none !important;
+  }
+}
+html[data-motion="reduce"] .social-fantasma {
+  transform: none !important;
+}
+html[data-motion="reduce"] .social-card-reativo {
+  animation-name: none !important;
+  transform: none !important;
+  rotate: 0deg !important;
+}
+html[data-motion="reduce"] .social-palco .btn-primary:hover {
+  transform: none !important;
+}
+html[data-motion="reduce"] .social-palco .btn-primary:hover::after {
+  opacity: 0 !important;
+  transform: none !important;
 }
 
 /* ==========================================================================
@@ -7063,6 +7764,63 @@ html[data-motion="reduce"] .social-card-reativo {
    corretamente durante a viagem, o que `scale` nao faria.
    `visibility: hidden` no repouso: fora do percurso o elemento nao existe para o
    ponteiro nem para o compositor. */
+/* ===========================================================================
+   Travessia Solucoes -> Numeros (`ui/SolutionsToMetrics.tsx`)
+   ===========================================================================
+   Condutor ancorado nas duas pontas: sai da ponta onde o fio de Solucoes se
+   dissipa (`[data-fio-saida]`) e chega na boca de entrada da onda da Metrics
+   (`[data-fio-chegada]`). Cobre a janela inteira porque as duas ancoras vivem em
+   secoes diferentes; o `d` do path é escrito em coordenadas de VIEWPORT pelo
+   componente, entao nao ha `viewBox` — 1 unidade = 1 px da tela.
+   =========================================================================== */
+.fio-travessia {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30; /* mesma camada do `MosaicHandoff`: acima das duas secoes, abaixo do cabecalho */
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+.fio-travessia-calha,
+.fio-travessia-vivo {
+  fill: none;
+  stroke-linecap: round;
+}
+.fio-travessia-calha {
+  stroke: rgba(163, 210, 240, 0.16);
+  stroke-width: 1.4;
+}
+.fio-travessia-vivo {
+  stroke: url(#fio-travessia-cor);
+  stroke-width: 2;
+  /* `pathLength=1` esta no atributo, entao o traco inteiro mede 1 e o offset que
+     o componente escreve por quadro é fracao direta do progresso. */
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 6px rgba(14, 216, 246, 0.45));
+  /* Sem `transition` aqui: `stroke-dashoffset` é reescrito a cada quadro pelo
+     relogio do scroll, e uma transicao na mesma propriedade disputaria com ele
+     (a licao de SIS-42). */
+}
+.fio-travessia-cabeca {
+  fill: #ffffff;
+  stroke: #0ed8f6;
+  stroke-width: 1.4;
+  filter: drop-shadow(0 0 8px rgba(14, 216, 246, 0.8));
+}
+/* Ponta de saida do fio de Solucoes: ancora medida, nao desenho. O traco visivel
+   ali é o `remate` do svg. */
+.solutions-fio-saida {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
 .mosaic-handoff {
   position: fixed;
   left: 0;
@@ -7829,4 +8587,227 @@ html[data-motion="reduce"] .solution-info > * {
   /* Toda camada de emenda: sem isto ela comeria cliques do conteúdo por baixo. */
   pointer-events: none;
   z-index: -1;
+}
+
+/* ===========================================================================
+   SIS-59 — rodape: informacao revelada por tras dos itens
+   ===========================================================================
+   Referencia: mimo.xiaomi.com/coder. Todo o hover do rodape era troca de cor.
+
+   REGRA QUE MANDA AQUI: nada existe SÓ no hover. O rodape é onde as pessoas
+   procuram endereco e telefone, e em toque nao ha hover nenhum. Entao:
+
+   - endereco, telefone, cidade, links e rotulos legais continuam VISIVEIS e
+     legiveis no repouso — o gesto so os reforca;
+   - o unico texto que nasce escondido é o NOME DA REDE ao lado do icone, que
+     antes nao existia visualmente em lugar nenhum (so no `aria-label`, de onde
+     o leitor de tela continua lendo). Ele aparece no hover E no
+     `:focus-visible`, entao o teclado tambem o alcanca;
+   - tudo que emerge é `position: absolute`, nunca no fluxo: zero salto de
+     layout;
+   - so `transform`, `opacity`, `filter`, `box-shadow`, `border-color` e
+     `background`;
+   - CSS puro, sem JS e sem dependencia nova. `MotionPreferenceTrigger` e o modal
+     de contato nao sao tocados. */
+
+/* --- 1. links de navegacao (e institucional): seta, sublinhado e vizinhanca -
+   O recuo de 1.15rem é ESTATICO — reservado uma vez, no repouso. É o que permite
+   a seta entrar sem empurrar o texto. */
+.lp-rodape-nav a {
+  position: relative;
+  display: inline-block;
+  padding-left: 1.15rem;
+}
+.lp-rodape-nav a::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transform: translate3d(-5px, 0, 0);
+  color: #0ed8f6;
+  transition:
+    opacity 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Sublinhado desenhado da esquerda para a direita. `transform-origin: left` +
+   `scaleX` — nada de animar `width`. */
+.lp-rodape-nav a::after {
+  content: "";
+  position: absolute;
+  left: 1.15rem;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: #0ed8f6;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lp-rodape-nav a:hover::before,
+.lp-rodape-nav a:focus-visible::before {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.lp-rodape-nav a:hover::after,
+.lp-rodape-nav a:focus-visible::after {
+  transform: scaleX(1);
+}
+/* Vizinhanca recuando de tom: destaca o item ativo sem precisar acender mais
+   nada. So `opacity`, e o piso é 0.55 — o texto continua legivel. Puro enfeite,
+   entao vive dentro do `@media (hover: hover)`. */
+@media (hover: hover) {
+  .lp-rodape-nav li a {
+    transition:
+      color var(--dur-fast, 200ms) var(--ease-out, ease-out),
+      opacity 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lp-rodape-nav:hover li:not(:hover) a {
+    opacity: 0.55;
+  }
+}
+
+/* --- 2. icones das redes: o nome emerge de tras do circulo ---------------- */
+.lp-rodape-rede {
+  position: relative;
+}
+.lp-rodape-rede-nome {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 0.4rem);
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(14, 216, 246, 0.35);
+  background: rgba(0, 26, 61, 0.92);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #a5f0ff;
+  pointer-events: none;
+  opacity: 0;
+  /* Sai de TRAS do circulo: comeca colado nele e sobe. A centragem fica no
+     `translate3d`, junto com o gesto, porque é um deslocamento so. */
+  transform: translate3d(-50%, 8px, 0) scale(0.94);
+  transition:
+    opacity 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lp-rodape-rede:hover .lp-rodape-rede-nome,
+.lp-rodape-rede:focus-visible .lp-rodape-rede-nome {
+  opacity: 1;
+  transform: translate3d(-50%, 0, 0) scale(1);
+}
+
+/* --- 3. unidades: o dado que ja esta atras ganha estado forte -------------
+   É o item mais proximo da referencia. O endereco e o telefone NAO nascem
+   escondidos — nascem a 0.88 de opacidade, que é legivel; o hover leva a 1,
+   acende a cidade em ciano e desenha um traco na lateral esquerda por
+   `box-shadow` (nao por `border`, que mudaria a caixa). */
+.lp-rodape-unidade {
+  border-radius: 10px;
+  transition:
+    box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lp-rodape-unidade-dado {
+  opacity: 0.88;
+  transition:
+    opacity 200ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lp-rodape-unidade-cidade {
+  transition: color 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lp-rodape-unidade:hover,
+.lp-rodape-unidade:focus-within {
+  transform: translate3d(3px, 0, 0);
+  box-shadow: inset 2px 0 0 0 #0ed8f6;
+  background: rgba(255, 255, 255, 0.05);
+}
+.lp-rodape-unidade:hover .lp-rodape-unidade-dado,
+.lp-rodape-unidade:focus-within .lp-rodape-unidade-dado {
+  opacity: 1;
+  color: #ffffff;
+}
+.lp-rodape-unidade:hover .lp-rodape-unidade-cidade,
+.lp-rodape-unidade:focus-within .lp-rodape-unidade-cidade {
+  color: #0ed8f6;
+}
+
+/* --- 4. logo: lampejo, sem mover a caixa --------------------------------- */
+@media (hover: hover) {
+  .lp-rodape-logo {
+    transition: filter 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lp-rodape-bloco:hover .lp-rodape-logo {
+    filter: brightness(1.1) drop-shadow(0 0 14px rgba(14, 216, 246, 0.45));
+  }
+}
+
+/* --- 5. titulos de coluna: traco curto sob o titulo ----------------------
+   Dispara no hover do BLOCO, e nao do `h4`: um titulo de uma linha é um alvo
+   pequeno demais para ser o gatilho da propria coluna. */
+.lp-rodape-titulo {
+  position: relative;
+}
+.lp-rodape-titulo::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.35rem;
+  width: 2rem;
+  height: 1px;
+  background: #0ed8f6;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lp-rodape-bloco:hover .lp-rodape-titulo::after,
+.lp-rodape-bloco:focus-within .lp-rodape-titulo::after {
+  transform: scaleX(1);
+}
+
+/* Movimento reduzido: as revelacoes SOBREVIVEM (opacidade, cor, borda) e os
+   deslizes saem. Nada fica preso em `opacity: 0` — os dois elementos que nascem
+   invisiveis (nome da rede e os dois tracos) aparecem em cheio no estado ativo,
+   so sem viajar para chegar lá. */
+@media (prefers-reduced-motion: reduce) {
+  .lp-rodape-nav a::before,
+  .lp-rodape-nav a::after,
+  .lp-rodape-rede-nome,
+  .lp-rodape-titulo::after,
+  .lp-rodape-unidade:hover,
+  .lp-rodape-unidade:focus-within {
+    transition: none !important;
+  }
+  .lp-rodape-nav a:hover::before,
+  .lp-rodape-nav a:focus-visible::before {
+    transform: none !important;
+  }
+  /* O rotulo da rede mantem o `-50%` nos DOIS estados: ele é a centragem, nao o
+     gesto. O que sai é o deslize de 8px e o `scale` — o rotulo aparece parado, no
+     lugar certo. */
+  .lp-rodape-rede-nome,
+  .lp-rodape-rede:hover .lp-rodape-rede-nome,
+  .lp-rodape-rede:focus-visible .lp-rodape-rede-nome {
+    transform: translate3d(-50%, 0, 0) !important;
+  }
+  .lp-rodape-unidade:hover,
+  .lp-rodape-unidade:focus-within {
+    transform: none !important;
+  }
+}
+html[data-motion="reduce"] .lp-rodape-nav a:hover::before,
+html[data-motion="reduce"] .lp-rodape-nav a:focus-visible::before,
+html[data-motion="reduce"] .lp-rodape-unidade:hover,
+html[data-motion="reduce"] .lp-rodape-unidade:focus-within {
+  transform: none !important;
+}
+html[data-motion="reduce"] .lp-rodape-rede-nome,
+html[data-motion="reduce"] .lp-rodape-rede:hover .lp-rodape-rede-nome,
+html[data-motion="reduce"] .lp-rodape-rede:focus-visible .lp-rodape-rede-nome {
+  transform: translate3d(-50%, 0, 0) !important;
 }

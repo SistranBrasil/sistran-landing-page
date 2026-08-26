@@ -9,7 +9,10 @@ import Metrics from '@/components/Metrics';
 import Solutions from '@/components/Solutions';
 import Social from '@/components/Social';
 import Contact from '@/components/Contact';
-import ContactCTA from '@/components/ContactCTA';
+// Import comentado junto com o consumo do bloco "Fale com a Gente!" no fim do
+// `main` (ver o comentário no lugar dele): deixá-lo ativo quebraria o lint por
+// import não utilizado, e removê-lo apagaria a pista de como religar.
+// import ContactCTA from '@/components/ContactCTA';
 import Footer from '@/components/Footer';
 import ScrollSpy from '@/components/ui/ScrollSpy';
 // Import comentado junto com o consumo do fio condutor logo abaixo (ver o
@@ -18,6 +21,7 @@ import ScrollSpy from '@/components/ui/ScrollSpy';
 // import ScrollSpine from '@/components/ui/ScrollSpine';
 import BackToTop from '@/components/ui/BackToTop';
 import MosaicHandoff from '@/components/ui/MosaicHandoff';
+import SolutionsToMetrics from '@/components/ui/SolutionsToMetrics';
 // Import comentado junto com os wrappers que saíram da home (ver a nota acima de
 // `<Contact />`): o componente continua no projeto, mas a home não o consome mais
 // — deixá-lo importado quebraria o lint por import não utilizado.
@@ -25,7 +29,10 @@ import MosaicHandoff from '@/components/ui/MosaicHandoff';
 import OptionalMorphIntro from '@/components/intro/OptionalMorphIntro';
 import NotchDivider from '@/components/ui/NotchDivider';
 import { StackScenes } from '@/components/legacy/StackScenes';
-import { MetricsStrip } from '@/components/legacy/MetricsStrip';
+// Import comentado junto com o consumo da faixa logo abaixo (ver o comentário em
+// volta de `<MetricsStrip />`): deixá-lo ativo quebraria o lint por import não
+// utilizado, e removê-lo apagaria a pista de como religar a faixa.
+// import { MetricsStrip } from '@/components/legacy/MetricsStrip';
 import { SignalMarquee } from '@/components/legacy/SignalMarquee';
 import { ImpactSequence } from '@/components/legacy/ImpactSequence';
 
@@ -101,18 +108,50 @@ export default function Page() {
             cima do fundo de Soluções sem disputa de `z-index`. Decorativo e
             `aria-hidden` — sem ele o tile fica no mosaico e a foto no palco. */}
         <MosaicHandoff />
-        {/* Resultados logo DEPOIS do método, como na apresentação de legado:
-            primeiro os quatro movimentos, depois as evidências que os comprovam.
-            Antes eles fechavam o percurso do hero, e saíram de lá a pedido.
+        {/* "Sistran em números" subiu para cá, a pedido: passa a ocupar o lugar
+            que era do bloco "Resultados | evidências dos casos", logo depois do
+            mosaico e de Soluções.
 
-            O chanfro leva o navy da seção para dentro da faixa clara de
-            parceiros, que encerra o bloco — as evidências dos casos emendam na
-            prova de terceiros. Números em `src/data/legacy.ts`, marcas em
-            `src/data/clients.ts`. */}
+            Fora do wrapper da serifa, fora do `SectionReveal` e fora do
+            `.section-light`: ela tem percurso de scroll próprio (seção alta +
+            `sticky`) e um ancestral com `transform` faria o `sticky` perder a
+            referência da viewport. Ela também desenha os próprios dois fundos —
+            faixa clara em cima, palco escuro embaixo.
+
+            Emenda de entrada: Soluções fecha em palco escuro e a faixa clara da
+            Metrics abria em corte reto. Quem resolve é `.impact-emenda`, dentro
+            do próprio componente — um degradê do navy na borda de cima da faixa,
+            que se dissipa conforme a seção entra (`--impact-entrada`, variável
+            que o único ScrollTrigger da seção já escreve). */}
+        <Metrics />
+        {/* Condutor da emenda Soluções -> Números: o fio que se dissipa à direita
+            do último nó de Soluções se estende com o scroll até a boca de entrada
+            da onda da Metrics, para os dois traços lerem como um só.
+
+            Fica DEPOIS das duas seções e é irmão direto delas, pelo mesmo motivo
+            do `MosaicHandoff` logo acima: o condutor é `position: fixed`, que
+            morre sob ancestral com `transform`/`filter`, e a ordem na árvore é o
+            que o faz pintar por cima dos dois fundos sem disputa de `z-index`.
+            Decorativo e `aria-hidden` — sem ele o fio de Soluções termina onde
+            terminava e a onda começa onde começava. */}
+        <SolutionsToMetrics />
+        {/* Evidências de terceiros fecham o bloco de números: o chanfro leva o
+            navy do palco da Metrics para dentro da faixa clara de parceiros.
+            Marcas em `src/data/clients.ts`.
+
+            `<MetricsStrip />` comentado a pedido: com a Metrics aqui em cima, as
+            duas faixas de indicadores numéricos ficariam coladas e repetiriam a
+            mesma figura retórica duas vezes seguidas — e a Metrics já traz os
+            sete indicadores institucionais. Comentado, e não removido: o
+            componente `src/components/legacy/MetricsStrip.tsx` e os dados em
+            `src/data/legacy.ts` (`metrics`, `metricsIntro`) continuam intactos,
+            então religar é descomentar a linha abaixo e o import no topo.
+            <MetricsStrip />
+        */}
         <div className={editorial.variable}>
-          <MetricsStrip />
-          {/* `--deep` é declarada em `:root` pelo `legacy.css`, importado pelo
-              próprio `MetricsStrip` acima. */}
+          {/* `--deep` continua declarada em `:root` pelo `legacy.css` — com o
+              `MetricsStrip` comentado, quem passa a importá-lo aqui é o
+              `SignalMarquee` logo abaixo (e o `ImpactSequence` mais adiante). */}
           <NotchDivider cor="var(--deep)" />
           <SignalMarquee />
         </div>
@@ -141,17 +180,9 @@ export default function Page() {
           <SectionReveal><Differentials /></SectionReveal>
         </div>
         */}
-        {/* "Sistran em números" saiu do `SectionReveal` e do `.section-light`
-            pelas mesmas duas razões da montagem acima: ela tem percurso de
-            scroll próprio (o reveal do wrapper brigaria com o sticky) e desenha
-            os dois fundos que precisa — faixa clara em cima, palco escuro
-            embaixo. Dentro do `.section-light` o degradê do bloco pintaria por
-            cima do palco e o repinte de texto navy apagaria os números. */}
-        <Metrics />
-        {/* `<Solutions />` saía daqui: subiu para o lugar do Método, logo depois
-            do mosaico. "Sistran em números" emenda direto no bloco claro de
-            Contato — as duas já resolvem a própria costura de cor (a Metrics
-            desenha faixa clara em cima e palco escuro embaixo). */}
+        {/* `<Metrics />` saía daqui: subiu para o lugar do bloco "Resultados |
+            evidências dos casos", logo depois do `MosaicHandoff`. `<Solutions />`
+            também já não é daqui — foi para o lugar do Método. */}
         {/* Ordem da home do site: contato -> LinkedIn -> "Fale com a Gente!"
 
             Os três `SectionReveal` que envolviam Contato, Social e ContactCTA
@@ -165,21 +196,37 @@ export default function Page() {
             elemento. O componente `ui/SectionReveal.tsx` fica no lugar, intacto,
             para quem precisar de reveal em bloco numa seção que não tenha o
             próprio. */}
-        {/* `emenda-de-escuro`: "Sistran em números" fecha em palco escuro
-            (`#041a33`) e o Contato abre em branco — era corte reto. A classe
-            pinta o navy da seção anterior na borda de cima deste bloco e o
-            dissolve para baixo, então a cor de saída de uma é a cor de entrada
-            da outra. Fica do lado do Contato, e não no fim da Metrics, porque
-            lá embaixo há números claros sobre o escuro: clarear aquele fundo
-            arruinaria o contraste do texto. */}
-        <div className="section-light emenda-de-escuro">
+        {/* `emenda-de-escuro` saiu daqui junto com a subida da Metrics: a classe
+            existia porque "Sistran em números" fechava em palco escuro
+            (`#041a33`) e o Contato abria em branco. Quem encosta no Contato
+            agora é a montagem (`lp-section--cream`), que já é clara — manter o
+            navy pintado na borda de cima deste bloco criaria uma faixa escura
+            onde não há nada de escuro para emendar.
+
+            A regra `.emenda-de-escuro` continua no `globals.css`, intacta, para
+            a próxima emenda escuro -> claro que aparecer. */}
+        <div className="section-light">
           <Contact />
         </div>
         <Social />
-        {/* `motionShowcase`: digitacao do titulo, entrada encadeada e grafismo
-            tecnico. Só aqui — o mesmo ContactCTA fecha outras nove paginas e
-            elas continuam como estavam. */}
+        {/* "Fale com a Gente!" comentado a pedido — o cartão azul com o título,
+            as duas linhas ("Quer conversar com um de nossos especialistas?..." /
+            "Temos uma equipe qualificada...") e o botão "Fale com a SISTRAN".
+            Quem fecha a página agora é o `<Social />`, e o `<Footer />` vem logo
+            depois.
+
+            Comentado, e não removido: `src/components/ContactCTA.tsx` continua
+            intacto e fecha OUTRAS NOVE páginas (`/blog`, `/blog/[slug]`, `/esg`,
+            `/eventos-inovacao`, `/quem-somos`, `/sistran-labs`,
+            `/sistran-university`, `/solucoes`, `/solucoes/[slug]`) — todas
+            seguem como estavam. Religar é descomentar a linha abaixo e o import
+            no topo do arquivo.
+
+            A prop `motionShowcase` (digitação do título, entrada encadeada e
+            grafismo técnico) só era usada aqui, então é a única coisa que sai de
+            circulação junto: quem religar precisa saber que esse modo existe.
         <ContactCTA motionShowcase />
+        */}
       </main>
       <Footer />
       <BackToTop />

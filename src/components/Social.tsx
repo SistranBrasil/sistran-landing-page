@@ -58,10 +58,56 @@ function usePonteiroNaSecao(alvo: React.RefObject<HTMLElement | null>, ativo: bo
   }, [alvo, ativo]);
 }
 
+/**
+ * SIS-58 — progresso da seção publicado como `--sp` (0..1), do momento em que o
+ * topo dela entra pela base da janela até o momento em que a base dela sai pelo
+ * topo. Quem consome é a marca d'água `#SomosSistraners`, que desliza na
+ * horizontal numa velocidade diferente da do bloco de texto.
+ *
+ * Mesmo desenho do `usePonteiroNaSecao` acima e do `MosaicHandoff`: um
+ * `requestAnimationFrame` por rajada de scroll, escrita por `ref` no DOM, zero
+ * re-render por quadro. Não é um ScrollTrigger novo — a seção não tem nenhum, e
+ * uma leitura de `getBoundingClientRect` por quadro resolve.
+ *
+ * O valor é escrito em `transform` no CSS, e NÃO em `translate`: a propriedade
+ * `translate` da marca d'água já carrega o gesto do ponteiro, que é
+ * transicionado. Valor por quadro e `transition` na mesma propriedade é
+ * exatamente a colisão do SIS-42.
+ */
+function useProgressoNaSecao(alvo: React.RefObject<HTMLElement | null>, ativo: boolean) {
+  useEffect(() => {
+    const el = alvo.current;
+    if (!el || !ativo) return;
+
+    let quadro = 0;
+    const medir = () => {
+      quadro = 0;
+      const r = el.getBoundingClientRect();
+      const curso = window.innerHeight + r.height;
+      const p = Math.min(1, Math.max(0, (window.innerHeight - r.top) / curso));
+      el.style.setProperty('--sp', p.toFixed(4));
+    };
+    const agendar = () => {
+      if (!quadro) quadro = requestAnimationFrame(medir);
+    };
+
+    medir();
+    window.addEventListener('scroll', agendar, { passive: true });
+    window.addEventListener('resize', agendar);
+    return () => {
+      if (quadro) cancelAnimationFrame(quadro);
+      window.removeEventListener('scroll', agendar);
+      window.removeEventListener('resize', agendar);
+      el.style.removeProperty('--sp');
+    };
+  }, [alvo, ativo]);
+}
+
 export default function Social() {
   const rm = useReducedMotion();
   const palcoRef = useRef<HTMLElement>(null);
   usePonteiroNaSecao(palcoRef, !rm);
+  useProgressoNaSecao(palcoRef, !rm);
   return (
     /* O fundo saiu do `style` inline para `.social-palco` no `globals.css`: as
        camadas de luz precisam ler `--sx`/`--sy`, e o violeta que havia aqui

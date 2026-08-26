@@ -33,17 +33,33 @@ export const coord = (n: number): number => Number(n.toFixed(3));
 /**
  * Distancia horizontal entre dois indicadores consecutivos.
  *
- * Piso de 280px para os vizinhos nao encostarem no ativo; teto de 360px para os
- * vizinhos imediatos nunca sairem da tela. Em 1536px o vao fica em ~338px: com
- * a lente central de ~440px sobram ~230px de cada lado, o suficiente para os
- * dois vizinhos aparecerem inteiros.
+ * O requisito de desenho é "os SETE indicadores visiveis ao mesmo tempo": com
+ * sete pontos o desenho ocupa `6 * vao`, entao o vao é o que decide quantos
+ * cabem na tela. O valor anterior (280–360px) punha 1680–2160px na horizontal —
+ * duas vezes a largura util de um monitor de 1280px, e por isso so o ativo e um
+ * vizinho apareciam.
+ *
+ * Agora: 13,5% da largura, entre 150px e 250px. Em 1280px o vao fica em ~173px
+ * (6 x 173 = 1037px de desenho, com folga nas duas pontas) e em 1920px em 250px
+ * (1500px). A lente acompanha — ela é derivada do vao no CSS
+ * (`--impact-lente`), e nao um `clamp` independente: era o desencontro entre os
+ * dois que fazia o conteudo dos vizinhos cair dentro dela.
+ *
+ * Os vizinhos nao brigam com a lente porque estao deslocados na VERTICAL
+ * (`DESVIOS_TRILHO`), onde o circulo da lente ja é estreito — o cruzamento é
+ * horizontal, nao area.
  */
 export function vaoEntreEtapas(larguraViewport: number): number {
-  return Math.min(360, Math.max(280, larguraViewport * 0.22));
+  return Math.min(250, Math.max(150, larguraViewport * 0.135));
 }
 
-/** Amplitude da onda entre dois indicadores, em pixels. */
-export const AMPLITUDE = 70;
+/**
+ * Amplitude da onda entre dois indicadores, em pixels.
+ *
+ * Reduzida junto com o vao: 70px sobre um vao de 173px dava uma serra, nao uma
+ * onda. Mantendo ~30% do vao minimo a curva volta a ler como onda larga.
+ */
+export const AMPLITUDE = 46;
 
 /** Distancia dos pontos de controle, como fracao do vao. */
 const CONTROLE = 0.34;
@@ -52,8 +68,13 @@ const CONTROLE = 0.34;
  * Deslocamento vertical do conteudo de cada indicador em relacao a linha-base da
  * curva. Alternam acima/abaixo para os vizinhos nao brigarem com a lente nem
  * entre si, e os valores sao proximos em modulo para o ritmo nao ficar torto.
+ *
+ * A alternancia agora é ESTRITA. A lista anterior repetia o lado nos indices 3 e
+ * 4 (`135, 125`, ambos abaixo), e isso passava desapercebido com vao de 300px —
+ * com o vao de ~173px que faz os sete caberem na tela, dois vizinhos do mesmo
+ * lado a essa distancia encostariam um no outro.
  */
-export const DESVIOS_TRILHO = [-135, 125, -140, 135, 125, -135, 130];
+export const DESVIOS_TRILHO = [-132, 128, -138, 134, -128, 138, -132];
 
 /** Lado da onda no trecho que TERMINA no indicador `i`. */
 const sentido = (i: number) => (i % 2 === 0 ? -1 : 1);

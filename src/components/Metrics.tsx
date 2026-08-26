@@ -252,6 +252,21 @@ export default function Metrics() {
         palco.style.setProperty('--impact-pulso-y', `${coord(ponto.y)}px`);
         palco.style.setProperty('--impact-pulso-op', String(opacidade));
 
+        /* Sinal de PASSAGEM: 0 com a etapa parada, 1 no meio do caminho entre
+           duas. É o que faz a lente reagir ao avanco em vez de so trocar o
+           conteudo por baixo — o sintoma de "tela travada" vinha de a moldura nao
+           ter nenhuma resposta continua ao scroll, e nao da lente estar centrada
+           (ela DEVE ficar centrada: é ela que define o centro da cena).
+
+           Seno, e nao triangulo (`1 - |2t - 1|`): o triangulo tem quina nas duas
+           pontas e a quina aparece como estalo no fim de cada passagem.
+
+           Zera na ultima etapa, senao o estado de conclusao ficaria pulsando. */
+        palco.style.setProperty(
+          '--impact-passagem',
+          String(etapa >= TOTAL - 1 ? 0 : Math.sin(passagem * Math.PI)),
+        );
+
         /* Unica coisa que vira estado React: muda sete vezes na secao inteira. */
         const indice = Math.min(TOTAL - 1, Math.round(etapa));
         if (indice === ativoRef.current) return;
@@ -276,6 +291,7 @@ export default function Metrics() {
         '--impact-pulso-x',
         '--impact-pulso-y',
         '--impact-pulso-op',
+        '--impact-passagem',
       ]) {
         palco.style.removeProperty(nome);
       }
@@ -297,6 +313,16 @@ export default function Metrics() {
     >
       <div ref={palcoRef} className="impact-sticky">
         <div className="impact-topo">
+          {/* Emenda de entrada. A seção acima (Soluções) fecha em palco escuro e
+              esta faixa é clara: sem nada no meio a troca é corte reto. O degradê
+              do navy na borda de cima resolve, e se dissipa conforme a seção
+              entra — a opacidade sai de `--impact-entrada`, a MESMA variável que
+              o único ScrollTrigger da seção já escreve. Nenhum gatilho novo.
+
+              `z-index: -1` (o mesmo truque de `.emenda-de-escuro`): pinta por
+              cima do fundo da faixa e por baixo do texto, sem precisar empilhar
+              o conteúdo. */}
+          <span aria-hidden className="impact-emenda" />
           <div className="container-lp impact-topo-inner">
             <div>
               <p className="impact-eyebrow">Sistran em números</p>
@@ -362,6 +388,13 @@ export default function Metrics() {
               } as React.CSSProperties
             }
           >
+            {/* Boca de entrada da onda: a beira esquerda do palco, na altura da
+                linha-base. É aqui que a travessia vinda de Soluções
+                (`SolutionsToMetrics`) pousa, para o fio de lá e a onda de cá
+                lerem como UM traço atravessando a emenda. Um ponto, medido por
+                `getBoundingClientRect` — a travessia não estima nada. */}
+            <span aria-hidden data-fio-chegada className="impact-chegada-fio" />
+
             {/* O caminho é mascarado com um buraco circular no centro: a curva
                 chega na borda da lente, desaparece e reaparece do outro lado —
                 nunca por cima do numero, do rotulo ou da legenda. */}
@@ -431,6 +464,23 @@ export default function Metrics() {
                     único ScrollTrigger da seção já escreve. Nenhum trigger novo. */}
                 <circle className="impact-arco-calha" cx="100" cy="100" r="92" />
                 <circle className="impact-arco-vivo" cx="100" cy="100" r="92" />
+                {/* Cabeça do arco: a bolinha que anda pela borda da lente, com a
+                    rotação saindo de `--impact-etapa` — a MESMA variável do arco,
+                    logo nenhum gatilho novo e nenhuma segunda medição do
+                    percurso.
+
+                    Ela existe porque a lente lia como "travada": o arco era o
+                    único indicador contínuo e é traço fino, então o avanço não
+                    aparecia. Uma marca que anda dá a leitura de percurso.
+
+                    Nó PRÓPRIO, e não `transform` num elemento que já tem
+                    `animation`: giro contínuo e valor por quadro na mesma
+                    propriedade do mesmo elemento é a colisão que SIS-42 corrigiu
+                    em Soluções — um sobrescreve o outro. E sem `transition`,
+                    porque o valor é reescrito a cada quadro pelo scroll. */}
+                <g className="impact-arco-cabeca">
+                  <circle cx="100" cy="8" r="3.4" />
+                </g>
                 <g className="impact-ticks">
                   {Array.from({ length: 36 }, (_, t) => {
                     const a = (t / 36) * Math.PI * 2;

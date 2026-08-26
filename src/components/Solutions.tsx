@@ -570,6 +570,23 @@ export default function Solutions() {
                     </span>
                   );
                 })}
+                {/* Ponta do remate, em HTML e do tamanho de um pixel: é o ponto
+                    onde o fio se dissipa, e é dele que a travessia até "Sistran
+                    em números" (`SolutionsToMetrics`) sai. Marcado aqui, e não
+                    calculado lá, porque a geometria do fio vive neste
+                    componente — e medido por `getBoundingClientRect`, e não
+                    lido do svg, porque o svg usa
+                    `preserveAspectRatio="none"` e as unidades do viewBox não
+                    são pixels da tela. Sem a travessia montada, é um span
+                    invisível sem custo. */}
+                <span
+                  data-fio-saida
+                  className="solutions-fio-saida"
+                  style={{
+                    left: `${(((geo.px + geo.pw * 0.995) / geo.w) * 100).toFixed(3)}%`,
+                    top: `${(((linhaY - geo.ph * 0.11) / geo.h) * 100).toFixed(3)}%`,
+                  }}
+                />
               </div>
             ) : null}
           </div>
