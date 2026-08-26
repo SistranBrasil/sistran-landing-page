@@ -5,11 +5,14 @@ import { motion, useScroll, useSpring, useTransform } from "motion/react"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import { ScrollVideo } from "@/components/primitives/ScrollVideo"
-import { SectionIntro } from "./SectionIntro"
+// Imports comentados junto com o consumo (abertura do Método e os quatro
+// movimentos, mais abaixo): ativos, quebrariam o lint por import não utilizado;
+// removidos, apagariam a pista de como religar. Os módulos seguem intactos.
+// import { SectionIntro } from "./SectionIntro"
 import { TechnicalBackdrop } from "./TechnicalBackdrop"
-import { useActiveStep } from "@/lib/useActiveStep"
+// import { useActiveStep } from "@/lib/useActiveStep"
 import { useReducedMotion } from "@/lib/motion"
-import { mosaicIntro, mosaicTiles, scenes, scenesIntro } from "@/data/legacy"
+import { mosaicIntro, mosaicTiles, scenes } from "@/data/legacy"
 
 /** Tile da Stack que desce e se torna o card 01 das Frentes. */
 const CARRIER = "microservicos"
@@ -60,7 +63,12 @@ function offsetIn(node: HTMLElement, root: HTMLElement) {
 type Travel = { dx: number; dy: number; sx: number; sy: number }
 
 export function StackScenes() {
+  /* Índice ativo das etapas comentado junto com os quatro movimentos (ver o
+     bloco `.scene-steps` no JSX abaixo): sem os botões, `active`, `setActive` e
+     `register` ficariam sem uso e o lint quebraria. Religar é descomentar aqui e
+     lá.
   const { active, setActive, register } = useActiveStep(scenes.length)
+  */
   const wrap = useRef<HTMLDivElement>(null)
   const stack = useRef<HTMLElement>(null)
   const media = useRef<HTMLDivElement>(null)
@@ -360,9 +368,20 @@ export function StackScenes() {
         </motion.span>
       </motion.div>
 
-      <section id="sistema" className="lp-section lp-section--dark" aria-labelledby="sistema-title">
+      {/* `aria-label` no lugar de `aria-labelledby="sistema-title"`: o título que
+          carregava esse `id` foi comentado, e apontar para um nó inexistente
+          deixaria a seção sem nome acessível. Ao religar o `SectionIntro`, voltar
+          para o `aria-labelledby`. */}
+      <section id="sistema" className="lp-section lp-section--dark" aria-label="Método">
         <TechnicalBackdrop density={12} />
         <div className="lp-container" style={{ position: "relative" }}>
+          {/* Abertura do Método comentada a pedido — o kicker "Método | quatro
+              movimentos", o título "A transformação começa quando o legado se
+              torna explicável." e o parágrafo "Quatro movimentos organizam a
+              transformação...". Comentada, e não removida: `scenesIntro`
+              continua em `src/data/legacy.ts` e o `SectionIntro` continua
+              existindo, então religar é descomentar este bloco e o import no
+              topo do arquivo.
           <SectionIntro
             id="sistema-title"
             kicker={scenesIntro.kicker}
@@ -370,6 +389,7 @@ export function StackScenes() {
             text={scenesIntro.text}
             progressive
           />
+          */}
 
           <div className="scene-story">
             <motion.div
@@ -384,6 +404,13 @@ export function StackScenes() {
               <ScrollVideo className="scene-video" src={CARRIER_VIDEO} progress={reel} />
             </motion.div>
 
+            {/* Os quatro movimentos comentados a pedido — 01 Tornar o legado
+                explicável, 02 Escolher com evidências, 03 Construir com
+                contexto e 04 Validar para evoluir, com seus textos. Comentados,
+                e não removidos: `scenes` continua em `src/data/legacy.ts` e o
+                CSS `.scene-steps` / `.scene-step` continua em `legacy.css`, então
+                religar é descomentar este bloco e o `useActiveStep` no corpo do
+                componente.
             <div className="scene-steps">
               {scenes.map((scene, index) => (
                 <button
@@ -402,6 +429,7 @@ export function StackScenes() {
                 </button>
               ))}
             </div>
+            */}
           </div>
         </div>
       </section>
