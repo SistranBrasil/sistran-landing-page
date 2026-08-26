@@ -7145,6 +7145,18 @@ html[data-motion="reduce"] .social-card-reativo {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    /* Reserva a faixa do header fixo. Sem isto o palco centraliza dentro de
+       100svh INTEIROS, e o primeiro item da coluna — a capsula do cabecalho —
+       cai justo debaixo da barra do menu: lia-se so "VEJA COMO A SISTRAN P...".
+       `--header-h` e reescrita pelo proprio Header quando ele compacta
+       (88px -> 68px), entao o espaco acompanha a barra em vez de ser numero
+       magico. Com `box-sizing: border-box` o `height: 100svh` nao cresce: a
+       area util passa a ser `100svh - --header-h` e o `center` passa a
+       centralizar ABAIXO do header.
+
+       Padding, e nao `top: var(--header-h)`: deslocar o sticky abriria uma
+       faixa do fundo do documento acima do palco durante a travagem. */
+    padding-top: var(--header-h);
     overflow: clip;
     isolation: isolate;
   }
