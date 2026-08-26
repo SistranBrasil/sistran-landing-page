@@ -12,6 +12,7 @@ import Contact from '@/components/Contact';
 import ContactCTA from '@/components/ContactCTA';
 import Footer from '@/components/Footer';
 import ScrollSpy from '@/components/ui/ScrollSpy';
+import ScrollSpine from '@/components/ui/ScrollSpine';
 import BackToTop from '@/components/ui/BackToTop';
 import SectionReveal from '@/components/ui/SectionReveal';
 import OptionalMorphIntro from '@/components/intro/OptionalMorphIntro';
@@ -45,6 +46,13 @@ export default function Page() {
           seguinte deixaria de ser irmã do hero e perderia o `z-index` que a faz
           subir por cima dele. */}
       <main id="conteudo" tabIndex={-1} className={editorial.variable}>
+        {/* Fio condutor: a linha lateral que costura hero -> contato e acende um
+            nó por seção. Fica aqui, irmão direto das seções, e nunca dentro de
+            um `SectionReveal` ou de outro wrapper animado — `position: fixed`
+            morre sob ancestral com `transform`/`filter`/`clip`, e a home tem
+            vários. Decorativo e `aria-hidden`: se sair, nada de conteúdo se
+            perde. */}
+        <ScrollSpine />
         <HeroCinematic />
         {/* Sem separador aqui: o hero encolhe em card sobre fundo claro e já
             entrega a cor do mosaico.

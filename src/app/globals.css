@@ -7213,3 +7213,129 @@ html[data-motion="reduce"] .solution-info {
     transform: none !important;
   }
 }
+
+/* ==========================================================================
+   Fio condutor (ScrollSpine)
+   --------------------------------------------------------------------------
+   A linha que costura hero -> contato. Todo o desenho progressivo acontece
+   AQUI, em CSS, consumindo duas custom properties:
+
+     --scroll-p   progresso do documento, publicado pelo `SmoothScroll` no
+                  `<html>` a cada quadro (uma escrita, nenhum re-render)
+     --spine-len  comprimento do caminho em unidades do `viewBox`, medido uma
+                  vez pelo componente com `getTotalLength()`
+
+   Nenhum JavaScript roda por quadro para isto: o navegador recalcula o
+   `stroke-dashoffset` junto com o resto do estilo.
+   ========================================================================== */
+
+.spine {
+  position: fixed;
+  /* Encostado à esquerda, com folga que cresce em telas largas. */
+  left: clamp(10px, 2.2vw, 40px);
+  top: 0;
+  width: 60px;
+  height: 100vh;
+  /* Decoração: não intercepta clique nem toque em nada por baixo. */
+  pointer-events: none;
+  /* Acima das seções e ABAIXO do header (que fica em 50): o fio não deve
+     atravessar a barra fixa nem competir com o menu. */
+  z-index: 20;
+
+  /* Só aparece quando há margem de sobra para ele. Abaixo de 1280px o
+     conteúdo já ocupa a largura útil e um fio na lateral viraria estorvo —
+     e o percurso continua legível sem ele, porque o fio nunca carregou
+     conteúdo. */
+  display: none;
+}
+
+@media (min-width: 1280px) {
+  .spine {
+    display: block;
+  }
+}
+
+.spine-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* O brilho do traço vaza da caixa de propósito. */
+  overflow: visible;
+}
+
+/* Calha: o trilho vazio. É ela que faz a linha viva parecer PREENCHER um
+   percurso que já existia, em vez de brotar do nada. */
+.spine-calha {
+  fill: none;
+  stroke: rgba(165, 240, 255, 0.14);
+  stroke-width: 1.5px;
+}
+
+/* Linha viva: desenhada por `stroke-dashoffset`, a técnica de
+   `.claude/skills/svg-stroke-drawing`. O traço tem exatamente o comprimento
+   do caminho, e o deslocamento vai de `--spine-len` (invisível) a 0 (inteiro)
+   conforme `--scroll-p` vai de 0 a 1.
+
+   Sem `transition`: o valor de origem já é contínuo e suavizado pelo Lenis —
+   uma transição por cima só adicionaria atraso sobre um movimento que já é
+   suave. */
+.spine-viva {
+  fill: none;
+  stroke: var(--color-sky, #0ed8f6);
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-dasharray: var(--spine-len, 0);
+  stroke-dashoffset: calc(var(--spine-len, 0) * (1 - var(--scroll-p, 0)));
+  filter: drop-shadow(0 0 6px rgba(14, 216, 246, 0.45));
+}
+
+/* Nós: uma parada por seção, posicionadas em % pelo componente a partir de
+   pontos medidos SOBRE o caminho — por isso ficam exatamente na linha em
+   qualquer altura de tela. */
+.spine-no {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  /* `translate(-50%, -50%)` centra o nó no ponto; o `scale` do estado ativo
+     entra no mesmo `transform` para não sobrescrever a centragem. */
+  transform: translate(-50%, -50%);
+  background: #03142d;
+  border: 1.5px solid rgba(165, 240, 255, 0.3);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out);
+}
+
+/* Já passou: fica aceso em azul, marcando o caminho percorrido. */
+.spine-no[data-estado='feito'] {
+  background: #0079cb;
+  border-color: #0079cb;
+}
+
+/* Seção da vez: o único nó com brilho. Dois halos — um anel próximo e um
+   difuso — porque um só some sobre o palco navy. */
+.spine-no[data-estado='ativo'] {
+  background: #a5f0ff;
+  border-color: var(--color-sky, #0ed8f6);
+  transform: translate(-50%, -50%) scale(1.4);
+  box-shadow:
+    0 0 0 4px rgba(14, 216, 246, 0.16),
+    0 0 14px rgba(14, 216, 246, 0.55);
+}
+
+/* Movimento reduzido: o fio aparece INTEIRO, em vez de congelar num traço
+   parcial. Ele é uma referência de percurso — deixá-lo pela metade seria
+   esconder informação, o erro que `.claude/skills/reduced-motion-conteudo`
+   descreve. O nó ativo continua acendendo (é estado, não movimento), só sem
+   transição. */
+.spine[data-rm] .spine-viva {
+  stroke-dashoffset: 0;
+  filter: none;
+}
+
+.spine[data-rm] .spine-no {
+  transition: none;
+}
