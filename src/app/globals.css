@@ -7028,13 +7028,9 @@ html[data-motion="reduce"] .social-card-reativo {
   }
 }
 
-.solutions-rodape {
-  position: relative;
-  z-index: 1;
-  width: min(92vw, 1640px);
-  margin-inline: auto;
-  margin-top: clamp(32px, 5vh, 64px);
-}
+/* `.solutions-rodape` saiu junto com o botão "Veja mais" que ela alinhava (ver o
+   comentário no fim do JSX de `Solutions.tsx`): sem o botão, sobrava só uma caixa
+   vazia reservando altura no fim do palco. */
 
 /* ==========================================================================
    Travessia do tile do mosaico ate a foto do card 01 (ui/MosaicHandoff)
@@ -7124,8 +7120,8 @@ html[data-motion="reduce"] .social-card-reativo {
   }
 }
 @media (max-width: 400px) {
-  .solutions-caixa,
-  .solutions-rodape {
+  /* `.solutions-rodape` saiu daqui com o botão "Veja mais". */
+  .solutions-caixa {
     width: calc(100% - 40px); /* minimo 20px de cada lado */
   }
 }

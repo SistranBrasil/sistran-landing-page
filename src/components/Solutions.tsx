@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+/* `Link` saiu com o botão "Veja mais" do rodapé da seção: era o único consumo
+   dele aqui, e um import sem uso quebra o lint. */
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Boxes, Check, Code2, ShieldCheck, UserPlus, Workflow } from 'lucide-react';
@@ -505,12 +506,11 @@ export default function Solutions() {
           />
         ))}
       </div>
-
-      <div className="solutions-rodape">
-        <Link href="/solucoes#servicos-diferenciais" className="btn-primary inline-flex">
-          Veja mais
-        </Link>
-      </div>
+      {/* O botão "Veja mais" (link para `/solucoes#servicos-diferenciais`) saiu
+          a pedido: ele pendurava um CTA solto embaixo de um palco que já termina
+          na própria trilha, e a rota continua alcançável pelo menu. Para religar,
+          basta um `.solutions-rodape` com um `<Link>` aqui — o bloco de CSS saiu
+          junto, então não sobrou estilo morto. */}
     </section>
   );
 }
