@@ -12,7 +12,10 @@ import Contact from '@/components/Contact';
 import ContactCTA from '@/components/ContactCTA';
 import Footer from '@/components/Footer';
 import ScrollSpy from '@/components/ui/ScrollSpy';
-import ScrollSpine from '@/components/ui/ScrollSpine';
+// Import comentado junto com o consumo do fio condutor logo abaixo (ver o
+// comentário em volta de `<ScrollSpine />`): deixá-lo ativo quebraria o lint por
+// import não utilizado, e removê-lo apagaria a pista de como religar o fio.
+// import ScrollSpine from '@/components/ui/ScrollSpine';
 import BackToTop from '@/components/ui/BackToTop';
 // Import comentado junto com os wrappers que saíram da home (ver a nota acima de
 // `<Contact />`): o componente continua no projeto, mas a home não o consome mais
@@ -49,13 +52,21 @@ export default function Page() {
           seguinte deixaria de ser irmã do hero e perderia o `z-index` que a faz
           subir por cima dele. */}
       <main id="conteudo" tabIndex={-1} className={editorial.variable}>
-        {/* Fio condutor: a linha lateral que costura hero -> contato e acende um
-            nó por seção. Fica aqui, irmão direto das seções, e nunca dentro de
-            um `SectionReveal` ou de outro wrapper animado — `position: fixed`
-            morre sob ancestral com `transform`/`filter`/`clip`, e a home tem
-            vários. Decorativo e `aria-hidden`: se sair, nada de conteúdo se
-            perde. */}
+        {/* Fio condutor comentado a pedido: a linha lateral que costurava hero
+            -> contato e acendia um nó por seção passava por cima do conteúdo e
+            incomodava mais do que orientava.
+
+            Comentado, e não removido: `src/components/ui/ScrollSpine.tsx` e o
+            bloco `.spine` do `globals.css` continuam intactos, então religar é
+            descomentar esta linha e o import no topo do arquivo. Se voltar,
+            precisa continuar aqui — irmão direto das seções, nunca dentro de um
+            wrapper animado: `position: fixed` morre sob ancestral com
+            `transform`/`filter`/`clip`, e a home tem vários.
+
+            Nada de conteúdo se perde com a saída: o fio era decorativo e
+            `aria-hidden`.
         <ScrollSpine />
+        */}
         <HeroCinematic />
         {/* Sem separador aqui: o hero encolhe em card sobre fundo claro e já
             entrega a cor do mosaico.
