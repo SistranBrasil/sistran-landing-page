@@ -309,6 +309,11 @@ export function StackScenes() {
                   no cascade, e o cartão nunca vinha para frente. */}
               <span className="mosaic-float">
                 <span
+                  /* Ponta de origem da travessia até a foto do card 01 de
+                     "Soluções de Negócios" (`ui/MosaicHandoff`): é a face que o
+                     viajante mede e substitui. Marca de medição apenas — sem o
+                     efeito o tile continua aqui, parado e visível. */
+                  data-carrier-origem={tile.id === CARRIER ? '' : undefined}
                   className={`mosaic-face${tile.video || tile.image ? " mosaic-face--media" : ""}${
                     tile.href ? " mosaic-face--link" : ""
                   }`}

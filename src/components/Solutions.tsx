@@ -347,6 +347,12 @@ export default function Solutions() {
                   >
                     <div
                       className="solution-viewport"
+                      /* Ponta de chegada da travessia do tile do mosaico
+                         (`ui/MosaicHandoff`). Só o card 01: é dele a foto que o
+                         tile "Arquitetura modular e escalável" carrega. Marca de
+                         medição apenas — a foto é correta e visível sem o
+                         efeito. */
+                      data-carrier-alvo={i === 0 ? '' : undefined}
                       ref={(el) => {
                         janelaRefs.current[i] = el;
                       }}

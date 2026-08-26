@@ -17,6 +17,7 @@ import ScrollSpy from '@/components/ui/ScrollSpy';
 // import não utilizado, e removê-lo apagaria a pista de como religar o fio.
 // import ScrollSpine from '@/components/ui/ScrollSpine';
 import BackToTop from '@/components/ui/BackToTop';
+import MosaicHandoff from '@/components/ui/MosaicHandoff';
 // Import comentado junto com os wrappers que saíram da home (ver a nota acima de
 // `<Contact />`): o componente continua no projeto, mas a home não o consome mais
 // — deixá-lo importado quebraria o lint por import não utilizado.
@@ -93,6 +94,13 @@ export default function Page() {
             (sticky + trilha de 400vh), e um ancestral com `transform` cria
             contexto e faz o sticky perder a referência da viewport. */}
         <Solutions />
+        {/* Travessia do tile "Arquitetura modular e escalável" até a foto do card
+            01 de Soluções. Fica DEPOIS das duas seções, e é irmão direto delas:
+            o viajante é `position: fixed`, que morre sob ancestral com
+            `transform`/`filter`, e a ordem na árvore é o que o faz pintar por
+            cima do fundo de Soluções sem disputa de `z-index`. Decorativo e
+            `aria-hidden` — sem ele o tile fica no mosaico e a foto no palco. */}
+        <MosaicHandoff />
         {/* Resultados logo DEPOIS do método, como na apresentação de legado:
             primeiro os quatro movimentos, depois as evidências que os comprovam.
             Antes eles fechavam o percurso do hero, e saíram de lá a pedido.

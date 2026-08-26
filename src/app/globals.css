@@ -6981,6 +6981,54 @@ html[data-motion="reduce"] .social-card-reativo {
   margin-top: clamp(32px, 5vh, 64px);
 }
 
+/* ==========================================================================
+   Travessia do tile do mosaico ate a foto do card 01 (ui/MosaicHandoff)
+   ========================================================================== */
+/* `position: fixed` com `left/top: 0` e deslocamento por `transform`: a medicao
+   entrega coordenadas de viewport, e mover por transform mantem o percurso na
+   GPU. Largura e altura mudam em px porque a proporcao muda no caminho (o tile e
+   retrato, a janela da foto e 16/9) — so assim o `object-fit: cover` reenquadra
+   corretamente durante a viagem, o que `scale` nao faria.
+   `visibility: hidden` no repouso: fora do percurso o elemento nao existe para o
+   ponteiro nem para o compositor. */
+.mosaic-handoff {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 30; /* abaixo do cabecalho (z-50), acima das duas secoes */
+  visibility: hidden;
+  opacity: 0;
+  overflow: hidden;
+  border: 1px solid rgba(190, 232, 255, 0.22);
+  box-shadow: 0 34px 90px rgba(3, 20, 45, 0.42);
+  background: #03142d;
+  pointer-events: none;
+  will-change: transform, width, height;
+}
+.mosaic-handoff-img {
+  object-fit: cover;
+  object-position: center;
+  /* Mesmo tratamento de cor da foto que recebe o pouso (`.solution-image`): sem
+     isso a imagem clarearia de um quadro para o outro na troca. */
+  filter: saturate(0.88) contrast(1.04) brightness(0.78);
+}
+.mosaic-handoff-rotulo {
+  position: absolute;
+  left: 1rem;
+  bottom: 0.9rem;
+  max-width: calc(100% - 2rem);
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-shadow: 0 2px 12px rgba(3, 20, 45, 0.6);
+}
+/* A face de origem cede lugar ao viajante. `--carrier-fonte` e escrita no
+   `<html>` pelo efeito, uma vez por mudanca de estado — nao a cada quadro. */
+[data-carrier-origem] {
+  opacity: var(--carrier-fonte, 1);
+}
+
 /* Fluxo natural (mobile, tablet estreito, movimento reduzido): cada cena e um
    bloco; a trilha do pin nao existe. */
 .solutions-trilha {
