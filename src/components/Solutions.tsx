@@ -560,15 +560,13 @@ export default function Solutions() {
                         } as React.CSSProperties
                       }
                     >
+                      {/* A legenda `01`–`04` sob o nó (`solutions-fio-no-num`,
+                          herdada de SIS-46) saiu a pedido em SIS-49: fora do
+                          círculo, pequena e sobre a foto, virou ruído. Quem
+                          marca a etapa aqui é o próprio nó — círculo aceso,
+                          borda clara, halo ciano e o anel que pulsa. Religar é
+                          devolver o span aqui e o bloco no `globals.css`. */}
                       <IconeNo strokeWidth={1.5} aria-hidden />
-                      {/* A numeração que estava na navegação lateral (SIS-46).
-                          Aqui ela marca de facto: o nó já é o ponto do percurso
-                          onde se está, e o número diz qual é. Fora do círculo,
-                          como legenda, e não dentro: os 52px do nó já são do
-                          ícone, e empilhar os dois deixaria ambos ilegíveis. */}
-                      <span className="solutions-fio-no-num">
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
                     </span>
                   );
                 })}
