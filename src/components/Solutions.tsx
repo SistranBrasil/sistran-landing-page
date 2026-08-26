@@ -209,7 +209,11 @@ export default function Solutions() {
   const nos = geo
     ? Array.from({ length: 6 }, (_, i) => geo.px + geo.pw * (0.135 + i * 0.146))
     : [];
-  const linhaY = geo ? geo.py + geo.ph * 0.44 : 0;
+  /* Altura da linha dentro da foto: 0.56, e não os 0.44 de antes — a pedido, um
+     pouco mais para baixo. Mais que isso e ela encosta no cartão descritivo, que
+     ocupa o terço inferior. Fração da altura medida, nunca px: acompanha a
+     janela em qualquer largura. */
+  const linhaY = geo ? geo.py + geo.ph * 0.56 : 0;
   const entrada = geo ? geo.px + geo.pw * 0.045 : 0;
   const dobra = geo ? geo.px - 20 : 0;
   const caminho = geo
@@ -468,6 +472,22 @@ export default function Solutions() {
             ) : null}
           </div>
 
+          {/* Convite ao scroll: o palco fica preso e, sem uma pista, dá a
+              impressão de página travada. Aparece só no palco dirigido e se
+              apaga sozinho quando o percurso começa — a opacidade sai de
+              `--sol-p`, o mesmo progresso que o trigger já escreve, então não há
+              estado novo nem listener extra. Decorativo e `aria-hidden`: quem
+              não vê continua com a navegação lateral e as setas do teclado. */}
+          {dirigindo ? (
+            <p aria-hidden className="solutions-convite">
+              <span className="solutions-convite-texto">
+                Role para percorrer as {String(total).padStart(2, '0')} soluções
+              </span>
+              <span className="solutions-convite-calha">
+                <span className="solutions-convite-ponto" />
+              </span>
+            </p>
+          ) : null}
         </div>
       </div>
 
