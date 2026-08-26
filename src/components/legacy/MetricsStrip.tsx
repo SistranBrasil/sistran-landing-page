@@ -29,11 +29,18 @@ export function MetricsStrip() {
     <section id="resultados-legado" className="lp-section lp-section--dark" aria-labelledby="resultados-legado-title">
       <TechnicalBackdrop density={9} />
       <div className="lp-container" style={{ position: 'relative' }}>
+        {/* `progressive`: o título acende palavra por palavra conforme o scroll.
+            Era o único cabeçalho da home que chegava pronto enquanto o conteúdo
+            abaixo dele entrava encenado — os cartões já sobem em cascata logo
+            aqui embaixo, e o contraste fazia o bloco parecer começar pelo meio.
+            Frase curta (oito palavras), dentro do limite que o `ProgressiveText`
+            recomenda; sob movimento reduzido ela nasce inteira. */}
         <SectionIntro
           id="resultados-legado-title"
           kicker={metricsIntro.kicker}
           title={metricsIntro.title}
           text={metricsIntro.text}
+          progressive
         />
 
         <div className="lp-metrics-grid">

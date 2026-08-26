@@ -14,7 +14,10 @@ import Footer from '@/components/Footer';
 import ScrollSpy from '@/components/ui/ScrollSpy';
 import ScrollSpine from '@/components/ui/ScrollSpine';
 import BackToTop from '@/components/ui/BackToTop';
-import SectionReveal from '@/components/ui/SectionReveal';
+// Import comentado junto com os wrappers que saíram da home (ver a nota acima de
+// `<Contact />`): o componente continua no projeto, mas a home não o consome mais
+// — deixá-lo importado quebraria o lint por import não utilizado.
+// import SectionReveal from '@/components/ui/SectionReveal';
 import OptionalMorphIntro from '@/components/intro/OptionalMorphIntro';
 import NotchDivider from '@/components/ui/NotchDivider';
 import { StackScenes } from '@/components/legacy/StackScenes';
@@ -130,15 +133,27 @@ export default function Page() {
             do mosaico. "Sistran em números" emenda direto no bloco claro de
             Contato — as duas já resolvem a própria costura de cor (a Metrics
             desenha faixa clara em cima e palco escuro embaixo). */}
-        {/* Ordem da home do site: contato -> LinkedIn -> "Fale com a Gente!" */}
+        {/* Ordem da home do site: contato -> LinkedIn -> "Fale com a Gente!"
+
+            Os três `SectionReveal` que envolviam Contato, Social e ContactCTA
+            saíram: eles não faziam nada. O wrapper anima só os nós marcados com
+            `data-reveal`, e esse atributo não existia em NENHUM lugar do projeto
+            — era um invólucro inerte. Pior: as três seções já se encenam
+            sozinhas, cada uma do seu jeito (o Contato pelo `--ct-surgir` do
+            próprio percurso sticky, o Social e o ContactCTA por `whileInView` do
+            Motion, mais a digitação do título no último). Marcar `data-reveal`
+            dentro delas criaria DUAS animações de entrada disputando o mesmo
+            elemento. O componente `ui/SectionReveal.tsx` fica no lugar, intacto,
+            para quem precisar de reveal em bloco numa seção que não tenha o
+            próprio. */}
         <div className="section-light">
-          <SectionReveal><Contact /></SectionReveal>
+          <Contact />
         </div>
-        <SectionReveal><Social /></SectionReveal>
+        <Social />
         {/* `motionShowcase`: digitacao do titulo, entrada encadeada e grafismo
             tecnico. Só aqui — o mesmo ContactCTA fecha outras nove paginas e
             elas continuam como estavam. */}
-        <SectionReveal><ContactCTA motionShowcase /></SectionReveal>
+        <ContactCTA motionShowcase />
       </main>
       <Footer />
       <BackToTop />
