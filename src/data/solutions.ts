@@ -15,6 +15,8 @@ export const SOLUTIONS: readonly Solution[] = [
     // O antigo #0079CB era quase invisivel apos a paleta clarear.
     color: '#57B7EE',
     colorOnLight: '#0067AF',
+    image: '/images/home/escritoriosp.jpg',
+    imageAlt: 'Equipe Sistran no escritório de São Paulo, em frente aos monitores de desenvolvimento.',
   },
   {
     id: 'servicos-processos',
@@ -23,6 +25,8 @@ export const SOLUTIONS: readonly Solution[] = [
     icon: 'Workflow',
     color: '#0ed8f6',
     colorOnLight: '#0193B4',
+    image: '/images/home/escritoriosp1.jpg',
+    imageAlt: 'Profissionais da Sistran reunidos em volta de uma mesa no escritório de São Paulo.',
   },
   {
     id: 'tipos-servico',
@@ -32,6 +36,8 @@ export const SOLUTIONS: readonly Solution[] = [
     // Paleta 100% azul da marca: o violeta/roxo antigo destoava dos cards.
     color: '#38BDF8',
     colorOnLight: '#0369A1',
+    image: '/images/home/sistransphist2.jpg',
+    imageAlt: 'Time da Sistran em atividade conjunta no escritório.',
   },
   {
     id: 'staff-augmentation',
@@ -40,5 +46,7 @@ export const SOLUTIONS: readonly Solution[] = [
     icon: 'UserPlus',
     color: '#7DD3FC',
     colorOnLight: '#075985',
+    image: '/images/home/sistransphist3.jpg',
+    imageAlt: 'Colaboradores da Sistran em ambiente de trabalho compartilhado.',
   },
 ] as const;

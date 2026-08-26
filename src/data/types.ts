@@ -31,6 +31,12 @@ export type Solution = {
   icon: IconName;
   color: string;
   colorOnLight: string;
+  /* Foto da solução no teatro da home. Opcional de propósito: a página
+     `/solucoes` consome os mesmos dados sem palco de imagem, e um card sem foto
+     continua legível — o `Solutions` só não desenha a janela. */
+  image?: string;
+  /** Descrição da foto. Ausente = foto decorativa (`alt=""`). */
+  imageAlt?: string;
 };
 export type FutureArea = { id: string; title: string; icon: IconName };
 export type Unit = { id: string; city: string; state: string; address?: string; phone?: string };

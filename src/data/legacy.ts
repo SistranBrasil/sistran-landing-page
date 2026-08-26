@@ -232,7 +232,18 @@ export const mosaicTiles: MosaicTile[] = [
     href: "https://landingpage-dbs.vercel.app/login",
   },
   // 9ª posição: é este tile que atravessa para a seção seguinte (ver StackScenes).
-  { id: "microservicos", label: "Arquitetura modular e escalável", layer: "slow" },
+  /* A foto é a MESMA do card 01 de "Soluções de Negócios" (`escritoriosp.jpg`,
+     em `src/data/solutions.ts`), e isso é intencional: este tile é o último do
+     mosaico antes da seção Soluções, então repetir a imagem faz a passagem de
+     "Arquitetura | destino adequado ao contexto" para "01 APIs, Projetos,
+     Desenvolvimento, Sustentação e Migrações" ler como continuação, e não como
+     corte. Trocar uma sem trocar a outra quebra a emenda. */
+  {
+    id: "microservicos",
+    label: "Arquitetura modular e escalável",
+    layer: "slow",
+    image: "/images/home/escritoriosp.jpg",
+  },
   { id: "ela", label: "ELA | análise visual de documentos", layer: "fast", image: "/imagens/ela.png" },
 ]
 
