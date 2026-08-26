@@ -6900,7 +6900,7 @@ html[data-motion="reduce"] .social-card-reativo {
   right: 0.34em;
   bottom: -0.22em;
   font-family: var(--font-display, inherit);
-  font-size: clamp(3.4rem, 7vw, 7.4rem);
+  font-size: clamp(2.8rem, 5vw, 5.4rem);
   font-weight: 750;
   line-height: 1;
   color: rgba(7, 120, 180, 0.12);
@@ -6910,8 +6910,8 @@ html[data-motion="reduce"] .social-card-reativo {
 .solution-info-icone {
   position: relative;
   display: inline-flex;
-  height: 44px;
-  width: 44px;
+  height: 38px;
+  width: 38px;
   align-items: center;
   justify-content: center;
   border-radius: 14px;
@@ -6920,8 +6920,8 @@ html[data-motion="reduce"] .social-card-reativo {
   color: #0067af;
 }
 .solution-info-icone svg {
-  height: 22px;
-  width: 22px;
+  height: 19px;
+  width: 19px;
 }
 .solution-info-indice {
   position: relative;
@@ -6937,21 +6937,22 @@ html[data-motion="reduce"] .social-card-reativo {
   position: relative;
   margin-top: 0.45rem;
   font-family: var(--font-display, inherit);
-  font-size: clamp(1.15rem, 1.5vw, 1.6rem);
+  font-size: clamp(1.05rem, 1.24vw, 1.34rem);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.24;
   color: #062b52;
   /* O numero decorativo mora na direita do cartao: o titulo para antes dele para
-     que os dois nunca se sobreponham. */
-  max-width: min(46ch, 74%);
+     que os dois nunca se sobreponham. Com o cartao menor a margem reservada e
+     maior em proporcao — o numero ocupa a mesma fatia de um retangulo estreito. */
+  max-width: min(40ch, 72%);
 }
 .solution-info-texto {
   position: relative;
-  margin-top: 0.6rem;
-  font-size: 0.98rem;
-  line-height: 1.6;
+  margin-top: 0.55rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
   color: #3c5a7a;
-  max-width: min(56ch, 78%);
+  max-width: min(50ch, 76%);
 }
 .solution-info-linha {
   position: relative;
@@ -7148,15 +7149,19 @@ html[data-motion="reduce"] .social-card-reativo {
   }
 
   /* --- Cartao descritivo: cobre so o terco inferior da foto --- */
+  /* Cartao menor a pedido: era 78% de largura com 210px de altura minima e
+     padding de ate 40px, e comia mais da foto do que precisava. Em 62% / 176px
+     ele continua legivel (o titulo mais longo, do card 01, ainda cabe em duas
+     linhas) e deixa as pessoas a vista. */
   .solutions-scroll[data-dirigindo] .solution-info {
     position: absolute;
-    left: -6%;
+    left: -4%;
     right: auto;
-    width: 78%;
-    bottom: -24px;
+    width: 62%;
+    bottom: -20px;
     margin: 0;
-    min-height: 210px;
-    padding: clamp(32px, 2.4vw, 40px);
+    min-height: 176px;
+    padding: clamp(24px, 1.9vw, 32px);
     z-index: 4;
     transform: translate3d(0, calc((var(--sol-passo-p, 0.5) - 0.5) * -4px), 0);
     transition:
@@ -7373,9 +7378,11 @@ html[data-motion="reduce"] .social-card-reativo {
     font-size: 0.94rem;
   }
   .solutions-scroll[data-dirigindo] .solution-info {
-    width: 88%;
-    min-height: 190px;
-    padding: 26px;
+    /* Mais largo que no desktop de proposito: a coluna do palco e menor aqui, e
+       em 62% o titulo do card 01 quebraria em quatro linhas. */
+    width: 76%;
+    min-height: 168px;
+    padding: 22px;
   }
   .solutions-curva,
   .solutions-coord,
