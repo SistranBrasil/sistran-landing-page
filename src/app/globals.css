@@ -6781,16 +6781,12 @@ html[data-motion="reduce"] .social-card-reativo {
   border-left: 4px solid #0ed8f6;
   box-shadow: 0 0 28px rgba(0, 213, 255, 0.09);
 }
-.solutions-nav-num {
-  font-family: var(--font-display, inherit);
-  font-size: 0.8rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: rgba(165, 240, 255, 0.62);
-}
-.solutions-nav-item[data-estado="ativo"] .solutions-nav-num {
-  color: #0ed8f6;
-}
+/* `.solutions-nav-num` (o `01`–`04` de cada item) saiu daqui em SIS-46. A mesma
+   tipografia — fonte de display, 700, `tabular-nums`, ciano quando aceso — está
+   agora em `.solutions-fio-no-num`, na legenda dos nós da linha de processo.
+   Para religar: um `<span>` antes de `.solutions-nav-titulo` no `Solutions.tsx`
+   e este bloco de volta. O contador `01 / 04` de `.solutions-progresso` nunca
+   dependeu dele. */
 .solutions-nav-titulo {
   flex: 1;
   font-family: var(--font-display, inherit);
@@ -7411,6 +7407,33 @@ html[data-motion="reduce"] .social-card-reativo {
   .solutions-fio-no svg {
     height: 20px;
     width: 20px;
+  }
+  /* Legenda numerada do no — a numeracao que estava na navegacao lateral, com a
+     mesma tipografia que ela tinha. Absoluta abaixo do circulo: dentro dele
+     disputaria os 52px com o icone.
+     Sem `transform` proprio de centragem em X? Tem: `left: 50%` +
+     `translateX(-50%)`. E seguro porque o `translate(-50%, -50%)` do no e do
+     ELEMENTO PAI — o filho tem o seu proprio sistema. */
+  .solutions-fio-no-num {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 7px);
+    transform: translateX(-50%);
+    font-family: var(--font-display, inherit);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: rgba(165, 240, 255, 0.62);
+    /* Mesma duracao das outras trocas de estado do no. */
+    transition:
+      color 380ms cubic-bezier(0.22, 1, 0.36, 1),
+      text-shadow 380ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .solutions-fio-no[data-estado="ativo"] .solutions-fio-no-num {
+    color: #0ed8f6;
+    text-shadow: 0 0 12px rgba(14, 216, 246, 0.55);
   }
   .solutions-fio-no[data-estado="ativo"] {
     border-color: rgba(165, 240, 255, 0.85);

@@ -334,12 +334,17 @@ export default function Solutions() {
                       data-estado={i === ativo ? 'ativo' : 'inativo'}
                       className="solutions-nav-item"
                     >
-                      <span className="solutions-nav-num">
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
+                      {/* O `01`–`04` saiu daqui em SIS-46: a numeração migrou
+                          para os nós da linha de processo, onde marca a etapa
+                          junto do ícone da solução. Aqui ela só repetia, em
+                          quatro cópias, o que o contador `01 / 04` logo abaixo
+                          já diz uma vez — e roubava largura do título.
+                          Nada de informação se perdeu: o contador e o
+                          `aria-current="step"` do botão continuam sendo o canal
+                          real (a linha é `aria-hidden`). */}
                       <span className="solutions-nav-titulo">{s.title}</span>
                       {/* O estado ativo não é só cor: tem barra à esquerda,
-                          placa de vidro, número aceso e a seta fixa. */}
+                          placa de vidro e a seta fixa. */}
                       <span aria-hidden className="solutions-nav-seta">
                         →
                       </span>
@@ -511,6 +516,14 @@ export default function Solutions() {
                       }
                     >
                       <IconeNo strokeWidth={1.5} aria-hidden />
+                      {/* A numeração que estava na navegação lateral (SIS-46).
+                          Aqui ela marca de facto: o nó já é o ponto do percurso
+                          onde se está, e o número diz qual é. Fora do círculo,
+                          como legenda, e não dentro: os 52px do nó já são do
+                          ícone, e empilhar os dois deixaria ambos ilegíveis. */}
+                      <span className="solutions-fio-no-num">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
                     </span>
                   );
                 })}
