@@ -3,16 +3,24 @@
 import "./legacy.css"
 import { motion, useScroll, useSpring, useTransform } from "motion/react"
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
-import { ScrollVideo } from "@/components/primitives/ScrollVideo"
-// Imports comentados junto com o consumo (abertura do Método e os quatro
-// movimentos, mais abaixo): ativos, quebrariam o lint por import não utilizado;
-// removidos, apagariam a pista de como religar. Os módulos seguem intactos.
+import { useRef } from "react"
+// Imports comentados junto com o consumo (abertura do Método, os quatro
+// movimentos, o vídeo e o tile viajante, mais abaixo): ativos, quebrariam o lint
+// por import não utilizado, e o `ScrollVideo` puxaria um componente para o bundle
+// sem ninguém para renderizá-lo. Removidos, apagariam a pista de como religar —
+// os módulos seguem intactos.
+// import { ScrollVideo } from "@/components/primitives/ScrollVideo"
 // import { SectionIntro } from "./SectionIntro"
 import { TechnicalBackdrop } from "./TechnicalBackdrop"
 // import { useActiveStep } from "@/lib/useActiveStep"
 import { useReducedMotion } from "@/lib/motion"
-import { mosaicIntro, mosaicTiles, scenes } from "@/data/legacy"
+// `scenes` e `scenesIntro` saíram do import junto com o JSX que os consumia.
+import { mosaicIntro, mosaicTiles } from "@/data/legacy"
+
+/* As três declarações abaixo (`CARRIER`, `CARRIER_VIDEO` e `offsetIn`) ficaram
+   sem consumidor com o tile viajante e o vídeo comentados, e são mantidas de
+   propósito: guardam a receita do reencode all-intra e a medição de layout que
+   qualquer religamento precisa. */
 
 /** Tile da Stack que desce e se torna o card 01 das Frentes. */
 const CARRIER = "microservicos"
@@ -71,18 +79,24 @@ export function StackScenes() {
   */
   const wrap = useRef<HTMLDivElement>(null)
   const stack = useRef<HTMLElement>(null)
+  const reduced = useReducedMotion()
+  /* Refs e estado da travessia comentados junto com o vídeo e o tile viajante:
+     `media` e `carrier` eram as duas pontas medidas do percurso, `travel` guardava
+     a geometria e `landingY`/`sceneEndY` eram os dois extremos do relógio do
+     vídeo. Sem tile e sem caixa de destino nada disso tem consumidor, e o lint
+     quebra com variável não utilizada.
+
   const media = useRef<HTMLDivElement>(null)
   const carrier = useRef<HTMLDivElement>(null)
-  const reduced = useReducedMotion()
   const [travel, setTravel] = useState<Travel | null>(null)
-  // Posição do card (`to.y` da medição abaixo), em pixels a partir do topo de
-  // `wrap`. É o gatilho do relógio do vídeo (`reel`, abaixo): o vídeo só deve
-  // começar a andar quando o tile pousar alinhado com a cena 1.
   const [landingY, setLandingY] = useState<number | null>(null)
-  // Topo da última etapa (`scenes.length - 1`), em pixels a partir do topo de
-  // `wrap`. É o outro extremo do relógio do vídeo: o vídeo deve terminar
-  // exatamente quando a cena 4 chega, não quando o bloco inteiro sai de tela.
   const [sceneEndY, setSceneEndY] = useState<number | null>(null)
+  */
+
+  /* Duas medições comentadas junto com o tile viajante e o vídeo: a primeira
+     media o percurso do tile até a caixa do card, a segunda o topo da última
+     etapa (extremo final do relógio do vídeo). A segunda ficou procurando um
+     `.scene-step` que não é mais renderizado, então nunca chegava a um valor.
 
   // Mede o percurso do tile até a caixa do card. Só valores de layout
   // (offsetTop/offsetWidth) — `getBoundingClientRect` já viria com o transform
@@ -168,6 +182,7 @@ export function StackScenes() {
 
     return () => observer.disconnect()
   }, [])
+  */
 
   // Parallax dos tiles da Stack.
   const { scrollYProgress: stackProgress } = useScroll({
@@ -183,6 +198,14 @@ export function StackScenes() {
   // Anulado com reduced motion — aqui é puro efeito.
   const copyDrift = useTransform(stackProgress, [0, 0.5, 1], [56, 0, -56])
   const copyY = useSpring(copyDrift, { stiffness: 90, damping: 26, mass: 0.6 })
+
+  /* Relógio do vídeo e travessia do tile, comentados junto com os dois.
+     `handoff` media o percurso pela caixa de destino (`media`), que não existe
+     mais; `cx`/`cy`/`csx`/`csy` aplicavam a geometria medida, `label` apagava o
+     rótulo antes de a escala distorcê-lo, `carrierOut`/`mediaIn` faziam a troca
+     final e `reel` era o tempo do vídeo. Sem consumidor, o lint quebra.
+     Religar é descomentar aqui, os refs e estados acima, as duas medições e os
+     blocos de JSX correspondentes.
 
   // Percurso medido pela caixa de destino, não pelo bloco da Stack.
   //
@@ -243,6 +266,7 @@ export function StackScenes() {
       sceneEndY !== null ? `${sceneEndY}px 55%` : "end start",
     ],
   })
+  */
 
   return (
     <div ref={wrap} className="stack-scenes">
@@ -270,10 +294,11 @@ export function StackScenes() {
               // daqui cortaria o percurso), mas continua ocupando a vaga:
               // removê-lo da lista deslocaria todos os `:nth-child` seguintes e
               // dois tiles cairiam na mesma posição.
-              style={{
-                y: tile.layer === "fast" ? fast : slow,
-                visibility: tile.id === CARRIER ? "hidden" : undefined,
-              }}
+              // O `visibility: hidden` do tile viajante saiu junto com ele: a vaga
+              // só ficava escondida porque um clone fazia a travessia por cima.
+              // Sem o clone, esconder deixaria um buraco no mosaico.
+              // visibility: tile.id === CARRIER ? "hidden" : undefined,
+              style={{ y: tile.layer === "fast" ? fast : slow }}
             >
               {/* Três camadas, três transforms independentes — cada efeito precisa
                   do seu, porque `transform` é uma propriedade só:
@@ -355,7 +380,14 @@ export function StackScenes() {
         </div>
       </section>
 
-      {/* Tile de ligação: nasce no mosaico e termina como a caixa do card 01. */}
+      {/* Tile de ligação comentado junto com o vídeo, e não por escolha estética:
+          ele nascia no mosaico e aterrissava EXATAMENTE na `.scene-media` — a
+          viagem (`x`, `y`, `scaleX`, `scaleY`) é medida entre os refs `carrier` e
+          `media`. Sem a caixa de destino ele viajaria para uma posição
+          indefinida. Com ele fora, o tile "Arquitetura modular e escalável"
+          volta a aparecer parado no próprio mosaico (ver o `visibility` na camada
+          de tiles acima). Religar é descomentar este bloco, a plumbing de
+          medição no corpo do componente e a caixa de vídeo abaixo.
       <motion.div
         ref={carrier}
         className="mosaic-tile stack-carrier"
@@ -367,6 +399,7 @@ export function StackScenes() {
           {mosaicTiles.find((tile) => tile.id === CARRIER)?.label}
         </motion.span>
       </motion.div>
+      */}
 
       {/* `aria-label` no lugar de `aria-labelledby="sistema-title"`: o título que
           carregava esse `id` foi comentado, e apontar para um nó inexistente
@@ -391,6 +424,22 @@ export function StackScenes() {
           />
           */}
 
+          {/* `.scene-story` inteira comentada: a caixa de vídeo (SIS-27) e os
+              quatro movimentos (SIS-26) eram as duas colunas dela, e uma grade de
+              duas colunas sem conteúdo em nenhuma delas só reservaria altura
+              vazia.
+
+              O vídeo saiu a pedido. Nem o componente `ScrollVideo`, nem o CSS
+              `.scene-media` / `.scene-video` / `.scene-steps`, nem os dados em
+              `src/data/legacy.ts`, nem o arquivo `/videos/process-scroll.mp4`
+              foram removidos — religar é descomentar este bloco, a plumbing de
+              medição no corpo do componente, o `useActiveStep` e os imports no
+              topo do arquivo.
+
+              Um comentário só, e não três aninhados: em JSX o primeiro fechamento
+              de bloco encerra tudo, então um marcador interno terminaria o
+              comentário no meio e o resto da árvore voltaria a ser código.
+
           <div className="scene-story">
             <motion.div
               ref={media}
@@ -398,19 +447,9 @@ export function StackScenes() {
               aria-hidden="true"
               style={travel ? { opacity: mediaIn } : undefined}
             >
-              {/* A caixa é só o vídeo durante as quatro etapas. O tempo dele é
-                  a posição de scroll, então ele continua correndo enquanto a
-                  caixa fica presa no topo e o leitor percorre os passos. */}
               <ScrollVideo className="scene-video" src={CARRIER_VIDEO} progress={reel} />
             </motion.div>
 
-            {/* Os quatro movimentos comentados a pedido — 01 Tornar o legado
-                explicável, 02 Escolher com evidências, 03 Construir com
-                contexto e 04 Validar para evoluir, com seus textos. Comentados,
-                e não removidos: `scenes` continua em `src/data/legacy.ts` e o
-                CSS `.scene-steps` / `.scene-step` continua em `legacy.css`, então
-                religar é descomentar este bloco e o `useActiveStep` no corpo do
-                componente.
             <div className="scene-steps">
               {scenes.map((scene, index) => (
                 <button
@@ -429,8 +468,8 @@ export function StackScenes() {
                 </button>
               ))}
             </div>
-            */}
           </div>
+          */}
         </div>
       </section>
     </div>
