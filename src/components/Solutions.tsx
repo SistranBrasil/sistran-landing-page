@@ -255,7 +255,25 @@ export default function Solutions() {
       ` C ${(dobra + 30).toFixed(1)} ${geo.sy.toFixed(1)},` +
       ` ${(entrada - 22).toFixed(1)} ${linhaY.toFixed(1)},` +
       ` ${entrada.toFixed(1)} ${linhaY.toFixed(1)}` +
-      ` H ${(nos[nos.length - 1] + geo.pw * 0.05).toFixed(1)}`
+      ` H ${(nos[nos.length - 1] ?? entrada).toFixed(1)}`
+    : '';
+  /* Remate do fim do percurso.
+     O caminho acima agora TERMINA no último nó, e não 5% de largura depois dele:
+     aquele toco de traço reto morrendo no vazio, com a ponta arredondada do
+     `stroke-linecap`, era o "final feio". Um percurso que acaba em nada parece
+     corte, não conclusão.
+
+     No lugar dele, um trecho próprio: sobe suavemente do último nó até a beira
+     da janela e dissolve num degradê (`#solutions-fio-fim`), porque quem se
+     dissipa não precisa de ponta. Path separado, e não mais um segmento do
+     `caminho`, por dois motivos — o degradê pintaria o fio inteiro se estivesse
+     no mesmo traço, e o traço aceso (`stroke-dashoffset`) mediria o remate como
+     se fosse etapa. */
+  const remate = geo
+    ? `M ${(nos[nos.length - 1] ?? entrada).toFixed(1)} ${linhaY.toFixed(1)}` +
+      ` C ${(geo.px + geo.pw * 0.915).toFixed(1)} ${linhaY.toFixed(1)},` +
+      ` ${(geo.px + geo.pw * 0.945).toFixed(1)} ${(linhaY - geo.ph * 0.075).toFixed(1)},` +
+      ` ${(geo.px + geo.pw * 0.995).toFixed(1)} ${(linhaY - geo.ph * 0.11).toFixed(1)}`
     : '';
   /* `noAtivo = ativo + 1` saiu: era a correção que os seis nós exigiam para a
      cabeça do percurso não acender no nó errado. Com um nó por solução, o nó da
@@ -482,6 +500,25 @@ export default function Solutions() {
                   viewBox={`0 0 ${geo.w.toFixed(0)} ${geo.h.toFixed(0)}`}
                   preserveAspectRatio="none"
                 >
+                  <defs>
+                    {/* Degradê do remate: ciano na emenda com o último nó,
+                        transparente na beira da janela. `userSpaceOnUse` com as
+                        coordenadas do viewBox — em `objectBoundingBox` o
+                        `preserveAspectRatio="none"` do svg esticaria o degradê
+                        junto da caixa. */}
+                    <linearGradient
+                      id="solutions-fio-fim"
+                      gradientUnits="userSpaceOnUse"
+                      x1={nos[nos.length - 1] ?? entrada}
+                      y1={linhaY}
+                      x2={geo.px + geo.pw * 0.995}
+                      y2={linhaY - geo.ph * 0.11}
+                    >
+                      <stop offset="0" stopColor="#0ed8f6" stopOpacity="0.55" />
+                      <stop offset="0.55" stopColor="#66caf4" stopOpacity="0.22" />
+                      <stop offset="1" stopColor="#66caf4" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
                   <path className="solutions-fio-calha" d={caminho} pathLength={1} />
                   {/* Trecho aceso: o desenho progressivo vive no CSS
                       (`stroke-dashoffset` com `pathLength=1`). */}
@@ -490,6 +527,14 @@ export default function Solutions() {
                     className="solutions-fio-vivo"
                     d={caminho}
                     pathLength={1}
+                  />
+                  {/* Remate: só acende de facto na última etapa (`data-fim`), em
+                      que o percurso chegou ao fim e a dissipação faz sentido.
+                      Nas anteriores fica esmaecido, como continuação prometida. */}
+                  <path
+                    className="solutions-fio-remate"
+                    d={remate}
+                    data-fim={ativo === total - 1 ? '' : undefined}
                   />
                 </svg>
                 {nos.map((x, i) => {
