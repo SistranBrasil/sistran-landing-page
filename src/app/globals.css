@@ -5547,6 +5547,10 @@ html[data-motion="reduce"] .ct-veu {
   z-index: 30;
   isolation: isolate;
   background: var(--fundo-marca);
+  /* Ancorado na janela, como em `.solutions-scroll`: é o que faz a borda de cima
+     desta seção ter a mesma cor da borda de baixo da vizinha sem nada pintado por
+     cima. Ver a nota no `:root`. */
+  background-attachment: fixed;
 }
 
 /* ── Faixa de abertura: sobretitulo, titulo e marcador ───────────────────── */
@@ -5562,32 +5566,32 @@ html[data-motion="reduce"] .ct-veu {
   color: #ffffff;
 }
 
-/* Emenda de entrada, recalibrada em SIS-60. Ela existia porque "Soluções de
-   Negócios" fechava em palco escuro e esta faixa era clara — pintava um degradê
-   NAVY na borda de cima. Com as duas seções no mesmo `--fundo-marca` não há mais
-   claro contra escuro; o que sobra é que o degradê é diagonal (115deg), então a
-   borda de baixo de Soluções e a borda de cima daqui não coincidem sozinhas.
-   Este achatamento resolve isso: a borda de cima passa a ser `--emenda-numeros`
-   de lado a lado, exatamente a cor que Soluções pinta na saída (a MESMA
-   variável, para não haver como calibrar um lado e esquecer o outro).
+/* Emenda de entrada, RETIRADA — e é ela a faixa clara e plana que aparecia no topo
+   da seção, denunciando a passagem em vez de esconder.
 
-   `z-index: -1` pinta por cima do fundo da faixa e por baixo do texto — mesmo
-   truque de `.emenda-de-escuro`, e por isso o conteúdo não precisa ser
-   empilhado. Não se dissipa mais com `--impact-entrada`: não é efeito de
-   entrada, é casamento de cor, e vale igual em modo lista, dirigido e movimento
-   reduzido. */
+   História, para não voltar: primeiro ela era um degradê navy, porque Soluções
+   fechava em palco escuro e esta faixa era clara (SIS-60). Depois de SIS-61 os
+   dois fundos viraram um só, e ela foi recalibrada para achatar a borda de cima em
+   `#0875c5` chapado ao longo de 200px, casando com a saída de Soluções.
+
+   O achatamento era necessário só porque o degradê era resolvido contra a caixa de
+   cada seção, e caixas de alturas diferentes davam cores diferentes na fronteira.
+   Com `background-attachment: fixed` nos dois lados (ver a nota no `:root`) as
+   bordas coincidem sozinhas — e o que sobrava aqui era 200px de azul plano
+   atravessando um degradê diagonal, ou seja, o remendo virou o defeito.
+
+   Sem substituto: não há nada a pintar numa fronteira que já não existe. O `span`
+   em `Metrics.tsx` está comentado junto, e os dois espelhos de modo dirigido /
+   movimento reduzido saíram com ele.
 .impact-emenda {
   position: absolute;
   inset: 0 0 auto 0;
   height: 200px;
   z-index: -1;
   pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    var(--emenda-numeros) 0,
-    var(--emenda-numeros-transp) 100%
-  );
+  background: linear-gradient(to bottom, #0875c5 0, rgba(8, 117, 197, 0) 100%);
 }
+*/
 
 .impact-topo-inner {
   display: flex;
@@ -5890,10 +5894,16 @@ html[data-motion="reduce"] .ct-veu {
        Continua TRAVADA (não `auto`): é dela que sai a linha-base da curva. */
     grid-template-rows: clamp(140px, 19svh, 178px) minmax(0, 1fr);
     overflow: clip;
-    /* SIS-61 — era o navy `#041a33`. O `sticky` tem exactamente uma tela de
-       altura, então é aqui que o `--fundo-marca` precisa ser pintado: se ficasse
-       só na seção de 520vh, o degradê deslizaria por trás do palco parado. */
+    /* SIS-61 — era o navy `#041a33`. O `sticky` precisa de fundo OPACO próprio:
+       ele cobre a tela inteira e, transparente, deixaria a seção de cima aparecer
+       por trás do palco parado.
+
+       `fixed` aqui não é detalhe: sem ele esta caixa de UMA tela pintava um recorte
+       do degradê completamente diferente do que a seção de 520vh pintava ao redor —
+       duas versões do mesmo degradê, e um degrau onde se encontravam. Ancorado na
+       janela, o que o `sticky` pinta é idêntico ao que a seção pinta. */
     background: var(--fundo-marca);
+    background-attachment: fixed;
   }
   .impact-scroll[data-dirigindo] .impact-topo {
     padding-block: clamp(1rem, 2vw, 1.5rem);
@@ -6876,14 +6886,9 @@ html[data-motion="reduce"] .ct-veu {
     height: auto !important;
     padding: 0 clamp(1.25rem, 5vw, 2rem) !important;
   }
-  /* A emenda é forma, não movimento — e depois de SIS-60 ela já é estática e do
-     mesmo tamanho em todos os modos, então não há mais nada a repor aqui. A regra
-     ficou como lembrete de que a emenda TEM de continuar visível: ela é o
-     casamento de cor com a saída de Soluções, e apagá-la reabriria o corte. */
-  .impact-scroll[data-dirigindo] .impact-emenda {
-    height: 200px !important;
-    opacity: 1 !important;
-  }
+  /* A reposição da `.impact-emenda` saiu junto com a emenda: não há mais faixa de
+     cor no topo para garantir aqui. A fronteira com Soluções agora casa sozinha,
+     pelo fundo ancorado na janela. */
   /* O marcador volta à horizontal junto com a faixa alta do modo lista. */
   .impact-scroll[data-dirigindo] .impact-marcador,
   .impact-scroll[data-dirigindo] .impact-trilho {
@@ -6981,13 +6986,10 @@ html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-rotulo,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-caption {
   margin-inline: 0 !important;
 }
-/* Espelho das mesmas tres reposicoes do bloco `@media (prefers-reduced-motion)`
-   logo acima: sem elas o interruptor em tempo de execucao entregaria a faixa e o
-   marcador na versao do palco dirigido, que a lista vertical nao usa. */
-html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-emenda {
-  height: 200px !important;
-  opacity: 1 !important;
-}
+/* Espelho das reposicoes do bloco `@media (prefers-reduced-motion)` logo acima:
+   sem elas o interruptor em tempo de execucao entregaria a faixa e o marcador na
+   versao do palco dirigido, que a lista vertical nao usa. A da `.impact-emenda`
+   saiu junto com a emenda. */
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-marcador,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-trilho {
   flex-direction: row !important;
@@ -7440,17 +7442,30 @@ html[data-motion="reduce"] .social-palco .btn-primary:hover::after {
    degradê diagonal e os dois focos de luz. As emendas com as seções vizinhas
    NÃO entram: elas são específicas de cada fronteira e cada seção declara a sua.
 
-   `--emenda-numeros` é a cor da fronteira Soluções -> Números: a saída de uma e
-   a entrada da outra leem a MESMA variável, então não há como calibrar um lado e
-   esquecer o outro. O valor é o primeiro stop do degradê (`#0875c5`), que é a
-   cor com que o fundo compartilhado começa. */
+   ANCORADO NA JANELA, não na caixa. Este é o ponto que faltava, e a causa real
+   da emenda que insistia em aparecer: um `linear-gradient(115deg, …)` e dois
+   radiais em `%` resolvem contra a caixa de CADA elemento. Os três consumidores
+   têm alturas completamente diferentes — `.solutions-scroll` (várias telas),
+   `.impact-scroll` (520vh) e `.impact-sticky` (uma tela) —, então a MESMA
+   declaração pintava três degradês diferentes, e todo encontro entre duas caixas
+   virava um degrau de cor.
+
+   Com `background-attachment: fixed` em todo consumidor, o degradê passa a ser
+   resolvido contra a janela: qualquer par de caixas mostra exatamente a mesma cor
+   na mesma altura de tela, e a emenda deixa de existir por construção — não por
+   calibragem. Foi por isso que as variáveis `--emenda-numeros*` saíram: elas
+   achatavam as duas bordas para `#0875c5` chapado, o que resolvia o degrau mas
+   plantava uma FAIXA CLARA de 200px atravessando um degradê diagonal. Remendo
+   visível é pior que o corte que ele tapa.
+
+   O preço, consciente: o fundo destas duas seções fica parado enquanto se rola
+   por elas. É o que torna a emenda invisível, e ler como atmosfera estável em vez
+   de cor deslizando é ganho, não perda. */
 :root {
   --fundo-marca:
     radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.18), transparent 34%),
     radial-gradient(circle at 82% 48%, rgba(14, 102, 192, 0.16), transparent 38%),
     linear-gradient(115deg, #0875c5 0%, #075aab 42%, #032d67 100%);
-  --emenda-numeros: #0875c5;
-  --emenda-numeros-transp: rgba(8, 117, 197, 0);
 }
 
 .solutions-scroll {
@@ -7469,17 +7484,19 @@ html[data-motion="reduce"] .social-palco .btn-primary:hover::after {
        lembrar. A seção tem `isolation: isolate` e um `.solutions-fundo` em
        `z-index: 0` — um `::before` teria de se equilibrar entre os dois. */
     linear-gradient(to bottom, #ffffff 0, rgba(255, 255, 255, 0) 220px),
-    /* EMENDA 3 — Soluções -> "Sistran em números". Estava calibrada em `--deep`
-       (`#004d8a`) para emendar com o `MetricsStrip`, que NÃO é mais a seção
-       seguinte: ele está comentado em `page.tsx` desde que a Metrics subiu para
-       cá. A saída pintava um navy que não existia em vizinho nenhum.
+    /* EMENDA 3 saiu daqui. Ela achatava a borda de baixo para `#0875c5` chapado
+       ao longo de 200px, para casar com a borda de cima da Metrics. Resolvia o
+       degrau e criava outro problema: uma faixa clara e plana cruzando um degradê
+       diagonal, que é justamente a "quebra de uma seção para outra" reportada.
 
-       Quem vem agora é a Metrics, que passou a abrir no mesmo `--fundo-marca`
-       desta seção. Como o degradê é diagonal (115deg), a borda de baixo daqui e a
-       borda de cima de lá não têm a mesma cor por acidente — as duas são
-       achatadas para `--emenda-numeros`, cada uma na sua ponta. */
-      linear-gradient(to top, var(--emenda-numeros) 0, var(--emenda-numeros-transp) 200px),
+       Não é mais necessária — as duas seções pintam o mesmo `--fundo-marca`
+       ancorado na JANELA (ver a nota no `:root`), então a última linha daqui e a
+       primeira de lá são a mesma cor sem nada pintado em cima. */
     var(--fundo-marca);
+  /* Uma entrada por camada, na ordem declarada: a emenda com o mosaico continua
+     colada ao topo DESTA seção (`scroll`), e as três camadas da marca passam a ser
+     resolvidas contra a janela (`fixed`). */
+  background-attachment: scroll, fixed, fixed, fixed;
 }
 
 /* Atmosfera: grade tecnica quase invisivel, brilho ciano, linhas finas, uma

@@ -313,22 +313,20 @@ export default function Metrics() {
     >
       <div ref={palcoRef} className="impact-sticky">
         <div className="impact-topo">
-          {/* Emenda de entrada, recalibrada em SIS-60. O texto que estava aqui
-              dizia que a seção acima (Soluções) fecha em palco escuro e que esta
-              faixa é clara, com um degradê de navy se dissipando por
-              `--impact-entrada`. Nada disso é verdade desde SIS-61: as duas
-              seções abrem no MESMO `--fundo-marca`, e a faixa não é mais clara.
+          {/* Emenda de entrada COMENTADA: era ela a faixa clara e plana no topo da
+              seção, que anunciava a passagem em vez de escondê-la.
 
-              O que a emenda faz agora é achatar a borda de cima para
-              `--emenda-numeros` — a mesma variável que Soluções pinta na saída.
-              O degradê do fundo é diagonal (115deg), então a borda de baixo de lá
-              e a de cima daqui não coincidem sozinhas. Estática: é casamento de
-              cor, não efeito de entrada.
+              Ela achatava a borda de cima para `#0875c5` chapado ao longo de
+              200px, para casar com a saída de Soluções — necessário só enquanto o
+              degradê era resolvido contra a caixa de cada seção. Agora as duas
+              pintam o mesmo `--fundo-marca` ancorado na JANELA
+              (`background-attachment: fixed`, ver a nota no `:root` do
+              `globals.css`), e as bordas coincidem sozinhas.
 
-              `z-index: -1` (o mesmo truque de `.emenda-de-escuro`): pinta por
-              cima do fundo da faixa e por baixo do texto, sem precisar empilhar
-              o conteúdo. */}
+              Comentada, e não removida: a regra `.impact-emenda` do `globals.css`
+              está comentada junto, com a mesma nota.
           <span aria-hidden className="impact-emenda" />
+          */}
           <div className="container-lp impact-topo-inner">
             <div>
               <p className="impact-eyebrow">Sistran em números</p>
