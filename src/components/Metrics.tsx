@@ -313,11 +313,17 @@ export default function Metrics() {
     >
       <div ref={palcoRef} className="impact-sticky">
         <div className="impact-topo">
-          {/* Emenda de entrada. A seção acima (Soluções) fecha em palco escuro e
-              esta faixa é clara: sem nada no meio a troca é corte reto. O degradê
-              do navy na borda de cima resolve, e se dissipa conforme a seção
-              entra — a opacidade sai de `--impact-entrada`, a MESMA variável que
-              o único ScrollTrigger da seção já escreve. Nenhum gatilho novo.
+          {/* Emenda de entrada, recalibrada em SIS-60. O texto que estava aqui
+              dizia que a seção acima (Soluções) fecha em palco escuro e que esta
+              faixa é clara, com um degradê de navy se dissipando por
+              `--impact-entrada`. Nada disso é verdade desde SIS-61: as duas
+              seções abrem no MESMO `--fundo-marca`, e a faixa não é mais clara.
+
+              O que a emenda faz agora é achatar a borda de cima para
+              `--emenda-numeros` — a mesma variável que Soluções pinta na saída.
+              O degradê do fundo é diagonal (115deg), então a borda de baixo de lá
+              e a de cima daqui não coincidem sozinhas. Estática: é casamento de
+              cor, não efeito de entrada.
 
               `z-index: -1` (o mesmo truque de `.emenda-de-escuro`): pinta por
               cima do fundo da faixa e por baixo do texto, sem precisar empilhar
@@ -357,9 +363,22 @@ export default function Metrics() {
         </div>
 
         <div className="impact-palco">
-          {/* Fronteira claro/escuro em curva larga e organica — nao chanfro (o
-              `NotchDivider` do projeto) e nao linha reta. O preenchimento é a cor
-              clara: o que sobra abaixo da curva é o palco. */}
+          {/* SIS-64 — fronteira claro/escuro em curva larga, comentada.
+
+              Ela separava a faixa clara do palco escuro, preenchida com a cor da
+              faixa. Depois de SIS-61 não existem mais dois fundos: faixa e palco
+              são o mesmo `--fundo-marca`, então não há fronteira para desenhar — e
+              a barriga em `#e7f0f9` viraria uma mancha clara atravessando o azul.
+
+              Era também a origem das sujeiras nos cantos que a task descreve:
+              `preserveAspectRatio="none"` sobre um viewBox de 1440x120 esticava o
+              path na horizontal em telas largas, a espessura aparente mudava com a
+              largura e as pontas deixavam de encostar limpas nas bordas.
+
+              Comentada, e não removida: as regras `.impact-borda` do `globals.css`
+              estão comentadas junto, com a mesma nota. Religar é descomentar os
+              dois — e o path teria de fechar nas duas bordas sem depender de
+              `preserveAspectRatio="none"`.
           <svg
             aria-hidden
             className="impact-borda"
@@ -368,6 +387,7 @@ export default function Metrics() {
           >
             <path d="M0 0 H1440 V44 C 1180 96 980 22 720 52 C 470 80 250 118 0 74 Z" />
           </svg>
+          */}
 
           <span aria-hidden className="impact-grade" />
 
@@ -517,18 +537,37 @@ export default function Metrics() {
                     key={m.id}
                     className="impact-item"
                     data-estado={i === ativo ? 'ativo' : i < ativo ? 'feito' : 'proximo'}
+                    /* SIS-62 — `data-dist` e `data-lado`, os dois derivados do que
+                       o item já tem. `data-dist` é a distancia em etapas até o
+                       ativo (0..3), o MESMO canal que os nodes usam: é ele que
+                       rarefaz os vizinhos por distancia, em vez da opacidade fixa
+                       que pesava igual no vizinho de ao lado e no da ponta da tela.
+                       `data-lado` diz para que lado da onda o bloco foi empurrado,
+                       e é o que orienta a haste. */
+                    data-dist={Math.min(3, Math.abs(i - ativo))}
+                    data-lado={(DESVIOS_TRILHO[i] ?? 0) < 0 ? 'acima' : 'abaixo'}
                     /* Posicao vai por variavel, nao por `left`/`top` inline:
                        estilo inline venceria o CSS do modo lista, e ai a lista
-                       vertical nasceria com os itens espalhados. Sao as duas
-                       unicas variaveis por item — o resto do calculo é o vao
-                       comum, compartilhado com a curva e com os nodes. */
+                       vertical nasceria com os itens espalhados. O resto do calculo
+                       é o vao comum, compartilhado com a curva e com os nodes.
+
+                       `--impact-haste` é o MODULO do mesmo desvio: a distancia do
+                       centro do bloco até a onda. Nao é numero novo — sai de
+                       `DESVIOS_TRILHO`, a mesma fonte da posicao. */
                     style={
                       {
                         '--impact-i': i,
                         '--impact-desvio': `${DESVIOS_TRILHO[i] ?? 0}px`,
+                        '--impact-haste': `${Math.abs(DESVIOS_TRILHO[i] ?? 0)}px`,
                       } as React.CSSProperties
                     }
                   >
+                    {/* Haste que liga este bloco ao seu node na onda. O bloco e o
+                        node já nascem no mesmo x, mas o bloco é empurrado na
+                        vertical para nao brigar com a lente, e nada preenchia esse
+                        vao: o numero lia como solto no palco em vez de pendurado no
+                        percurso. Decorativa, e por isso `aria-hidden`. */}
+                    <span aria-hidden className="impact-haste" />
                     {/* Ordinal decorativo: a posicao no percurso ja vem da `<ol>`,
                         entao repeti-la em texto acessivel seria leitura dobrada. */}
                     <p aria-hidden className="impact-indice">
