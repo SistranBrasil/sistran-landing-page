@@ -8123,9 +8123,12 @@ html[data-motion="reduce"] .social-palco .btn-primary:hover::after {
     /* Reserva a faixa do header fixo. Sem isto o palco centraliza dentro de
        100svh INTEIROS, e o primeiro item da coluna — a capsula do cabecalho —
        cai justo debaixo da barra do menu: lia-se so "VEJA COMO A SISTRAN P...".
-       `--header-h` e reescrita pelo proprio Header quando ele compacta
-       (88px -> 68px), entao o espaco acompanha a barra em vez de ser numero
-       magico. Com `box-sizing: border-box` o `height: 100svh` nao cresce: a
+       `--header-h` vem de `:root` neste arquivo e vale 88px. Ela ERA reescrita
+       pelo proprio Header quando ele compactava (88px -> 68px); desde SIS-65 o
+       cabecalho nao compacta mais, entao a variavel e constante e o Header nao
+       toca nela — ainda assim continua sendo a variavel, e nao 88px escrito
+       aqui, para haver um lugar so a mudar se a altura mudar.
+       Com `box-sizing: border-box` o `height: 100svh` nao cresce: a
        area util passa a ser `100svh - --header-h` e o `center` passa a
        centralizar ABAIXO do header.
 

@@ -144,7 +144,9 @@ export default function Differentials() {
         {/* Encosta abaixo do cabecalho, nao no topo da viewport: com `top: 0` a
             tag e o titulo da seccao ficavam por tras do header fixo e o card
             tinha de ser encurtado para compensar (relatorio de UX, p15).
-            `--header-h` e escrito pelo Header e acompanha a compactacao. */}
+            `--header-h` vem de `:root` no `globals.css`. Ate SIS-65 o Header a
+            reescrevia ao compactar; agora o cabecalho tem altura fixa e a
+            variavel e constante (88px). */}
         <div
           className="sticky flex items-center overflow-hidden"
           style={{

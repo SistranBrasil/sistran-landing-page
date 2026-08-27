@@ -28,32 +28,34 @@ export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [compacto, setCompacto] = useState(false);
   const [activeHash, setActiveHash] = useState('');
   const [contactOpen, setContactOpen] = useState(false);
 
-  /* Duas leituras do mesmo scroll, com limiares diferentes de proposito:
-     `scrolled` (40px) so intensifica o fundo — mudanca barata, pode ser cedo.
-     `compacto` (80px) reduz a altura do cabecalho, o que reposiciona a pagina
-     inteira: mais tarde para nao disparar num toque acidental do trackpad
-     (relatorio de UX, p13 — cabecalho de 88px come a primeira dobra). */
+  /* SIS-65 — sobrou UMA leitura do scroll. `scrolled` (40px) só intensifica o
+     fundo e acende o fio de baixo: mudança barata, que não reposiciona nada.
+
+     O estado `compacto` (80px) saiu junto com a compactação. Ele reduzia a
+     altura da pílula de 88px para 68px, e era ISSO que obrigava a logo a
+     encolher — 5,5rem são exatamente os 88px da pílula expandida, então dentro
+     de 68px a logo grande não caberia. Pedido é logo sempre no tamanho maior,
+     e das duas saídas possíveis esta é a que entrega literalmente o tamanho da
+     captura: a pílula deixa de encolher. O preço é 20px de viewport
+     permanentes, que era a razão original de compactar (relatório de UX, p13 —
+     cabeçalho de 88px come a primeira dobra). Fica registrado: quem quiser a
+     dobra de volta tem de escolher a outra saída, uma logo que caiba em 68px.
+
+     Sem `compacto` a altura é constante, então `--header-h` também é — e ela já
+     está declarada como `88px` em `:root` no `globals.css`. O efeito que a
+     reescrevia por quadro de estado saiu: escrever no `documentElement` um valor
+     que nunca muda é só uma chance de os dois lugares divergirem. Quem depende
+     dela (`scroll-margin-top` das âncoras, o sticky do `Differentials`) passa a
+     ler a folha de estilo direto. */
   useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 40);
-      setCompacto(y > 80);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  /* `--header-h` alimenta o `scroll-margin-top` das seccoes ancoraveis
-     (globals.css). Se a altura muda e a variavel nao, toda ancora passa a
-     parar 20px errada — ou escondida atras do proprio cabecalho. */
-  useEffect(() => {
-    document.documentElement.style.setProperty('--header-h', compacto ? '68px' : '88px');
-  }, [compacto]);
 
   const isHome = pathname === '/';
   // hidden apenas no topo absoluto da home
@@ -138,18 +140,18 @@ export default function Header() {
   return (
     <>
     <header
-      className={clsx(
-        'fixed inset-x-0 z-50 mx-auto flex w-[min(1240px,calc(100%-32px))] items-center justify-between rounded-[20px] px-3 pl-5 text-white',
-        compacto ? 'top-2 h-[64px] md:h-[68px]' : 'top-4 h-[72px] md:h-[88px]',
-      )}
+      className="fixed inset-x-0 top-4 z-50 mx-auto flex h-[72px] w-[min(1240px,calc(100%-32px))] items-center justify-between rounded-[20px] px-3 pl-5 text-white md:h-[88px]"
       style={{
         border: PILL_BORDER,
         background: scrolled ? PILL_BG_STRONG : PILL_BG,
         boxShadow: PILL_SHADOW,
         backdropFilter: 'blur(28px) saturate(1.4)',
         WebkitBackdropFilter: 'blur(28px) saturate(1.4)',
+        /* SIS-65 — `height` e `top` saíram da lista: com altura e posição fixas
+           elas eram transições sobre valores que nunca mudam. Sobra o que de
+           fato reage a `scrolled`. */
         transition:
-          'background var(--dur-base, 300ms) ease, box-shadow var(--dur-base, 300ms) ease, height var(--dur-base, 300ms) var(--ease-out, ease), top var(--dur-base, 300ms) var(--ease-out, ease)',
+          'background var(--dur-base, 300ms) ease, box-shadow var(--dur-base, 300ms) ease',
       }}
     >
       {/* borda inferior gradient sutil */}
@@ -178,17 +180,34 @@ export default function Header() {
         {/* `data-morph-target`: destino da abertura opcional da home
             (OptionalMorphIntro). O atributo e so uma marca de medicao — o logo
             continua correto e visivel sem o efeito. */}
+        {/* SIS-65 — uma altura só, a maior, sem depender de estado de scroll:
+            4,5rem no estreito e 5,5rem a partir de `md`. O
+            `transition-[height]` saiu com ela — altura fixa não transiciona.
+
+            `width`/`height` corrigidos de 280x96 para 560x374, as dimensões
+            REAIS do arquivo. Não é detalhe: com a razão errada (2,92 em vez de
+            1,50) o `w-auto` reservava uma caixa de 256px de largura para uma
+            marca que o `object-contain` pintava com 132px, e os ~124px
+            restantes eram espaço morto entre a logo e a nav. Corrigir a razão
+            não muda o tamanho aparente da marca — ela já era pintada a 132x88
+            — só devolve o espaço e faz a caixa reservada bater com o que se vê,
+            que é o que importa para CLS.
+
+            Nitidez em tela 2x deixa de ser risco pelo mesmo motivo: 88px de
+            exibição pedem 176px de fonte, e o arquivo tem 374px de altura. A
+            preocupação da task partia dos 96px declarados, que não eram os do
+            arquivo.
+
+            O mesmo par errado está no `Footer.tsx` (360x124) com o mesmo
+            arquivo; fora do escopo desta task, mas é a mesma correção. */}
         <Image
           data-morph-target=""
           src="/images/sistran-corp-logo.png"
           alt="Sistran"
-          width={280}
-          height={96}
+          width={560}
+          height={374}
           priority
-          className={clsx(
-            'logo-glow w-auto object-contain transition-[height] duration-300',
-            compacto ? 'h-[3.1rem] md:h-[3.4rem]' : 'h-[4.5rem] md:h-[5.5rem]',
-          )}
+          className="logo-glow h-[4.5rem] w-auto object-contain md:h-[5.5rem]"
         />
       </Link>
 
