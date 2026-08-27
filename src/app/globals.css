@@ -6000,14 +6000,29 @@ html[data-motion="reduce"] .ct-veu {
     inset: 0;
     z-index: 3;
     pointer-events: none;
-    /* SIS-61 — as duas pontas fechavam no navy chapado `#041a33`, que era o fundo
-       do palco. Agora o fundo é um degradê DIAGONAL: nenhuma cor chapada casa com
-       as duas bordas ao mesmo tempo. A vinheta passa a ser sombra translúcida no
-       tom escuro do próprio degradê (`#032d67`), então o fundo continua aparecendo
-       por baixo e ela lê como escurecimento, não como remendo de cor. */
-    background:
-      linear-gradient(90deg, rgba(3, 45, 103, 0.92) 0%, rgba(3, 45, 103, 0) 14%),
-      linear-gradient(270deg, rgba(3, 45, 103, 0.92) 0%, rgba(3, 45, 103, 0) 14%);
+    /* A vinheta pinta O PRÓPRIO FUNDO, recortado nas duas pontas — não uma
+       sombra por cima dele.
+       Como sombra translúcida ela era o defeito que se via na captura: 14% de
+       1900px são ~265px de `#032d67` a 0,92 de opacidade em cada lado, o que
+       sobre o navy antigo passava batido e sobre o azul médio de agora virou
+       borrão escuro. E porque o `inset: 0` a mede dentro do `.impact-palco`, a
+       borda de cima dela caía exatamente na fronteira das linhas do grid,
+       desenhando um corte horizontal duro atravessando a seção.
+       Repintando `--fundo-marca` com o mesmo `background-attachment: fixed` do
+       palco, o que aparece nas pontas é pixel a pixel o fundo que já estava
+       ali — a máscara só decide ONDE ele volta a ser opaco, cobrindo os
+       indicadores que entram e saem de cena. Sem cor nova, sem borda superior:
+       a máscara é vertical de ponta a ponta. */
+    background: var(--fundo-marca);
+    background-attachment: fixed;
+    /* Duas camadas de máscara, uma por ponta. Sem `mask-composite` declarado o
+       padrão é `add`, então elas se somam e o meio da cena fica descoberto. */
+    mask-image:
+      linear-gradient(90deg, #000 0%, transparent 12%),
+      linear-gradient(270deg, #000 0%, transparent 12%);
+    -webkit-mask-image:
+      linear-gradient(90deg, #000 0%, transparent 12%),
+      linear-gradient(270deg, #000 0%, transparent 12%);
   }
 
   /* As duas trilhas — a da curva e a do conteúdo — se deslocam com o MESMO
