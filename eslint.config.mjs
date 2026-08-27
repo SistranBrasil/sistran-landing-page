@@ -8,6 +8,7 @@ export default [
       'linha-tempo-sistran-react/**',
       'sistran-video/**',
       'scroll-world/**',
+      'subprojects/**',
     ],
   },
   ...nextCoreWebVitals,

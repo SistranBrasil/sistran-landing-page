@@ -287,7 +287,7 @@ type BuildingParts = {
 /* ---------------------------------------------------------------------------
    Torre River Park — geometria fiel
 
-   Portada de `src/app/sistran-river-park-3d/app/BuildingViewer.tsx`, que é o
+   Portada de `subprojects/sistran-river-park-3d/app/BuildingViewer.tsx`, que é o
    estudo entregue: corpo envidraçado com meia-cápsula de alumínio no eixo,
    fachada traseira idêntica à frontal (clone rotacionado), laterais em vidro
    azul com malha de esquadrias e cobertura em T com antena.
