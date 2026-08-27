@@ -21,7 +21,10 @@ import ScrollSpy from '@/components/ui/ScrollSpy';
 // import ScrollSpine from '@/components/ui/ScrollSpine';
 import BackToTop from '@/components/ui/BackToTop';
 import MosaicHandoff from '@/components/ui/MosaicHandoff';
-import SolutionsToMetrics from '@/components/ui/SolutionsToMetrics';
+// Import comentado junto com o consumo do condutor Soluções -> Números (ver o
+// comentário no lugar dele, depois de `<Metrics />`): deixá-lo ativo quebraria o
+// lint por import não utilizado, e removê-lo apagaria a pista de como religar.
+// import SolutionsToMetrics from '@/components/ui/SolutionsToMetrics';
 // Import comentado junto com os wrappers que saíram da home (ver a nota acima de
 // `<Contact />`): o componente continua no projeto, mas a home não o consome mais
 // — deixá-lo importado quebraria o lint por import não utilizado.
@@ -133,8 +136,25 @@ export default function Page() {
             morre sob ancestral com `transform`/`filter`, e a ordem na árvore é o
             que o faz pintar por cima dos dois fundos sem disputa de `z-index`.
             Decorativo e `aria-hidden` — sem ele o fio de Soluções termina onde
-            terminava e a onda começa onde começava. */}
+            terminava e a onda começa onde começava.
+
+            COMENTADO: o condutor não tem como ficar discreto, e o motivo é
+            geométrico, não de calibragem. A saída do fio de Soluções fica na
+            DIREITA da tela e a boca de entrada da onda da Metrics na ESQUERDA,
+            então o traço precisa cruzar a largura inteira da janela — e com
+            `stroke` ciano e `drop-shadow` ele lê como uma diagonal acesa por
+            cima do título "Sistran em números", que é exatamente a parte que
+            ficou feia. Religar sem mudar as duas âncoras traz a diagonal de
+            volta.
+
+            Comentado, e não removido: `ui/SolutionsToMetrics.tsx`, as marcas
+            `[data-fio-saida]` (em `Solutions.tsx`) e `[data-fio-chegada]` (em
+            `Metrics.tsx`) e o bloco `.fio-travessia` do `globals.css` continuam
+            intactos — religar é descomentar a linha abaixo e o import no topo.
+            Se voltar, precisa continuar aqui: irmão direto das duas seções,
+            nunca dentro de um wrapper animado.
         <SolutionsToMetrics />
+        */}
         {/* Evidências de terceiros fecham o bloco de números: o chanfro leva o
             navy do palco da Metrics para dentro da faixa clara de parceiros.
             Marcas em `src/data/clients.ts`.
