@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import { CONSULTING_AREAS } from '@/data/consulting';
 import { getIcon } from '@/lib/icons';
-import { vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '@/lib/motion';
+import { vHeader, vTitle, vSubtitle, VP, easeExpo, useReducedMotion } from '@/lib/motion';
 import type { ConsultingArea } from '@/data/consulting';
 
 /**
@@ -46,7 +46,7 @@ function ConsultRow({
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={VP}
-      transition={{ duration: 0.6, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.6, delay: index * 0.08, ease: easeExpo }}
       onMouseEnter={onActivate}
       onFocus={onActivate}
       /* group/row, nao group: o wrapper de secao tambem usa group-hover e o
@@ -63,7 +63,7 @@ function ConsultRow({
         style={{
           background: `linear-gradient(90deg, rgba(255,255,255,0.85), rgba(255,255,255,0.55) 55%, rgba(255,255,255,0.15))`,
           transform: `scaleX(${active ? 1 : 0})`,
-          transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+          transitionTimingFunction: 'var(--ease-out)',
           boxShadow: active ? '0 14px 34px -22px rgba(0,121,203,0.55)' : 'none',
         }}
       />
@@ -74,7 +74,7 @@ function ConsultRow({
         style={{
           background: `linear-gradient(180deg, ${accent}, ${accent}66)`,
           transform: `scaleY(${active ? 1 : 0})`,
-          transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+          transitionTimingFunction: 'var(--ease-out)',
         }}
       />
 

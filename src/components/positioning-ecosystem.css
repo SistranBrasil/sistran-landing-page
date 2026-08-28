@@ -1,0 +1,853 @@
+/* ===========================================================
+   Perfil & Posicionamento — "Ecossistema Sistran"
+   -----------------------------------------------------------
+   Componente: PositioningEcosystem.tsx  ·  escrita: src/data/posicionamento.ts
+
+   CSS de componente, importado pelo proprio componente — mesma convencao de
+   `partners-trail.css`. Toda a coreografia que nao depende de estado mora aqui e
+   nao no JSX, pela razao de sempre neste projeto: com movimento reduzido a
+   arvore de React nao pode mudar, so o estilo.
+
+   O bloco `@media (prefers-reduced-motion: reduce)` do fim é espelhado por
+   `html[data-motion="reduce"]` (o atributo que o script inline de layout.tsx
+   grava antes do primeiro paint). At-rule nao pode ser condicionada por seletor
+   de atributo, entao a duplicacao é obrigatoria: mudar um exige mudar o outro.
+   =========================================================== */
+.eco-secao {
+  --eco-ciano: #20d7f2;
+  --eco-link: clamp(26px, 3.4vw, 62px);
+  --eco-core: clamp(178px, 19vw, 262px);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-block: clamp(4rem, 7vw, 7.5rem);
+  background:
+    radial-gradient(circle at 50% 66%, rgba(16, 196, 242, 0.15), transparent 28%),
+    radial-gradient(circle at 22% 45%, rgba(6, 115, 210, 0.15), transparent 34%),
+    /* SIS-78: era `#020f24 / #031a38 / #041329`. Mesmo degradê, agora no escuro
+       da marca — os palcos escuros do site passam a ser o mesmo material. */
+    linear-gradient(
+      135deg,
+      var(--palco-fundo) 0%,
+      var(--palco-marca) 48%,
+      var(--palco-fundo) 100%
+    );
+}
+
+/* Grade tecnica: duas linhas de 1px, mascarada nas quatro bordas para nascer e
+   morrer sem corte seco. É so pintura — `aria-hidden` no elemento. */
+.eco-grade {
+  position: absolute;
+  inset: -4rem 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(34, 190, 238, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 190, 238, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image:
+    linear-gradient(transparent, #000 14%, #000 86%, transparent),
+    linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(transparent, #000 14%, #000 86%, transparent),
+    linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-composite: intersect;
+}
+
+.eco-wrap {
+  width: min(1680px, calc(100% - 80px));
+  margin-inline: auto;
+}
+
+/* ---------- Cabecalho ---------- */
+.eco-header {
+  text-align: center;
+  margin-bottom: clamp(2.25rem, 3.5vw, 3.75rem);
+}
+
+/* As reguas laterais do sobretitulo sao CSS, nao caracteres de desenho. */
+.eco-eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
+}
+.eco-eyebrow > span {
+  font-size: clamp(0.66rem, 0.85vw, 0.8rem);
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--eco-ciano);
+  white-space: nowrap;
+}
+.eco-eyebrow::before,
+.eco-eyebrow::after {
+  content: "";
+  height: 1px;
+  width: clamp(2rem, 9vw, 9rem);
+  background: linear-gradient(90deg, transparent, rgba(32, 215, 242, 0.55));
+}
+.eco-eyebrow::after {
+  background: linear-gradient(90deg, rgba(32, 215, 242, 0.55), transparent);
+}
+
+.eco-titulo {
+  margin-top: clamp(0.9rem, 1.4vw, 1.4rem);
+  font-size: clamp(2.7rem, 4.3vw, 5rem);
+  font-weight: 760;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  color: #ffffff;
+  text-wrap: balance;
+}
+.eco-ciano {
+  color: var(--eco-ciano);
+}
+
+/* ---------- Tres areas: pilar / palco / pilar ---------- */
+.eco-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 15fr) minmax(0, 70fr) minmax(0, 15fr);
+  gap: clamp(0.75rem, 2vw, 2.5rem);
+  align-items: center;
+}
+
+/* ---------- Pilares institucionais ---------- */
+.eco-pilar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 20rem;
+  margin-inline: auto;
+}
+.eco-pilar-titulo {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(0.95rem, 1.28vw, 1.4rem);
+  font-weight: 800;
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-wrap: balance;
+}
+/* A linha conectiva de cada pilar ("a toda", "em Seguros") nao deve competir com
+   a palavra principal: pesa menos e sai da caixa alta. */
+.eco-pilar-titulo > span:nth-child(3) {
+  font-size: 0.72em;
+  font-weight: 600;
+  text-transform: none;
+  color: rgba(233, 245, 255, 0.86);
+}
+.eco-regua {
+  display: block;
+  height: 2px;
+  width: 2.25rem;
+  margin-block: clamp(0.9rem, 1.6vw, 1.5rem);
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(32, 215, 242, 0.15),
+    var(--eco-ciano),
+    rgba(32, 215, 242, 0.15)
+  );
+}
+.eco-pilar-icone {
+  width: 1.85rem;
+  height: 1.85rem;
+  color: rgba(120, 201, 248, 0.9);
+}
+.eco-pilar-texto {
+  margin-top: clamp(0.9rem, 1.6vw, 1.4rem);
+  font-size: clamp(0.72rem, 0.86vw, 0.9rem);
+  line-height: 1.6;
+  /* Contraste bem acima de 4.5:1 sobre o azul-marinho do fundo. */
+  color: rgba(214, 234, 250, 0.88);
+}
+
+/* ---------- Palco ---------- */
+.eco-stage {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* ---------- Trilho de Solucoes ---------- */
+.eco-rail {
+  position: relative;
+  margin-inline: auto;
+  width: min(100%, 62rem);
+  padding: clamp(1.4rem, 2vw, 2rem) clamp(1rem, 2vw, 2rem) clamp(1.1rem, 1.6vw, 1.5rem);
+  background: linear-gradient(135deg, rgba(8, 48, 92, 0.72), rgba(4, 24, 54, 0.82));
+  border: 1px solid rgba(99, 185, 236, 0.38);
+  backdrop-filter: blur(16px);
+  border-radius: 24px;
+}
+/* O titulo cavalga a borda superior, como no material de referencia. */
+.eco-rail-titulo {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding-inline: 0.9rem;
+  background: #041a38;
+  font-size: clamp(0.9rem, 1.1vw, 1.15rem);
+  font-weight: 700;
+  color: rgba(232, 246, 255, 0.95);
+}
+.eco-rail-grupos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2.25rem);
+}
+.eco-rail-grupo {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.eco-rail-icone {
+  flex: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-top: 0.1rem;
+  color: var(--eco-ciano);
+}
+.eco-rail-nome {
+  font-size: clamp(0.8rem, 0.95vw, 1rem);
+  font-weight: 700;
+  color: #ffffff;
+}
+.eco-rail-texto {
+  margin-top: 0.2rem;
+  font-size: clamp(0.68rem, 0.8vw, 0.82rem);
+  line-height: 1.45;
+  color: rgba(206, 230, 248, 0.85);
+}
+/* Node ciano entre os grupos, com a conexao horizontal curta de cada lado. */
+.eco-rail-node {
+  position: absolute;
+  top: 0.85rem;
+  right: calc(clamp(1rem, 2vw, 2.25rem) / -2);
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--eco-ciano);
+  box-shadow: 0 0 8px rgba(32, 215, 242, 0.7);
+}
+.eco-rail-node::before,
+.eco-rail-node::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: clamp(0.4rem, 0.9vw, 1rem);
+  height: 1px;
+  background: rgba(99, 185, 236, 0.45);
+}
+.eco-rail-node::before {
+  right: 100%;
+}
+.eco-rail-node::after {
+  left: 100%;
+}
+
+/* Tres curvas do trilho descendo para o eixo do nucleo. Altura fixa de proposito:
+   as pontas caem no lugar certo em qualquer largura, sem medir nada em JS. */
+.eco-rail-links {
+  position: relative;
+  height: 72px;
+  margin-block: -2px;
+  pointer-events: none;
+}
+.eco-rail-links svg {
+  width: 100%;
+  height: 100%;
+}
+.eco-rail-links path {
+  fill: none;
+  stroke: rgba(99, 185, 236, 0.24);
+  stroke-width: 1;
+}
+.eco-rail-links circle {
+  fill: rgba(32, 215, 242, 0.55);
+}
+
+/* ---------- Rede ---------- */
+.eco-network {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--eco-core) minmax(0, 1fr);
+  align-items: center;
+}
+.eco-net-cel {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+.eco-net-cel-esq {
+  grid-column: 1;
+  grid-row: 1;
+}
+.eco-net-cel-dir {
+  grid-column: 3;
+  grid-row: 1;
+}
+.eco-nucleo-cel {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+}
+/* Descida do trilho ate o topo do nucleo. Passa pela coluna central, que é livre
+   de texto — nenhuma linha atravessa palavra nenhuma. */
+.eco-descida {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(32, 215, 242, 0.4), rgba(32, 215, 242, 0));
+}
+
+/* ---------- Conexao modulo <-> nucleo ---------- */
+.eco-link {
+  position: relative;
+  flex: none;
+  width: var(--eco-link);
+  height: 44px;
+}
+.eco-link svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.eco-link-base {
+  stroke: rgba(99, 185, 236, 0.9);
+  stroke-width: 1;
+  opacity: 0.24;
+}
+.eco-link-ativa {
+  stroke: var(--eco-ciano);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 5px rgba(32, 215, 242, 0.48));
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: eco-desenha 750ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes eco-desenha {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.eco-node {
+  fill: rgba(99, 185, 236, 0.45);
+  transition: fill 300ms ease;
+}
+.eco-link.is-ativo .eco-node {
+  fill: var(--eco-ciano);
+}
+
+/* Particula: viaja UMA vez, do modulo ao nucleo, e desaparece. Nao circula. */
+.eco-particula {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  margin-top: -2.5px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 0 8px 2px rgba(32, 215, 242, 0.75);
+  opacity: 0;
+}
+.eco-particula-esq {
+  animation: eco-particula-esq 750ms cubic-bezier(0.4, 0, 0.2, 1) 60ms forwards;
+}
+.eco-particula-dir {
+  animation: eco-particula-dir 750ms cubic-bezier(0.4, 0, 0.2, 1) 60ms forwards;
+}
+@keyframes eco-particula-esq {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  15%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(var(--eco-link));
+    opacity: 0;
+  }
+}
+@keyframes eco-particula-dir {
+  0% {
+    transform: translateX(var(--eco-link));
+    opacity: 0;
+  }
+  15%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+}
+
+/* ---------- Modulos ---------- */
+.eco-modulo {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: clamp(1rem, 1.5vw, 1.5rem);
+  border-radius: 24px;
+  background: linear-gradient(140deg, rgba(9, 44, 84, 0.62), rgba(4, 22, 48, 0.78));
+  border: 1px solid rgba(89, 171, 224, 0.3);
+  box-shadow: 0 18px 40px rgba(0, 8, 26, 0.28);
+  /* Inativo continua legivel — 0.72 é o piso, nao um esconderijo. */
+  opacity: 0.72;
+  transition:
+    opacity 360ms ease,
+    border-color 360ms ease,
+    box-shadow 360ms ease,
+    transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.eco-modulo.is-ativo {
+  opacity: 1;
+  border-color: rgba(32, 215, 242, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(32, 215, 242, 0.2),
+    0 0 32px rgba(32, 215, 242, 0.18),
+    0 24px 54px rgba(0, 8, 26, 0.38);
+  transform: translateY(-4px);
+}
+.eco-modulo:hover:not(.is-ativo) {
+  border-color: rgba(120, 201, 248, 0.55);
+  transform: translateY(-3px);
+  opacity: 0.86;
+}
+
+/* O cabecalho é o botao. As capacidades NAO viram controles: nao existe pagina
+   de destino para elas, e um botao que nao leva a lugar nenhum é armadilha. */
+.eco-modulo-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "num  seta"
+    "tit  seta";
+  align-items: center;
+  gap: 0.2rem 0.75rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.35rem 0.25rem 0.6rem;
+  text-align: left;
+  border-radius: 14px;
+  cursor: pointer;
+}
+.eco-modulo-head:focus-visible {
+  outline: 2px solid var(--eco-ciano);
+  outline-offset: 3px;
+}
+.eco-modulo-num {
+  grid-area: num;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: rgba(160, 205, 238, 0.85);
+  transition: color 360ms ease;
+}
+.eco-modulo.is-ativo .eco-modulo-num {
+  color: var(--eco-ciano);
+}
+.eco-modulo-titulo {
+  grid-area: tit;
+  font-size: clamp(1rem, 1.35vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  text-wrap: balance;
+}
+.eco-modulo-seta {
+  grid-area: seta;
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(120, 201, 248, 0.45);
+  color: rgba(190, 224, 246, 0.9);
+  transition:
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 300ms ease,
+    border-color 300ms ease;
+}
+.eco-modulo-seta svg {
+  width: 1rem;
+  height: 1rem;
+}
+.eco-modulo:hover .eco-modulo-seta {
+  transform: translateX(4px);
+}
+.eco-modulo.is-ativo .eco-modulo-seta {
+  color: #ffffff;
+  border-color: var(--eco-ciano);
+}
+
+.eco-modulo-itens {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+.eco-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 10px;
+  background: rgba(31, 89, 139, 0.2);
+  border: 1px solid rgba(89, 171, 224, 0.22);
+  font-size: clamp(0.7rem, 0.85vw, 0.9rem);
+  line-height: 1.3;
+  color: rgba(214, 234, 250, 0.9);
+  transition:
+    background 300ms ease,
+    border-color 300ms ease,
+    color 300ms ease;
+}
+.eco-item svg {
+  flex: none;
+  width: 1.05rem;
+  height: 1.05rem;
+  color: rgba(120, 201, 248, 0.9);
+}
+.eco-modulo.is-ativo .eco-item {
+  background: rgba(31, 89, 139, 0.34);
+  border-color: rgba(89, 171, 224, 0.4);
+  color: #eef8ff;
+  /* Cascata discreta na ativacao: 45ms por item. `both` para o item nao piscar
+     no estado inicial da animacao. */
+  animation: eco-item-entra 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--eco-i) * 45ms);
+}
+.eco-modulo.is-ativo .eco-item svg {
+  color: var(--eco-ciano);
+}
+@keyframes eco-item-entra {
+  from {
+    opacity: 0.55;
+    transform: translateX(-6px);
+  }
+}
+
+/* ---------- Nucleo ---------- */
+.eco-nucleo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--eco-core);
+  height: var(--eco-core);
+  /* Remontado por `key` a cada ativacao: a resposta roda uma vez e para. */
+  animation: eco-nucleo-responde 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes eco-nucleo-responde {
+  0% {
+    transform: scale(1);
+  }
+  55% {
+    transform: scale(1.025);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.eco-halo {
+  position: absolute;
+  inset: -18%;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(32, 215, 242, 0.28), transparent 62%);
+}
+.eco-anel {
+  position: absolute;
+  border-radius: 999px;
+  border: 1px solid rgba(120, 201, 248, 0.32);
+}
+.eco-anel-1 {
+  inset: 0;
+  /* Respiracao quase imperceptivel, 4s. Sai por completo em movimento reduzido. */
+  animation: eco-respira 4s ease-in-out infinite;
+}
+.eco-anel-2 {
+  inset: 8%;
+  border-color: rgba(32, 215, 242, 0.22);
+  border-style: dashed;
+}
+@keyframes eco-respira {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.015);
+    opacity: 0.9;
+  }
+}
+.eco-nucleo-disco {
+  display: grid;
+  place-items: center;
+  gap: 0.35rem;
+  width: 76%;
+  height: 76%;
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 30%, #ffffff, #dcefff 78%, #c6e4fb);
+  box-shadow:
+    0 0 0 8px rgba(4, 24, 54, 0.55),
+    0 0 46px rgba(32, 215, 242, 0.35);
+}
+/* O simbolo oficial entra como MASCARA alpha do PNG branco do site — é o mesmo
+   arquivo do resto da marca, nao ha logotipo redesenhado a mao aqui. */
+.eco-simbolo {
+  width: 42%;
+  height: 42%;
+  background: linear-gradient(135deg, #0079cb, #0ed8f6 60%, #20d7f2);
+  -webkit-mask: url("/images/sistran-logo.png") center / contain no-repeat;
+  mask: url("/images/sistran-logo.png") center / contain no-repeat;
+}
+.eco-nucleo-frase {
+  font-size: clamp(0.78rem, 1.05vw, 1.05rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #063765;
+  text-align: center;
+}
+
+/* ---------- Progresso ---------- */
+.eco-progresso {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: min(100%, 24rem);
+  margin: clamp(1.5rem, 2.5vw, 2.5rem) auto 0;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(8, 48, 92, 0.6), rgba(4, 24, 54, 0.75));
+  border: 1px solid rgba(99, 185, 236, 0.28);
+}
+.eco-progresso-num {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(32, 215, 242, 0.6);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--eco-ciano);
+}
+.eco-progresso-total {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(196, 224, 245, 0.8);
+}
+.eco-progresso-trilha {
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(99, 185, 236, 0.2);
+  overflow: hidden;
+}
+.eco-progresso-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(32, 215, 242, 0.5), var(--eco-ciano));
+  transition: width 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ===========================================================
+   Tablet: 768px a 1199px — pilares viram faixa superior
+   =========================================================== */
+@media (max-width: 1199px) {
+  .eco-wrap {
+    width: min(1680px, calc(100% - 40px));
+  }
+  .eco-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "pe pd"
+      "st st";
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+  }
+  .eco-pilar-esq {
+    grid-area: pe;
+  }
+  .eco-pilar-dir {
+    grid-area: pd;
+  }
+  .eco-stage {
+    grid-area: st;
+    margin-top: clamp(1.5rem, 4vw, 3rem);
+  }
+  /* O texto complementar recua visualmente, mas continua no DOM. */
+  .eco-pilar-texto {
+    font-size: 0.78rem;
+    opacity: 0.82;
+  }
+  .eco-rail-grupos {
+    gap: 1rem;
+  }
+  /* Curvas simplificadas: menos altura, menos desvio. */
+  .eco-rail-links {
+    height: 44px;
+  }
+}
+
+/* ===========================================================
+   Mobile: abaixo de 768px — fluxo natural, nada comprimido
+   =========================================================== */
+@media (max-width: 767px) {
+  .eco-secao {
+    padding-block: 3.5rem;
+  }
+  .eco-wrap {
+    width: calc(100% - 40px);
+  }
+  .eco-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "pe"
+      "st"
+      "pd";
+    gap: 2rem;
+  }
+  .eco-rail-grupos {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.1rem;
+  }
+  /* Nenhuma conexao cruza blocos diferentes: no lugar das curvas, uma linha
+     vertical simples. */
+  .eco-rail-links {
+    height: 32px;
+  }
+  .eco-rail-links svg {
+    display: none;
+  }
+  .eco-rail-links::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: linear-gradient(to bottom, rgba(32, 215, 242, 0.45), rgba(32, 215, 242, 0.1));
+  }
+  .eco-rail-node {
+    display: none;
+  }
+  .eco-network {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  .eco-nucleo-cel,
+  .eco-net-cel-esq,
+  .eco-net-cel-dir {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .eco-descida {
+    display: none;
+  }
+  /* Os dois modulos aparecem inteiros: nada escondido atras de interacao. */
+  .eco-modulo {
+    opacity: 1;
+  }
+  .eco-net-cel-esq,
+  .eco-net-cel-dir {
+    flex-direction: column;
+  }
+  /* A conexao horizontal nao cabe: vira separador vertical curto. */
+  .eco-link {
+    width: 100%;
+    height: 22px;
+    order: 2;
+  }
+  .eco-link svg,
+  .eco-particula {
+    display: none;
+  }
+  .eco-link::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: rgba(32, 215, 242, 0.28);
+  }
+  .eco-link.is-ativo::after {
+    background: var(--eco-ciano);
+  }
+  .eco-progresso {
+    width: 100%;
+  }
+}
+
+/* ===========================================================
+   Movimento reduzido. Este bloco e o de `html[data-motion="reduce"]` logo abaixo
+   sao espelhos — mudar um exige mudar o outro.
+   Nenhuma informacao depende de animacao aqui: a relacao entre trilho, modulos e
+   nucleo esta no layout e no texto, nao no movimento.
+   =========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .eco-particula {
+    display: none;
+  }
+  .eco-link-ativa {
+    animation: none;
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+  }
+  .eco-nucleo,
+  .eco-anel-1,
+  .eco-modulo.is-ativo .eco-item {
+    animation: none;
+  }
+  .eco-modulo,
+  .eco-modulo.is-ativo,
+  .eco-modulo:hover:not(.is-ativo),
+  .eco-modulo:hover .eco-modulo-seta {
+    transform: none;
+  }
+  .eco-modulo,
+  .eco-item,
+  .eco-node,
+  .eco-modulo-seta,
+  .eco-progresso-fill {
+    transition-duration: 150ms;
+  }
+}
+html[data-motion="reduce"] .eco-particula {
+  display: none !important;
+}
+html[data-motion="reduce"] .eco-link-ativa {
+  animation: none !important;
+  stroke-dasharray: none !important;
+  stroke-dashoffset: 0 !important;
+}
+html[data-motion="reduce"] .eco-nucleo,
+html[data-motion="reduce"] .eco-anel-1,
+html[data-motion="reduce"] .eco-modulo.is-ativo .eco-item {
+  animation: none !important;
+}
+html[data-motion="reduce"] .eco-modulo,
+html[data-motion="reduce"] .eco-modulo.is-ativo,
+html[data-motion="reduce"] .eco-modulo:hover:not(.is-ativo),
+html[data-motion="reduce"] .eco-modulo:hover .eco-modulo-seta {
+  transform: none !important;
+}

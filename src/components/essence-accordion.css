@@ -1,0 +1,490 @@
+/**
+ * Nossa essência — Missão, Valores e Pilares em accordion editorial.
+ *
+ * ── Por que accordion, e nao tres cards ─────────────────────────────────────
+ * Os tres conteudos tem tamanhos muito diferentes: a Missão é um paragrafo, os
+ * Valores sao uma linha, os Pilares sao seis frases longas. Em tres colunas
+ * iguais isso vira uma coluna cheia ao lado de duas quase vazias — era o defeito
+ * da versao anterior. Faixa por faixa, cada conteudo recebe a altura que precisa.
+ *
+ * ── Fundo branco, e ele importa ─────────────────────────────────────────────
+ * Esta seção fica entre duas outras que sao azul-marinho ("Tecnologias") ou
+ * fotograficas. O branco é o que a diferencia — nenhum card, nenhum vidro,
+ * nenhuma sombra. O que separa as faixas é UMA linha de 1px.
+ *
+ * ── A altura nao é `height: auto` ───────────────────────────────────────────
+ * `grid-template-rows: 0fr -> 1fr` num grid de uma linha é o unico jeito de
+ * animar "ate o tamanho do conteudo" sem medir nada em JavaScript e sem o salto
+ * do `height: auto`. O filho precisa de `min-height: 0` e `overflow: hidden`,
+ * senao ele se recusa a encolher.
+ */
+
+.essence-section {
+  position: relative;
+  background: #fff;
+  color: #123b68;
+  overflow: clip;
+  /* Só embaixo: o respiro de cima vem do `padding-block` do container, que assim
+     não empurra as linhas do accordion. */
+  padding-bottom: clamp(72px, 9vh, 120px);
+}
+
+.essence-container {
+  width: min(1500px, calc(100% - 96px));
+  margin-inline: auto;
+  padding-block: clamp(72px, 9vh, 120px) 0;
+}
+
+/* ── Cabeçalho ───────────────────────────────────────────────────────────── */
+.essence-eyebrow {
+  display: block;
+  color: #00aede;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+/* Linha curta sob a eyebrow: desenhada da esquerda, uma vez. */
+.essence-risco {
+  width: 64px;
+  height: 2px;
+  margin-top: 18px;
+  background: #0ed8f6;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1) 0.16s;
+}
+.essence-section[data-entrou='1'] .essence-risco {
+  transform: scaleX(1);
+}
+.essence-title {
+  max-width: 920px;
+  margin-top: 24px;
+  color: #073e82;
+  font-size: clamp(2.8rem, 4.4vw, 5rem);
+  font-weight: 720;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+/* Entrada: eyebrow, depois titulo subindo 18px. Uma vez só — o atributo
+   `data-entrou` nunca volta para 0. */
+.essence-eyebrow,
+.essence-title {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.essence-title {
+  transition-delay: 0.18s;
+}
+.essence-section[data-entrou='1'] .essence-eyebrow,
+.essence-section[data-entrou='1'] .essence-title {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Accordion ───────────────────────────────────────────────────────────────
+   Sangra na largura inteira de propósito: sao as LINHAS que atravessam a tela.
+   O alinhamento do texto volta pelo padding interno das faixas, que acompanha a
+   margem do container. */
+.essence-accordion {
+  margin-top: clamp(56px, 7vh, 88px);
+  border-top: 1px solid rgba(31, 117, 185, 0.3);
+  border-bottom: 1px solid rgba(31, 117, 185, 0.3);
+  opacity: 0;
+  transition: opacity 0.5s ease-out 0.3s;
+}
+.essence-section[data-entrou='1'] .essence-accordion {
+  opacity: 1;
+}
+
+.essence-item {
+  position: relative;
+  border-bottom: 1px solid rgba(31, 117, 185, 0.24);
+}
+/* A ultima faixa nao repete a borda: quem fecha a composição é a borda de baixo
+   do accordion. */
+.essence-item:last-child {
+  border-bottom: 0;
+}
+/* Fundo azul-gelo só na faixa aberta, e ele entra por opacidade — animar o
+   `background` em si custa repaint da faixa inteira. */
+.essence-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  background:
+    radial-gradient(circle at 72% 52%, rgba(14, 216, 246, 0.07), transparent 27%),
+    linear-gradient(110deg, #f9fcff 0%, #f1f8fc 52%, #eaf5fb 100%);
+}
+.essence-item[data-aberta='true']::before {
+  opacity: 1;
+}
+
+/* ── Trigger ─────────────────────────────────────────────────────────────── */
+.essence-trigger {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 116px;
+  display: grid;
+  grid-template-columns: minmax(180px, max-content) minmax(120px, 300px) 44px;
+  align-items: center;
+  gap: clamp(28px, 4vw, 72px);
+  padding: 28px clamp(40px, 8vw, 140px);
+  border: 0;
+  background: transparent;
+  color: #073e82;
+  text-align: left;
+  cursor: pointer;
+}
+.essence-trigger:focus-visible {
+  outline: 2px solid #0ed8f6;
+  outline-offset: -4px;
+}
+.essence-item-title {
+  font-size: clamp(1.7rem, 2.3vw, 2.7rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  transition: color 0.24s ease-out;
+}
+.essence-item-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, #0ed8f6, rgba(14, 216, 246, 0.12));
+  opacity: 0.75;
+  transition: opacity 0.24s ease-out;
+}
+.essence-chevron {
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: #0ed8f6;
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Hover NÃO abre: só sinaliza que dá para clicar. */
+.essence-trigger:hover .essence-item-title {
+  color: #1f75b9;
+}
+.essence-trigger:hover .essence-item-line {
+  opacity: 1;
+}
+.essence-trigger:hover .essence-chevron {
+  transform: translateY(3px);
+}
+.essence-item[data-aberta='true'] .essence-chevron,
+.essence-item[data-aberta='true'] .essence-trigger:hover .essence-chevron {
+  transform: rotate(180deg);
+}
+
+/* ── Painel ──────────────────────────────────────────────────────────────── */
+.essence-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 560ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 220ms ease;
+}
+.essence-content[data-open='true'] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.essence-content-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+.essence-content-inner {
+  position: relative;
+  min-height: 430px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.56fr) minmax(360px, 0.44fr);
+  align-items: center;
+  gap: clamp(64px, 8vw, 140px);
+  padding: clamp(44px, 6vh, 76px) clamp(40px, 8vw, 140px) clamp(64px, 8vh, 96px);
+}
+
+/* Linha que entra da borda esquerda da janela e para antes do texto. Só existe
+   na faixa aberta, e entra uma vez — não pulsa. */
+.essence-active-line {
+  position: absolute;
+  left: 0;
+  top: 52%;
+  width: min(18vw, 260px);
+  height: 1px;
+  background: #087fc7;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  transition: transform 480ms cubic-bezier(0.22, 1, 0.36, 1) 200ms;
+}
+.essence-active-line::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px -3px 0 0;
+  border-radius: 999px;
+  background: #0ed8f6;
+}
+.essence-content[data-open='true'] .essence-active-line {
+  transform: scaleX(1);
+}
+
+/* ── Texto ───────────────────────────────────────────────────────────────── */
+.essence-copy {
+  max-width: 660px;
+  color: #173b63;
+  /* Os pilares decidem 1 ou 2 colunas medindo ESTA caixa, nao a janela. */
+  container-type: inline-size;
+}
+.essence-copy h3 {
+  color: #073e82;
+  font-size: clamp(2.8rem, 4vw, 4.6rem);
+  font-weight: 730;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+.essence-copy p {
+  /* ~70 caracteres por linha em tela grande: é o `ch` que garante isso, e nao um
+     `max-width` em pixels, que muda de medida junto com a fonte. */
+  max-width: 68ch;
+  margin-top: 28px;
+  font-size: clamp(1.1rem, 1.35vw, 1.35rem);
+  line-height: 1.7;
+}
+.essence-footnote {
+  max-width: 68ch;
+  margin-top: 22px;
+  color: #527190;
+  font-size: clamp(0.94rem, 1.1vw, 1.1rem);
+  font-style: italic;
+  line-height: 1.65;
+}
+
+/* Titulo e texto entram com stagger, presos ao estado aberto. */
+.essence-copy > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.essence-content[data-open='true'] .essence-copy > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.essence-content[data-open='true'] .essence-copy > *:nth-child(1) {
+  transition-delay: 180ms;
+}
+.essence-content[data-open='true'] .essence-copy > *:nth-child(2) {
+  transition-delay: 260ms;
+}
+.essence-content[data-open='true'] .essence-copy > *:nth-child(3) {
+  transition-delay: 320ms;
+}
+
+/* ── Pilares ─────────────────────────────────────────────────────────────── */
+.essence-pillars {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 40px;
+  margin-top: 28px;
+  padding: 0;
+  list-style: none;
+  font-size: clamp(1rem, 1.1vw, 1.12rem);
+  line-height: 1.62;
+}
+/* Duas colunas só quando ha espaco: o container query mede o proprio painel, e
+   nao a janela — é ele que sabe se cabe. */
+@container (max-width: 620px) {
+  .essence-pillars {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.essence-pillars li {
+  position: relative;
+  padding-left: 28px;
+}
+.essence-pillars li::before {
+  content: '';
+  position: absolute;
+  top: 0.75em;
+  left: 0;
+  width: 14px;
+  height: 2px;
+  background: #0ed8f6;
+}
+/* Os pilares entram na cascata junto com o resto da copy. */
+.essence-content[data-open='true'] .essence-pillars {
+  transition-delay: 260ms;
+}
+
+/* ── Visuais em SVG ──────────────────────────────────────────────────────────
+   Sem moldura, sem fundo proprio: as linhas ficam sobre o azul-gelo da faixa.
+   O desenho progressivo é `stroke-dashoffset` com `pathLength="1"` em cada
+   traço — assim `dasharray: 1` vale para circulo, linha e path, sem medir
+   comprimento nenhum em JavaScript. */
+.essence-visual {
+  justify-self: center;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1;
+  pointer-events: none;
+}
+.essence-visual svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.essence-visual [data-traco] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 720ms cubic-bezier(0.22, 1, 0.36, 1) 180ms;
+}
+.essence-content[data-open='true'] .essence-visual [data-traco] {
+  stroke-dashoffset: 0;
+}
+.essence-visual [data-node] {
+  opacity: 0;
+  transition: opacity 380ms ease-out 620ms;
+}
+.essence-content[data-open='true'] .essence-visual [data-node] {
+  opacity: 1;
+}
+/* Glow azul-claro por tras do desenho. Estatico: nao pulsa, nao é filtro
+   animado. */
+.essence-visual {
+  position: relative;
+}
+.essence-visual::before {
+  content: '';
+  position: absolute;
+  inset: 8%;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(14, 216, 246, 0.13) 0%,
+    rgba(8, 127, 199, 0.06) 44%,
+    transparent 72%
+  );
+}
+
+/* ── Tablet ──────────────────────────────────────────────────────────────── */
+@media (max-width: 1279px) {
+  .essence-container {
+    width: min(1500px, calc(100% - 56px));
+  }
+  .essence-trigger {
+    min-height: 102px;
+  }
+  .essence-content-inner {
+    min-height: 360px;
+    grid-template-columns: minmax(0, 0.58fr) minmax(260px, 0.42fr);
+    gap: clamp(40px, 5vw, 72px);
+  }
+  .essence-visual {
+    max-width: 320px;
+  }
+}
+
+/* ── Mobile ──────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .essence-container {
+    width: 100%;
+    padding-inline: 20px;
+  }
+  .essence-trigger {
+    min-height: 82px;
+    /* O titulo e a linha dividem o que sobra; o chevron mantem os 44px. */
+    grid-template-columns: max-content minmax(24px, 1fr) 44px;
+    gap: 16px;
+    padding: 20px 20px;
+  }
+  .essence-content-inner {
+    min-height: 0;
+    /* Texto primeiro, visual embaixo. */
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding: 28px 20px 44px;
+  }
+  .essence-pillars {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .essence-visual {
+    max-width: 260px;
+  }
+  /* A linha lateral encurta para nao encostar no texto. */
+  .essence-active-line {
+    width: 44px;
+  }
+}
+
+/* ── Movimento reduzido ──────────────────────────────────────────────────────
+   O accordion continua funcionando: o que sai é o movimento. Nada fica
+   escondido, nada muda de ordem — os SVGs aparecem prontos, o texto aparece sem
+   deslocamento e a troca de faixa é um fade curto. */
+@media (prefers-reduced-motion: reduce) {
+  .essence-section .essence-eyebrow,
+  .essence-section .essence-title,
+  .essence-section .essence-copy > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: opacity 140ms linear !important;
+  }
+  .essence-section .essence-risco,
+  .essence-section .essence-active-line {
+    transform: scaleX(1) !important;
+    transition: none !important;
+  }
+  .essence-section .essence-visual [data-traco] {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+  .essence-section .essence-visual [data-node] {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+  .essence-section .essence-content {
+    transition: opacity 140ms linear !important;
+  }
+  .essence-section .essence-chevron,
+  .essence-section .essence-item::before {
+    transition: none !important;
+  }
+}
+html[data-motion='reduce'] .essence-eyebrow,
+html[data-motion='reduce'] .essence-title,
+html[data-motion='reduce'] .essence-copy > * {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: opacity 140ms linear !important;
+}
+html[data-motion='reduce'] .essence-risco,
+html[data-motion='reduce'] .essence-active-line {
+  transform: scaleX(1) !important;
+  transition: none !important;
+}
+html[data-motion='reduce'] .essence-visual [data-traco] {
+  stroke-dashoffset: 0 !important;
+  transition: none !important;
+}
+html[data-motion='reduce'] .essence-visual [data-node] {
+  opacity: 1 !important;
+  transition: none !important;
+}
+html[data-motion='reduce'] .essence-content {
+  transition: opacity 140ms linear !important;
+}
+html[data-motion='reduce'] .essence-chevron,
+html[data-motion='reduce'] .essence-item::before {
+  transition: none !important;
+}

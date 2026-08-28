@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { gsap } from 'gsap';
-import { prefersReducedMotion, useReducedMotion } from '@/lib/motion';
+import { easeExpo, prefersReducedMotion, useReducedMotion } from '@/lib/motion';
 import { HERO_SLIDES } from '@/data/hero';
 
 /* O h1 gira os titulos dos 3 slides do hero do site (antes girava
@@ -112,7 +112,7 @@ export default function MorphingHeadline({ index = 0 }: { index?: number }) {
               initial={rm || !introDone ? false : { y: '0.35em', opacity: 0, filter: 'blur(8px)' }}
               animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
               exit={rm ? { opacity: 0 } : { y: '-0.35em', opacity: 0, filter: 'blur(8px)' }}
-              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.55, ease: easeExpo }}
               className="block"
             >
               {slide.titleTop}
@@ -128,7 +128,7 @@ export default function MorphingHeadline({ index = 0 }: { index?: number }) {
               initial={rm || !introDone ? false : { y: '0.4em', opacity: 0, filter: 'blur(10px)' }}
               animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
               exit={rm ? { opacity: 0 } : { y: '-0.4em', opacity: 0, filter: 'blur(10px)' }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, ease: easeExpo }}
               className="text-gradient-hero inline-block font-black"
             >
               {slide.titleBottom}

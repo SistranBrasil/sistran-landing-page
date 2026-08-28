@@ -1,0 +1,736 @@
+/**
+ * Vitrine de tecnologias (/quem-somos, depois de "Escritórios BRASIL").
+ *
+ * ── Três decisões que explicam o resto do arquivo ───────────────────────────
+ *
+ * 1. OS LOOPS DOS TRILHOS SÃO CSS, o carrossel central é estado do React.
+ *    Trilho contínuo é movimento sem eventos: um `@keyframes` em `transform`
+ *    roda no compositor e não custa render nenhum. O carrossel muda ~15 vezes
+ *    por minuto, então pode ser estado.
+ *
+ * 2. AS POSIÇÕES DO CARROSSEL SÃO DEGRAUS, não uma função contínua.
+ *    Cada card recebe `data-pos` (-3..3, 0 = ativo) e o CSS tem uma regra por
+ *    degrau. A `transition` interpola entre dois degraus — mesmo resultado que
+ *    animar por JavaScript, sem escrever `transform` a cada quadro.
+ *
+ * 3. TODA LOGO FICA SOBRE UMA PLACA CLARA.
+ *    As logos são os arquivos oficiais e não podem receber filtro de cor. Sobre
+ *    vidro azul-marinho, sete das dezessete ficam ilegíveis (aws, node, mongodb,
+ *    java, zendesk, REST:API e .NET são artes escuras). A placa clara resolve o
+ *    contraste sem tocar em um pixel das logos. É um desvio conhecido do
+ *    "card de vidro azul-marinho" do briefing, e a alternativa seria entregar
+ *    logos ilegíveis ou logos alteradas.
+ *
+ * Sem Canvas, sem WebGL, sem vídeo. Só `transform`, `opacity` e gradientes.
+ */
+
+.tech-showcase {
+  position: relative;
+  min-height: clamp(720px, 100svh, 940px);
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 52% 48%, rgba(14, 216, 246, 0.14), transparent 30%),
+    radial-gradient(circle at 8% 58%, rgba(8, 127, 199, 0.12), transparent 34%),
+    /* SIS-78: era `#020d20 / #031b3d / #03142d`. Esta seção fica logo acima de
+       "Nossa essência", que é branca — o azul da marca é o que faz a fronteira
+       ler como troca de material, e nao como apagão. */
+    linear-gradient(
+      180deg,
+      var(--palco-fundo) 0%,
+      var(--palco-marca) 52%,
+      var(--palco-fundo) 100%
+    );
+}
+
+/* ── Fundo ─────────────────────────────────────────────────────────────────
+   Camadas decorativas, todas `aria-hidden` por construção (nenhuma tem texto) e
+   todas atrás do conteúdo. Nada aqui pisca nem pulsa: a grade é estática, as
+   linhas são estáticas, e o único movimento do fundo é o halo por baixo do card
+   ativo — que é o que aponta o olho para onde a informação está. */
+.tech-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.tech-bg__grade {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image:
+    linear-gradient(#ffffff 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff 1px, transparent 1px);
+  background-size:
+    64px 64px,
+    64px 64px;
+}
+/* Linhas horizontais finas na altura dos três trilhos: são elas que ligam
+   visualmente os planos, no lugar de qualquer moldura de painel. */
+.tech-bg__linha {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(120, 200, 255, 0.16) 18%,
+    rgba(14, 216, 246, 0.34) 50%,
+    rgba(120, 200, 255, 0.16) 82%,
+    transparent 100%
+  );
+}
+.tech-bg__linha--1 {
+  top: 26%;
+}
+.tech-bg__linha--2 {
+  top: 62%;
+}
+.tech-bg__linha--3 {
+  top: 84%;
+}
+.tech-bg__node {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  margin: -2px 0 0 -2px;
+  border-radius: 999px;
+  background: #0ed8f6;
+  opacity: 0.32;
+  box-shadow: 0 0 10px rgba(14, 216, 246, 0.5);
+}
+/* Glow central: fica atrás do card ativo e é a única camada do fundo que se
+   move — respira devagar, só em `opacity`. */
+.tech-bg__glow {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: min(760px, 70vw);
+  aspect-ratio: 1.6;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(14, 216, 246, 0.16) 0%,
+    rgba(14, 216, 246, 0.05) 42%,
+    rgba(14, 216, 246, 0) 72%
+  );
+}
+.tech-showcase[data-visivel='1'] .tech-bg__glow {
+  animation: tech-respira 9s ease-in-out infinite;
+}
+@keyframes tech-respira {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+/* Vinheta lateral: escurece as pontas para os cards saírem de cena em vez de
+   serem cortados por uma borda dura. */
+.tech-bg__vinheta {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(2, 13, 32, 0.9) 0%, rgba(2, 13, 32, 0) 11%),
+    linear-gradient(270deg, rgba(2, 13, 32, 0.9) 0%, rgba(2, 13, 32, 0) 11%);
+}
+
+.tech-container {
+  position: relative;
+  z-index: 2;
+  width: min(1440px, calc(100% - 96px));
+  margin-inline: auto;
+  padding-block: clamp(72px, 8vh, 112px);
+}
+
+/* ── Cabeçalho ───────────────────────────────────────────────────────────── */
+.tech-titulo {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2rem, 3vw, 3.25rem);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+.tech-titulo::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 48px;
+  height: 2px;
+  background: #0ed8f6;
+  box-shadow: 0 0 14px rgba(14, 216, 246, 0.34);
+}
+
+/* ── Palco ───────────────────────────────────────────────────────────────── */
+.tech-palco {
+  position: relative;
+  min-height: clamp(500px, 62vh, 650px);
+  margin-top: clamp(42px, 6vh, 72px);
+  perspective: 1400px;
+}
+
+/* ── Trilhos contínuos ───────────────────────────────────────────────────────
+   Estrutura: `.tech-trilho` (janela, com fade nas pontas) > `.tech-trilho__fita`
+   (o que anda) > duas `.tech-trilho__grupo` idênticas.
+
+   A emenda é exata porque cada grupo tem `padding-right` igual ao `gap`: a
+   largura de um grupo passa a INCLUIR o espaçamento até o próximo, então
+   `-50%` da fita é exatamente um grupo. Sem isso sobra ou falta um gap por
+   volta — o salto clássico do marquee por duplicação. */
+.tech-trilho {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 12%,
+    #000 88%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #000 12%,
+    #000 88%,
+    transparent 100%
+  );
+}
+.tech-trilho--superior {
+  top: 4%;
+  transform: translateZ(-120px) scale(0.92);
+  opacity: 0.78;
+}
+.tech-trilho--inferior {
+  bottom: 8%;
+  transform: translateZ(-60px) scale(0.95);
+  opacity: 0.82;
+}
+.tech-trilho__fita {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.tech-trilho__grupo {
+  display: flex;
+  flex-shrink: 0;
+  gap: clamp(24px, 2.4vw, 44px);
+  padding-right: clamp(24px, 2.4vw, 44px);
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+.tech-showcase[data-visivel='1'] .tech-trilho--superior .tech-trilho__fita {
+  animation: tech-esquerda 34s linear infinite;
+}
+.tech-showcase[data-visivel='1'] .tech-trilho--inferior .tech-trilho__fita {
+  animation: tech-direita 39s linear infinite;
+}
+@keyframes tech-esquerda {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@keyframes tech-direita {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ── Card ────────────────────────────────────────────────────────────────── */
+.tech-card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  padding: clamp(18px, 1.8vw, 28px);
+  border-radius: 22px;
+  overflow: hidden;
+  background: linear-gradient(145deg, rgba(11, 46, 87, 0.76), rgba(3, 20, 45, 0.88));
+  border: 1px solid rgba(140, 210, 245, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 24px 54px rgba(0, 9, 28, 0.28);
+  backdrop-filter: blur(14px);
+}
+.tech-trilho .tech-card {
+  width: 190px;
+  height: 96px;
+}
+/* Placa clara: a superfície onde a logo fica legível. Um `span`, não um fundo
+   aplicado à imagem — a logo continua intacta. */
+.tech-card__placa {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(214, 233, 248, 0.9));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+.tech-logo {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  max-width: var(--tech-logo-max, 78%);
+  max-height: 72%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* ── Carrossel central ─────────────────────────────────────────────────────── */
+.tech-carrossel {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: clamp(200px, 18vw, 270px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transform: translateY(-50%);
+  transform-style: preserve-3d;
+  touch-action: pan-y;
+}
+.tech-carrossel:focus-visible {
+  outline: 2px solid #0ed8f6;
+  outline-offset: 14px;
+  border-radius: 26px;
+}
+/* Passo horizontal entre dois cards vizinhos. Uma variável só: é dela que sai a
+   posição de todos os degraus. */
+.tech-carrossel {
+  --tech-passo: clamp(200px, 17vw, 290px);
+}
+.tech-carrossel .tech-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(180px, 16vw, 240px);
+  height: clamp(150px, 13vw, 200px);
+  transform-origin: 50% 50%;
+  transition:
+    transform 0.68s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.68s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.68s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+/* Degraus. `data-pos` vem do React (posição relativa ao ativo, -3..3); o que
+   está além de |3| some e sai do fluxo de ponteiro. */
+.tech-carrossel .tech-card[data-pos='0'] {
+  width: clamp(290px, 24vw, 380px);
+  height: clamp(200px, 18vw, 270px);
+  transform: translate(-50%, -50%) translateZ(90px) scale(1);
+  opacity: 1;
+  z-index: 5;
+}
+.tech-carrossel .tech-card[data-pos='-1'] {
+  transform: translate(-50%, -50%) translateX(calc(-1 * var(--tech-passo)))
+    translateZ(-20px) rotateY(8deg) scale(0.86);
+  opacity: 0.78;
+  z-index: 4;
+}
+.tech-carrossel .tech-card[data-pos='1'] {
+  transform: translate(-50%, -50%) translateX(var(--tech-passo)) translateZ(-20px)
+    rotateY(-8deg) scale(0.86);
+  opacity: 0.78;
+  z-index: 4;
+}
+.tech-carrossel .tech-card[data-pos='-2'] {
+  transform: translate(-50%, -50%) translateX(calc(-1.9 * var(--tech-passo)))
+    translateZ(-60px) rotateY(10deg) scale(0.74);
+  opacity: 0.44;
+  z-index: 3;
+}
+.tech-carrossel .tech-card[data-pos='2'] {
+  transform: translate(-50%, -50%) translateX(calc(1.9 * var(--tech-passo)))
+    translateZ(-60px) rotateY(-10deg) scale(0.74);
+  opacity: 0.44;
+  z-index: 3;
+}
+/* Terceiro degrau é o BASTIDOR: opacidade zero.
+   É ele que faz a cena ter fluxo em vez de embaralhamento. Com as sete cartas
+   sempre visíveis, uma troca só reposicionava todas — nada nascia, nada saía.
+   Agora cada passo traz uma tecnologia surgindo do nada na direita e leva outra
+   embora na esquerda, e as cinco do meio é que ficam à vista. */
+.tech-carrossel .tech-card[data-pos='-3'] {
+  transform: translate(-50%, -50%) translateX(calc(-2.7 * var(--tech-passo)))
+    translateZ(-120px) rotateY(12deg) scale(0.6);
+  opacity: 0;
+  z-index: 1;
+}
+.tech-carrossel .tech-card[data-pos='3'] {
+  transform: translate(-50%, -50%) translateX(calc(2.7 * var(--tech-passo)))
+    translateZ(-120px) rotateY(-12deg) scale(0.6);
+  opacity: 0;
+  z-index: 1;
+}
+.tech-carrossel .tech-card[data-pos='fora'] {
+  transform: translate(-50%, -50%) translateZ(-140px) scale(0.6);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Card ativo: fundo claro, borda acesa e halo. O aumento de escala já está no
+   degrau `0`; aqui é só superfície. */
+.tech-carrossel .tech-card[data-pos='0'] {
+  background: radial-gradient(
+    circle at 50% 44%,
+    rgba(235, 248, 255, 0.96),
+    rgba(170, 207, 235, 0.82)
+  );
+  border: 2px solid rgba(159, 233, 255, 0.92);
+  box-shadow:
+    0 0 0 5px rgba(14, 216, 246, 0.08),
+    0 0 32px rgba(14, 216, 246, 0.24),
+    0 28px 64px rgba(0, 9, 28, 0.38);
+}
+/* No card ativo a placa desaparece: o fundo dele já é claro. Assim não há
+   retângulo dentro de retângulo. */
+.tech-carrossel .tech-card[data-pos='0'] .tech-card__placa {
+  background: none;
+  box-shadow: none;
+}
+/* Ponto luminoso no meio da borda de cima — só no ativo, e ele ATRAVESSA a
+   borda uma vez a cada troca (a animação é reiniciada pela troca da `key` do
+   elemento no React). */
+.tech-card__ponto {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 46px;
+  height: 2px;
+  margin-left: -23px;
+  background: linear-gradient(90deg, transparent, #0ed8f6, transparent);
+  box-shadow: 0 0 12px rgba(14, 216, 246, 0.8);
+}
+.tech-showcase[data-visivel='1'] .tech-card__ponto {
+  animation: tech-atravessa 0.72s cubic-bezier(0.22, 1, 0.36, 1) 1;
+}
+@keyframes tech-atravessa {
+  from {
+    transform: translateX(-120px);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  to {
+    transform: translateX(120px);
+    opacity: 0.35;
+  }
+}
+
+/* A logo que acabou de assumir o centro SURGE.
+   A animação está na imagem, e não no card: o `transform` do card pertence ao
+   degrau (`data-pos`), e uma `animation` na mesma propriedade do mesmo elemento
+   venceria a declaração e travaria o card fora de lugar.
+
+   Não precisa de `key` no React: quando o card B passa a casar com
+   `[data-pos='0']`, a regra começa a valer para um ELEMENTO novo, e é aí que o
+   navegador dispara a animação. Uma vez por troca, exatamente. */
+.tech-showcase[data-visivel='1'] .tech-carrossel .tech-card[data-pos='0'] .tech-logo {
+  animation: tech-surge 0.72s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes tech-surge {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Entrada em cascata, uma vez só. `--i` vem do React (índice do card) e vira
+   atraso — é o "ir surgindo" da primeira vez que a seção aparece.
+   Nos cards dos trilhos a animação pode mexer no `transform` (lá quem se move é
+   a fita, não o card). No carrossel ela mora na placa, por causa do degrau. */
+.tech-showcase[data-entrou='1'] .tech-trilho .tech-card {
+  animation: tech-entra 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.52s + var(--i, 0) * 0.055s);
+}
+.tech-showcase[data-entrou='1'] .tech-carrossel .tech-card__placa {
+  animation: tech-entra-placa 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.6s + var(--i, 0) * 0.055s);
+}
+/* O centro chega por último e sozinho, para o olho parar nele. */
+.tech-showcase[data-entrou='1'] .tech-carrossel .tech-card[data-pos='0'] .tech-card__placa {
+  animation-delay: 0.68s;
+}
+@keyframes tech-entra {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes tech-entra-placa {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Controles ───────────────────────────────────────────────────────────── */
+.tech-controles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 2vw, 28px);
+  margin-top: clamp(24px, 3vh, 40px);
+}
+.tech-botao {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(140, 210, 245, 0.42);
+  background: rgba(6, 30, 62, 0.6);
+  color: #dff3ff;
+  cursor: pointer;
+  transition:
+    background 0.2s ease-out,
+    border-color 0.2s ease-out,
+    transform 0.2s ease-out;
+}
+.tech-botao:hover {
+  background: rgba(14, 216, 246, 0.18);
+  border-color: rgba(159, 233, 255, 0.8);
+}
+.tech-botao:active {
+  transform: scale(0.94);
+}
+.tech-botao:focus-visible {
+  outline: 2px solid #0ed8f6;
+  outline-offset: 3px;
+}
+.tech-progresso {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tech-progresso__seg {
+  width: 26px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(180, 216, 240, 0.24);
+  transition:
+    background 0.3s ease-out,
+    width 0.3s ease-out;
+}
+.tech-progresso__seg[data-estado='ativo'] {
+  width: 46px;
+  background: #0ed8f6;
+  box-shadow: 0 0 12px rgba(14, 216, 246, 0.55);
+}
+
+/* ── Tablet ──────────────────────────────────────────────────────────────── */
+@media (max-width: 1279px) {
+  .tech-container {
+    width: min(1440px, calc(100% - 56px));
+  }
+  .tech-palco {
+    perspective: 1100px;
+  }
+  .tech-trilho .tech-card {
+    width: 156px;
+    height: 84px;
+  }
+  /* Duas laterais de cada lado: o terceiro degrau sai de cena. */
+  .tech-carrossel .tech-card[data-pos='-3'],
+  .tech-carrossel .tech-card[data-pos='3'] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .tech-bg__linha--1,
+  .tech-bg__node {
+    display: none;
+  }
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────────
+   Não é a composição desktop comprimida: os trilhos saem e o carrossel vira uma
+   faixa rolável com `scroll-snap`, que é o gesto nativo. Todas as dezessete
+   continuam alcançáveis — as do carrossel na faixa, as dos trilhos na lista que
+   aparece abaixo dela. */
+@media (max-width: 767px) {
+  .tech-showcase {
+    min-height: 0;
+  }
+  .tech-container {
+    width: 100%;
+    padding-inline: 20px;
+    padding-block: clamp(56px, 9vh, 80px);
+  }
+  .tech-palco {
+    min-height: 0;
+    perspective: none;
+  }
+  .tech-trilho {
+    display: none;
+  }
+  .tech-carrossel {
+    position: relative;
+    top: auto;
+    height: auto;
+    display: flex;
+    gap: 16px;
+    transform: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 11vw;
+    padding-block: 8px;
+    /* A faixa sangra até as bordas da janela, mas o `scroll-padding` mantém o
+       card ativo centrado — e a página não ganha rolagem horizontal porque quem
+       rola é este elemento, não o documento. */
+    margin-inline: -20px;
+    padding-inline: 11vw;
+    scrollbar-width: none;
+  }
+  .tech-carrossel::-webkit-scrollbar {
+    display: none;
+  }
+  .tech-carrossel .tech-card,
+  .tech-carrossel .tech-card[data-pos='0'],
+  .tech-carrossel .tech-card[data-pos='-1'],
+  .tech-carrossel .tech-card[data-pos='1'],
+  .tech-carrossel .tech-card[data-pos='-2'],
+  .tech-carrossel .tech-card[data-pos='2'],
+  .tech-carrossel .tech-card[data-pos='-3'],
+  .tech-carrossel .tech-card[data-pos='3'],
+  .tech-carrossel .tech-card[data-pos='fora'] {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 78vw;
+    height: 46vw;
+    min-height: 150px;
+    transform: none;
+    opacity: 1;
+    scroll-snap-align: center;
+    pointer-events: auto;
+  }
+  /* Lista das tecnologias dos trilhos, que no desktop rolam sozinhas. */
+  .tech-restantes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .tech-restantes .tech-card {
+    width: auto;
+    height: 76px;
+    padding: 12px;
+    border-radius: 16px;
+  }
+}
+/* Acima de 768px a lista de reserva não existe: aquelas logos estão nos trilhos,
+   e mostrá-las duas vezes duplicaria conteúdo. */
+@media (min-width: 768px) {
+  .tech-restantes {
+    display: none;
+  }
+}
+
+/* ── Movimento reduzido ──────────────────────────────────────────────────────
+   Duas escritas da mesma regra: a preferência do sistema e o interruptor do site
+   (`data-motion="reduce"` em `<html>`, gravado antes do primeiro paint).
+
+   Nada é escondido. O palco 3D vira uma grade com as dezessete logos, os loops
+   param e o autoplay já foi desligado no componente. */
+@media (prefers-reduced-motion: reduce) {
+  .tech-showcase .tech-trilho__fita,
+  .tech-showcase .tech-bg__glow,
+  .tech-showcase .tech-card__ponto,
+  .tech-showcase .tech-card,
+  .tech-showcase .tech-card__placa,
+  .tech-showcase .tech-logo {
+    animation: none !important;
+  }
+}
+html[data-motion='reduce'] .tech-trilho__fita,
+html[data-motion='reduce'] .tech-bg__glow,
+html[data-motion='reduce'] .tech-card__ponto,
+html[data-motion='reduce'] .tech-card,
+html[data-motion='reduce'] .tech-card__placa,
+html[data-motion='reduce'] .tech-logo {
+  animation: none !important;
+}
+
+.tech-showcase[data-estatico='1'] .tech-palco {
+  min-height: 0 !important;
+  perspective: none !important;
+}
+.tech-showcase[data-estatico='1'] .tech-trilho,
+.tech-showcase[data-estatico='1'] .tech-controles {
+  display: none !important;
+}
+.tech-showcase[data-estatico='1'] .tech-carrossel {
+  position: relative !important;
+  top: auto !important;
+  height: auto !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+  transform: none !important;
+  overflow: visible !important;
+}
+.tech-showcase[data-estatico='1'] .tech-carrossel .tech-card,
+.tech-showcase[data-estatico='1'] .tech-restantes .tech-card {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  width: auto !important;
+  height: 116px !important;
+  transform: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transition: none !important;
+}
+.tech-showcase[data-estatico='1'] .tech-restantes {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 16px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+/* Sem o fundo claro do "ativo" quando não há ativo: em modo estático todos os
+   cards são iguais, e a placa clara volta a valer para todos. */
+.tech-showcase[data-estatico='1'] .tech-carrossel .tech-card[data-pos='0'] {
+  background: linear-gradient(145deg, rgba(11, 46, 87, 0.76), rgba(3, 20, 45, 0.88));
+  border: 1px solid rgba(140, 210, 245, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 24px 54px rgba(0, 9, 28, 0.28);
+}
+.tech-showcase[data-estatico='1'] .tech-carrossel .tech-card[data-pos='0'] .tech-card__placa {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(214, 233, 248, 0.9));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+}

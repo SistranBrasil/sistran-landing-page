@@ -62,7 +62,10 @@ export default function Page() {
       {/* 2. Serviços — no site esta secao tem sobretitulo "Diferenciais",
              titulo "Serviços", dois paragrafos e os mesmos 4 cards da home,
              fechando com o botao "Quero um serviço exclusivo". */}
-      <section id="servicos-diferenciais" className="section-py">
+      {/* SIS-76 — grade técnica, mesma malha ancorada na janela das demais
+          seções escuras do site. Ver a nota em `.grade-tecnica` no globals.css. */}
+      <section id="servicos-diferenciais" className="section-py relative overflow-hidden">
+        <div aria-hidden className="grade-tecnica" />
         <div className="container-lp">
           <span className="tag-section">Diferenciais</span>
           <h2 className="mt-4 font-display text-section font-bold text-white">Serviços</h2>
@@ -112,7 +115,8 @@ export default function Page() {
              nenhum link de entrada. Este é o ponto de acesso: o texto do card é
              o proprio conteudo da pagina (scenesIntro/mosaicIntro em
              src/data/legacy.ts), sem copy nova. */}
-      <section id="transformacao-legado" className="section-py scroll-mt-32">
+      <section id="transformacao-legado" className="section-py scroll-mt-32 relative overflow-hidden">
+        <div aria-hidden className="grade-tecnica" />
         <div className="container-lp">
           <span className="tag-section">{scenesIntro.kicker}</span>
           <h2 className="mt-4 max-w-3xl font-display text-section font-bold text-white">

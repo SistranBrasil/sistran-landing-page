@@ -58,8 +58,20 @@ export function vaoEntreEtapas(larguraViewport: number): number {
  *
  * Reduzida junto com o vao: 70px sobre um vao de 173px dava uma serra, nao uma
  * onda. Mantendo ~30% do vao minimo a curva volta a ler como onda larga.
+ *
+ * SIS-74: 46px -> 22px. A 46px a curva era uma senoide de amplitude generosa
+ * atravessando o palco — a forma mais previsivel que um grafico decorativo pode
+ * ter, e metade da razao pela qual a cena lia como template. A 22px sobre um vao
+ * de 150–250px ela vira um TRILHO com desvio leve: continua havendo relevo (é
+ * dele que sai a leitura de percurso, e é ele que separa os blocos vizinhos), mas
+ * o desenho passa a ser tenso em vez de ondulado.
+ *
+ * Nao é so estetica: `DESVIOS_TRILHO` empurra o conteudo ~130px na vertical, e
+ * com 46px de onda os dois relevos somavam e o ritmo dos blocos ficava
+ * desencontrado do da curva. Com 22px o desvio do conteudo domina, que é o que
+ * deve dominar.
  */
-export const AMPLITUDE = 46;
+export const AMPLITUDE = 22;
 
 /** Distancia dos pontos de controle, como fracao do vao. */
 const CONTROLE = 0.34;
@@ -96,24 +108,39 @@ export type Onda = {
  * a curva chega sempre na mesma altura, e é so no meio do caminho que ela sobe
  * ou desce.
  *
- * O desenho comeca um vao antes do primeiro indicador e termina um vao depois do
- * ultimo, para a curva atravessar a cena em vez de nascer e morrer nos extremos.
+ * ── Por que a MARGEM é meia tela, e nao um vao ─────────────────────────────
+ * O desenho comecava um vao antes do primeiro indicador e terminava um vao
+ * depois do ultimo. Como a trilha se desloca um vao por etapa e o indicador
+ * ativo fica sempre no centro da tela, isso deixava a onda comecando e
+ * terminando a apenas UM vao (150–250px) do centro — ou seja, no primeiro
+ * indicador a metade esquerda da tela abria vazia, e no ultimo a metade direita
+ * ficava vazia. Era esse o defeito visivel nas capturas, e nao a falta de
+ * efeitos: a onda nascia e morria dentro do quadro.
+ *
+ * `margem` é o numero de trechos extra em cada ponta, e quem chama passa
+ * `ceil(centroX / vao)` — o bastante para que, em qualquer etapa, a onda
+ * atravesse a tela de borda a borda. As pontas que caem fora do `viewBox` sao
+ * recortadas por ele, que é exatamente o efeito desejado: a curva chega na
+ * borda e é cortada, em vez de terminar no ar.
  */
 export function criarOnda(
   centroX: number,
   centroY: number,
   vao: number,
   total: number,
+  margem = 1,
 ): Onda {
   const c = vao * CONTROLE;
   const x = (i: number) => centroX + i * vao;
-  let d = `M ${coord(x(-1))} ${coord(centroY)}`;
-  for (let i = -1; i < total; i += 1) {
+  const primeiro = -Math.max(1, Math.round(margem));
+  const ultimo = total - 1 + Math.max(1, Math.round(margem));
+  let d = `M ${coord(x(primeiro))} ${coord(centroY)}`;
+  for (let i = primeiro; i < ultimo; i += 1) {
     const s = sentido(i + 1);
     const y = coord(centroY + s * AMPLITUDE);
     d += ` C ${coord(x(i) + c)} ${y} ${coord(x(i + 1) - c)} ${y} ${coord(x(i + 1))} ${coord(centroY)}`;
   }
-  return { d, largura: x(total) };
+  return { d, largura: x(ultimo) };
 }
 
 /**

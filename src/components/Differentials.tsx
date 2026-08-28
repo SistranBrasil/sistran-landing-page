@@ -146,7 +146,15 @@ export default function Differentials() {
             tinha de ser encurtado para compensar (relatorio de UX, p15).
             `--header-h` vem de `:root` no `globals.css`. Ate SIS-65 o Header a
             reescrevia ao compactar; agora o cabecalho tem altura fixa e a
-            variavel e constante (88px). */}
+            variavel e constante (88px).
+
+            SIS-77 revisou este `100svh` e ele FICA. A suspeita do issue era de
+            que a altura de tela estivesse apenas criando um bloco de exatamente
+            uma tela — corte seco, candidato a sair. Nao e o caso: o wrapper
+            acima tem `DIFFERENTIALS.length * 100vh` e este filho e `sticky`, ou
+            seja, a altura de tela e o quadro de um palco preso a rolagem, e
+            `irParaPasso()` conta com ela para calcular onde parar. Mexer aqui
+            desalinha os passos, nao suaviza fronteira nenhuma. */}
         <div
           className="sticky flex items-center overflow-hidden"
           style={{

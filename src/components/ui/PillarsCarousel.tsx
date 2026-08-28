@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { DIFFERENTIALS } from '@/data/differentials';
 import { getIcon } from '@/lib/icons';
-import { useReducedMotion } from '@/lib/motion';
+import { easeExpo, useReducedMotion } from '@/lib/motion';
 
 const DURATION_MS = 3800;
 
@@ -74,7 +74,7 @@ export default function PillarsCarousel() {
             initial={rm ? false : { opacity: 0, y: 12, filter: 'blur(6px)' }}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.55, ease: easeExpo }}
             className="flex flex-col gap-4"
           >
             <div

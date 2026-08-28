@@ -2,7 +2,7 @@
 
 import { animate, motion, useInView, useMotionValue, useTransform } from 'motion/react';
 import { useEffect, useRef } from 'react';
-import { useReducedMotion } from '@/lib/motion';
+import { easeExpo, useReducedMotion } from '@/lib/motion';
 
 type Props = {
   /** Valor final, como está escrito no conteúdo ("10", "1"…). */
@@ -60,7 +60,7 @@ export function CountUp({ value, className, duration = 1.4, srText }: Props) {
       return;
     }
 
-    const controls = animate(count, target, { duration, ease: [0.22, 1, 0.36, 1] });
+    const controls = animate(count, target, { duration, ease: easeExpo });
     return () => controls.stop();
   }, [count, duration, inView, reduced, target]);
 

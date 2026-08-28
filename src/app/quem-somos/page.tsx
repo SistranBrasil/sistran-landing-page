@@ -2,10 +2,15 @@ import Link from 'next/link';
 import PageShell from '@/components/PageShell';
 import PageHero from '@/components/PageHero';
 import About from '@/components/About';
+import PositioningEcosystem from '@/components/PositioningEcosystem';
+import RecognitionTheater from '@/components/RecognitionTheater';
 import Differentials from '@/components/Differentials';
 import Metrics from '@/components/Metrics';
 import ContactCTA from '@/components/ContactCTA';
-import BuildingShowcase from '@/components/ui/BuildingShowcase';
+import TechnologyShowcase from '@/components/TechnologyShowcase';
+import EssenceAccordion from '@/components/EssenceAccordion';
+/* SIS-69: `BuildingShowcase` saiu da pagina — o import volta junto com o bloco,
+   documentado mais abaixo, entre Tecnologias e Diferenciais. */
 import OfficesScene from '@/components/ui/OfficesScene';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import TituloAceso from '@/components/ui/TituloAceso';
@@ -16,9 +21,7 @@ import {
   COMO_AGIMOS,
   DIFERENCIAIS_6,
   ISG,
-  PILARES,
   POR_QUE_SISTRAN,
-  PREMIACOES,
   PREMIACOES_NOTAS,
 } from '@/data/aSistran';
 
@@ -60,11 +63,50 @@ export default function Page() {
       {/* Fronteiras claro/escuro em chanfro: o separador fica FORA do bloco
           claro, porque `.section-light` tem `isolation: isolate` e pintaria o
           proprio degrade sobre ele. A cor é a do bloco que avanca. */}
+      {/* ── SIS-75 · mapa de fronteiras desta pagina ───────────────────────────
+          Contagem, e nao impressao: os 10 `NotchDivider` desta pagina se dividem
+          em 8 fronteiras claro↔escuro e 2 claro↔claro. Fronteira escuro↔escuro:
+          ZERO aqui — o padrao real da pagina é escuro → claro alternando, porque
+          entre "Como Agimos" e "Por que SISTRAN?" existem Metrics,
+          RecognitionTheater e o bloco claro do ISG. (A unica escuro↔escuro do
+          site esta na home, `page.tsx:179`.)
+
+          Decisao por tipo:
+          • claro ↔ escuro (8) — MANTEM o Modelo B (chanfro). O contraste é alto,
+            o chanfro é identidade da marca aqui e dissolver navy em branco por
+            gradiente pede uma faixa de ~200px de tom intermediario: é
+            exatamente o remendo que a nota de `globals.css:7793` proibe
+            ("remendo visivel é pior que o corte que ele tapa").
+          • claro ↔ claro (2 — as duas em volta do `EssenceAccordion`, marcadas
+            abaixo) — vira Modelo A. Ali o chanfro
+            separa `#e4edf7` de `#ffffff` e `#ffffff` de `#f2f9fe`: tons quase
+            iguais, entao o SVG é a UNICA coisa visivel na junta. Sem contraste
+            para justificar corte, e sem risco de faixa intermediaria — a
+            dissolucao é entre vizinhos.
+
+          As duas linhas marcadas abaixo com "SIS-75: candidata a Modelo A" sao o
+          escopo de implementacao; todas as outras estao marcadas "SIS-75: chanfro
+          mantido por decisao" para nao serem removidas na proxima passada. */}
+      {/* SIS-75: chanfro mantido por decisao — claro↔escuro (hero navy → About). */}
       <NotchDivider cor="#ffffff" invertido />
 
       <div className="section-light">
         <About />
+      </div>
 
+      {/* Perfil & Posicionamento vem logo depois de "Sobre nós": é a leitura
+          natural — primeiro quem a Sistran é, depois onde ela se posiciona. O
+          bloco claro fecha aqui porque a secao é azul-marinho profundo, e as duas
+          fronteiras recebem o chanfro de sempre (a cor é a do bloco que avanca). */}
+      {/* SIS-75: chanfro mantido por decisao — claro↔escuro (About → Posicionamento). */}
+      <NotchDivider cor="#e4edf7" />
+
+      <PositioningEcosystem />
+
+      {/* SIS-75: chanfro mantido por decisao — escuro↔claro (Posicionamento → Escritorios). */}
+      <NotchDivider cor="#ffffff" invertido />
+
+      <div className="section-light">
         {/* Escritórios BRASIL */}
         <section aria-labelledby="escritorios" className="section-py">
           <div className="container-lp">
@@ -87,22 +129,26 @@ export default function Page() {
           </div>
         </section>
 
-        {/* Explorador 3D. Fica junto dos escritorios porque é do edificio que
-            trata; entra sem titulo e sem texto novo — o pedido foi manter o
-            componente 3D, nao acrescentar escrita.
+        {/* Tecnologias. Pinta o proprio fundo azul-marinho e sangra na largura
+            inteira, entao entra sem `container-lp` e sem NotchDivider — este
+            ultimo nao pode viver dentro de `.section-light`, que tem
+            `isolation: isolate`. */}
+        <TechnologyShowcase />
 
-            A torre tambem aparece DENTRO da cena acima, no trecho de Sao Paulo,
-            com o 2º andar marcado — lá ela é dirigida pela rolagem e nao aceita
-            o ponteiro. Este bloco continua sendo o explorador de verdade: gira
-            com o arraste, tem bussola, vistas rapidas e o complexo modular.
-            Cada cena pausa o proprio laco de render quando sai da tela, entao só
-            uma delas desenha por vez. */}
-        <section aria-label="Explorador arquitetônico 360°" className="section-py pt-0">
-          <div className="container-lp">
-            <BuildingShowcase />
-          </div>
-        </section>
+        {/* SIS-69: o explorador 3D 360° (cartao azul com "01 Torre River Park" /
+            "02 Complexo Modular", bussola de vistas, "35+ Anos de mercado") saiu
+            da pagina a pedido. `BuildingShowcase` continua no repositorio, sem
+            consumidor — para religar, basta reimportar e devolver aqui:
 
+              <section aria-label="Explorador arquitetônico 360°" className="section-py pt-0">
+                <div className="container-lp"><BuildingShowcase /></div>
+              </section>
+
+            A TORRE nao saiu: `OfficesScene`, logo acima, monta o mesmo
+            `BuildingExplorer` no trecho de Sao Paulo com o 2º andar marcado —
+            lá dirigida pela rolagem e sem aceitar o ponteiro. Com uma cena só na
+            rota, o `three` agora tem um consumidor em vez de dois, e nao existe
+            mais a disputa de "só uma delas desenha por vez". */}
         {/* Diferenciais — os 6 itens, so titulo, como no site */}
         <section aria-labelledby="diferenciais-6" className="section-py">
           <div className="container-lp">
@@ -129,59 +175,38 @@ export default function Page() {
         <Differentials />
       </div>
 
+      {/* SIS-75: candidata a Modelo A — claro↔claro (`#e4edf7` → branco do
+          EssenceAccordion). O chanfro aqui é a unica coisa visivel na junta. */}
       <NotchDivider cor="#e4edf7" />
 
-      {/* Missão · Valores · Pilares */}
-      <section aria-labelledby="missao-valores-pilares" className="section-py">
-        <div className="container-lp">
-          <h2 id="missao-valores-pilares" className="sr-only">
-            Missão, Valores e Pilares
-          </h2>
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <ScrollReveal as="article" indice={0} className="glass-card notch-card barra-sinal p-7">
-              <h3 className="font-display text-xl font-bold text-white">Missão</h3>
-              <p className="mt-3 text-sm leading-relaxed text-white/85">
-                Oferecer soluções de negócios escaláveis, de baixo TCO*, baseadas em tecnologia para
-                companhias de Seguros, considerando suas necessidades atuais e futuras.
-              </p>
-              <p className="mt-3 text-xs italic leading-relaxed text-ink-faint">
-                *Total Cost of Ownership, uma estimativa financeira de custos diretos e indiretos de
-                investimentos.
-              </p>
-            </ScrollReveal>
+      {/* Missão · Valores · Pilares.
+          Os tres cartoes escuros de largura igual viraram um accordion editorial
+          de fundo branco: os conteudos tem tamanhos muito diferentes (um
+          paragrafo, uma linha, seis frases), e em tres colunas iguais isso
+          deixava duas quase vazias. Os textos sao os mesmos, agora em
+          `src/data/essencia.ts`. */}
+      <EssenceAccordion />
 
-            <ScrollReveal as="article" indice={1} className="glass-card notch-card barra-sinal p-7">
-              <h3 className="font-display text-xl font-bold text-white">Valores</h3>
-              <p className="mt-3 text-sm leading-relaxed text-white/85">
-                Conhecimento em Seguros, Flexibilidade, Tecnologia, Solidez e permanência.
-              </p>
-            </ScrollReveal>
-
-            <ScrollReveal as="article" indice={2} className="glass-card notch-card barra-sinal p-7">
-              <h3 className="font-display text-xl font-bold text-white">Pilares</h3>
-              <ul className="mt-3 space-y-2">
-                {PILARES.map((p) => (
-                  <li key={p} className="text-sm leading-relaxed text-white/85">
-                    {p}
-                  </li>
-                ))}
-              </ul>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-
+      {/* SIS-75: candidata a Modelo A — claro↔claro (branco → `#f2f9fe` da
+          Abordagem). Mesmo caso da fronteira acima. */}
       <NotchDivider cor="#f2f9fe" invertido />
 
       {/* Abordagem de projetos */}
-      <section aria-labelledby="abordagem" className="section-py section-light section-light-blue">
+      {/* SIS-77 — 1ª das duas fronteiras com sobreposição: os quatro cartões
+          numerados atravessam o chanfro e entram no escuro de "Como Agimos". Foi
+          escolhida porque os dois blocos já usam `num-monumental` no
+          `.etapa-num` — é o mesmo dispositivo do `04` fantasma da referência. */}
+      <section
+        aria-labelledby="abordagem"
+        className="vaza-fonte section-py section-light section-light-blue"
+      >
         <div className="container-lp">
           <TituloAceso
             id="abordagem"
             texto="Temos uma abordagem completa de projetos para o mercado Segurador"
             className="max-w-3xl font-display text-section font-bold text-ink"
           />
-          <ol className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="vaza-cartoes mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {ABORDAGEM.map((etapa, i) => (
               <ScrollReveal
                 as="li"
@@ -197,10 +222,14 @@ export default function Page() {
         </div>
       </section>
 
+      {/* SIS-75: chanfro mantido por decisao — claro↔escuro (Abordagem → Como Agimos). */}
       <NotchDivider cor="#cfe7f7" />
 
       {/* Como Agimos */}
-      <section aria-labelledby="como-agimos" className="section-py relative overflow-hidden">
+      <section
+        aria-labelledby="como-agimos"
+        className="recebe-vazamento section-py relative overflow-hidden"
+      >
         <div aria-hidden className="grade-tecnica" />
         <div className="container-lp">
           <TituloAceso
@@ -231,29 +260,16 @@ export default function Page() {
 
       <Metrics />
 
-      {/* Premiações, Certificações e Reconhecimentos */}
-      <section aria-labelledby="premiacoes" className="section-py">
-        <div className="container-lp">
-          <TituloAceso
-            id="premiacoes"
-            texto="Premiações, Certificações e"
-            destaque="Reconhecimentos"
-            className="font-display text-section font-bold text-white"
-          />
-          <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {PREMIACOES.map((p, i) => (
-              <ScrollReveal
-                as="li"
-                indice={i}
-                key={p.label}
-                className="glass-card-hover notch-card barra-sinal p-6"
-              >
-                <span className="num-monumental num-forte">{p.value}</span>
-                <p className="mt-2 text-sm leading-relaxed text-white/85">{p.label}</p>
-              </ScrollReveal>
-            ))}
-          </ul>
-          <div className="mt-8 space-y-4">
+      {/* Premiações, Certificações e Reconhecimentos.
+          Os quatro cartões claros iguais deram lugar ao "Teatro de
+          Reconhecimentos": o mesmo conteúdo (12 / 3 / 5 / 3 e os quatro assets
+          oficiais) num palco navegável. O `h2` da seção passou a viver dentro do
+          componente, e é ele que `aria-labelledby` aponta. As duas notas
+          continuam aqui, logo abaixo — são escrita existente e com fonte. */}
+      <section aria-labelledby="premiacoes">
+        <RecognitionTheater />
+        <div className="container-lp pb-14 md:pb-20">
+          <div className="space-y-4">
             {PREMIACOES_NOTAS.map((n) => (
               <p key={n.slice(0, 24)} className="max-w-3xl text-lg leading-relaxed text-white/85">
                 {n}
@@ -263,9 +279,18 @@ export default function Page() {
         </div>
       </section>
 
+      {/* SIS-75: chanfro mantido por decisao — escuro↔claro (Reconhecimentos → ISG). */}
       <NotchDivider cor="#f2f9fe" invertido />
 
       {/* ISG Provider Lens */}
+      {/* SIS-77 — ISG era a 2ª candidata do issue e foi DESCARTADA por estrutura,
+          não por gosto: a grade de citações não é o último item da seção — a nota
+          do reprint ISG vem depois dela. Margem negativa na grade encurta a seção
+          e sobe a nota 5rem, em cima dos cartões. Para a citação atravessar, a
+          nota teria de atravessar junto, e letra miúda de crédito saindo para
+          dentro do bloco escuro é ruído, não ênfase.
+          A 2ª fronteira virou "Conheça também" → "Fale com a Gente!", onde a
+          grade É o último item. */}
       <section aria-labelledby="isg" className="section-py section-light section-light-blue">
         <div className="container-lp">
           <TituloAceso
@@ -302,6 +327,7 @@ export default function Page() {
         </div>
       </section>
 
+      {/* SIS-75: chanfro mantido por decisao — claro↔escuro (ISG → Por que SISTRAN?). */}
       <NotchDivider cor="#cfe7f7" />
 
       {/* Por que SISTRAN? */}
@@ -336,12 +362,17 @@ export default function Page() {
         </div>
       </section>
 
+      {/* SIS-75: chanfro mantido por decisao — escuro↔claro (Por que SISTRAN? → Conheca tambem). */}
       <NotchDivider cor="#f2f9fe" invertido />
 
       {/* Caminho para as outras duas paginas do submenu "Quem somos". */}
+      {/* SIS-77 — 2ª e última fronteira com sobreposição: os dois cartões de
+          "Conheça também" descem para dentro do cartão azul de "Fale com a
+          Gente!". Aqui a grade É o último item da seção, que é o que a técnica
+          exige (ver a nota do bloco `.vaza-*` no `globals.css`). */}
       <section
         aria-labelledby="mais-quem-somos"
-        className="section-py section-light section-light-blue"
+        className="vaza-fonte section-py section-light section-light-blue"
       >
         <div className="container-lp">
           <TituloAceso
@@ -349,7 +380,7 @@ export default function Page() {
             texto="Conheça também"
             className="font-display text-section font-bold text-ink"
           />
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="vaza-cartoes mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
             <ScrollReveal indice={0}>
               <Link
                 href="/sistran-labs"
@@ -380,9 +411,17 @@ export default function Page() {
         </div>
       </section>
 
+      {/* SIS-75: chanfro mantido por decisao — claro↔escuro (Conheca tambem → ContactCTA). */}
       <NotchDivider cor="#cfe7f7" />
 
-      <ContactCTA />
+      {/* SIS-77 — a compensação do vazamento entra num `<div>` em volta, e não
+          dentro do `ContactCTA`: o componente fecha outras nove páginas, e nelas
+          não há cartão descendo para dentro dele. O `<div>` é transparente e o
+          `ContactCTA` não pinta fundo próprio (o navy é o da página), então a
+          faixa de folga não cria banda de cor nenhuma. */}
+      <div className="recebe-vazamento">
+        <ContactCTA />
+      </div>
     </PageShell>
   );
 }

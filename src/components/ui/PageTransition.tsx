@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { motion } from 'motion/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useReducedMotion } from '@/lib/motion';
+import { easeExpo, useReducedMotion } from '@/lib/motion';
 import type Lenis from 'lenis';
 
 export default function PageTransition({ children }: { children: React.ReactNode }) {
@@ -44,7 +44,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
       key={pathname}
       initial={rm ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={rm ? { duration: 0 } : { duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      transition={rm ? { duration: 0 } : { duration: 0.4, ease: easeExpo }}
     >
       {children}
     </motion.div>

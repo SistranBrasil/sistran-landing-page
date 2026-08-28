@@ -5,7 +5,23 @@
  *
  * A rolagem é vertical, como no resto do site; o que anda na horizontal é a
  * trilha, empurrada por `transform` para deixar o indicador da vez no centro da
- * tela. Nunca há barra de rolagem horizontal e não há clique: não é carrossel.
+ * tela. Nunca há barra de rolagem horizontal.
+ *
+ * ── SIS-73: agora há clique, e continua não sendo carrossel ──────────────────
+ * Até aqui esta nota dizia "não há clique: não é carrossel". A segunda metade
+ * segue verdadeira; a primeira mudou, e a distinção é o ponto todo.
+ *
+ * Os sete indicadores só eram alcançáveis rolando 520vh — quem queria o quarto
+ * número rolava cinco telas, e por teclado a cena era inalcançável. A faixa de
+ * atalhos no pé do palco resolve os dois.
+ *
+ * O que a mantém fora da categoria "carrossel" é o que o clique NÃO faz: ele não
+ * escolhe o indicador. O índice ativo continua saindo de um lugar só — o
+ * progresso do único ScrollTrigger da seção. O botão apenas leva a ROLAGEM até a
+ * altura em que aquele indicador é o da vez, e o gatilho reage a isso exatamente
+ * como reagiria à roda do mouse. Um `setAtivo(i)` no `onClick` seria sobrescrito
+ * no quadro seguinte pelo `onUpdate`; por isso não existe estado novo aqui, e
+ * depois de clicar a rolagem segue do ponto onde parou, sem salto.
  *
  * Desenho da seção, de cima para baixo: uma faixa clara com o sobretítulo, o
  * título e o marcador `03 / 07`; abaixo dela o palco escuro, separado por uma
@@ -100,14 +116,31 @@ function ImpactNumero({ valor, ativo }: { valor: number; ativo: boolean }) {
     if (prefersReducedMotion()) return;
     const no = alvo.current;
     if (!no) return;
+    /* SIS-72: era `duration: 1.1` com `ease: [0.22, 1, 0.36, 1]`. Aquela curva
+       desacelera forte, mas é MONOTONA — o numero nunca passa do alvo. O pedido
+       ("contagem rapida e desaceleracao elastica") é mola, e mola precisa
+       ultrapassar para voltar.
+
+       `damping: 30` no `stiffness: 120` sugerido fica praticamente critico: nao
+       sobra elasticidade visivel, seria a curva de antes com outro nome. Em 22 a
+       mola passa do alvo em ~3-4% e volta — em 850 isso é um pico por volta de
+       880, dois ou tres quadros, exatamente o "elastico" pedido.
+
+       `restDelta: 0.5` fecha em meio digito: com `Math.round` no `onUpdate`,
+       perseguir 0.01 seria gastar quadros num movimento que a tela nao mostra
+       mais. */
     const controle = animate(0, valor, {
-      duration: 1.1,
-      ease: [0.22, 1, 0.36, 1],
+      type: 'spring',
+      stiffness: 120,
+      damping: 22,
+      restDelta: 0.5,
       onUpdate: (v) => {
         no.textContent = String(Math.round(v));
       },
-      /* Fecha exatamente no valor: `Math.round` do ultimo quadro poderia parar
-         um digito antes. */
+      /* Fecha exatamente no valor. Com mola isso passou a ser obrigatorio, nao
+         zelo: `restDelta: 0.5` interrompe a meio digito do alvo, e o ultimo
+         quadro pode ser o retorno do overshoot. Sem esta linha o indicador
+         poderia descansar em 851. */
       onComplete: () => {
         no.textContent = String(valor);
       },
@@ -124,8 +157,14 @@ function ImpactNumero({ valor, ativo }: { valor: number; ativo: boolean }) {
       ref={alvo}
       className="impact-numero"
       /* Largura reservada pelo numero final: contando 0 -> 850 o texto passa de
-         um para tres digitos, e sem a reserva o `+` ao lado escorregaria. */
-      style={{ minWidth: `${String(valor).length}ch` }}
+         um para tres digitos, e sem a reserva o `+` ao lado escorregaria.
+
+         SIS-72: a reserva agora conta o PICO da mola, nao o valor final. Nos
+         sete valores de hoje (850/23/130/650/230/35/25) da no mesmo — nenhum
+         esta na fronteira de digito. Mas um `99+` viraria `103` por dois
+         quadros, ganharia um digito e empurraria o `+`; com a margem embutida o
+         proximo numero que entrar na lista nao reabre esse bug. */
+      style={{ minWidth: `${String(Math.ceil(valor * 1.08)).length}ch` }}
     >
       {valor}
     </span>
@@ -141,6 +180,11 @@ export default function Metrics() {
   const palcoRef = useRef<HTMLDivElement>(null);
   const cenaRef = useRef<HTMLDivElement>(null);
   const ativoRef = useRef(0);
+  /* SIS-73: o gatilho guardado para os atalhos alcançarem `start`/`end` — as duas
+     alturas de rolagem que delimitam o percurso. É a única coisa que a faixa de
+     botões precisa saber, e ela vem do MESMO gatilho que dita o índice ativo:
+     nenhum segundo medidor do percurso. */
+  const gatilhoRef = useRef<ScrollTrigger | null>(null);
   /* Largura da tela e altura util do palco. Sao a UNICA entrada da geometria, e
      mudam so em resize — nao em rolagem. */
   const [medida, setMedida] = useState(MEDIDA_PADRAO);
@@ -193,7 +237,13 @@ export default function Metrics() {
     const vao = vaoEntreEtapas(medida.larguraTela);
     const centroX = medida.larguraTela / 2;
     const centroY = medida.alturaPalco * LINHA_BASE;
-    const onda = criarOnda(centroX, centroY, vao, TOTAL);
+    /* Margem em TRECHOS: meia tela de cada lado, arredondada para cima. É o que
+       garante que a onda atravesse o quadro em QUALQUER etapa — no primeiro
+       indicador ela já vem da borda esquerda, no último ela segue para fora da
+       direita. Com a margem de um vão só, as duas pontas morriam a 150–250px do
+       centro e metade da tela abria vazia. */
+    const margem = Math.ceil(centroX / vao);
+    const onda = criarOnda(centroX, centroY, vao, TOTAL, margem);
     return { vao, centroX, centroY, altura: medida.alturaPalco, ...onda };
   }, [medida]);
 
@@ -275,6 +325,8 @@ export default function Metrics() {
       },
     });
 
+    gatilhoRef.current = gatilho;
+
     const atualizar = () => ScrollTrigger.refresh();
     window.addEventListener('resize', atualizar);
     return () => {
@@ -282,6 +334,7 @@ export default function Metrics() {
       /* Só o gatilho DESTA seção. Nunca `ScrollTrigger.killAll()`: as outras
          seções da página têm gatilhos próprios e sobrevivem a este desmonte. */
       gatilho.kill();
+      gatilhoRef.current = null;
       delete palco.dataset.visivel;
       for (const nome of [
         '--impact-p',
@@ -300,6 +353,34 @@ export default function Metrics() {
        gatilho é recriado com as medidas novas, e o `refresh` recalcula o
        percurso. Fora de resize nada aqui muda. */
   }, [dirigindo, geo]);
+
+  /**
+   * SIS-73 — atalho para o indicador `i`.
+   *
+   * Não mexe em `ativo`: converte o índice na FRAÇÃO de progresso em que aquele
+   * indicador é o da vez — o inverso exato da conta do `onUpdate` — e leva a
+   * rolagem até a altura correspondente. Quem decide o índice continua sendo o
+   * ScrollTrigger.
+   *
+   * `start`/`end` vêm do gatilho vivo, não de `offsetTop` recalculado à mão: se o
+   * percurso mudar (resize, `refresh`), o atalho acompanha sem uma segunda fonte
+   * de verdade para desincronizar.
+   *
+   * Lenis primeiro, `window.scrollTo` como reserva — o mesmo par de
+   * `Differentials.irParaPasso`. Com movimento reduzido a viagem é salto: uma
+   * duração de 0,9s é movimento, e é justamente o que a preferência recusa.
+   */
+  const irParaIndicador = (i: number) => {
+    const gatilho = gatilhoRef.current;
+    if (!gatilho) return;
+    const p = ETAPAS_INICIO + (i / (TOTAL - 1)) * (ETAPAS_FIM - ETAPAS_INICIO);
+    const alvo = gatilho.start + p * (gatilho.end - gatilho.start);
+    const rm = prefersReducedMotion();
+    const lenis = (window as unknown as { __lenis?: { scrollTo: (t: number, o?: object) => void } })
+      .__lenis;
+    if (lenis) lenis.scrollTo(alvo, { duration: rm ? 0 : 0.9 });
+    else window.scrollTo({ top: alvo, behavior: rm ? 'auto' : 'smooth' });
+  };
 
   return (
     <section
@@ -328,35 +409,48 @@ export default function Metrics() {
           <span aria-hidden className="impact-emenda" />
           */}
           <div className="container-lp impact-topo-inner">
-            <div>
-              <p className="impact-eyebrow">Sistran em números</p>
-              {/* O ponto final em ciano é um `span` proprio: é pontuacao, nao
-                  palavra, e nao deve entrar no gradiente do titulo. */}
-              <h2 id="impact-titulo" className="impact-titulo">
-                Escala que transforma o mercado de seguros
-                <span className="impact-ponto">.</span>
-              </h2>
-            </div>
+            {/* SIS-74 — trilha de metadados: sobretítulo, fio e marcador na MESMA
+                linha, imediatamente acima do título.
 
-            {/* Marcador de etapa. O numero em texto é o que cumpre "nao indicar
-                o item ativo so por cor"; os pontos sao reforco visual. */}
-            <div className="impact-marcador">
-              <p className="impact-marcador-num">
-                <span className="impact-marcador-atual">{doisDigitos(ativo + 1)}</span>
-                <span aria-hidden> / </span>
-                <span className="impact-marcador-total">{doisDigitos(TOTAL)}</span>
-              </p>
-              <div aria-hidden className="impact-trilho">
-                <span className="impact-trilho-aceso" />
-                {METRICS.map((m, i) => (
-                  <span
-                    key={m.id}
-                    className="impact-trilho-ponto"
-                    data-estado={i === ativo ? 'ativo' : i < ativo ? 'feito' : 'proximo'}
-                  />
-                ))}
+                Antes o título ficava à esquerda e o marcador na ponta oposta da
+                faixa, com meia tela de vazio entre os dois: o `03 / 07` lia como
+                um widget avulso, sem dono, e a faixa toda ficava com a silhueta
+                genérica de "título à esquerda, coisa à direita". Aqui o marcador
+                é legenda do bloco — está a um fio de distância do texto que ele
+                numera, e o alinhamento é o do sobretítulo, não o da borda da
+                tela. O fio é curto de propósito: ele ENCOSTA os dois, não os
+                separa de ponta a ponta. */}
+            <div className="impact-topo-meta">
+              <p className="impact-eyebrow">Sistran em números</p>
+              <span aria-hidden className="impact-meta-fio" />
+
+              {/* Marcador de etapa. O numero em texto é o que cumpre "nao indicar
+                  o item ativo so por cor"; os traços sao reforco visual. */}
+              <div className="impact-marcador">
+                <p className="impact-marcador-num">
+                  <span className="impact-marcador-atual">{doisDigitos(ativo + 1)}</span>
+                  <span aria-hidden> / </span>
+                  <span className="impact-marcador-total">{doisDigitos(TOTAL)}</span>
+                </p>
+                <div aria-hidden className="impact-trilho">
+                  <span className="impact-trilho-aceso" />
+                  {METRICS.map((m, i) => (
+                    <span
+                      key={m.id}
+                      className="impact-trilho-ponto"
+                      data-estado={i === ativo ? 'ativo' : i < ativo ? 'feito' : 'proximo'}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
+
+            {/* O ponto final em ciano é um `span` proprio: é pontuacao, nao
+                palavra, e nao deve entrar no gradiente do titulo. */}
+            <h2 id="impact-titulo" className="impact-titulo">
+              Escala que transforma o mercado de seguros
+              <span className="impact-ponto">.</span>
+            </h2>
           </div>
         </div>
 
@@ -468,63 +562,64 @@ export default function Metrics() {
                 caia no centro da tela. Centro transparente: o numero, que
                 continua no `<li>`, aparece por cima. */}
             <span aria-hidden className="impact-lente">
-              <svg className="impact-aneis" viewBox="0 0 200 200" focusable="false">
-                <path className="impact-anel impact-anel-1" d="M100 14 A 86 86 0 0 1 186 100" />
-                <path className="impact-anel impact-anel-1" d="M100 186 A 86 86 0 0 1 14 100" />
-                <path className="impact-anel impact-anel-2" d="M28 128 A 76 76 0 0 0 172 128" />
-                <path className="impact-anel impact-anel-2" d="M172 72 A 76 76 0 0 0 28 72" />
-                {/* Terceiro anel, contínuo e quase apagado: dá um terceiro plano
-                    de profundidade sem competir com os dois arcos que giram. */}
-                <circle className="impact-anel impact-anel-3" cx="100" cy="100" r="66" />
-                {/* Arco de progresso: dois círculos sobrepostos, o de baixo como
-                    calha e o de cima recortado por `stroke-dashoffset`, que o CSS
-                    calcula a partir de `--impact-etapa` — a MESMA variável que o
-                    único ScrollTrigger da seção já escreve. Nenhum trigger novo. */}
-                <circle className="impact-arco-calha" cx="100" cy="100" r="92" />
-                <circle className="impact-arco-vivo" cx="100" cy="100" r="92" />
-                {/* Cabeça do arco: a bolinha que anda pela borda da lente, com a
-                    rotação saindo de `--impact-etapa` — a MESMA variável do arco,
-                    logo nenhum gatilho novo e nenhuma segunda medição do
-                    percurso.
+              {/* SIS-74 — a lente era um anel de radar: três anéis concêntricos
+                  girando em velocidades diferentes, 36 ticks radiais, um arco de
+                  progresso circular com bolinha orbitando e uma varredura cónica
+                  por cima. Cada peça tinha justificação própria, e somadas
+                  produziam exatamente o clichê de HUD de ficção científica — a
+                  moldura chamava mais atenção que o número que ela existia para
+                  emoldurar.
 
-                    Ela existe porque a lente lia como "travada": o arco era o
-                    único indicador contínuo e é traço fino, então o avanço não
-                    aparecia. Uma marca que anda dá a leitura de percurso.
+                  No lugar: um PAINEL. Moldura retangular de 1px com cantos em
+                  esquadro (marca de corte, vocabulário de prancha técnica), e o
+                  progresso numa barra reta na aresta de cima. A mesma informação
+                  — em que ponto do percurso a cena está — lida num gesto que não
+                  gira: barra que enche da esquerda para a direita, na mesma
+                  direção em que a trilha anda.
 
-                    Nó PRÓPRIO, e não `transform` num elemento que já tem
-                    `animation`: giro contínuo e valor por quadro na mesma
-                    propriedade do mesmo elemento é a colisão que SIS-42 corrigiu
-                    em Soluções — um sobrescreve o outro. E sem `transition`,
-                    porque o valor é reescrito a cada quadro pelo scroll. */}
-                <g className="impact-arco-cabeca">
-                  <circle cx="100" cy="8" r="3.4" />
-                </g>
-                <g className="impact-ticks">
-                  {Array.from({ length: 36 }, (_, t) => {
-                    const a = (t / 36) * Math.PI * 2;
-                    const r1 = 92;
-                    const r2 = 92 + (t % 3 === 0 ? 7 : 3.5);
-                    return (
-                      <line
-                        key={t}
-                        /* `coord` arredonda: sem ele o cosseno do Node e o do
-                           navegador diferem no ultimo digito e o React acusa
-                           divergencia de hidratacao. */
-                        x1={coord(100 + Math.cos(a) * r1)}
-                        y1={coord(100 + Math.sin(a) * r1)}
-                        x2={coord(100 + Math.cos(a) * r2)}
-                        y2={coord(100 + Math.sin(a) * r2)}
-                      />
-                    );
-                  })}
-                </g>
+                  Os quatro esquadros são um `<path>` só: são o mesmo traço em
+                  quatro cantos, e separá-los em quatro nós seria quatro nós para
+                  manter a mesma espessura. `vectorEffect` mantém 1px real em
+                  qualquer largura de painel — sem ele o `viewBox` esticado
+                  engrossaria o traço na horizontal. */}
+              <svg
+                className="impact-moldura"
+                viewBox="0 0 100 62"
+                preserveAspectRatio="none"
+                focusable="false"
+              >
+                <rect
+                  className="impact-moldura-caixa"
+                  x="0.5"
+                  y="0.5"
+                  width="99"
+                  height="61"
+                  vectorEffect="non-scaling-stroke"
+                />
+                <path
+                  className="impact-moldura-esquadro"
+                  vectorEffect="non-scaling-stroke"
+                  d="M0.5 12V0.5H12 M88 0.5H99.5V12 M99.5 50V61.5H88 M12 61.5H0.5V50"
+                />
               </svg>
+
+              {/* Barra de progresso na aresta de cima. `scaleX` a partir da
+                  esquerda, dirigido por `--impact-etapa` — a MESMA variável que
+                  o único ScrollTrigger da seção já escreve, nenhum gatilho novo.
+                  Nó próprio para o `transform` ter um dono só (a lição de
+                  SIS-42). */}
+              <span className="impact-barra">
+                <span className="impact-barra-viva" />
+              </span>
+
               {/* Um contextual só, o do indicador da vez: a lente é unica. */}
               <span className="impact-contextual" key={METRICS[ativo]?.id}>
                 <ImpactVisual nome={METRICS[ativo]?.visual} />
               </span>
-              {/* Node de chegada: marca, na borda esquerda da lente, o ponto em
-                  que a curva entra na mascara. */}
+              {/* Marca de chegada: onde a curva entra na máscara, na aresta
+                  esquerda do painel. Era uma bolinha branca com dois halos
+                  ciano; virou um traço vertical rente à aresta, do mesmo
+                  vocabulário dos esquadros. */}
               <span className="impact-chegada" />
             </span>
 
@@ -602,6 +697,48 @@ export default function Metrics() {
               <span className="impact-regua-viva" />
             </span>
           </div>
+
+          {/* SIS-73 — faixa de atalhos. Fica FORA do `.impact-cena`, direto no
+              palco, pelo mesmo motivo da lente: `.impact-track` e
+              `.impact-trilha-curva` recebem `transform` por quadro, e um alvo de
+              clique que anda 1400px na horizontal é um alvo que ninguém acerta.
+
+              Só existe no modo dirigido — `dirigindo` é `false` abaixo de 1024px
+              e com movimento reduzido, e nesses casos a seção é a lista completa
+              dos sete indicadores. Não há por que oferecer atalho para o que já
+              está todo na tela, e transformar a lista em tabs esconderia seis dos
+              sete atrás de interação.
+
+              `<nav>` com botões, não `role="tablist"`: são sete destinos dentro da
+              MESMA cena, não sete painéis alternáveis. O leitor de tela que
+              ouvisse "aba" esperaria trocar de conteúdo, e o que acontece é a
+              rolagem andar. */}
+          {dirigindo && (
+            <nav className="impact-atalhos" aria-label="Ir para um indicador">
+              {METRICS.map((m, i) => (
+                <button
+                  key={m.id}
+                  type="button"
+                  className="impact-atalho"
+                  /* `aria-current` é o sinal semântico do ativo, e o ordinal em
+                     texto mais o peso da fonte são os sinais visuais
+                     não-cromáticos — a borda ciano é reforço, nunca a única
+                     informação. */
+                  aria-current={i === ativo ? 'true' : undefined}
+                  data-estado={i === ativo ? 'ativo' : undefined}
+                  /* O rótulo visível é só o ordinal, para a faixa caber nos sete
+                     sem competir com a cena. O nome do indicador vai no
+                     `aria-label`, senão o botão seria lido como "zero quatro". */
+                  aria-label={`${doisDigitos(i + 1)} — ${m.label}`}
+                  onClick={() => irParaIndicador(i)}
+                >
+                  <span aria-hidden className="impact-atalho-num">
+                    {doisDigitos(i + 1)}
+                  </span>
+                </button>
+              ))}
+            </nav>
+          )}
 
           <span aria-hidden className="impact-vinheta" />
         </div>

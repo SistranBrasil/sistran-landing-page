@@ -446,6 +446,82 @@ html[data-motion="reduce"] .scene-media-frame {
   margin-inline: auto;
 }
 
+/* SIS-68 — realce do título na variante da home.
+   Os stops NÃO são novos: são exatamente os da variante clara do gradiente da
+   marca (`.section-light .text-gradient-brand`, em `globals.css`). A classe
+   global `.text-gradient-brand` é clara-sobre-escuro e o mosaico é bloco branco
+   (`--paper`) fora de `.section-light`, então aqui ela sairia quase invisível.
+   `color` vem antes do recorte de propósito: se `background-clip: text` falhar
+   (ou o texto for copiado para outro contexto), sobra o azul da marca legível,
+   e não um vão branco. */
+.mosaic-realce {
+  color: #0079cb;
+  background-image: linear-gradient(100deg, #0079cb 0%, #1885ce 45%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* O gradiente aplicado a um `inline` se refaz por linha; `inline-block` mantém
+     uma caixa só, então a rampa atravessa o realce inteiro mesmo se ele quebrar
+     de linha em telas estreitas. */
+  display: inline-block;
+}
+
+/* Os quatro pilares. Linha vertical, não grade: o bloco de texto é centrado e
+   estreito (`max-width: 46rem`), e quatro colunas apertariam "Solidez e
+   permanência" em duas linhas enquanto os vizinhos ficam numa. */
+.mosaic-pilares {
+  margin: clamp(1.75rem, 4svh, 2.75rem) auto 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: clamp(0.75rem, 1.6svh, 1.1rem);
+  width: max-content;
+  max-width: 100%;
+  /* Rótulos alinhados entre si, com o conjunto centrado no bloco: com
+     `text-align: center` herdado, os nomes ficariam escalonados em relação aos
+     ícones e a coluna perderia a prumada. */
+  text-align: left;
+}
+
+.mosaic-pilar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mosaic-pilar-marca {
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+/* Traço mais fino que o padrão do lucide (2): num ícone pequeno sobre branco, o
+   traço cheio nas cores claras dos pilares (#57B7EE, #C4A0FB) vira uma mancha.
+   As cores vêm de `differentials.ts` e são decorativas — o nome ao lado é o que
+   carrega a informação, então nenhuma delas precisa passar em contraste de
+   texto. */
+.mosaic-pilar-marca > svg {
+  width: clamp(1.15rem, 1.5vw, 1.4rem);
+  height: auto;
+  stroke-width: 1.6;
+}
+
+.mosaic-pilar-nome {
+  color: var(--ink);
+  font-weight: 600;
+  font-size: clamp(0.95rem, 1.1vw, 1.08rem);
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 30rem) {
+  /* Abaixo disso "Conhecimento em Seguros" com `width: max-content` empurraria
+     a coluna além da tela. Volta a ser fluida e o texto quebra. */
+  .mosaic-pilares {
+    width: auto;
+    justify-items: start;
+    margin-inline: clamp(0.5rem, 4vw, 1.5rem);
+  }
+}
+
 /* Camada de mídia periférica: absoluta no desktop, grid no mobile.
    Sem `perspective` aqui de propósito: com um ponto de fuga único no centro, um
    cartão distante dele ganha um deslocamento de projeção proporcional à
@@ -2197,12 +2273,41 @@ html.has-dialog {
   grid-area: 1 / 1;
 }
 
+/* O vídeo nasce invisível e só aparece quando há quadro decodificado
+   (`data-pronto`, escrito pelo `ScrollVideo` com `revelarQuandoPronto`).
+
+   É o que faz a seção abrir mostrando o FUNDO e a montagem surgir com a
+   rolagem. Sem isto, o que cobre o quadro preto do decodificador é o `poster`
+   — e o pôster é o quadro de 8,6s, com a montagem já concluída, então a
+   sequência começava pelo fim.
+
+   `opacity: 0` tem de vir daqui, do CSS servido, e não de JS na hidratação:
+   assim não existe o quadro inicial em que o pôster pisca. */
 .sequence-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   /* O clipe é claro nas bordas; sem isso o texto perde contraste no canto. */
   filter: saturate(1.05) brightness(0.92);
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+}
+
+.sequence-video[data-pronto='true'] {
+  opacity: 1;
+}
+
+/* Saída de emergência 1 — movimento reduzido. Não há curso de scroll nem seek,
+   logo `data-pronto` nunca chega. Sem esta regra o vídeo ficaria invisível para
+   sempre e a seção perderia a imagem: é o pitfall de reduced-motion em que um
+   estado inicial `opacity: 0` sobrevive à animação morta. Aqui quem assume é o
+   pôster, e é para isto que ele continua existindo.
+
+   (Saída de emergência 2, falha de carregamento, é tratada no `ScrollVideo`:
+   `error` também revela.) */
+.sequence[data-static='true'] .sequence-video {
+  opacity: 1;
+  transition: none;
 }
 
 /* Gradiente de leitura: escurece só o pé, onde o texto pousa. As paradas cobrem

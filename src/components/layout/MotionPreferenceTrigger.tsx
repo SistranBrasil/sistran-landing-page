@@ -2,6 +2,13 @@
 
 import { useState } from 'react';
 import { motionPreferenceCopy } from '@/lib/motionPreference';
+/* SIS-70 — este gatilho parece o candidato óbvio a `dynamic` (o diálogo só
+   existe atrás de clique), e não é: o `MotionPreferenceIntro` está montado no
+   layout RAIZ com import estático do MESMO módulo, então ele já está no pacote
+   inicial de toda rota. `dynamic` aqui não removeria nada do primeiro
+   carregamento — só acrescentaria um chunk e uma requisição para buscar código
+   que já chegou. Ver a justificativa do import estático em
+   `MotionPreferenceIntro.tsx`. */
 import { MotionPreferenceDialog } from './MotionPreferenceDialog';
 
 /**

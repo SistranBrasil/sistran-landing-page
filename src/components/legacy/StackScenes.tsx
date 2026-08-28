@@ -15,7 +15,12 @@ import { useRef } from "react"
 // import { useActiveStep } from "@/lib/useActiveStep"
 import { useReducedMotion } from "@/lib/motion"
 // `scenes` e `scenesIntro` saíram do import junto com o JSX que os consumia.
-import { mosaicIntro, mosaicTiles } from "@/data/legacy"
+import { mosaicIntro, mosaicIntroHome, mosaicTiles } from "@/data/legacy"
+// SIS-68: os quatro pilares saem de `DIFFERENTIALS`, a MESMA fonte da seção
+// `Differentials` (hoje comentada na home). Um array novo aqui criaria duas
+// fontes para os mesmos quatro rótulos, e elas divergiriam na primeira revisão.
+import { DIFFERENTIALS } from "@/data/differentials"
+import { getIcon } from "@/lib/icons"
 
 /* As três declarações abaixo (`CARRIER`, `CARRIER_VIDEO` e `offsetIn`) ficaram
    sem consumidor com o tile viajante e o vídeo comentados, e são mantidas de
@@ -70,7 +75,22 @@ function offsetIn(node: HTMLElement, root: HTMLElement) {
  */
 type Travel = { dx: number; dy: number; sx: number; sy: number }
 
-export function StackScenes() {
+/**
+ * SIS-68 — duas variantes do MESMO teatro.
+ *
+ * `legado` (padrão) é o que sempre existiu: kicker "Arquitetura", título
+ * "destino adequado ao contexto". É o cabeçalho certo em
+ * `/transformacao-legado`, onde a seção abre a página.
+ *
+ * `home` troca a abertura por "Entrega com Alta Performance e Comprometimento"
+ * e acrescenta os quatro pilares. O padrão continua sendo `legado` de
+ * propósito: quem religar a seção em outra rota herda o texto antigo, que é o
+ * neutro, em vez da escrita específica da home.
+ */
+type Variante = "legado" | "home"
+
+export function StackScenes({ variante = "legado" }: { variante?: Variante } = {}) {
+  const naHome = variante === "home"
   /* Índice ativo das etapas comentado junto com os quatro movimentos (ver o
      bloco `.scene-steps` no JSX abaixo): sem os botões, `active`, `setActive` e
      `register` ficariam sem uso e o lint quebraria. Religar é descomentar aqui e
@@ -272,11 +292,49 @@ export function StackScenes() {
     <div ref={wrap} className="stack-scenes">
       <section id="sinais" ref={stack} className="mosaic" aria-labelledby="sinais-title">
         <motion.div className="mosaic-copy" style={reduced ? undefined : { y: copyY }}>
-          <p className="lp-eyebrow lp-tag">{mosaicIntro.kicker}</p>
+          {/* Sem kicker na home: a tag foi removida a pedido. A seção não fica
+              sem nome acessível — o `aria-labelledby` aponta para o próprio
+              `<h2 id="sinais-title">`, que continua aqui nas duas variantes. */}
+          {naHome ? null : <p className="lp-eyebrow lp-tag">{mosaicIntro.kicker}</p>}
           <h2 id="sinais-title" className="lp-display lp-display--lg">
-            {mosaicIntro.title}
+            {naHome ? (
+              <>
+                {mosaicIntroHome.tituloAntes}
+                {/* Classe própria, e NÃO `.text-gradient-brand`: aquela é
+                    clara-sobre-escuro (#a5f3fc → #fff → #e9d5ff) e o mosaico é
+                    bloco claro (`--paper: #ffffff`) fora de `.section-light`,
+                    onde vive a única variante escura do gradiente. Reusar a
+                    classe deixaria o realce quase invisível — branco sobre
+                    branco. Ver `.mosaic-realce` em `legacy.css`. */}
+                <span className="mosaic-realce">{mosaicIntroHome.tituloRealce}</span>
+                {mosaicIntroHome.tituloDepois}
+              </>
+            ) : (
+              mosaicIntro.title
+            )}
           </h2>
-          <p className="lp-lead">{mosaicIntro.text}</p>
+          <p className="lp-lead">{naHome ? mosaicIntroHome.text : mosaicIntro.text}</p>
+
+          {/* Os quatro pilares, só na home. Título apenas: `DIFFERENTIALS`
+              carrega `description`, mas as caixas do site são só rótulo — e uma
+              das descrições ainda diz "mais de 150 clientes" (o número correto
+              é 130), erro que não é desta issue e que não vale trazer para a
+              tela. Ícones decorativos: o texto ao lado já é o nome. */}
+          {naHome ? (
+            <ul className="mosaic-pilares">
+              {DIFFERENTIALS.map((pilar) => {
+                const Icone = getIcon(pilar.icon)
+                return (
+                  <li key={pilar.id} className="mosaic-pilar">
+                    <span className="mosaic-pilar-marca" aria-hidden="true" style={{ color: pilar.color }}>
+                      <Icone />
+                    </span>
+                    <span className="mosaic-pilar-nome">{pilar.title}</span>
+                  </li>
+                )
+              })}
+            </ul>
+          ) : null}
         </motion.div>
 
         {/* O `aria-hidden` saiu da camada e passou a ser por tile: três deles são
@@ -319,10 +377,20 @@ export function StackScenes() {
                   }`}
                 >
                   {/* Ilustração decorativa: o rótulo já nomeia o tile, então o
-                      `alt` fica vazio para o leitor de tela não repetir. O
-                      otimizador entra aqui — ao contrário do logo do header, este
-                      é um PNG de ~1,8 MB num cartão de no máximo 176px, e sem
-                      redimensionar seriam 10× os pixels necessários. */}
+                      `alt` fica vazio para o leitor de tela não repetir.
+
+                      SIS-70 — o comentário que estava aqui dizia que "o
+                      otimizador entra aqui". Não entra: o projeto roda com
+                      `images: { unoptimized: true }` (`next.config.mjs`), então
+                      o `next/image` serve o arquivo do disco como ele está. O
+                      diagnóstico do comentário estava certo (PNG de ~1,8 MB num
+                      cartão de no máximo 176px, 10× os pixels necessários) e a
+                      conclusão errada — ninguém estava consertando isso.
+
+                      Agora os cinco tiles apontam para WebP de 440px gerados por
+                      `scripts/otimizar-tiles-mosaico.mjs`: 10,9 MB → 226 kB. O
+                      `<Image>` fica pelo `fill` e pelo `sizes`, não pela
+                      compressão. */}
                   {tile.image ? (
                     <Image
                       className="mosaic-image"

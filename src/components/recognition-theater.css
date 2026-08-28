@@ -1,0 +1,1557 @@
+/* ===========================================================
+   Teatro de Reconhecimentos — Premiacoes, Certificacoes e Reconhecimentos.
+
+   A folha é escrita de baixo para cima: a BASE é o fluxo natural do mobile, com
+   os quatro reconhecimentos empilhados e visiveis. A experiencia sticky, o palco
+   unico, as miniaturas laterais e o conector entram so a partir de 1200px. Em
+   movimento reduzido tudo isso é desligado e o markup volta a ser a mesma lista
+   completa da base — sem esconder nada e sem trocar de arvore no React.
+
+   O bloco `@media (prefers-reduced-motion: reduce)` e o de
+   `html[data-motion="reduce"]` no fim sao ESPELHOS: mudar um exige mudar o
+   outro. O atributo é escrito pelo script inline de `layout.tsx` antes da
+   primeira pintura, para a preferencia valer sem esperar hidratacao.
+   =========================================================== */
+
+.rec-scroll {
+  --rec-ciano: #22d3ee;
+  --rec-borda: rgba(102, 187, 237, 0.42);
+  position: relative;
+  isolation: isolate;
+}
+
+.rec-sticky {
+  position: relative;
+  overflow: clip;
+  padding-block: clamp(56px, 9vw, 104px);
+}
+
+/* --- Fundo: degrades, grade tecnica, diagonais e vinheta ------------------ */
+
+.rec-fundo {
+  position: absolute;
+  inset: 0;
+  z-index: -4;
+  background:
+    radial-gradient(circle at 65% 55%, rgba(29, 199, 242, 0.13), transparent 30%),
+    radial-gradient(circle at 12% 38%, rgba(16, 112, 207, 0.14), transparent 36%),
+    /* SIS-78: era `#020f22 / #031a38 / #062c5d`. O terceiro ponto já era quase o
+       escuro da marca; agora os três são ele. */
+    linear-gradient(
+      125deg,
+      var(--palco-fundo) 0%,
+      var(--palco-marca) 52%,
+      var(--palco-marca) 100%
+    );
+}
+
+.rec-grade {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  opacity: 0.05;
+  background-image:
+    linear-gradient(to right, #7fd7f5 1px, transparent 1px),
+    linear-gradient(to bottom, #7fd7f5 1px, transparent 1px);
+  background-size: 78px 78px;
+  /* Some nas bordas para a grade nao encostar na fronteira da secao. */
+  -webkit-mask: radial-gradient(ellipse 78% 72% at 50% 50%, #000 46%, transparent 100%);
+  mask: radial-gradient(ellipse 78% 72% at 50% 50%, #000 46%, transparent 100%);
+}
+
+/* Diagonais muito discretas e alguns pontos de coordenada — os dois no mesmo
+   no, para nao somar mais uma camada de composicao. */
+.rec-diagonais {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    repeating-linear-gradient(
+      118deg,
+      rgba(127, 215, 245, 0.028) 0 1px,
+      transparent 1px 190px
+    ),
+    radial-gradient(circle, rgba(127, 215, 245, 0.14) 1px, transparent 1.5px);
+  background-size:
+    auto auto,
+    156px 156px;
+  -webkit-mask: radial-gradient(ellipse 80% 76% at 50% 50%, #000 40%, transparent 100%);
+  mask: radial-gradient(ellipse 80% 76% at 50% 50%, #000 40%, transparent 100%);
+}
+
+.rec-vinheta {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse 92% 88% at 50% 50%, transparent 52%, rgba(1, 8, 21, 0.62));
+}
+
+.rec-wrap {
+  position: relative;
+  width: min(1600px, calc(100% - 40px));
+  margin-inline: auto;
+}
+
+/* --- Cabecalho ----------------------------------------------------------- */
+
+.rec-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--rec-ciano);
+}
+
+/* A linha curta é CSS, nao caractere. */
+.rec-eyebrow::after {
+  content: '';
+  flex: 0 0 auto;
+  width: clamp(28px, 5vw, 64px);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.7), transparent);
+}
+
+.rec-titulo {
+  margin: 0;
+  max-width: 780px;
+  font-size: clamp(2.1rem, 4.1vw, 4.8rem);
+  font-weight: 760;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+  color: #ffffff;
+}
+
+/* --- Layout -------------------------------------------------------------- */
+
+.rec-header {
+  margin-bottom: clamp(28px, 3vh, 48px);
+}
+
+.rec-layout {
+  display: grid;
+  gap: clamp(32px, 5vw, 86px);
+}
+
+/* --- Navegacao editorial ------------------------------------------------- */
+
+.rec-nav-titulo {
+  margin: 0 0 14px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(190, 226, 247, 0.72);
+}
+
+.rec-nav-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Separador discreto entre as linhas, sem borda no ultimo item. */
+.rec-nav-lista > li + li {
+  border-top: 1px solid rgba(122, 178, 216, 0.16);
+}
+
+.rec-nav-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  /* 44px de area clicavel garantidos pelo padding + line-height. */
+  min-height: 56px;
+  padding: 14px 16px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  opacity: 0.62;
+  transition:
+    opacity 240ms ease,
+    background-color 240ms ease,
+    border-color 240ms ease,
+    box-shadow 240ms ease;
+}
+
+.rec-nav-indice {
+  font-size: 0.86rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: rgba(190, 226, 247, 0.8);
+  transition: color 240ms ease;
+}
+
+.rec-nav-nome {
+  font-size: clamp(0.95rem, 1vw, 1.08rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: rgba(233, 244, 252, 0.9);
+}
+
+.rec-nav-seta {
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  color: var(--rec-ciano);
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
+}
+
+.rec-nav-seta svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Hover e foco clareiam e movem a seta, mas NAO trocam o item aceso. */
+.rec-nav-item:hover,
+.rec-nav-item:focus-visible {
+  opacity: 1;
+  border-color: rgba(122, 178, 216, 0.4);
+}
+
+.rec-nav-item:hover .rec-nav-seta,
+.rec-nav-item:focus-visible .rec-nav-seta {
+  opacity: 0.7;
+  transform: translateX(4px);
+}
+
+.rec-nav-item.is-ativo {
+  opacity: 1;
+  background: linear-gradient(90deg, rgba(10, 112, 203, 0.28), rgba(7, 57, 113, 0.12));
+  border: 1px solid rgba(68, 191, 240, 0.52);
+  border-left: 4px solid var(--rec-ciano);
+  box-shadow: 0 0 28px rgba(34, 211, 238, 0.1);
+}
+
+.rec-nav-item.is-ativo .rec-nav-indice {
+  color: var(--rec-ciano);
+}
+
+.rec-nav-item.is-ativo .rec-nav-nome {
+  color: #ffffff;
+}
+
+.rec-nav-item.is-ativo .rec-nav-seta {
+  opacity: 1;
+}
+
+/* Os concluidos nao dependem so da cor: recebem tambem o fio ciano a esquerda. */
+.rec-nav-item.is-feito {
+  opacity: 0.78;
+  border-left: 2px solid rgba(34, 211, 238, 0.42);
+  border-radius: 12px;
+}
+
+/* --- Progresso da navegacao --------------------------------------------- */
+
+.rec-progresso {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(20px, 3vw, 34px);
+}
+
+.rec-progresso-num {
+  font-size: 1.06rem;
+  font-weight: 760;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--rec-ciano);
+}
+
+.rec-progresso-total {
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: rgba(190, 226, 247, 0.6);
+}
+
+.rec-progresso-trilha {
+  position: relative;
+  flex: 1 1 auto;
+  height: 3px;
+  min-width: 80px;
+  border-radius: 999px;
+  background: rgba(122, 178, 216, 0.2);
+  overflow: hidden;
+}
+
+.rec-progresso-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0079cb, var(--rec-ciano));
+  transition: width 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --- Palco e molduras ---------------------------------------------------- */
+
+.rec-theater-wrap {
+  position: relative;
+}
+
+/* As molduras vivem atras do palco e nao existem no mobile: sem o palco unico,
+   elas nao teriam o que emoldurar. */
+.rec-frame {
+  display: none;
+}
+
+.rec-theater {
+  position: relative;
+  border-radius: 30px;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(135deg, rgba(10, 49, 94, 0.82), rgba(3, 25, 55, 0.92));
+  border: 1px solid var(--rec-borda);
+  box-shadow: 0 32px 80px rgba(0, 8, 25, 0.38);
+  padding: clamp(20px, 4vw, 30px);
+}
+
+/* Conector e wipe pertencem ao palco unico do desktop. */
+.rec-conector,
+.rec-wipe {
+  display: none;
+}
+
+/* --- Cenas: fluxo natural na base --------------------------------------- */
+
+.rec-palco {
+  display: grid;
+  gap: clamp(24px, 4vw, 36px);
+}
+
+.rec-cena {
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+  text-align: center;
+  padding-block: clamp(18px, 4vw, 26px);
+}
+
+.rec-cena + .rec-cena {
+  border-top: 1px solid rgba(122, 178, 216, 0.16);
+}
+
+/* --- Peca: arte, halo e pedestal ---------------------------------------- */
+
+.rec-peca {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: end;
+  padding: 18px 22px 0;
+  border-radius: 20px;
+}
+
+/* Tres dos quatro assets sao selos de tinta escura (o da ABNT tem 100% dos
+   pixels opacos abaixo de 110 de luminancia). Sobre azul-marinho eles
+   desapareceriam, entao cada um declara a propria placa de apoio. */
+.rec-placa-clara {
+  background: linear-gradient(160deg, #ffffff, #eaf3fb);
+  border: 1px solid rgba(143, 207, 244, 0.5);
+  box-shadow: 0 16px 40px rgba(0, 8, 25, 0.34);
+}
+
+.rec-placa-escura {
+  background: linear-gradient(160deg, rgba(6, 22, 44, 0.94), rgba(2, 12, 28, 0.96));
+  border: 1px solid rgba(198, 160, 74, 0.44);
+  box-shadow: 0 16px 40px rgba(0, 8, 25, 0.34);
+}
+
+.rec-arte {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin-inline: auto;
+}
+
+/* `contain` sempre: nenhum selo é cortado nem deformado, e nada é rotacionado. */
+.rec-arte img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 26px rgba(0, 8, 25, 0.42));
+}
+
+/* Spotlight ciano atras da peca. No fluxo estreito ele é so um brilho de apoio;
+   no palco (>=1200px) ele cresce e ganha os aneis de profundidade. */
+.rec-spot {
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: 46%;
+  width: 116%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.2), transparent 62%);
+  pointer-events: none;
+}
+
+/* Os aneis sao ornamento de palco: no fluxo vertical eles nao tem funcao. */
+.rec-anel {
+  display: none;
+}
+
+/* Base eliptica: superficie grafite azulada, fio dourado fino, halo ciano
+   embaixo. A peca fica APOIADA, nao flutuando. */
+.rec-pedestal {
+  position: relative;
+  z-index: 0;
+  display: block;
+  width: min(86%, 320px);
+  height: clamp(18px, 3vw, 30px);
+  margin-top: -6px;
+  border-radius: 50%;
+  background:
+    linear-gradient(180deg, rgba(24, 62, 108, 0.96), rgba(6, 24, 50, 0.98));
+  border: 1px solid rgba(198, 160, 74, 0.42);
+  box-shadow:
+    0 10px 26px rgba(0, 8, 25, 0.5),
+    0 14px 34px rgba(34, 211, 238, 0.16);
+}
+
+/* --- Numero, titulo e selo ---------------------------------------------- */
+
+.rec-dados {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
+.rec-contagem {
+  font-size: clamp(4rem, 12vw, 13rem);
+  font-weight: 780;
+  line-height: 0.8;
+  letter-spacing: -0.065em;
+  font-variant-numeric: tabular-nums;
+  color: #ffffff;
+  text-shadow: 0 0 28px rgba(52, 197, 245, 0.14);
+}
+
+.rec-nome {
+  margin: 0;
+  max-width: 480px;
+  font-size: clamp(1.3rem, 2.8vw, 3.2rem);
+  font-weight: 720;
+  line-height: 1.08;
+  color: #ffffff;
+}
+
+.rec-selo {
+  margin: 4px 0 0;
+  padding: 7px 16px;
+  border: 1px solid rgba(34, 211, 238, 0.62);
+  border-radius: 999px;
+  background: rgba(4, 26, 56, 0.7);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rec-ciano);
+}
+
+/* --- Miniaturas: ausentes na base, o conteudo ja esta todo em fluxo ----- */
+
+.rec-rail {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rec-mini {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 10px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition:
+    border-color 240ms ease,
+    transform 240ms ease,
+    box-shadow 240ms ease;
+}
+
+.rec-mini img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 74px;
+  object-fit: contain;
+}
+
+.rec-mini:hover,
+.rec-mini:focus-visible {
+  border-color: rgba(34, 211, 238, 0.7);
+  transform: translateY(-3px);
+  box-shadow: 0 0 22px rgba(34, 211, 238, 0.16);
+}
+
+/* --- Base: setas e linha do tempo --------------------------------------- */
+
+.rec-base {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: clamp(20px, 3vw, 30px);
+  padding-top: clamp(16px, 2vw, 22px);
+  border-top: 1px solid rgba(122, 178, 216, 0.16);
+}
+
+.rec-ctrl {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid rgba(122, 178, 216, 0.46);
+  background: rgba(4, 26, 56, 0.66);
+  color: #ffffff;
+  cursor: pointer;
+  transition:
+    border-color 220ms ease,
+    background-color 220ms ease,
+    opacity 220ms ease;
+}
+
+.rec-ctrl svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 220ms ease;
+}
+
+.rec-ctrl:hover:not(:disabled) {
+  border-color: var(--rec-ciano);
+  background: rgba(10, 54, 100, 0.78);
+}
+
+.rec-ctrl:hover:not(:disabled) svg {
+  transform: translateX(3px);
+}
+
+.rec-ctrl[aria-label='Reconhecimento anterior']:hover:not(:disabled) svg {
+  transform: translateX(-3px);
+}
+
+/* Desabilitado perceptivel por opacidade E por cursor — nao so por cor. */
+.rec-ctrl:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+
+.rec-timeline {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rec-timeline > li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+/* A linha entre os nodes é CSS, nao caractere. */
+.rec-timeline > li + li::before {
+  content: '';
+  position: absolute;
+  top: 11px;
+  right: 50%;
+  left: -50%;
+  height: 1px;
+  background: rgba(122, 178, 216, 0.28);
+}
+
+.rec-timeline > li.is-ativo::before,
+.rec-timeline > li.is-feito::before {
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.5), var(--rec-ciano));
+}
+
+.rec-node {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  /* 44px de alvo garantido sem inflar o desenho do node. */
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.rec-node-ponto {
+  width: 12px;
+  height: 12px;
+  margin-top: 5px;
+  border-radius: 50%;
+  border: 1px solid rgba(146, 187, 217, 0.62);
+  background: transparent;
+  transition:
+    background-color 260ms ease,
+    border-color 260ms ease,
+    box-shadow 260ms ease;
+}
+
+.rec-node-indice {
+  font-size: 0.66rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: rgba(190, 226, 247, 0.62);
+  transition: color 260ms ease;
+}
+
+.is-feito .rec-node-ponto {
+  background: #78c9f8;
+  border-color: rgba(120, 201, 248, 0.8);
+}
+
+.is-ativo .rec-node-ponto {
+  background: var(--rec-ciano);
+  border-color: var(--rec-ciano);
+  box-shadow:
+    0 0 0 4px rgba(34, 211, 238, 0.16),
+    0 0 14px rgba(34, 211, 238, 0.4);
+}
+
+.is-ativo .rec-node-indice {
+  color: #ffffff;
+}
+
+/* Foco visivel em tudo que é clicavel — nunca removido sem substituto. */
+.rec-nav-item:focus-visible,
+.rec-mini:focus-visible,
+.rec-ctrl:focus-visible,
+.rec-node:focus-visible {
+  outline: 2px solid var(--rec-ciano);
+  outline-offset: 3px;
+}
+
+/* ===========================================================
+   Tablet: 768–1199px. Duas colunas ~32/68, cabecalho e numero menores,
+   miniaturas menores, conector simplificado. Ainda sem sticky.
+   =========================================================== */
+@media (min-width: 768px) {
+  .rec-wrap {
+    width: min(1600px, calc(100% - 64px));
+  }
+  .rec-layout {
+    grid-template-columns: minmax(280px, 0.34fr) minmax(0, 0.66fr);
+    align-items: center;
+  }
+  .rec-cena {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    align-items: center;
+    text-align: left;
+  }
+  /* Aqui tambem quem manda é a altura, mas com teto de 300px: o palco unico
+     ainda nao existe e as quatro cenas convivem na mesma coluna. */
+  .rec-arte img {
+    width: auto;
+    height: min(var(--rec-h, 300px), 300px);
+    max-width: 100%;
+    margin-inline: auto;
+  }
+  .rec-dados {
+    justify-items: start;
+  }
+  .rec-contagem {
+    font-size: clamp(4.4rem, 9vw, 7rem);
+  }
+  .rec-nome {
+    font-size: clamp(1.4rem, 2.2vw, 2rem);
+  }
+  .rec-mini img {
+    max-height: 96px;
+  }
+}
+
+/* ===========================================================
+   Desktop acima de 1200px: a experiencia sticky de quatro etapas.
+
+   O vao entre as colunas é uma variavel porque o conector precisa da MESMA
+   medida para se posicionar dentro dele.
+   =========================================================== */
+@media (min-width: 1200px) {
+  .rec-scroll {
+    --rec-vao: clamp(44px, 4vw, 72px);
+    --rec-pad-x: clamp(38px, 3.5vw, 62px);
+    /* Altura do palco numa variavel porque a arte precisa da MESMA medida para
+       calcular o proprio teto — ver `.rec-arte img`. */
+    --rec-palco-h: clamp(590px, 66vh, 680px);
+    min-height: 380vh;
+  }
+
+  .rec-sticky {
+    position: sticky;
+    top: 0;
+    /* Desconta o header fixo para a secao nao ficar escondida atras do menu. */
+    min-height: calc(100svh - var(--header-height, 0px));
+    display: grid;
+    align-content: center;
+    /* `clip` deixa o `position: sticky` funcionar (ao contrario de `hidden`) e
+       ainda apara o que sobra nas laterais. */
+    overflow: clip;
+    padding-block: clamp(40px, 5vh, 72px);
+  }
+
+  .rec-wrap {
+    width: min(1600px, calc(100% - 96px));
+  }
+
+  .rec-titulo {
+    /* DESVIO DELIBERADO, documentado: a referencia pede `max-width: 780px` E
+       `font-size` ate 4.8rem. As duas nao coexistem nesta escrita — na Sora, no
+       peso 760, "Premiações, Certificações" gasta cerca de 13.8em, ou seja
+       ~1010px a 76.8px. Ou a caixa passa de 780px, ou a linha quebra em tres e o
+       titulo volta a dominar a secao (problema nº1 do diagnostico).
+       Mantive os 780px e fiz a FONTE ceder: 3.5rem (56px) deixa a linha em
+       ~775px, preservando a quebra em duas linhas do `<br>` sem palavra orfa. O
+       termo de crescimento (4.1vw) e o piso (3rem) sao os da referencia. */
+    font-size: clamp(3rem, 4.1vw, 3.5rem);
+    max-width: 780px;
+  }
+
+  /* Esquerda ~31%, palco ~69%. Num desktop de 1800px o wrap trava em 1600 e o
+     palco fica com ~1054px. */
+  .rec-layout {
+    grid-template-columns: minmax(340px, 0.31fr) minmax(0, 0.69fr);
+    gap: var(--rec-vao);
+    align-items: center;
+  }
+
+  /* --- Navegacao: itens maiores, alinhados ao centro do palco ------------- */
+
+  .rec-nav-item {
+    min-height: 76px;
+    padding: 18px 22px;
+  }
+
+  .rec-nav-item.is-ativo {
+    min-height: 84px;
+    padding: 20px 24px;
+  }
+
+  .rec-progresso {
+    margin-top: 40px;
+  }
+
+  /* --- Molduras posteriores ---------------------------------------------- */
+
+  /* O wrapper NAO recorta: se recortasse, cortaria as molduras deslocadas. Só o
+     palco controla o recorte do proprio conteudo. E o `z-index: 0` aqui cria o
+     contexto onde as molduras podem ir para tras do palco com `-1`. */
+  .rec-theater-wrap {
+    position: relative;
+    z-index: 0;
+    overflow: visible;
+  }
+
+  .rec-frame {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: 30px;
+    border: 1px solid rgba(143, 207, 244, 0.34);
+    pointer-events: none;
+    animation: rec-frame-respira 9s ease-in-out infinite;
+  }
+
+  .rec-frame-1 {
+    --rec-fx: 24px;
+    --rec-fy: -22px;
+    opacity: 0.48;
+  }
+
+  .rec-frame-2 {
+    --rec-fx: 46px;
+    --rec-fy: -42px;
+    opacity: 0.24;
+    animation-delay: -4.5s;
+  }
+
+  @keyframes rec-frame-respira {
+    0%,
+    100% {
+      transform: translate(var(--rec-fx), var(--rec-fy));
+    }
+    50% {
+      transform: translate(calc(var(--rec-fx) + 4px), calc(var(--rec-fy) + 3px));
+    }
+  }
+
+  /* --- Palco ------------------------------------------------------------- */
+
+  .rec-theater {
+    position: relative;
+    width: 100%;
+    min-height: var(--rec-palco-h);
+    border-radius: 30px;
+    overflow: hidden;
+    isolation: isolate;
+    display: block;
+    padding: 0;
+  }
+
+  /* --- Um reconhecimento por vez ---------------------------------------- */
+
+  .rec-palco {
+    position: relative;
+    display: block;
+    height: 100%;
+    min-height: inherit;
+  }
+
+  /* As tres areas do palco: trofeu+plataforma, numero+titulo, miniaturas. A
+     terceira coluna fica VAZIA de proposito — é a reserva da rail, que é uma so
+     para as quatro cenas e por isso vive posicionada, nao como item de grade. */
+  .rec-cena {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 0.55fr) minmax(300px, 0.35fr) minmax(118px, 0.1fr);
+    align-items: center;
+    height: 100%;
+    gap: 0;
+    padding: clamp(46px, 4vw, 72px) var(--rec-pad-x) 130px;
+    border: 0;
+    text-align: left;
+    /* Saida do asset: 260ms. `visibility` tira a cena apagada do alcance do
+       ponteiro e do leitor de tela sem removê-la do DOM — e garante que nunca
+       ha duas imagens opacas no palco ao mesmo tempo. */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px) scale(0.97);
+    transition:
+      opacity 260ms ease,
+      transform 260ms ease,
+      visibility 0s linear 260ms;
+  }
+
+  .rec-cena + .rec-cena {
+    border-top: 0;
+  }
+
+  /* Entrada do asset: 520ms, de baixo para cima. */
+  .rec-cena.is-ativo {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    transition:
+      opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s;
+  }
+
+  /* --- Area 1: palco do asset ------------------------------------------- */
+
+  .rec-peca {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 430px;
+    /* Reserva do espaco da plataforma: é este `padding` que faz o asset descer
+       ate encostar nela, em vez de flutuar no meio da celula. */
+    padding: 0 0 78px;
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+
+  /* Spotlight atras do asset. */
+  .rec-spot {
+    position: absolute;
+    z-index: 0;
+    left: 50%;
+    bottom: 60px;
+    width: min(100%, 520px);
+    aspect-ratio: 1;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(38, 197, 239, 0.2) 0%,
+      rgba(23, 128, 202, 0.08) 38%,
+      transparent 68%
+    );
+    pointer-events: none;
+  }
+
+  /* Tres aneis finos de profundidade: tamanhos progressivos, opacidade baixa,
+     atras do asset, e nenhum deles gira. */
+  .rec-anel {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    bottom: 88px;
+    aspect-ratio: 1;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    border: 1px solid rgba(62, 177, 230, 0.2);
+    pointer-events: none;
+  }
+
+  .rec-anel-1 {
+    width: min(64%, 300px);
+  }
+
+  .rec-anel-2 {
+    width: min(84%, 400px);
+    opacity: 0.7;
+  }
+
+  .rec-anel-3 {
+    width: min(100%, 480px);
+    opacity: 0.45;
+  }
+
+  /* Respiro quase imperceptivel — o unico movimento continuo do palco. */
+  .rec-cena.is-ativo .rec-spot {
+    animation: rec-spot-respira 7s ease-in-out infinite;
+  }
+
+  @keyframes rec-spot-respira {
+    0%,
+    100% {
+      opacity: 0.86;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  /* --- Arte: dimensionada pela ALTURA ----------------------------------- */
+
+  /* No palco unico a placa envolve so a arte, nao a celula inteira. */
+  .rec-placa-clara .rec-arte,
+  .rec-placa-escura .rec-arte {
+    padding: clamp(14px, 1.6vw, 22px);
+    border-radius: 20px;
+  }
+
+  .rec-placa-clara .rec-arte {
+    background: linear-gradient(160deg, #ffffff, #eaf3fb);
+    border: 1px solid rgba(143, 207, 244, 0.5);
+    box-shadow: 0 16px 40px rgba(0, 8, 25, 0.34);
+  }
+
+  .rec-placa-escura .rec-arte {
+    background: linear-gradient(160deg, rgba(6, 22, 44, 0.94), rgba(2, 12, 28, 0.96));
+    border: 1px solid rgba(198, 160, 74, 0.44);
+    box-shadow: 0 16px 40px rgba(0, 8, 25, 0.34);
+  }
+
+  /* O wrapper nao limita mais nada: quem manda é a altura da imagem. Era daqui
+     que vinha o trofeu pequeno — `width: min(92%, 460px)` resolvia contra uma
+     celula estreita e o teto inline de 300px cortava o resto. */
+  .rec-arte {
+    position: relative;
+    z-index: 4;
+    align-self: end;
+    width: auto;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  /* `--rec-h` vem do dado, por peca: as quatro proporcoes sao diferentes e so a
+     altura as deixa com presenca equivalente. A largura sai da proporcao
+     nativa; os tetos abaixo sao só rede de seguranca.
+
+     O `280px` do teto é a soma exata do que o palco gasta acima e abaixo da
+     arte: 72px de respiro no topo, 130px de reserva da linha do tempo e 78px do
+     apoio na plataforma. Sem ele, numa tela de 900px de altura a peca de 380px
+     (Reactions) subiria ate encostar na borda do palco. Nao é porcentagem: o
+     teto sai da MESMA medida que define a altura do palco, entao ele resolve
+     sempre — foi justamente a porcentagem contra pai de altura automatica que
+     tornava o dimensionamento anterior imprevisivel. */
+  .rec-arte img {
+    width: auto;
+    height: min(var(--rec-h, 340px), calc(var(--rec-palco-h) - 280px));
+    max-width: min(78%, 380px);
+    max-height: 390px;
+    object-fit: contain;
+    object-position: center bottom;
+    filter:
+      drop-shadow(0 24px 24px rgba(0, 5, 18, 0.34))
+      drop-shadow(0 0 22px rgba(46, 195, 239, 0.12));
+    animation: none;
+  }
+
+  /* --- Plataforma: tres camadas ----------------------------------------- */
+
+  /* O elemento é o tampo; `::before` é a base intermediaria e `::after` o halo.
+     Tres camadas sem tres nos a mais no DOM. */
+  .rec-pedestal {
+    position: absolute;
+    z-index: 2;
+    left: 50%;
+    bottom: 34px;
+    width: min(92%, 500px);
+    height: 54px;
+    margin: 0;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, #29435f 0%, #122943 58%, #07172d 100%);
+    border: 1px solid rgba(216, 164, 74, 0.62);
+    box-shadow: 0 12px 30px rgba(0, 8, 25, 0.5);
+  }
+
+  .rec-pedestal::before,
+  .rec-pedestal::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+  }
+
+  .rec-pedestal::before {
+    z-index: -1;
+    transform: translateY(24px) scaleX(0.96);
+    background: #081a32;
+    border: 1px solid rgba(82, 159, 211, 0.42);
+  }
+
+  .rec-pedestal::after {
+    z-index: -2;
+    transform: translateY(42px) scaleX(0.9);
+    box-shadow: 0 0 30px rgba(34, 211, 238, 0.24);
+  }
+
+  /* Resposta curta do glow na troca — nao é laco continuo. */
+  .rec-cena.is-ativo .rec-pedestal::after {
+    animation: rec-pedestal-acende 620ms ease-out;
+  }
+
+  @keyframes rec-pedestal-acende {
+    0% {
+      box-shadow: 0 0 30px rgba(34, 211, 238, 0.24);
+    }
+    30% {
+      box-shadow: 0 0 18px rgba(34, 211, 238, 0.08);
+    }
+    100% {
+      box-shadow: 0 0 30px rgba(34, 211, 238, 0.24);
+    }
+  }
+
+  /* --- Area 2: numero, titulo e estado ---------------------------------- */
+
+  .rec-dados {
+    position: relative;
+    z-index: 5;
+    display: block;
+    align-self: center;
+    justify-items: start;
+    transform: translateY(-12px);
+  }
+
+  .rec-contagem {
+    display: block;
+    font-size: clamp(8rem, 11vw, 12.5rem);
+    font-weight: 780;
+    line-height: 0.78;
+    letter-spacing: -0.065em;
+    /* Crossfade do numero: 420ms. */
+    animation: rec-num-entra 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes rec-num-entra {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .rec-nome {
+    max-width: 390px;
+    margin-top: 30px;
+    font-size: clamp(2rem, 2.7vw, 3.1rem);
+    font-weight: 730;
+    line-height: 1.05;
+    text-wrap: balance;
+    /* Titulo sobe suavemente: 380ms. */
+    animation: rec-nome-entra 380ms ease both;
+  }
+
+  @keyframes rec-nome-entra {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .rec-selo {
+    display: inline-block;
+    margin: 24px 0 0;
+    animation: rec-fade 380ms ease 80ms both;
+  }
+
+  @keyframes rec-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* --- Area 3: miniaturas ----------------------------------------------- */
+
+  .rec-rail {
+    display: grid;
+    gap: 14px;
+    position: absolute;
+    top: 50%;
+    right: var(--rec-pad-x);
+    width: 118px;
+    transform: translateY(-50%);
+    z-index: 6;
+  }
+
+  /* A peca acesa sai da rail; a ordem 01–04 no DOM continua intacta. */
+  .rec-rail > li.is-ativo {
+    display: none;
+  }
+
+  .rec-rail > li {
+    animation: rec-fade 420ms ease both;
+  }
+
+  /* As tres miniaturas visiveis tem dimensao identica — o tamanho nao depende
+     do asset. Fundo azul-marinho em degrade, nunca retangulo branco. */
+  .rec-mini {
+    width: 118px;
+    height: 130px;
+    aspect-ratio: auto;
+    padding: 14px;
+    border-radius: 16px;
+    background: linear-gradient(145deg, rgba(12, 48, 83, 0.92), rgba(5, 25, 52, 0.96));
+    border: 1px solid rgba(95, 177, 227, 0.34);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .rec-mini img {
+    width: auto;
+    height: var(--rec-hm, 70px);
+    max-width: 88%;
+    max-height: 88%;
+    object-fit: contain;
+  }
+
+  /* Os dois selos de tinta escura desapareceriam sobre o azul. Em vez de trocar
+     o fundo do bloco por branco, a superficie clara fica presa a ARTE, com
+     cantos proprios: o mosaico continua uniforme e a marca segue legivel, com
+     os brancos internos do selo preservados. */
+  .rec-mini.rec-placa-clara img {
+    padding: 5px;
+    border-radius: 9px;
+    background: linear-gradient(160deg, #f4f9fd, #e3eef8);
+  }
+
+  .rec-mini.rec-placa-clara,
+  .rec-mini.rec-placa-escura {
+    background: linear-gradient(145deg, rgba(12, 48, 83, 0.92), rgba(5, 25, 52, 0.96));
+  }
+
+  .rec-mini.rec-placa-escura {
+    border-color: rgba(198, 160, 74, 0.4);
+  }
+
+  /* --- Conector luminoso, no vao entre as colunas ----------------------- */
+
+  /* Sai do item ativo, cruza o vao e morre ~24px dentro da borda do palco —
+     antes do spotlight. Nao encosta em trofeu, numero, titulo, rail ou linha. */
+  .rec-conector {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(-1 * var(--rec-vao));
+    width: calc(var(--rec-vao) + 24px);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .rec-conector svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .rec-conector-base {
+    fill: none;
+    stroke: rgba(122, 178, 216, 0.18);
+    stroke-width: 1;
+  }
+
+  /* Depois de desenhada, a linha fica parada e discreta. */
+  .rec-conector-ativo {
+    fill: none;
+    stroke: var(--rec-ciano);
+    stroke-width: 1.5;
+    opacity: 0.72;
+    filter: drop-shadow(0 0 5px rgba(34, 211, 238, 0.42));
+    stroke-dasharray: 420;
+    stroke-dashoffset: 420;
+    animation: rec-desenha 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes rec-desenha {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .rec-conector-no {
+    fill: var(--rec-ciano);
+    opacity: 0.8;
+  }
+
+  /* Wipe: um feixe atravessa o palco uma vez por troca. */
+  .rec-wipe {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent 42%,
+      rgba(34, 211, 238, 0.12) 50%,
+      transparent 58%
+    );
+    animation: rec-wipe 620ms ease-out forwards;
+  }
+
+  @keyframes rec-wipe {
+    from {
+      transform: translateX(-60%);
+      opacity: 0;
+    }
+    25% {
+      opacity: 1;
+    }
+    to {
+      transform: translateX(60%);
+      opacity: 0;
+    }
+  }
+
+  /* --- Linha do tempo na base ------------------------------------------- */
+
+  .rec-base {
+    position: absolute;
+    left: 64px;
+    right: 64px;
+    bottom: 34px;
+    z-index: 7;
+    display: grid;
+    grid-template-columns: 60px minmax(0, 1fr) 60px;
+    align-items: center;
+    min-height: 76px;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border-top: 0;
+  }
+
+  .rec-ctrl {
+    width: 52px;
+    height: 52px;
+  }
+
+  .rec-ctrl:first-child {
+    justify-self: start;
+  }
+
+  .rec-ctrl:last-child {
+    justify-self: end;
+  }
+
+  .rec-timeline {
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: clamp(16px, 3vw, 48px);
+  }
+
+  /* Caixa fixa para o ponto: o node ativo cresce sem empurrar a linha. */
+  .rec-node {
+    grid-template-rows: 24px auto;
+    gap: 6px;
+  }
+
+  .rec-node-ponto {
+    place-self: center;
+    margin: 0;
+  }
+
+  .rec-timeline > li + li::before {
+    top: 12px;
+  }
+
+  .is-ativo .rec-node-ponto {
+    width: 22px;
+    height: 22px;
+    box-shadow:
+      0 0 0 5px rgba(34, 211, 238, 0.14),
+      0 0 16px rgba(34, 211, 238, 0.42);
+  }
+
+  .rec-node-indice {
+    font-size: 0.7rem;
+  }
+}
+
+/* ===========================================================
+   Tablet largo dentro do desktop: acima de 1200px o palco ja é sticky, mas
+   entre 1200 e 1439px o vao e o numero precisam ceder um pouco para o titulo e
+   a rail nao brigarem pela mesma faixa.
+   =========================================================== */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .rec-contagem {
+    font-size: clamp(6.5rem, 9vw, 9rem);
+  }
+
+  .rec-nome {
+    font-size: clamp(1.8rem, 2.3vw, 2.4rem);
+    max-width: 320px;
+  }
+
+  .rec-arte img {
+    height: min(var(--rec-h, 340px), 320px, calc(var(--rec-palco-h) - 280px));
+  }
+
+  .rec-frame-2 {
+    display: none;
+  }
+}
+
+/* ===========================================================
+   Movimento reduzido. Espelhado no bloco `html[data-motion="reduce"]` abaixo —
+   mudar um exige mudar o outro.
+   Aqui o sticky prolongado cai, os quatro reconhecimentos voltam ao fluxo
+   natural, e nada de wipe, particula, parallax ou deslocamento de asset.
+   Nenhuma informacao depende de animacao: os quatro numeros, titulos e assets
+   estao todos na tela.
+   =========================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .rec-scroll {
+    min-height: auto;
+  }
+  .rec-sticky {
+    position: static;
+    min-height: 0;
+    display: block;
+  }
+  .rec-theater {
+    min-height: 0;
+    padding: clamp(20px, 3vw, 30px);
+  }
+  .rec-palco {
+    display: grid;
+    height: auto;
+    min-height: 0;
+    gap: clamp(24px, 4vw, 36px);
+  }
+  /* Uma coluna: o palco de tres areas volta a ser lista. */
+  .rec-cena {
+    position: static;
+    inset: auto;
+    grid-template-columns: 1fr;
+    height: auto;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    padding: clamp(18px, 4vw, 26px) 0;
+    transition: opacity 150ms ease;
+  }
+  .rec-cena + .rec-cena {
+    border-top: 1px solid rgba(122, 178, 216, 0.16);
+  }
+  .rec-peca {
+    height: auto;
+    min-height: 0;
+    padding-bottom: 0;
+  }
+  .rec-arte {
+    align-self: auto;
+  }
+  .rec-dados {
+    transform: none;
+  }
+  .rec-conector,
+  .rec-wipe,
+  .rec-rail,
+  .rec-anel {
+    display: none;
+  }
+  /* A plataforma volta a ser a base simples do fluxo: as duas camadas extras
+     dependiam do posicionamento absoluto dentro do palco. */
+  .rec-pedestal {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: min(86%, 320px);
+    height: clamp(18px, 3vw, 30px);
+    transform: none;
+    margin: -6px auto 0;
+  }
+  .rec-pedestal::before,
+  .rec-pedestal::after {
+    display: none;
+  }
+  .rec-base {
+    position: static;
+    left: auto;
+    right: auto;
+    bottom: auto;
+  }
+  .rec-frame,
+  .rec-arte img,
+  .rec-cena.is-ativo .rec-spot,
+  .rec-cena.is-ativo .rec-pedestal,
+  .rec-cena.is-ativo .rec-pedestal::after,
+  .rec-conector-ativo,
+  .rec-contagem,
+  .rec-nome,
+  .rec-selo,
+  .rec-rail > li {
+    animation: none;
+  }
+  .rec-conector-ativo {
+    stroke-dashoffset: 0;
+  }
+  .rec-nav-item,
+  .rec-nav-seta,
+  .rec-mini,
+  .rec-ctrl svg,
+  .rec-progresso-fill,
+  .rec-node-ponto {
+    transition-duration: 150ms;
+  }
+  .rec-nav-item:hover .rec-nav-seta,
+  .rec-mini:hover,
+  .rec-ctrl:hover:not(:disabled) svg {
+    transform: none;
+  }
+}
+
+html[data-motion='reduce'] .rec-scroll {
+  min-height: auto !important;
+}
+html[data-motion='reduce'] .rec-sticky {
+  position: static !important;
+  min-height: 0 !important;
+  display: block !important;
+}
+html[data-motion='reduce'] .rec-theater {
+  min-height: 0 !important;
+  padding: clamp(20px, 3vw, 30px) !important;
+}
+html[data-motion='reduce'] .rec-palco {
+  display: grid !important;
+  height: auto !important;
+  min-height: 0 !important;
+  gap: clamp(24px, 4vw, 36px) !important;
+}
+html[data-motion='reduce'] .rec-cena {
+  position: static !important;
+  inset: auto !important;
+  grid-template-columns: 1fr !important;
+  height: auto !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  padding: clamp(18px, 4vw, 26px) 0 !important;
+  transition: opacity 150ms ease !important;
+}
+html[data-motion='reduce'] .rec-cena + .rec-cena {
+  border-top: 1px solid rgba(122, 178, 216, 0.16) !important;
+}
+html[data-motion='reduce'] .rec-peca {
+  height: auto !important;
+  min-height: 0 !important;
+  padding-bottom: 0 !important;
+}
+html[data-motion='reduce'] .rec-arte {
+  align-self: auto !important;
+}
+html[data-motion='reduce'] .rec-dados {
+  transform: none !important;
+}
+html[data-motion='reduce'] .rec-conector,
+html[data-motion='reduce'] .rec-wipe,
+html[data-motion='reduce'] .rec-rail,
+html[data-motion='reduce'] .rec-anel {
+  display: none !important;
+}
+html[data-motion='reduce'] .rec-pedestal {
+  position: relative !important;
+  left: auto !important;
+  bottom: auto !important;
+  width: min(86%, 320px) !important;
+  height: clamp(18px, 3vw, 30px) !important;
+  transform: none !important;
+  margin: -6px auto 0 !important;
+}
+html[data-motion='reduce'] .rec-pedestal::before,
+html[data-motion='reduce'] .rec-pedestal::after {
+  display: none !important;
+}
+html[data-motion='reduce'] .rec-base {
+  position: static !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+}
+html[data-motion='reduce'] .rec-frame,
+html[data-motion='reduce'] .rec-arte img,
+html[data-motion='reduce'] .rec-cena.is-ativo .rec-spot,
+html[data-motion='reduce'] .rec-cena.is-ativo .rec-pedestal,
+html[data-motion='reduce'] .rec-cena.is-ativo .rec-pedestal::after,
+html[data-motion='reduce'] .rec-conector-ativo,
+html[data-motion='reduce'] .rec-contagem,
+html[data-motion='reduce'] .rec-nome,
+html[data-motion='reduce'] .rec-selo,
+html[data-motion='reduce'] .rec-rail > li {
+  animation: none !important;
+}
+html[data-motion='reduce'] .rec-conector-ativo {
+  stroke-dashoffset: 0 !important;
+}
+html[data-motion='reduce'] .rec-nav-item:hover .rec-nav-seta,
+html[data-motion='reduce'] .rec-mini:hover,
+html[data-motion='reduce'] .rec-ctrl:hover:not(:disabled) svg {
+  transform: none !important;
+}

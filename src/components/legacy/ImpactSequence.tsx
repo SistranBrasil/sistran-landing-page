@@ -22,8 +22,13 @@ import { impactSequence } from "@/data/legacy"
  *
  * 1. O seek é do `ScrollVideo`, que acelera pelo próprio `seeking` em vez de um
  *    laço de `requestAnimationFrame`. Mesmo efeito, um mecanismo só no projeto.
- * 2. O quadro preto que o `<video>` pinta antes do primeiro quadro decodificado
- *    é coberto pelo `poster` (montagem concluída), no lugar do estado `ready`.
+ * 2. A revelação da fonte (estado `ready` + `opacity`) existe, mas mora no
+ *    `ScrollVideo`, atrás da prop `revelarQuandoPronto`, porque o hero usa o
+ *    mesmo componente e não deve abrir vazio. Enquanto não há quadro
+ *    decodificado o `<video>` fica em `opacity: 0` e o que se vê é o FUNDO da
+ *    seção — não o `poster`, que é a montagem já concluída e faria a sequência
+ *    começar pelo fim. O pôster segue no lugar para o modo de movimento
+ *    reduzido, onde não há seek.
  *
  * O vídeo é decoração — nunca a única via para a informação. O texto está no
  * HTML servido, fora do vídeo, e continua legível sem JS, sem o arquivo e com
@@ -75,6 +80,11 @@ export function ImpactSequence() {
             src={impactSequence.src}
             poster={impactSequence.poster}
             progress={eased}
+            /* A seção abre no fundo e a montagem surge com o scroll: sem isto o
+               pôster (quadro final) é o que se vê ao entrar. As saídas de
+               emergência da `opacity: 0` estão em `legacy.css` (movimento
+               reduzido) e no próprio `ScrollVideo` (falha de carregamento). */
+            revelarQuandoPronto
           />
 
           {/* Dentro do card, não do sticky: quando a cena recua o gradiente

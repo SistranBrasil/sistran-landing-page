@@ -469,7 +469,18 @@ body::after {
   background-image:
     linear-gradient(rgba(0, 121, 203, 0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 121, 203, 0.04) 1px, transparent 1px);
-  background-size: 48px 48px;
+  /* SIS-76 — mesmo módulo e mesma âncora de `.grade-tecnica`: é o que faz um
+     bloco claro e um escuro pertencerem à MESMA malha em vez de a duas.
+     Era `48px`, resolvido contra a caixa; agora é `--grade-modulo` resolvido
+     contra a janela. A opacidade `0.04` fica como está — é ela que mantém o
+     contraste do texto navy, e o issue pede explicitamente para preservar.
+
+     A máscara radial permanece: ela é a vinheta que apaga a malha nas bordas de
+     cada bloco claro, e é o que evita que a grade encoste em corte reto no azul
+     da seção seguinte. Alinhamento de fase e suavização de borda resolvem coisas
+     diferentes; só a primeira era o defeito. */
+  background-size: var(--grade-modulo) var(--grade-modulo);
+  background-attachment: fixed;
   mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, transparent 75%);
   -webkit-mask-image: radial-gradient(
     ellipse at 50% 50%,
@@ -913,6 +924,27 @@ main:focus {
   --motion-base: 420ms;
   --motion-scene: 650ms;
   --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ── Palco escuro (SIS-78) ────────────────────────────────────────────────
+     Havia SETE azuis-quase-pretos ligeiramente diferentes espalhados pelos
+     palcos escuros — `#020d20`, `#031b3d`, `#03142d`, `#020f22`, `#031a38`,
+     `#020f24`, `#041329`, `#03182f`, `#020f21`, `#031326`. Todos entre 8% e 12%
+     de luminosidade, nenhum deles o escuro DA MARCA. O efeito era blocos que
+     nao conversam: cada seção parecia de um material diferente.
+
+     `--palco-marca` é exatamente o `#032d67` que fecha o `--fundo-marca` mais
+     abaixo, e `--palco-fundo` é a extremidade derivada dele para os degradês
+     manterem o volume que tinham. Sao dois valores, nao sete.
+
+     `--fundo-marca` NAO muda: ele é consumido com `background-attachment: fixed`
+     por `.solutions-scroll` / `.impact-scroll` / `.impact-sticky`, e é a emenda
+     invisivel de SIS-60/61. Aqui só se acrescenta vocabulario.
+
+     Contraste: texto branco sobre `#032d67` da ~13:1, e `rgba(255,255,255,.85)`
+     da ~9:1 — os dois bem acima de 4.5:1, entao clarear o palco nao rebaixa
+     nenhum bloco de texto destas seções. */
+  --palco-marca: #032d67;
+  --palco-fundo: #021d43;
 }
 section[id],
 [id][data-anchor],
@@ -2142,13 +2174,25 @@ html[data-motion="reduce"] .orbit-counter {
   color: var(--contact-muted) !important;
 }
 /* O endereco PRECISA reaparecer aqui — mas para SUBIR de tom, nao para baixar.
-   A excecao generica acima (`.section-light .contact-inline span:not(eyebrow)`,
-   tres classes + elemento) vence a regra base do endereco (uma classe) e
-   reescrevia o branco puro de volta para `--contact-text` (#f7fbff, azulado),
-   que é justamente o tom que se aproximava do fundo e mantinha o endereco lendo
-   como apagado na secao inline. Aqui ele volta ao branco cheio do cartao. */
+   A excecao generica acima devolve `--contact-text` para os `span` do painel, e
+   o endereco quer branco cheio.
+
+   `!important` é OBRIGATORIO aqui, e a conta é o motivo: o override de secao
+   clara (`globals.css:511`) é
+
+     .section-light span:not([class*="badge"]):not([class*="pill"])
+       :not([class*="eyebrow"]):not([class*="tag-section"])
+
+   ou seja UMA classe mais QUATRO seletores de atributo dentro dos `:not()` —
+   especificidade (0,5,1), porque `:not()` nao conta mas o seu argumento conta.
+   Este seletor de tres classes vale (0,3,0) e PERDIA, pintando o endereco de
+   `#0a1f44`. Era essa a causa real do endereco escuro no cartao sobre a foto
+   (a home monta `<Contact />` dentro de `.section-light` — `src/app/page.tsx`),
+   e nao a composicao da camada escalada. Subir especificidade encadeando
+   classes resolveria, mas `!important` é o que o resto deste bloco ja usa
+   (eyebrow, muted) e mantem o padrao. */
 .section-light .contact-inline .contact-dialog-endereco-texto {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 /* ---------------------------------------------------------------------------
@@ -3391,7 +3435,7 @@ html[data-motion="reduce"] ::view-transition-group(*) {
       rgba(14, 88, 147, 0.55),
       transparent 62%
     ),
-    #031326;
+    var(--palco-marca); /* SIS-78: era #031326 */
 }
 .mmi-painel--topo::before {
   top: 0;
@@ -4145,7 +4189,11 @@ html[data-motion="reduce"] .building-scroll > .building-scroll-inner {
       rgba(22, 115, 224, 0.1),
       transparent 30%
     ),
-    linear-gradient(138deg, #02070e 0%, #061225 52%, #020813 100%);
+    /* SIS-78: era #02070e / #061225 / #020813. Dentro de `.os-mapa` este fundo
+       é sobrescrito para `none`, e esse é o unico consumidor do mapa hoje —
+       aqui a cor entra pelo vocabulario comum, para o dia em que o cartao
+       voltar a ser montado fora da cena. */
+    linear-gradient(138deg, var(--palco-fundo) 0%, var(--palco-marca) 52%, var(--palco-fundo) 100%);
   overflow: hidden;
 }
 /* Grade tecnica de fundo, apagada nas bordas. */
@@ -4226,9 +4274,12 @@ html[data-motion="reduce"] .building-scroll > .building-scroll-inner {
   stroke-width: 1.55;
   vector-effect: non-scaling-stroke;
 }
+/* SIS-78: 10% de alpha bastava sobre o preenchimento quase preto de antes.
+   Contra o azul-medio da marca essas curvas desapareciam; o tom sobe para um
+   azul-claro e o alpha dobra. Continua discreto — é relevo, nao desenho. */
 .bm-relevo {
   fill: none;
-  stroke: rgba(100, 180, 244, 0.1);
+  stroke: rgba(178, 222, 255, 0.2);
   stroke-width: 1;
 }
 
@@ -4477,7 +4528,7 @@ html[data-motion="reduce"] .bm-halo {
   overflow: hidden;
   border-radius: 16px;
   border: 1px solid rgba(142, 204, 255, 0.16);
-  background: #061225;
+  background: var(--palco-marca); /* SIS-78: era #061225 */
   aspect-ratio: 4 / 3;
   margin: 0;
 }
@@ -4555,7 +4606,8 @@ html[data-motion="reduce"] .bm-halo {
 .os-abas button.active {
   color: #f4fbff;
   border-color: rgba(65, 176, 255, 0.65);
-  background: linear-gradient(120deg, #0b2548, #1479ec);
+  /* SIS-78: a ponta escura era #0b2548, um dos quase-pretos do mapa. */
+  background: linear-gradient(120deg, var(--palco-marca), #1479ec);
 }
 .os-abas button:hover {
   color: #f4fbff;
@@ -4636,7 +4688,7 @@ html[data-motion="reduce"] .bm-halo {
         rgba(22, 115, 224, 0.2),
         transparent 42%
       ),
-      linear-gradient(140deg, #02070e 0%, #061225 55%, #020813 100%);
+      linear-gradient(140deg, var(--palco-fundo) 0%, var(--palco-marca) 55%, var(--palco-fundo) 100%); /* SIS-78 */
   }
   .os-palco[data-modo="scroll"] .os-mapa {
     position: absolute;
@@ -5025,6 +5077,29 @@ html[data-motion="reduce"] .bm-pais-cabeca {
    baixa de proposito (a skill pede no maximo 18%); `pointer-events: none` e
    `aria-hidden` no elemento garantem que é so pintura. Sem canvas e sem RAF:
    nao ha o que pausar fora da viewport. */
+/* SIS-76 — ANCORADA NA JANELA, não na caixa. É a mesma correção que
+   `--fundo-marca` já recebeu para a cor (ver a nota no `:root` junto de
+   `--grade-modulo`), e a grade nunca a tinha recebido.
+
+   Com `inset: 0` sozinho, cada seção resolvia o tile de 6rem a partir do PRÓPRIO
+   topo. Como nenhuma seção tem altura múltipla de 6rem, duas seções escuras
+   quaisquer mostravam a linha horizontal em alturas de tela diferentes — a malha
+   "recomeçava" a cada bloco, e é exatamente isso que faz o site ser lido como
+   caixas empilhadas em vez de um plano contínuo.
+
+   `background-attachment: fixed` resolve o tile contra a janela: qualquer par de
+   seções, vizinhas ou separadas por três blocos claros, mostra a mesma linha na
+   mesma altura de tela. A continuidade passa a ser consequência da construção, e
+   não de calibrar alturas de seção uma por uma — que é uma calibragem que quebra
+   no primeiro `padding` alterado.
+
+   Preço consciente, o mesmo já aceito em `--fundo-marca`: a grade fica parada
+   enquanto se rola. Para uma malha de blueprint isso é ganho — plano de fundo é
+   referência, não conteúdo que acompanha.
+
+   Degradação: iOS Safari trata `fixed` como `scroll` em vários cenários. Lá a
+   grade volta a ser resolvida contra a caixa, ou seja, volta ao comportamento de
+   hoje. É perda de alinhamento, não quebra de layout. */
 .grade-tecnica {
   position: absolute;
   inset: 0;
@@ -5033,7 +5108,14 @@ html[data-motion="reduce"] .bm-pais-cabeca {
   background-image:
     linear-gradient(rgba(14, 216, 246, 0.14) 1px, transparent 1px),
     linear-gradient(90deg, rgba(14, 216, 246, 0.14) 1px, transparent 1px);
-  background-size: 6rem 6rem;
+  background-size: var(--grade-modulo) var(--grade-modulo);
+  background-attachment: fixed;
+  /* A máscara de entrada/saída CONTINUA aqui de propósito. Todo consumidor atual
+     é uma seção escura cercada por `.section-light` — em `/quem-somos` há dois
+     blocos claros entre "Como Agimos" e "Por que SISTRAN?" —, então cada uma é
+     isolada e precisa que a malha nasça e morra sem corte seco contra o azul.
+     Onde duas seções com grade ficarem encostadas, a máscara é que passa a criar
+     a faixa lisa na junta: para esse caso existe `.grade-tecnica--continua`. */
   -webkit-mask-image: linear-gradient(
     transparent,
     #000 18%,
@@ -5041,6 +5123,82 @@ html[data-motion="reduce"] .bm-pais-cabeca {
     transparent
   );
   mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+}
+
+/* SIS-75 — a variante `.grade-tecnica--continua` (sem máscara de borda, para duas
+   seções escuras DIRETAMENTE encostadas) foi REMOVIDA daqui pela auditoria de
+   fronteiras. Ela nasceu em SIS-76 sem consumidor, esperando o mapa; o mapa
+   chegou e diz que o consumidor não existe:
+
+   Fronteira escuro ↔ escuro em todo o site: UMA só, e não está em `/quem-somos`
+   (onde o padrão real é escuro → claro alternando 10 vezes). É na home, entre o
+   palco de "Sistran em números" e o `SignalMarquee` (`page.tsx:179`, o
+   `NotchDivider cor="var(--deep)"`). E nenhuma das duas desenha `.grade-tecnica`
+   — aplicar a variante ali exigiria antes introduzir a grade nas duas seções, o
+   que é outra decisão de desenho, não a continuação desta.
+
+   Regra deixada no lugar do código: se um dia duas seções que JÁ desenham
+   `.grade-tecnica` ficarem adjacentes, a variante volta com duas linhas
+   (`mask-image: none`) — não com máscara nova. Em seção isolada ela não serve:
+   sem máscara e sem vizinha, a malha termina em corte reto. */
+
+/* ── SIS-77 · sobreposição entre seções (overlap) ─────────────────────────────
+   O `04` fantasma de "Staff Augmentation" invadindo o azul de Números era o único
+   vazamento do site. Aqui ele fica disponível para fronteiras escolhidas — DUAS,
+   não as dez: overlap repetido em toda junta deixa de ser ênfase e vira ruído.
+
+   Por que o padrão é este e não `margin-bottom` negativa sozinha: margem negativa
+   NÃO move o elemento, só encurta o pai. Para o cartão realmente passar da borda
+   da seção é preciso zerar o `padding-bottom` que o segurava — só então a margem
+   negativa o joga para fora da caixa. E é preciso zerar em vez de compensar: se o
+   padding voltasse por outro caminho, a altura da seção não mudaria e o cartão
+   continuaria dentro.
+
+   O `NotchDivider` continua colado na borda de baixo do bloco claro (a seção
+   encurtou, o chanfro veio com ela) e o cartão atravessa o chanfro. Sem isso o
+   chanfro viraria uma barra branca solta no escuro.
+
+   `z-index` na SEÇÃO, não no cartão: `.section-light` tem `isolation: isolate`, e
+   de dentro dele nenhum `z-index` alcança a seção seguinte. Elevando o contexto
+   inteiro, o que vaza vai junto — e o `isolation` continua fazendo o trabalho
+   dele, que é não deixar os overrides de texto navy escaparem.
+
+   Só a partir de 1024px: abaixo disso as grades viram uma ou duas colunas e o
+   vazamento encostaria no texto da seção seguinte em vez de sobrar no fundo. */
+@media (min-width: 1024px) {
+  /* Fora de `@layer components`, de propósito: é o que faz `padding-bottom: 0`
+     vencer o `py-32` de `.section-py` sem `!important` — CSS sem camada ganha de
+     CSS em camada, independente de especificidade. */
+  .vaza-fonte {
+    /* Uma só medida para os dois lados da fronteira: o quanto o cartão desce é
+       exatamente o quanto o receptor abre. Declarada na fonte E no receptor
+       porque eles são irmãos, não pai e filho — não há ancestral comum onde
+       herdar. Mudar a saliência = mudar os dois valores juntos. */
+    --vaza-altura: 5rem;
+    position: relative;
+    z-index: 1;
+    padding-bottom: 0;
+  }
+  .vaza-cartoes {
+    margin-bottom: calc(var(--vaza-altura, 5rem) * -1);
+  }
+  .recebe-vazamento {
+    --vaza-altura: 5rem;
+  }
+  /* O receptor abre espaço para a saliência: sem isto o cartão que vaza pousa
+     sobre o título da seção de baixo. */
+  /* Receptor que é a PRÓPRIA seção: o valor substitui o `py` dela, então
+     precisa repor a folga normal (8rem) mais a saliência. */
+  section.recebe-vazamento {
+    padding-top: calc(8rem + var(--vaza-altura, 5rem));
+  }
+  /* Receptor que é um `<div>` em volta de um componente compartilhado — o caso
+     do `ContactCTA`, que fecha outras nove páginas e não pode receber a classe
+     por dentro. Aqui o `padding` do componente continua valendo, então só a
+     saliência é somada; usar o valor de cima empilharia 8rem duas vezes. */
+  div.recebe-vazamento {
+    padding-top: var(--vaza-altura, 5rem);
+  }
 }
 
 /* Barra de sinal no topo do cartao: cresce da esquerda no hover/foco. É so
@@ -5593,18 +5751,42 @@ html[data-motion="reduce"] .ct-veu {
 }
 */
 
+/* SIS-74 — coluna em TODA largura, e não mais `row` a partir de 900px com
+   `space-between`. Era esse `space-between` que jogava o `03 / 07` para a borda
+   oposta da tela: em 1440px sobravam ~600px de vazio entre o título e o
+   marcador, e nada ali dizia que os dois eram a mesma coisa. Empilhados, a
+   ordem de leitura é a hierarquia — metadados, título — e o marcador fica a
+   um fio do texto que numera. */
 .impact-topo-inner {
   display: flex;
   flex-direction: column;
-  gap: clamp(1.5rem, 3vw, 2.5rem);
+  gap: clamp(0.75rem, 1.4vw, 1.1rem);
   align-items: flex-start;
-  justify-content: space-between;
 }
-@media (min-width: 900px) {
-  .impact-topo-inner {
-    flex-direction: row;
-    align-items: flex-end;
-  }
+
+/* A trilha de metadados. `align-items: baseline` e não `center`: o sobretítulo
+   tem 12px e o ordinal do marcador tem ~17px, e é pela LINHA DE BASE que os
+   dois leem como uma frase só — centrados na caixa, o sobretítulo subia meio
+   pixel e a linha ficava torta. */
+.impact-topo-meta {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(0.6rem, 1.2vw, 1rem);
+  flex-wrap: wrap;
+}
+/* Fio curto entre sobretítulo e marcador — a régua de 1px do vocabulário
+   técnico da seção, a mesma espessura da `.impact-regua` no pé do palco.
+   `flex: 0 1` com base pequena: ele NUNCA cresce para atravessar a faixa. O
+   `translateY` compensa o `baseline` do pai, que alinharia o fio pelo fundo. */
+.impact-meta-fio {
+  flex: 0 1 clamp(1.5rem, 5vw, 4.5rem);
+  height: 1px;
+  transform: translateY(-0.3em);
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.45),
+    rgba(255, 255, 255, 0.08)
+  );
 }
 
 /* SIS-61 — sobre a faixa clara este sobretítulo era o ciano escurecido
@@ -5620,7 +5802,9 @@ html[data-motion="reduce"] .ct-veu {
   letter-spacing: 0.26em;
   text-transform: uppercase;
   color: #ffffff;
-  margin-bottom: 0.6rem;
+  /* Zero: o espaçamento agora é o `gap` da trilha de metadados, e a margem
+     sobrando empurrava o fio para fora da linha de base. */
+  margin-bottom: 0;
 }
 
 .impact-titulo {
@@ -5643,8 +5827,8 @@ html[data-motion="reduce"] .ct-veu {
 
 .impact-marcador {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  align-items: baseline;
+  gap: 0.7rem;
   flex-shrink: 0;
 }
 /* Número em TEXTO: é ele que informa a etapa. Os pontos ao lado são reforço —
@@ -5655,14 +5839,23 @@ html[data-motion="reduce"] .ct-veu {
    qualquer transparência cai abaixo dos 4,5:1 exigidos para 15px. Os dois ficam
    brancos, e a hierarquia entre "01" e "/ 07" passa a ser só corpo e peso — que
    é o que ela já era de fato. */
+/* SIS-74 — corpo reduzido (era 0,95rem com o ordinal em 1,6rem). Ao lado do
+   sobretítulo o marcador é LEGENDA, não manchete: em 1,6rem ele competia com o
+   título logo abaixo e virava um segundo foco na faixa. O `0.9375rem` do
+   ordinal mantém a leitura confortável (o mínimo de 4,5:1 vale para <15px, e
+   branco puro mede 4,9:1 aqui de todo modo). */
 .impact-marcador-num {
   font-variant-numeric: tabular-nums;
-  font-size: 0.95rem;
-  letter-spacing: 0.12em;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  /* Branco puro, sem transparência — o raciocínio de SIS-61 continua valendo e
+     agora com mais força: em 12px o mínimo é 4,5:1, branco sobre `#0875c5` mede
+     4,9:1 e 72% de alfa cairia para ~3:1. A hierarquia entre "03" e "/ 07" é
+     corpo e peso, não opacidade. */
   color: #ffffff;
 }
 .impact-marcador-atual {
-  font-size: 1.6rem;
+  font-size: 0.9375rem;
   font-weight: 700;
   color: #ffffff;
 }
@@ -5670,8 +5863,11 @@ html[data-motion="reduce"] .ct-veu {
 .impact-trilho {
   position: relative;
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  align-items: flex-end;
+  gap: 4px;
+  /* Encosta os traços na linha de base do ordinal ao lado, em vez de deixá-los
+     flutuando no meio da caixa. */
+  transform: translateY(-0.06em);
 }
 .impact-trilho-aceso {
   display: none;
@@ -5679,20 +5875,33 @@ html[data-motion="reduce"] .ct-veu {
 /* SIS-61 — a família de cor era navy sobre claro; sobre azul passa a ser a
    família clara/ciano. Contraste não é requisito aqui: os pontos são decoração
    `aria-hidden`, e quem informa a etapa é o número em texto ao lado. */
+/* SIS-74 — traços retos de 2px, e não mais bolinhas de 7px que o ativo esticava
+   em pílula de 26px. Duas razões, uma de forma e uma de sentido:
+
+   Forma: bolinha que estica é o vocabulário de "bullets de carrossel", e esta
+   seção não é carrossel (ver a nota de cabeçalho de `Metrics.tsx`). Traço de
+   régua é o mesmo desenho dos esquadros do painel (`.impact-moldura-esquadro`), da
+   régua de atalhos e da `.impact-regua` do pé do palco — a faixa passa a falar a língua da cena, em vez de trazer um
+   componente de outro repertório.
+
+   Sentido: o que muda no ativo é a ALTURA, e altura é a grandeza que uma régua
+   usa para marcar a graduação principal. A largura constante mantém o passo dos
+   sete traços fixo, então o grupo não muda de tamanho conforme a etapa anda —
+   antes ele crescia 19px e empurrava o layout de volta a cada troca. */
 .impact-trilho-ponto {
-  width: 7px;
-  height: 7px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.28);
+  width: 2px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.3);
   transition:
     background var(--dur-fast) var(--ease-out),
-    width var(--dur-fast) var(--ease-out);
+    height var(--dur-fast) var(--ease-out);
 }
 .impact-trilho-ponto[data-estado="feito"] {
-  background: rgba(14, 216, 246, 0.7);
+  height: 8px;
+  background: rgba(14, 216, 246, 0.65);
 }
 .impact-trilho-ponto[data-estado="ativo"] {
-  width: 26px;
+  height: 17px;
   background: #0ed8f6;
 }
 
@@ -5836,6 +6045,13 @@ html[data-motion="reduce"] .ct-veu {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  /* SIS-74 — o número monumental era o único elemento da cena sem nenhum halo,
+     e com `background-clip: text` `text-shadow` não serve: ele pinta atrás do
+     recorte e some. `drop-shadow` segue a forma das glifas, que é justamente o
+     que existe aqui. Dois raios: um curto para dar corpo à letra, um largo para
+     assentar o número sobre a lente. Nada de sombra escura — o fundo é azul. */
+  filter: drop-shadow(0 0 2px rgba(14, 216, 246, 0.32))
+    drop-shadow(0 0 26px rgba(14, 216, 246, 0.22));
 }
 .impact-numero {
   display: inline-block;
@@ -5893,6 +6109,18 @@ html[data-motion="reduce"] .ct-veu {
        devolve vai todo para o palco, onde os sete indicadores precisam de espaço.
        Continua TRAVADA (não `auto`): é dela que sai a linha-base da curva. */
     grid-template-rows: clamp(140px, 19svh, 178px) minmax(0, 1fr);
+    /* Reserva a faixa do header fixo — a MESMA solução de
+       `.solutions-scroll[data-dirigindo] .solutions-sticky`, e pelo mesmo motivo.
+       Sem isto a faixa de abertura começa em `top: 0` e o header, que é fixo e
+       flutua por cima, come a segunda linha do título: lia-se só
+       "…o mercado de seguros" cortado ao meio.
+
+       `padding-top`, e não `top: var(--header-h)`: deslocar o sticky abriria uma
+       faixa do fundo do documento acima do palco durante a travagem. Com
+       `box-sizing: border-box` a altura não cresce — a área útil passa a ser
+       `100svh - --header-h`, e é o palco (a segunda linha, `1fr`) que devolve o
+       espaço. */
+    padding-top: var(--header-h);
     overflow: clip;
     /* SIS-61 — era o navy `#041a33`. O `sticky` precisa de fundo OPACO próprio:
        ele cobre a tela inteira e, transparente, deixaria a seção de cima aparecer
@@ -5918,39 +6146,19 @@ html[data-motion="reduce"] .ct-veu {
      Soluções. Fica estática, com a mesma altura dos outros modos, e por isso não
      precisa mais de regra nenhuma aqui nem nos dois espelhos de movimento
      reduzido. */
-  /* Marcador no canto superior DIREITO, título à esquerda: `flex-start` alinha os
-     dois pelo topo da faixa, e é `space-between` que empurra o marcador para a
-     ponta. */
+  /* SIS-74 — o marcador não vai mais para o canto superior direito, e o trilho
+     não vira coluna. A faixa é uma pilha só (metadados sobre título) nos dois
+     modos, então tudo o que o modo dirigido precisa fazer aqui é APERTAR os
+     corpos para o cabeçalho caber na linha de `clamp(140px, 19svh, 178px)` do
+     `grid` do sticky. Menos um layout para manter em duas versões — e a razão
+     pela qual os espelhos de movimento reduzido lá embaixo também encolheram. */
   .impact-scroll[data-dirigindo] .impact-topo-inner {
     width: 100%;
-    align-items: flex-start;
+    gap: 0.55rem;
   }
   .impact-scroll[data-dirigindo] .impact-titulo {
     font-size: clamp(1.6rem, 2.6vw, 2.4rem);
     max-width: 26ch;
-  }
-  /* Trilho VERTICAL descendo do marcador (era horizontal ao lado dele). O número
-     fica em cima, os sete pontos descem alinhados à direita. */
-  .impact-scroll[data-dirigindo] .impact-marcador {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.6rem;
-  }
-  .impact-scroll[data-dirigindo] .impact-trilho {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.35rem;
-  }
-  /* Na vertical o ponto ativo cresce em ALTURA, não em largura: `width` viraria
-     um traço apontando para fora do trilho. */
-  .impact-scroll[data-dirigindo] .impact-trilho-ponto {
-    transition:
-      background var(--dur-fast) var(--ease-out),
-      height var(--dur-fast) var(--ease-out);
-  }
-  .impact-scroll[data-dirigindo] .impact-trilho-ponto[data-estado="ativo"] {
-    width: 7px;
-    height: 22px;
   }
   .impact-scroll[data-dirigindo] .impact-palco {
     padding-block: 0;
@@ -5992,6 +6200,143 @@ html[data-motion="reduce"] .ct-veu {
 
   .impact-scroll[data-dirigindo] .impact-grade {
     opacity: calc(0.35 + 0.65 * var(--impact-entrada, 1));
+    /* Grade mais presente e maior no palco dirigido: as linhas a 0,045 sob uma
+       máscara que já apagava tudo depois de 75% do centro davam um fundo
+       praticamente liso — de onde vinha a leitura de tela vazia. Mesmo desenho,
+       só legível. */
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.075) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.075) 1px, transparent 1px);
+    background-size:
+      76px 76px,
+      76px 76px;
+    mask-image: radial-gradient(
+      ellipse 82% 78% at 50% 55%,
+      #000 30%,
+      transparent 92%
+    );
+    -webkit-mask-image: radial-gradient(
+      ellipse 82% 78% at 50% 55%,
+      #000 30%,
+      transparent 92%
+    );
+    /* Paralaxe da grade: ela desliza um terço do que a trilha anda, e é o que dá
+       profundidade ao palco — sem isto o fundo fica absolutamente parado enquanto
+       o conteúdo passa, que é metade da sensação de "tela travada".
+
+       `background-position`, e não `transform`: a máscara radial vive NESTE
+       elemento, então transladá-lo levaria o buraco da máscara junto e o foco de
+       luz sairia do centro da lente. A posição do tile move o desenho por baixo
+       de uma máscara que fica quieta. */
+    background-position: calc(var(--impact-etapa, 0) * -21px)
+      calc(var(--impact-p, 0) * -34px);
+  }
+
+  /* ── Fundo do palco: dois focos de luz e uma varredura ────────────────────
+     Duas camadas em pseudo-elementos da CENA — nenhum nó novo no DOM, e as duas
+     `aria-hidden` por construção. Na cena, e não no palco, por uma razão de
+     herança: a GEOMETRIA (`--impact-vao`, `--impact-centro`, `--impact-lente`)
+     é escrita pelo React no `.impact-cena`, e o palco é o pai — não a veria. O
+     PROGRESSO vem do `.impact-sticky`, que é ancestral dos dois.
+
+     `z-index: 0` contra o `auto` dos filhos posicionados da cena: as duas ficam
+     por baixo do caminho, da lente e da trilha. O `overflow: clip` fecha a caixa.
+
+     Os focos NÃO pintam cor nova: são o ciano e o azul-claro da marca em
+     opacidade baixa sobre o `--fundo-marca`, no mesmo espírito dos dois radiais
+     que o degradê já tem. O que eles acrescentam é MOVIMENTO — deriva lenta em
+     `transform`, mais um deslocamento ligado ao progresso, para o fundo
+     acompanhar o percurso em vez de assistir a ele. */
+  .impact-scroll[data-dirigindo] .impact-cena::before {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      /* Horizonte: faixa larga e baixa na altura da linha-base, e é a camada que
+         resolve o "palco vazio". A onda atravessava um azul liso; agora ela corre
+         sobre uma banda de luz que dá chão à composição e faz o topo e as pontas
+         lerem como afastamento, não como buraco. */
+      radial-gradient(
+        76% 26% at 50% 56%,
+        rgba(14, 216, 246, 0.14) 0%,
+        rgba(14, 216, 246, 0.05) 46%,
+        rgba(14, 216, 246, 0) 74%
+      ),
+      radial-gradient(
+        38% 46% at 22% 34%,
+        rgba(14, 216, 246, 0.16) 0%,
+        rgba(14, 216, 246, 0) 68%
+      ),
+      radial-gradient(
+        42% 40% at 78% 70%,
+        rgba(120, 200, 255, 0.14) 0%,
+        rgba(120, 200, 255, 0) 70%
+      ),
+      radial-gradient(
+        30% 34% at 52% 18%,
+        rgba(255, 255, 255, 0.07) 0%,
+        rgba(255, 255, 255, 0) 72%
+      );
+    /* O deslocamento horizontal é uma FRAÇÃO do vão por etapa (um sexto), o que
+       põe os focos no plano mais distante da cena: eles andam pouco enquanto a
+       trilha anda um vão inteiro. A deriva vertical vem da animação. */
+    transform: translate3d(
+      calc(var(--impact-etapa, 0) * var(--impact-vao, 0px) / -6),
+      0,
+      0
+    );
+    opacity: calc(0.35 + 0.65 * var(--impact-entrada, 1));
+    will-change: transform;
+  }
+  .impact-sticky[data-visivel="1"] .impact-cena::before {
+    /* Deriva no `::before` de um elemento que também recebe `transform` por
+       quadro seria a colisão de SIS-42 — mesma propriedade, dois donos. Aqui a
+       animação mexe só em `filter` e `opacity`, e o `transform` fica inteiro para
+       o scroll. */
+    animation: impact-aurora 22s ease-in-out infinite;
+  }
+
+  /* Varredura: um leque cônico girando muito devagar, recortado num anel largo
+     em volta da lente. É o que faz o palco "respirar" na região onde o olho
+     está, sem acrescentar linha nenhuma sobre o texto — a máscara mantém o
+     centro (onde vive o número) completamente limpo. */
+  .impact-scroll[data-dirigindo] .impact-cena::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: conic-gradient(
+      from var(--impact-varredura, 0deg) at var(--impact-centro, 50%) 55%,
+      rgba(14, 216, 246, 0) 0deg,
+      rgba(14, 216, 246, 0.11) 28deg,
+      rgba(14, 216, 246, 0) 74deg,
+      rgba(14, 216, 246, 0) 360deg
+    );
+    mask-image: radial-gradient(
+      circle at var(--impact-centro, 50%) 55%,
+      transparent 0,
+      transparent calc(var(--impact-lente, 320px) / 2),
+      #000 calc(var(--impact-lente, 320px) / 2 + 40px),
+      transparent calc(var(--impact-lente, 320px) * 1.9)
+    );
+    -webkit-mask-image: radial-gradient(
+      circle at var(--impact-centro, 50%) 55%,
+      transparent 0,
+      transparent calc(var(--impact-lente, 320px) / 2),
+      #000 calc(var(--impact-lente, 320px) / 2 + 40px),
+      transparent calc(var(--impact-lente, 320px) * 1.9)
+    );
+    /* Acende na passagem entre indicadores e recolhe ao pousar: o mesmo
+       `--impact-passagem` que a lente já usa, sem gatilho novo. */
+    opacity: calc(
+      (0.5 + 0.5 * var(--impact-passagem, 0)) * var(--impact-entrada, 1)
+    );
+  }
+  .impact-sticky[data-visivel="1"] .impact-cena::after {
+    animation: impact-varredura 16s linear infinite;
   }
 
   .impact-scroll[data-dirigindo] .impact-vinheta {
@@ -6037,15 +6382,61 @@ html[data-motion="reduce"] .ct-veu {
     position: absolute;
     inset: 0;
     padding: 0;
+    /* O segundo eixo é a ENTRADA da cena: a trilha (conteúdo e curva) sobe 44px
+       até assentar, e é isso que faz a seção começar como um palco que se compõe
+       em vez de aparecer pronta e imóvel — a queixa da abertura. Um `transform`
+       só, com os dois eixos no mesmo valor: nada de segunda propriedade a
+       disputar (SIS-42).
+
+       Fallback 1, nunca 0: se a variável faltar por um quadro a cena tem de estar
+       ASSENTADA e visível, não deslocada. */
     transform: translate3d(
       calc(-1 * var(--impact-etapa, 0) * var(--impact-vao)),
-      0,
+      calc((1 - var(--impact-entrada, 1)) * 44px),
       0
     );
+    opacity: calc(0.28 + 0.72 * var(--impact-entrada, 1));
     will-change: transform;
   }
   .impact-scroll[data-dirigindo] .impact-track {
     z-index: 7;
+  }
+  /* A curva entra um pouco DEPOIS do conteúdo — 60% do mesmo deslocamento — e é
+     essa defasagem curta que dá a leitura de duas camadas em vez de um bloco só
+     subindo. Mesmo `transform`, mesma variável, nenhum gatilho novo. */
+  .impact-scroll[data-dirigindo] .impact-trilha-curva {
+    transform: translate3d(
+      calc(-1 * var(--impact-etapa, 0) * var(--impact-vao)),
+      calc((1 - var(--impact-entrada, 1)) * 72px),
+      0
+    );
+  }
+
+  /* Boca de entrada da onda: um foco de luz na beira esquerda, na altura da
+     linha-base. Sem ele a metade esquerda do palco abre completamente vazia (é o
+     que se vê na captura de abertura): o primeiro indicador está no centro e não
+     há nada antes dele. Com o foco, aquele lado passa a ser de onde o percurso
+     VEM — e é exatamente o ponto onde a travessia de Soluções pousa. */
+  .impact-scroll[data-dirigindo] .impact-chegada-fio::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: clamp(220px, 26vw, 420px);
+    height: clamp(220px, 26vw, 420px);
+    transform: translate(-42%, -50%);
+    pointer-events: none;
+    border-radius: 999px;
+    background: radial-gradient(
+      circle,
+      rgba(14, 216, 246, 0.2) 0%,
+      rgba(14, 216, 246, 0.07) 38%,
+      rgba(14, 216, 246, 0) 70%
+    );
+    opacity: var(--impact-entrada, 1);
+  }
+  .impact-sticky[data-visivel="1"] .impact-chegada-fio::before {
+    animation: impact-respira 7s ease-in-out infinite;
   }
 
   /* O caminho fica PARADO e leva a máscara. O buraco circular no centro é o que
@@ -6072,17 +6463,51 @@ html[data-motion="reduce"] .ct-veu {
     /* Segue a lente, que agora vem do vão (`--impact-lente`, herdada da
        `.impact-cena`). Com o valor duplicado em `clamp` aqui, mudar a lente
        deixava o buraco no tamanho antigo e a curva reaparecia por cima dos anéis. */
-    --impact-buraco: calc(var(--impact-lente) / 2 + 18px);
-    mask-image: radial-gradient(
-      circle at var(--impact-centro) 55%,
-      transparent var(--impact-buraco),
-      #000 calc(var(--impact-buraco) + 1px)
-    );
-    -webkit-mask-image: radial-gradient(
-      circle at var(--impact-centro) 55%,
-      transparent var(--impact-buraco),
-      #000 calc(var(--impact-buraco) + 1px)
-    );
+    /* SIS-74 — buraco RETANGULAR, porque a lente virou painel. Com o furo
+       circular de antes a curva era cortada num raio menor que a metade da
+       largura do painel: ela desaparecia bem antes da aresta esquerda e
+       reaparecia bem depois da direita, deixando dois vãos de azul de cada lado
+       do painel. E onde o painel é mais alto que o círculo (os cantos), a curva
+       passava por cima do vidro.
+
+       Feito com DUAS camadas de máscara e `exclude`: a de baixo cobre tudo, a de
+       cima é um retângulo posicionado sobre o painel, e a exclusão abre o furo.
+       É a única forma de recortar um retângulo em `mask-image` — `radial-gradient`
+       só sabe fazer círculos e elipses.
+
+       As medidas saem do painel (`--impact-lente` de largura, razão 1,62) mais
+       14px de folga de cada lado: a curva morre um pouco antes da aresta em
+       vez de encostar nela, senão o traço parece soldado à moldura.
+
+       O centro vertical vem de `--impact-linha` (pixels, herdada da
+       `.impact-cena`) e NÃO do `55%` que o furo circular usava. Não é
+       equivalência trocada por gosto: em `mask-position` uma percentagem alinha
+       aquela fração da IMAGEM com a mesma fração da CAIXA — `55%` de um furo de
+       altura fixa não cai a 55% da cena, e o desvio muda com a altura do palco.
+       Num `radial-gradient` a percentagem é a posição do centro do gradiente, que
+       é outra coisa; era por isso que funcionava antes. */
+    --impact-buraco-l: calc(var(--impact-lente) + 28px);
+    --impact-buraco-a: calc(var(--impact-lente) / 1.62 + 28px);
+    mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+    mask-size:
+      100% 100%,
+      var(--impact-buraco-l) var(--impact-buraco-a);
+    mask-position:
+      0 0,
+      calc(var(--impact-centro) - var(--impact-buraco-l) / 2)
+        calc(var(--impact-linha) - var(--impact-buraco-a) / 2);
+    mask-repeat: no-repeat, no-repeat;
+    mask-composite: exclude;
+    -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+    -webkit-mask-size:
+      100% 100%,
+      var(--impact-buraco-l) var(--impact-buraco-a);
+    -webkit-mask-position:
+      0 0,
+      calc(var(--impact-centro) - var(--impact-buraco-l) / 2)
+        calc(var(--impact-linha) - var(--impact-buraco-a) / 2);
+    -webkit-mask-repeat: no-repeat, no-repeat;
+    -webkit-mask-composite: xor;
   }
 
   /* `viewBox` e `width`/`height` em pixels iguais: 1 unidade = 1 px. Sem
@@ -6269,9 +6694,16 @@ html[data-motion="reduce"] .ct-veu {
      nessa mesma altura — e ganha a largura da lente. */
   .impact-scroll[data-dirigindo] .impact-item[data-estado="ativo"] {
     top: var(--impact-linha);
-    /* A largura da lente, pela variável e não por um `clamp` repetido: o ativo
-       tem de coincidir com a moldura, senão o rótulo sai por fora dos anéis. */
-    width: var(--impact-lente);
+    /* A largura do painel MENOS a margem interna, pela variável e não por um
+       `clamp` repetido: o ativo tem de caber na moldura, senão o rótulo sai por
+       fora dela.
+
+       SIS-74 — era `var(--impact-lente)` exato, e num CÍRCULO desse diâmetro a
+       largura útil só existia na linha do meio: o rótulo e a legenda, que ficam
+       acima e abaixo do centro, encostavam nas paredes curvas. Num retângulo a
+       largura é a mesma em toda a altura, e o `- 44px` é a margem lateral que
+       sobra dos dois lados da moldura. */
+    width: calc(var(--impact-lente) - 44px);
     opacity: 1;
     z-index: 7;
   }
@@ -6417,9 +6849,45 @@ html[data-motion="reduce"] .ct-veu {
     position: absolute;
     left: var(--impact-centro);
     top: 55%;
+    /* SIS-74 — painel LARGO, não círculo. O círculo obrigava o conteúdo a caber
+       numa forma que estreita justamente onde o texto é mais largo: a legenda de
+       duas linhas encostava nas paredes curvas e o rótulo tinha de ser curto. Em
+       1,62:1 o texto ganha as linhas de que precisa e sobra margem lateral.
+
+       A largura sai do MESMO `--impact-lente` derivado do vão, então o painel
+       continua acompanhando o espaçamento dos indicadores — não é um `clamp`
+       independente, que era o desencontro que punha conteúdo de vizinho dentro
+       da moldura. */
     width: var(--impact-lente);
-    aspect-ratio: 1;
-    transform: translate3d(-50%, -50%, 0);
+    /* A razão 1,62 não é gosto: ela define a ALTURA, e a altura do painel é o que
+       decide se os blocos vizinhos batem nele. `DESVIOS_TRILHO` empurra o vizinho
+       ~132px acima ou abaixo da linha-base, e meia altura do painel é
+       `--impact-lente / 1.62 / 2` — entre 99px (lente de 320px) e 123px (lente de
+       400px, o teto do `clamp`). Fica sempre debaixo dos 132px, então o vizinho
+       passa rente e nunca por cima do vidro.
+
+       Era por isto que a largura NÃO podia crescer: um painel mais largo tem de
+       ser mais alto para manter a proporção, e a 1,5× desta largura a meia altura
+       chegava a 185px — os dois vizinhos imediatos caíam dentro da moldura. A
+       forma larga vem da razão, não de esticar a pegada. */
+    aspect-ratio: 1.62;
+    border-radius: 3px;
+    /* Vidro fino. O painel precisa de UMA superfície para as arestas terem o que
+       delimitar — sem fundo nenhum os esquadros ficariam soltos no azul. Muito
+       discreto de propósito: quem manda na cena é o número, e o contextual atrás
+       dele ainda tem de aparecer. */
+    background: linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(255, 255, 255, 0.02) 46%,
+      rgba(4, 32, 62, 0.16) 100%
+    );
+    /* A escala entra junto com a opacidade: a lente CRESCE para o lugar em vez de
+       já estar montada no primeiro quadro. Centragem por `translate3d(-50%,-50%)`
+       antes do `scale`, para escalar em torno do próprio centro. Um `transform`
+       só neste nó, sem `animation` nem `transition` a disputá-lo (SIS-42). */
+    transform: translate3d(-50%, -50%, 0)
+      scale(calc(0.84 + 0.16 * var(--impact-entrada, 1)));
     z-index: 6;
     pointer-events: none;
     /* SIS-63 — a cena se compõe por partes: no primeiro quadro da seção a lente
@@ -6434,24 +6902,54 @@ html[data-motion="reduce"] .ct-veu {
        há valor por quadro brigando com transição alguma. */
     opacity: calc(0.25 + 0.75 * var(--impact-entrada, 1));
   }
-  /* Node de chegada: onde a curva entra na máscara, na borda esquerda da lente.
-     O node original da trilha fica escondido pelo buraco da máscara. */
+  /* ── Vida própria da lente ───────────────────────────────────────────────
+     A queixa era "o círculo fica fixo e muito feio": os anéis giravam, mas o
+     corpo da lente não tinha atmosfera nenhuma — a moldura flutuava sobre o
+     fundo sem nada a ligá-la a ele.
+
+     `::before` é o halo, e é ele que assenta a lente no palco. `::after` é a
+     varredura de radar. Ambos em nós PRÓPRIOS, e não nos anéis: os anéis já têm
+     `animation` em `transform`. */
+  .impact-scroll[data-dirigindo] .impact-lente::before {
+    content: "";
+    position: absolute;
+    inset: -34%;
+    z-index: -1;
+    pointer-events: none;
+    /* Elipse, não `circle`: o painel é largo, e um halo circular sobrava em cima
+       e em baixo e faltava nas laterais. */
+    background: radial-gradient(
+      ellipse 62% 74% at 50% 50%,
+      rgba(14, 216, 246, 0.16) 0%,
+      rgba(14, 216, 246, 0.06) 48%,
+      rgba(14, 216, 246, 0) 76%
+    );
+  }
+  /* Respira em `filter`, não em `transform` nem `opacity`: a `opacity` do pai já
+     é dirigida pela entrada e o halo herda essa multiplicação de graça. */
+  .impact-sticky[data-visivel="1"] .impact-lente::before {
+    animation: impact-aurora 9s ease-in-out infinite;
+  }
+  /* A varredura cónica de radar saiu com os anéis (ver a nota no `<svg>` de
+     `Metrics.tsx`): setor de luz girando é a assinatura visual exata do HUD que
+     esta seção deixou de ser. O que ficou como resposta contínua ao avanço é a
+     barra reta na aresta de cima, que é informação, não atmosfera. */
+  /* Marca de chegada: onde a curva entra na máscara, rente à aresta esquerda do
+     painel. Traço vertical, do mesmo vocabulário dos esquadros — era uma bolinha
+     branca com dois halos ciano, o único ponto da cena com brilho de "led". */
   .impact-scroll[data-dirigindo] .impact-chegada {
     display: block;
     position: absolute;
-    left: 0;
+    left: -1px;
     top: 50%;
-    width: 12px;
-    height: 12px;
-    margin: -6px 0 0 -6px;
-    border-radius: 999px;
-    border: 2px solid #0ed8f6;
-    background: #ffffff;
-    box-shadow:
-      0 0 0 7px rgba(14, 216, 246, 0.1),
-      0 0 22px rgba(14, 216, 246, 0.65);
+    width: 1px;
+    height: 26px;
+    margin-top: -13px;
+    background: #0ed8f6;
+    box-shadow: 0 0 10px rgba(14, 216, 246, 0.55);
+    transform-origin: 50% 50%;
   }
-  .impact-scroll[data-dirigindo] .impact-aneis,
+  .impact-scroll[data-dirigindo] .impact-moldura,
   .impact-scroll[data-dirigindo] .impact-contextual,
   .impact-scroll[data-dirigindo] .impact-contextual svg {
     position: absolute;
@@ -6459,22 +6957,47 @@ html[data-motion="reduce"] .ct-veu {
     width: 100%;
     height: 100%;
   }
-  .impact-anel {
+  /* ── Moldura do painel ───────────────────────────────────────────────────── */
+  .impact-moldura {
+    overflow: visible;
     fill: none;
-    stroke-linecap: round;
-    transform-origin: 100px 100px;
   }
-  .impact-anel-1 {
-    stroke: rgba(14, 216, 246, 0.55);
-    stroke-width: 1.4;
-  }
-  .impact-anel-2 {
-    stroke: rgba(155, 220, 255, 0.3);
+  /* Caixa: a aresta contínua, quase apagada. É ela que fecha a silhueta; os
+     esquadros é que dão o acento. */
+  .impact-moldura-caixa {
+    stroke: rgba(255, 255, 255, 0.14);
     stroke-width: 1;
   }
-  .impact-anel-3 {
-    stroke: rgba(155, 220, 255, 0.14);
-    stroke-width: 0.8;
+  /* Esquadros: o acento em ciano nos quatro cantos. `stroke-linecap: butt` — em
+     `round` as pontas viravam gotas e o desenho perdia a leitura de marca de
+     corte. */
+  .impact-moldura-esquadro {
+    stroke: rgba(14, 216, 246, 0.85);
+    stroke-width: 1.5;
+    stroke-linecap: butt;
+  }
+  /* ── Barra de progresso na aresta de cima ────────────────────────────────── */
+  .impact-scroll[data-dirigindo] .impact-barra {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -1px;
+    height: 2px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  /* `scaleX` a partir da esquerda: `--impact-etapa` vai de 0 a 6 (sete
+     indicadores), daí o `/ 6`. Sem `transition` — o valor é reescrito a cada
+     quadro pelo relógio do scroll, e uma transição sobre valor por quadro só
+     acrescenta atraso. */
+  .impact-barra-viva {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transform-origin: 0 50%;
+    transform: scaleX(calc(var(--impact-etapa, 0) / 6));
+    background: linear-gradient(90deg, rgba(14, 216, 246, 0.5), #0ed8f6);
+    box-shadow: 0 0 12px rgba(14, 216, 246, 0.6);
   }
   /* ── Resposta da lente à passagem ────────────────────────────────────────
      `--impact-passagem` vale 0 com a etapa parada e 1 no meio do caminho entre
@@ -6483,88 +7006,61 @@ html[data-motion="reduce"] .ct-veu {
      move é a trilha por baixo — mas agora reage ao avanço em vez de só assistir o
      conteúdo trocar.
 
-     A escala vai no `<svg>` da moldura, e NÃO nos `<path>` dos anéis: aqueles têm
-     `animation: impact-gira` na mesma propriedade `transform`, e valor por quadro
-     disputando `transform` com giro contínuo é exactamente a colisão que SIS-42
-     corrigiu em Soluções — um sobrescreve o outro. Nós diferentes, propriedades
-     que não se cruzam.
+     A escala vai no `<svg>` da moldura, e não no `.impact-lente`: o `transform`
+     daquele nó já tem dono (a centragem `translate3d(-50%,-50%)` mais a escala de
+     entrada), e dois valores por quadro na mesma propriedade do mesmo elemento é a
+     colisão que SIS-42 corrigiu em Soluções — um sobrescreve o outro. Nós
+     diferentes, propriedades que não se cruzam.
 
      Sem `transition`: o valor é reescrito a cada quadro pelo relógio do scroll. */
-  .impact-scroll[data-dirigindo] .impact-aneis {
-    transform: scale(calc(1 + 0.045 * var(--impact-passagem, 0)));
+  /* SIS-74 — a rotação por etapa saiu com os anéis: painel que gira é painel
+     torto, e num retângulo qualquer grau de rotação lê como defeito de
+     alinhamento (num círculo passava desapercebido). Fica a escala, muito
+     contida, e a opacidade — as duas no MESMO nó, um dono por propriedade. */
+  .impact-scroll[data-dirigindo] .impact-moldura {
+    transform: scale(calc(1 + 0.02 * var(--impact-passagem, 0)));
     transform-origin: 50% 50%;
-    opacity: calc(0.82 + 0.18 * var(--impact-passagem, 0));
+    opacity: calc(0.78 + 0.22 * var(--impact-passagem, 0));
     will-change: transform;
+  }
+  /* SIS-74 — respiração da lente parada. Entre duas etapas `--impact-passagem`
+     volta a 0 e a moldura fica imóvel; um respiro lento devolve vida sem
+     competir com o scroll.
+
+     Vai em `filter`, e NÃO em `transform` nem `opacity`: as duas já têm dono
+     por quadro logo acima (`--impact-passagem` / `--impact-etapa`), e animação
+     vence declaração — animar qualquer uma delas aqui mataria a resposta à
+     passagem. É a colisão de dono de propriedade que SIS-42 corrigiu em
+     Soluções. Atrelado a `[data-visivel="1"]` como todo o resto da seção: fora
+     de cena o compositor descansa. */
+  .impact-scroll[data-dirigindo]
+    .impact-sticky[data-visivel="1"]
+    .impact-moldura {
+    animation: impact-aneis-respira 6.5s ease-in-out infinite;
   }
   /* O node de chegada abre quando a curva está atravessando e fecha ao pousar: é
      o ponto onde a curva entra na máscara, então é ele que traduz "está a
      acontecer algo" na borda da lente. */
   .impact-scroll[data-dirigindo] .impact-chegada {
-    transform: scale(calc(1 + 0.55 * var(--impact-passagem, 0)));
+    /* Só `scaleY`: o traço tem 1px de largura, e escalar na horizontal o
+       engrossaria para 1,55px — meio pixel que o navegador resolve como
+       antialiasing e lê como traço desfocado. Cresce no eixo em que tem
+       tamanho. */
+    transform: scaleY(calc(1 + 0.55 * var(--impact-passagem, 0)));
   }
-  /* Arco de progresso. A calha é o círculo inteiro, apagado; o vivo é o mesmo
-     círculo com `stroke-dashoffset` proporcional à etapa.
+  /* SIS-74 — saíram daqui: o arco de progresso circular (calha + vivo por
+     `stroke-dashoffset`), a cabeça do arco que orbitava a borda, os 36 ticks
+     radiais e os três giros contínuos dos anéis.
 
-     578.053 é o perímetro de r=92 (2π·92) na caixa 200×200 do SVG — em unidades
-     de `viewBox`, e não em pixels de tela, então não depende do tamanho da lente.
-     Divide por 6 porque são SETE indicadores: `--impact-etapa` vai de 0 a
-     TOTAL-1. O `-90deg` põe o zero no topo. */
-  .impact-arco-calha,
-  .impact-arco-vivo {
-    fill: none;
-    stroke-linecap: round;
-    transform: rotate(-90deg);
-    transform-origin: 100px 100px;
-  }
-  .impact-arco-calha {
-    stroke: rgba(196, 216, 238, 0.14);
-    stroke-width: 2.4;
-  }
-  /* Mais grosso e mais aceso que antes (`1.6` / `0.8`). Em unidades de `viewBox`
-     de 200 dentro de uma lente de ~320px, 1.6 dava ~2,5px de traço — o único
-     indicador contínuo da moldura era quase invisível, e é daí que vinha boa parte
-     da sensação de lente estática. */
-  .impact-arco-vivo {
-    stroke: #0ed8f6;
-    stroke-width: 2.4;
-    stroke-dasharray: 578.053;
-    stroke-dashoffset: calc(578.053 * (1 - var(--impact-etapa, 0) / 6));
-    filter:
-      drop-shadow(0 0 4px rgba(14, 216, 246, 0.6))
-      drop-shadow(0 0 12px rgba(14, 216, 246, 0.3));
-  }
-  /* Cabeça do arco: a marca que ANDA pela borda da lente. 60deg por etapa porque
-     `--impact-etapa` vai de 0 a 6 (sete indicadores) e a volta é de 360deg; o
-     `-90deg` põe o zero no topo, como no arco.
+     O progresso não desapareceu, mudou de forma: é a `.impact-barra` na aresta de
+     cima do painel, dirigida pela MESMA `--impact-etapa` que o arco usava. Trocar
+     um círculo que se preenche por uma barra que enche não perde informação
+     nenhuma — e a barra anda no mesmo sentido da trilha, o que o arco nunca fez.
 
-     `transform` dirigido por quadro e SEM `transition` e SEM `animation` — este nó
-     não tem nada a disputar a propriedade com ele (a lição de SIS-42). O brilho
-     que pulsa fica na `opacity`, que é outra propriedade. */
-  .impact-arco-cabeca {
-    transform: rotate(calc(-90deg + var(--impact-etapa, 0) * 60deg));
-    transform-origin: 100px 100px;
-  }
-  .impact-arco-cabeca circle {
-    fill: #ffffff;
-    stroke: #0ed8f6;
-    stroke-width: 1.6;
-    filter: drop-shadow(0 0 7px rgba(14, 216, 246, 0.85));
-  }
-  .impact-ticks line {
-    stroke: rgba(155, 220, 255, 0.28);
-    stroke-width: 0.8;
-  }
-  /* Movimento interno só no indicador ativo E só com a seção na tela: fora dela
-     `[data-visivel]` sai e o compositor descansa. */
-  .impact-sticky[data-visivel="1"] .impact-lente .impact-anel-1 {
-    animation: impact-gira 26s linear infinite;
-  }
-  .impact-sticky[data-visivel="1"] .impact-lente .impact-anel-2 {
-    animation: impact-gira 38s linear infinite reverse;
-  }
-  .impact-sticky[data-visivel="1"] .impact-lente .impact-ticks {
-    animation: impact-respira 6s ease-in-out infinite;
-  }
+     Os giros contínuos não têm substituto, de propósito: eram movimento que não
+     dizia nada (nada avança quando um anel dá uma volta em 26s) e eram a maior
+     parte do que fazia a cena parecer um painel de nave. O que respira agora é a
+     moldura inteira, uma vez a cada 6,5s, em `filter`. */
 
   /* Componente contextual: entra atrás do número, com opacidade baixa. É
      contexto, não ilustração principal. Só existe um, o do indicador da vez — a
@@ -6741,6 +7237,109 @@ html[data-motion="reduce"] .ct-veu {
     clip-path: inset(0 calc(100% - 100% * var(--impact-p, 0)) 0 0);
   }
 
+  /* ── Atalhos (SIS-73) ───────────────────────────────────────────────────────
+     Sete botões no pé do palco, logo ACIMA da régua: a régua é a escala do
+     percurso e os atalhos são a forma de saltar nele — juntos leem como um
+     rodapé de controle, e nenhum dos dois encosta na lente.
+
+     `z-index: 8`, um acima da trilha do conteúdo (7) e da vinheta (3): a vinheta
+     repinta o fundo nas duas pontas e engoliria o primeiro e o último botão.
+
+     Fica no `.impact-palco`, não no `.impact-cena`: o palco não recebe
+     `transform` por quadro. É a mesma razão pela qual a lente vive fora da
+     trilha. */
+  .impact-scroll[data-dirigindo] .impact-atalhos {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: clamp(38px, 5.5vh, 62px);
+    z-index: 8;
+    display: flex;
+    justify-content: center;
+    /* SIS-74 — encostados uns nos outros (era `gap: 6–10px`). Sete caixinhas
+       espaçadas leem como sete botões avulsos; encostadas, com um fio a dividi-las,
+       leem como UMA régua com sete graduações — que é o que são, e é o mesmo
+       vocabulário da `.impact-regua` logo abaixo. */
+    gap: 0;
+    /* Acompanha a entrada da cena para não aparecer pronto sobre um palco que
+       ainda se compõe. Nunca abaixo de 1: se a variável faltar por um quadro, os
+       controles têm de estar utilizáveis. */
+    opacity: calc(0.25 + 0.75 * var(--impact-entrada, 1));
+  }
+  /* SIS-74 — de pílula arredondada com fundo de vidro para casa de régua: sem
+     arredondamento, sem fundo em repouso e sem borda em volta. A única linha é a
+     de cima, e é ela que forma a régua contínua quando os sete se encostam.
+
+     A área de clique NÃO diminuiu: 44px de largura e 34px de altura continuam
+     acima do mínimo confortável, e agora encostadas não há vãos mortos entre
+     alvos. */
+  .impact-scroll[data-dirigindo] .impact-atalho {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-width: 44px;
+    min-height: 34px;
+    padding: 0.5rem 0 0;
+    border: 0;
+    border-top: 1px solid rgba(196, 226, 255, 0.24);
+    border-radius: 0;
+    background: transparent;
+    /* Opacidade fixa nos inativos era o pedido, e é o erro que SIS-61 já corrigiu
+       em `.impact-caption`: 50% de opacidade sobre o azul da marca cai abaixo de
+       4,5:1. Aqui o inativo é COR, não opacidade — branco a 0,78 de alfa sobre
+       `#032d67` mede ~7,8:1, e a diferença com o ativo é dada por peso, borda e
+       fundo, não por apagar o texto. */
+    color: rgba(240, 250, 255, 0.78);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition:
+      border-color var(--motion-fast, 180ms) var(--motion-ease, ease),
+      color var(--motion-fast, 180ms) var(--motion-ease, ease);
+  }
+  /* O traço de graduação: a marca vertical que desce da régua em cada casa. Em
+     `::before` para não pedir um `<span>` a mais no markup — é decoração pura. */
+  .impact-scroll[data-dirigindo] .impact-atalho::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 7px;
+    background: rgba(196, 226, 255, 0.34);
+    transition:
+      height var(--motion-fast, 180ms) var(--motion-ease, ease),
+      background var(--motion-fast, 180ms) var(--motion-ease, ease);
+  }
+  .impact-scroll[data-dirigindo] .impact-atalho:hover {
+    border-top-color: rgba(196, 226, 255, 0.6);
+    color: #ffffff;
+  }
+  .impact-scroll[data-dirigindo] .impact-atalho:hover::before {
+    height: 11px;
+    background: rgba(255, 255, 255, 0.8);
+  }
+  /* Foco visível e próprio: o `outline` do navegador sobre o azul do palco quase
+     não aparece. Ciano da marca, deslocado para não se confundir com a borda. */
+  .impact-scroll[data-dirigindo] .impact-atalho:focus-visible {
+    outline: 2px solid #7fe6ff;
+    outline-offset: 2px;
+  }
+  /* Ativo: TRÊS sinais, e só um deles é cor — peso da fonte, o traço de graduação
+     principal (mais alto, como a marca de dezena de uma régua) e o ciano.
+     `aria-current` cuida do leitor de tela. */
+  .impact-scroll[data-dirigindo] .impact-atalho[data-estado="ativo"] {
+    border-top-color: rgba(14, 216, 246, 0.85);
+    color: #ffffff;
+    font-weight: 700;
+  }
+  .impact-scroll[data-dirigindo] .impact-atalho[data-estado="ativo"]::before {
+    height: 15px;
+    background: #0ed8f6;
+    box-shadow: 0 0 8px rgba(14, 216, 246, 0.7);
+  }
+
   /* Legibilidade dos indicadores laterais. Nada encolheu e a trilha não ficou
      mais larga: o que muda é hierarquia interna (ordinal menor e mais marcado,
      número com sombra que o separa dos anéis) e um pouco mais de presença nos
@@ -6789,9 +7388,52 @@ html[data-motion="reduce"] .ct-veu {
     transform: scale(1);
   }
 }
-@keyframes impact-gira {
+/* SIS-74 — `@keyframes impact-gira` REMOVIDO. Era o giro contínuo dos três anéis
+   da lente, e os anéis saíram junto com o resto do HUD (ver a nota em
+   `.impact-moldura`). Nenhum outro elemento da folha o usava. */
+
+/* Ângulo da varredura do fundo. Precisa de `@property` para ser INTERPOLÁVEL:
+   uma variável não registada é texto para o motor de animação, e o keyframe
+   saltaria de 0deg para 360deg num quadro em vez de girar.
+
+   Girar por `transform` no próprio elemento não serve: a máscara radial vive
+   nele e giraria junto, tirando o buraco de cima da lente. Aqui só o desenho
+   do cónico gira; a máscara fica quieta. */
+@property --impact-varredura {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes impact-varredura {
   to {
-    transform: rotate(360deg);
+    --impact-varredura: 360deg;
+  }
+}
+
+/* Focos de luz do fundo. Só `filter`, e por dois motivos: o `transform` é escrito
+   por quadro pelo scroll (paralaxe) e giro contínuo na mesma propriedade é a
+   colisão de SIS-42; e a `opacity` é a entrada da cena
+   (`--impact-entrada`) — animá-la aqui sobrescreveria a entrada, porque animação
+   vence declaração. */
+@keyframes impact-aurora {
+  0%,
+  100% {
+    filter: saturate(1) brightness(1);
+  }
+  50% {
+    filter: saturate(1.3) brightness(1.22);
+  }
+}
+/* SIS-74 — respiro da moldura da lente. Só `filter`: `transform` e `opacity`
+   deste nó são dirigidos por quadro (ver `.impact-moldura`). Amplitude pequena de
+   propósito — é para dar vida à lente parada, não para chamar atenção. */
+@keyframes impact-aneis-respira {
+  0%,
+  100% {
+    filter: brightness(1) drop-shadow(0 0 0 rgba(14, 216, 246, 0));
+  }
+  50% {
+    filter: brightness(1.14) drop-shadow(0 0 14px rgba(14, 216, 246, 0.28));
   }
 }
 @keyframes impact-respira {
@@ -6891,8 +7533,22 @@ html[data-motion="reduce"] .ct-veu {
      solto ao lado do texto da lista (SIS-62). */
   .impact-scroll[data-dirigindo] .impact-haste,
   .impact-scroll[data-dirigindo] .impact-lente,
+  /* O fio de chegada (e o foco de luz do seu `::before`) só faz sentido com a
+     onda: sem ela seria um brilho solto na margem da lista. */
+  .impact-scroll[data-dirigindo] .impact-chegada-fio,
   .impact-scroll[data-dirigindo] .impact-regua,
+  /* SIS-73 — os atalhos nem sao renderizados quando `dirigindo` é false, entao
+     esta linha é rede de seguranca: se a preferencia de movimento virar no meio
+     da sessao, o CSS cai na lista antes de o React reavaliar, e a faixa nao pode
+     ficar flutuando sobre uma lista vertical. */
+  .impact-scroll[data-dirigindo] .impact-atalhos,
   .impact-scroll[data-dirigindo] .impact-vinheta {
+    display: none !important;
+  }
+  /* Camadas de fundo do palco: a aurora e a varredura cónica são atmosfera da
+     cena dirigida. Na lista vertical não há lente para a varredura contornar. */
+  .impact-scroll[data-dirigindo] .impact-cena::before,
+  .impact-scroll[data-dirigindo] .impact-cena::after {
     display: none !important;
   }
   .impact-scroll[data-dirigindo] .impact-lista {
@@ -6904,15 +7560,13 @@ html[data-motion="reduce"] .ct-veu {
   /* A reposição da `.impact-emenda` saiu junto com a emenda: não há mais faixa de
      cor no topo para garantir aqui. A fronteira com Soluções agora casa sozinha,
      pelo fundo ancorado na janela. */
-  /* O marcador volta à horizontal junto com a faixa alta do modo lista. */
-  .impact-scroll[data-dirigindo] .impact-marcador,
-  .impact-scroll[data-dirigindo] .impact-trilho {
-    flex-direction: row !important;
-    align-items: center !important;
-  }
-  .impact-scroll[data-dirigindo] .impact-trilho-ponto[data-estado="ativo"] {
-    width: 26px !important;
-    height: 7px !important;
+  /* SIS-74 — as três regras que reendireitavam o marcador (`flex-direction: row`,
+     `align-items: center` e o ativo de volta a 26x7) saíram: o marcador é a mesma
+     trilha horizontal de metadados nos dois modos, então não há nada a desfazer
+     aqui. Só o aperto de `gap` do modo dirigido é revertido, porque a faixa do
+     modo lista respira. */
+  .impact-scroll[data-dirigindo] .impact-topo-inner {
+    gap: clamp(0.75rem, 1.4vw, 1.1rem) !important;
   }
   .impact-scroll[data-dirigindo] .impact-item {
     position: relative !important;
@@ -6964,8 +7618,14 @@ html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-pulso,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-no,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-haste,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-lente,
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-chegada-fio,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-regua,
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-atalhos,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-vinheta {
+  display: none !important;
+}
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-cena::before,
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-cena::after {
   display: none !important;
 }
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-lista {
@@ -7001,20 +7661,13 @@ html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-rotulo,
 html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-caption {
   margin-inline: 0 !important;
 }
-/* Espelho das reposicoes do bloco `@media (prefers-reduced-motion)` logo acima:
-   sem elas o interruptor em tempo de execucao entregaria a faixa e o marcador na
-   versao do palco dirigido, que a lista vertical nao usa. A da `.impact-emenda`
-   saiu junto com a emenda. */
-html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-marcador,
-html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-trilho {
-  flex-direction: row !important;
-  align-items: center !important;
-}
-html[data-motion="reduce"]
-  .impact-scroll[data-dirigindo]
-  .impact-trilho-ponto[data-estado="ativo"] {
-  width: 26px !important;
-  height: 7px !important;
+/* Espelho da reposicao da faixa no bloco `@media (prefers-reduced-motion)` logo
+   acima: sem ela o interruptor em tempo de execucao entregaria o cabecalho com o
+   `gap` apertado do palco dirigido, que a lista vertical nao precisa. A da
+   `.impact-emenda` saiu junto com a emenda; as do marcador sairam em SIS-74,
+   quando ele passou a ter um layout so nos dois modos. */
+html[data-motion="reduce"] .impact-scroll[data-dirigindo] .impact-topo-inner {
+  gap: clamp(0.75rem, 1.4vw, 1.1rem) !important;
 }
 
 /* ===========================================================================
@@ -7481,6 +8134,17 @@ html[data-motion="reduce"] .social-palco .btn-primary:hover::after {
     radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.18), transparent 34%),
     radial-gradient(circle at 82% 48%, rgba(14, 102, 192, 0.16), transparent 38%),
     linear-gradient(115deg, #0875c5 0%, #075aab 42%, #032d67 100%);
+
+  /* SIS-76 — MÓDULO ÚNICO da grade técnica, pelo mesmo motivo que
+     `--fundo-marca` mora aqui: uma grade que quer ser "um só canvas" não pode
+     ter o tamanho do tile declarado em dois lugares.
+
+     E ele estava. `.grade-tecnica` usava `6rem` e `.section-light::before` usava
+     `48px` — o issue descrevia as duas como "o mesmo grid" e elas nunca foram o
+     mesmo grid. Seções claras e escuras alternadas mostravam malhas de passo
+     diferente, o que por si só já denuncia a fronteira antes mesmo da questão do
+     alinhamento. Agora é um valor, consumido pelos dois. */
+  --grade-modulo: 6rem;
 }
 
 .solutions-scroll {
@@ -7789,7 +8453,7 @@ html[data-motion="reduce"] .social-palco .btn-primary:hover::after {
   border-radius: 24px;
   overflow: hidden;
   border: 1px solid rgba(190, 232, 255, 0.22);
-  background: #03142d;
+  background: var(--palco-marca); /* SIS-78: era #03142d */
   box-shadow: 0 34px 90px rgba(3, 20, 45, 0.42);
 }
 /* A foto. `next/image` com `fill` ja entrega `position: absolute; inset: 0` —
@@ -8063,7 +8727,7 @@ html[data-motion="reduce"] .social-palco .btn-primary:hover::after {
   overflow: hidden;
   border: 1px solid rgba(190, 232, 255, 0.22);
   box-shadow: 0 34px 90px rgba(3, 20, 45, 0.42);
-  background: #03142d;
+  background: var(--palco-marca); /* SIS-78: era #03142d */
   pointer-events: none;
   will-change: transform, width, height;
 }
@@ -8716,7 +9380,7 @@ html[data-motion="reduce"] .solution-info > * {
   /* `translate(-50%, -50%)` centra o nó no ponto; o `scale` do estado ativo
      entra no mesmo `transform` para não sobrescrever a centragem. */
   transform: translate(-50%, -50%);
-  background: #03142d;
+  background: var(--palco-marca); /* SIS-78: era #03142d */
   border: 1.5px solid rgba(165, 240, 255, 0.3);
   transition:
     transform var(--dur-fast) var(--ease-out),

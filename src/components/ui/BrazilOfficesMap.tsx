@@ -56,10 +56,21 @@ export default function BrazilOfficesMap() {
 
         <defs>
           <path id="bm-brasil" d={BRAZIL_PATH} />
+          {/* SIS-78: era `#0a1c35 / #0b2548 / #07162a` — ~8% de luminosidade, ou
+              seja azul-quase-preto. Foi desenhado quando o mapa era um cartao
+              sobre o palco escuro `.bm-palco`; dentro da cena dos escritorios o
+              palco saiu (`globals.css`, `.os-mapa .bm-palco`) e o pais passou a
+              ser uma silhueta a 8% de luz sobre uma folha a 92% — mancha preta,
+              nao mapa.
+
+              Agora é azul da marca: a faixa media de `#0079CB`/`#1479ec`, escura
+              o bastante para os quatro tracos claros por cima continuarem
+              legiveis (o do pais fica em ~4,9:1 contra o tom central) e clara o
+              bastante para ler como azul, e nao como buraco. */}
           <linearGradient id="bm-preenchimento" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#0a1c35" />
-            <stop offset=".52" stopColor="#0b2548" />
-            <stop offset="1" stopColor="#07162a" />
+            <stop offset="0" stopColor="#0a4489" />
+            <stop offset=".52" stopColor="#135fae" />
+            <stop offset="1" stopColor="#073a76" />
           </linearGradient>
           <linearGradient id="bm-traco" x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stopColor="#fff" />

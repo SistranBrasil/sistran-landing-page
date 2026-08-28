@@ -2,6 +2,7 @@
 
 import { MotionConfig } from 'motion/react';
 import { useEffect } from 'react';
+import { easeExpo } from '@/lib/motion';
 
 /**
  * Política de movimento em um lugar só.
@@ -60,7 +61,7 @@ export default function MotionPolicyProvider({ children }: { children: React.Rea
   return (
     <MotionConfig
       reducedMotion="user"
-      transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.42, ease: easeExpo }}
     >
       {children}
     </MotionConfig>

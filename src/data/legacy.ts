@@ -187,37 +187,89 @@ export const mosaicIntro = {
   text: "Cada organização exige um destino diferente. A Luminna preserva o método e adapta arquitetura, dados, nuvem, segurança e engenharia às restrições e aos objetivos de cada cliente.",
 }
 
+/* SIS-68 — abertura do mosaico NA HOME.
+   É campo próprio, e não uma troca no `mosaicIntro` acima, porque aquele objeto
+   serve outros dois lugares onde a escrita antiga é a certa:
+
+   · `/transformacao-legado` monta a MESMA `StackScenes`, e ali
+     "Arquitetura | destino adequado ao contexto" é o cabeçalho correto da seção;
+   · `/solucoes` usa `mosaicIntro.text` como parágrafo do card "Transformação de
+     Legado" — texto com função descritiva, que explica o que é a página. Trocar
+     o campo poria "Empresas que aderem a tecnologia..." num card que precisa
+     descrever legado.
+
+   Título e linha NÃO são escrita nova: são os da seção `Differentials`, hoje
+   comentada em `src/app/page.tsx`. Vêm de
+   `.claude/conteudo-site/00-home.md` (seção 3), verbatim.
+
+   Sem `kicker`: a tag foi removida a pedido. O rótulo acessível da seção continua
+   existindo — é o próprio `<h2 id="sinais-title">`, apontado por
+   `aria-labelledby`.
+
+   O título vem em três pedaços, e não como uma frase que o componente fatia:
+   "Entrega com " + "Alta Performance" (em gradiente) + " e Comprometimento".
+   Fatiar por `split()` faria a marcação depender de a substring bater exatamente,
+   e uma vírgula a mais na revisão de texto derrubaria o realce sem erro nenhum. */
+export const mosaicIntroHome = {
+  tituloAntes: "Entrega com ",
+  /** Sai em gradiente, como na `Differentials`. */
+  tituloRealce: "Alta Performance",
+  tituloDepois: " e Comprometimento",
+  text: "Empresas que aderem a tecnologia em seus processos estão sempre a frente no mercado!",
+}
+
+/* SIS-70 — os quatro vídeos do mosaico apontam para reencodes `tile-*`.
+   Um `<video>` não passa pelo otimizador do Next (só `<Image>` passa), então o
+   arquivo chega no tamanho em que está no disco. O tile é
+   `clamp(6rem, 11vw, 11rem)` com `aspect-ratio: 3/4` — no máximo 176×235 CSS px,
+   ~352×470 em DPR 2 — e as fontes eram 1080×1920. Com `autoPlay`, entrar na tela
+   baixava o arquivo inteiro: 40,5 MB para quatro cartões de 176px.
+
+   Os reencodes são 360×640 (mesma proporção 9:16 da fonte, folga sobre os 352
+   necessários em DPR 2), CRF 30, sem áudio, `+faststart`: 1,5 MB no total, −97%.
+
+     ffmpeg -i azure.mp4 -an -vf "scale=360:640:flags=lanczos" -c:v libx264 \
+       -profile:v main -preset slow -crf 30 -pix_fmt yuv420p -movflags +faststart tile-azure.mp4
+
+   GOP normal aqui, de propósito — e essa é a diferença em relação aos três
+   vídeos dirigidos por scroll (`hero-scroll`, `impacto-assembly-scroll`,
+   `process-scroll`), que são all-intra (`-g 1`) porque cada quadro é destino de
+   seek. Estes tocam em loop solto, nunca recebem `currentTime`, então não há
+   motivo para pagar keyframe em todo quadro.
+
+   Os originais em resolução cheia ficam no disco, intocados: são a fonte de
+   qualquer reencode futuro, e apagá-los deixaria só a versão de 360px. */
 export const mosaicTiles: MosaicTile[] = [
   // A ordem manda no layout: cada tile é posicionado por `:nth-child` no CSS.
   // Trocar o conteúdo de uma vaga muda o que aparece ali, não onde ela fica.
-  { id: "azure", label: "Arquitetura Azure com Azure SQL", layer: "slow", video: "/videos/azure.mp4" },
+  { id: "azure", label: "Arquitetura Azure com Azure SQL", layer: "slow", video: "/videos/tile-azure.mp4" },
   {
     id: "sds",
     label: "SDS | sinistro, regulação e antifraude",
     layer: "fast",
-    video: "/videos/sdsapres.mp4",
+    video: "/videos/tile-sdsapres.mp4",
     href: "https://sds-landing-page-six.vercel.app/",
   },
-  { id: "assessment", label: "Diagnóstico do sistema legado", layer: "slow", image: "/imagens/assement.png" },
-  { id: "aws", label: "Arquitetura orientada ao padrão AWS", layer: "fast", image: "/imagens/aws.png" },
+  { id: "assessment", label: "Diagnóstico do sistema legado", layer: "slow", image: "/imagens/tiles/assement.webp" },
+  { id: "aws", label: "Arquitetura orientada ao padrão AWS", layer: "fast", image: "/imagens/tiles/aws.webp" },
   {
     id: "as-is-to-be",
     label: "Do AS IS à arquitetura alvo",
     layer: "slow",
-    video: "/imagens/aistobe.mp4",
+    video: "/videos/tile-aistobe.mp4",
   },
   {
     id: "cicd",
     label: "Aceite Digital | modernização e nova capacidade",
     layer: "fast",
-    video: "/videos/sad-video.mp4",
+    video: "/videos/tile-sad.mp4",
     href: "https://sad-landingpage.vercel.app/",
   },
   {
     id: "tecnologias",
     label: "Tecnologias definidas pelo contexto",
     layer: "slow",
-    image: "/imagens/tecnologias.png",
+    image: "/imagens/tiles/tecnologias.webp",
   },
   {
     id: "dbs",
@@ -228,7 +280,7 @@ export const mosaicTiles: MosaicTile[] = [
        imagem é a tela do próprio sistema. */
     label: "Gateway de Pagamentos | modernização com testes e infraestrutura",
     layer: "fast",
-    image: "/imagens/dbsapre.png",
+    image: "/imagens/tiles/dbsapre.webp",
     href: "https://landingpage-dbs.vercel.app/login",
   },
   // 9ª posição: é este tile que atravessa para a seção seguinte (ver StackScenes).
@@ -244,7 +296,7 @@ export const mosaicTiles: MosaicTile[] = [
     layer: "slow",
     image: "/images/home/escritoriosp.jpg",
   },
-  { id: "ela", label: "ELA | análise visual de documentos", layer: "fast", image: "/imagens/ela.png" },
+  { id: "ela", label: "ELA | análise visual de documentos", layer: "fast", image: "/imagens/tiles/ela.webp" },
 ]
 
 /* Sequência de montagem presa ao scroll. A montagem é ilustração do método, não
@@ -264,11 +316,12 @@ export const mosaicTiles: MosaicTile[] = [
    é quase vazio, e é ele que aparece com movimento reduzido, quando não há seek.
 */
 export const impactSequence = {
-  kicker: "Impacto | conhecimento convertido em capacidade",
-  /* A quebra é explícita: o `\n` é respeitado porque `.sequence-copy .lp-display`
-     tem `white-space: pre-line`. Sem ponto final. */
-  title: "Do conhecimento implícito\nà operação moderna",
-  text: "Modernizar legado é reconstruir conhecimento, decidir o destino e validar cada camada sem interromper a operação. O resultado é um sistema compreendido, testado, documentado e preparado para evoluir.",
+  kicker: "Desafios no desenvolvimento de software",
+  /* Sem `\n` aqui: `.sequence-copy .lp-display` tem `white-space: pre-line` e
+     respeitaria a quebra, mas o título tem quatro palavras e cabe numa linha
+     só — uma quebra explícita o partiria ao meio. Sem ponto final. */
+  title: "Sobre o Luminna AI",
+  text: "O Luminna AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez.",
   src: "/videos/impacto-assembly-scroll.mp4",
   poster: "/videos/impacto-assembly-poster.jpg",
 }

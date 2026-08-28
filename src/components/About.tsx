@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '@/lib/motion';
+import { vHeader, vTitle, vSubtitle, VP, easeExpo, useReducedMotion } from '@/lib/motion';
 
 /* Numeros e frases da secao "Sobre nós" da pagina A Sistran — nada aqui é
    redacao nova: cada `detail` é uma frase do proprio texto do site.
@@ -215,7 +215,7 @@ export default function About() {
           initial={rm ? false : { opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={VP}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: easeExpo }}
           className="relative mt-20 md:mt-28"
         >
           {/* linha gradient horizontal passando por trás (~50% altura) */}
@@ -249,7 +249,7 @@ export default function About() {
                   viewport={VP}
                   transition={{
                     duration: 0.75,
-                    ease: [0.22, 1, 0.36, 1],
+                    ease: easeExpo,
                     // cascata: cada card entra depois do anterior
                     delay: rm ? 0 : 0.14 * i,
                   }}

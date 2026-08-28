@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import clsx from 'clsx';
 import { PARTNERS, PARTNER_CATEGORIES, type PartnerCategory, type Partner } from '@/data/partners';
 import { getIcon } from '@/lib/icons';
-import { useReducedMotion } from '@/lib/motion';
+import { easeExpo, useReducedMotion } from '@/lib/motion';
 import { useTilt } from '@/lib/useTilt';
 
 type Filter = 'todos' | PartnerCategory;
@@ -19,8 +19,6 @@ const CATEGORY_TONES: Record<PartnerCategory, string> = {
   dados: '#C4A0FB',
   inteligencia: '#6EE7B7',
 };
-
-const easeExpo = [0.22, 1, 0.36, 1] as const;
 
 function PartnerCard({ p, index }: { p: Partner; index: number }) {
   const rm = useReducedMotion();

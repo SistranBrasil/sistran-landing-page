@@ -534,7 +534,8 @@
   place-items: center;
   border-radius: 15px;
   color: #6faeff;
-  background: #0a1b30;
+  /* SIS-78: era `#0a1b30`, oitavo quase-preto do conjunto. */
+  background: var(--palco-marca);
   font-size: 1.35rem;
   font-family: ui-monospace, monospace;
 }

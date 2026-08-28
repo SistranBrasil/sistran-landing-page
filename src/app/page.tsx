@@ -90,7 +90,11 @@ export default function Page() {
             comentada junto: sem caixa de destino ela não tinha onde pousar.
             Conteúdo em `src/data/legacy.ts`. */}
         <div className={editorial.variable}>
-          <StackScenes />
+          {/* SIS-68: variante da home — abertura "Entrega com Alta Performance
+              e Comprometimento" e os quatro pilares dentro do bloco de texto.
+              `/transformacao-legado` monta o mesmo componente sem a prop e
+              continua com a abertura "Arquitetura". */}
+          <StackScenes variante="home" />
         </div>
         {/* Soluções ocupa agora o lugar do Método, a pedido: é o teatro preso ao
             scroll com a pílula "Veja como a Sistran pode ajudar sua Seguradora
@@ -172,6 +176,15 @@ export default function Page() {
           {/* `--deep` continua declarada em `:root` pelo `legacy.css` — com o
               `MetricsStrip` comentado, quem passa a importá-lo aqui é o
               `SignalMarquee` logo abaixo (e o `ImpactSequence` mais adiante). */}
+          {/* SIS-75 — esta é a ÚNICA fronteira escuro↔escuro do site: palco navy
+              da Metrics (`#041a33`) → `--deep` (`#004d8a`) do marquee. O chanfro
+              fica: as duas cores são escuras mas bem diferentes, e sem o SVG a
+              junta lê como degrau de azul, não como continuidade. Modelo A aqui
+              exigiria as duas seções compartilhando `--fundo-marca`, e o marquee
+              pinta o próprio `--deep` do `legacy.css`.
+              É também a fronteira que justificaria `.grade-tecnica--continua` —
+              e não justifica, porque nenhuma das duas desenha a grade (ver a nota
+              no lugar da classe removida, em `globals.css`). */}
           <NotchDivider cor="var(--deep)" />
           <SignalMarquee />
         </div>

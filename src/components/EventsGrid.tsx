@@ -31,7 +31,7 @@ function EventCard({ e, active }: { e: SistranEvent; active: boolean }) {
         'transition-opacity duration-500',
         active ? 'opacity-100' : 'opacity-55',
       )}
-      style={{ transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)' }}
+      style={{ transitionTimingFunction: 'var(--ease-out)' }}
     >
     {/* Escala numa camada interna, nao no item flex: getBoundingClientRect (que
         scrollToIdx usa para mirar o card) reflete transform, e escalar o item
@@ -40,7 +40,7 @@ function EventCard({ e, active }: { e: SistranEvent; active: boolean }) {
       className="h-full transition-transform duration-500"
       style={{
         transform: rm ? undefined : `scale(${active ? 1 : 0.95})`,
-        transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        transitionTimingFunction: 'var(--ease-out)',
       }}
     >
     <article

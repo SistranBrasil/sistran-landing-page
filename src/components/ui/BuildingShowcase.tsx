@@ -11,6 +11,18 @@ import type { BuildingModel, ExplorerApi } from './BuildingExplorer';
  * Moldura do explorador 3D: seletor de modelo, cartao de local, rotulo vertical
  * e o numero de anos de mercado que ja existe no site.
  *
+ * ── FORA DA PAGINA (SIS-69) ────────────────────────────────────────────────
+ * Este componente NAO tem consumidor: o bloco 360° saiu de `/quem-somos` a
+ * pedido. Ele fica no repositorio porque a decisao foi editorial, nao tecnica —
+ * mesmo caminho de `Differentials` em `src/app/page.tsx`. Para religar, ver o
+ * comentario "SIS-69" em `src/app/quem-somos/page.tsx`, que guarda o JSX exato.
+ *
+ * A TORRE continua no site por outro caminho: `OfficesScene` monta
+ * `BuildingExplorer` direto, sem esta moldura. Por isso o CSS de
+ * `.three-explorer-shell` é compartilhado e nao pode ser removido; o de
+ * `.building-*`, `.model-switch`, `.location-*` e `.vertical-label` só existe
+ * para este arquivo e fica dormente junto com ele.
+ *
  * Do material entregue veio só o explorador. O hero que o acompanhava trazia
  * cabecalho, rodape, CTAs e metricas proprias — nada disso entra aqui, porque a
  * pagina ja tem cabecalho, rodape, CTA e seus proprios numeros, e aquelas

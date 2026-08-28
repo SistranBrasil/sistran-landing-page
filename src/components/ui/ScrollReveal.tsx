@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import type { CSSProperties, ReactNode } from 'react';
-import { useReducedMotion } from '@/lib/motion';
+import { easeExpo, useReducedMotion } from '@/lib/motion';
 
 /**
  * Entrada por rolagem para blocos de conteudo.
@@ -21,7 +21,6 @@ import { useReducedMotion } from '@/lib/motion';
  * momento em que entra na tela.
  */
 
-const EASE_MARCA = [0.22, 1, 0.36, 1] as const;
 const PASSO = 0.07; // atraso entre itens vizinhos
 const ATRASO_MAX = 0.42; // teto: com 10 cartoes o ultimo nao pode chegar tarde
 
@@ -74,13 +73,19 @@ export default function ScrollReveal({
             }
       }
       whileInView={{ opacity: 1, y: 0, scale: 1, clipPath: 'inset(0% 0% 0% 0%)' }}
+      /* SIS-71: viewport proprio, e nao o `VP` de `motion.ts`, de proposito. `VP`
+         usa `margin: '-80px'` e nenhum `amount`, o que serve a um bloco unico
+         entrando em cena. Aqui cada item se observa sozinho para escalonar a
+         cascata pelo `indice`: com -80px o ultimo cartao de uma grade de quatro
+         so dispararia bem depois de ja estar visivel, e o `amount: 0.2` e o que
+         faz um cartao alto comecar a entrar sem esperar 20% da tela. */
       viewport={{ once: true, amount: 0.2, margin: '-40px' }}
       transition={
         reduzido
           ? { duration: 0 }
           : {
               duration: 0.7,
-              ease: EASE_MARCA,
+              ease: easeExpo,
               delay: Math.min(indice * PASSO, ATRASO_MAX),
             }
       }

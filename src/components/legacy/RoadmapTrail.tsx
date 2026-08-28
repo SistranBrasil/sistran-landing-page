@@ -1,13 +1,25 @@
 "use client"
 
 import "./legacy.css"
+import dynamic from "next/dynamic"
 import { useMotionValueEvent, useScroll } from "motion/react"
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react"
 import { roadmapIntro, roadmapStops, stageLabel } from "@/data/legacy"
 import { useReducedMotion } from "@/lib/motion"
 import { STOP_SPACING, TRAIL_WIDTH, buildTrail, stopVisual } from "@/lib/legacyRoadmap"
 import { RoadmapCardArt } from "./RoadmapCardArt"
-import { RoadmapStopDialog } from "./RoadmapStopDialog"
+/* SIS-70 — o diálogo só existe atrás de clique, então não precisa estar no
+   pacote inicial. `ssr: false` porque ele monta por `createPortal` e nunca é
+   renderizado no servidor: `opened` começa em `null`.
+
+   Sem `loading`: o gatilho é um clique, não a rolagem. O componente que abre com
+   `ScrollTrigger` é o caso em que o carregamento tardio chega depois de a seção
+   já estar na tela — aqui o usuário já decidiu abrir, e um quadro a mais é
+   invisível ao lado do próprio tempo da animação de entrada. */
+const RoadmapStopDialog = dynamic(
+  () => import("./RoadmapStopDialog").then((m) => m.RoadmapStopDialog),
+  { ssr: false },
+)
 
 const trail = buildTrail(roadmapStops.length)
 

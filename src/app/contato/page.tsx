@@ -46,7 +46,13 @@ export default function Page() {
         }
       />
 
-      <section aria-label="Formulário de contato" className="section-py">
+      {/* SIS-76 — a grade entra nas seções escuras que estavam sem nada. O pedido
+          é uma malha única no site inteiro; enquanto só duas seções de
+          /quem-somos a tinham, o resto do fundo escuro era caixa vazia. Mesmo
+          molde de lá: `relative overflow-hidden` no <section> (a grade é
+          `absolute` em `z-index: -1`) e `aria-hidden` no nó. */}
+      <section aria-label="Formulário de contato" className="section-py relative overflow-hidden">
+        <div aria-hidden className="grade-tecnica" />
         <div className="container-lp grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-start">
           <ul className="space-y-5">
             <li className="glass-card-hover flex gap-4 p-6">
@@ -127,7 +133,8 @@ export default function Page() {
       {/* Este bloco esta na pagina de Contato do site (e o CTA comercial esta em
           Trabalhe conosco — os dois estao trocados na origem). Mantido onde o
           site o publica, com o link apontando para a pagina de carreira. */}
-      <section aria-labelledby="time-sistran" className="section-py">
+      <section aria-labelledby="time-sistran" className="section-py relative overflow-hidden">
+        <div aria-hidden className="grade-tecnica" />
         <div className="container-lp max-w-3xl">
           <span className="tag-section">#sistran</span>
           <h2 id="time-sistran" className="mt-4 font-display text-section font-bold text-white">
