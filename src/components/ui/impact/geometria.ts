@@ -144,6 +144,39 @@ export function criarOnda(
 }
 
 /**
+ * A MESMA onda com amplitude zero: a linha-base reta, de ponta a ponta.
+ *
+ * Orquestração visual, Prioridade 1 — passagem Números → Parceiros. No fim do
+ * percurso a curva "perde amplitude e se torna a linha-base horizontal" de onde
+ * os logos dos parceiros emergem. A amplitude está assada no `d` (é o `y` dos
+ * pontos de controle), então não há como animá-la sem uma segunda geometria:
+ * esta função devolve o MESMO caminho — mesmos comandos, mesmos endpoints, mesma
+ * contagem de nós — com os controles na linha-base.
+ *
+ * Mesma estrutura de comandos de propósito: as duas camadas se cruzam por
+ * `opacity`, e com 22px de amplitude o cruzamento lê como a onda assentando. Um
+ * caminho de estrutura diferente (`M`+`L`, por exemplo) fecharia a porta para
+ * trocar a travessia por interpolação de `d` no dia em que o suporte permitir.
+ */
+export function criarPlano(
+  centroX: number,
+  centroY: number,
+  vao: number,
+  total: number,
+  margem = 1,
+): string {
+  const c = vao * CONTROLE;
+  const x = (i: number) => centroX + i * vao;
+  const primeiro = -Math.max(1, Math.round(margem));
+  const ultimo = total - 1 + Math.max(1, Math.round(margem));
+  let d = `M ${coord(x(primeiro))} ${coord(centroY)}`;
+  for (let i = primeiro; i < ultimo; i += 1) {
+    d += ` C ${coord(x(i) + c)} ${coord(centroY)} ${coord(x(i + 1) - c)} ${coord(centroY)} ${coord(x(i + 1))} ${coord(centroY)}`;
+  }
+  return d;
+}
+
+/**
  * Ponto da onda na posicao continua `etapa` (0 = primeiro indicador,
  * `total - 1` = ultimo), em PIXELS da trilha.
  *

@@ -11,9 +11,12 @@
  * Até aqui esta nota dizia "não há clique: não é carrossel". A segunda metade
  * segue verdadeira; a primeira mudou, e a distinção é o ponto todo.
  *
- * Os sete indicadores só eram alcançáveis rolando 520vh — quem queria o quarto
- * número rolava cinco telas, e por teclado a cena era inalcançável. A faixa de
- * atalhos no pé do palco resolve os dois.
+ * Os sete indicadores só eram alcançáveis rolando a trilha inteira (520vh na
+ * época; 340vh depois da orquestração visual) — quem queria o quarto número
+ * rolava várias telas, e por teclado a cena era inalcançável. A faixa de atalhos
+ * no pé do palco resolve os dois, e depois da Prioridade 2 ela é um dos DOIS
+ * canais de progresso que restaram, junto com o `03 / 07` em texto: o trilho de
+ * pontos e a régua do pé do palco saíram (notas nos respectivos lugares).
  *
  * O que a mantém fora da categoria "carrossel" é o que o clique NÃO faz: ele não
  * escolhe o indicador. O índice ativo continua saindo de um lugar só — o
@@ -55,6 +58,7 @@ import {
   DESVIOS_TRILHO,
   coord,
   criarOnda,
+  criarPlano,
   pontoNaOnda,
   vaoEntreEtapas,
 } from '@/components/ui/impact/geometria';
@@ -72,6 +76,12 @@ const ETAPAS_INICIO = 0.16;
 const ETAPAS_FIM = 0.94;
 /** O pulso aparece no meio da passagem entre dois indicadores e some ao chegar. */
 const PULSO_SUBIDA = 0.2;
+/** Trecho final em que a onda perde amplitude e vira a linha-base horizontal que
+    entrega a narrativa aos parceiros (orquestração visual, Prioridade 1). Começa
+    em `ETAPAS_FIM`: o sétimo indicador já é o da vez, `07 / 07` está na tela, e o
+    que resta do percurso é a passagem — não sobra tempo morto entre as duas
+    coisas, que era o "reset visual" a evitar. */
+const ATERRAR_INICIO = ETAPAS_FIM;
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const doisDigitos = (n: number) => String(n).padStart(2, '0');
@@ -244,7 +254,11 @@ export default function Metrics() {
        centro e metade da tela abria vazia. */
     const margem = Math.ceil(centroX / vao);
     const onda = criarOnda(centroX, centroY, vao, TOTAL, margem);
-    return { vao, centroX, centroY, altura: medida.alturaPalco, ...onda };
+    /* Mesmo caminho com amplitude zero, para a passagem aos parceiros. Calculado
+       junto porque depende das MESMAS entradas — dois `useMemo` sobre a mesma
+       medida seriam duas chances de divergirem. */
+    const dPlano = criarPlano(centroX, centroY, vao, TOTAL, margem);
+    return { vao, centroX, centroY, altura: medida.alturaPalco, dPlano, ...onda };
   }, [medida]);
 
   useEffect(() => {
@@ -268,6 +282,12 @@ export default function Metrics() {
         const p = self.progress;
         palco.style.setProperty('--impact-p', String(p));
         palco.style.setProperty('--impact-entrada', String(clamp01(p / ENTRADA_FIM)));
+        /* Aterragem: 0 enquanto a cena é a onda, 1 quando ela já é a linha-base.
+           O CSS cruza as duas camadas de path com esta variável. */
+        palco.style.setProperty(
+          '--impact-aterrar',
+          String(clamp01((p - ATERRAR_INICIO) / (1 - ATERRAR_INICIO))),
+        );
 
         /* Posicao continua na sequencia, em indices: 0 = primeiro indicador,
            TOTAL-1 = ultimo. É dela que sai TUDO — deslocamento da trilha, trecho
@@ -339,6 +359,7 @@ export default function Metrics() {
       for (const nome of [
         '--impact-p',
         '--impact-entrada',
+        '--impact-aterrar',
         '--impact-etapa',
         '--impact-aceso-x',
         '--impact-pulso-x',
@@ -432,6 +453,30 @@ export default function Metrics() {
                   <span aria-hidden> / </span>
                   <span className="impact-marcador-total">{doisDigitos(TOTAL)}</span>
                 </p>
+                {/* Trilho de sete pontos COMENTADO (orquestração visual,
+                    Prioridade 2).
+
+                    A seção tinha QUATRO leituras simultâneas do mesmo progresso:
+                    o `03 / 07` em texto, estes pontos ao lado dele, os nodes na
+                    curva e a régua no pé do palco — mais a faixa de atalhos, que
+                    também mostra qual é o ativo. Cinco maneiras de responder
+                    "onde estou", nenhuma delas errada isoladamente, e juntas um
+                    ruído: o olho procura qual delas é a oficial.
+
+                    O corte fica com os dois canais que fazem algo que os outros
+                    não fazem: o `03 / 07` em texto (informação exata, e o único
+                    que não depende de cor nem de posição) e a faixa de atalhos
+                    (o único que também NAVEGA, e o canal de teclado da cena).
+                    Os nodes na curva ficam porque não são um indicador de
+                    progresso avulso — são a própria linha-sinal da narrativa
+                    passando pelos indicadores; apagá-los tiraria o motivo
+                    visual, não uma duplicata.
+
+                    Estes pontos eram o mais dispensável: repetiam, em cor e a um
+                    centímetro de distância, exatamente o que o número ao lado já
+                    dizia com precisão. Comentado, e não removido: as regras
+                    `.impact-trilho*` do `globals.css` estão comentadas junto,
+                    com a mesma nota. Religar é descomentar os dois.
                 <div aria-hidden className="impact-trilho">
                   <span className="impact-trilho-aceso" />
                   {METRICS.map((m, i) => (
@@ -442,6 +487,7 @@ export default function Metrics() {
                     />
                   ))}
                 </div>
+                */}
               </div>
             </div>
 
@@ -522,6 +568,12 @@ export default function Metrics() {
                   height={coord(geo.altura)}
                 >
                   <path className="impact-curva-base" d={geo.d} />
+                  {/* Linha-base da passagem aos parceiros: a MESMA curva com
+                      amplitude zero. As duas se cruzam por `opacity`, dirigidas
+                      por `--impact-aterrar`, no último trecho do percurso — a
+                      onda assenta e o que segue para a seção seguinte é uma reta.
+                      Ver `criarPlano` em `geometria.ts`. */}
+                  <path className="impact-curva-plana" d={geo.dPlano} />
                 </svg>
                 <div className="impact-curva-recorte">
                   <svg
@@ -689,13 +741,27 @@ export default function Metrics() {
               </ol>
             </div>
 
-            {/* Régua discreta no pé do palco: traços em `repeating-linear-gradient`
-                e, por cima, a mesma régua em ciano recortada pelo progresso. Dá
-                escala ao percurso sem acrescentar texto — a etapa em número
-                continua no marcador do cabeçalho. */}
+            {/* Régua do pé do palco COMENTADA (orquestração visual, Prioridade 2).
+
+                Era a terceira leitura do progresso: traços em
+                `repeating-linear-gradient` e, por cima, a mesma régua em ciano
+                recortada pelo avanço. A justificação original — "dá escala ao
+                percurso sem acrescentar texto" — perdeu o objeto: a faixa de
+                atalhos ocupa a mesma aresta inferior do palco, mostra os sete
+                ordinais e marca o ativo, então a escala do percurso já está
+                escrita ali, com números em vez de traços, e clicável.
+
+                Duas réguas na mesma borda também competiam: a de traços era a
+                que parecia interativa e não era.
+
+                Comentada, e não removida: as regras `.impact-regua*` do
+                `globals.css` estão comentadas junto, com a mesma nota. Religar
+                é descomentar os dois — e então rever a faixa de atalhos, porque
+                as duas dividem a aresta.
             <span aria-hidden className="impact-regua">
               <span className="impact-regua-viva" />
             </span>
+            */}
           </div>
 
           {/* SIS-73 — faixa de atalhos. Fica FORA do `.impact-cena`, direto no

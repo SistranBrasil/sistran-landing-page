@@ -7,7 +7,10 @@ import PageTransition from '@/components/ui/PageTransition';
 import AnchorFocus from '@/components/ui/AnchorFocus';
 import MotionPolicyProvider from '@/components/layout/MotionPolicyProvider';
 import { MotionPreferenceIntro } from '@/components/layout/MotionPreferenceIntro';
-import { MOTION_PREFERENCE_STORAGE_KEY } from '@/lib/motionPreference';
+import {
+  DEFAULT_MOTION_PREFERENCE,
+  MOTION_PREFERENCE_STORAGE_KEY,
+} from '@/lib/motionPreference';
 
 /**
  * Roda antes do primeiro paint, por isso é texto inline e não módulo: precisa
@@ -31,11 +34,17 @@ const REDUCED_MOTION_OVERRIDE_SCRIPT = `
   var FEATURE_PATTERN = /prefers-reduced-motion/i;
   var NO_PREFERENCE_PATTERN = /prefers-reduced-motion\\s*:\\s*no-preference/i;
   var STORAGE_KEY = "${MOTION_PREFERENCE_STORAGE_KEY}";
+  /* Interpolado de \`DEFAULT_MOTION_PREFERENCE\`, e não escrito à mão: era "full"
+     literal aqui, e o default mudou para "system". Duas cópias do mesmo default
+     é exatamente o tipo de divergência silenciosa que este script já avisa (na
+     nota de \`motionPreference.ts\`) que precisa de replicação manual — com a
+     interpolação, esta metade deixou de precisar. */
+  var DEFAULT_PREFERENCE = "${DEFAULT_MOTION_PREFERENCE}";
 
   function resolvePreference() {
     var stored = null;
     try { stored = localStorage.getItem(STORAGE_KEY); } catch (e) {}
-    var preference = (stored === "system" || stored === "full" || stored === "reduce") ? stored : "full";
+    var preference = (stored === "system" || stored === "full" || stored === "reduce") ? stored : DEFAULT_PREFERENCE;
     if (preference === "reduce") return true;
     if (preference === "full") return false;
     try { return originalMatchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; }

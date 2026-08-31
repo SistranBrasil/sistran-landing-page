@@ -400,7 +400,13 @@ html[data-motion="reduce"] .scene-media-frame {
 
 .mosaic {
   position: relative;
-  min-height: 205svh;
+  /* 205svh -> 172svh (orquestração visual, Prioridade 3). O mosaico responde uma
+     pergunta só — "o que entregamos?" — e cobrava duas telas de rolagem a mais do
+     que precisa para isso. A composição não muda: os tiles têm a mesma
+     distribuição e o mesmo parallax, só percorrem o mesmo caminho em menos curso,
+     o que também aproxima a travessia do tile até a foto de Soluções
+     (`MosaicHandoff`) do momento em que ela é lida como consequência. */
+  min-height: 172svh;
   display: grid;
   /* Texto no ALTO do bloco, não no centro: assim ele já está visível logo abaixo
      do card do hero, em vez de esperar quase uma tela de vazio até os 85svh. */
@@ -2218,7 +2224,19 @@ html.has-dialog {
    depender da barra de URL móvel, que mudaria o curso no meio do gesto. */
 .sequence {
   position: relative;
-  height: 320svh;
+  /* 320svh -> 216svh (orquestração visual, Prioridade 4). Três telas e um terço
+     de rolagem para UMA legenda era o trecho com a pior razão entre curso e
+     conteúdo da página. Agora a seção tem três capítulos que se sucedem no
+     percurso (ver `impactSequence.chapters` em `src/data/legacy.ts` e
+     `.sequence-chapter` mais abaixo), então cada tela de rolagem entrega texto
+     novo — e ainda sobra o trecho de encolhimento em card (`SHRINK`, a partir de
+     0.72 do percurso), que é o que emenda na seção seguinte.
+
+     216svh, e não os 180svh do piso sugerido: o `currentTime` do vídeo é
+     conduzido por este curso, e abaixo de ~200svh o seek passa a andar mais de um
+     quadro por giro de roda em telas grandes — a montagem sai aos saltos, que é
+     exatamente o defeito que a mola do `useSpring` existe para esconder. */
+  height: 216svh;
   /* EMENDA 4 — `.lp-signals` (faixa de parceiros, `--paper`) -> ImpactSequence
      (`--cream`). O passo é curto (branco para azul-claríssimo), mas a faixa tem
      `border-block` e o encontro das duas linhas retas fazia ler como corte. O
@@ -2373,6 +2391,71 @@ html.has-dialog {
   /* Honra o `\n` do título sem impedir a quebra automática: em telas estreitas
      cada uma das duas linhas ainda pode se dividir de novo. */
   white-space: pre-line;
+}
+
+/* ── Capítulos (orquestração visual, Prioridade 4) ─────────────────────────────
+   Compreender / Transformar / Validar e evoluir, os três em FLUXO NORMAL: nada
+   aqui os empilha no mesmo lugar, e é de propósito. O percurso muda a ênfase (a
+   opacidade vem de `ImpactSequence.tsx`, entre 0.28 e 1), nunca a existência —
+   sem JavaScript ou com movimento reduzido a seção é o cabeçalho seguido dos
+   três capítulos, lido de cima para baixo.
+
+   Colunas, e não uma lista vertical, porque a cópia mora na metade de baixo do
+   sticky: três blocos empilhados ali empurrariam o texto para fora da tela junto
+   com o vídeo. Em telas estreitas viram uma coluna só — e aí o modo dirigido nem
+   existe (é de 1024px para cima). */
+.sequence-chapters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  max-width: 62rem;
+}
+
+@media (max-width: 900px) {
+  .sequence-chapters {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sequence-chapter {
+  /* Fio na borda de cima em vez de numeração: os três são etapas de um método,
+     e a linha curta é o mesmo vocabulário da linha-sinal que atravessa a
+     página. `border-top` e não um pseudo-elemento — é uma aresta, não um
+     desenho. */
+  border-top: 1px solid rgb(255 255 255 / 28%);
+  padding-top: 0.75rem;
+}
+
+.sequence-chapter-title {
+  font-family: var(--font-sora), system-ui, sans-serif;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--paper);
+  /* Mesmo halo da cópia acima: o fundo é o vídeo, que muda de quadro a quadro. */
+  text-shadow:
+    0 0 2px rgb(0 26 61 / 95%),
+    0 0 10px rgb(0 26 61 / 80%);
+}
+
+.sequence-chapter-text {
+  margin-top: 0.35rem;
+  font-size: clamp(0.875rem, 1.05vw, 0.95rem);
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--paper) 90%, transparent);
+  text-shadow:
+    0 0 2px rgb(0 26 61 / 95%),
+    0 0 10px rgb(0 26 61 / 75%);
+}
+
+/* Movimento reduzido: os três com o mesmo peso, sem depender de `style` inline
+   (o componente não passa nenhum nesse modo). Explícito de qualquer forma —
+   `opacity` herdada de um render anterior do `motion` não sobreviveria a um
+   recarregamento com a preferência ligada, mas a regra documenta a intenção. */
+html[data-motion="reduce"] .sequence-chapter {
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 /* Menos movimento: sem curso de scroll, sem seek. O quadro do pôster fica parado
@@ -2561,6 +2644,58 @@ html.has-dialog {
   border-block: 1px solid var(--line);
   background: var(--paper);
   color: var(--ink);
+}
+
+/* ── Linha-base da passagem Números → Parceiros (Prioridade 1) ─────────────────
+   A curva de "Sistran em números" assenta numa reta horizontal no fim do
+   percurso daquela seção; esta é a continuação do traço, rente à borda de cima
+   da faixa. Desenha-se da esquerda para a direita na chegada (`data-chegou`,
+   escrito por `SignalMarquee.tsx`) e as marcas sobem dela.
+
+   `transform: scaleX` a partir da esquerda, e não `width`: largura animada é
+   reflow por quadro, e este é um traço de 1px atravessando a tela inteira. */
+.lp-signals-base {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    rgb(14 216 246 / 0%),
+    rgb(14 216 246 / 85%) 12%,
+    rgb(14 216 246 / 85%) 88%,
+    rgb(14 216 246 / 0%)
+  );
+  transform-origin: left center;
+  transition: transform var(--motion-slow, 900ms) var(--ease-enter, ease-out);
+  /* Acima do fundo da faixa, abaixo das marcas: o traço passa por trás dos
+     logos, como um fio de onde eles pendem. */
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ESTADO FINAL É O DEFAULT, como no resto da página: a linha inteira e as marcas
+   no lugar. Quem PEDE o estado de entrada é o JavaScript, escrevendo
+   `data-chegou="0"` ao montar — então sem JS, com o observador nunca disparando
+   ou com movimento reduzido não existe caminho em que a faixa fique invisível.
+   Era o inverso disto (esconder por default e revelar na entrada) que produzia a
+   classe de bug mais grave desta refatoração: conteúdo preso em `opacity: 0`. */
+.lp-signals[data-chegou="0"] .lp-signals-base {
+  transform: scaleX(0);
+}
+
+/* As marcas sobem da linha, depois de ela existir: o atraso é o que faz o gesto
+   ler como "os logos emergem dela", e não como duas coisas aparecendo juntas. */
+.lp-signals .marquee-viewport {
+  transition:
+    opacity var(--motion-base, 600ms) var(--ease-enter, ease-out) 240ms,
+    transform var(--motion-base, 600ms) var(--ease-enter, ease-out) 240ms;
+}
+
+.lp-signals[data-chegou="0"] .marquee-viewport {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
 }
 
 /* Sobrescreve o vão pequeno de `.marquee-copy` (0.75rem, calibrado para as placas

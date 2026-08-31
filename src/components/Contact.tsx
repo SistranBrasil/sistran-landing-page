@@ -37,10 +37,29 @@ const clamp01 = (valor: number) => Math.min(1, Math.max(0, valor));
    telefone e comecar a preencher. */
 const SURGIR_FIM = 0.34;
 
+/**
+ * Orquestração visual, Prioridade 5 — DEPOIS DE CHEGAR, O PAINEL NÃO SE MEXE.
+ *
+ * `--ct-p` era o progresso cru da seção inteira, e o CSS o usa em `translate3d` e
+ * `rotate` (ver `.ct-painel` em `globals.css`). Consequência: o painel continuava
+ * derivando e girando durante todo o percurso — inclusive DEPOIS de o formulário
+ * estar disponível. E como o navegador rola a página para trazer um campo em foco
+ * à vista, clicar ou tabular para um campo mexia a rolagem, a rolagem mexia
+ * `--ct-p`, e `--ct-p` mexia o painel: o campo escapava por baixo do cursor.
+ *
+ * Agora `--ct-p` satura em `SURGIR_FIM`. O trecho de chegada continua idêntico;
+ * o que acaba é o movimento residual do resto do curso. A rolagem conduzida
+ * termina exatamente onde o formulário fica utilizável, que é a exigência.
+ */
+const clamparChegada = (p: number) => (p > SURGIR_FIM ? SURGIR_FIM : p);
+
 export default function Contact() {
   const [dirigindo, setDirigindo] = useState(false);
   const trilhaRef = useRef<HTMLElement>(null);
   const palcoRef = useRef<HTMLDivElement>(null);
+  /* Ref, e não estado: virar `true` não deve re-renderizar a seção — e muito
+     menos o formulário, que a essa altura tem texto digitado dentro. */
+  const travadoRef = useRef(false);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)');
@@ -63,14 +82,33 @@ export default function Contact() {
       end: 'bottom bottom',
       scrub: 1,
       onUpdate: (self) => {
+        /* Trava definitiva: alguém está usando o formulário. Nenhum quadro mais,
+           nem se a rolagem andar — validação que expande uma mensagem de erro,
+           teclado virtual, `scrollIntoView` do navegador ao tabular para o botão
+           de envio, tudo isso move a rolagem, e nada disso pode mover o painel.
+           A trava não se desfaz ao sair do campo: quem já interagiu não deve ver
+           o painel voltar a andar depois. */
+        if (travadoRef.current) return;
         palco.style.setProperty('--ct-surgir', String(clamp01(self.progress / SURGIR_FIM)));
-        palco.style.setProperty('--ct-p', String(self.progress));
+        palco.style.setProperty('--ct-p', String(clamparChegada(self.progress)));
       },
     });
+
+    /* `focusin`, e não `focus`: eventos de foco não borbulham, `focusin` sim —
+       um ouvinte na seção cobre todos os campos, o `select`, o checkbox de
+       consentimento e o botão de envio, presentes ou futuros. */
+    const travar = () => {
+      if (travadoRef.current) return;
+      travadoRef.current = true;
+      palco.style.setProperty('--ct-surgir', '1');
+      palco.style.setProperty('--ct-p', String(SURGIR_FIM));
+    };
+    trilha.addEventListener('focusin', travar);
 
     const atualizar = () => ScrollTrigger.refresh();
     window.addEventListener('resize', atualizar);
     return () => {
+      trilha.removeEventListener('focusin', travar);
       window.removeEventListener('resize', atualizar);
       gatilho.kill();
       for (const nome of ['--ct-surgir', '--ct-p']) palco.style.removeProperty(nome);

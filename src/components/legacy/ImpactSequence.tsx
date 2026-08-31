@@ -1,7 +1,7 @@
 "use client"
 
 import "./legacy.css"
-import { motion, useScroll, useSpring, useTransform } from "motion/react"
+import { motion, useScroll, useSpring, useTransform, type MotionValue } from "motion/react"
 import { useRef } from "react"
 import { ScrollVideo } from "@/components/primitives/ScrollVideo"
 import { useReducedMotion } from "@/lib/motion"
@@ -41,6 +41,71 @@ import { impactSequence } from "@/data/legacy"
  * não precisa emendar em nada, só terminar parado.
  */
 const SHRINK = [0.72, 0.97] as const
+
+/**
+ * Meia-vida de um capítulo: quanto do percurso ele leva para entrar e para sair.
+ * Os capítulos estão a 0.24 de distância (ver `impactSequence.chapters`), então
+ * 0.07 deixa cada um parado e legível na maior parte da sua vez, com uma
+ * passagem curta em que o que sai e o que entra se cruzam — em vez de um corte
+ * seco ou de dois textos sobrepostos por muito tempo.
+ */
+const CAP_BORDA = 0.07
+
+/**
+ * Um capítulo. Componente próprio, e não um `useTransform` dentro de `.map`:
+ * hooks em laço só são legítimos com comprimento garantido, e "garantido por
+ * enquanto" é o tipo de invariante que a próxima edição de `legacy.ts` quebra em
+ * silêncio. Aqui a regra é estrutural — um capítulo, um componente, seus hooks.
+ *
+ * Sob movimento reduzido não recebe `style` nenhum: os três ficam visíveis,
+ * empilhados pelo CSS, e a seção lê como um bloco de texto com três subtítulos.
+ * É a mesma política do resto da página (estado final é o default).
+ */
+function SequenceChapter({
+  progress,
+  at,
+  title,
+  text,
+  reduced,
+}: {
+  progress: MotionValue<number>
+  at: number
+  title: string
+  text: string
+  reduced: boolean
+}) {
+  /* Vai de 0.28 a 1, NÃO de 0 a 1 — e isso é decisão de acessibilidade, não de
+     estética. Se os capítulos desaparecessem por completo, os três teriam de
+     dividir o mesmo lugar na tela (senão a coluna cresceria com dois blocos
+     invisíveis), e aí a legibilidade de dois terços do texto passaria a depender
+     da animação: sem JavaScript, ou se o gesto parasse no meio, o leitor ficaria
+     com um capítulo e dois fantasmas empilhados.
+
+     Ficando os três em fluxo normal e sempre presentes, o percurso muda a
+     ÊNFASE — o capítulo da vez acende, os outros recuam para um cinza legível —
+     e o pior caso possível é ler os três com o mesmo peso. Que é exatamente o
+     que a seção entrega sob movimento reduzido. */
+  const opacity = useTransform(
+    progress,
+    [at - CAP_BORDA, at, at + 0.24 - CAP_BORDA, at + 0.24],
+    [0.28, 1, 1, 0.28],
+  )
+  /* Sobe pouco: 10px. A cena atrás já se move, e um texto que viaja junto com
+     ela compete com o vídeo em vez de comentá-lo. Como os três ficam em fluxo,
+     o deslocamento tem de ser pequeno o suficiente para não parecer que o bloco
+     saiu do lugar em relação aos vizinhos. */
+  const y = useTransform(progress, [at - CAP_BORDA, at], [10, 0])
+
+  return (
+    <motion.div
+      className="sequence-chapter"
+      style={reduced ? undefined : { opacity, y }}
+    >
+      <h3 className="sequence-chapter-title">{title}</h3>
+      <p className="sequence-chapter-text">{text}</p>
+    </motion.div>
+  )
+}
 
 export function ImpactSequence() {
   const section = useRef<HTMLElement>(null)
@@ -106,6 +171,26 @@ export function ImpactSequence() {
             {impactSequence.title}
           </h2>
           <p className="lp-lead">{impactSequence.text}</p>
+
+          {/* Três capítulos que se sucedem no percurso (Prioridade 4). O
+              cabeçalho acima fica: ele nomeia a seção, e os capítulos contam o
+              que a montagem do vídeo está mostrando em cada trecho.
+
+              A ordem no DOM é a ordem de leitura, e é a mesma dos `at`: sem
+              JavaScript, com movimento reduzido ou com o vídeo indisponível, os
+              três aparecem juntos, em sequência, e o texto continua completo. */}
+          <div className="sequence-chapters">
+            {impactSequence.chapters.map((cap) => (
+              <SequenceChapter
+                key={cap.id}
+                progress={scrollYProgress}
+                at={cap.at}
+                title={cap.title}
+                text={cap.text}
+                reduced={reduced}
+              />
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>

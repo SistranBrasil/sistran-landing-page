@@ -29,6 +29,30 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --stagger: 0.08s;
   --blur-max: 12px;
+
+  /* ── Assinatura de movimento da narrativa (orquestração visual) ───────────
+     Nomes canônicos pedidos pela refatoração de narrativa. NÃO são um segundo
+     sistema: são a mesma escala, com os nomes que as seções novas consomem.
+     `--motion-base` e `--ease-enter` apontam para `--dur-base`/`--ease-out`, que
+     já eram os valores da marca em dezenas de regras — mudar um muda os dois, e
+     não há como divergirem.
+
+     `--ease-enter` é a curva de ENTRADA (a de saída da marca, `--ease-out`, é a
+     mesma família: arranca rápido, assenta longo). `--ease-exit` é a inversa,
+     para quem SAI de cena: acelera até desaparecer, porque conteúdo que sai não
+     merece o tempo de assentamento de quem chega.
+
+     `--scroll-scrub` é o único token que não é CSS-only: é o valor de `scrub`
+     dos ScrollTriggers da página, escrito aqui para haver UM lugar a afinar o
+     peso da rolagem. Quem consome em JS lê via `getComputedStyle` ou repete o
+     literal com esta referência no comentário — hoje todas as seções usam 1. */
+  --motion-fast: 180ms;
+  --motion-base: var(--dur-base);
+  --motion-slow: 900ms;
+  --ease-enter: var(--ease-out);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-linear: linear;
+  --scroll-scrub: 1;
 }
 
 /* Trava scroll do body quando menu overlay estiver aberto */
@@ -740,7 +764,13 @@ body::after {
    aqui a rolagem a mais entrega escrita, nao mais video. */
 @media (min-width: 1024px) {
   #top {
-    min-height: 320vh;
+    /* 320vh -> 260vh (orquestração visual). Volta ao valor anterior à inclusão
+       dos indicadores de "Resultados" no fim do percurso do hero: com "Sistran
+       em números" reconstruída como a seção de prova e escala, o hero não
+       precisa mais sustentar a leitura desses indicadores até o fim. O motivo
+       original do encurtamento vale de novo — hero longo cobra rolagem sem
+       entregar conteúdo novo (relatório de UX, p13). */
+    min-height: 260vh;
   }
 }
 
@@ -5359,7 +5389,14 @@ html[data-motion="reduce"] .barra-sinal::before {
    Lenis. */
 .ct-trilha[data-modo="scroll"] {
   /* Um trecho para o painel chegar e mais um para ele ficar parado e legivel. */
-  height: 200svh;
+  /* 200svh -> 110svh (orquestração visual, Prioridade 5). Duas telas de rolagem
+     antes do formulário significavam que a conversão — o fim da narrativa —
+     era a parte que mais cobrava gesto. Agora sobra só o trecho de chegada do
+     painel (`--ct-surgir` termina em SURGIR_FIM = 0.34) e uma folga curta para
+     ele assentar; a partir daí o formulário está disponível e a rolagem
+     conduzida acabou, que é a exigência explícita: o campo em foco não pode se
+     deslocar durante digitação, validação ou envio. */
+  height: 110svh;
   padding-block: 0;
 }
 .ct-trilha[data-modo="scroll"] .ct-inner {
@@ -5860,6 +5897,14 @@ html[data-motion="reduce"] .ct-veu {
   color: #ffffff;
 }
 
+/* ORQUESTRAÇÃO VISUAL, Prioridade 2 — MARCAÇÃO COMENTADA EM `Metrics.tsx`.
+   A seção mostrava o mesmo progresso em cinco lugares; ficaram o `03 / 07` em
+   texto e a faixa de atalhos (ver a nota longa no lugar do `<div
+   className="impact-trilho">`). Estas regras seguem aqui, inertes, porque o
+   histórico de decisão delas (SIS-61, SIS-74 abaixo) é o que explica por que os
+   traços têm a forma que têm — e comentários CSS não aninham, então envolvê-las
+   num comentário maior (elas já têm comentários dentro) quebraria o arquivo.
+   Religar os pontos é descomentar o bloco no TSX; nada aqui precisa mudar. */
 .impact-trilho {
   position: relative;
   display: flex;
@@ -6089,7 +6134,18 @@ html[data-motion="reduce"] .ct-veu {
   .impact-scroll[data-dirigindo] {
     /* Percurso: cerca de sete telas de rolagem para os sete indicadores, mais
        entrada e fechamento. Menos que isso e a passagem fica apressada. */
-    min-height: 520vh;
+    /* 520vh -> 340vh (orquestração visual, Prioridade 1 e 2). Sete telas de
+       rolagem para sete indicadores dava uma tela inteira por número — e o que
+       muda entre um e outro é um número, um título curto e um microvisual, não
+       uma cena nova. Com ~48vh por etapa a passagem continua legível (o scrub
+       de 1 segura o movimento) e a jornada Soluções (304vh) + Números (340vh)
+       cabe na faixa de 650–720vh pedida para o percurso de prova inteiro.
+
+       Não mexer sem olhar `Metrics.tsx`: as fatias vêm de ETAPAS_INICIO/
+       ETAPAS_FIM sobre o progresso NORMALIZADO do gatilho, então encurtar a
+       trilha reescala tudo junto e nenhuma constante lá precisa mudar. O que
+       muda é a velocidade percebida — daí o piso de ~48vh por etapa. */
+    min-height: 340vh;
   }
   /* Duas faixas de altura conhecida: cabeçalho e palco. O cabeçalho tem altura
      TRAVADA (não `auto`) porque é dela que sai a linha-base da curva — com
@@ -6159,6 +6215,26 @@ html[data-motion="reduce"] .ct-veu {
   .impact-scroll[data-dirigindo] .impact-titulo {
     font-size: clamp(1.6rem, 2.6vw, 2.4rem);
     max-width: 26ch;
+  }
+  /* Orquestração visual, Prioridade 1 — a outra metade da emenda Soluções →
+     Números. "Soluções de Negócios" sai por uma máscara vertical subindo (ver
+     `--sol-saida`, no bloco de Soluções); este título ENTRA pelo movimento
+     complementar: vem de baixo, mesma distância (105%, para o descendente do "ç"
+     não aparecer antes da hora) e mesma direção. Os dois lidos em sequência dão
+     um só rolo de texto girando, em vez de dois títulos independentes.
+
+     Reaproveita `--impact-entrada`, que o único ScrollTrigger da seção já
+     escreve (0 no topo da trilha, 1 em `ENTRADA_FIM`) — nenhum gatilho novo.
+     Default 1: sem JS, abaixo de 1024px ou com movimento reduzido o título está
+     inteiro e sem máscara.
+
+     Sem `will-change`: a entrada ocupa os primeiros 14% do percurso e o título
+     fica estático no resto — uma camada de compositor permanente aqui seria
+     desperdício. */
+  .impact-scroll[data-dirigindo] .impact-titulo,
+  .impact-scroll[data-dirigindo] .impact-eyebrow {
+    transform: translate3d(0, calc((1 - var(--impact-entrada, 1)) * 105%), 0);
+    clip-path: inset(calc((1 - var(--impact-entrada, 1)) * 100%) 0 0 0);
   }
   .impact-scroll[data-dirigindo] .impact-palco {
     padding-block: 0;
@@ -6536,6 +6612,23 @@ html[data-motion="reduce"] .ct-veu {
     stroke: rgba(214, 235, 255, 0.42);
     stroke-width: 2;
     stroke-linecap: round;
+    /* Some no fim do percurso, quando a linha-base plana assume: as duas se
+       cruzam em vez de uma sumir e a outra aparecer. Ver `--impact-aterrar` em
+       `Metrics.tsx`. */
+    opacity: calc(1 - var(--impact-aterrar, 0));
+  }
+  /* ── Aterragem: a onda vira linha-base (Prioridade 1, Números → Parceiros) ───
+     Mesmo caminho de `criarPlano`, amplitude zero. Nasce invisível e assume no
+     último trecho, enquanto a onda se apaga — com 22px de amplitude o cruzamento
+     lê como a curva assentando na horizontal, que é o gesto que entrega a
+     narrativa aos parceiros. Mais claro e mais grosso que a base: no fim ela não
+     é mais o "por fazer", é a linha que continua para a seção seguinte. */
+  .impact-scroll[data-dirigindo] .impact-curva-plana {
+    fill: none;
+    stroke: rgba(214, 235, 255, 0.62);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    opacity: var(--impact-aterrar, 0);
   }
   /* SIS-62 — `3` -> `4.5`: a diferença de espessura entre feito e por fazer é o
      que conta o progresso, e sobre o fundo azul (mais claro que o navy antigo) o
@@ -7151,7 +7244,20 @@ html[data-motion="reduce"] .ct-veu {
   .impact-scroll[data-dirigindo]
     .impact-item[data-estado="ativo"]
     .impact-valor {
-    font-size: clamp(5.5rem, 7.5vw, 8rem);
+    /* Orquestração visual, Prioridade 2: o número é o elemento DOMINANTE do
+       quadro, não mais um número grande entre outros elementos grandes.
+       `clamp(5.5rem, 7.5vw, 8rem)` -> piso em 7rem, como a especificação pede.
+
+       O teto e a taxa ficam abaixo dos `14vw`/`13rem` pedidos, e o motivo é
+       geométrico, não estético: o número mora DENTRO da lente
+       (`.impact-lente`, painel de proporção fixa cuja largura sai do vão medido
+       em `geometria.ts`) e divide o painel com o rótulo e a legenda. A 14vw um
+       valor de três dígitos mais o `+` passa da aresta do painel em telas de
+       1440px para cima — e a moldura é justamente o que dá ao número o estatuto
+       de "lente". Crescer além daqui exige alargar o vão, e alargar o vão muda o
+       path da curva, a posição dos nodes e o deslocamento por etapa de uma vez.
+       Fica registrado como divergência consciente. */
+    font-size: clamp(7rem, 9.5vw, 10rem);
   }
   .impact-scroll[data-dirigindo] .impact-mais {
     font-size: 0.45em;
@@ -7189,7 +7295,13 @@ html[data-motion="reduce"] .ct-veu {
     transform: none;
   }
 
-  /* ── Régua de base ──────────────────────────────────────────────────────────
+  /* ── Régua de base — MARCAÇÃO COMENTADA EM `Metrics.tsx` ────────────────────
+     Orquestração visual, Prioridade 2: a régua saiu porque a faixa de atalhos
+     ocupa a MESMA aresta do palco e já diz em números onde o percurso está, e
+     clicável. Estas regras seguem aqui, inertes (`.impact-regua` é
+     `display: none` no default e só reaparecia sob `[data-dirigindo]`); religar
+     é descomentar o bloco no TSX e então repartir a aresta com os atalhos.
+
      Traços em `repeating-linear-gradient` (um só elemento, nenhum nó por traço) e
      por cima a mesma régua acesa, recortada por `clip-path` na fração do
      percurso já feita. Fica no rodapé da cena, longe da lente e dos indicadores
@@ -8296,6 +8408,34 @@ html[data-motion="reduce"] .social-palco .btn-primary:hover::after {
   }
 }
 
+/* ── Saída do título por máscara vertical (Prioridade 1, Soluções → Números) ───
+   "Soluções de Negócios" sai por uma máscara vertical, e "Sistran em números"
+   entra pelo movimento complementar (ver `.impact-titulo` no bloco de Números).
+   Os dois títulos usam a MESMA distância e a MESMA direção, então a emenda lê
+   como um só rolo de texto girando — um título sobe e sai por baixo do próprio
+   recorte, o outro chega de baixo pelo recorte complementar.
+
+   Sem gatilho novo: a fração de saída sai de `--sol-p`, o progresso que o único
+   ScrollTrigger da seção já publica. `clamp()` sobre número puro é o mesmo
+   idioma já usado em `.solutions-*` mais abaixo (a opacidade da dica de
+   rolagem).
+
+   `clip-path` além do `translate`: só transladar deixaria o título passando por
+   cima do que estiver acima dele na página; o recorte faz o texto desaparecer
+   NA borda de cima da própria caixa, que é o que dá a leitura de máscara. */
+.solutions-scroll[data-dirigindo] .solutions-sticky {
+  --sol-saida: clamp(0, calc((var(--sol-p, 0) - 0.9) * 10), 1);
+}
+.solutions-scroll[data-dirigindo] .solutions-titulo,
+.solutions-scroll[data-dirigindo] .solutions-eyebrow {
+  /* -105%, não -100%: o descendente do "ç" de "Negócios" ainda aparece a 100%. */
+  transform: translate3d(0, calc(var(--sol-saida, 0) * -105%), 0);
+  clip-path: inset(0 0 calc(var(--sol-saida, 0) * 100%) 0);
+  /* Sem `will-change`: a saída ocupa 10% do percurso e passa 90% do tempo em
+     zero — uma camada de compositor permanente para dois títulos que quase nunca
+     se movem é exatamente o desperdício que a regra de performance proíbe. */
+}
+
 /* ---------- Layout ---------- */
 .solutions-layout {
   position: relative; /* caixa de referencia da linha de processo medida */
@@ -8841,7 +8981,19 @@ html[data-motion="reduce"] .social-palco .btn-primary:hover::after {
     margin-top: -100svh;
   }
   .solutions-scroll[data-dirigindo] .solutions-passo {
-    min-height: 100vh;
+    /* 100vh -> 76vh por fatia (orquestração visual, Prioridade 1): a seção passa
+       de 400vh para 304vh. Uma tela cheia de rolagem por solução era o preço de
+       trocar uma foto e um cartão de texto — e Soluções é o primeiro terço de uma
+       jornada de prova que segue em "Sistran em números" (340vh) e fecha nos
+       parceiros. As duas trilhas somam ~644vh, dentro da faixa de 650–720vh
+       pedida para a jornada inteira, contra os ~920vh de antes.
+
+       As fatias continuam IGUAIS entre si, e isso não é detalhe de estilo: o
+       índice ativo sai de `floor(progress * 4)` em `Solutions.tsx`, então quatro
+       fatias de alturas diferentes trocariam a cena fora da etapa
+       correspondente. Mudar este número é mudar as quatro de uma vez — é por isso
+       que ele é uma regra só. */
+    min-height: 76vh;
   }
 
   /* Composicao assimetrica: coluna de navegacao estreita, palco dominante. */

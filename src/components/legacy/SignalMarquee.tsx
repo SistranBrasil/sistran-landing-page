@@ -26,6 +26,7 @@
 import './legacy.css';
 import { useEffect, useRef, useState } from 'react';
 import { CLIENTS } from '@/data/clients';
+import { prefersReducedMotion } from '@/lib/motion';
 
 /* Só as marcas COM arquivo de logo. A faixa é puramente visual: um chip textual
    no meio de placas gráficas (o fallback do `ClientWall`) quebraria o ritmo do
@@ -41,6 +42,60 @@ export function SignalMarquee() {
      — as duas cópias da trilha não cobrem a tela e sobra um vazio até o loop
      reiniciar. Medimos e repetimos até a cópia encher a viewport. */
   const [repeats, setRepeats] = useState(1);
+  const regiaoRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * Chegada da faixa: a linha-base se desenha e as marcas sobem dela uma vez, na
+   * entrada. Um `IntersectionObserver` só, desconectado depois do primeiro
+   * disparo — não é um efeito que reaja à rolagem, é uma chegada.
+   *
+   * `data-chegou` em vez de estado React porque o CSS é o único interessado, e
+   * porque um re-render aqui remontaria a trilha do marquee no meio do loop.
+   *
+   * O atributo vale `"0"` (estado de entrada) e depois some. Escrito ASSIM, e não
+   * ao contrário: o CSS tem o estado final como default e é o JavaScript que pede
+   * o estado de entrada. Sem JS, com movimento reduzido ou se o observador nunca
+   * disparar, a faixa está inteira na tela — nunca presa em `opacity: 0`.
+   *
+   * Por que a subida é do GRUPO e não de cada marca, em cascata: os itens da
+   * faixa existem em duas cópias e se repetem `repeats` vezes dentro de cada uma,
+   * e a trilha já está em translação contínua. Um `animation-delay` por item
+   * escalonaria também as duplicatas — a mesma marca subiria duas vezes, em
+   * momentos diferentes, enquanto atravessa a tela. A sequência que a
+   * especificação pede é o que a própria translação do loop já produz: as marcas
+   * entram uma depois da outra pela borda.
+   */
+  useEffect(() => {
+    const regiao = regiaoRef.current;
+    if (!regiao) return;
+
+    if (prefersReducedMotion()) return;
+
+    /* Pede o estado de entrada. Num quadro seguinte, para o navegador ter o
+       estado final registrado antes — sem isso a transição não teria de onde
+       partir e a faixa apareceria de uma vez. */
+    regiao.dataset.chegou = '0';
+
+    const io = new IntersectionObserver(
+      (entradas) => {
+        for (const entrada of entradas) {
+          if (!entrada.isIntersecting) continue;
+          delete regiao.dataset.chegou;
+          io.disconnect();
+        }
+      },
+      /* 25% da faixa: a linha-base tem de começar a se desenhar quando ela ainda
+         está entrando, para o traço parecer vindo da seção de cima. */
+      { threshold: 0.25 },
+    );
+    io.observe(regiao);
+    return () => {
+      io.disconnect();
+      /* Se a seção desmontar antes de a faixa chegar, o que fica é o estado
+         final — não o de entrada congelado. */
+      delete regiao.dataset.chegou;
+    };
+  }, []);
 
   useEffect(() => {
     const vp = viewportRef.current;
@@ -92,7 +147,21 @@ export function SignalMarquee() {
   return (
     /* `aria-label` na região: sem ele a faixa é uma sequência de imagens sem
        contexto — quem ouve não sabe do que é essa lista de nomes. */
-    <div className="lp-signals" role="region" aria-label="Parceiros e tecnologias">
+    <div
+      ref={regiaoRef}
+      className="lp-signals"
+      role="region"
+      aria-label="Parceiros e tecnologias"
+    >
+      {/* Linha-base da passagem Números → Parceiros (orquestração visual,
+          Prioridade 1). A curva de "Sistran em números" perde amplitude e vira
+          uma reta horizontal no fim daquele percurso (`--impact-aterrar`); esta
+          é a continuação dela — o mesmo traço, agora carregando as marcas.
+
+          Ela se desenha da esquerda para a direita quando a faixa entra na tela,
+          e as marcas sobem dela. Decorativa: `aria-hidden`, e a faixa funciona
+          exatamente igual sem ela. */}
+      <span aria-hidden className="lp-signals-base" />
       <div ref={viewportRef} className="marquee-viewport">
         <div className="marquee-track marquee-left">
           <div ref={groupRef} className="marquee-copy lp-signals-copy">

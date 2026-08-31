@@ -129,7 +129,11 @@ export function MotionPreferenceDialog({ mode, onClose }: Props) {
             <button
               type="button"
               className="motion-dialog-accept"
-              onClick={() => finish('full')}
+              /* `'system'`, não `'full'`: o botão de confirmação do banner
+                 grava o default respeitoso em vez de forçar animação plena em
+                 quem pediu movimento reduzido no dispositivo. Ver a nota de
+                 `accept` em `motionPreference.ts`. */
+              onClick={() => finish('system')}
             >
               {motionPreference.accept}
             </button>

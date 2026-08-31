@@ -2,7 +2,25 @@ export type MotionPreference = 'system' | 'full' | 'reduce';
 
 export const MOTION_PREFERENCE_STORAGE_KEY = 'sistran-motion-preference';
 export const MOTION_PREFERENCE_SEEN_KEY = 'sistran-motion-preference-seen';
-export const DEFAULT_MOTION_PREFERENCE: MotionPreference = 'full';
+/**
+ * Padrão: SEGUIR O SISTEMA.
+ *
+ * Era `'full'`, e isso fazia a página ignorar `prefers-reduced-motion` de quem
+ * nunca abriu o banner — ou seja, de quase todo mundo. A preferência do SO é uma
+ * declaração de necessidade, não uma sugestão a ser sobrescrita por um default;
+ * `prefers-reduced-motion: reduce` é padrão em muitos perfis corporativos do
+ * Windows e no modo de economia de bateria, então o público afetado não é caso
+ * de borda.
+ *
+ * `'full'` continua existindo como escolha EXPLÍCITA — quem tem a preferência
+ * ligada no sistema mas quer a experiência completa aqui marca "Ativas" e a
+ * escolha persiste em `localStorage`. O que mudou é só de quem é o benefício da
+ * dúvida.
+ *
+ * Consequência a lembrar: o script inline de `app/layout.tsx` espelha
+ * `resolveReducedMotion` à mão, mas lê ESTE default por nome — ver a nota lá.
+ */
+export const DEFAULT_MOTION_PREFERENCE: MotionPreference = 'system';
 
 function isMotionPreference(value: unknown): value is MotionPreference {
   return value === 'system' || value === 'full' || value === 'reduce';
@@ -73,13 +91,33 @@ export type MotionPreferenceOption = {
 /** Cópia do banner. O projeto não tem `@/content/site`, então mora aqui. */
 export const motionPreferenceCopy = {
   title: 'Preferências de movimento',
-  note: 'Esta página utiliza animações. Se isso causa desconforto/enjoo, tontura ou sensibilidade à luz, escolha "Sistema" ou "Reduzidas" em "Mais opções".',
-  accept: 'Aceitar',
+  note: 'Esta página utiliza animações e, por padrão, segue a preferência de movimento deste dispositivo. Se as animações causam desconforto/enjoo, tontura ou sensibilidade à luz, escolha "Reduzidas" em "Mais opções".',
+  /* Era "Aceitar", e o botão gravava `'full'`. Com o default seguindo o sistema,
+     aquele par virava uma armadilha: o botão grande e destacado do banner
+     sobrescreveria a preferência de movimento de quem a tem ligada no SO —
+     justamente quem o banner existe para proteger. Agora o botão CONFIRMA o
+     default respeitoso (grava `'system'`, ver `MotionPreferenceDialog.finish`), e
+     "Ativas" continua alcançável em "Mais opções" como escolha explícita. */
+  accept: 'Continuar',
   moreOptions: 'Mais opções',
   fewerOptions: 'Menos opções',
   close: 'Fechar',
+  /**
+   * O texto anterior avisava que, fora de "Ativas", "algum elemento pode
+   * aparecer posicionado de forma inesperada". Saiu por dois motivos.
+   *
+   * O primeiro é que a refatoração de narrativa tornou-o falso: o modo reduzido
+   * não é a mesma página com as animações desligadas, é um layout estático
+   * completo — sem trilha alta, sem `sticky` dirigido, sem scrub, e com todo
+   * conteúdo no estado final (é o default do CSS, e o modo dirigido é que se
+   * adiciona por `[data-dirigindo]`).
+   *
+   * O segundo é que um aviso de possível defeito na opção acessível empurra quem
+   * precisa dela de volta para a opção que causa desconforto. A acessibilidade
+   * não é um modo degradado que se aceita sob ressalva.
+   */
   alternativeNote:
-    'Esta página tem animações bastante dinâmicas. Ao escolher uma preferência diferente de "Ativas", é possível que, ocasionalmente, algum elemento apareça posicionado de forma inesperada.',
+    'Em "Sistema" e "Reduzidas" a página é apresentada em layout estático: todo o conteúdo fica visível de uma vez, sem percursos de rolagem nem vídeo conduzido pelo gesto.',
   footerTrigger: 'Preferências de movimento',
   options: [
     { id: 'full', label: 'Ativas', hint: 'Toda a animação e o vídeo conduzido por scroll, sem alteração.' },

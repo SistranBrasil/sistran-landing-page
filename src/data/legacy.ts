@@ -324,6 +324,46 @@ export const impactSequence = {
   text: "O Luminna AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez.",
   src: "/videos/impacto-assembly-scroll.mp4",
   poster: "/videos/impacto-assembly-poster.jpg",
+  /**
+   * Três capítulos (orquestração visual, Prioridade 4).
+   *
+   * Antes a seção pedia 320svh — três telas e um terço de rolagem — para UMA
+   * legenda: era o pior trecho da página na razão entre curso cobrado e conteúdo
+   * entregue. A trilha caiu para 216svh E o conteúdo triplicou; as duas metades
+   * do problema, não só a primeira.
+   *
+   * `at` é a fração do percurso da seção em que o capítulo é o da vez. Os três
+   * cabem antes de `SHRINK[0]` (0.72, em `ImpactSequence.tsx`), porque a partir
+   * dali a cena recua para card pequeno e a legenda sai — um quarto capítulo, ou
+   * um terceiro atrasado, escreveria sobre o recuo. Espaçamento igual: a
+   * montagem do vídeo não tem batidas marcadas o suficiente para justificar
+   * frações irregulares, e inventá-las seria fingir uma sincronia que o arquivo
+   * não sustenta.
+   *
+   * O `title`/`text` de cima seguem existindo e NÃO são redundantes: são o
+   * cabeçalho da seção (o `<h2>` que `aria-labelledby` aponta). Os capítulos são
+   * `<h3>`.
+   */
+  chapters: [
+    {
+      id: "compreender",
+      at: 0.08,
+      title: "Compreender",
+      text: "Transformar contexto complexo — sistemas, regras de negócio e histórico de operação — em uma visão acionável do que precisa mudar.",
+    },
+    {
+      id: "transformar",
+      at: 0.32,
+      title: "Transformar",
+      text: "Converter esse conhecimento em fluxos, decisões e código: a modernização deixa de ser diagnóstico e passa a ser entrega em produção.",
+    },
+    {
+      id: "validar",
+      at: 0.56,
+      title: "Validar e evoluir",
+      text: "Aprender com a operação e com os resultados, para que cada ciclo devolva evidência ao próximo — e a plataforma evolua com o negócio.",
+    },
+  ],
 }
 
 export const roadmapIntro = {
