@@ -1,0 +1,14 @@
+interface:
+  display_name: Waabi Typography
+  short_description: Apply Waabi-inspired typography safely
+  default_prompt: Use $waabi-typography to apply a responsive Waabi-inspired typography
+    system to this project without changing its content or layout.
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true
