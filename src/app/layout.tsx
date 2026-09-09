@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Instrument_Serif, Inter } from 'next/font/google';
+import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Background from '@/components/Background';
 import SmoothScroll from '@/components/ui/SmoothScroll';
@@ -132,24 +132,91 @@ const REDUCED_MOTION_OVERRIDE_SCRIPT = `
 })();
 `;
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
-/* TIPOGRAFIA.md — o display do site deixou de ser sans geométrico e passou a ser
-   serifa editorial: `Sora` saiu, `Instrument Serif` entrou. O corpo segue Inter.
+/* SIS-155 — O PAR TIPOGRÁFICO DO SITE, e a troca mais espalhada que este arquivo
+   já sofreu: saiu `Instrument Serif` + `Inter`, entrou `Geist Sans` + `Geist
+   Mono` (`docs/terminal-typography-prompt.md`). São duas camadas:
 
-   `weight: '400'` não é opcional: a fonte NÃO é variável, e omitir o peso quebra
-   o build com `Missing weight for font Instrument_Serif`. É também a razão de
-   toda a hierarquia de display vir de tamanho e `letter-spacing`, nunca de peso —
-   qualquer valor acima de 400 seria negrito sintetizado pelo navegador, que
-   engrossa e borra as serifas.
+     • proporcional (`Geist`) — hero, títulos, navegação e parágrafo. Hierarquia
+       por TAMANHO e ESPAÇAMENTO, nunca por peso: 400 é a assinatura, 500 existe
+       só para navegação e ênfase intencional. É a mesma disciplina da adoção
+       anterior, por outro motivo — antes porque a serifa só tinha 400, agora
+       porque é a característica da referência.
+     • técnica (`Geist Mono` 600) — botão, rótulo curto, categoria, metadado,
+       valor, código, estado, timestamp. NUNCA parágrafo, NUNCA título longo.
 
-   O itálico entra porque a home e `/transformacao-legado` já o usavam quando a
-   serifa era declarada por rota (`--font-legacy-serif`); centralizada aqui, ela
-   precisa continuar oferecendo os dois estilos. */
-const serif = Instrument_Serif({
-  weight: '400',
+   Retirar a serifa dos 76 pontos de `font-display` é reversão de identidade, não
+   ajuste, e por isso tem aval datado: aprovado em 09/09/2026 por quem responde
+   pela marca, registrado no ponto 1 da SIS-155. Não é decisão de implementador e
+   não deve ser reaberta aqui.
+
+   `weight` explícito nos dois, e não a variável: pedir `variable` traria o eixo
+   100–900 e com ele a porta aberta para qualquer peso, que é justamente o que a
+   lista fechada impede. Os cortes carregados são 400/500/600/700 na Sans e 600 na
+   Mono — os dois últimos da Sans são desvio do prompt, e o ⚠️ logo acima do
+   carregador traz a medição que o obrigou.
+
+   ⚠️ ITÁLICO: a Sans carrega `['normal','italic']` de propósito. A SIS-155
+   afirmava que "Geist Sans não tem corte itálico real"; a tabela deste
+   carregador (`next/dist/compiled/@next/font/.../font-data.json`) declara
+   `styles: ['normal','italic']` para `Geist` e `Geist Mono`, e o build baixa o
+   arquivo itálico — ou seja é CORTE, não oblíquo sintetizado, e é por isso que o
+   `font-synthesis: none` de `globals.css` não o apaga. Ver a nota de
+   `essence-accordion.css`, onde fica o único `font-style: italic` do projeto.
+
+   O carregamento anterior fica abaixo, comentado e não deletado (regra da casa):
+
+     const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
+     const serif = Instrument_Serif({
+       weight: '400',            // a fonte NÃO é variável; omitir quebrava o build
+       style: ['normal', 'italic'],
+       subsets: ['latin'],
+       variable: '--font-serif',
+       display: 'swap',
+     });
+
+   O motivo de cada linha dele, para quem precisar reverter: `weight: '400'` era
+   obrigatório porque `Instrument Serif` não é variável (`Missing weight for font
+   Instrument_Serif`), e era também a razão de a hierarquia de display vir de
+   tamanho — qualquer peso acima de 400 seria negrito sintetizado, que engrossa e
+   borra serifa. O itálico entrava porque a home e `/transformacao-legado` já o
+   usavam quando a serifa era declarada por rota (`--font-legacy-serif`). */
+/* ⚠️ DESVIO DECLARADO DO PROMPT, com o número que o obrigou — o prompt pede
+   "Geist Sans 400/500", e SÓ esses dois cortes deixariam 285 pontos de texto do
+   site sendo desenhados em 500. Não é estimativa: é a contagem de uma sonda de
+   navegador sobre o build de produção, varrendo as 12 rotas e listando cada nó de
+   texto cujo `font-weight` COMPUTADO passa de 500 na família proporcional —
+   600 em 178 pontos, 700 em 95, e 650/720/730/760/800 nos 12 restantes.
+
+   Com `font-synthesis: none` em `html`, nenhum desses 285 vira negrito falso; o
+   navegador simplesmente serve o corte mais próximo que existe, que seria o 500.
+   Ou seja: o site não ganharia peso fabricado — ele PERDERIA a camada de ênfase
+   inteira, de uma vez, calada. O `span` de ênfase do próprio hero da home
+   (70,56px, peso 700) e os dois botões "Fale com a gente" (700) ficariam
+   indistinguíveis do texto ao lado, e `font-semibold` — 178 dos 285 — passaria a
+   não fazer nada em lugar nenhum do projeto.
+
+   A alternativa fiel ao prompt seria RETIRAR o pedido de peso desses 285 pontos e
+   passar a ênfase para a camada Mono, caixa alta e `letter-spacing`. Isso é
+   redesenho de 285 marcações em JSX e CSS, muda a aparência muito além de
+   tipografia, e esta issue é explicitamente "typography only". Não cabe aqui.
+
+   Então entram 600 e 700 como CORTES REAIS (cobrem 273 dos 285; os pesos de eixo
+   herdados do Inter variável — 650, 720, 730, 760, 800 — passam a resolver no 700
+   real mais próximo, sem síntese). A disciplina do prompt continua valendo para o
+   que se ESCREVE de novo: 400 é a assinatura, 500 a navegação, e ênfase nova vai
+   para a Mono, não para um 700 a mais. Voltar ao pedido literal do prompt é apagar
+   dois itens desta lista — e reabrir os 285. */
+const geistSans = Geist({
+  weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
   subsets: ['latin'],
-  variable: '--font-serif',
+  variable: '--font-geist-sans',
+  display: 'swap',
+});
+const geistMono = Geist_Mono({
+  weight: '600',
+  subsets: ['latin'],
+  variable: '--font-geist-mono',
   display: 'swap',
 });
 
@@ -210,7 +277,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
        O escopo é o atributo deste elemento — não silencia os filhos. */
     <html
       lang="pt-BR"
-      className={`${inter.variable} ${serif.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
       {/* O `<head>` manual SAIU daqui, e o script que vivia dentro dele desceu

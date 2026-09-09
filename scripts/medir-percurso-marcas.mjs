@@ -2,6 +2,18 @@
  * SIS-156 — confere o percurso pinado de "Sistran em números" com a grade
  * estática de marcas como rodapé, em vez da faixa rolante.
  *
+ * ⚠️ ESTE SCRIPT MEDIU O ARRANJO ANTERIOR À SIS-179. Naquele arranjo a grade de
+ * marcas era o rodapé desta seção; na SIS-179 ela subiu para logo depois do hero
+ * (mount em `src/app/page.tsx`) e a seção ficou SEM rodapé. O cabeçalho fica como
+ * está, no tempo em que foi escrito, porque é o registro do que foi medido e de
+ * como — reescrevê-lo no presente faria parecer que estas medições valem para a
+ * arrumação de hoje.
+ * O que o script continua sendo bom para: as três asserções não pressupõem rodapé
+ * nenhum, então rodá-lo depois da SIS-179 é justamente o jeito de verificar que a
+ * razão medida de `ETAPAS_FIM` se reajustou sozinha à altura zero — que é o motivo
+ * pelo qual `ETAPAS_FIM_PADRAO` NÃO foi recalculado. Ver a nota dele em
+ * `Metrics.tsx`. Só não espere reencontrar os ~690px de rodapé: eles saíram.
+ *
  * O que se mede e por quê: a caixa do percurso mede `340vh` MAIS a altura do
  * rodapé, e as sete etapas se reescalam sobre o progresso normalizado dessa
  * caixa (`ETAPAS_INICIO = 0.16` e `ETAPAS_FIM`, em `Metrics.tsx`). Trocar

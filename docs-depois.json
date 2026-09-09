@@ -1,0 +1,289 @@
+{
+ "rotulo": "depois",
+ "saida": {
+  "scrollspy": {
+   "/quem-somos": {
+    "pior": {
+     "texto": "Conheça também",
+     "tinta": 127.08
+    },
+    "segundo": {
+     "texto": "Por que Sistran",
+     "tinta": 123.23
+    },
+    "bordaDireita": 165.08
+   },
+   "/solucoes": {
+    "pior": {
+     "texto": "Consultoria",
+     "tinta": 95.58
+    },
+    "segundo": {
+     "texto": "Tecnologia",
+     "tinta": 86.8
+    },
+    "bordaDireita": 133.58
+   },
+   "/solucoes/fast": {
+    "pior": {
+     "texto": "Monitoramento",
+     "tinta": 118.53
+    },
+    "segundo": {
+     "texto": "O que é o Fast?",
+     "tinta": 114.92
+    },
+    "bordaDireita": 156.53
+   },
+   "/sistran-labs": {
+    "pior": {
+     "texto": "Principais",
+     "tinta": 77.56
+    },
+    "segundo": {
+     "texto": "Soluções",
+     "tinta": 73.06
+    },
+    "bordaDireita": 115.56
+   },
+   "/esg": {
+    "pior": {
+     "texto": "Environment",
+     "tinta": 98.05
+    },
+    "segundo": {
+     "texto": "Governance",
+     "tinta": 92.69
+    },
+    "bordaDireita": 136.05
+   },
+   "/transformacao-legado": {
+    "pior": {
+     "texto": "Arquitetura",
+     "tinta": 94.36
+    },
+    "segundo": {
+     "texto": "Roadmap",
+     "tinta": 66.92
+    },
+    "bordaDireita": 132.36
+   },
+   "/contato": {
+    "pior": {
+     "texto": "Onde Estamos",
+     "tinta": 105.8
+    },
+    "segundo": {
+     "texto": "#timeSISTRAN",
+     "tinta": 97.77
+    },
+    "bordaDireita": 143.8
+   },
+   "/eventos-inovacao": {
+    "pior": {
+     "texto": "Eventos",
+     "tinta": 62.14
+    },
+    "segundo": {
+     "texto": "Social",
+     "tinta": 50.63
+    },
+    "bordaDireita": 100.14
+   },
+   "/trabalhe-conosco": {
+    "pior": {
+     "texto": "Social",
+     "tinta": 50.63
+    },
+    "segundo": {
+     "texto": "Início",
+     "tinta": 43.36
+    },
+    "bordaDireita": 88.63
+   },
+   "/parceiros-e-implementacoes": {
+    "pior": {
+     "texto": "Implementações",
+     "tinta": 123.42
+    },
+    "segundo": {
+     "texto": "Linha do tempo",
+     "tinta": 115.64
+    },
+    "bordaDireita": 161.42
+   },
+   "/sistran-university": {
+    "pior": {
+     "texto": "O Programa",
+     "tinta": 90.94
+    },
+    "segundo": {
+     "texto": "Números",
+     "tinta": 67.47
+    },
+    "bordaDireita": 128.94
+   },
+   "/latam": {
+    "pior": {
+     "texto": "Aseguradoras",
+     "tinta": 110.55
+    },
+    "segundo": {
+     "texto": "Experiencia",
+     "tinta": 89.91
+    },
+    "bordaDireita": 148.55
+   },
+   "/blog": null
+  },
+  "contatoCartao": {
+   "390": {
+    "cartao": 350,
+    "distintas": [
+     350
+    ],
+    "porFileira": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "piorRotulo": "650+628+Mil horas de Capacidade Produtiva no Brasil",
+    "tintaRotulo": 91.2,
+    "linhasRotulo": 5
+   },
+   "768": {
+    "cartao": 352,
+    "distintas": [
+     352
+    ],
+    "porFileira": [
+     2,
+     2,
+     2,
+     1
+    ],
+    "piorRotulo": "650+618+Mil horas de Capacidade Produtiva no Brasil",
+    "tintaRotulo": 91.2,
+    "linhasRotulo": 5
+   },
+   "1024": {
+    "cartao": 280,
+    "distintas": [
+     280
+    ],
+    "porFileira": [
+     7
+    ],
+    "piorRotulo": "650+0+Mil horas de Capacidade Produtiva no Brasil",
+    "tintaRotulo": 98.05,
+    "linhasRotulo": 5
+   },
+   "1440": {
+    "cartao": 345.59,
+    "distintas": [
+     345.59
+    ],
+    "porFileira": [
+     7
+    ],
+    "piorRotulo": "650+0+Mil horas de Capacidade Produtiva no Brasil",
+    "tintaRotulo": 127.69,
+    "linhasRotulo": 5
+   }
+  },
+  "solucoesManchete": {
+   "320": {
+    "linhas": 13,
+    "fontSize": "32px",
+    "fontFamily": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+    "lineHeight": "34.56px",
+    "largura": 280,
+    "altura": 310.92,
+    "caracteres": 118,
+    "transbordo": false
+   },
+   "768": {
+    "linhas": 7,
+    "fontSize": "32px",
+    "fontFamily": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+    "lineHeight": "34.56px",
+    "largura": 720,
+    "altura": 103.64,
+    "caracteres": 118,
+    "transbordo": false
+   },
+   "1024": {
+    "linhas": 7,
+    "fontSize": "36.864px",
+    "fontFamily": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+    "lineHeight": "39.8131px",
+    "largura": 960,
+    "altura": 119.39,
+    "caracteres": 118,
+    "transbordo": false
+   },
+   "1440": {
+    "linhas": 7,
+    "fontSize": "51.2px",
+    "fontFamily": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+    "lineHeight": "55.296px",
+    "largura": 1116,
+    "altura": 165.89,
+    "caracteres": 118,
+    "transbordo": false
+   },
+   "1920": {
+    "linhas": 7,
+    "fontSize": "51.2px",
+    "fontFamily": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+    "lineHeight": "55.296px",
+    "largura": 1116,
+    "altura": 165.89,
+    "caracteres": 118,
+    "transbordo": false
+   }
+  },
+  "home": {
+   "marcasTitulo": {
+    "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+    "peso": "400",
+    "corpo": "51.84px",
+    "estilo": "normal",
+    "largura": 1116,
+    "linhas": 2
+   },
+   "heroH1": {
+    "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+    "peso": "400",
+    "corpo": "16px",
+    "estilo": "normal",
+    "largura": 1,
+    "linhas": 1
+   },
+   "corpo": {
+    "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+    "peso": "700",
+    "corpo": "70.56px",
+    "estilo": "normal",
+    "largura": 518.39,
+    "linhas": 5
+   },
+   "bodyFeature": "normal",
+   "sintese": "none",
+   "kerning": "normal"
+  },
+  "italico": [
+   {
+    "classe": "essence-footnote",
+    "texto": "*Total Cost of Ownership, uma estimativa",
+    "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+    "estilo": "italic",
+    "corpo": "27.2px"
+   }
+  ]
+ }
+}

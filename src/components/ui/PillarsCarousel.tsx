@@ -61,7 +61,13 @@ export default function PillarsCarousel() {
         <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#0ed8f6]">
           Nossos pilares
         </span>
-        <span className="text-[10px] font-semibold tabular-nums text-white/75">
+        {/* SIS-155 — ESTADO ("03 / 07") na camada técnica, e o corpo subiu de 10px
+            para 11px: 10px é o degrau que a issue proíbe explicitamente, e o piso é
+            11px. `font-semibold` = 600, o único peso da Mono. */}
+        <span
+          className="text-[11px] font-semibold tabular-nums text-white/75 font-mono"
+          style={{ fontFeatureSettings: '"tnum" 1' }}
+        >
           {String(i + 1).padStart(2, '0')} / {String(DIFFERENTIALS.length).padStart(2, '0')}
         </span>
       </div>

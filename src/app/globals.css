@@ -8,19 +8,132 @@
    =========================================================== */
 
 :root {
-  /* Papéis tipográficos (TIPOGRAFIA.md) — o CSS consome o PAPEL, nunca a fonte
-     concreta. A camada de indireção é o que permitiu trocar Sora por Instrument
-     Serif mexendo num lugar só, e é o vocabulário que o `legacy.css` já usava.
+  /* Papéis tipográficos — o CSS consome o PAPEL, nunca a fonte concreta. A camada
+     de indireção é o que permitiu trocar Sora por Instrument Serif, e agora
+     Instrument Serif por Geist, mexendo num lugar só; é também o vocabulário que
+     o `legacy.css` já usava.
+
+     SIS-155 — as duas famílias do prompt entram como `--font-proportional` e
+     `--font-mono`, com os fallbacks que ele pede, e os TRÊS nomes antigos passam
+     a apontar para elas. Não há sistema novo ao lado do velho de propósito: os
+     papéis antigos continuam sendo os nomes que 76 pontos de JSX e dezenas de
+     regras de CSS consomem, e reescrevê-los todos seria trocar uma indireção que
+     funciona por um diff gigante.
+
+     ⚠️ `--font-editorial` NÃO É MAIS EDITORIAL, e o nome ficou. Ele era a serifa;
+     hoje resolve para a mesma grotesca de `--font-proportional`. O nome mente um
+     pouco e isso é deliberado: renomeá-lo pediria varrer todo consumidor, e o
+     ganho seria cosmético. Quem ler "editorial" aqui tem de entender "o papel que
+     era da serifa" — e se algum dia a serifa voltar, é ESTA linha que muda.
+
+     ⚠️ NENHUM FALLBACK SERIFADO SOBROU, e isso é critério de aceite da SIS-155,
+     não estética: com `Georgia`/`serif` no fim da lista, uma falha de
+     carregamento degradava para serifa — exatamente o oposto do que a troca
+     pretende. A lista de queda agora é `Helvetica Neue, Arial, sans-serif`
+     (proporcional) e `SFMono-Regular, Consolas, monospace` (técnica), como o
+     prompt manda.
 
      `--font-display` é alias de compatibilidade, e corrige um bug silencioso: o
      CSS referenciava essa variável em 11 pontos e ela nunca era definida em
      lugar nenhum. Os 7 pontos com fallback (`var(--font-display)`)
      herdavam a fonte do pai e os outros caíam em `system-ui` — ou seja, parte do
      site que devia estar em display não estava. Com a variável definida, esses
-     pontos MUDAM de aparência: é correção, não regressão. */
-  --font-editorial: var(--font-serif), Georgia, "Times New Roman", serif;
-  --font-interface: var(--font-inter), Inter, system-ui, sans-serif;
+     pontos MUDAM de aparência: é correção, não regressão.
+
+     A linha antiga, para quem precisar do rastro:
+       --font-editorial: var(--font-serif), Georgia, "Times New Roman", serif;
+       --font-interface: var(--font-inter), Inter, system-ui, sans-serif; */
+  --font-proportional: var(--font-geist-sans), "Helvetica Neue", Arial, sans-serif;
+  /* ⚠️ `--font-mono` era CONSUMIDA E NUNCA DEFINIDA: `legacy.css:2483` faz
+     `var(--font-mono, ui-monospace, monospace)` desde sempre, então aquele ponto
+     vinha caindo no monoespaçado do sistema — aparência diferente em Windows,
+     macOS e Linux. Definir aqui conserta um defeito silencioso de brinde. */
+  --font-mono: var(--font-geist-mono), SFMono-Regular, Consolas, monospace;
+  --font-editorial: var(--font-proportional);
+  --font-interface: var(--font-proportional);
   --font-display: var(--font-editorial);
+
+  /* ── Os oito papéis do prompt, MAPEADOS sobre a escala que já existe ─────────
+     A escala de manchete continua em `tailwind.config.ts` (`hero`, `section`,
+     `palco`, `pagehero`, `pagehero-medio`, `pagehero-longo`) e NÃO foi
+     substituída: aqueles degraus foram calibrados contra os títulos reais das
+     quatorze rotas, e `pagehero-medio`/`pagehero-longo` existem porque com
+     tamanho único a manchete de 118 caracteres de `/solucoes` ocupava sete
+     linhas. Trocar por uma tabela genérica de oito papéis reabriria esse defeito.
+     Então os papéis do prompt viram tokens para o que a escala NÃO cobria —
+     corpo, rótulo e legenda — e os três de manchete ficam como referência
+     declarada do mapeamento, sem competir com o Tailwind.
+
+     ⚠️ `--tipo-legenda` é 11px, NÃO os 10px da linha 43 do
+     `docs/terminal-typography-prompt.md`. O piso desta casa é 11px para rótulo
+     em caixa-alta com tracking e 12px para texto corrido (SIS-174), e 10px
+     ficaria abaixo dele — texto sub-piso que a SIS-174 teria de desfazer depois.
+     Onde o prompt disser 10px, aqui é 11px. Não descer daqui: se algum papel
+     ficar ilegível a 11px em Geist Mono 600, o caminho é reportar. */
+  --tipo-display: clamp(3rem, 6vw, 4.375rem); /* → `hero`/`pagehero` no Tailwind */
+  --tipo-manchete-lg: clamp(2.5rem, 4.5vw, 3rem); /* → `section`/`pagehero-medio` */
+  --tipo-manchete-md: clamp(2rem, 3.4vw, 2.25rem); /* → `pagehero-longo` */
+  --tipo-titulo-lg: clamp(1.375rem, 2.2vw, 1.5rem);
+  --tipo-corpo-lg: 1.125rem; /* 18px */
+  --tipo-corpo: 1rem; /* 16px — piso, e não desce para salvar quebra de linha */
+  --tipo-rotulo: 0.6875rem; /* 11px, mono 600, tracking .050em */
+  --tipo-legenda: 0.6875rem; /* 11px (o prompt pede 10; ver ⚠️ acima) */
+  --tipo-medida-corpo-lg: 60ch;
+  --tipo-medida-corpo: 65ch;
+
+  /* ⚠️ SIS-155 · PONTO 12 — TODA CONSTANTE MEDIDA CONTRA LARGURA DE TEXTO, COM O
+     NÚMERO ANTES E DEPOIS. Esta é a tabela; os pontos espalhados apontam para cá.
+
+     ── A causa raiz de tudo abaixo: `ch` é a largura do "0" da família
+     Medido no navegador, mesma sonda, build de produção:
+       Instrument Serif ......... ~0,460 em/ch   (a serifa que saiu)
+       Inter .................... ~0,600 em/ch
+       Geist .................... 0,6631 em/ch  (0,6381 com tracking −0,025em)
+       Geist Mono ............... 0,6000 em/ch
+       Arial (queda) ............ 0,5563 em/ch
+     Ou seja: TODA caixa em `ch` que estava numa serifa cresceu ~44%, e toda caixa
+     em `ch` que estava na Inter cresceu ~10%. Nenhum `Nch` no código foi alterado
+     — a unidade se reajusta sozinha, e é exatamente por isso que ela foi escolhida
+     em vez de pixels. O que precisou de conferência foi o EFEITO: caixa maior pode
+     estourar container, e caixa maior muda contagem de linha.
+
+     ── Medido a 1440 (largura da caixa `max-width` resolvida, antes → depois)
+       .pagehero-entrada h1 `46ch` ..... 906,75 → 1306,91  (satura em 1116 útil)
+       .marcas-grade-titulo `34ch` ..... 688,16 → 1168,58  (satura em 1116 útil)
+       .sequence-copy .lp-display ...... 834,62 → 1202,95
+       .solution-info-titulo min(40ch,72%) 357,70 → 515,55 (72% corta em 467,84)
+       .solution-info-texto min(50ch,76%) 355,20 → 373,30
+       .contact-dialog-titulo `16ch` ... 529,92 → 763,78
+       .impact-titulo `22ch` ........... 830,76 → 853,78
+       .impact-caption `34ch` .......... (idem escala, ver :10200)
+       .hero-caption-title `14ch` ...... 666,12 → 684,57
+       .hero-caption-lead `38ch` ....... 466,03 → 489,77
+       .essence-footnote `60ch` ........ 892,29 → 941,99
+       .lp-lead `46ch` ................. 585,03 → 614,84
+     A SATURAÇÃO É O ACHADO, e é boa notícia: as duas caixas que cresceram 44%
+     passaram a pedir mais do que os 1116px úteis do `container-lp`, então de 1180
+     para cima quem limita a linha deixou de ser o `ch` e passou a ser o container.
+     Nenhuma delas estoura — o container corta antes.
+
+     ── Onde a contagem de LINHAS mudou (o que se vê na tela)
+       /contato   h1: 3 → 4 linhas          /esg      h1: 2 → 3
+       /trabalhe-conosco h1: 2 → 3          /sistran-labs h1: 1 → 2 (1440 e 768)
+       /sistran-university h1: 1 → 2        /transformacao-legado .lp-lead: 4 → 3
+       /solucoes  h1 (320px): 6 → 9 linhas, +103,6px de altura, SEM estouro
+                  (linha mais larga 267,5 de 280 disponíveis)
+     Nenhuma dessas caixas tem altura fixa — conferido uma por uma. As que ganharam
+     linha são títulos com `text-wrap: balance`, que redistribui em vez de cortar.
+     A de 320px é o pior caso do site e está reportada no comentário de entrega.
+
+     ── Constantes remedidas que NÃO mudaram, e por que
+       limiar 1439,98px do ScrollSpy ..... rótulo 131,53 → 127,08 (folga AUMENTOU)
+       cartão de `/contato` 17.5rem ...... 350/352/280/345,59 idênticos (REM, não ch)
+     Ambas com a conta refeita na nota do próprio ponto (:400 e :7385).
+
+     ⚠️ Uma advertência de atribuição: a comparação foi feita contra `HEAD`, e a
+     árvore tem trabalho não commitado de OUTRAS issues. Em `.marcas-grade-titulo`,
+     o corpo 44 → 51,84px e a mudança de rota são da SIS-179, não desta issue; aqui
+     só a coluna de família e de largura de linha é efeito da SIS-155. */
 
   /* Paleta SISTRAN — dark navy sofisticado */
   --color-bg: #1273bc;
@@ -100,23 +213,113 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* TIPOGRAFIA.md — `cv11` e `ss01` (logo abaixo, no `body`) são *stylistic sets*
-   do Inter: as alternativas de `l`/`1` e de `a`/`g`. Valem no corpo e não podem
-   herdar para o display — `Instrument Serif` não tem esses sets, e há motores que
-   desativam as ligaturas PADRÃO ao receber uma feature desconhecida, o que
-   estragaria justamente o `fi`/`fl` de uma serifa. `normal` devolve o
-   comportamento default da fonte.
+/* SIS-155 — `cv11`/`ss01` SAÍRAM, e este `.font-display` perdeu a razão de
+   existir junto com eles. Os dois pontos são um só assunto, e é por isso que
+   estão comentados no mesmo lugar.
 
-   Vem antes do `body` de propósito: em `font-feature-settings` não há herança
-   parcial — o valor mais específico substitui a lista inteira. */
-.font-display {
-  font-feature-settings: normal;
+   O que era, e por quê: `cv11` e `ss01` são *stylistic sets* do INTER (as
+   alternativas de `l`/`1` e de `a`/`g`). Ligados no `body`, herdavam para tudo, e
+   este bloco existia para CANCELAR a herança no display — `Instrument Serif` não
+   tem esses sets, e há motores que desativam as ligaturas PADRÃO ao receber uma
+   feature desconhecida, o que estragaria o `fi`/`fl` de uma serifa.
+
+   Com o par novo, as duas metades caem:
+     • Geist não tem `cv11` nem `ss01`. Herdados por uma fonte que não os
+       implementa eles não quebram nada, mas ficam como sujeira que engana quem
+       ler depois — e o risco das ligaturas descrito acima vale para qualquer
+       fonte, não só para serifa.
+     • Sem `cv11`/`ss01` no `body`, não há herança para cancelar. Um
+       `font-feature-settings: normal` aqui passaria a ser um no-op que parece
+       significar algo.
+
+   ⚠️ Não é merge, é substituição: em `font-feature-settings` o valor mais
+   específico troca a LISTA INTEIRA. Era justamente por isso que o cancelamento
+   funcionava, e é por isso que os dois blocos tinham de ser reavaliados juntos —
+   apagar um e esquecer o outro deixaria o display sem as features que o corpo tem
+   ou vice-versa.
+
+   O bloco antigo, para religar se o Inter voltar:
+     .font-display { font-feature-settings: normal; }
+   (e a lista `"cv11", "ss01"` no `body`, logo abaixo)
+
+   ⚠️ `.font-display` continua EXISTINDO como classe do Tailwind — ela é
+   `fontFamily.display` em `tailwind.config.ts`, usada em 76 pontos do JSX. O que
+   saiu é só a regra de feature-settings deste arquivo. */
+
+/* SIS-155 — as duas regras de DOCUMENTO que o prompt pede, e que a auditoria do
+   ponto 11 registrou como ZERO ocorrências antes desta issue. (A terceira lacuna
+   daquele ponto, `text-wrap`, não é de documento: `balance` só vale em título
+   curto e `pretty` em parágrafo, então ela mora nas regras de cada papel.)
+
+   `font-synthesis: none` é o que impede peso e itálico FALSOS: sem ele, um
+   `font-weight: 700` sobre uma família que não carrega 700 vira negrito desenhado
+   pelo navegador, que engrossa e borra. Com ele, o navegador usa o peso mais próximo
+   que existe de verdade. É o que protege a camada Mono, que tem UM corte (600):
+   qualquer peso pedido nela é servido por esse corte, e nunca fabricado.
+
+   ⚠️ E ele NÃO apaga o itálico do projeto, ao contrário do que a SIS-155 supunha:
+   `Geist` carrega corte itálico REAL em 400 e 500 (conferido nos `@font-face`
+   gerados pelo build — `font-family:Geist;font-style:italic`), então
+   `essence-accordion.css` continua inclinado por arquivo, não por síntese. Se
+   algum dia o carregamento de `layout.tsx` deixar de pedir `style: ['normal',
+   'italic']`, ESTA declaração faz aquele trecho ficar reto em silêncio. */
+html {
+  font-synthesis: none;
+  font-kerning: normal;
 }
 
-/* TIPOGRAFIA.md — nota sobre PESO, que é a mudança mais espalhada da adoção.
-   `Instrument Serif` tem 400 e itálico 400, nada mais: qualquer valor acima é
-   sintetizado pelo navegador, que engrossa os traços e borra as serifas. Então a
-   hierarquia do display passou a vir de tamanho e `letter-spacing`, nunca de peso.
+/* SIS-155 — a terceira lacuna do ponto 11 (`text-wrap`), e ela é por PAPEL e não de
+   documento, por isso vem numa regra própria em vez de subir para o `html`.
+
+   `balance` iguala o comprimento das linhas de um bloco curto e é o que tira a linha
+   órfã de uma ou duas palavras no fim de uma manchete. Ele tem CUSTO: o navegador
+   reequilibra o bloco inteiro, e por isso a especificação limita o efeito a poucas
+   linhas — aplicá-lo a parágrafo não é errado, é ignorado, e num texto longo seria
+   trabalho jogado fora. Daí ele ficar restrito a título.
+
+   `pretty` é o oposto em escopo: mexe só no fim do bloco, evitando a última linha com
+   uma palavra só, e é feito para texto corrido.
+
+   Ambos degradam para `wrap` em navegador que não os conhece — não há fallback a
+   escrever, e nenhum ponto de layout depende deles para caber.
+
+   ⚠️ `h1`…`h6` aqui NÃO alcança as manchetes que são desenhadas por classe com quebra
+   controlada à mão (`<br>` ou `max-width` em `ch`): nesses, `balance` disputa com uma
+   quebra já decidida. As manchetes das quatorze rotas passam por `PageHero`, que não
+   força quebra, então elas ganham o equilíbrio de graça — e a contagem de linhas de
+   cada uma foi conferida depois desta regra entrar, não presumida. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+
+/* Nota sobre PESO — vale MAIS depois da SIS-155, não menos, e a razão mudou.
+   Escrita quando o display era `Instrument Serif`, que tem 400 e itálico 400 e
+   nada mais: qualquer valor acima era sintetizado pelo navegador, que engrossa os
+   traços e borra as serifas. Daí a hierarquia do display vir de tamanho e
+   `letter-spacing`, nunca de peso.
+
+   ⚠️ A SIS-155 trocou a serifa por `Geist`, que TEM 100–900 na fonte variável —
+   ou seja, o impedimento técnico daquela frase caducou. A disciplina fica, agora
+   por decisão de desenho: a referência (`docs/terminal-typography-prompt.md`,
+   linha 47) pede 400 como assinatura principal e 500 só em navegação e ênfase
+   intencional, e é o que faz o resultado parecer suíço em vez de institucional.
+   ⚠️ O CARREGAMENTO NÃO REFORÇA MAIS ISSO, e é bom saber antes de confiar na
+   disciplina: `layout.tsx` carrega 400/500/600/700 na Sans, não só 400/500. O
+   desvio é declarado lá, com a medição que o obrigou — 285 pontos de texto do site
+   pedem peso acima de 500, e com apenas dois cortes todos eles seriam desenhados em
+   500 de uma vez, calados. Consequência para quem escreve daqui em diante: um
+   `font-bold` sobrevivente AGORA VALE de verdade, em corte real. A regra dos 400/500
+   passou a ser só convenção de desenho — nada no carregamento a defende, e nada na
+   tela vai denunciar quem a furar. Quem revisar peso neste projeto revisa lendo o
+   código, não confiando na fonte para reprovar.
 
    Foram normalizados para 400: os 73 pontos de JSX que combinavam `font-display`
    com `font-bold`/`font-black`, e 13 blocos de CSS cujo `font-family` é
@@ -132,7 +335,8 @@ html.lenis body {
 body {
   background-color: #1273bc;
   color: #f8fafc;
-  font-feature-settings: "cv11", "ss01";
+  /* SIS-155 — `font-feature-settings: "cv11", "ss01";` saiu daqui; o porquê está
+     no bloco comentado acima do `.font-display`, logo antes desta regra. */
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   /* `clip` (nao `hidden`): hidden cria um scroll container e quebra o
@@ -236,6 +440,19 @@ body::after {
    150px empurra este limiar. Não dá para derivar isso em CSS — a conta depende
    do texto — então o que fica é a medição registrada aqui e o pedido de remedir
    ao acrescentar seção. Medido a 1424/1439/1440 nas seis rotas da SIS-170.
+
+   SIS-155 — ESTE LIMIAR FOI REMEDIDO NA GEIST, e é uma das constantes do ponto
+   12: ela nasceu de largura de TEXTO, então trocar a família é exatamente o que
+   pode invalidá-la. O rótulo mais largo continua sendo o de `/quem-somos`
+   ("Conheça também"), e ele ENCOLHEU: 131,53px na Inter → 127,08px na Geist, com
+   a borda direita indo de 169,53 para 165,08. Medido em build de produção, sonda
+   de navegador, a 1440. A conta `(W − 1180) / 2 + 32 ≥ borda` passa a pedir
+   `W ≥ 1430,16`, ou seja o 1440 continua VÁLIDO e agora com 4,45px de folga a
+   mais do que tinha — mais seguro que antes, não menos. O número NÃO desce para
+   1430: 1440 é o degrau de breakpoint que a issue original escolheu, e apertá-lo
+   contra a medição do dia devolveria a fragilidade que esta nota descreve.
+   ⚠️ Este é o número que precisa ser remedido a cada troca de família OU de
+   rótulo em `pageSections.ts:212-217` — as duas coisas mexem nele.
 
    ONDE MORA O NÚMERO: 1440 existe só aqui. O outro corte, 1280, existe só no
    `matchMedia` de `ScrollSpy.tsx:37` — que é o que decide se o indicador monta.
@@ -1881,7 +2098,10 @@ h3[id] {
   isolation: isolate;
   grid-area: 1 / 1;
   /* Era `46rem` (736px), e era esse teto — não o `font-size` — que impedia o
-     título de dominar o quadro: a 7.8vw uma linha de 14ch pede ~800px, e a
+     título de dominar o quadro: a 7.8vw uma linha de 14ch pedia ~800px na Inter
+     (SIS-155 · ponto 12: na Geist os mesmos 14ch resolvem em 684,57px de caixa a
+     1440, contra 666,12px antes — o teto de `min(62rem, 68vw)` continua acima dos
+     dois, então nada aqui mudou de comportamento; tabela em `:82`), e a
      caixa cortava antes disso, forçando três linhas curtas. `68vw` mantém a
      coluna dentro da faixa de 55%–70% da largura útil pedida na refatoração
      proporcional; `62rem` é o travão para telas muito largas, onde 68vw viraria
@@ -4068,10 +4288,28 @@ html[data-motion="reduce"] ::view-transition-group(*) {
   height: 3rem;
 }
 
+/* SIS-155 — PRIMEIRO PONTO DA CAMADA TÉCNICA, e a nota longa fica aqui: os outros
+   ~24 pontos numéricos do projeto recebem o mesmo trio e apontam para cá.
+
+   O trio é `--font-mono` + `font-weight: 600` + `"tnum" 1`, e cada peça resolve uma
+   coisa diferente:
+     • a FAMÍLIA, porque leitura de instrumento, rótulo curto, valor e timestamp são
+       o papel que a issue reserva para a Mono — nunca parágrafo, nunca título;
+     • o 600, porque é o ÚNICO peso da Mono carregado — a Mono tem um corte só, então
+       qualquer peso declarado aqui é servido por ele, e escrever 700 seria escrever
+       um número que a tela não pode honrar. Escrever 600 é escrever o que sai;
+     • o `"tnum" 1` ao lado de `font-variant-numeric`, porque a issue pede os dois:
+       a propriedade alta é a que o navegador entende, a feature é a garantia quando
+       a família expõe o recurso só por nome de tabela OpenType. Declarar as duas não
+       é redundância defensiva — `font-feature-settings` SUBSTITUI a lista herdada em
+       vez de somar a ela, então quem escreve a feature aqui tem de escrever a lista
+       inteira que quer neste ponto, e a lista inteira que este ponto quer é `tnum`. */
 .mmi-leitura {
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.14em;
   /* SIS-86 — era `#0b2550`, azul quase preto: legível no cartão branco, quase
      invisível no cartão azul. */
@@ -4507,7 +4745,12 @@ html[data-motion="reduce"] .tcr-canvas {
 }
 .model-switch button span {
   color: #0ed8f6;
+  /* SIS-155 — camada técnica: é o valor dentro de um BOTÃO, dois dos papéis da
+     Mono de uma vez. O trio está explicado em `.mmi-leitura`. */
+  font-family: var(--font-mono);
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
 }
 .model-switch button:hover,
 .camera-presets button:hover {
@@ -4641,8 +4884,21 @@ html[data-motion="reduce"] .tcr-canvas {
 }
 .location-code {
   color: rgba(165, 240, 255, 0.75);
-  font-size: 0.66rem;
+  /* SIS-155 — CÓDIGO, o papel mais literal da camada técnica. Trio em
+     `.mmi-leitura`.
+
+     ⚠️ O CORPO SUBIU, e é a única mudança de TAMANHO que esta issue faz: era
+     `0.66rem` = 10,56px, abaixo do piso de 11px que a issue fixa (e a razão de ela
+     proibir o `caption` de 10px do prompt). Não desci nada para caber e não deixei
+     passar: 0.6875rem = 11px exatos, o mesmo valor de `--tipo-rotulo` e
+     `--tipo-legenda`. Um código alfanumérico é justamente onde 0,5px importa, porque
+     o leitor tem de distinguir caractere a caractere em vez de reconhecer a palavra
+     inteira pela silhueta. */
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   letter-spacing: 0.1em;
 }
 
@@ -4672,9 +4928,21 @@ html[data-motion="reduce"] .tcr-canvas {
   display: block;
   color: #eaf9ff;
   font-size: clamp(1.9rem, 3.4vw, 2.8rem);
-  font-weight: 900;
+  /* SIS-155 — VALOR: entra na camada técnica, Mono 600, trio em `.mmi-leitura`. O 900
+     antigo sai porque a Mono tem um corte só e 900 aqui seria um número que a tela não
+     pode honrar — 600 é o que sai de fato.
+     O tamanho fica: a hierarquia deste número vem do CORPO (28px a 1440 contra os
+     9,92px do `.stat-label` abaixo), que é a regra da issue — nunca do peso.
+     ⚠️ Esses 9,92px do rótulo estão abaixo do piso de 11px da issue e NÃO foram
+     mexidos aqui: o rótulo não é ponto numérico, então não entra na camada Mono, e
+     subir corpo de rótulo proporcional em cadeia passaria do que a SIS-155
+     autoriza. Está na lista reportada no comentário de entrega, junto com os outros
+     `0.62rem`/`0.6rem` de rótulo do arquivo. */
+  font-family: var(--font-mono);
+  font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
 }
 .building-stat .stat-label {
   display: block;
@@ -6584,11 +6852,18 @@ html[data-motion="reduce"] .bm-pais-cabeca {
 /* Numero da etapa em versao monumental: o mesmo texto que ja existia, agora com
    peso de titulo e um risco de sinal ciano ao lado. `tabular-nums` mantem 01 e
    04 com a mesma largura, entao a coluna nao dança. */
+/* SIS-155 — "peso de titulo" na nota acima virou METADADO de etapa na Mono 600. O
+   raciocínio do `tabular-nums` (01 e 04 com a mesma largura, coluna que não dança)
+   fica valendo e ganha reforço: em monoespaçada a largura é igual por construção, e
+   não só a dos dígitos. Trio em `.mmi-leitura`. */
 .etapa-num {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   letter-spacing: 0.14em;
 }
 .etapa-num::after {
@@ -7161,7 +7436,21 @@ html[data-motion="reduce"] .bm-pais-cabeca {
    pode ser lida de dentro deste bloco (ela nasce no seletor do palco); a ligação
    entre os dois é esta nota.
    As medições de cartões por fileira acima seguem valendo para o repouso; a 1024+
-   com o percurso ligado a leitura passa a ser 7 cartões em fileira única. */
+   com o percurso ligado a leitura passa a ser 7 cartões em fileira única.
+
+   SIS-155 — A TABELA ACIMA FOI REMEDIDA NA GEIST e não mudou um número: 350px a
+   390, 352 a 768, 280 a 1024 e 345,59 a 1440, idênticos aos da Inter. Isso não é
+   sorte, é a natureza da constante: o `17.5rem` (280px) é um mínimo em REM, não
+   em `ch`, e a partir dele quem decide a largura final é o `auto-fit` sobre os
+   1116px úteis do `container-lp` — nenhuma etapa consulta a largura do texto.
+   O que a troca de família move aqui é só o CONTEÚDO do cartão: o rótulo mais
+   largo (`.contato-indicador`) encolheu de 173,89px para 148,98px a 1440 e de
+   165,25 para 159,08 a 768, ou seja a folga dos ~99px citados acima AUMENTOU.
+   A conclusão do parágrafo dos 264px continua de pé — e continua sendo o motivo
+   de o 4+3 não voltar — porque ela é limitada pela contagem de linhas do rótulo,
+   e o rótulo agora cabe com mais sobra, não com menos. Nenhum ajuste necessário;
+   registrado porque o ponto 12 pede o número antes e depois, inclusive dos que
+   NÃO mudaram (o gêmeo em `metrics-band-track.css:83` idem). */
 .contato-indicadores-grade {
   display: grid;
   /* Uma coluna no estreito por consequência do mínimo, não por regra própria:
@@ -7246,6 +7535,16 @@ html[data-motion="reduce"] .bm-pais-cabeca {
      desenhos de largura diferente lado a lado, e a fileira ganha um desalinho que
      não vem do dado. */
   font-variant-numeric: tabular-nums;
+  /* SIS-155 — VALOR na camada técnica. Trio em `.mmi-leitura`; o peso já era 600, o
+     único da Mono carregado, então aqui não houve peso caindo calado.
+
+     ⚠️ Este é um dos pontos MEDIDOS do ponto 12 da issue, e o mais sensível dos
+     três nomeados: a largura do `.contato-indicador` é derivada do texto, e
+     monoespaçada é MAIS LARGA por dígito que a proporcional. O número antes/depois
+     de cada viewport está no comentário de entrega. Mexer no corpo daqui sem
+     remedir a fileira reabre o defeito que o `flex: none` acima existe para evitar. */
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum' 1;
   color: #fff;
 }
 
@@ -7826,14 +8125,29 @@ html[data-motion="reduce"] .barra-sinal::before {
 
 /* Numero monumental das etapas. O mesmo texto que ja existia, agora com peso de
    titulo — é forma, nao escrita nova. */
+/* SIS-155 — O `var(--font-editorial)` daqui era o que fazia o número "monumental":
+   ele pedia a SERIFA de propósito, e a serifa saiu do site. Mantê-lo apontando para
+   `--font-editorial` deixaria a declaração viva e sem efeito nenhum (a indireção
+   resolve para a mesma grotesca do corpo), o que é pior do que trocá-la — parece
+   escolha e não é mais. Um ordinal de etapa é METADADO, então ele desce para a
+   camada técnica: Mono 600, trio em `.mmi-leitura`. A monumentalidade continua vindo
+   do CORPO (3,6rem) e do tracking, que é a regra da issue.
+
+   O peso saiu de 400 para 600 e isso NÃO engrossa nada por decisão minha: a Mono
+   carrega um único corte (600), então um `font-weight: 400` aqui seria servido pelo
+   600 de todo modo — o navegador escolhe a face mais próxima disponível, e
+   `font-synthesis: none` só proíbe FABRICAR peso, não substituir. Escrever 600 é
+   dizer o que a tela já faria; deixar 400 seria uma declaração que mente.
+   A linha antiga, para o rastro: `font-family: var(--font-editorial);` */
 .num-monumental {
   display: block;
-  font-family: var(--font-editorial);
+  font-family: var(--font-mono);
   font-size: clamp(2.4rem, 4vw, 3.6rem);
-  font-weight: 400;
+  font-weight: 600;
   line-height: 0.9;
   letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   color: #0ed8f6;
   opacity: 0.55;
 }
@@ -8597,8 +8911,14 @@ html[data-motion="reduce"] .ct-veu {
    título logo abaixo e virava um segundo foco na faixa. O `0.9375rem` do
    ordinal mantém a leitura confortável (o mínimo de 4,5:1 vale para <15px, e
    branco puro mede 4,9:1 aqui de todo modo). */
+/* SIS-155 — marcador de posição é METADADO: Mono 600, trio em `.mmi-leitura`. Os
+   0,75rem = 12px continuam acima do piso de 11px da issue, e o contraste que as
+   notas de SIS-61/SIS-74 acima defendem não muda com a família. */
 .impact-marcador-num {
+  font-family: var(--font-mono);
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   font-size: 0.75rem;
   letter-spacing: 0.14em;
   /* Branco puro, sem transparência — o raciocínio de SIS-61 continua valendo e
@@ -8850,6 +9170,20 @@ html[data-motion="reduce"] .ct-veu {
    e em 1). É a mesma decisão de sempre — a fileira é o arranjo de tela larga, e
    o conteúdo manda no resto.
 
+   SIS-155 · ponto 12 — REMEDIDO NA GEIST, e a medição corrige o parágrafo acima
+   em vez de confirmá-lo. O "~171px por coluna" e as "~5 linhas" eram conta de
+   guardanapo; no navegador, com a Geist:
+     1280 → coluna de 128,58px, rótulo em 4 linhas a 16px
+     1024 → coluna de 202,13px, rótulo em 2 linhas (aqui já é o arranjo 4+3)
+     1440 → coluna de 148,42px, rótulo em 3 linhas
+   A coluna real a 1280 é 42px mais ESTREITA do que a nota estimava, e mesmo assim
+   o rótulo fecha em 4 linhas, uma a menos do que a estimativa previa. A decisão
+   de as sete colunas começarem em 1280 continua correta, e agora com número
+   medido em vez de derivado. A largura de linha do rótulo cresceu com a família
+   (106,11 → 145,63px a 1440), o que é o esperado: `ch` da Geist é 0,6631em contra
+   0,600em da Inter. Nada estoura, nenhuma caixa tem altura fixa aqui, e o piso de
+   16px do rótulo NÃO foi tocado.
+
    `align-items: start`: as sete caixas têm alturas diferentes (o rótulo de uma
    linha e o de cinco), e é pelo TOPO que os sete números ficam na mesma linha —
    que é a linha estática de que o desenho fala. Centrados, cada número flutuaria
@@ -8941,12 +9275,17 @@ html[data-motion="reduce"] .impact-lista[data-observando] .impact-item[data-aces
   transform: none;
   transition: none;
 }
+/* SIS-155 — índice é METADADO. Trio em `.mmi-leitura`; o peso já era 600. Os 0,7rem
+   = 11,2px passam do piso de 11px por 0,2px, então este ponto não pode encolher sem
+   quebrar critério de aceite. */
 .impact-indice {
+  font-family: var(--font-mono);
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.24em;
   color: rgba(14, 216, 246, 0.85);
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
 }
 .impact-valor {
   display: flex;
@@ -8954,10 +9293,19 @@ html[data-motion="reduce"] .impact-lista[data-observando] .impact-item[data-aces
   gap: 0.1em;
   margin-block: 0.35rem 0.5rem;
   font-size: clamp(2.5rem, 6vw, 4.25rem);
-  font-weight: 700;
+  /* SIS-155 — VALOR, o papel central da camada técnica, e o maior deles no site
+     (68px a 1440). Mono 600; trio em `.mmi-leitura`.
+     O 700 sai porque a Mono tem UM corte (600): declarar 700 aqui é declarar um número
+     que a tela não pode honrar, e quem ler o CSS depois vai acreditar num contraste de
+     peso que não existe entre este valor e os rótulos Mono ao redor. O contraste real
+     vem do CORPO (68px contra 12px) — que é a regra da issue. Mesmo caso de
+     `.num-monumental`. */
+  font-family: var(--font-mono);
+  font-weight: 600;
   line-height: 0.95;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   /* SIS-61 — a ponta do degradê era `#0ed8f6`, que sobre o azul do fundo mede
      2,8:1 e não alcança os 3:1 do texto grande. Fim aberto em `#7fe6ff`: mesma
      família ciano, 3,4:1.
@@ -10572,10 +10920,22 @@ html[data-motion="reduce"] .impact-lista[data-observando] .impact-item[data-aces
        `#032d67` mede ~7,8:1, e a diferença com o ativo é dada por peso, borda e
        fundo, não por apagar o texto. */
     color: rgba(240, 250, 255, 0.78);
-    font-size: 0.68rem;
+    /* SIS-155 — BOTÃO com número: papel da camada técnica nos dois sentidos. Trio em
+       `.mmi-leitura`.
+       O corpo subiu de `0.68rem` (10,88px) para 11px exatos. São 0,12px, e a razão de
+       mexer não é aparência: 11px é piso declarado da issue, e um controle que fica
+       0,12px abaixo dele reprova o critério tão literalmente quanto um que fique 2px
+       abaixo. O alvo de toque não é afetado: ele vem do `min-width: 44px` /
+       `min-height: 34px` acima, e o texto não é o que o dimensiona.
+       ⚠️ Esses 34px de ALTURA ficam abaixo dos 44px que a issue pede para controle,
+       e não foram tocados aqui: mexer neles é geometria de componente, que esta
+       issue proíbe. Vai reportado, não corrigido às escondidas. */
+    font-size: 0.6875rem;
     font-weight: 600;
     letter-spacing: 0.14em;
+    font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
     cursor: pointer;
     transition:
       border-color var(--motion-fast, 180ms) var(--motion-ease, ease),
@@ -10608,13 +10968,23 @@ html[data-motion="reduce"] .impact-lista[data-observando] .impact-item[data-aces
     outline: 2px solid #7fe6ff;
     outline-offset: 2px;
   }
-  /* Ativo: TRÊS sinais, e só um deles é cor — peso da fonte, o traço de graduação
-     principal (mais alto, como a marca de dezena de uma régua) e o ciano.
-     `aria-current` cuida do leitor de tela. */
+  /* Ativo: DOIS sinais, e só um deles é cor — o traço de graduação principal (mais
+     alto, como a marca de dezena de uma régua) e o ciano. `aria-current` cuida do
+     leitor de tela.
+     ⚠️ SIS-155 — eram TRÊS, e o terceiro era peso da fonte. Ele SAIU porque deixou
+     de funcionar: o botão passou para a Geist Mono, que carrega um corte único (600),
+     então este `font-weight: 700` renderizava idêntico ao 600 do estado inativo —
+     um sinal declarado no CSS, prometido no comentário e invisível na tela, que é
+     pior que sinal nenhum para quem confia na nota. Não dá para resolver pedindo mais
+     um peso: a issue fixa 600 como o único peso da camada técnica.
+     O que sobra continua bastando, e é medido em geometria e não só em cor: o traço
+     vai de 7px (repouso) a 15px (ativo), mais de duas vezes, e o `aria-current`
+     carrega o estado para quem não vê nenhum dos dois.
+     A linha retirada, para o rastro:
+       font-weight: 700; */
   .impact-scroll[data-dirigindo] .impact-atalho[data-estado="ativo"] {
     border-top-color: rgba(14, 216, 246, 0.85);
     color: #ffffff;
-    font-weight: 700;
   }
   .impact-scroll[data-dirigindo] .impact-atalho[data-estado="ativo"]::before {
     height: 15px;
@@ -12064,11 +12434,22 @@ html[data-motion="reduce"] .palco-reativo .btn-primary:hover::after {
   position: absolute;
   left: clamp(20px, 3vw, 52px);
   top: clamp(20px, 3vh, 48px);
+  /* SIS-155 — COORDENADA: o papel mais literal da Mono depois de código. Trio em
+     `.mmi-leitura`.
+     ⚠️ Os `0.6rem` (9,6px) FICAM, e é decisão, não descuido. Este é o único ponto da
+     camada técnica que deixei abaixo do piso de 11px: com `rgba(...,0.14)` de tinta
+     ele é marca-d'água de fundo, não texto para ler — ninguém decifra a coordenada e
+     nada depende dela. Subir para 11px aumentaria um ornamento absoluto sem ganhar
+     legibilidade nenhuma (a 14% de alfa o limite é o contraste, não o corpo), e a
+     issue manda REPORTAR o que não couber no piso em vez de improvisar. Está no
+     comentário de entrega. */
+  font-family: var(--font-mono);
   font-size: 0.6rem;
   font-weight: 600;
   letter-spacing: 0.24em;
   color: rgba(226, 245, 255, 0.14);
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
 }
 
 .solutions-sticky {
@@ -12372,14 +12753,18 @@ html[data-motion="reduce"] .palco-reativo .btn-primary:hover::after {
   background: linear-gradient(90deg, #0079cb, #0ed8f6);
   transition: width 520ms cubic-bezier(0.22, 1, 0.36, 1);
 }
+/* SIS-155 — ESTADO ("03 / 07" de progresso): papel da camada técnica. Trio em
+   `.mmi-leitura`; peso já era 600 e 0,7rem = 11,2px passa do piso. */
 .solutions-progresso-texto {
   margin-top: 0.7rem;
+  font-family: var(--font-mono);
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.72);
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
 }
 
 /* ---------- Teatro ---------- */
@@ -13022,7 +13407,14 @@ html[data-motion="reduce"] .palco-reativo .btn-primary:hover::after {
        são frases, não palavras — "APIs, Projetos, Desenvolvimento, Sustentação e
        Migrações" tem 56 caracteres. A 69px ele ocupava cinco linhas e transbordava
        a base da janela por ~120px. 3.6vw dá ~52px em 1440, quatro linhas, dentro
-       do quadro, e continua na faixa 2.8rem–5.8rem pela borda de baixo. */
+       do quadro, e continua na faixa 2.8rem–5.8rem pela borda de baixo.
+       SIS-155 · ponto 12 — remedido na Geist: 51,8px de corpo e as MESMAS quatro
+       linhas a 1440 (e quatro a 1280 e a 1024 também). A conclusão de não subir
+       para 5.8rem sobrevive à troca de família, e por um motivo que vale escrever:
+       a caixa deste título é `min(40ch, 72%)` e a 1440 os 40ch da Geist pedem
+       515,55px — mais do que os 467,84px que os 72% entregam. Ou seja de 1180 para
+       cima quem limita esta linha deixou de ser o `ch` e passou a ser o 72%, e a
+       contagem de linhas parou de depender da família. Tabela completa em `:82`. */
     font-size: clamp(2.8rem, 3.6vw, 4.4rem);
     /* TIPOGRAFIA.md — era 750, o mesmo valor da regra base (que já foi para 400).
        Este bloco é a variante do modo dirigido e sobrescrevia o peso de volta:
@@ -14610,10 +15002,16 @@ html[data-motion="reduce"] .lp-rodape-rede:focus-visible .lp-rodape-rede-nome {
   min-width: 0;
 }
 
+/* SIS-155 — ordinal do preview, camada técnica (a família e o `tnum` vêm do JSX, em
+   `EventsGrid.tsx`).
+   O corpo subiu de 9px para 11px, o maior salto de tamanho desta issue e o mais
+   necessário: 9px é dois pixels abaixo do piso, e em monoespaçada 600 com 0,2em de
+   tracking o "07" a 9px deixa de ser leitura e passa a ser textura. O 700 que estava
+   aqui já era corrigido para 600 mais abaixo neste arquivo (ver o segundo bloco de
+   `.evento-preview-num`), e em Mono 600 é o único peso de todo modo. */
 .evento-preview-num {
   display: block;
-  font-size: 9px;
-  font-weight: 700;
+  font-size: 11px;
   letter-spacing: 0.2em;
 }
 
@@ -14649,12 +15047,19 @@ html[data-motion="reduce"] .lp-rodape-rede:focus-visible .lp-rodape-rede-nome {
     flex: none;
     padding: 0 0.6rem;
     font-size: 12px;
-    font-weight: 700;
+    /* SIS-155 — contador de posição é ESTADO: Mono 600, trio em `.mmi-leitura`. O 700
+       que estava aqui sai porque a Mono tem um corte só e seria peso escrito sem
+       correspondente na tela; 600 é o que o navegador serve de qualquer forma.
+       12px, acima do piso de 11px. */
+    font-family: var(--font-mono);
+    font-weight: 600;
     letter-spacing: 0.14em;
     /* `tabular-nums` porque o número troca durante a rolagem: com dígitos de
        largura variável o contador ficaria tremendo, e ele está a centímetros do
-       olho no fim da tela. */
+       olho no fim da tela. Em monoespaçada isso passa a valer para todo caractere,
+       inclusive a barra do "02 / 15", e não só para os dígitos. */
     font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
     color: #eaf6ff;
   }
 
@@ -14805,9 +15210,18 @@ html[data-motion="reduce"] .lp-rodape-rede:focus-visible .lp-rodape-rede-nome {
    continua no lugar e é o único a fazer isso.
 
    Comentado, e não removido: religar é descomentar o `<span>` no `EventsGrid.tsx`
-   e este bloco. Se voltar, volta com as duas notas de TIPOGRAFIA.md abaixo, que
-   continuam válidas — elas explicam por que o rótulo usa `--font-interface` em 700
-   em vez de herdar a serifa editorial do `<h3>`.
+   e este bloco. Se voltar, volta com as duas notas de TIPOGRAFIA.md abaixo — mas
+   elas explicam por que o rótulo usa `--font-interface` em 700 em vez de herdar a
+   serifa editorial do `<h3>`, e a SIS-155 caducou as duas metades disso.
+
+   ⚠️ SIS-155 — SE ESTE BLOCO VOLTAR, NÃO VOLTA COMO ESTÁ ESCRITO ABAIXO. A serifa
+   editorial saiu do site (não há mais o que "não herdar"), e o papel que a nota antiga
+   descreve foi para outra camada.
+   O papel que a nota antiga descreve ("'01' a 0.8rem com 0.22em de tracking é
+   RÓTULO de interface, não texto editorial") continua CERTO, e é exatamente o que
+   a camada técnica atende: religar é `font-family: var(--font-mono)` com
+   `font-weight: 600` — o único peso da Mono carregado —, não `--font-interface` em
+   700. O tamanho fica em 0.8rem (12,8px), acima do piso de 11px da issue.
 
    O que muda no desenho com a saída: o `display: block` + `margin-bottom: 0.4rem`
    empurravam o título para baixo, então o bloco de texto sobe 0,4rem mais a altura
@@ -15791,7 +16205,18 @@ html[data-motion="reduce"] .lp-rodape-rede:focus-visible .lp-rodape-rede-nome {
      duas linhas ("em suas operações e" / "cultura corporativa."), igualando a
      contagem do título — é a igualdade de LINHAS que faz as duas metades lerem
      como uma frase, não a igualdade de corpo. */
-  font-family: var(--font-editorial), Georgia, "Times New Roman", serif;
+  /* SIS-155 — a cauda `, Georgia, "Times New Roman", serif` SAIU daqui, e este era
+     o ÚLTIMO ponto do projeto onde uma serifa sobrevivia. A linha era:
+       font-family: var(--font-editorial), Georgia, "Times New Roman", serif;
+     Redefinir `--font-editorial` para a pilha Geist (`:52`) não bastava: este
+     consumidor reanexava a queda serifada DEPOIS da variável, então uma falha de
+     carregamento da Geist ainda degradava esta frase para Georgia — o oposto do
+     que a troca pretende, e num ponto visível (36px, metade de uma manchete).
+     Encontrado por sonda de navegador, não por leitura: `getComputedStyle` devolvia
+     `Geist, "Geist Fallback", "Helvetica Neue", Arial, sans-serif, Georgia, "Times
+     New Roman", serif` neste `<p>` nas quatro larguras medidas. A pilha de queda
+     agora vem inteira do token, como nos outros 75 pontos. */
+  font-family: var(--font-editorial);
   font-size: clamp(1.5rem, 2.5vw, 2.25rem);
   /* 1,1 e não o `leading-relaxed` (1,625) do componente: entrelinhamento de texto
      corrido em duas linhas de display abriria um vão que separa a continuação da

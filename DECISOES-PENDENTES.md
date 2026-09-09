@@ -1,7 +1,6 @@
 # Decisões que dependem de você
 
-Levantado pela conferência das issues do time SIS (Linear, `sistran-labs`). Última limpeza:
-08/09/2026.
+Levantado pela conferência das issues do time SIS (Linear, `sistran-labs`). Última limpeza: 09/09/2026.
 
 Tudo aqui é decisão de **produto, design, conteúdo ou board** — nenhuma é técnica, e nenhuma
 eu posso tomar no papel de verificador.
@@ -123,6 +122,11 @@ credibilidade, não seção de conteúdo — e o arquivo já barra o "Fale com a
 critério. A favor: fora da lista, o salto de Início para Soluções pula uma tela cheia.
 *Enquanto você não disser: não entra, e fica anotado que a ausência é decisão pendente.*
 
+> **Entregue assim (SIS-179, 09/09).** A grade subiu e `src/data/pageSections.ts` ficou **sem** a
+> linha, conforme o combinado acima. A seção tem `aria-labelledby` no próprio `<h2>` com `id`, então
+> a âncora existe e funciona — o que falta é só a entrada no indicador lateral. Acrescentá-la depois
+> é uma linha no arquivo de dados, sem tocar em componente.
+
 **b. O rótulo de campo de formulário fica em 11px ou 12px? — SIS-174**
 
 `globals.css:3090`. O piso novo da SIS-174 é 12px para texto corrido e 11px só para rótulo
@@ -130,43 +134,17 @@ caixa-alta com tracking. Esse rótulo é caixa-alta, então cabe na exceção �
 campo**, que a pessoa lê para saber o que digitar, não etiqueta decorativa. *Minha recomendação:
 12px.* Rótulo que orienta preenchimento não é ornamento.
 
-**c. Os sete componentes mortos merecem issue própria?**
-
-`Hero`, `PillarsCarousel`, `TrustTicker`, `UnitsMap`, `CompanySignature`, `PartnersGrid`,
-`EventsGrid` não são montados por rota nenhuma. Pela regra da casa, código que sai de cena fica
-comentado com o motivo — só que estes nunca foram "retirados", ficaram para trás. *Vale uma issue
-só para decidir, um por um, o que é rascunho e o que é peça guardada de propósito.*
+**c. Os componentes órfãos** — abertos como
+**[SIS-188](https://linear.app/sistran-labs/issue/SIS-188)** (Backlog). `UnitsMap` ainda vive em
+`/contato`; a issue pede validar a lista antes de qualquer higiene.
 
 ---
 
-## 3c. Duas coisas que o hero novo criou, e as duas são de olho — SIS-178 (aprovada)
+## 3c. O que sobrou do hero novo — SIS-178 (aprovada)
 
-A issue está **aprovada e conferida**; isto não é defeito de execução, é consequência do desenho
-que você escolheu. Mas uma delas **está visível na home agora**.
-
-**a. A emenda entre o claro do hero e o branco da seção seguinte** ⚠️ *aparece hoje*
-
-Localizei o mecanismo: `globals.css:585`, a regra `#top + *` põe a seção seguinte **por cima** do
-hero enquanto ele afunda — de propósito, é o que faz a travessia. A borda de cima dela é a aresta.
-Antes não se via porque os dois lados eram branco; agora é `#f4f8fc` de um lado e `#fff` do outro.
-Degrau de largura cheia, ~20px abaixo do card: **y536 a 390px, y450 a 1440px**.
-
-Vale dizer: **a sua foto de referência tem essa mesma aresta** — faixa azulada em cima, branco
-puro embaixo. Então pode ser que ela seja o desenho, não o defeito. As três saídas:
-
-1. **O mosaico também vira `#f4f8fc`.** Some a emenda de vez. Custo: o claro do hero deixa de ser
-   um momento e passa a ser a cor da página — e aí vale checar as seções seguintes, que foram
-   compostas contra branco.
-2. **Degradê de `#f4f8fc` a `#fff`** na borda de cima do mosaico. Mantém o hero como momento e
-   dissolve a aresta. É o mais barato e o que menos mexe no resto.
-3. **Deixar.** Se a aresta é o desenho da referência, ela não é defeito — mas então precisa estar
-   escrita como decisão, senão volta como bug na próxima conferência.
-
-*Minha recomendação: **2**.* Entrega o efeito sem transformar a cor da home inteira.
-
-⚠️ Seja qual for, uma nota tem de ser reescrita junto: `src/app/page.tsx:82` diz *"o hero encolhe
-em card sobre fundo claro e já entrega a cor do mosaico"* — era verdade, deixou de ser nesta issue,
-e agora **argumenta que a emenda não existe**.
+**a. A emenda claro→seguinte** saiu para a **[SIS-187](https://linear.app/sistran-labs/issue/SIS-187)**
+(Backlog). Três saídas estão na issue; recomendação continua sendo a 2 (degradê). Precisa do
+seu aval no comentário antes do despacho.
 
 **b. A 390px a marca `SISTRAN` sai cortada dos dois lados**
 
@@ -176,34 +154,21 @@ As saídas reais são duas: `contain` com tarja (aparece barra), ou **um corte d
 no próprio vídeo** para o celular. A segunda é mais trabalho e melhor resultado.
 
 Fora do critério de aceite (que é ≥1024), mas é a mesma reclamação do logo cortado, no celular.
+Ainda sem issue — só vira quando você mandar cortar origem ou aceitar tarja.
 
 ---
 
-## 4. Duas varreduras que eu abriria como issue, se você quiser
+## 4–5. Varreduras e achados — abertos em 09/09
 
-Não são urgentes — são trabalho que vale existir como issue em vez de virar achado solto na
-próxima conferência.
-
-- **`matchMedia` dentro de `useEffect` em oito componentes.** É a origem da maior parte dos 24
-  avisos de lint da linha de base. A forma da casa é `useSyncExternalStore` com o
-  `MediaQueryList` em cache de módulo.
-- **Auditoria dos "dois interruptores de movimento".** Toda cena que decide layout por
-  `@media (prefers-reduced-motion)` **e** por hook precisa espelhar a regra em
-  `html[data-motion="reduce"]`, senão o botão da interface mente. Foi exatamente o defeito da
-  SIS-159 (quatorze parceiros desapareciam), e `events-spotlight.css` e `legacy.css` já tiveram
-  o mesmo. Ninguém garantiu que não há um terceiro caso.
-
----
-
-## 5. Achados de conferência esperando virar issue
-
-Não cabem nas issues onde apareceram — e achado registrado em issue aprovada é achado morto.
-
-- **Rolagem lateral em `/esg` no celular.** Medi `scrollWidth − innerWidth` = **7px a 390** e
-  **3px a 768**; zero de 1024 para cima. É anterior à SIS-138, então aprovei a issue sem isso.
-  Ninguém reporta 7px; todo mundo sente.
-- **Caminhos SP/PR fechados** no `viewBox="0 0 720 640"` da cena de escritórios, e o **roxo de
-  `BRASIL`** como decisão de token — os dois sobraram da conferência da SIS-169.
+| Issue | Status | O quê |
+|---|---|---|
+| [SIS-182](https://linear.app/sistran-labs/issue/SIS-182) | Todo | `matchMedia` → `useSyncExternalStore` (oito componentes / lint) |
+| [SIS-183](https://linear.app/sistran-labs/issue/SIS-183) | Todo | Auditoria espelho `prefers-reduced-motion` ↔ `data-motion` |
+| [SIS-184](https://linear.app/sistran-labs/issue/SIS-184) | Todo | `/esg` rolagem lateral 7px (390) / 3px (768) |
+| [SIS-185](https://linear.app/sistran-labs/issue/SIS-185) | Backlog | Divisas SP/PR + violeta de `BRASIL` (token: pare e diga) |
+| [SIS-186](https://linear.app/sistran-labs/issue/SIS-186) | Todo | Instrumento de contraste × antialiasing em texto miúdo |
+| [SIS-187](https://linear.app/sistran-labs/issue/SIS-187) | Backlog | Emenda hero → seção seguinte (precisa do seu 1/2/3) |
+| [SIS-188](https://linear.app/sistran-labs/issue/SIS-188) | Backlog | Inventário de componentes órfãos (item 3b-c) |
 
 ---
 
@@ -225,13 +190,22 @@ A SIS-155 é a **última da fila e isolada**, ratificado por você.
 | Issue | Estado |
 |---|---|
 | SIS-174 | Todo — piso de tamanho de texto (30 pontos abaixo de 11px); ainda não conferi |
-| SIS-175 | Todo — o `copy-lock` trava `as React.CSSProperties` como se fosse cópia do site (aberta por mim na conferência da SIS-172) |
-| SIS-173 | Todo — o `pareceCodigo()` descartando cinco frases publicadas de verdade |
-| SIS-155 | Todo — última da fila, isolada (ver item 6) |
+| SIS-175 | Todo — o `copy-lock` trava literal técnico como se fosse cópia. Cresceu na conferência da SIS-173 |
+| SIS-155 | In Progress — tipografia Geist (ver item 6) |
+| SIS-176 | Todo — números: fundo, divisórias, trilho (desbloqueada pela SIS-179) |
+| SIS-181 | Todo — ScrollSpy: rótulo invisível em seção clara sem `.section-light` |
+| SIS-182 | Todo — `matchMedia` → `useSyncExternalStore` |
+| SIS-183 | Todo — auditoria dos dois interruptores de movimento |
+| SIS-184 | Todo — `/esg` rolagem lateral |
+| SIS-186 | Todo — contraste × antialiasing |
+| SIS-185 | Backlog — divisas SP/PR + violeta `BRASIL` (token) |
+| SIS-187 | Backlog — emenda hero (precisa 1/2/3) |
+| SIS-188 | Backlog — componentes órfãos |
 | SIS-131 | Backlog — espera as três URLs de vídeo (item 2) |
 | SIS-123 | Backlog — o que sobrou é texto jurídico, que nenhum agente escreve |
 | SIS-124 | Backlog — espera o documento do MTE (item 2) |
 | SIS-154 | Backlog — `images: unoptimized`: **decisão sua**, deploy ou resíduo |
 | SIS-125 | Backlog — índice da varredura; índice não tem "pronto". Virar documento, se quiser |
+| SIS-177 | Backlog — conteúdo de “Sistran em números” |
 
 Todas as issues com label `conferido` e em In Review estão aprovadas e saíram deste arquivo.

@@ -15,7 +15,29 @@
    diferença de superfície JÁ é a aresta; embaixo ela encosta no creme da montagem
    (EMENDA 4, em `legacy.css`), claro contra claro, e aí o fio é o que separa. É
    por isso que a troca de faixa por grade não precisa de recurso de emenda novo:
-   quem costura é a superfície clara, e ela continua clara. */
+   quem costura é a superfície clara, e ela continua clara.
+
+   ── SIS-179: A VIZINHANÇA DE CIMA MUDOU, E A DECISÃO É NÃO GANHAR FIO EM CIMA
+   A grade saiu do rodapé de "Sistran em números" e subiu para logo depois do
+   hero (ver `page.tsx`). Ou seja o parágrafo acima descreve a vizinhança ANTIGA:
+   em cima já não há degradê azul. Agora ela encosta na folha clara do hero, que a
+   SIS-178 deixou em `#f4f8fc`.
+
+   `#f4f8fc` contra `#f5faff` é delta RGB de 1, 2, 3 — contraste 1,0163. A aresta
+   de cima não fica fraca, ela deixa de existir, e isso é DELIBERADO: a
+   `.hero-sheet` sempre existiu para "entregar a cor da seção seguinte" (nota dela
+   em `globals.css`), e enquanto a seção seguinte era o mosaico branco essa
+   promessa era aproximada. Com a grade aqui ela passa a ser exata. O fio em cima
+   desenharia justamente a emenda que a folha existe para apagar.
+   O `border-bottom` FICA: embaixo continua o mosaico, e lá a aresta é necessária.
+
+   ⚠️ As duas cores NÃO podem ser unificadas por uma varredura de "padronizar
+   cores", e elas se parecem o suficiente para tentar alguém. São duas superfícies
+   com dois motivos diferentes e escritos: `#f5faff` é o azul dentro do branco
+   como saída da jornada azul, explicitamente NÃO `--paper` (parágrafo acima, e
+   `.lp-signals` em `legacy.css`); `#f4f8fc` é escolha medida da solicitante,
+   entre três candidatos, e explicitamente NÃO é token (nota da `.hero-sheet`).
+   Unificar as duas apaga as duas decisões de uma vez. */
 .marcas-grade {
   background: #f5faff;
   color: var(--ink);
@@ -30,44 +52,192 @@
    Serifa por `--font-display`, no mesmo registro dos outros títulos editoriais.
    `max-width` em `ch` porque a medida que importa é a da LINHA, não a da coluna:
    uma frase longa atravessando 1728px viraria uma faixa de texto de uma linha só,
-   que é o oposto do bloco editorial da referência. */
+   que é o oposto do bloco editorial da referência.
+
+   ── SIS-179: CENTRADO E MAIOR, E O `max-width: 34ch` FICA
+   O título passa a abrir a página logo depois do hero, e ali ele não é rodapé de
+   credibilidade: é a primeira frase escrita que a home entrega. Daí centrar e
+   crescer.
+   `margin-inline: auto` é o que centra o BLOCO (sem ele o `text-align: center`
+   centraria as linhas dentro de uma caixa de 34ch ainda encostada à esquerda —
+   texto centrado no terço esquerdo da tela, que lê como erro).
+   O teto do `clamp` sobe de 2,75rem para 3,5rem e o piso de 1,6 para 1,75rem. O
+   termo fluido sobe de 3,1vw para 3,6vw para que o teto seja alcançado (a 90rem
+   de container, 3,6vw de 1440 = 51,8px > 56px do teto? não: 51,8 < 56, então o
+   teto é alcançado só acima de ~1556px de viewport — de propósito, senão o
+   crescimento pararia antes de a tela acabar).
+   O `max-width: 34ch` NÃO é afrouxado. A medida de linha é o que impede a frase
+   de virar faixa de uma linha só, e centrar não muda isso — centrado e largo é
+   pior de ler, porque o olho perde o ponto de retorno. `none` aqui desfaria o
+   motivo escrito no parágrafo acima. Se um dia precisar afrouxar, afrouxe com
+   número medido (34 → 40ch), nunca com `none`.
+   SIS-155 · ponto 12 — os "~830px" abaixo eram da serifa, e a troca de família os
+   invalidou: `ch` da Instrument Serif media ~0,460em e o da Geist mede 0,6631em,
+   então os mesmos 34ch passaram a pedir 1168,58px a 1440 (medido; era 688,16px).
+   O `34ch` NÃO muda — e o efeito prático é que ele parou de ser o limitador: os
+   1116px úteis do `container-lp` cortam antes, e a linha mais larga renderizada
+   mede 805,14px dentro deles. Ou seja a medida de linha que este parágrafo defende
+   continua garantida, só que de 1180 para cima quem a garante é o container.
+   ⚠️ Se a grade um dia sair do `container-lp`, o `34ch` volta a ser o limitador e
+   a 1168px ele é linha longa demais para o motivo escrito acima — nesse caso o
+   número a rever é ESTE, e o alvo medido é ~830px de caixa (≈ 24ch na Geist).
+   Tabela completa das constantes em `globals.css:82`.
+   Com 34ch a ~50px a caixa media ~830px na serifa; o `text-wrap: balance` continua
+   equilibrando as linhas, e centrado ele passa a ser necessário e não enfeite:
+   linha curta sob linha longa é o defeito clássico do título centrado. */
 .marcas-grade-titulo {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(1.6rem, 3.1vw, 2.75rem);
+  font-size: clamp(1.75rem, 3.6vw, 3.5rem);
   line-height: 1.15;
   letter-spacing: -0.01em;
   max-width: 34ch;
+  margin-inline: auto;
   margin-bottom: clamp(2rem, 3.5vw, 3.25rem);
+  text-align: center;
   text-wrap: balance;
 }
 
-/* A MALHA.
-   As linhas são o `gap` da grade deixando ver o fundo dela, e cada célula pinta o
-   off-white por cima. Escrito assim, e não com `border` por célula, porque com
-   `border` fechar a fileira e a coluna EXTERNAS exigiria `:nth-child` calculado
-   sobre o número de colunas — e o número de colunas muda em 1024px. O
-   `padding: 1px` é o que fecha as quatro bordas de fora: o fundo aparece em volta
-   do bloco inteiro com a mesma espessura das linhas internas, então nenhuma
-   célula fica aberta e a grade não lê como tabela mal fechada.
-   Consequência de usar o gap como linha: as linhas nunca somem por
-   arredondamento, porque não há duas bordas adjacentes se somando — é sempre
-   exatamente 1px.
+/* ════════════════════════════════════════════════════════════════════════════
+   A MALHA — SIS-179: DE CAIXA FECHADA PARA CAMPO ABERTO COM CRUZES
 
-   GEOMETRIA: 5 × 3 aqui e 3 × 5 abaixo de 1024px. Quinze é divisível por cinco e
-   por três, então as DUAS arrumações fecham exatas — nenhuma fileira incompleta,
-   que numa malha de bordas visíveis apareceria como buraco e não como respiro. Não
-   há célula atravessando duas colunas: um logo esticado dominaria justamente a
-   fileira que a normalização de altura óptica existe para equalizar.
-   Duas arrumações só, e não quatro: em 2 colunas sobraria um órfão. */
+   ── O QUE HAVIA, E POR QUE SAIU
+   As linhas eram o `gap` da grade deixando ver o fundo dela, e cada célula
+   pintava o off-white por cima; o `padding: 1px` fechava as quatro bordas de
+   fora. O desenho era correto e tinha uma vantagem real que fica REGISTRADA
+   porque a nova solução tem de igualá-la: com o gap como linha, nenhuma linha
+   soma com a vizinha e a espessura é sempre exatamente 1px.
+   Ele saiu por uma razão só: fechava. As quatro bordas externas desenhavam uma
+   caixa, e a referência não tem caixa — tem um campo de papel milimetrado em que
+   as linhas ATRAVESSAM o bloco de células e seguem além dele, com uma cruz `+`
+   em cada cruzamento. Fechar a caixa era o que fazia a grade ler como tabela.
+     Antes:
+       .marcas-grade-malha { display: grid; gap: 1px; padding: 1px;
+                             background: var(--line); }
+       .marcas-grade-celula { background: #f5faff; }
+
+   ── A GEOMETRIA, E POR QUE ELA É EXATA POR CONSTRUÇÃO
+   Este é o ponto em que a solução ingênua falha, e ela falha SILENCIOSAMENTE.
+   Desenhar as linhas com `repeating-linear-gradient` de passo em `px` erra: as
+   colunas são `1fr`, então a largura da célula é a do container dividida por 5 —
+   um número fracionário que muda a cada pixel de viewport — e um passo em `px`
+   descola das colunas na primeira largura que não for múltipla. O erro cresce a
+   cada repetição, então na quinta coluna já é visível.
+   A malha aqui não tem passo em `px`: o passo é uma FRAÇÃO do próprio campo, e
+   o campo é dimensionado para que a fração caia exatamente sobre as colunas.
+
+   O truque é a calha de MEIA CÉLULA. O campo (`-campo`) tem, de cada lado, meia
+   célula de folga; as linhas são desenhadas no CENTRO de cada quadrícula de
+   `background-size`, e com meia célula de calha os centros das quadrículas caem
+   exatamente sobre as bordas das células. Nada de `:nth-child`, nada de célula
+   vazia de enchimento.
+
+   Desktop (5 colunas):
+     campo  = 5 células + 0,5 + 0,5 = 6 células de largura
+     calha  = 0,5 célula = 100%/12 = 8,3333% do campo   → `padding-inline`
+     passoX = 1 célula   = 100%/6  = 16,6667%           → `background-size` x
+     células têm `aspect-ratio: 16/9`, logo
+       alturaCélula = larguraCélula × 9/16 = largura_do_campo × 3/32
+     calha vertical = 0,5 altura = largura_do_campo × 3/64 → `calc(100% * 3 / 64)`
+       (`padding` em `%` resolve sobre a LARGURA do bloco contenedor, e o campo
+        ocupa a largura do contenedor — é por isso que a conta fecha em `%` puro
+        e continua fechando em qualquer viewport)
+     campo tem 3 fileiras + 1 altura de calha = 4 alturas → passoY = 25%
+   Mobile (3 colunas, 5 fileiras):
+     campo = 4 células; calha = 12,5%; passoX = 25%
+     alturaCélula = largura_do_campo × 9/64; calha vertical = `100% * 9 / 128`
+     campo = 5 + 1 = 6 alturas → passoY = 100%/6
+
+   Consequência que faz a entrega inteira funcionar: TODO cruzamento de linhas é
+   um canto de célula. Não sobra nenhum cruzamento no vazio, então as cruzes
+   podem ser desenhadas pelas próprias células, em `px` fixo, sem depender de
+   fração nenhuma (ver `.marcas-grade-celula::before`).
+
+   ── GEOMETRIA DE ANTES, QUE CONTINUA VALENDO
+   5 × 3 acima de 1024px e 3 × 5 abaixo. Quinze é divisível por cinco e por três,
+   então as DUAS arrumações fecham exatas — nenhuma fileira incompleta, que numa
+   malha de linhas visíveis apareceria como buraco e não como respiro. Nenhuma
+   célula atravessa duas colunas: um logo esticado dominaria justamente a fileira
+   que a normalização de altura óptica existe para equalizar. Duas arrumações só,
+   e não quatro: em 2 colunas sobraria um órfão.
+   1024px é o mesmo degrau do resto da página (ver a nota da SIS-178 em
+   `HeroCinematic.tsx`), não um degrau inventado para esta seção. */
+.marcas-grade-campo {
+  /* As duas linhas e a cruz, em variáveis para o bloco `forced-colors` e para o
+     hover não terem de repetir a cor. */
+  --malha-linha: var(--line);
+  /* ⚠️ TINTA OPACA, E ISSO NÃO É PREFERÊNCIA DE ESCRITA. Era
+     `rgb(0 26 61 / 30%)`, e translúcida ela SOMA: cada célula desenha cruz nos
+     seus quatro cantos, então um canto interno é o mesmo pixel pintado por até
+     quatro células diferentes — camadas de elementos distintos, que o compositor
+     empilha. O campo saía em três degraus, medido a 1440 com trava de
+     assentamento: canto externo `[158,171,187]` (1 camada), meio de aresta
+     `[111,127,149]` (2), cruzamento interno `[92,109,133]` (4) — ~66 pontos de
+     RGB de amplitude, pálido na borda e escuro no meio.
+     `#acb7c5` é exatamente o que a camada ÚNICA já produzia (30% de
+     `rgb(0 26 61)` sobre o `#f5faff` da seção), então a cor pretendida não muda:
+     o que sai é a soma. Opaca, N camadas do mesmo pixel dão o mesmo valor que
+     uma, e a geometria fica intacta — nenhuma posição se move.
+     A alternativa era desenhar cada cruz uma vez no próprio campo; ficou pela
+     tinta porque o hover acende a cruz da célula apontada por
+     `--malha-cruz` local (ver o bloco de hover), e cruz desenhada no campo não
+     sabe qual célula está sob o ponteiro.
+     ⚠️ Se algum dia o fundo da seção deixar de ser `#f5faff`, esta tinta tem de
+     ser recalculada — ela é uma cor CHAPADA que imita transparência sobre um
+     fundo específico. */
+  --malha-cruz: #acb7c5;
+  /* Meia célula de calha nos quatro lados — é isto que põe os centros das
+     quadrículas sobre as bordas das células. */
+  padding-inline: 12.5%;
+  padding-block: calc(100% * 9 / 128);
+  /* Três camadas, de cima para baixo: verticais, horizontais, e as cruzes ficam
+     nas células (`px` fixo). As duas primeiras são `linear-gradient` com paradas
+     em `calc(50% ± 0.5px)`: um fio de 1px no centro da quadrícula, e a quadrícula
+     é o passo. `repeating-` seria redundante — quem repete é o `background-size`.
+     `0.5px` e não `1px` de cada lado: a linha tem de ficar CENTRADA na borda da
+     célula, senão ela pende para dentro de uma das duas vizinhas. */
+  background-image:
+    linear-gradient(
+      to right,
+      transparent calc(50% - 0.5px),
+      var(--malha-linha) calc(50% - 0.5px),
+      var(--malha-linha) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    linear-gradient(
+      to bottom,
+      transparent calc(50% - 0.5px),
+      var(--malha-linha) calc(50% - 0.5px),
+      var(--malha-linha) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    );
+  background-size:
+    25% 100%,
+    100% calc(100% / 6);
+  background-position: 0 0;
+  background-repeat: repeat;
+}
+
+@media (min-width: 1024px) {
+  .marcas-grade-campo {
+    padding-inline: calc(100% / 12);
+    padding-block: calc(100% * 3 / 64);
+    background-size:
+      calc(100% / 6) 100%,
+      100% 25%;
+  }
+}
+
 .marcas-grade-malha {
   list-style: none;
   margin: 0;
+  padding: 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  padding: 1px;
-  background: var(--line);
+  /* `gap: 0`: as linhas já não são o gap. Com gap as bordas das células
+     deixariam de coincidir com os centros das quadrículas e a conta acima
+     desandaria. */
+  gap: 0;
 }
 
 @media (min-width: 1024px) {
@@ -78,14 +248,73 @@
 
 /* A célula. `aspect-ratio` em vez de altura fixa: as células precisam ser
    comparáveis lado a lado (é o que expõe logo desproporcional), e a proporção
-   acompanha a largura da coluna sozinha nas duas arrumações. */
+   acompanha a largura da coluna sozinha nas duas arrumações. É também o que
+   fecha a conta de altura do campo — mudar esta proporção obriga a refazer os
+   `padding-block` e os `background-size` de `.marcas-grade-campo`.
+   Sem `background` próprio agora: a célula era opaca para tapar o fundo-linha do
+   bloco, e não há mais fundo-linha para tapar. Opaca ela apagaria justamente as
+   linhas que agora passam por baixo dela. */
 .marcas-grade-celula {
-  background: #f5faff;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   aspect-ratio: 16 / 9;
   padding: clamp(0.75rem, 1.6vw, 1.5rem);
+  transition:
+    background-color var(--base) var(--ease),
+    box-shadow var(--base) var(--ease);
+}
+
+/* AS CRUZES. Uma camada só, com as quatro cruzes dos quatro cantos da célula, em
+   `px` FIXO — é o que a geometria de meia calha acima compra: todo cruzamento é
+   um canto de célula, então nenhuma cruz precisa ser posicionada por fração.
+   Oito camadas de `background`: por canto, um braço horizontal (9×1) e um
+   vertical (1×9), deslocados 4px para fora para ficarem centrados no cruzamento.
+   Células vizinhas desenham a mesma cruz sobreposta — até QUATRO vezes no canto
+   interno, uma por célula que compartilha aquele canto. Não soma de espessura
+   (a posição é a mesma), mas somaria de TINTA se a cor fosse translúcida, e a
+   primeira versão desta nota afirmava que não somava: ver o ⚠️ de `--malha-cruz`
+   em `.marcas-grade-campo`, que é onde a soma foi medida e a cor virou opaca.
+   Opaca, quatro camadas do mesmo pixel dão o mesmo valor que uma.
+   ⚠️ Qualquer valor com alfa nesta variável reabre o defeito de três degraus.
+   `inset: 0` e não `-0.5px`: o canto da célula É o centro nominal do fio.
+   Os cantos externos do bloco também ganham cruz, e é isso que faz o campo ler
+   como papel milimetrado em vez de tabela: a cruz marca o cruzamento, e o
+   cruzamento existe mesmo onde a caixa não fecha. */
+.marcas-grade-celula::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--malha-cruz), var(--malha-cruz)),
+    linear-gradient(var(--malha-cruz), var(--malha-cruz)),
+    linear-gradient(var(--malha-cruz), var(--malha-cruz)),
+    linear-gradient(var(--malha-cruz), var(--malha-cruz)),
+    linear-gradient(var(--malha-cruz), var(--malha-cruz)),
+    linear-gradient(var(--malha-cruz), var(--malha-cruz)),
+    linear-gradient(var(--malha-cruz), var(--malha-cruz)),
+    linear-gradient(var(--malha-cruz), var(--malha-cruz));
+  background-size:
+    9px 1px,
+    1px 9px,
+    9px 1px,
+    1px 9px,
+    9px 1px,
+    1px 9px,
+    9px 1px,
+    1px 9px;
+  background-position:
+    left -4px top -0.5px,
+    left -0.5px top -4px,
+    right -4px top -0.5px,
+    right -0.5px top -4px,
+    left -4px bottom -0.5px,
+    left -0.5px bottom -4px,
+    right -4px bottom -0.5px,
+    right -0.5px bottom -4px;
+  background-repeat: no-repeat;
 }
 
 /* TAMANHO ÓPTICO NORMALIZADO — o ponto 10 da issue, e o que a grade expõe mais que
@@ -116,8 +345,44 @@
 
 /* A cor volta no ponteiro, e só onde há ponteiro fino: em toque o estado de hover
    fica preso depois do tap. O gatilho é a CÉLULA (é ela que tem área apontável) e
-   o que muda é a imagem. */
+   o que muda é a imagem.
+
+   ── SIS-179: A CÉLULA APONTADA ACENDE, E ACENDE NO AZUL DA MARCA
+   A referência acende a célula num verde-amarelo. Aqui é `--signal-deep`
+   (`#0079cb`): a paleta da casa não tem esse verde, e introduzi-lo por causa de
+   um hover criaria uma sexta cor que só existe nesta seção. O azul faz o mesmo
+   serviço — separa a célula apontada das outras 14 — dentro do que a marca já é.
+   `--signal-deep` e não `--signal` (`#0ed8f6`): o ciano claro sobre `#f5faff` não
+   se vê.
+
+   Três coisas acontecem juntas, e cada uma tem um motivo:
+     1. a preencher pálido (8%) marca a área da célula sem competir com a logo;
+     2. as QUATRO arestas acendem por `box-shadow` de spread 1px, que é desenhado
+        POR FORA da caixa e portanto cai exatamente sobre o fio cinza que passa na
+        borda — cobre a malha em vez de somar um segundo fio ao lado dela. Com
+        `border` a célula mudaria de tamanho e a malha inteira andaria 1px;
+     3. `z-index` com `position: relative` (a célula já é `relative` por causa das
+        cruzes): sem isso o `box-shadow` de uma célula ficaria por baixo da
+        vizinha seguinte na ordem do documento, e só duas das quatro arestas
+        apareceriam.
+   As cruzes da célula apontada também acendem, por `--malha-cruz` local: cruz
+   cinza dentro de aresta azul lê como sujeira.
+
+   ⚠️ ISTO É ENRIQUECIMENTO DE PONTEIRO, NÃO INFORMAÇÃO. O realce não diz nada que
+   já não esteja dito — a logo e o `alt` são o conteúdo, e a cor cheia no hover é
+   ganho de leitura, não um dado novo. É por isso que aqui NÃO há `tabindex`, e a
+   ausência é deliberada: pôr as 15 células na ordem de tabulação acrescentaria 15
+   paradas sem destino a quem navega por teclado, para revelar um efeito de cor. A
+   grade não é navegação — nenhuma célula é ligação, nenhuma leva a lugar nenhum.
+   Se um dia as células virarem links, o `:focus-visible` passa a ser OBRIGATÓRIO
+   e este bloco tem de sair de dentro da `@media (hover: hover)`. */
 @media (hover: hover) and (pointer: fine) {
+  .marcas-grade-celula:hover {
+    --malha-cruz: var(--signal-deep);
+    z-index: 1;
+    background: rgb(0 121 203 / 8%);
+    box-shadow: 0 0 0 1px var(--signal-deep);
+  }
   .marcas-grade-celula:hover img {
     filter: grayscale(0);
     opacity: 1;
@@ -125,28 +390,59 @@
 }
 
 /* `prefers-reduced-motion`: não há regra de movimento a desligar aqui — a grade é
-   parada, e é esse o ganho da troca. A única coisa animada é a transição de cor no
-   hover, que o reset global de `globals.css` já reduz a 0,01ms, e sem esconder
-   nada: o estado final do hover é a logo em cor cheia, visível.
+   parada, e é esse o ganho da troca. A única coisa animada é a transição de cor e
+   de aresta no hover, que o reset global de `globals.css` já reduz a 0,01ms, e sem
+   esconder nada: o estado final do hover é a célula acesa com a logo em cor cheia,
+   visível. Nada aqui nasce em `opacity: 0`, então não há o defeito de "animação
+   morta deixa conteúdo invisível para sempre".
    Fica registrado para que ninguém procure o par `html[data-motion="reduce"]` que
    as outras cenas têm: aqui ele não existe porque não há o que congelar. */
 
 /* `forced-colors`: `grayscale` só atrapalha num modo que já substitui as cores, e
-   a malha desenhada com `background` desapareceria — `--line` não é cor de sistema.
-   As linhas voltam como borda, que o modo respeita. */
+   a malha desenhada com `background` desapareceria — nem `--line` nem
+   `--signal-deep` são cor de sistema, e `background-image` é justamente o que o
+   modo descarta. As linhas voltam como borda, que o modo respeita.
+
+   ── SIS-179: A MALHA ABERTA NÃO SOBREVIVE AQUI, E A SUBSTITUIÇÃO É A CAIXA
+   O campo aberto com cruzes depende de oito camadas de `background-image` e de
+   duas de gradiente — tudo isso é apagado em `forced-colors`. Não há como
+   desenhar linha que atravessa o bloco com `border`, porque `border` só existe na
+   borda da caixa. Então a substituição É a grade fechada de bordas, e isso fica
+   ESCRITO para que ninguém tome este bloco por resto do desenho antigo que
+   esqueceram de limpar: é a tradução deliberada da malha para um modo que só
+   entende cor de sistema. Perde-se o "atravessa além do bloco" e a cruz; mantém-se
+   o que a malha significa, que é onde uma célula acaba e a outra começa.
+   As calhas do campo também saem: meia célula de folga em volta de uma caixa
+   fechada é só espaço vazio com aparência de erro. */
 @media (forced-colors: active) {
   .marcas-grade-celula img {
     filter: none;
     opacity: 1;
   }
-  .marcas-grade-malha {
-    gap: 0;
+  .marcas-grade-campo {
     padding: 0;
+    background-image: none;
+  }
+  /* As cruzes não têm equivalente: viram nada, em vez de virarem oito retângulos
+     de `CanvasText` empilhados nos cantos. */
+  .marcas-grade-celula::before {
+    content: none;
   }
   .marcas-grade-celula {
     border: 1px solid CanvasText;
     /* Sem `margin: -1px` as bordas adjacentes somam e a malha fica com linha
        dupla no meio e simples na borda. */
     margin: 0 -1px -1px 0;
+  }
+  /* O realce de hover: a preencher e o `box-shadow` são descartados pelo modo.
+     Volta como `outline` na cor `Highlight`, que é o par que o modo reserva para
+     "item apontado" — e `outline` porque ela não entra no layout, então a malha
+     não anda 1px ao apontar. `Highlight` como PREENCHER seria pior que nada: o
+     azul de sistema por trás de uma logo escura apagaria a logo. */
+  .marcas-grade-celula:hover {
+    background: none;
+    box-shadow: none;
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
   }
 }

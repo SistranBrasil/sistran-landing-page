@@ -85,11 +85,18 @@ function AccelCard({ a, index }: { a: Accelerator; index: number }) {
         </div>
         <span
           aria-hidden
-          className="font-display text-3xl leading-none"
+          /* SIS-155 — ordinal é METADADO: `font-display` → `font-mono`. */
+          /* SIS-155 — `font-semibold` NÃO é ênfase: a utilitária `font-mono` só troca a
+             família, e sem peso declarado este nó pedia 400 — peso que o único corte
+             carregado da Geist Mono (600) não tem. O navegador servia o 600 e o código
+             dizia 400: se um dia entrar um corte 400 na Mono, oito pontos como este
+             mudariam de aparência calados. Medido em 600 computado pela sonda. */
+          className="font-mono font-semibold text-3xl leading-none"
           style={{
             // Branco translucido: o tone em opacity 15% desaparecia no fundo azul.
             color: 'rgba(255,255,255,0.30)',
             fontVariantNumeric: 'tabular-nums',
+            fontFeatureSettings: '"tnum" 1',
           }}
         >
           {String(index + 1).padStart(2, '0')}

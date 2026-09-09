@@ -86,10 +86,21 @@ function CountUpNumber({
     <span
       ref={ref}
       aria-hidden
-      className="font-display leading-none tabular-nums"
+      /* SIS-155 — VALOR na camada técnica: `font-display` virou `font-mono`. É o
+         número de 96px do bloco, e o papel dele (dado, não escrita) é justamente o
+         que a issue reserva para a Mono. */
+      /* SIS-155 — `font-semibold` NÃO é ênfase: a utilitária `font-mono` só troca a
+         família, e sem peso declarado este nó pedia 400 — peso que o único corte
+         carregado da Geist Mono (600) não tem. O navegador servia o 600 e o código
+         dizia 400: se um dia entrar um corte 400 na Mono, oito pontos como este
+         mudariam de aparência calados. Medido em 600 computado pela sonda. */
+      className="font-mono font-semibold leading-none tabular-nums"
       style={{
         fontSize: 'clamp(3.25rem, 7.5vw, 6rem)',
+        /* Calibrado contra proporcional; em monoespaçada aperta mais, porque o avanço
+           já é fixo. Fica: o transbordo deste número foi medido depois da troca. */
         letterSpacing: '-0.05em',
+        fontFeatureSettings: '"tnum" 1',
         background: `linear-gradient(135deg, ${color} 0%, #0ed8f6 55%, #a5f0ff 100%)`,
         WebkitBackgroundClip: 'text',
         backgroundClip: 'text',

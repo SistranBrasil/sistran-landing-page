@@ -546,9 +546,14 @@ export default function EventsGrid() {
                   />
                 )}
                 <span className="relative z-10">{f.label}</span>
+                {/* SIS-155 — contagem do filtro: camada técnica, e 10px → 11px, que é
+                    o piso da issue (o degrau de 10px é proibido por nome). O chip tem
+                    `px-2 py-0.5` e cresce com o texto, então o pixel a mais não
+                    aperta nada. */}
                 <span
+                  style={{ fontFeatureSettings: '"tnum" 1' }}
                   className={clsx(
-                    'relative z-10 rounded-full px-2 py-0.5 text-[10px] tabular-nums',
+                    'relative z-10 rounded-full px-2 py-0.5 font-mono text-[11px] tabular-nums',
                     active ? 'bg-white/25 !text-white' : 'bg-white/10 !text-[#B8DDF6]',
                   )}
                 >
@@ -629,7 +634,16 @@ export default function EventsGrid() {
                       </span>
                     )}
                     <span className="evento-preview-texto">
-                      <span className="evento-preview-num tabular-nums" style={{ color: tone }}>
+                      {/* SIS-155 — ordinal do preview: camada técnica. */}
+                      <span
+                        /* SIS-155 — `font-semibold` NÃO é ênfase: a utilitária `font-mono` só troca a
+                           família, e sem peso declarado este nó pedia 400 — peso que o único corte
+                           carregado da Geist Mono (600) não tem. O navegador servia o 600 e o código
+                           dizia 400: se um dia entrar um corte 400 na Mono, oito pontos como este
+                           mudariam de aparência calados. Medido em 600 computado pela sonda. */
+                        className="evento-preview-num font-mono font-semibold tabular-nums"
+                        style={{ color: tone, fontFeatureSettings: '"tnum" 1' }}
+                      >
                         {alvo ? String(ordemNoCatalogo(alvo)).padStart(2, '0') : '—'}
                       </span>
                       <span className="evento-preview-titulo">{alvo?.title ?? rotulo}</span>

@@ -365,6 +365,18 @@ const NOMES_TECNICOS = new Set([
   'toggleActions',
   'transition',
   'willChange',
+  /* SIS-155 — mesmo remédio da SIS-173 acima, agora por causa da tipografia
+     terminal: onze pontos passaram a declarar `fontFeatureSettings: '"tnum" 1'`
+     em `style` inline (numeral tabular na camada Mono, pedido da issue). O valor
+     `"tnum" 1` tem a forma de frase curta e o portão o leu como TEXTO NOVO do
+     site — `npm run test:copy` reprovou com `+ "tnum" 1 (0x -> 11x)`. Não é
+     escrita: é ajuste de fonte OpenType. Filtrar pelo NOME da propriedade, e não
+     pela forma do valor, é a regra já estabelecida aqui.
+     `fontVariantNumeric` entra junto por prevenção: hoje seu valor
+     (`tabular-nums`) é recusado pela forma, mas é a propriedade irmã desta e
+     qualquer valor composto futuro cairia no mesmo buraco. */
+  'fontFeatureSettings',
+  'fontVariantNumeric',
   'className',
   'class',
   'classList',

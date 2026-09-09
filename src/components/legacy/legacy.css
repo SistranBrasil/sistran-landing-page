@@ -192,8 +192,22 @@
   color: color-mix(in srgb, currentColor 78%, transparent);
 }
 
+/* SIS-155 — esta classe passa a ser a PORTADORA da camada técnica na legado, e é o
+   único ponto do projeto onde o trio serve mais de um lugar: os seis consumidores
+   dela (`lp-metric-value`, `stop-dialog-counter`, `stop-figure-value`,
+   `roadmap-index`, `scene-step-index`) são todos valor, contador ou índice — nenhum
+   é parágrafo ou título, que são os dois papéis que a Mono não pode ocupar.
+   Trio explicado em `globals.css`, em `.mmi-leitura`.
+
+   ⚠️ Ela é declarada ANTES de `.stop-figure-value` e de `.scene-step-index` neste
+   arquivo, e as três têm a mesma especificidade (uma classe): quem escrever
+   `font-family` mais abaixo VENCE aqui. É por isso que `.stop-figure-value` teve de
+   ser mexida também em vez de herdar esta linha — ver a nota lá. */
 .lp-numeric {
+  font-family: var(--font-mono);
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
 }
 
 .lp-section-intro {
@@ -370,6 +384,12 @@ html[data-motion="reduce"] .scene-media-frame {
   color: var(--paper);
 }
 
+/* SIS-155 — a família e o peso da camada técnica NÃO estão aqui de propósito: o
+   `<span>` carrega `.lp-numeric` junto (`StackScenes.tsx`), e como esta regra não
+   declara `font-family`, a utilitária resolve sem disputa de especificidade. Se algum
+   dia esta classe for usada sozinha, o índice volta para a proporcional caladamente —
+   o conserto é acrescentar `.lp-numeric` no JSX, não duplicar o trio aqui.
+   Os 0,75rem = 12px ficam acima do piso de 11px da issue. */
 .scene-step-index {
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
@@ -2219,9 +2239,19 @@ html.has-dialog {
 }
 
 /* Escala editorial e `tabular-nums` pela classe `.numeric` do HTML: são números
-   comparáveis lado a lado, e largura de dígito variável desalinharia a coluna. */
+   comparáveis lado a lado, e largura de dígito variável desalinharia a coluna.
+
+   ⚠️ SIS-155 — "escala editorial" caducou. Esta linha pedia `--font-editorial` para
+   ter a SERIFA no número, e a serifa saiu do site: apontando para a indireção nova
+   ela resolveria para a mesma grotesca do corpo, virando uma declaração que parece
+   escolha e não é. O número é VALOR, então vai para a camada técnica junto com os
+   outros cinco consumidores de `.lp-numeric`.
+   Tem de estar escrito AQUI e não só na utilitária porque esta regra vem depois dela
+   no arquivo com a mesma especificidade — sem esta linha, `--font-editorial` venceria
+   a Mono e este seria o único dos seis fora da camada.
+   A linha antiga, para o rastro: `font-family: var(--font-editorial);` */
 .stop-figure-value {
-  font-family: var(--font-editorial);
+  font-family: var(--font-mono);
   font-size: clamp(1.8rem, 3.4vw, 2.3rem);
   line-height: 1;
   letter-spacing: -0.02em;

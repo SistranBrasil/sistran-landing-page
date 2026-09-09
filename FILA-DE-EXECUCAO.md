@@ -1,48 +1,94 @@
-# Fila de execução — SIS
+# Uma por vez — protocolo de despacho e conferência (SIS)
 
-Ordem em que as issues devem ser feitas. **Eu consulto este arquivo ao terminar cada
-conferência** e passo a próxima ao agente implementador, sem esperar novo pedido seu.
+**Mudou em 09/09/2026, a seu pedido.** A fila com ordem pré-combinada **não vale mais**.
+Este arquivo passa a registrar o protocolo, não uma lista.
 
-- Só você reordena. Se eu achar que a ordem está errada, eu argumento aqui e espero.
-- Quando uma issue é aprovada (`conferido`, In Review), ela **sai** desta lista — a mesma regra
-  do `DECISOES-PENDENTES.md`. O histórico fica nos comentários das issues.
-- Issue que depende de conteúdo seu não entra na fila: fica no `DECISOES-PENDENTES.md` até a
-  informação chegar.
+## A regra
 
-Última atualização: 08/09/2026.
+1. **Uma issue por vez.** O agente implementador trabalha **só** a issue que eu enviar
+   explicitamente. Ele não escolhe a próxima, não se serve de lista nenhuma, e não encadeia
+   uma na outra por conta própria.
+2. **Eu confiro essa uma**, fecho com `conferido` (ou devolvo com `conferir` removido e
+   In Progress), e **paro**.
+3. **A próxima é você quem nomeia.** Eu não despacho sozinha. Se eu achar que uma issue
+   deveria vir antes, eu argumento — e espero.
 
----
+O que isso troca: antes eu emendava conferência em despacho sem passar por você. Agora cada
+troca de issue passa. O custo é um turno seu por issue; o ganho é que nada entra em
+implementação sem você saber, e nunca há duas frentes abertas ao mesmo tempo.
 
-## Agora
+## Conferidas nesta rodada
 
-| # | Issue | O que é | Estado |
-|---|---|---|---|
-| 1 | **SIS-179** | Grade de marcas: sobe para depois do hero, título centrado, malha aberta | **em implementação** |
+**SIS-173** — aprovada em 09/09 (`conferido`, In Review). Cinco frases trancadas, 21 casos de
+autoteste, portões verdes. Dois reparos de texto pendentes e o achado das doze entradas técnicas
+roteado para a SIS-175.
 
-A **SIS-178 saiu da fila: aprovada e conferida** (`conferido`, In Review). O hero está com o claro
-`#f4f8fc`, o logo inteiro nos vinte casos medidos (folga mínima de 50,2px contra piso de 16) e o
-vídeo all-intra. Duas consequências do desenho novo foram para o item **3c** do
-`DECISOES-PENDENTES.md`, e uma delas aparece na home agora: a emenda entre o claro do hero e o
-branco da seção seguinte.
+**SIS-179** — aprovada em 09/09 (`conferido`, In Review), comentário `3dbc30cd`. Grade montada
+depois do hero, título centrado com folga igual até a primeira decimal em cinco larguras, malha
+**exata por construção** (não por tolerância), hover azul com anel medido em `[0,121,203]`, emenda
+com o hero de delta `(1,2,3)` no desktop e no celular. Portões: 24/0, `tsc` limpo, copy-lock OK.
 
-## Depois, nesta ordem
+Os dois consertos de acabamento que pedi foram feitos e **conferidos** no mesmo dia
+(comentário `32d50cee`): `--malha-cruz` virou `#acb7c5` opaca e o empilhamento acabou — 2 e 4
+camadas agora leem `172,183,197` exatamente, e a amplitude caiu de ~66 pontos para 12, os 12
+para o lado claro (franja de antialiasing no canto externo, não acúmulo). A nota do
+`.impact-percurso` marca as razões 1 e 2 como **INERTES** com o endereço de cada trava.
+Nada pendente. Pode ir para Done.
 
-| # | Issue | O que é | Por que aqui |
-|---|---|---|---|
-| 2 | **SIS-176** | "Sistran em números": fundo de imagem no palco, divisórias entre os sete, trilho de nós que acende na rolagem | Estava fora da lista por descuido meu — foi aberta às 20:07, antes de eu montar a fila. Entra aqui porque monta em `src/app/page.tsx:142`, o mesmo arquivo da SIS-179. **Liberada.** O comentário `7a95c6af` apontou dois defeitos (o item 1 não produzia resultado visível — a foto entraria por baixo de cor chapada opaca — e todas as linhas de `globals.css` deslocadas em +200) e o autor corrigiu, inclusive a regra base da grade: são **quatro** faixas (1 / 2 / 4 / 7 colunas), e a borda tem de ser **redevolvida** ao subir de faixa, senão a fileira de 7 fica sem divisória nenhuma |
-| 3 | **SIS-174** | Piso de tamanho de texto: subir os 30 pontos abaixo de 11px | A SIS-178 já cita este piso como restrição. Fazer depois evita remedir o hero duas vezes. **Cuidado herdado da SIS-180 (aprovada):** o token `text-palco` em `tailwind.config.ts:96` é exceção deliberada e não pode ser "consertado" de volta para `text-section` numa varredura |
-| 4 | **SIS-175** | O `copy-lock` trava `as React.CSSProperties` como se fosse cópia do site | Ferramenta de portão: consertar cedo poupa ruído em toda issue seguinte |
-| 5 | **SIS-173** | O `pareceCodigo()` descartando cinco frases publicadas de verdade | Mesma ferramenta da 175; fazer as duas em sequência |
-| 6 | **SIS-155** | Trocar o sistema tipográfico pelo par Geist Sans / Geist | **Última e isolada, ratificado por você.** Ela muda a largura de todo texto do site e reabre limiares medidos em pixel — ver item 6 do `DECISOES-PENDENTES.md` |
+## Em voo agora
 
-## Fora da fila, à espera de você
+**SIS-155** — trocar o sistema tipográfico do site pelo par Geist Sans 400/500 + Geist Mono 600.
+Despachada em 09/09 depois de você nomeá-la, e **com quatro mudanças na issue antes de sair**
+(comentário `2da3b693`):
 
-Estão no `DECISOES-PENDENTES.md`, não aqui: SIS-131 (três URLs de vídeo), SIS-123 (texto
-jurídico), SIS-124 (PDF do MTE), SIS-154 (`images: unoptimized`, decisão de deploy), SIS-125
-(índice de varredura).
+1. **Seu aval de marca entrou por escrito no ponto 1.** Ele travava a retirada da serifa dos 76
+   pontos de `font-display` até "aprovação de quem responde pela marca". Você aprovou retirar a
+   serifa de todas as quatorze rotas. Está datado, e o implementador foi instruído a não reabrir.
+2. **O bloqueio da SIS-174 caiu, e a ordem virou 155 → 174**, como você decidiu. O motivo ficou
+   escrito nas duas issues: a tabela dos ~30 pontos da 174 lista tamanhos **declarados**, não
+   medidos — `0.68rem` continua `0.68rem` depois da troca de família. O "pare e diga" da 174 está
+   revogado por escrito.
+3. **O conflito real foi consertado**: dois pontos da 155 permitiam texto abaixo do piso de 11px
+   da 174 — o critério "rótulo mono entre 10 e 12px" e o `caption` a 10px do prompt. Os dois agora
+   dizem 11px, com critério de aceite novo. Sem esse conserto o bloqueio seria legítimo, e vale
+   dizer: a 155 primeiro *só* funciona porque isso foi corrigido.
+4. **A 174 foi corrigida do outro lado** para as duas não se contradizerem — inclusive a nota de
+   topo dela, que ainda afirmava que a serifa fica por decisão sua de 08/09. Ficou registrado que
+   ela vai localizar os pontos **pelo seletor, não pela linha**, porque o diff da 155 desloca a
+   numeração de `globals.css` inteira.
 
-## A abrir como issue, quando você mandar
+O que eu vou apertar na conferência: o **ponto 12** (a lista escrita de toda constante de layout
+medida contra largura de texto, com o número antes e depois de cada uma), o itálico do
+`essence-accordion.css` — que morre em silêncio, sem virar falso, e tem de ser decisão declarada —
+e a manchete de 118 caracteres de `/solucoes`, que é o defeito que os dois degraus de manchete
+longa existem para evitar.
 
-Item 4 e 5 do `DECISOES-PENDENTES.md`: a varredura de `matchMedia` dentro de `useEffect` em oito
-componentes, a auditoria dos dois interruptores de movimento, a rolagem lateral de 7px em `/esg`
-no celular, e os caminhos SP/PR fechados da cena de escritórios.
+## À sua escolha
+
+Não é ordem, é o que existe pronto para ser chamado. A SIS-179 fechou, então a
+**SIS-176 está desbloqueada** — o `blockedBy` dela era exatamente essa conferência.
+
+| Issue | O que é | Observação minha |
+|---|---|---|
+| **SIS-176** | "Sistran em números": fundo de imagem no palco, divisórias entre os sete, trilho de nós que acende na rolagem | Liberada. Monta no mesmo `src/app/page.tsx` da SIS-179 — se for a seguinte, o terreno está quente |
+| **SIS-174** | Piso de tamanho de texto: subir os 30 pontos abaixo de 11px | **Agora vem DEPOIS da SIS-155**, por sua decisão de 09/09. Boa candidata a seguinte: ela mede na tipografia final, uma vez só |
+| **SIS-175** | O `copy-lock` trava literal técnico como se fosse cópia | Ferramenta de portão: conserta ruído em toda issue seguinte. **Cresceu** na conferência da SIS-173 — doze entradas técnicas no lock e três buracos de regra |
+
+## Fora disso, à espera de você
+
+No `DECISOES-PENDENTES.md`, não aqui: SIS-131 (três URLs de vídeo), SIS-123 (texto jurídico),
+SIS-124 (PDF do MTE), SIS-154 (`images: unoptimized`, decisão de deploy), SIS-125 (índice de
+varredura). Decisões que travam issue já aberta: **SIS-187** (emenda hero, escolher 1/2/3) e o
+item 2 da **SIS-185** (violeta de `BRASIL`).
+
+## Abertas em 09/09 (itens 4–5 + 3c + órfãos)
+
+| Issue | Status | O quê |
+|---|---|---|
+| **SIS-182** | Todo | `matchMedia` → `useSyncExternalStore` |
+| **SIS-183** | Todo | Auditoria dos dois interruptores de movimento |
+| **SIS-184** | Todo | `/esg` scroll lateral no celular |
+| **SIS-186** | Todo | Contraste × antialiasing em texto miúdo |
+| **SIS-185** | Backlog | Divisas SP/PR + token violeta `BRASIL` |
+| **SIS-187** | Backlog | Emenda hero → grade (precisa do seu aval) |
+| **SIS-188** | Backlog | Componentes órfãos |

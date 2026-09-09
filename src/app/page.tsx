@@ -41,11 +41,16 @@ import { StackScenes } from '@/components/legacy/StackScenes';
 // import { MetricsStrip } from '@/components/legacy/MetricsStrip';
 // SIS-101 — a faixa de logos agora é montada por `Metrics.tsx`, como rodapé da
 // seção dos números. A home não a consome mais diretamente.
-// SIS-156 — e na home ela deixou de ser faixa: o rodapé daquela seção agora é a
-// grade estática `BrandGrid`, montada no mesmo lugar. A faixa rolante segue viva
+// SIS-156 — e na home ela deixou de ser faixa: o rodapé daquela seção passou a ser
+// a grade estática `BrandGrid`, montada no mesmo lugar. A faixa rolante segue viva
 // em `/contato` e `/parceiros-e-implementacoes`; a home não a consome de nenhuma
 // forma.
+// SIS-179 — "montada no mesmo lugar" já não vale: a grade voltou a ser montada
+// AQUI, e não mais por `Metrics.tsx`. Só que não como faixa de logos solta no fim
+// da página, como na SIS-101: ela abre a home, logo depois do hero. O que continua
+// valendo é a última frase — a home não consome o `SignalMarquee` de nenhuma forma.
 // import { SignalMarquee } from '@/components/legacy/SignalMarquee';
+import { BrandGrid } from '@/components/BrandGrid';
 import { ImpactSequence } from '@/components/legacy/ImpactSequence';
 
 export default function Page() {
@@ -79,8 +84,31 @@ export default function Page() {
         <ScrollSpine />
         */}
         <HeroCinematic />
-        {/* Sem separador aqui: o hero encolhe em card sobre fundo claro e já
-            entrega a cor do mosaico.
+        {/* SIS-179 — a GRADE DE MARCAS abre a página, logo depois do hero. Era
+            rodapé de "Sistran em números" (mount comentado em `Metrics.tsx`), e
+            subiu: as marcas que a Sistran opera são prova de credibilidade, e
+            prova serve mais no começo do que no fim.
+
+            ── ELA É O `#top + *`, E ISSO NÃO É DETALHE
+            `globals.css` dá `z-index: 1` ao irmão seguinte do hero, para que ele
+            SUBA por cima do hero enquanto a cena afunda. Esse irmão era o `<div>`
+            do mosaico; agora é esta seção. Duas consequências, as duas conferidas:
+              1. o `<BrandGrid />` tem de ficar aqui, irmão DIRETO, nunca dentro de
+                 um wrapper — é a mesma razão escrita na nota do `<main>` acima;
+              2. a faixa tem fundo opaco (`#f5faff`) e passa por cima do hero. Foi
+                 medido que ela não corta o card antes da hora: o card fecha e
+                 desce (`drop`) dentro das 320svh do `#top`, e a grade só encosta
+                 no topo dele no fim do percurso — é exatamente o encontro que o
+                 `drop` existe para produzir, não um corte.
+            A emenda de cor com o hero é deliberadamente invisível: a `.hero-sheet`
+            é `#f4f8fc` e esta seção é `#f5faff`. Ver a nota de `brand-grid.css`,
+            que também registra por que as duas cores NÃO podem ser unificadas. */}
+        <BrandGrid />
+        {/* Sem separador aqui: o hero encolhia em card sobre fundo claro e já
+            entregava a cor do mosaico. SIS-179 — a grade entrou no meio, então quem
+            encosta no mosaico agora é ela, com o `border-bottom` de `--line` que ela
+            já tinha. Segue sem separador, e por um motivo a mais: são duas
+            superfícies claras seguidas, e o fio de 1px da grade é a aresta.
 
             O `StackScenes` era mosaico e Método num bloco só, porque o tile
             "Arquitetura modular e escalável" saía do mosaico, descia e se

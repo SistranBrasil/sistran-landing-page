@@ -15,3 +15,12 @@ tsconfig.tsbuildinfo
 # SIS-132: worker do MapLibre copiado de node_modules por scripts/copiar-worker-maplibre.mjs
 # (predev/prebuild). Versionar a cópia a deixaria envelhecer em silêncio.
 public/maplibre/
+
+# Sondas de medição e capturas de conferência: são SAÍDA DE INSTRUMENTO, não fonte.
+# Vivem só enquanto a issue está aberta — quem mediu apaga ao fim da conferência.
+# A regra está aqui como rede de segurança, para que um `git add .` distraído não
+# suba a instrumentação junto com a entrega.
+sonda*.mjs
+docs/capturas/
+*.tmp.json
+*.tmp.mjs

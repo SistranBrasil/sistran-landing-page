@@ -195,7 +195,15 @@ function ItemList({ block }: { block: Extract<AccelBlock, { kind: 'list' }> }) {
       {block.ordered && (
         <span
           aria-hidden
-          className="font-display text-sm tabular-nums text-[#A5F0FF]"
+          /* SIS-155 — ordinal de lista é METADADO: `font-display` → `font-mono`.
+             `text-sm` = 14px, acima do piso de 11px da issue. */
+          /* SIS-155 — `font-semibold` NÃO é ênfase: a utilitária `font-mono` só troca a
+             família, e sem peso declarado este nó pedia 400 — peso que o único corte
+             carregado da Geist Mono (600) não tem. O navegador servia o 600 e o código
+             dizia 400: se um dia entrar um corte 400 na Mono, oito pontos como este
+             mudariam de aparência calados. Medido em 600 computado pela sonda. */
+          className="font-mono font-semibold text-sm tabular-nums text-[#A5F0FF]"
+          style={{ fontFeatureSettings: '"tnum" 1' }}
         >
           {String(i + 1).padStart(2, '0')}
         </span>

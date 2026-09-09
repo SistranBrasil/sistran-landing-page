@@ -308,6 +308,30 @@
   /* Sobe junto com o paragrafo, mas mantendo a MESMA distancia relativa: nota de
      rodape que chega perto do corpo deixa de se ler como ressalva. */
   font-size: clamp(1.02rem, 1.25vw, 1.18rem);
+  /* ⚠️ SIS-155 — ESTE É O ÚNICO `font-style: italic` DO PROJETO, e a decisão sobre ele
+     é declarada e não herdada: FICA, e o site passa a CARREGAR o corte itálico real
+     da Geist para sustentá-lo.
+
+     A issue partia da premissa de que "Geist Sans não tem corte itálico real", o que
+     obrigaria a escolher entre perder a inclinação ou aceitar oblíquo fabricado. A
+     premissa não se confirmou. Verificado onde importa — não na tabela do carregador,
+     que declara `styles` mas não prova arquivo, e sim no CSS que o build EMITE: há
+     `@font-face` com `font-family: Geist; font-style: italic` em 400 e em 500. São
+     arquivos que o navegador baixa, então é corte desenhado.
+
+     É isso que faz as duas coisas conviverem: `html { font-synthesis: none }` em
+     `globals.css` proíbe FABRICAR itálico, e não proíbe usar um que exista. Sem o
+     corte, aquela regra apagaria a inclinação desta linha caladamente — o texto
+     continuaria sendo ressalva no HTML e pararia de parecer ressalva na tela.
+
+     O elo é o `style: ['normal', 'italic']` de `layout.tsx`: retirá-lo dali para
+     economizar bytes endireita esta nota de rodapé sem erro, sem aviso e sem
+     diferença em nenhum outro lugar do site. Se algum dia isso for feito, é aqui que
+     tem de vir a decisão de como marcar a ressalva sem inclinação.
+
+     Por que itálico e não outra marca: a ressalva é PARÁGRAFO, então nem cor (já
+     usada, `#527190`) nem a camada Mono servem — Mono é rótulo e valor, nunca corpo
+     corrido, e a issue é explícita nisso. */
   font-style: italic;
   line-height: 1.65;
 }

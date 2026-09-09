@@ -61,8 +61,13 @@ import { useJornada } from '@/components/ProofJourney';
    estática e o import da faixa fica comentado junto com o mount. Comentado, e não
    deletado, é a pista de como religar; ativo, quebraria o lint por import não
    utilizado.
-   import { SignalMarquee } from '@/components/legacy/SignalMarquee'; */
-import { BrandGrid } from '@/components/BrandGrid';
+   import { SignalMarquee } from '@/components/legacy/SignalMarquee';
+
+   SIS-179 — e agora a GRADE também saiu: ela subiu para logo depois do hero, e
+   quem a importa é `src/app/page.tsx`. Esta seção deixou de ter rodapé de marcas.
+   O import fica comentado pelo mesmo motivo do de cima — ativo, o lint quebraria
+   por import não utilizado; apagado, ninguém saberia que já esteve aqui:
+   import { BrandGrid } from '@/components/BrandGrid'; */
 /* SIS-165 — este import NAO acompanhou o modo dirigido para fora, e a razao foi
    verificada no build, nao presumida: `geometria.ts` continua com consumidor vivo
    e incondicional fora daqui — `coord` é usado por
@@ -118,7 +123,22 @@ const ETAPAS_INICIO = 0.16;
  * constante que não parece ter relação com a altura de um rodapé.
  *
  * O valor fica como reserva para antes da primeira medição e para o caso de a
- * caixa não ser encontrada: é o comportamento anterior, e nunca é pior que ele. */
+ * caixa não ser encontrada: é o comportamento anterior, e nunca é pior que ele.
+ *
+ * ── SIS-179: O RODAPÉ FOI EMBORA, E O NÚMERO NÃO MUDA
+ * A grade de marcas saiu desta seção e subiu para logo depois do hero, então o
+ * rodapé de ~690px descrito acima não existe mais: o gatilho passa a medir a caixa
+ * do percurso mais quase nada. Isto está escrito para impedir o recálculo que a
+ * leitura dos parágrafos acima sugere.
+ * O `0.94` NÃO foi recalculado, e não precisa ser, porque é exatamente o caso que
+ * a SIS-156 previu ao trocar constante por medição: "qualquer mudança futura na
+ * altura deste rodapé reescala a partitura sozinha". A altura mudou para zero, que
+ * é uma mudança de altura como outra qualquer — `etapasFimRef` é reescrito na
+ * primeira medição e a partitura segue a razão real.
+ * Ou seja: a saída da grade não é um número a corrigir, é a PROVA de que o
+ * mecanismo funciona. Se alguém trocar isto por um valor "mais atual", perde-se a
+ * reserva correta para antes da primeira medição e a próxima mudança de altura
+ * volta a quebrar em silêncio. */
 const ETAPAS_FIM_PADRAO = 0.94;
 /** O pulso aparece no meio da passagem entre dois indicadores e some ao chegar. */
 const PULSO_SUBIDA = 0.2;
@@ -182,6 +202,14 @@ const LINHA_BASE = 0.5;
  *
  * O gabarito é o próprio valor final, invisível (`visibility: hidden`) e
  * `aria-hidden`, empilhado na MESMA célula de grid do número vivo. A largura passa
+ * SIS-155 · ponto 12 — esta é a única constante da varredura que já nasceu imune,
+ * e vale registrar por quê: o gabarito mede o TEXTO, então a troca de Inter por
+ * Geist Mono 600 não pede recálculo nenhum. Conferido no navegador: `.impact-valor`
+ * em Geist Mono 600 a 32px, número e gabarito na mesma célula, `+` no eixo. Os
+ * "~145px" e "~87px" acima são da Inter e ficam como registro do defeito antigo —
+ * se fossem reaproveitados como alvo hoje estariam errados. Tabela das outras
+ * constantes em `globals.css:82`.
+ *
  * a ser exatamente a do texto final, em qualquer fonte e qualquer tamanho: o `+`
  * continua parado e a primeira glifa do número nasce no eixo, ao pixel.
  *
@@ -812,7 +840,43 @@ export default function Metrics() {
           caixa que inclui o rodapé faz o fim das etapas migrar para dentro do
           trecho em que o palco já está saindo, tanto mais quanto mais alto for o
           rodapé — e nada avisa. O que reescala sozinho, agora, é `ETAPAS_FIM`:
-          medido como a razão entre esta caixa e a seção. */}
+          medido como a razão entre esta caixa e a seção.
+
+          ── SIS-179: A RAZÃO DE EXISTIR DESTA CAIXA CAIU, E ELA FICA
+          A primeira frase acima — "ela existe por uma razão só: dar à faixa de
+          logos um lugar DEPOIS do sticky" — deixou de valer. A faixa saiu na
+          SIS-156, a grade que a substituiu saiu na SIS-179 (subiu para depois do
+          hero), e esta seção não tem mais rodapé nenhum. A caixa não tem mais
+          irmão a acomodar.
+          Ela FICA, e não por inércia. Três coisas pendem dela — mas ⚠️ AS DUAS
+          PRIMEIRAS ESTÃO INERTES HOJE, e é justamente por isso que precisam estar
+          escritas: quem testar "tiro a caixa, nada muda" vai ver que nada muda
+          MESMO, e vai apagá-la. O que a mantém é o retorno do condutor, não o
+          efeito de agora.
+            1. o `min-height: 340vh` mora nela (`globals.css`) — é ela que dá altura
+               ao percurso, e sem ela o sticky não tem onde viajar. INERTE: cada
+               regra dele é prefixada por `.impact-scroll[data-dirigindo]`
+               (`globals.css:9119`, `:10818`, `:10923`) e o atributo não é mais
+               escrito, porque `dirigindo` é `false` cravado em `:315`. Hoje a
+               caixa não tem altura nenhuma imposta;
+            2. `percursoRef` é a caixa que o efeito mede para calcular `ETAPAS_FIM`;
+               a medição sobrevive à ausência de rodapé (a razão simplesmente tende
+               a 1) e continua sendo o que protege a partitura de mudanças de
+               altura futuras. INERTE: o efeito retorna na primeira linha
+               (`if (!dirigindo) return`, em `:526`), então nenhuma medição corre —
+               `ETAPAS_FIM` fica no `ETAPAS_FIM_PADRAO`, que é exatamente por que
+               aquele `0.94` NÃO pode ser trocado por um valor "mais atual";
+            3. desfazê-la devolveria o sticky à seção inteira, que é o arranjo que
+               a SIS-101 desmontou — e a próxima peça que alguém puser depois do
+               palco cairia no mesmo defeito descrito no segundo parágrafo, que
+               continua sendo a única explicação escrita dele. Esta é a única das
+               três que vale HOJE, e ela é sobre o futuro do arquivo, não sobre a
+               tela de agora.
+          Em uma frase: as razões 1 e 2 voltam a valer no minuto em que alguém
+          religar `dirigindo` (as três linhas comentadas em `:313`), e a caixa é
+          pré-requisito das duas. Apagá-la agora é barato e só cobra depois.
+          Se um dia esta seção voltar a ter rodapé, a caixa já está pronta: era esse
+          o serviço, e ele continua disponível. */}
       <div ref={percursoRef} className="impact-percurso">
       <div ref={palcoRef} className="impact-sticky">
         <div className="impact-topo">
@@ -1364,7 +1428,34 @@ export default function Metrics() {
           Sem `aria-hidden` e sem wrapper: o componente já é um `role="region"`
           rotulado, e não tem texto — não precisa da serifa editorial que o
           envolvia na home. */}
-      {/* SIS-156 — a FAIXA ROLANTE saiu daqui e entrou a grade estática
+      {/* ══════════════════════════════════════════════════════════════════════
+          SIS-179 — A GRADE TAMBÉM SAIU DAQUI. ESTE BLOCO É HERANÇA.
+
+          O `<BrandGrid />` que este comentário inteiro explica não é montado mais
+          nesta seção: subiu para logo depois do hero, em `src/app/page.tsx`. Nada
+          fecha "Sistran em números" agora — a seção termina na própria partitura.
+          O bloco fica, pela regra da casa, porque cada um dos quatro parágrafos
+          abaixo continua sendo o único registro de uma decisão que ainda vale ou
+          de um defeito que ainda pode voltar. Leia cada um com a ressalva que o
+          acompanha.
+
+          ⚠️ NÃO RECALCULE `ETAPAS_FIM_PADRAO` POR CAUSA DESTA MUDANÇA. É a
+          armadilha desta issue: o quarto parágrafo abaixo diz que a grade mede
+          ~690px contra os ~130px da faixa, e a saída dela tira esses ~690px da
+          caixa do percurso — a leitura natural é "então o 0,94 mudou". Está
+          errado, e a razão é o próprio conserto da SIS-156: `ETAPAS_FIM` deixou de
+          ser número e passou a ser RAZÃO MEDIDA do DOM (`etapasFimRef` nasce com
+          `ETAPAS_FIM_PADRAO` e é reescrito pelo efeito que mede a razão entre a
+          caixa de `percursoRef` e a seção; quem lê é a partitura). Tirar a grade
+          faz a razão se recalcular sozinha na primeira medição. O `0,94` é só o
+          valor de partida antes dela.
+          Os números 690/130/527 são, portanto, o HISTÓRICO de por que a razão
+          passou a ser medida — e a saída da grade sem uma linha de código alterada
+          é a prova de que a medição funciona. Era isso que o parágrafo queria
+          dizer; escrito como estava, ele convidava ao recálculo.
+          ══════════════════════════════════════════════════════════════════════
+
+          SIS-156 — a FAIXA ROLANTE saiu daqui e entrou a grade estática
           (`BrandGrid`), no formato de `terminal-industries.com`: título editorial
           acima e as marcas paradas numa malha de linhas finas. O
           `<SignalMarquee />` fica comentado, não deletado:
@@ -1392,6 +1483,16 @@ export default function Metrics() {
           superfície clara, como antes. Nada de `NotchDivider` — ver o parágrafo do
           `.impact-percurso` no topo desta seção.
 
+          ⚠️ SIS-179 — ESTE É O PARÁGRAFO QUE A MUDANÇA DESFAZ, E É ACHADO ABERTO.
+          A superfície clara que costurava aqui era a da GRADE, e a grade levou o
+          `#f5faff` embora. A emenda que ela costurava — palco escuro acima, creme
+          da montagem abaixo — fica descoberta, e é o espelho exato do ganho da
+          issue: fecha-se a aresta debaixo do hero e abre-se uma aqui.
+          Medido, não argumentado (números no relatório da SIS-179). A correção não
+          é desta issue: ela é ou devolver uma superfície clara a este fim de seção,
+          ou aceitar o degrau como aresta legítima entre duas cenas. Fica escrito
+          para que o próximo não descubra o degrau sem saber de onde veio.
+
           E O QUE FOI MEDIDO, porque é o que quebrou em silêncio de verdade: a caixa
           do percurso mede 340vh MAIS a altura deste rodapé, e a grade é ~690px
           contra os ~130px da faixa. Com `ETAPAS_FIM` cravado em `0.94`, a sétima
@@ -1404,8 +1505,15 @@ export default function Metrics() {
           cinco fileiras a seção é a lista completa, sem sticky e sem etapas. A
           grade mais alta não tem o que reescalar lá.
           Medido em 1440×900, 1366×768 e 900×800 por
-          `scripts/medir-percurso-marcas.mjs`. */}
-      <BrandGrid />
+          `scripts/medir-percurso-marcas.mjs` — que mediu o ARRANJO ANTERIOR à
+          SIS-179, com a grade ainda aqui. */}
+      {/* SIS-179 — o mount saiu daqui, e fica comentado em vez de apagado porque é
+          o registro de que esta seção já teve rodapé, e de que devolvê-lo é uma
+          linha:
+
+              <BrandGrid />
+
+          O `import` correspondente também está comentado no topo do arquivo. */}
     </section>
   );
 }

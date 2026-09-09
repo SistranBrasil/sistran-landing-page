@@ -315,14 +315,31 @@ export default function PartnersTrack() {
             {/* Número DERIVADO do índice — nenhum campo `num` no dado. */}
             <span
               aria-hidden
-              className="font-display text-4xl leading-none"
-              style={{ color: 'rgba(255,255,255,0.30)', fontVariantNumeric: 'tabular-nums' }}
+              /* SIS-155 — ordinal é METADADO: `font-display` → `font-mono`. */
+              /* SIS-155 — `font-semibold` NÃO é ênfase: a utilitária `font-mono` só troca a
+                 família, e sem peso declarado este nó pedia 400 — peso que o único corte
+                 carregado da Geist Mono (600) não tem. O navegador servia o 600 e o código
+                 dizia 400: se um dia entrar um corte 400 na Mono, oito pontos como este
+                 mudariam de aparência calados. Medido em 600 computado pela sonda. */
+              className="font-mono font-semibold text-4xl leading-none"
+              style={{
+                color: 'rgba(255,255,255,0.30)',
+                fontVariantNumeric: 'tabular-nums',
+                fontFeatureSettings: '"tnum" 1',
+              }}
             >
               {String(i + 1).padStart(2, '0')}
             </span>
+            {/* SIS-155 — 10px → 11px nos QUATRO rótulos Mono deste arquivo (chip de
+               categoria, rótulo de categoria da faixa, chip de filtro e o "role para
+               explorar"): o prompt fixa 10px para o papel `caption`, e a issue PROÍBE
+               explicitamente descer de 11px. Medidos a 10px pela sonda antes da troca; a
+               Geist Mono 600 em caixa alta com `tracking` a 10px era o menor texto real da
+               rota. Nenhum dos quatro vive em caixa de altura fixa — o `px-2.5 py-1` do
+               chip cresce com o conteúdo. */}
             {/* Chip de categoria: conteúdo já aprovado, e existe nos dezesseis. */}
             <span
-              className="inline-flex items-center rounded-full border border-white/12 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em]"
+              className="inline-flex items-center rounded-full border border-white/12 bg-white/[0.04] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em]"
               style={{ color: tone, fontFamily: MONO }}
             >
               {PARTNER_CATEGORIES[p.category].label}
@@ -458,7 +475,7 @@ export default function PartnersTrack() {
             tabIndex={estaAberto ? 0 : undefined}
           >
             <span
-              className="text-[10px] font-semibold uppercase tracking-[0.2em]"
+              className="text-[11px] font-semibold uppercase tracking-[0.2em]"
               style={{ color: tone, fontFamily: MONO }}
             >
               {PARTNER_CATEGORIES[p.category].label}
@@ -547,7 +564,7 @@ export default function PartnersTrack() {
                 <button
                   key={a.cat}
                   type="button"
-                  className="rounded-full border border-ink/15 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-ink/70 transition-colors hover:border-ink/40 hover:text-ink"
+                  className="rounded-full border border-ink/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-ink/70 transition-colors hover:border-ink/40 hover:text-ink"
                   style={{ fontFamily: MONO }}
                   onClick={() => irPara(a.i)}
                 >
@@ -565,7 +582,7 @@ export default function PartnersTrack() {
           </div>
 
           <p
-            className="text-center text-[10px] font-semibold uppercase tracking-[0.28em] text-ink/45"
+            className="text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-ink/45"
             style={{ fontFamily: MONO }}
           >
             ROLE PARA EXPLORAR

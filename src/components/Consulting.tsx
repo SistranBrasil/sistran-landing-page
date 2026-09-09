@@ -83,10 +83,19 @@ function ConsultRow({
         <div className="flex shrink-0 items-center gap-4 md:w-32 md:flex-col md:items-start md:gap-4">
           <span
             aria-hidden
-            className="font-display text-3xl leading-none transition-colors duration-500 md:text-4xl"
+            /* SIS-155 — ordinal é METADADO: `font-display` → `font-mono`. A distinção
+               entre ativo e inativo aqui é COR e não peso, então ela sobrevive à
+               família de corte único. */
+            /* SIS-155 — `font-semibold` NÃO é ênfase: a utilitária `font-mono` só troca a
+               família, e sem peso declarado este nó pedia 400 — peso que o único corte
+               carregado da Geist Mono (600) não tem. O navegador servia o 600 e o código
+               dizia 400: se um dia entrar um corte 400 na Mono, oito pontos como este
+               mudariam de aparência calados. Medido em 600 computado pela sonda. */
+            className="font-mono font-semibold text-3xl leading-none transition-colors duration-500 md:text-4xl"
             style={{
               color: active ? accent : 'rgba(6,43,82,0.32)',
               fontVariantNumeric: 'tabular-nums',
+              fontFeatureSettings: '"tnum" 1',
             }}
           >
             {String(index + 1).padStart(2, '0')}

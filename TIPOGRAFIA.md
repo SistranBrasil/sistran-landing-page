@@ -4,7 +4,30 @@ Documento de referência para alinhar a tipografia deste site (`sistran-landing-
 com a proposta usada na apresentação da Transformação de Legado
 (`C:\Users\maria.martinelli\inovacao_landing_page\apresentação\site`).
 
-> ## ✅ ADOTADO — 03/09/2026
+> ## ⛔ SUPERADO — 09/09/2026 (SIS-155)
+>
+> **Este documento descreve a tipografia ANTERIOR do site e não é mais a fonte da
+> verdade.** A SIS-155 substituiu o par `Instrument Serif` + `Inter` por
+> **Geist Sans + Geist Mono**, com aval de marca datado de 09/09/2026 registrado
+> no ponto 1 da issue. A retirada da serifa dos 76 pontos de `font-display` é
+> reversão de identidade aprovada, não ajuste de implementador.
+>
+> Onde está a fonte da verdade agora:
+> - **A intenção**: `docs/terminal-typography-prompt.md` (os oito papéis).
+> - **O carregamento e o desvio de pesos**: o cabeçalho de `src/app/layout.tsx`,
+>   inclusive o ⚠️ que mede os 285 pontos de texto acima de 500.
+> - **Os tokens e a tabela de constantes medidas**: `src/app/globals.css:82`.
+>
+> **O que este arquivo ainda serve**: histórico. Ele registra por que a serifa
+> entrou, quais pontos ela alcançava e quais defeitos a adoção dela consertou —
+> e a §5 continua sendo o registro do que foi conferido em 03/09. Nada abaixo
+> desta linha deve ser lido como instrução para código novo: onde ele diz
+> "Instrument Serif", hoje é Geist; onde diz que só existe o peso 400, hoje há
+> 400/500/600/700 (com a disciplina do prompt escrita no `layout.tsx`).
+>
+> ### O carimbo anterior, preservado na íntegra abaixo
+>
+> ## ✅ ADOTADO — 03/09/2026 *(vale até 09/09/2026; superado pelo bloco acima)*
 >
 > **Este documento deixou de ser proposta.** Os seis passos da §4 foram
 > executados e verificados; as seções 1–4 e 6 seguem valendo como a

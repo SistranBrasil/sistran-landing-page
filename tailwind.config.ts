@@ -54,15 +54,30 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        /* TIPOGRAFIA.md — `font-display` agora resolve para a serifa editorial, e
-           por isso as ~28 telas que já usam a classe migram sem tocar em JSX.
+        /* SIS-155 — as três famílias saem da MESMA indireção de `globals.css`
+           (`--font-proportional` / `--font-mono`), e não repetem a lista de
+           fallback: repetir seria criar um segundo lugar para editar, que é
+           exatamente o defeito que a camada de papéis existe para evitar. */
+        sans: ['var(--font-proportional)'],
+        /* `font-display` resolve para a GROTESCA agora — a serifa saiu do site
+           inteiro (76 pontos de JSX, quatorze rotas), com aval de marca datado no
+           ponto 1 da SIS-155. As ~28 telas que usam a classe migram sem tocar em
+           JSX, que é o ganho da indireção.
 
-           O fallback virou `serif` de propósito, e não é detalhe: com `Inter` no
-           fim da lista, uma falha de carregamento faria o título parecer corpo
-           aumentado — o layout mudaria de personalidade em vez de degradar. Uma
-           serifa de sistema mantém a intenção. */
-        display: ['var(--font-serif)', 'Georgia', '"Times New Roman"', 'serif'],
+           ⚠️ O FALLBACK DEIXOU DE SER SERIFADO, e isso é o critério de aceite, não
+           gosto. A lista era `Georgia, "Times New Roman", serif`, escolhida quando
+           o display ERA serifa: ali, degradar para serifa de sistema mantinha a
+           intenção. Hoje mantê-la faria o oposto — uma falha de carregamento
+           entregaria justamente a personalidade que a issue retirou. A queda agora
+           é `Helvetica Neue, Arial, sans-serif`, dentro de `--font-proportional`.
+
+           A lista antiga, para o rastro:
+             display: ['var(--font-serif)', 'Georgia', '"Times New Roman"', 'serif'], */
+        display: ['var(--font-proportional)'],
+        /* A camada TÉCNICA. Nova como utilitária do Tailwind (`font-mono` do
+           default apontava para a pilha genérica do framework), e é o que os
+           rótulos, valores e botões passam a consumir. */
+        mono: ['var(--font-mono)'],
       },
       fontSize: {
         /* TIPOGRAFIA.md — a ESCALA é a daqui (cinco degraus, calibrados contra os
@@ -74,7 +89,24 @@ const config: Config = {
            linhas — e `letter-spacing` mais negativo. Serifa grande solta parece
            "desmontada"; é a diferença mais visível entre a proposta aplicada e um
            serif aplicado cru. Nos degraus menores o fechamento é menor, porque ali
-           o corpo já é pequeno o suficiente para o kerning natural servir. */
+           o corpo já é pequeno o suficiente para o kerning natural servir.
+
+           ⚠️ SIS-155 — ESTES SEIS DEGRAUS FICAM, e a issue pede isso por escrito:
+           os papéis de manchete do prompt foram MAPEADOS sobre eles (o mapa está
+           em `globals.css`, nos tokens `--tipo-*`) em vez de substituí-los. Trocar
+           por uma tabela genérica reabriria o defeito que `pagehero-medio` e
+           `pagehero-longo` existem para evitar — a manchete de 118 caracteres de
+           `/solucoes` em sete linhas.
+
+           São SEIS, não os cinco que a issue conta: `palco` entrou depois dela,
+           pela SIS-180.
+
+           As MÉTRICAS (line-height fechado, tracking negativo) foram calibradas
+           contra SERIFA, e a família mudou. Ficaram como estão de propósito: a
+           issue proíbe tamanho e tracking soltos novos, e `-0.04em` em grotesca de
+           corpo grande é a própria assinatura suíça da referência. O que sustenta
+           a decisão é medição, não gosto — a contagem de linhas de cada manchete
+           foi conferida antes e depois da troca, e está no relatório da issue. */
         hero: ['clamp(2.8rem, 7vw, 5.8rem)', { lineHeight: '0.92', letterSpacing: '-0.04em' }],
         section: ['clamp(2.2rem, 4.6vw, 4.1rem)', { lineHeight: '0.96', letterSpacing: '-0.04em' }],
         /* SIS-180 — EXCEÇÃO DELIBERADA, e está registrada aqui justamente para

@@ -51,7 +51,16 @@ function CountUp({
   }, [to, suffix, durationMs]);
 
   return (
-    <span ref={ref} className="tabular-nums">
+    /* `"tnum" 1` ao lado do utilitário `tabular-nums` (SIS-155): a propriedade alta é
+       o que o navegador lê, a feature é a garantia quando a família só expõe a tabela
+       OpenType por nome. Importa mais aqui que em qualquer outro contador do site —
+       este número SOBE quadro a quadro, e dígito de largura variável faria a linha
+       inteira tremer durante a contagem. */
+    <span
+      ref={ref}
+      className="tabular-nums"
+      style={{ fontFeatureSettings: '"tnum" 1' }}
+    >
       0{suffix}
     </span>
   );
@@ -295,8 +304,18 @@ export default function CompanySignature() {
           ].map((s) => (
             <div key={s.label} className="flex flex-col gap-1">
               {/* Cada número puxa um tom distinto da paleta */}
+              {/* SIS-155 — VALOR: `font-display` saiu daqui para `font-mono`, a
+                  camada técnica (rótulo, valor, estado). As duas utilitárias saem da
+                  mesma indireção de `globals.css`, então a troca é de PAPEL e não de
+                  arquivo de fonte. O rótulo abaixo continua na proporcional, que é o
+                  contraste que faz o par número/legenda funcionar. */}
               <span
-                className="font-display text-xl leading-none md:text-2xl"
+                /* SIS-155 — `font-semibold` NÃO é ênfase: a utilitária `font-mono` só troca a
+                   família, e sem peso declarado este nó pedia 400 — peso que o único corte
+                   carregado da Geist Mono (600) não tem. O navegador servia o 600 e o código
+                   dizia 400: se um dia entrar um corte 400 na Mono, oito pontos como este
+                   mudariam de aparência calados. Medido em 600 computado pela sonda. */
+                className="font-mono font-semibold text-xl leading-none md:text-2xl"
                 style={{
                   background: `linear-gradient(135deg, ${s.tone}, #ffffff 85%)`,
                   WebkitBackgroundClip: 'text',

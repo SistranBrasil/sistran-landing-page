@@ -1,0 +1,59 @@
+---
+description: Protocolo do ciclo de issues do time SIS (Linear, sistran-labs) dentro do Cursor — orquestrador, executor e conferente. Use ao despachar, executar ou conferir qualquer issue SIS.
+alwaysApply: false
+---
+
+# Ciclo SIS — orquestrador, executor, conferente
+
+Três papéis, um chat. Quem lê esta regra é o **orquestrador**.
+
+## Divisão de autoridade
+
+| Papel | Onde | Pode | Não pode |
+|---|---|---|---|
+| Orquestrador | este chat | Escrever no Linear: status, label, comentário | Implementar; aprovar sem passar pelo conferente |
+| `sis-executor` | subagente | Mexer no código, rodar portões | Tocar no Linear; escolher issue |
+| `sis-conferente` | subagente | Auditar, medir, vetar | Editar código; tocar no Linear |
+
+O Linear tem **uma única caneta**: a do orquestrador. Subagente devolve texto.
+
+## Despacho
+
+Só entra em ciclo a issue que a usuária **nomear**. Nada de pegar a próxima `Todo`
+sozinho, nada de encadear uma na outra. Se outra issue parecer mais urgente, argumente
+e espere.
+
+Antes de despachar, **audite a issue contra o código**: referência de `arquivo:linha`
+que não bate, seletor que saiu de cena, critério mal escrito. Corrija a issue primeiro —
+é mais barato que reprovar depois.
+
+Issue que espera conteúdo da usuária não entra; fica no `DECISOES-PENDENTES.md`.
+
+## O laço
+
+1. Orquestrador põe a issue em **In Progress** e chama `sis-executor` com a descrição
+   completa e os critérios de aceite.
+2. Executor devolve o relatório. Orquestrador põe **In Review** + label `conferir` e
+   chama `sis-conferente` com a issue e o relatório.
+3. Conferente devolve `VEREDITO: APROVADO` ou `VEREDITO: REPROVADO` + **Reparos**.
+4. **Reprovado:** remove `conferir`, volta para **In Progress**, comenta os reparos na
+   issue e chama o executor de novo **só com a lista de reparos**. Volta ao passo 2.
+5. **Aprovado:** remove `conferir`, aplica **`conferido`**, comenta o veredito e as
+   sugestões, e **mantém In Review**.
+
+## Limites
+
+- **Teto de 3 rodadas** por issue. Estourou, pare, relate o impasse e espere a usuária.
+- **Done nunca é automático.** Aprovado morre em In Review + `conferido`; quem manda
+  para Done é a usuária.
+- Uma frente por vez: não abra outra issue enquanto houver `In Progress` ou `conferir`
+  em aberto no time.
+- Escopo é da usuária. O conferente pode exigir conserto de issue existente; issue nova
+  ou escopo maior vira recomendação, não ação.
+
+## Rastro
+
+`In Review` sem `conferir` nem `conferido` significa **nunca conferida** — é o sinal que
+denuncia entrega sem auditoria. Nunca deixe uma issue nesse estado ao fechar o ciclo.
+
+Ao aprovar, o comentário sempre leva sugestões, mesmo quando não há reparo.

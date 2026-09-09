@@ -108,9 +108,19 @@ function PartnerCard({ p, index }: { p: Partner; index: number }) {
         <div className="flex flex-col items-end gap-2">
           <span
             aria-hidden
-            className="font-display text-4xl leading-none"
+            /* SIS-155 — ordinal é METADADO: `font-display` → `font-mono`. */
+            /* SIS-155 — `font-semibold` NÃO é ênfase: a utilitária `font-mono` só troca a
+               família, e sem peso declarado este nó pedia 400 — peso que o único corte
+               carregado da Geist Mono (600) não tem. O navegador servia o 600 e o código
+               dizia 400: se um dia entrar um corte 400 na Mono, oito pontos como este
+               mudariam de aparência calados. Medido em 600 computado pela sonda. */
+            className="font-mono font-semibold text-4xl leading-none"
             /* Branco translucido: o tone a 15% desaparecia no fundo azul claro. */
-            style={{ color: 'rgba(255,255,255,0.30)', fontVariantNumeric: 'tabular-nums' }}
+            style={{
+              color: 'rgba(255,255,255,0.30)',
+              fontVariantNumeric: 'tabular-nums',
+              fontFeatureSettings: '"tnum" 1',
+            }}
           >
             {String(index + 1).padStart(2, '0')}
           </span>
@@ -241,9 +251,12 @@ export default function PartnersGrid() {
                   />
                 )}
                 <span className="relative z-10">{f.label}</span>
+                {/* SIS-155 — contagem do filtro: camada técnica, 10px → 11px (piso da
+                    issue). Gêmeo do chip de `EventsGrid.tsx`. */}
                 <span
+                  style={{ fontFeatureSettings: '"tnum" 1' }}
                   className={clsx(
-                    'relative z-10 rounded-full px-2 py-0.5 text-[10px] tabular-nums',
+                    'relative z-10 rounded-full px-2 py-0.5 font-mono text-[11px] tabular-nums',
                     active
                       ? 'bg-white/25 !text-white'
                       : 'bg-[#0079CB]/10 !text-[#5c7a9e]',

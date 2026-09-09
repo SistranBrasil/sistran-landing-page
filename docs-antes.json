@@ -1,0 +1,289 @@
+{
+ "rotulo": "antes",
+ "saida": {
+  "scrollspy": {
+   "/quem-somos": {
+    "pior": {
+     "texto": "Conheça também",
+     "tinta": 131.53
+    },
+    "segundo": {
+     "texto": "Por que Sistran",
+     "tinta": 126
+    },
+    "bordaDireita": 169.53
+   },
+   "/solucoes": {
+    "pior": {
+     "texto": "Consultoria",
+     "tinta": 98.33
+    },
+    "segundo": {
+     "texto": "Tecnologia",
+     "tinta": 90.09
+    },
+    "bordaDireita": 136.33
+   },
+   "/solucoes/fast": {
+    "pior": {
+     "texto": "Monitoramento",
+     "tinta": 123.97
+    },
+    "segundo": {
+     "texto": "O que é o Fast?",
+     "tinta": 118
+    },
+    "bordaDireita": 161.97
+   },
+   "/sistran-labs": {
+    "pior": {
+     "texto": "Principais",
+     "tinta": 78.84
+    },
+    "segundo": {
+     "texto": "Soluções",
+     "tinta": 74.39
+    },
+    "bordaDireita": 116.84
+   },
+   "/esg": {
+    "pior": {
+     "texto": "Environment",
+     "tinta": 101.83
+    },
+    "segundo": {
+     "texto": "Governance",
+     "tinta": 95.19
+    },
+    "bordaDireita": 139.83
+   },
+   "/transformacao-legado": {
+    "pior": {
+     "texto": "Arquitetura",
+     "tinta": 98.64
+    },
+    "segundo": {
+     "texto": "Roadmap",
+     "tinta": 68.72
+    },
+    "bordaDireita": 136.64
+   },
+   "/contato": {
+    "pior": {
+     "texto": "Onde Estamos",
+     "tinta": 109.11
+    },
+    "segundo": {
+     "texto": "#timeSISTRAN",
+     "tinta": 103.39
+    },
+    "bordaDireita": 147.11
+   },
+   "/eventos-inovacao": {
+    "pior": {
+     "texto": "Eventos",
+     "tinta": 64.53
+    },
+    "segundo": {
+     "texto": "Social",
+     "tinta": 51.55
+    },
+    "bordaDireita": 102.53
+   },
+   "/trabalhe-conosco": {
+    "pior": {
+     "texto": "Social",
+     "tinta": 51.55
+    },
+    "segundo": {
+     "texto": "Início",
+     "tinta": 44.61
+    },
+    "bordaDireita": 89.55
+   },
+   "/parceiros-e-implementacoes": {
+    "pior": {
+     "texto": "Implementações",
+     "tinta": 127.22
+    },
+    "segundo": {
+     "texto": "Linha do tempo",
+     "tinta": 120.03
+    },
+    "bordaDireita": 165.22
+   },
+   "/sistran-university": {
+    "pior": {
+     "texto": "O Programa",
+     "tinta": 93.13
+    },
+    "segundo": {
+     "texto": "Números",
+     "tinta": 68.36
+    },
+    "bordaDireita": 131.13
+   },
+   "/latam": {
+    "pior": {
+     "texto": "Aseguradoras",
+     "tinta": 112.97
+    },
+    "segundo": {
+     "texto": "Experiencia",
+     "tinta": 92.09
+    },
+    "bordaDireita": 150.97
+   },
+   "/blog": null
+  },
+  "contatoCartao": {
+   "390": {
+    "cartao": 350,
+    "distintas": [
+     350
+    ],
+    "porFileira": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "piorRotulo": "650+595+Mil horas de Capacidade Produtiva no Brasil",
+    "tintaRotulo": 66.28,
+    "linhasRotulo": 5
+   },
+   "768": {
+    "cartao": 352,
+    "distintas": [
+     352
+    ],
+    "porFileira": [
+     2,
+     2,
+     2,
+     1
+    ],
+    "piorRotulo": "650+596+Mil horas de Capacidade Produtiva no Brasil",
+    "tintaRotulo": 66.28,
+    "linhasRotulo": 5
+   },
+   "1024": {
+    "cartao": 280,
+    "distintas": [
+     280
+    ],
+    "porFileira": [
+     7
+    ],
+    "piorRotulo": "650+0+Mil horas de Capacidade Produtiva no Brasil",
+    "tintaRotulo": 71.27,
+    "linhasRotulo": 5
+   },
+   "1440": {
+    "cartao": 345.59,
+    "distintas": [
+     345.59
+    ],
+    "porFileira": [
+     7
+    ],
+    "piorRotulo": "650+0+Mil horas de Capacidade Produtiva no Brasil",
+    "tintaRotulo": 92.8,
+    "linhasRotulo": 5
+   }
+  },
+  "solucoesManchete": {
+   "320": {
+    "linhas": 7,
+    "fontSize": "32px",
+    "fontFamily": "\"Instrument Serif\", \"Instrument Serif Fallback\", Georgia, \"T",
+    "lineHeight": "34.56px",
+    "largura": 280,
+    "altura": 207.28,
+    "caracteres": 118,
+    "transbordo": false
+   },
+   "768": {
+    "linhas": 4,
+    "fontSize": "32px",
+    "fontFamily": "\"Instrument Serif\", \"Instrument Serif Fallback\", Georgia, \"T",
+    "lineHeight": "34.56px",
+    "largura": 677.11,
+    "altura": 103.64,
+    "caracteres": 118,
+    "transbordo": false
+   },
+   "1024": {
+    "linhas": 4,
+    "fontSize": "36.864px",
+    "fontFamily": "\"Instrument Serif\", \"Instrument Serif Fallback\", Georgia, \"T",
+    "lineHeight": "39.8131px",
+    "largura": 779.95,
+    "altura": 119.39,
+    "caracteres": 118,
+    "transbordo": false
+   },
+   "1440": {
+    "linhas": 4,
+    "fontSize": "51.2px",
+    "fontFamily": "\"Instrument Serif\", \"Instrument Serif Fallback\", Georgia, \"T",
+    "lineHeight": "55.296px",
+    "largura": 1083.39,
+    "altura": 165.89,
+    "caracteres": 118,
+    "transbordo": false
+   },
+   "1920": {
+    "linhas": 4,
+    "fontSize": "51.2px",
+    "fontFamily": "\"Instrument Serif\", \"Instrument Serif Fallback\", Georgia, \"T",
+    "lineHeight": "55.296px",
+    "largura": 1083.39,
+    "altura": 165.89,
+    "caracteres": 118,
+    "transbordo": false
+   }
+  },
+  "home": {
+   "marcasTitulo": {
+    "familia": "\"Instrument Serif\", \"Instrument Serif Fallback\", Georgia, \"Times New R",
+    "peso": "400",
+    "corpo": "51.84px",
+    "estilo": "normal",
+    "largura": 810.77,
+    "linhas": 2
+   },
+   "heroH1": {
+    "familia": "Inter, \"Inter Fallback\", ui-sans-serif, system-ui, sans-serif",
+    "peso": "400",
+    "corpo": "16px",
+    "estilo": "normal",
+    "largura": 1,
+    "linhas": 1
+   },
+   "corpo": {
+    "familia": "Inter, \"Inter Fallback\", ui-sans-serif, system-ui, sans-serif",
+    "peso": "700",
+    "corpo": "70.56px",
+    "estilo": "normal",
+    "largura": 518.39,
+    "linhas": 5
+   },
+   "bodyFeature": "\"cv11\", \"ss01\"",
+   "sintese": "weight style small-caps",
+   "kerning": "auto"
+  },
+  "italico": [
+   {
+    "classe": "essence-footnote",
+    "texto": "*Total Cost of Ownership, uma estimativa",
+    "familia": "Inter, \"Inter Fallback\", ui-sans-serif, system-ui, sans-seri",
+    "estilo": "italic",
+    "corpo": "27.2px"
+   }
+  ]
+ }
+}

@@ -181,10 +181,20 @@
     box-shadow 240ms ease;
 }
 
+/* SIS-155 — os cinco pontos numéricos deste arquivo entram na camada técnica (Mono
+   600, trio explicado em `globals.css`, `.mmi-leitura`), e ele é o arquivo com os
+   pesos mais arbitrários do projeto: 700, 760 e 780, três valores diferentes para o
+   mesmo papel, herdados do eixo variável da Inter, que aceitava qualquer número.
+   A Mono tem UM corte (600). Manter 760 e 780 escritos aqui seria deixar no CSS uma
+   hierarquia de peso que a tela não desenha — três valores servidos pelo mesmo
+   arquivo. O que separa estes cinco pontos entre si é CORPO e COR, e é o que a issue
+   pede; o peso passa a ser 600 nos cinco porque é o que sai. */
 .rec-nav-indice {
+  font-family: var(--font-mono);
   font-size: 0.86rem;
-  font-weight: 700;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   color: rgba(190, 226, 247, 0.8);
   transition: color 240ms ease;
 }
@@ -260,18 +270,31 @@
   margin-top: clamp(20px, 3vw, 34px);
 }
 
+/* O 760 era peso de fonte VARIÁVEL (a Inter aceitava valor arbitrário no eixo). A
+   Geist é carregada em cortes discretos, então número quebrado aqui não teria nem
+   como ser servido — ver a nota de `.rec-nav-indice`. */
 .rec-progresso-num {
+  font-family: var(--font-mono);
   font-size: 1.06rem;
-  font-weight: 760;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   letter-spacing: -0.02em;
   color: var(--rec-ciano);
 }
 
+/* O par do anterior ("/ 06"): mesma camada, e agora o MESMO peso dos dois — a Mono
+   tem um corte só, então a distinção por peso que existia (760 contra 600 na Inter
+   variável) deixa de existir, e isso é declarado em vez de descoberto depois.
+   A hierarquia entre o corrente e o total continua em pé sem ela, por CORPO e COR:
+   1,06rem em `var(--rec-ciano)` contra 0,92rem em branco a 60% de alfa. É a regra da
+   issue — hierarquia por tamanho e espaçamento, nunca por peso. */
 .rec-progresso-total {
+  font-family: var(--font-mono);
   font-size: 0.92rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   color: rgba(190, 226, 247, 0.6);
 }
 
@@ -431,10 +454,22 @@
 
 .rec-contagem {
   font-size: clamp(4rem, 12vw, 13rem);
-  font-weight: 780;
+  /* SIS-155 — o número MAIOR do site (208px a 1440). O 780 vinha do eixo variável da
+     Inter, que aceitava qualquer valor; a Mono tem UM corte (600), então 780 aqui
+     seria peso escrito sem correspondente na tela. Mono 600, e a presença deste
+     número nunca veio do peso — vem dos 208px. Ver `.rec-nav-indice`.
+     ⚠️ O `letter-spacing: -0.065em` foi calibrado contra proporcional, e em
+     monoespaçada ele aperta MAIS (o avanço já é fixo e igual para todo caractere, sem
+     os pares de kerning que a proporcional usava para justificar o negativo). Ficou
+     como está porque a contagem de linhas e o transbordo deste bloco foram medidos
+     depois da troca, nas cinco larguras, e estão no relatório da issue — não porque a
+     linha não tenha sido reavaliada. */
+  font-family: var(--font-mono);
+  font-weight: 600;
   line-height: 0.8;
   letter-spacing: -0.065em;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   color: #ffffff;
   text-shadow: 0 0 28px rgba(52, 197, 245, 0.14);
 }
@@ -610,10 +645,17 @@
     box-shadow 260ms ease;
 }
 
+/* SIS-155 — índice de nó, camada técnica; ver `.rec-nav-indice`.
+   O corpo subiu de `0.66rem` (10,56px) para 11px exatos: é rótulo numérico legível,
+   não ornamento, então o piso de 11px da issue vale sem exceção aqui — diferente do
+   `.solutions-coord` de `globals.css`, que fica abaixo por ser marca-d'água a 14% de
+   alfa e está reportado. */
 .rec-node-indice {
-  font-size: 0.66rem;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
   color: rgba(190, 226, 247, 0.62);
   transition: color 260ms ease;
 }
@@ -1070,7 +1112,15 @@
   .rec-contagem {
     display: block;
     font-size: clamp(8rem, 11vw, 12.5rem);
-    font-weight: 780;
+    /* SIS-155 — 600, pelo mesmo motivo do bloco base (a Mono tem UM corte). Este
+       ponto é o que quase escapou da issue: `.rec-contagem` tem QUATRO faixas neste
+       arquivo, e só esta redeclara `font-weight`. Corrigir a base deixava o peso
+       velho valendo justamente na largura de desktop grande, onde este número é o
+       maior do site — a sonda pegou `font-weight: 780` computado depois de a base já
+       estar em 600. Quem mexer em peso aqui enumera as quatro faixas
+       (linhas ~455, ~717, ~1112, ~1384), não só a primeira.
+       Era: `font-weight: 780;` */
+    font-weight: 600;
     line-height: 0.78;
     letter-spacing: -0.065em;
     /* Crossfade do numero: 420ms. */
