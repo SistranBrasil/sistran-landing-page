@@ -15,11 +15,19 @@
 
    Fonte: .claude/conteudo-site/servicos/*.md */
 
+/* SIS-120 — `navLabel` é a ABREVIAÇÃO do título para a coluna do navegador
+   lateral, e existe só nos blocos cujo título não cabe lá. A regra é a que
+   `src/data/pageSections.ts` já declara ("Rótulo é ABREVIAÇÃO, não título"): o
+   rótulo fica com `whitespace-nowrap` sobre o conteúdo da página, então
+   "Desafios no desenvolvimento de software" em caixa alta atravessaria a coluna
+   e entraria no texto a 1366. Não é escrita nova — cada `navLabel` é um recorte
+   do título que está ao lado dele. Ausente, o rótulo é o próprio título. */
 export type AccelBlock =
-  | { kind: 'paragraphs'; heading?: string; paragraphs: readonly string[] }
+  | { kind: 'paragraphs'; heading?: string; navLabel?: string; paragraphs: readonly string[] }
   | {
       kind: 'list';
       heading?: string;
+      navLabel?: string;
       intro?: string;
       ordered?: boolean;
       items: readonly { term?: string; text: string }[];
@@ -49,6 +57,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'list',
         heading: 'O que o Match AI faz?',
+        navLabel: 'O que faz',
         ordered: true,
         items: [
           { text: 'Gera ofertas hiperpersonalizadas' },
@@ -87,6 +96,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'list',
         heading: 'Desafios no desenvolvimento de software',
+        navLabel: 'Desafios',
         items: [
           {
             term: 'Demanda Crescente',
@@ -158,6 +168,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'list',
         heading: 'O que o Fast oferece?',
+        navLabel: 'O que oferece',
         ordered: true,
         items: [
           { term: 'Automatização e Aceleração', text: 'Processos até 95% mais rápidos.' },
@@ -171,6 +182,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'list',
         heading: 'Integração sem Fronteiras',
+        navLabel: 'Integração',
         items: [
           { text: 'O Fast se integra com os sistemas existentes da seguradora.' },
           { text: 'Fácil implementação, pronta para funcionar com ERPs, sistemas de OCR, e outros.' },
@@ -188,6 +200,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'list',
         heading: 'Monitore e Aprimore seus Processos',
+        navLabel: 'Monitoramento',
         items: [
           {
             text: 'Dashboard intuitivo para visualização de sinistros aprovados, rejeitados, e em análise.',
@@ -215,6 +228,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'list',
         heading: 'Nossos serviços de QA Integrado incluem',
+        navLabel: 'Serviços',
         ordered: true,
         items: [
           /* "design(cases)" espacado; crase de "à gestão" no item 3. */
@@ -256,6 +270,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'list',
         heading: 'Principais diferenciais',
+        navLabel: 'Diferenciais',
         ordered: true,
         items: [
           {
@@ -283,6 +298,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'paragraphs',
         heading: 'O que é o Smart Miner?',
+        navLabel: 'O que é',
         paragraphs: [
           /* "scaners" -> scanners; virgula sobrando depois de "corrige". */
           'O Smart Miner coleta imagens obtidas por celulares e/ou scanners em diversos formatos de arquivos (JPG, JPEG, PNG e PDF), faz ajustes em cada imagem (corrige inclinação, posição, separação de imagens), tipifica o documento — cartorários (nascimento, casamento, óbito), RG, CNH, comprovantes de endereço, notas fiscais, declaração de herdeiros, entre outros — e após estas validações realiza a extração das informações necessárias, por exemplo, para a abertura de um Sinistro.',
@@ -291,6 +307,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'paragraphs',
         heading: 'Onde usar o Smart Miner?',
+        navLabel: 'Onde usar',
         paragraphs: [
           'Ele pode ser inserido em todo e qualquer processo que receba documentos (padronizados ou não). Agrega valor e agiliza processos nas esteiras de abertura/comunicado de Sinistros, bem como na validação dos processos de subscrição para Emissão de apólices e certificados.',
           /* Site diz "Fast Claims"; o produto é publicado como "Fast".
@@ -303,6 +320,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'paragraphs',
         heading: 'Como usar o Smart Miner?',
+        navLabel: 'Como usar',
         paragraphs: [
           'A API é um componente que deverá estar interligado aos canais de entrada de documentos (portais, apps, agências) e, a cada novo upload, a API será chamada para executar a tipificação e leitura de informações.',
           'Trabalhando em conjunto com o Console de Pré Análise, podem ser criados e administrados vários kits de documentos (por ramo, por natureza, por cobertura) e avisos de documentos faltantes, datas de recebimentos, solicitação de novos documentos, etc.',
@@ -333,6 +351,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'paragraphs',
         heading: 'De onde pode ser acessada?',
+        navLabel: 'Acesso',
         paragraphs: [
           /* "IOS" -> iOS. O site apresenta os dados de dispositivos no presente
              sem nenhuma data; o paragrafo seguinte registra isso. */
@@ -345,4 +364,41 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
 
 export function getAcceleratorPage(id: string) {
   return ACCELERATOR_PAGES.find((p) => p.id === id);
+}
+
+/* SIS-120 — âncora de um bloco, derivada do título.
+   É UMA função, usada nos dois lugares que precisam do mesmo id: a `<section>`
+   em `src/app/solucoes/[slug]/page.tsx` e a lista do navegador lateral em
+   `src/data/pageSections.ts`. Escrever a regra duas vezes é o defeito clássico
+   de âncora que não acende — o observador procuraria um id que a página nunca
+   escreveu.
+   Bloco SEM título não tem id: não há o que ancorar nem o que rotular, e
+   `<section>` sem nome acessível não entra como região para leitor de tela, que
+   é o comportamento certo para um bloco de continuação. */
+/* Único lugar que transforma título em `id`: a página escreve o `id` com ela e
+   `pageSections.ts` monta o link do navegador lateral com ela, então não existe a
+   possibilidade de a bolinha apontar para uma âncora que a página não tem.
+   Dois títulos iguais dão o mesmo id — "Benefícios" existe em `lumina-ai` e em
+   `fast` —, e isso não colide porque são PÁGINAS diferentes; dentro de uma mesma
+   página os 17 títulos atuais são distintos. Título repetido na mesma página é o
+   que quebraria (dois `id` iguais no documento), e é o que precisa ser conferido
+   ao acrescentar bloco. */
+export function idDoBloco(heading: string): string {
+  return heading
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+/* Chave de lista estável, em lugar do `key={i}`: título quando existe, senão o
+   começo do primeiro texto do bloco — que é conteúdo travado do site e não muda
+   de posição sozinho. Com índice, reordenar blocos reaproveitaria o nó errado
+   silenciosamente. */
+export function chaveDoBloco(block: AccelBlock): string {
+  if (block.heading) return block.heading;
+  return block.kind === 'paragraphs'
+    ? block.paragraphs[0].slice(0, 40)
+    : (block.intro ?? block.items[0]?.text ?? '').slice(0, 40);
 }

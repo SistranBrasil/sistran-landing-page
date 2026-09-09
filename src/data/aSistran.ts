@@ -8,7 +8,20 @@ export const OFFICES = [
   {
     id: 'sp',
     name: 'São Paulo',
-    text: 'Nosso escritório em SÃO PAULO-SP é um espaço moderno e integrado, projetado para inspirar colaboração e bem-estar.',
+    /* SIS-163 — DUAS MUDANCAS, as duas decididas pela pessoa que mantem o
+       conteudo (registradas nos comentarios da issue), e as duas AQUI e nao no
+       componente, porque este arquivo é a fonte:
+         · "SÃO PAULO-SP" virou "São Paulo" — caixa e baixa, e sem a sigla do
+           estado repetida: quem esta lendo esta ficha acabou de clicar na aba
+           "São Paulo" e ve "SÃO PAULO – SP" no rotulo do mapa ao lado.
+         · entrou "inovação" na enumeracao, que é o que a arte de referencia
+           (`public/imagensexemplo/mapasescritorio1.png`) mostra.
+       A frase anterior era "Nosso escritório em SÃO PAULO-SP é um espaço moderno
+       e integrado, projetado para inspirar colaboração e bem-estar." — fica
+       registrada aqui porque estava travada em `copy-lock.json`, e copia travada
+       so muda com decisao de quem escreve; a entrada de la foi atualizada junto,
+       senao a trava passaria a guardar uma frase que o site nao tem mais. */
+    text: 'Nosso escritório em São Paulo é um espaço moderno e integrado, projetado para inspirar colaboração, inovação e bem-estar.',
   },
   {
     id: 'pr',
@@ -37,13 +50,10 @@ export const PILARES = [
   'Aprimoramento contínuo de visão de negócios de nossos consultores colaboradores.',
 ] as const;
 
-/** Secao 8 — Abordagem de projetos: apenas os 4 rotulos das etapas. */
-export const ABORDAGEM = [
-  'Consultoria',
-  'Projetos',
-  'Alocação de Especialistas',
-  'Outsourcing',
-] as const;
+/* Secao 8 — os quatro rotulos ("Consultoria", "Projetos", "Alocação de
+   Especialistas", "Outsourcing") mudaram para `src/data/modelosAtuacao.ts`
+   (SIS-99), onde cada um ganhou descricao e quadrante. Aqui eles eram uma lista
+   de etapas numeradas, e o numero era a parte errada. */
 
 /** Secao 9 — Como Agimos. No HTML do site a lista aparece duplicada (clone de
     carrossel sem aria-hidden); aqui aparece uma vez. */

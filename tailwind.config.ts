@@ -55,11 +55,72 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['var(--font-sora)', 'var(--font-inter)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        /* TIPOGRAFIA.md — `font-display` agora resolve para a serifa editorial, e
+           por isso as ~28 telas que já usam a classe migram sem tocar em JSX.
+
+           O fallback virou `serif` de propósito, e não é detalhe: com `Inter` no
+           fim da lista, uma falha de carregamento faria o título parecer corpo
+           aumentado — o layout mudaria de personalidade em vez de degradar. Uma
+           serifa de sistema mantém a intenção. */
+        display: ['var(--font-serif)', 'Georgia', '"Times New Roman"', 'serif'],
       },
       fontSize: {
-        hero: ['clamp(2.8rem, 7vw, 5.8rem)', { lineHeight: '0.98', letterSpacing: '-0.02em' }],
-        section: ['clamp(2.2rem, 4.6vw, 4.1rem)', { lineHeight: '1.04', letterSpacing: '-0.03em' }],
+        /* TIPOGRAFIA.md — a ESCALA é a daqui (cinco degraus, calibrados contra os
+           títulos reais das quatorze rotas); o que mudou foram as MÉTRICAS de cada
+           degrau, porque serifa 400 em corpo grande não se comporta como sans 700.
+
+           Duas mudanças em todos eles, na mesma direção: `line-height` mais
+           fechado — abaixo de 1 nos dois maiores, onde antes sobrava ar entre as
+           linhas — e `letter-spacing` mais negativo. Serifa grande solta parece
+           "desmontada"; é a diferença mais visível entre a proposta aplicada e um
+           serif aplicado cru. Nos degraus menores o fechamento é menor, porque ali
+           o corpo já é pequeno o suficiente para o kerning natural servir. */
+        hero: ['clamp(2.8rem, 7vw, 5.8rem)', { lineHeight: '0.92', letterSpacing: '-0.04em' }],
+        section: ['clamp(2.2rem, 4.6vw, 4.1rem)', { lineHeight: '0.96', letterSpacing: '-0.04em' }],
+        /* SIS-180 — EXCEÇÃO DELIBERADA, e está registrada aqui justamente para
+           não ser "corrigida" de volta ao `section` numa varredura de
+           consistência tipográfica.
+           A seção `#SomosSistraners` é o convite final da home (e o fechamento de
+           /trabalhe-conosco e de /eventos-inovacao): foi pedido que ela ficasse
+           maior e mais destacada que as seções de meio de página. Com o
+           `section` ela media 65,6px a 1440, o mesmo de qualquer outra seção da
+           rota, e não se distinguia de nada.
+           O degrau fica ENTRE `section` e `hero`, e isso é medido: 83,2px a 1440
+           contra 65,6px do `section` e 92,8px do `hero`. A hierarquia
+           hero > palco > seção continua existindo — um convite de fechamento que
+           passasse o título da própria página inverteria a leitura.
+           `line-height` um pouco mais solto que o do `section` (0.98 contra 0.96)
+           porque o título dele quebra em duas linhas nas três rotas, e serifa
+           grande em duas linhas com 0.96 encosta a descendente da primeira na
+           ascendente da segunda. */
+        palco: ['clamp(2.6rem, 5.8vw, 5.2rem)', { lineHeight: '0.98', letterSpacing: '-0.04em' }],
+        /* Entrada das rotas internas (`PageHero`, 14 rotas).
+           Elas usavam `text-section`, o token dos títulos de MEIO de página, e o
+           resultado medido era 65.6px a 1440 ocupando 53% da largura — a entrada
+           não dominava a tela em nenhuma das quatorze. Um degrau abaixo do hero
+           da home (`clamp(4.5rem, 7.8vw, 9rem)` = 112px a 1440) e um acima do
+           corpo: 92px a 1440. A hierarquia home > rota interna > seção passa a
+           existir, o que antes não acontecia porque interna == seção.
+
+           São TRÊS degraus e não um porque os títulos das quatorze rotas variam
+           de 9 caracteres ("A Sistran") a 118 (`/solucoes`), e a primeira versão
+           usava um tamanho só: a captura de `/solucoes` mostrou a frase ocupando
+           sete linhas e passando da janela. Um nome e uma sentença não são o
+           mesmo objeto tipográfico, e a escala tem de sair do COMPRIMENTO — ver
+           `escalaDoTitulo` em `PageHero.tsx`. */
+        pagehero: ['clamp(2.6rem, 6.4vw, 5.6rem)', { lineHeight: '0.96', letterSpacing: '-0.04em' }],
+        'pagehero-medio': [
+          'clamp(2.2rem, 4.9vw, 4.4rem)',
+          { lineHeight: '1', letterSpacing: '-0.035em' },
+        ],
+        /* O degrau dos títulos longos (`/solucoes`, 118 caracteres) é o único que
+           NÃO desce abaixo de 1: ali o texto é uma sentença de várias linhas, e
+           linha colada em corpo de 3,2rem vira bloco cinza. Fecha só de 1.12 para
+           1.08. */
+        'pagehero-longo': [
+          'clamp(2rem, 3.6vw, 3.2rem)',
+          { lineHeight: '1.08', letterSpacing: '-0.03em' },
+        ],
       },
       borderRadius: {
         '2xl': '18px',

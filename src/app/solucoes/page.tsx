@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import PageShell from '@/components/PageShell';
 import PageHero from '@/components/PageHero';
+import HeroVideoBackdrop from '@/components/ui/HeroVideoBackdrop';
 import Accelerators from '@/components/Accelerators';
 import Consulting from '@/components/Consulting';
 import ContactCTA from '@/components/ContactCTA';
-import { SOLUTIONS } from '@/data/solutions';
+import ServicesJourneyStage from '@/components/ui/ServicesJourneyStage';
 import { scenesIntro, mosaicIntro } from '@/data/legacy';
 
 export const metadata = {
@@ -16,6 +17,18 @@ export const metadata = {
 export default function Page() {
   return (
     <PageShell>
+      {/* SIS-94 — o vídeo cobre a abertura INTEIRA: o hero e a barra "NESTA
+          PÁGINA". Elas são irmãs, e um vídeo dentro do `PageHero` deixaria a
+          barra abrindo já sobre o navy, com uma emenda no meio da abertura. */}
+      {/* O arquivo é o `-loop`, e nao o `-scroll`: aquele foi cortado para ser
+          BUSCADO quadro a quadro e a volta dele nao fecha (o ultimo quadro esta
+          tao longe do primeiro quanto um quadro qualquer do meio, medido). Este
+          tem a cauda dissolvida no proprio comeco, entao o ponto de emenda fica
+          abaixo do ruido de compressao entre quadros vizinhos. */}
+      <HeroVideoBackdrop
+        src="/videos/solucoes-hero-loop.mp4"
+        poster="/videos/solucoes-hero-loop-poster.webp"
+      >
       {/* Abertura verbatim do site (que ali é texto puro, sem heading). */}
       <PageHero
         eyebrow="Soluções, Serviços e Consultoria"
@@ -29,9 +42,26 @@ export default function Page() {
           sobre o azul da pagina. Agora tem base navy opaca, borda ciano e um
           rotulo que explica o que a barra e — sem isso os tres links pareciam
           decoracao, nao navegacao. */}
-      <div className="container-lp -mt-6 mb-6">
+      {/* SIS-100 — a barra passa a ser SÓ de tela estreita (`xl:hidden`).
+
+          De 1280px para cima quem navega esta página é o navegador lateral de
+          seções (montado no `PageShell`), com os mesmos quatro destinos: manter
+          as duas seria a mesma navegação duas vezes na mesma tela, e a barra é a
+          que atrapalha, porque ocupa altura logo abaixo do hero.
+
+          Abaixo de 1280 ela FICA, e é por isso que não foi removida: o navegador
+          lateral não existe nessas larguras (a coluna disputaria a borda com o
+          conteúdo), e sem a barra a página perderia a navegação interna
+          justamente onde a rolagem é mais longa. Uma navegação por largura, nunca
+          duas ao mesmo tempo — nem zero. */}
+      <div className="container-lp -mt-6 mb-6 xl:hidden">
         <nav
-          aria-label="Navegação da página"
+          /* Nome próprio, diferente do "Seções desta página" do navegador
+             lateral: as duas navs coexistem na árvore (a de cá só está oculta por
+             CSS acima de 1280), e dois landmarks de navegação com o MESMO nome
+             acessível são indistinguíveis na lista de landmarks do leitor de
+             tela. O nome aqui é o rótulo que já está escrito na barra. */
+          aria-label="Nesta página"
           className="flex flex-col gap-3 rounded-2xl border border-[#0ed8f6]/30 p-3 backdrop-blur-lg sm:flex-row sm:items-center sm:gap-4"
           style={{
             background:
@@ -55,8 +85,14 @@ export default function Page() {
           </div>
         </nav>
       </div>
+      </HeroVideoBackdrop>
 
-      {/* 1. Tecnologia Disruptiva — aceleradores em fundo escuro */}
+      {/* 1. Tecnologia Disruptiva — SIS-93: passou a usar o mesmo fundo azul
+             claro da Consultoria (`section-light section-light-blue`). A
+             alternância da página deixou de ser escuro→escuro→claro→escuro e
+             virou claro→escuro→claro→escuro→escuro: cada bloco claro fica
+             cercado por escuros, que é a leitura que a página já tinha na
+             Consultoria. */}
       <Accelerators />
 
       {/* 2. Serviços — no site esta secao tem sobretitulo "Diferenciais",
@@ -64,38 +100,38 @@ export default function Page() {
              fechando com o botao "Quero um serviço exclusivo". */}
       {/* SIS-76 — grade técnica, mesma malha ancorada na janela das demais
           seções escuras do site. Ver a nota em `.grade-tecnica` no globals.css. */}
-      <section id="servicos-diferenciais" className="section-py relative overflow-hidden">
+      {/* `overflow-x-clip`, e NÃO `overflow-hidden`: a pilha de serviços aqui
+          dentro depende de `position: sticky`, e `overflow: hidden` em qualquer
+          ancestral cria um contêiner de rolagem — o `sticky` passaria a se
+          prender a ele em vez de à janela, o que na prática o desliga. `clip`
+          num eixo só recorta sem criar esse contêiner, e continua contendo a
+          `.grade-tecnica`, que é o motivo do recorte. */}
+      <section id="servicos-diferenciais" className="section-py relative overflow-x-clip">
         <div aria-hidden className="grade-tecnica" />
         <div className="container-lp">
-          <span className="tag-section">Diferenciais</span>
-          <h2 className="mt-4 font-display text-section font-bold text-white">Serviços</h2>
-          <p className="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
-            Dedicada ao mercado segurador, com experiência em todos os ramos, a Sistran atua como
-            integradora de sistemas para clientes com grandes carteiras.
-          </p>
-          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-white/85">
-            Somos uma empresa de TI 100% focada no segmento de Seguros no Brasil, acumulamos
-            experiências e lições aprendidas em mais de 30 implementações de ERP bem-sucedidas.
-          </p>
+          {/* Os quatro serviços saíram da grade `sm:grid-cols-2` e passaram a ser
+              a pilha com vídeo preso ao lado — layout portado da seção
+              "Transição visual | do sinal ao entendimento" da apresentação de
+              Transformação de Legado. O vídeo é `/videos/jornada.mp4`, o mesmo
+              arquivo da origem.
 
-          <ul className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
-            {SOLUTIONS.map((s, i) => (
-              <li key={s.id} className="glass-card-hover relative overflow-hidden p-7">
-                <span aria-hidden className="corner-accent" />
-                <span
-                  aria-hidden
-                  className="font-display text-sm font-bold tabular-nums"
-                  style={{ color: s.color }}
-                >
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <h3 className="mt-2 font-display text-lg font-bold leading-snug text-white">
-                  {s.title}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/85">{s.description}</p>
-              </li>
-            ))}
-          </ul>
+              A abertura (`Diferenciais` / `Serviços` / os dois parágrafos) entra
+              DENTRO do componente, como na origem: ela é presa no topo da coluna
+              dos cards, ao lado do vídeo, e acompanha a pilha inteira. Solta no
+              fluxo acima do grid, o título ficava atrás do header fixo e os
+              parágrafos ocupavam a largura toda, desligados da pilha.
+
+              A escrita continua morando aqui, e não no componente: é escrita da
+              página. O lock (`scripts/copy-lock.mjs`) compara por valor, então
+              passá-la por prop não mexe no conteúdo travado. */}
+          <ServicesJourneyStage
+            eyebrow="Diferenciais"
+            title="Serviços"
+            paragraphs={[
+              'Dedicada ao mercado segurador, com experiência em todos os ramos, a Sistran atua como integradora de sistemas para clientes com grandes carteiras.',
+              'Somos uma empresa de TI 100% focada no segmento de Seguros no Brasil, acumulamos experiências e lições aprendidas em mais de 30 implementações de ERP bem-sucedidas.',
+            ]}
+          />
 
           {/* No site cada card leva a uma pagina de servico com Lorem Ipsum em
               ingles; nenhuma delas foi recriada. O botao aponta para o contato,
@@ -106,9 +142,8 @@ export default function Page() {
         </div>
       </section>
 
-      {/* 3. Consultoria — azul claro (a classe vive no proprio componente).
-             Fecha a alternancia da pagina: hero/nav escuro -> Accelerators
-             escuro -> Consultoria clara -> CTA escuro. */}
+      {/* 3. Consultoria — azul claro (a classe vive no proprio componente) e,
+             desde a SIS-93, a MESMA classe usada em Tecnologia Disruptiva. */}
       <Consulting />
 
       {/* 4. Transformação de Legado — a pagina /transformacao-legado existia sem
@@ -119,7 +154,7 @@ export default function Page() {
         <div aria-hidden className="grade-tecnica" />
         <div className="container-lp">
           <span className="tag-section">{scenesIntro.kicker}</span>
-          <h2 className="mt-4 max-w-3xl font-display text-section font-bold text-white">
+          <h2 className="mt-4 max-w-3xl font-display text-section text-white">
             Transformação de Legado
           </h2>
           <p className="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">

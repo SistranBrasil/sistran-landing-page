@@ -1,0 +1,194 @@
+/**
+ * EssenceHologram — palco 3D da arte de cada faixa de "Nossa essência".
+ *
+ * A rotação chega em `--eh-rx` / `--eh-ry`, escritas pelo componente durante o
+ * gesto. Tudo o mais é CSS: a flutuação, o pulso do halo e as sombras. Ver o
+ * cabeçalho do `.tsx` para o motivo de a rotação e a flutuação viverem em nós
+ * SEPARADOS.
+ *
+ * NÃO existe placa, cartão nem moldura aqui. Os renders têm canal alfa, então a
+ * peça é o próprio objeto recortado sobre a faixa clara; qualquer `background`,
+ * `border` ou `overflow: hidden` nesta cadeia desenharia o retângulo que a
+ * transparência existe para não ter — e recortaria o `drop-shadow`.
+ */
+
+.eh-raiz {
+  justify-self: center;
+  width: 100%;
+  max-width: 560px;
+}
+
+.eh-palco {
+  --eh-rx: -6deg;
+  --eh-ry: 0deg;
+  /* `perspective` no palco, e não na carta: aqui o ponto de fuga é o centro
+     DESTA caixa, então girar a carta a aproxima e a afasta de verdade. Na carta,
+     cada face teria fuga própria e o efeito viraria um cisalhamento chapado. */
+  perspective: 1100px;
+  perspective-origin: 50% 46%;
+  display: grid;
+  touch-action: none; /* o arrasto é nosso; sem isto o dedo rola a página */
+  cursor: grab;
+  border-radius: 26px;
+}
+.eh-palco[data-girando='1'] {
+  cursor: grabbing;
+}
+.eh-palco:focus-visible {
+  outline: 2px solid #0ed8f6;
+  outline-offset: 10px;
+}
+
+/* Flutuação lenta — a camada que se move SOZINHA. */
+.eh-orbita {
+  position: relative;
+  transform-style: preserve-3d;
+  animation: eh-flutuar 7.5s ease-in-out infinite;
+}
+@keyframes eh-flutuar {
+  0%,
+  100% {
+    transform: translate3d(0, -6px, 0) rotate(-0.35deg);
+  }
+  50% {
+    transform: translate3d(0, 6px, 0) rotate(0.35deg);
+  }
+}
+
+/* A camada que o gesto move. */
+.eh-carta {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--eh-rx)) rotateY(var(--eh-ry));
+  /* Retorno macio quando o ângulo salta (teclado, Home). Durante o arrasto o
+     componente escreve a cada movimento, e a transição curta só amacia o traço
+     sem dar sensação de atraso. */
+  transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.eh-palco[data-girando='1'] .eh-carta {
+  transition: none;
+}
+
+.eh-arte {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* A SOMBRA ATRÁS do objeto. `drop-shadow` e não `box-shadow`: ele lê o canal
+     alfa do PNG, então a sombra sai no contorno da peça. `box-shadow` sairia no
+     retângulo da tag — a moldura que acabamos de remover, de volta em cinza.
+     Duas passadas: uma curta e densa que assenta o objeto, uma longa e difusa
+     que dá a distância até a página. Vem depois do brilho/saturação porque
+     filtros se aplicam em ordem, e sombrear a imagem já corrigida é o certo. */
+  filter: saturate(1.12) brightness(1.06) contrast(1.04)
+    drop-shadow(0 10px 16px rgba(3, 28, 56, 0.28)) drop-shadow(0 34px 46px rgba(3, 28, 56, 0.22));
+  /* Empurrada para a frente no eixo Z: é isso que separa a arte do halo quando a
+     peça gira, em vez de tudo girar como um adesivo. */
+  transform: translateZ(26px);
+  user-select: none;
+}
+
+/* Halo que pulsa atrás do objeto: o "pulsante". Vive num plano recuado, então
+   passa por trás da peça e aparece em volta dela quando ela inclina.
+
+   Mais fraco e mais fechado do que quando havia placa: ali o halo costurava uma
+   borda dura ao fundo claro e podia ser forte. Sem placa, opacidade alta faz o
+   gradiente virar um disco ciano visível — exatamente o fundo que não queremos.
+   Aqui ele é só a luz que a peça emite. */
+.eh-brilho {
+  position: absolute;
+  inset: 4%;
+  z-index: -1;
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(14, 216, 246, 0.26) 0%,
+    rgba(8, 127, 199, 0.13) 42%,
+    transparent 72%
+  );
+  filter: blur(26px);
+  transform: translateZ(-60px);
+  animation: eh-pulsar 3.6s ease-in-out infinite;
+}
+@keyframes eh-pulsar {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: translateZ(-60px) scale(0.94);
+  }
+  50% {
+    opacity: 0.95;
+    transform: translateZ(-60px) scale(1.06);
+  }
+}
+
+/* Sombra no chão. Deitada no plano horizontal com `rotateX(84deg)`, então ela
+   encurta e alonga junto com a inclinação da peça — de graça, porque está na
+   mesma cena 3D. Complementa o `drop-shadow` da arte: aquele é o contorno, este
+   é o apoio. */
+.eh-sombra {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -34px;
+  height: 46px;
+  border-radius: 999px;
+  background: radial-gradient(ellipse, rgba(4, 34, 66, 0.34), transparent 70%);
+  filter: blur(10px);
+  transform: rotateX(84deg) translateZ(-30px);
+  pointer-events: none;
+}
+
+/* Dica de interação: texto de verdade, visível. Um objeto que se gira e não
+   avisa que se gira é um objeto que ninguém gira. */
+.eh-dica {
+  margin-top: 26px;
+  color: #527190;
+  font-size: 0.86rem;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+@media (max-width: 1279px) {
+  .eh-raiz {
+    max-width: 420px;
+  }
+}
+@media (max-width: 767px) {
+  .eh-raiz {
+    max-width: 100%;
+  }
+  .eh-sombra {
+    bottom: -24px;
+    height: 32px;
+  }
+}
+
+/* ── Movimento reduzido ──────────────────────────────────────────────────────
+   Cai tudo que se move sozinho: flutuação e pulso. O halo fica no ponto médio do
+   pulso, aceso — apagá-lo tiraria a luz que a peça emite. O arrasto e as setas
+   continuam funcionando: são movimento PEDIDO. */
+@media (prefers-reduced-motion: reduce) {
+  .eh-orbita,
+  .eh-brilho {
+    animation: none !important;
+  }
+  .eh-brilho {
+    opacity: 0.72;
+    transform: translateZ(-60px) scale(1);
+  }
+  .eh-orbita {
+    transform: none !important;
+  }
+}
+html[data-motion='reduce'] .eh-orbita,
+html[data-motion='reduce'] .eh-brilho {
+  animation: none !important;
+}
+html[data-motion='reduce'] .eh-brilho {
+  opacity: 0.72;
+  transform: translateZ(-60px) scale(1);
+}
+html[data-motion='reduce'] .eh-orbita {
+  transform: none !important;
+}

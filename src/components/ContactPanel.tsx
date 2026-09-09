@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import { enviarContato } from '@/app/actions/contato';
 import { ESTADO_INICIAL } from '@/app/actions/contato-estado';
-import { CONTACT_PHONE, HQ_ADDRESS } from '@/data/contact';
+import { CONTACT_EMAIL, CONTACT_PHONE, HQ_ADDRESS } from '@/data/contact';
 
 /**
  * Painel de contato: a foto da sede recortada em arco, o telefone e o
@@ -55,6 +55,15 @@ export type PainelContatoProps = {
   description: string;
   /** Id do titulo, referido pelo `aria-labelledby` de quem mostra o painel. */
   tituloId: string;
+  /**
+   * SIS-127 — publica o e-mail comercial dentro do destaque do telefone.
+   *
+   * Opcional e DESLIGADA por padrao, pelo mesmo motivo de `onClose` ser
+   * opcional: este painel serve tres lugares (a secao da home, o `<dialog>` do
+   * cabecalho e `/contato`). Acrescentar o e-mail no corpo do componente seria
+   * mudar tres telas escondido dentro de uma. So `/contato` liga.
+   */
+  mostrarEmail?: boolean;
 };
 
 export default function PainelContato({
@@ -63,6 +72,7 @@ export default function PainelContato({
   title,
   description,
   tituloId,
+  mostrarEmail = false,
 }: PainelContatoProps) {
   return (
     /* Duas colunas em tela larga, uma em tela estreita: a foto vira uma faixa
@@ -104,6 +114,7 @@ export default function PainelContato({
           title={title}
           description={description}
           tituloId={tituloId}
+          mostrarEmail={mostrarEmail}
         />
       </div>
     </div>
@@ -335,12 +346,14 @@ function CorpoContato({
   title,
   description,
   tituloId,
+  mostrarEmail,
 }: {
   onClose?: () => void;
   eyebrow: string;
   title: string;
   description: string;
   tituloId: string;
+  mostrarEmail?: boolean;
 }) {
   /* `action` (nao `onSubmit`): server action = POST sempre. Antes o formulario
      nao tinha method nem action, e sem JS o navegador mandava GET com nome,
@@ -354,7 +367,7 @@ function CorpoContato({
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#34d399]/20 text-[#34d399]">
           <Check className="h-7 w-7" strokeWidth={2} />
         </div>
-        <h3 className="mt-4 font-display text-xl font-bold text-white">Mensagem recebida</h3>
+        <h3 className="mt-4 font-display text-xl text-white">Mensagem recebida</h3>
         <p className="mt-2 max-w-sm text-sm text-ink-muted">
           Este formulário é uma demonstração. Nenhuma integração externa foi executada.
         </p>
@@ -389,8 +402,39 @@ function CorpoContato({
             <a href={TELEFONE_LINK}>{CONTACT_PHONE}</a>
           </span>
         </span>
+        {/* SIS-127 — o e-mail comercial entra AQUI, e só onde `mostrarEmail`
+            está ligado (`/contato`). Telefone e e-mail são a mesma coisa — as
+            duas vias diretas — e viviam em dois lugares com dois pesos
+            diferentes: o número dentro do destaque, o endereço num parágrafo
+            solto abaixo do cartão.
+
+            Fica ABAIXO do telefone, não ao lado. Lado a lado seriam dois itens
+            do mesmo peso, e o número é a razão de a caixa existir: ele é o
+            único caminho que responde na hora. A hierarquia é sustentada no
+            CSS (`.contact-dialog-fone-email`), não aqui — mesma linha com
+            ícone, um degrau menor de tamanho e de peso. */}
+        {mostrarEmail ? (
+          <span className="contact-dialog-fone-linha contact-dialog-fone-email">
+            <span className="contact-dialog-fone-icone" aria-hidden>
+              <Mail className="h-4 w-4" strokeWidth={1.9} />
+            </span>
+            <span>
+              <span className="contact-dialog-fone-rotulo">Ou escreva para</span>
+              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+            </span>
+          </span>
+        ) : null}
+
+        {/* A nota tem duas versões porque o bloco passou a ter duas leituras.
+            Sem o e-mail, "ou se preferir" contrasta o telefone com o
+            formulário. Com o e-mail, a caixa já oferece DUAS vias diretas, e a
+            frase antiga passaria a apontar para a terceira como se fosse a
+            segunda. Reescrever é o que a issue pede quando diz para reler o
+            bloco inteiro em vez de encaixar a linha. */}
         <p className="contact-dialog-fone-nota">
-          Ou se preferir, deixe uma mensagem abaixo que te retornaremos em breve.
+          {mostrarEmail
+            ? 'Prefere não ligar nem escrever? Deixe uma mensagem no formulário abaixo que te retornaremos em breve.'
+            : 'Ou se preferir, deixe uma mensagem abaixo que te retornaremos em breve.'}
         </p>
       </div>
 

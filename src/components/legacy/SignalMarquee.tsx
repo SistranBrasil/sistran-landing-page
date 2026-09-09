@@ -1,7 +1,15 @@
 'use client';
 
 /**
- * Faixa de parceiros que passa em loop, entre os Resultados e o resto da página.
+ * Faixa de parceiros que passa em loop, fechando a seção "Sistran em números".
+ *
+ * SIS-101 — ela era uma seção independente entre os números e o resto da página,
+ * e era daí que vinham os três defeitos apontados: a linha ciano por cima das
+ * logos, o chanfro do `NotchDivider` que a antecedia (uma diagonal que terminava
+ * no vazio, porque não havia dois blocos para chanfrar) e o degrau na emenda.
+ * Agora ela é montada DENTRO de `Metrics.tsx`, depois do percurso do palco, como
+ * rodapé da mesma seção — ver a nota lá. Nada aqui depende disso: o componente
+ * continua autônomo e `/parceiros-e-implementacoes` o monta sozinho.
  *
  * Antes esta faixa passava os seis sinais do método em serifa grande
  * ("Diagnóstico do legado", "Conhecimento navegável", ...). Saíram a pedido: o
@@ -21,6 +29,17 @@
  * scroll próprio.
  *
  * A cópia visual é `aria-hidden`, então o leitor de tela lê a lista uma vez só.
+ *
+ * SIS-156 — DUAS TELAS, NÃO TRÊS. A home trocou esta faixa por uma grade estática
+ * (`src/components/BrandGrid.tsx`), no formato de `terminal-industries.com`.
+ * Sobraram `/contato:133` e `/parceiros-e-implementacoes:105`, que continuam
+ * rolantes — divergência deliberada, e a issue trocou só a home.
+ * Nada aqui mudou por causa disso, e é bom que se saiba por quê: as duas telas
+ * restantes usam o componente inteiro, com o mesmo desenho e a mesma mecânica.
+ * Quem for unificar as três depois tem dois caminhos e eles não são equivalentes —
+ * a grade precisa de um TÍTULO aprovado por tela (é metade do efeito da
+ * referência, e o da home está no `copy-lock.json`), enquanto a faixa não precisa
+ * de uma palavra. Trocar as outras duas é, antes de tudo, uma decisão de texto.
  */
 
 import './legacy.css';
@@ -130,14 +149,50 @@ export function SignalMarquee() {
      assim que o leitor de tela ouve a lista uma vez só.
 
      `<img>` simples: são arquivos estáticos de proporção variada, exibidos em
-     altura fixa, e o otimizador não tem o que fazer aqui. */
+     altura fixa, e o otimizador não tem o que fazer aqui.
+
+     SIS-102 — o ponto azul separador NÃO é um nó aqui, é o `::after` de cada
+     `.lp-partner` (em `legacy.css`), e isso é decisão de projeto, não atalho:
+
+     1. `::after` absoluto não entra na largura medida da cópia. A largura é o que
+        alimenta o `translate3d(-50%)` do loop, então um separador em `<span>`
+        obrigaria a remedir tudo e qualquer erro de meio vão viraria salto na
+        volta. Assim a medição de cima continua valendo sem tocar em nada.
+     2. Um ponto POR ITEM, e não entre pares, é o que resolve a emenda: o ponto do
+        último item de uma cópia cai no vão que antecede a primeira marca da cópia
+        seguinte. Não existe "último" numa faixa infinita — só existe o vão, e
+        todo vão tem o seu ponto.
+     3. Pseudo-elemento sem texto (`content: ''`, cor e raio) não tem o que ser
+        anunciado, o que cumpre o `aria-hidden` pedido sem marcar nada.
+
+     A única posição em que o ponto sobra de verdade é o fim da lista com
+     movimento reduzido, onde a faixa vira lista rolável e a cópia duplicada sai
+     de cena — e aí o CSS o esconde por `:last-child`. */
   const copia = (
     <>
       {Array.from({ length: repeats }, (_, r) =>
         PARCEIROS.map((parceiro) => (
           <span className="lp-partner" key={`${parceiro.name}-${r}`}>
+            {/* SIS-136 — `fetchPriority="low"` entrou porque `loading="lazy"` NÃO
+                é "não baixa": é "baixa quando chega perto da janela", e o limiar do
+                Chrome no desktop é da ordem de mil pixels. Enquanto a faixa fechava
+                a página isso não custava nada. Em /contato ela subiu para y=1017 a
+                1440×900 — logo abaixo da dobra e DENTRO do limiar —, então as 18
+                requisições de logo passaram a sair na primeira rajada, junto com a
+                foto do hero que é `priority`. `low` não impede a requisição; ele
+                manda o navegador servi-la DEPOIS do que é crítico, que é
+                exatamente o que a issue pede ("as logos não disputam o primeiro
+                paint"). Vale para as três telas que montam esta faixa: logo
+                decorativa em altura fixa nunca deve concorrer com o hero de
+                ninguém. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={parceiro.logo} alt={parceiro.name} loading="lazy" decoding="async" />
+            <img
+              src={parceiro.logo}
+              alt={parceiro.name}
+              loading="lazy"
+              decoding="async"
+              fetchPriority="low"
+            />
           </span>
         )),
       )}
@@ -153,15 +208,27 @@ export function SignalMarquee() {
       role="region"
       aria-label="Parceiros e tecnologias"
     >
-      {/* Linha-base da passagem Números → Parceiros (orquestração visual,
-          Prioridade 1). A curva de "Sistran em números" perde amplitude e vira
-          uma reta horizontal no fim daquele percurso (`--impact-aterrar`); esta
-          é a continuação dela — o mesmo traço, agora carregando as marcas.
+      {/* SIS-101 — a linha-base ciano saiu daqui.
 
-          Ela se desenha da esquerda para a direita quando a faixa entra na tela,
-          e as marcas sobem dela. Decorativa: `aria-hidden`, e a faixa funciona
-          exatamente igual sem ela. */}
-      <span aria-hidden className="lp-signals-base" />
+          Ela era um `<span className="lp-signals-base" />` a `top: -1px`: um
+          traço de 2px atravessando a faixa de ponta a ponta, que se desenhava da
+          esquerda para a direita na chegada. A justificativa era de continuidade
+          — a curva de "Sistran em números" assenta numa reta horizontal no fim
+          daquele percurso, e este seria o prolongamento dela.
+
+          O problema é que o prolongamento passava POR CIMA da área das logos (o
+          `z-index: 1` punha o traço acima do fundo e abaixo das marcas, mas as
+          marcas têm altura variável e nenhuma encosta na borda de cima), então o
+          que se lia era um risco luminoso cortando a faixa. E a continuidade que
+          ele buscava agora existe de graça: com SIS-101 a faixa é o rodapé da
+          própria seção dos números, então a curva aterrissa e a faixa vem logo
+          abaixo, sem precisar de um segundo traço para costurar duas seções que
+          já não são duas.
+
+          O que NÃO saiu é a chegada: `data-chegou` continua sendo escrito e
+          continua fazendo as marcas subirem na entrada (ver `.lp-signals
+          .marquee-viewport` em `legacy.css`). Elas sobem de onde a curva
+          terminou, e não de um traço desenhado para isso. */}
       <div ref={viewportRef} className="marquee-viewport">
         <div className="marquee-track marquee-left">
           <div ref={groupRef} className="marquee-copy lp-signals-copy">

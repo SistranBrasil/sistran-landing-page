@@ -12,6 +12,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/quem-somos',
     '/sistran-labs',
     '/sistran-university',
+    /* SIS-82 — a página regional em espanhol. Entra no sitemap junto com as
+       outras três de "Quem somos": rota nova que ninguém indexa é rota que
+       ninguém acha. */
+    '/latam',
     '/solucoes',
     ...ACCELERATOR_PAGES.map((p) => `/solucoes/${p.id}`),
     '/transformacao-legado',

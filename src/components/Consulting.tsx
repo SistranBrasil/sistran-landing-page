@@ -83,7 +83,7 @@ function ConsultRow({
         <div className="flex shrink-0 items-center gap-4 md:w-32 md:flex-col md:items-start md:gap-4">
           <span
             aria-hidden
-            className="font-display text-3xl font-black leading-none transition-colors duration-500 md:text-4xl"
+            className="font-display text-3xl leading-none transition-colors duration-500 md:text-4xl"
             style={{
               color: active ? accent : 'rgba(6,43,82,0.32)',
               fontVariantNumeric: 'tabular-nums',
@@ -114,7 +114,7 @@ function ConsultRow({
         {/* Texto */}
         <div className="min-w-0 flex-1">
           <h3
-            className="font-display text-xl font-bold leading-snug transition-transform duration-500 md:text-2xl"
+            className="font-display text-xl leading-snug transition-transform duration-500 md:text-2xl"
             style={{ color: '#062B52', transform: active ? 'translateX(6px)' : 'none' }}
           >
             {c.title}
@@ -175,7 +175,7 @@ export default function Consulting() {
           </motion.span>
           <motion.h2
             variants={vTitle}
-            className="mt-3 font-display text-section font-bold text-ink"
+            className="mt-3 font-display text-section text-ink"
           >
             <span className="text-gradient-brand">Consultoria</span>
           </motion.h2>

@@ -64,17 +64,49 @@ function entra(delay: number, y = 16, x = 0) {
   };
 }
 
-/** Tres curvas do trilho de Solucoes descendo para o eixo do nucleo. */
+/**
+ * Tres curvas do trilho de Solucoes descendo para o eixo do nucleo.
+ *
+ * SIS-95 — cada curva entra DUAS vezes com o mesmo `d`: o traco de base, sempre
+ * desenhado por completo, e o `-fluxo`, um tracejado curto que corre por cima
+ * sugerindo fluxo de dados. Repetir o caminho é o que dispensa mascara ou um
+ * segundo SVG sobreposto.
+ *
+ * Os atrasos vem do indice, e nao de um valor unico: tres pulsos partindo juntos
+ * leem como engrenagem, nao como fluxo.
+ */
 function RailLinks() {
+  const caminhos = [
+    'M200 0 C200 44 500 26 500 72',
+    'M500 0 L500 72',
+    'M800 0 C800 44 500 26 500 72',
+  ];
+  const nos = [200, 500, 800];
   return (
     <div className="eco-rail-links" aria-hidden>
       <svg viewBox="0 0 1000 72" preserveAspectRatio="none" focusable="false">
-        <path d="M200 0 C200 44 500 26 500 72" vectorEffect="non-scaling-stroke" />
-        <path d="M500 0 L500 72" vectorEffect="non-scaling-stroke" />
-        <path d="M800 0 C800 44 500 26 500 72" vectorEffect="non-scaling-stroke" />
-        <circle cx="200" cy="2" r="3" />
-        <circle cx="500" cy="2" r="3" />
-        <circle cx="800" cy="2" r="3" />
+        {caminhos.map((d) => (
+          <path key={d} d={d} vectorEffect="non-scaling-stroke" />
+        ))}
+        {caminhos.map((d, i) => (
+          <path
+            key={`fluxo-${d}`}
+            className="eco-rail-fluxo"
+            d={d}
+            style={{ ['--eco-atraso' as string]: `${i * 0.9}s` }}
+            vectorEffect="non-scaling-stroke"
+          />
+        ))}
+        {nos.map((cx, i) => (
+          <circle
+            key={cx}
+            className="eco-rail-no"
+            cx={cx}
+            cy="2"
+            r="3"
+            style={{ ['--eco-atraso' as string]: `${i * 0.9}s` }}
+          />
+        ))}
       </svg>
     </div>
   );
@@ -101,6 +133,19 @@ function ModuleLink({
     <div className={`eco-link ${ativo ? 'is-ativo' : ''}`} aria-hidden>
       <svg viewBox="0 0 120 44" preserveAspectRatio="none" focusable="false">
         <line className="eco-link-base" x1="0" y1="22" x2="120" y2="22" vectorEffect="non-scaling-stroke" />
+        {/* SIS-95 — pulso permanente, independente do estado `ativo`: os dois
+            ramos correm SEMPRE em direcao ao nucleo (daí `paraEsquerda` inverter
+            o sentido), o que é a leitura do proprio titulo da secao. O `-ativa`
+            abaixo continua sendo outra coisa: resposta de uma vez à troca. */}
+        <line
+          className={`eco-link-fluxo ${paraEsquerda ? 'eco-link-fluxo-inverso' : ''}`}
+          x1="0"
+          y1="22"
+          x2="120"
+          y2="22"
+          style={{ ['--eco-atraso' as string]: paraEsquerda ? '1.35s' : '0.45s' }}
+          vectorEffect="non-scaling-stroke"
+        />
         {ativo && (
           <line
             key={pulso}
@@ -179,6 +224,13 @@ export default function PositioningEcosystem() {
   const yTrilho = useTransform(scrollYProgress, [0, 1], rm ? [0, 0] : [4, -4]);
   const yModulos = useTransform(scrollYProgress, [0, 1], rm ? [0, 0] : [5, -5]);
   const yNucleo = useTransform(scrollYProgress, [0, 1], rm ? [0, 0] : [-3, 3]);
+  /* SIS-95 — tilt preso ao PROGRESSO DA ROLAGEM, nao ao ponteiro: o resto da
+     secao já se move por rolagem, e uma segunda fonte de movimento (mouse) daria
+     duas leituras de profundidade discordando entre si — fora de nao existir em
+     toque. Amplitude de 5 graus: o suficiente para a esfera virar, longe de
+     distorcer o texto dentro dela. */
+  const rotXNucleo = useTransform(scrollYProgress, [0, 1], rm ? [0, 0] : [5, -5]);
+  const rotYNucleo = useTransform(scrollYProgress, [0, 1], rm ? [0, 0] : [-4, 4]);
 
   /* Troca por rolagem: primeira metade da travessia = 01, segunda = 02. O
      `setState` só é chamado quando o indice derivado muda, nao a cada pixel. */
@@ -250,15 +302,27 @@ export default function PositioningEcosystem() {
             <div className="eco-network">
               <motion.div className="eco-nucleo-cel" style={{ y: yNucleo }} {...entra(ATRASO.nucleo)}>
                 <span aria-hidden className="eco-descida" />
+                {/* O tilt vai neste no, e a resposta de escala continua no de
+                    dentro (`key={pulso}`): dois donos de `transform` no mesmo
+                    elemento é a colisao do SIS-42. */}
+                <motion.div
+                  className="eco-nucleo-tilt"
+                  style={{ transformPerspective: 900, rotateX: rotXNucleo, rotateY: rotYNucleo }}
+                >
                 <div key={pulso} className="eco-nucleo">
                   <span aria-hidden className="eco-halo" />
                   <span aria-hidden className="eco-anel eco-anel-1" />
                   <span aria-hidden className="eco-anel eco-anel-2" />
+                  {/* SIS-95 — terceiro anel: os dois tracejados giram em sentidos
+                      e velocidades diferentes, e é o desencontro entre eles que
+                      da profundidade. Ver a nota em `.eco-anel-2` no CSS. */}
+                  <span aria-hidden className="eco-anel eco-anel-3" />
                   <div className="eco-nucleo-disco">
                     <span aria-hidden className="eco-simbolo" />
                     <p className="eco-nucleo-frase">{ECO_NUCLEO.frase}</p>
                   </div>
                 </div>
+                </motion.div>
               </motion.div>
 
               {ECO_MODULOS.map((m, i) => {

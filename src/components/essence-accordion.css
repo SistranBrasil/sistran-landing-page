@@ -9,8 +9,13 @@
  *
  * ── Fundo branco, e ele importa ─────────────────────────────────────────────
  * Esta seção fica entre duas outras que sao azul-marinho ("Tecnologias") ou
- * fotograficas. O branco é o que a diferencia — nenhum card, nenhum vidro,
- * nenhuma sombra. O que separa as faixas é UMA linha de 1px.
+ * fotograficas. O branco é o que a diferencia — nenhum card, nenhum vidro. O que
+ * separa as faixas é UMA linha de 1px.
+ *
+ * A excecao é a peca 3D do painel, e ela nao viola a regra: o render tem alfa,
+ * entao nao ha placa nem moldura — o objeto flutua recortado sobre a folha, com
+ * sombra propria. É a unica coisa nesta secao com volume, e é volume de OBJETO,
+ * nao de cartao. Ver o cabecalho de `ui/EssenceHologram.tsx`.
  *
  * ── A altura nao é `height: auto` ───────────────────────────────────────────
  * `grid-template-rows: 0fr -> 1fr` num grid de uma linha é o unico jeito de
@@ -131,9 +136,9 @@
   position: relative;
   z-index: 1;
   width: 100%;
-  min-height: 116px;
+  min-height: 138px;
   display: grid;
-  grid-template-columns: minmax(180px, max-content) minmax(120px, 300px) 44px;
+  grid-template-columns: minmax(240px, max-content) minmax(100px, 300px) 44px;
   align-items: center;
   gap: clamp(28px, 4vw, 72px);
   padding: 28px clamp(40px, 8vw, 140px);
@@ -147,11 +152,26 @@
   outline: 2px solid #0ed8f6;
   outline-offset: -4px;
 }
+/* O corpo do titulo é o que dava a impressao de faixa vazia: "Missão" em 2.7rem
+   ao lado de um painel de 430px de altura lia como legenda, nao como titulo de
+   secao. Agora ele acompanha a escala do `.essence-title` do cabecalho — um
+   degrau abaixo dele, e nao tres. */
 .essence-item-title {
-  font-size: clamp(1.7rem, 2.3vw, 2.7rem);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  transition: color 0.24s ease-out;
+  font-size: clamp(2.3rem, 3.5vw, 4.2rem);
+  font-weight: 720;
+  line-height: 1;
+  letter-spacing: -0.042em;
+  transition:
+    color 0.24s ease-out,
+    opacity 0.24s ease-out;
+}
+/* A faixa fechada recua um pouco: com titulos deste tamanho, tres em cheio
+   competiriam entre si e nada indicaria qual esta aberta. */
+.essence-item[data-aberta='false'] .essence-item-title {
+  opacity: 0.62;
+}
+.essence-trigger:hover .essence-item-title {
+  opacity: 1;
 }
 .essence-item-line {
   width: 100%;
@@ -186,6 +206,9 @@
 
 /* ── Painel ──────────────────────────────────────────────────────────────── */
 .essence-content {
+  /* Acima do degradê azul-gelo da faixa (`.essence-item::before`), que é opaco. */
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
@@ -203,9 +226,16 @@
 }
 .essence-content-inner {
   position: relative;
-  min-height: 430px;
+  /* Piso de altura para a composição não ficar rasa em monitor grande — mas
+     amarrado à ALTURA da janela (SIS-98). Fixo em 430px, somado ao padding de
+     até 172px, o painel passava de 600px; num 1366x768 com as três faixas
+     (~350px) e o cabeçalho fixo não sobrava tela, e a Missão terminava cortada
+     no rodapé. Em 768px de altura isto vira ~330px, e o painel inteiro cabe. */
+  min-height: min(430px, 43vh);
   display: grid;
-  grid-template-columns: minmax(0, 0.56fr) minmax(360px, 0.44fr);
+  /* A peca 3D é mais larga que o SVG quadrado que existia aqui, e precisa de ar
+     em volta para a rotacao nao encostar no texto. */
+  grid-template-columns: minmax(0, 0.5fr) minmax(340px, 0.5fr);
   align-items: center;
   gap: clamp(64px, 8vw, 140px);
   padding: clamp(44px, 6vh, 76px) clamp(40px, 8vw, 140px) clamp(64px, 8vh, 96px);
@@ -241,31 +271,43 @@
 
 /* ── Texto ───────────────────────────────────────────────────────────────── */
 .essence-copy {
-  max-width: 660px;
+  max-width: 720px;
   color: #173b63;
   /* Os pilares decidem 1 ou 2 colunas medindo ESTA caixa, nao a janela. */
   container-type: inline-size;
+  /* Centralizado de verdade na coluna. `align-items: center` no pai centraliza a
+     CAIXA, mas o primeiro paragrafo tinha `margin-top: 28px` — margem dentro de
+     um item centralizado nao é ignorada, ela empurra o conteudo para baixo, e era
+     por isso que o texto de "Valores" (uma linha so) descia para o rodape do
+     painel enquanto o topo ficava vazio. */
+  align-self: center;
 }
-.essence-copy h3 {
-  color: #073e82;
-  font-size: clamp(2.8rem, 4vw, 4.6rem);
-  font-weight: 730;
-  line-height: 1;
-  letter-spacing: -0.045em;
+.essence-copy > *:first-child {
+  margin-top: 0;
 }
+/* O `.essence-copy h3` que existia aqui saiu junto com o titulo duplicado do
+   painel (SIS-98). O titulo da faixa é o `.essence-item-title` do botao. */
 .essence-copy p {
-  /* ~70 caracteres por linha em tela grande: é o `ch` que garante isso, e nao um
-     `max-width` em pixels, que muda de medida junto com a fonte. */
-  max-width: 68ch;
-  margin-top: 28px;
-  font-size: clamp(1.1rem, 1.35vw, 1.35rem);
-  line-height: 1.7;
+  /* ~52 caracteres por linha: é o `ch` que garante isso, e nao um `max-width` em
+     pixels, que muda de medida junto com a fonte. Era 68ch — com o corpo maior
+     abaixo, 68ch daria uma linha longa demais para ler de um golpe. */
+  max-width: 52ch;
+  margin-top: 30px;
+  /* Corpo grande de propósito. O titulo da faixa foi para ~50px e o texto ficou
+     em ~19px ao lado dele: o painel lia como legenda de um titulo, nao como o
+     conteudo da faixa. Aqui ele sobe para ~27px em tela grande, que é a escala de
+     um paragrafo editorial de abertura — a mesma familia de tamanho do titulo,
+     nao um degrau perdido abaixo dele. */
+  font-size: clamp(1.3rem, 1.9vw, 1.7rem);
+  line-height: 1.55;
 }
 .essence-footnote {
-  max-width: 68ch;
-  margin-top: 22px;
+  max-width: 60ch;
+  margin-top: 24px;
   color: #527190;
-  font-size: clamp(0.94rem, 1.1vw, 1.1rem);
+  /* Sobe junto com o paragrafo, mas mantendo a MESMA distancia relativa: nota de
+     rodape que chega perto do corpo deixa de se ler como ressalva. */
+  font-size: clamp(1.02rem, 1.25vw, 1.18rem);
   font-style: italic;
   line-height: 1.65;
 }
@@ -296,12 +338,16 @@
 .essence-pillars {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px 40px;
+  gap: 22px 44px;
   margin-top: 28px;
   padding: 0;
   list-style: none;
-  font-size: clamp(1rem, 1.1vw, 1.12rem);
-  line-height: 1.62;
+  /* Sobe menos que o paragrafo, e de proposito: sao SEIS frases longas em duas
+     colunas. No corpo de ~27px do paragrafo a lista passaria de uma tela e os
+     Pilares voltariam a terminar cortados no rodape — o defeito que o piso de
+     altura em `vh` existe para evitar. */
+  font-size: clamp(1.08rem, 1.28vw, 1.24rem);
+  line-height: 1.6;
 }
 /* Duas colunas só quando ha espaco: o container query mede o proprio painel, e
    nao a janela — é ele que sabe se cabe. */
@@ -328,54 +374,24 @@
   transition-delay: 260ms;
 }
 
-/* ── Visuais em SVG ──────────────────────────────────────────────────────────
-   Sem moldura, sem fundo proprio: as linhas ficam sobre o azul-gelo da faixa.
-   O desenho progressivo é `stroke-dashoffset` com `pathLength="1"` em cada
-   traço — assim `dasharray: 1` vale para circulo, linha e path, sem medir
-   comprimento nenhum em JavaScript. */
-.essence-visual {
-  justify-self: center;
-  width: 100%;
-  max-width: 420px;
-  aspect-ratio: 1;
-  pointer-events: none;
-}
-.essence-visual svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-.essence-visual [data-traco] {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset 720ms cubic-bezier(0.22, 1, 0.36, 1) 180ms;
-}
-.essence-content[data-open='true'] .essence-visual [data-traco] {
-  stroke-dashoffset: 0;
-}
-.essence-visual [data-node] {
-  opacity: 0;
-  transition: opacity 380ms ease-out 620ms;
-}
-.essence-content[data-open='true'] .essence-visual [data-node] {
-  opacity: 1;
-}
-/* Glow azul-claro por tras do desenho. Estatico: nao pulsa, nao é filtro
-   animado. */
-.essence-visual {
-  position: relative;
-}
-.essence-visual::before {
-  content: '';
-  position: absolute;
-  inset: 8%;
-  border-radius: 999px;
-  background: radial-gradient(
-    circle,
-    rgba(14, 216, 246, 0.13) 0%,
-    rgba(8, 127, 199, 0.06) 44%,
-    transparent 72%
-  );
+/* ── Telas baixas ────────────────────────────────────────────────────────────
+   Notebook de 768px de altura, ou janela de navegador com abas e barras: aqui a
+   restrição é vertical, não horizontal, e nenhuma media query de LARGURA pega
+   esse caso. O que encolhe é o respiro — o texto não muda de corpo. */
+@media (min-width: 768px) and (max-height: 860px) {
+  .essence-trigger {
+    min-height: 112px;
+    padding-block: 18px;
+  }
+  .essence-content-inner {
+    padding-block: clamp(28px, 4vh, 44px) clamp(32px, 5vh, 56px);
+  }
+  .essence-accordion {
+    margin-top: clamp(32px, 4vh, 56px);
+  }
+  .essence-container {
+    padding-block: clamp(48px, 6vh, 80px) 0;
+  }
 }
 
 /* ── Tablet ──────────────────────────────────────────────────────────────── */
@@ -384,15 +400,12 @@
     width: min(1500px, calc(100% - 56px));
   }
   .essence-trigger {
-    min-height: 102px;
+    min-height: 118px;
   }
   .essence-content-inner {
-    min-height: 360px;
-    grid-template-columns: minmax(0, 0.58fr) minmax(260px, 0.42fr);
+    min-height: min(360px, 40vh);
+    grid-template-columns: minmax(0, 0.52fr) minmax(280px, 0.48fr);
     gap: clamp(40px, 5vw, 72px);
-  }
-  .essence-visual {
-    max-width: 320px;
   }
 }
 
@@ -411,16 +424,13 @@
   }
   .essence-content-inner {
     min-height: 0;
-    /* Texto primeiro, visual embaixo. */
+    /* Texto primeiro, peca 3D embaixo. */
     grid-template-columns: minmax(0, 1fr);
     gap: 32px;
     padding: 28px 20px 44px;
   }
   .essence-pillars {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .essence-visual {
-    max-width: 260px;
   }
   /* A linha lateral encurta para nao encostar no texto. */
   .essence-active-line {
@@ -430,8 +440,10 @@
 
 /* ── Movimento reduzido ──────────────────────────────────────────────────────
    O accordion continua funcionando: o que sai é o movimento. Nada fica
-   escondido, nada muda de ordem — os SVGs aparecem prontos, o texto aparece sem
-   deslocamento e a troca de faixa é um fade curto. */
+   escondido, nada muda de ordem — o texto aparece sem deslocamento e a troca de
+   faixa é um fade curto. A peca 3D tem as proprias regras em
+   `ui/essence-hologram.css`: para de flutuar e de pulsar, mas continua girando
+   com o gesto. */
 @media (prefers-reduced-motion: reduce) {
   .essence-section .essence-eyebrow,
   .essence-section .essence-title,
@@ -443,14 +455,6 @@
   .essence-section .essence-risco,
   .essence-section .essence-active-line {
     transform: scaleX(1) !important;
-    transition: none !important;
-  }
-  .essence-section .essence-visual [data-traco] {
-    stroke-dashoffset: 0 !important;
-    transition: none !important;
-  }
-  .essence-section .essence-visual [data-node] {
-    opacity: 1 !important;
     transition: none !important;
   }
   .essence-section .essence-content {
@@ -471,14 +475,6 @@ html[data-motion='reduce'] .essence-copy > * {
 html[data-motion='reduce'] .essence-risco,
 html[data-motion='reduce'] .essence-active-line {
   transform: scaleX(1) !important;
-  transition: none !important;
-}
-html[data-motion='reduce'] .essence-visual [data-traco] {
-  stroke-dashoffset: 0 !important;
-  transition: none !important;
-}
-html[data-motion='reduce'] .essence-visual [data-node] {
-  opacity: 1 !important;
   transition: none !important;
 }
 html[data-motion='reduce'] .essence-content {

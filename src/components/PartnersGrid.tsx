@@ -108,7 +108,7 @@ function PartnerCard({ p, index }: { p: Partner; index: number }) {
         <div className="flex flex-col items-end gap-2">
           <span
             aria-hidden
-            className="font-display text-4xl font-black leading-none"
+            className="font-display text-4xl leading-none"
             /* Branco translucido: o tone a 15% desaparecia no fundo azul claro. */
             style={{ color: 'rgba(255,255,255,0.30)', fontVariantNumeric: 'tabular-nums' }}
           >
@@ -125,7 +125,7 @@ function PartnerCard({ p, index }: { p: Partner; index: number }) {
 
       {/* Title */}
       <h3
-        className="relative mt-6 font-display text-xl font-bold leading-tight text-white md:text-[1.35rem]"
+        className="relative mt-6 font-display text-xl leading-tight text-white md:text-[1.35rem]"
         style={{ transform: 'translateZ(24px)' }}
       >
         {p.title}

@@ -1,0 +1,262 @@
+/* SIS-144 — percurso horizontal da faixa de indicadores de `/contato`
+   (`ui/PercursoIndicadores.tsx`).
+
+   Arquivo próprio e COLOCADO, no padrão de `partners-track.css`,
+   `events-spotlight.css`, `brand-grid.css` e `essence-accordion.css`. O que NÃO
+   veio para cá é a superfície do cartão: ela continua em `globals.css`
+   (`.contato-indicador` e filhos), porque é a mesma nas duas formas e porque o
+   contraste do rótulo foi medido lá, contra ela. Este arquivo só trata de
+   GEOMETRIA e de MOVIMENTO.
+
+   ══════════════════════════════════════════════════════════════════════════
+   OS MESMOS NÓS NAS DUAS FORMAS
+
+   Diferença deliberada em relação ao precedente: `partners-track.css` alterna
+   entre duas árvores com `display: none`, porque lá o painel da trilha tem
+   conteúdo que a lista não pode ter. Aqui a `<ul>` da faixa É a grade e VIRA a
+   trilha — nada é montado em dobro, nada é lido duas vezes, e não existe uma
+   cópia para esquecer de espelhar quando o CSS mudar. O motivo completo está no
+   cabeçalho do componente.
+
+   ══════════════════════════════════════════════════════════════════════════
+   COMO A CENA SE MOVE, E POR QUE NÃO TEM ScrollTrigger
+
+   `position: sticky` no palco, NUNCA `pin: true` (a proibição está escrita em
+   seis componentes desta base; `pin` reparenta o nó e dessincroniza com o
+   Lenis). Sem `pin` não há `pinSpacing`: a altura extra vem do espaçador que o
+   componente monta, que é escrito por nós.
+
+   O deslocamento é UMA conta de CSS, entre comprimentos de CSS:
+
+     translateX = -t * (largura da trilha - largura útil da janela)
+
+   A largura da trilha é `N × w + (N-1) × vão` e a útil é `100vw - 2 × goteira`.
+   Nenhum dos quatro é medido em JavaScript, então NÃO HÁ `scrollWidth` para
+   ficar velho quando as fontes ou o contador terminam de assentar — que é
+   exatamente o que dissolve a exigência de `ScrollTrigger.refresh()` da issue em
+   vez de cumpri-la (ver o cabeçalho do componente).
+
+   MEDIDO NO NAVEGADOR (build de produção, rolagem em passos menores que o passo da
+   cena — 30svh):
+     largura   cartão   vão     trilha    deslocamento   preso de → até   passo
+     1024×768  280,0    16,4    2140,2    −1116,2px      594 → 1971       50px
+     1440×900  345,6    20,0    2654,3    −1214,4px      712 → 2240       60px
+     1920×1080 360,0    20,0    2768,0     −848,0px      835 → 2674       70px
+   Os sete indicadores foram alcançados nas três larguras (7/7 inteiros dentro da
+   janela em algum quadro). A 1024 o cartão pousa no piso de 17,5rem e a 1920 no
+   teto de 22,5rem, que é o que mantém a largura igual à da grade em repouso.
+
+   `max(0px, …)`: em janela larga o bastante para os sete cartões, a distância é
+   negativa e o `max` a zera. A cena então não desloca nada — e continua correta,
+   porque não há transbordo a percorrer. Não é caso hipotético: é o que acontece
+   se alguém reduzir a contagem em `metrics.ts`.
+
+   `t` é o progresso normalizado. `--mb-p` vem do `useProgressoDeSecao` em modo
+   `saida` (0 quando o topo da seção encosta no topo da janela, 1 quando a base
+   encosta) e `--mb-esc` corrige a diferença entre "a seção inteira" e "o trecho
+   em que o palco está preso", que é 100svh mais curto. Os dois números são
+   escritos pelo componente, que é onde a contagem e o passo vivem: este arquivo
+   não tem um `7` nem um `280svh` para divergir de `metrics.ts`.
+
+   ══════════════════════════════════════════════════════════════════════════
+   O PERCURSO É EXCEÇÃO; A GRADE É O REPOUSO
+
+   As três condições são cumulativas e todas têm de valer: largura ≥ 1024px,
+   movimento não reduzido (`@media` do sistema E o espelho do botão da interface,
+   no fim do arquivo) e `[data-percurso="ligado"]`, que só existe com JavaScript
+   ligado. Faltando qualquer uma, a faixa é a grade de `globals.css` com os sete
+   indicadores à vista. Nenhum cartão pode ficar fora de alcance por causa de uma
+   regra de acessibilidade — é o item 3 da issue e o defeito que a SIS-159 mediu.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .mb-percurso[data-percurso='ligado'] {
+    position: relative;
+    /* `clip`, NUNCA `hidden`: `hidden` faria deste bloco um contêiner de scroll e
+       mataria o `position: sticky` do palco aqui dentro. Regra da casa e defeito
+       clássico deste desenho. */
+    overflow: clip;
+
+    /* Largura do cartão e vão. Estes dois SÃO a distância da trilha (ver a nota
+       do topo): mexer aqui muda o percurso inteiro sem tocar em JavaScript.
+       O teto de 22,5rem = 360px é a largura que a grade já dava a 1440 e a 1920
+       (358,7px medidos na SIS-143), então o cartão não muda de tamanho ao entrar
+       no percurso. O piso de 17,5rem é o mesmo mínimo da grade, e o motivo dele
+       está em `globals.css`: é o pior rótulo ("Mil horas de Capacidade Produtiva
+       no Brasil") em duas linhas ao lado do número. Quem mexer remede com ESSE
+       rótulo, não com "Clientes". */
+    --mb-w: clamp(17.5rem, 24vw, 22.5rem);
+    --mb-gap: clamp(1rem, 1.6vw, 1.25rem);
+    /* A goteira que sobra nas duas pontas: o mesmo respiro lateral do
+       `container-lp`, para o primeiro e o último cartão não encostarem na borda
+       da janela nos extremos do percurso. */
+    --mb-goteira: clamp(1rem, 4vw, 4rem);
+    --mb-trilha: calc(var(--mb-n, 7) * var(--mb-w) + (var(--mb-n, 7) - 1) * var(--mb-gap));
+    --mb-dist: max(0px, calc(var(--mb-trilha) - 100vw + 2 * var(--mb-goteira)));
+
+    /* `clamp` com números crus: depois de o palco soltar, `t` fica travado em 1 e
+       o último cartão permanece no lugar enquanto o resto da seção rola. */
+    --mb-t: clamp(0, calc(var(--mb-p, 0) * var(--mb-esc, 1)), 1);
+
+    /* ── O FUNDO MUDA DE DONO, E É PARA PRESERVAR A EMENDA DA SIS-136 ────────
+       Ponto de atenção 6. Fora do percurso a faixa tem 1 tela de altura e o
+       degradê `#0f2b4a → #071d36` fecha o pé em `#071d36` plano, que é o que a
+       faixa clara das logos precisa para emendar sem listra.
+       Com o percurso a seção passa a ter ~280svh: o MESMO degradê esticado por
+       280svh mostraria azul claro no alto da janela durante todo o trecho preso e
+       só chegaria ao `#071d36` no último quadro. Então o degradê passa para o
+       PALCO (que tem 100svh, a medida para a qual ele foi desenhado) e a seção
+       alta fica com o `#071d36` plano do pé.
+       Por que não pisca em nenhuma das duas pontas: no alto, o palco cobre a
+       janela inteira desde antes de prender, então a emenda com o pé do hero
+       continua sendo o `#0f2b4a` do topo dele; embaixo, o palco termina em
+       `#071d36`, exatamente a cor da seção que aparece quando ele solta — a
+       diferença é zero, não é "pouca". */
+    background: #071d36;
+  }
+
+  /* ── O PALCO ─────────────────────────────────────────────────────────────
+     `100svh` e não `100vh`: em tela com barra de navegação dinâmica o `vh` mede
+     a janela maior e o conteúdo ficaria fora de quadro (ponto de atenção 9).
+     `clip` de novo — é o que impede o cartão que já passou de aparecer fora do
+     palco. */
+  .mb-percurso[data-percurso='ligado'] .mb-palco {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    z-index: 1;
+    display: grid;
+    align-content: center;
+    overflow: clip;
+    padding-block: calc(var(--header-h, 88px) + 0.75rem) 1.5rem;
+    background: linear-gradient(180deg, #0f2b4a 0%, #0a2440 58%, #071d36 100%);
+  }
+
+  /* A seção externa cede o respiro ao palco: mantê-lo nos dois somaria duas
+     folgas e o `padding` da seção alta ficaria pendurado no fim do percurso, como
+     uma tira de navy sem conteúdo. */
+  .contato-indicadores:has(.mb-percurso[data-percurso='ligado']) {
+    padding-block: 0;
+  }
+
+  /* O `container-lp` deixa de limitar a trilha: os 1116px úteis dele são
+     exatamente o que causa o transbordo, e a trilha precisa de `max-content` para
+     poder correr. O recuo do PRIMEIRO cartão continua sendo o do
+     `container-lp` — vem da goteira, para o percurso começar alinhado com o resto
+     da página em vez de na borda da tela. */
+  /* `html:not([data-motion='reduce'])` porque esta é uma das duas regras que o
+     espelho do interruptor manual não consegue DESFAZER (o valor original é
+     utilitário do Tailwind com três degraus de recuo) — então ela simplesmente não
+     se aplica quando o botão está em `reduce`. Explicação inteira no fim do
+     arquivo. */
+  html:not([data-motion='reduce']) .mb-percurso[data-percurso='ligado'] .container-lp {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  /* ── A TRILHA ────────────────────────────────────────────────────────────
+     `display: flex` vence o `display: grid` de `.contato-indicadores-grade` por
+     especificidade (0,2,1 contra 0,1,0), e não pela ordem dos arquivos — que é o
+     tipo de disputa que se quebra quando alguém reordena imports.
+     `will-change` e `backface-visibility` mantêm o deslize na GPU; só
+     `transform` é animado (ponto de atenção 7), nunca `left` nem `margin`. */
+  .mb-percurso[data-percurso='ligado'] .contato-indicadores-grade {
+    display: flex;
+    align-items: stretch;
+    width: max-content;
+    gap: var(--mb-gap);
+    padding-inline: var(--mb-goteira);
+    transform: translate3d(calc(var(--mb-t) * var(--mb-dist) * -1), 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  /* Largura fixa no percurso: é ela que a conta da distância usa. Sem
+     `flex: 0 0`, o flex encolheria os cartões para caber na janela e a distância
+     calculada não corresponderia ao deslocamento real. */
+  .mb-percurso[data-percurso='ligado'] .contato-indicador {
+    flex: 0 0 var(--mb-w);
+    width: var(--mb-w);
+  }
+}
+
+/* ── ESPELHO DO INTERRUPTOR MANUAL (`html[data-motion="reduce"]`) ───────────
+   Este site tem DOIS jeitos de reduzir movimento: a preferência do sistema e o
+   botão da interface. O botão funciona porque `layout.tsx` embrulha o
+   `window.matchMedia`, então todo hook de JS vê o valor escolhido — mas uma
+   `@media (prefers-reduced-motion: …)` de verdade NÃO é interceptável, e o bloco
+   acima é uma dessas.
+   Aqui o espelho é BARATO e ainda assim obrigatório: o componente já para de
+   escrever `--mb-p` e já REMOVE `data-percurso` quando `useReducedMotion()`
+   devolve `true`, então o seletor de cima deixa de casar sozinho. Este bloco é a
+   segunda tranca, para o caso de o atributo sobreviver a um quadro (ou de alguém
+   passar a ligar o percurso por outra via): sem ele, a trilha ficaria montada e
+   CONGELADA no primeiro cartão, com quatro dos sete inalcançáveis. É exatamente o
+   que a SIS-159 mediu na trilha de parceiros — 2 de 16 alcançados com o botão em
+   `reduce` — e o padrão está em `partners-track.css:248`, `events-spotlight.css`
+   e `legacy.css`.
+   ESPECIFICIDADE: `html[data-motion] .x` é (0,2,1) e empata com o seletor de
+   atributo de cima; o `:not()` não muda a conta, então quem decide é a ORDEM, e
+   este bloco vem depois de propósito. Media query não soma especificidade. */
+html[data-motion='reduce'] .mb-percurso .contato-indicadores-grade {
+  display: grid;
+  width: auto;
+  padding-inline: 0;
+  transform: none;
+}
+
+html[data-motion='reduce'] .mb-percurso .mb-palco {
+  position: static;
+  height: auto;
+  overflow: visible;
+  padding-block: 0;
+  background: none;
+}
+
+html[data-motion='reduce'] .mb-percurso {
+  overflow: visible;
+  background: none;
+}
+
+/* DUAS CORREÇÕES ENTRARAM POR MEDIÇÃO, não por simetria — a sonda ligou o botão a
+   1440×900 e achou o que o resto deste espelho não cobria:
+   • o ESPAÇADOR sobreviveu, com 1620px de altura: a faixa voltava a ser grade de
+     344px e ficavam ~1,8 tela de rolagem vazia embaixo dela. É exatamente o que o
+     comentário do próprio espaçador promete que não acontece;
+   • o `container-lp` continuava sem teto de largura, então a grade se abria em
+     1440px em vez de 1116px e a faixa lia 4+3 (duas fileiras) em vez do 3+3+1
+     medido no repouso — mesma preferência, dois desenhos diferentes conforme o
+     caminho pelo qual ela foi ligada.
+   Nenhum dos dois esconde conteúdo (os sete continuaram alcançáveis nas duas
+   medições), e é por isso que aparecem como divergência e não como defeito de
+   acessibilidade. Ainda assim o espelho não pode entregar uma página diferente da
+   que o `@media` do sistema entrega.
+
+   COMO ELAS FORAM CORRIGIDAS, e por que NÃO como as regras acima: as outras do
+   espelho desfazem valor simples (`display`, `position`, `transform`), então
+   reescrevê-las aqui é seguro. Estas duas não. O `.container-lp` é utilitário do
+   Tailwind (`max-w-container px-5 sm:px-6 lg:px-8`), e "restaurar" seria redigitar
+   um recuo que tem TRÊS degraus responsivos — a primeira mudança no utilitário
+   deixaria esta cópia divergindo em silêncio. Então em vez de desfazer, o espelho
+   IMPEDE: as duas regras do percurso ganharam `html:not([data-motion='reduce'])`,
+   e o que nunca é aplicado não precisa de desfazimento. Ver as duas ocorrências
+   dentro da `@media` acima. */
+
+/* O espaçador é o que dá altura à seção durante o percurso, e ele não pode
+   sobreviver a nenhum dos desligamentos: 180svh de rolagem vazia depois da faixa
+   é conteúdo nenhum ocupando duas telas.
+   Fora da `@media` de propósito — o padrão é altura zero, e o percurso é que a
+   concede. Assim o espaçador nunca aparece por acidente em tela estreita, com
+   movimento reduzido ou sem JavaScript. */
+.mb-espaco {
+  height: 0;
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  /* Mesma guarda, e aqui ela é a que MAIS importa: com o botão em `reduce` a
+     sonda mediu 1620px de espaçador sobrevivendo a uma faixa que já tinha voltado
+     a ser grade de 344px — quase duas telas de rolagem vazia. */
+  html:not([data-motion='reduce']) .mb-percurso[data-percurso='ligado'] .mb-espaco {
+    height: calc((var(--mb-n, 7) - 1) * var(--mb-passo, 30svh));
+  }
+}

@@ -1,0 +1,662 @@
+{
+  "1440x900 /": {
+    "vw": 1440,
+    "alturaPagina": 14033,
+    "alturaEmVh": 15.59,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "path",
+      "largura": 6336
+    },
+    "superficies": [
+      "rgb(255, 255, 255)|",
+      "rgb(226, 239, 250)|linear-gradient(rgb(255, 255, 255) 0px, rgba(255, 255, 255, 0) 40svh),",
+      "|radial-gradient(70% 60% at 20% 20%, rgba(14, 216, 246, 0.18), rgba(0,"
+    ],
+    "titulo": {
+      "texto": "Soluções de Negócio em Seguros — Sistran Brasil",
+      "px": 16,
+      "altura": 1,
+      "largura": 1,
+      "fracaoLargura": 0.001,
+      "fracaoAlturaHero": 2.6
+    },
+    "secoes": 5
+  },
+  "1440x900 /quem-somos": {
+    "vw": 1440,
+    "alturaPagina": 24675,
+    "alturaEmVh": 27.42,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "path",
+      "largura": 6336
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 50% 66%, rgba(16, 196, 242, 0.15), rgba(0, 0",
+      "|radial-gradient(circle at 52% 48%, rgba(14, 216, 246, 0.14), rgba(0, 0",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,",
+      "rgb(255, 255, 255)|",
+      "|radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "A Sistran",
+      "px": 89.6,
+      "altura": 91.4,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 0.58
+    },
+    "secoes": 16
+  },
+  "1440x900 /solucoes": {
+    "vw": 1440,
+    "alturaPagina": 6361,
+    "alturaEmVh": 7.07,
+    "documentoVaza": false,
+    "piorVazamento": null,
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Oferecemos SOLUÇÕES, SERVIÇOS e CONSULTORIA sob ",
+      "px": 51.2,
+      "altura": 229.4,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 0.58
+    },
+    "secoes": 6
+  },
+  "1440x900 /solucoes/match-ai": {
+    "vw": 1440,
+    "alturaPagina": 3218,
+    "alturaEmVh": 3.58,
+    "documentoVaza": false,
+    "piorVazamento": null,
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Match AI",
+      "px": 89.6,
+      "altura": 91.4,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 0.58
+    },
+    "secoes": 5
+  },
+  "1440x900 /transformacao-legado": {
+    "vw": 1440,
+    "alturaPagina": 6416,
+    "alturaEmVh": 7.13,
+    "documentoVaza": false,
+    "piorVazamento": null,
+    "superficies": [
+      "|radial-gradient(960px 640px at 12% 8%, color(srgb 0.647059 0.941176 1"
+    ],
+    "titulo": null,
+    "secoes": 1
+  },
+  "1440x900 /parceiros-e-implementacoes": {
+    "vw": 1440,
+    "alturaPagina": 10921,
+    "alturaEmVh": 12.13,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.marquee-track",
+      "largura": 5040
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Parceiros e Implementações",
+      "px": 89.6,
+      "altura": 182.8,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 0.631
+    },
+    "secoes": 3
+  },
+  "1440x900 /sistran-labs": {
+    "vw": 1440,
+    "alturaPagina": 2885,
+    "alturaEmVh": 3.21,
+    "documentoVaza": false,
+    "piorVazamento": null,
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Sistran Labs: Laboratório de INOVAÇÃO",
+      "px": 70.4,
+      "altura": 149.2,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 1.007
+    },
+    "secoes": 3
+  },
+  "1440x900 /sistran-university": {
+    "vw": 1440,
+    "alturaPagina": 1816,
+    "alturaEmVh": 2.02,
+    "documentoVaza": false,
+    "piorVazamento": null,
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Autossuficiência em capacitação de recursos",
+      "px": 70.4,
+      "altura": 149.2,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 0.827
+    },
+    "secoes": 2
+  },
+  "1440x900 /esg": {
+    "vw": 1440,
+    "alturaPagina": 4110,
+    "alturaEmVh": 4.57,
+    "documentoVaza": false,
+    "piorVazamento": null,
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "A Sistran demonstra seu forte compromisso com o ",
+      "px": 51.2,
+      "altura": 172,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 0.58
+    },
+    "secoes": 5
+  },
+  "1440x900 /eventos-inovacao": {
+    "vw": 1440,
+    "alturaPagina": 3382,
+    "alturaEmVh": 3.76,
+    "documentoVaza": false,
+    "piorVazamento": null,
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 20% 20%, rgba(14, 216, 246, 0.18), rgba(0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Eventos & Inovação",
+      "px": 89.6,
+      "altura": 91.4,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 0.58
+    },
+    "secoes": 4
+  },
+  "1440x900 /blog": {
+    "vw": 1440,
+    "alturaPagina": 2162,
+    "alturaEmVh": 2.4,
+    "documentoVaza": false,
+    "piorVazamento": null,
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Os melhores conteúdos. Feitos por especialistas ",
+      "px": 70.4,
+      "altura": 149.3,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 0.58
+    },
+    "secoes": 3
+  },
+  "1440x900 /contato": {
+    "vw": 1440,
+    "alturaPagina": 3239,
+    "alturaEmVh": 3.6,
+    "documentoVaza": false,
+    "piorVazamento": null,
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Preencha o formulário e fale com a gente!",
+      "px": 70.4,
+      "altura": 149.3,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 0.58
+    },
+    "secoes": 4
+  },
+  "1440x900 /trabalhe-conosco": {
+    "vw": 1440,
+    "alturaPagina": 2598,
+    "alturaEmVh": 2.89,
+    "documentoVaza": false,
+    "piorVazamento": null,
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 20% 20%, rgba(14, 216, 246, 0.18), rgba(0,"
+    ],
+    "titulo": {
+      "texto": "Venha fazer parte do nosso time! #SomosSistraner",
+      "px": 70.4,
+      "altura": 149.3,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 0.58
+    },
+    "secoes": 3
+  },
+  "1440x900 /politica-de-privacidade": {
+    "vw": 1440,
+    "alturaPagina": 2986,
+    "alturaEmVh": 3.32,
+    "documentoVaza": false,
+    "piorVazamento": null,
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Política de cookies",
+      "px": 89.6,
+      "altura": 91.4,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 0.58
+    },
+    "secoes": 2
+  },
+  "1440x900 /relatorio-de-transparencia-salarial": {
+    "vw": 1440,
+    "alturaPagina": 1852,
+    "alturaEmVh": 2.06,
+    "documentoVaza": false,
+    "piorVazamento": null,
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Relatório de Transparência e Igualdade Salarial ",
+      "px": 51.2,
+      "altura": 114.7,
+      "largura": 1116,
+      "fracaoLargura": 0.775,
+      "fracaoAlturaHero": 0.58
+    },
+    "secoes": 2
+  },
+  "390x844 /": {
+    "vw": 390,
+    "alturaPagina": 13194,
+    "alturaEmVh": 15.63,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.marquee-track",
+      "largura": 1440
+    },
+    "superficies": [
+      "rgb(255, 255, 255)|",
+      "rgb(226, 239, 250)|linear-gradient(rgb(255, 255, 255) 0px, rgba(255, 255, 255, 0) 40svh),",
+      "|radial-gradient(70% 60% at 20% 20%, rgba(14, 216, 246, 0.18), rgba(0,"
+    ],
+    "titulo": {
+      "texto": "Soluções de Negócio em Seguros — Sistran Brasil",
+      "px": 16,
+      "altura": 1,
+      "largura": 1,
+      "fracaoLargura": 0.003,
+      "fracaoAlturaHero": 1.7
+    },
+    "secoes": 5
+  },
+  "390x844 /quem-somos": {
+    "vw": 390,
+    "alturaPagina": 22618,
+    "alturaEmVh": 26.8,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.absolute",
+      "largura": 480
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 50% 66%, rgba(16, 196, 242, 0.15), rgba(0, 0",
+      "|radial-gradient(circle at 52% 48%, rgba(14, 216, 246, 0.14), rgba(0, 0",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,",
+      "rgb(255, 255, 255)|",
+      "|radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "A Sistran",
+      "px": 41.6,
+      "altura": 42.4,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 0.46
+    },
+    "secoes": 16
+  },
+  "390x844 /solucoes": {
+    "vw": 390,
+    "alturaPagina": 9705,
+    "alturaEmVh": 11.5,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.absolute",
+      "largura": 480
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Oferecemos SOLUÇÕES, SERVIÇOS e CONSULTORIA sob ",
+      "px": 32,
+      "altura": 322.5,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 0.639
+    },
+    "secoes": 6
+  },
+  "390x844 /solucoes/match-ai": {
+    "vw": 390,
+    "alturaPagina": 4110,
+    "alturaEmVh": 4.87,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.absolute",
+      "largura": 480
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Match AI",
+      "px": 41.6,
+      "altura": 42.4,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 0.46
+    },
+    "secoes": 5
+  },
+  "390x844 /transformacao-legado": {
+    "vw": 390,
+    "alturaPagina": 4103,
+    "alturaEmVh": 4.86,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "path",
+      "largura": 695.7
+    },
+    "superficies": [
+      "|radial-gradient(960px 640px at 12% 8%, color(srgb 0.647059 0.941176 1"
+    ],
+    "titulo": null,
+    "secoes": 1
+  },
+  "390x844 /parceiros-e-implementacoes": {
+    "vw": 390,
+    "alturaPagina": 16407,
+    "alturaEmVh": 19.44,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.marquee-track",
+      "largura": 2880
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Parceiros e Implementações",
+      "px": 41.6,
+      "altura": 84.8,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 0.585
+    },
+    "secoes": 3
+  },
+  "390x844 /sistran-labs": {
+    "vw": 390,
+    "alturaPagina": 4078,
+    "alturaEmVh": 4.83,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.absolute",
+      "largura": 480
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Sistran Labs: Laboratório de INOVAÇÃO",
+      "px": 35.2,
+      "altura": 111.9,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 1.543
+    },
+    "secoes": 3
+  },
+  "390x844 /sistran-university": {
+    "vw": 390,
+    "alturaPagina": 2651,
+    "alturaEmVh": 3.14,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.absolute",
+      "largura": 480
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Autossuficiência em capacitação de recursos",
+      "px": 35.2,
+      "altura": 111.9,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 1.143
+    },
+    "secoes": 2
+  },
+  "390x844 /esg": {
+    "vw": 390,
+    "alturaPagina": 6127,
+    "alturaEmVh": 7.26,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.absolute",
+      "largura": 480
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "A Sistran demonstra seu forte compromisso com o ",
+      "px": 32,
+      "altura": 179.1,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 0.476
+    },
+    "secoes": 5
+  },
+  "390x844 /eventos-inovacao": {
+    "vw": 390,
+    "alturaPagina": 4354,
+    "alturaEmVh": 5.16,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.orb",
+      "largura": 480.7
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 20% 20%, rgba(14, 216, 246, 0.18), rgba(0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Eventos & Inovação",
+      "px": 41.6,
+      "altura": 84.8,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 0.46
+    },
+    "secoes": 4
+  },
+  "390x844 /blog": {
+    "vw": 390,
+    "alturaPagina": 2546,
+    "alturaEmVh": 3.02,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.absolute",
+      "largura": 480
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Os melhores conteúdos. Feitos por especialistas ",
+      "px": 35.2,
+      "altura": 149.3,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 0.46
+    },
+    "secoes": 3
+  },
+  "390x844 /contato": {
+    "vw": 390,
+    "alturaPagina": 4143,
+    "alturaEmVh": 4.91,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.absolute",
+      "largura": 480
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Preencha o formulário e fale com a gente!",
+      "px": 35.2,
+      "altura": 111.9,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 0.46
+    },
+    "secoes": 4
+  },
+  "390x844 /trabalhe-conosco": {
+    "vw": 390,
+    "alturaPagina": 3385,
+    "alturaEmVh": 4.01,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.orb",
+      "largura": 480.8
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,",
+      "|radial-gradient(70% 60% at 20% 20%, rgba(14, 216, 246, 0.18), rgba(0,"
+    ],
+    "titulo": {
+      "texto": "Venha fazer parte do nosso time! #SomosSistraner",
+      "px": 35.2,
+      "altura": 111.9,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 0.46
+    },
+    "secoes": 3
+  },
+  "390x844 /politica-de-privacidade": {
+    "vw": 390,
+    "alturaPagina": 4890,
+    "alturaEmVh": 5.79,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.absolute",
+      "largura": 480
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Política de cookies",
+      "px": 41.6,
+      "altura": 84.8,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 0.46
+    },
+    "secoes": 2
+  },
+  "390x844 /relatorio-de-transparencia-salarial": {
+    "vw": 390,
+    "alturaPagina": 2598,
+    "alturaEmVh": 3.08,
+    "documentoVaza": false,
+    "piorVazamento": {
+      "alvo": "div.absolute",
+      "largura": 480
+    },
+    "superficies": [
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.13), rgba(0, 0,",
+      "|radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), rgba(0, 0,"
+    ],
+    "titulo": {
+      "texto": "Relatório de Transparência e Igualdade Salarial ",
+      "px": 32,
+      "altura": 143.3,
+      "largura": 350,
+      "fracaoLargura": 0.897,
+      "fracaoAlturaHero": 0.46
+    },
+    "secoes": 2
+  }
+}

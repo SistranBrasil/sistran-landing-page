@@ -33,13 +33,43 @@ type Props = {
 
 const OPACIDADE_INICIAL = 0.18;
 
+/** Token sem letra nem dígito: `/`, `—`, `·`, `&` isolado por espaços. */
+const SO_PONTUACAO = /^[^\p{L}\p{N}]+$/u;
+
+/**
+ * SIS-140 item 10 — `texto.split(' ')` puro dava a cada `/` do titulo de SOCIAL
+ * uma PALAVRA propria, com passo de acendimento proprio: ver uma barra sozinha
+ * surgindo do nada entre dois nomes de fundacao nao le como ritmo, le como
+ * defeito. Em "SOCIAL: Projeto Gerando Talentos / Fundación Huerta Niño /
+ * Fundación Aguas" eram 2 dos 11 passos gastos em barra.
+ *
+ * Aqui o token que nao tem letra nem digito cola no anterior e divide o passo com
+ * ele — 9 passos, e a barra acende junto da palavra a que pertence. Ganho de
+ * tirinha: como cada grupo e um `inline-block`, a barra tambem deixa de poder
+ * comecar linha sozinha.
+ *
+ * E no-op nos outros titulos: nenhum dos demais chamadores tem token de
+ * pontuacao isolado (conferido nos 7 call sites), entao `total` e o ritmo deles
+ * ficam identicos ao de antes.
+ */
+function agruparPontuacao(texto: string): string[] {
+  return texto.split(' ').reduce<string[]>((grupos, token) => {
+    if (grupos.length > 0 && SO_PONTUACAO.test(token)) {
+      grupos[grupos.length - 1] = `${grupos[grupos.length - 1]} ${token}`;
+      return grupos;
+    }
+    grupos.push(token);
+    return grupos;
+  }, []);
+}
+
 export default function TituloAceso({ id, texto, destaque, className }: Props) {
   const ref = useRef<HTMLHeadingElement>(null);
   const reduzido = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 92%', 'end 55%'] });
 
-  const palavras = texto.split(' ');
-  const destacadas = destaque ? destaque.split(' ') : [];
+  const palavras = agruparPontuacao(texto);
+  const destacadas = destaque ? agruparPontuacao(destaque) : [];
   const total = palavras.length + destacadas.length;
   const risco = useTransform(scrollYProgress, [0, 0.9], reduzido ? [1, 1] : [0, 1]);
 

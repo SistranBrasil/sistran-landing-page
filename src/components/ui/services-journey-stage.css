@@ -1,0 +1,527 @@
+/* ============================================================================
+   Pilha de serviços com vídeo preso ao lado — seção "Diferenciais / Serviços"
+   de `/solucoes`. Consumido por `ServicesJourneyStage.tsx`.
+
+   Layout portado da seção "Transição visual | do sinal ao entendimento"
+   (`#registro`) do projeto `apresentação/site`, onde vive em
+   `app/styles/sections.css` sob os seletores `.journey*`. Duas colunas: à
+   esquerda o vídeo `sticky`, à direita os cards, cada um com a sua altura de
+   tela, empilhando por baixo.
+
+   Prefixo `svc-` e não `journey-` de propósito: o `globals.css` já tem
+   `.proof-journey` (`ProofJourney.tsx`), e um segundo vocabulário `journey-*`
+   sem dono claro é convite a colisão na próxima seção que se chamar jornada.
+
+   O que mudou na porta:
+     - a seção aqui é ESCURA (navy) e na origem era clara. Fundo dos cards, cor
+       do texto e do filete foram para a paleta desta página; o vídeo é o mesmo
+       arquivo (`/videos/jornada.mp4`, copiado da origem);
+     - a abertura tem DOIS parágrafos, e não um. Ela continua presa no topo da
+       coluna como na origem, mas é mais alta, e por isso o título dela é menor
+       que o `text-section` da página e a medida (`--svc-intro-h`) importa mais:
+       é ela que empurra a linha de travamento dos cards;
+     - são quatro cards (`SOLUTIONS`), não três.
+   ========================================================================== */
+
+.svc-journey-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(22.5rem, 0.82fr);
+  gap: clamp(1.6rem, 3.5vw, 3rem);
+  align-items: start;
+}
+
+/*
+ * O invólucro é o trilho do `sticky`. Um elemento `sticky` só desliza pela
+ * altura do PAI, e o pai precisa ser esta coluna — não o grid, que é
+ * `align-items: start` e encolheria até a altura do vídeo.
+ */
+.svc-journey-stage-wrap {
+  position: relative;
+  height: 100%;
+}
+
+/* O `top` casa com o `scroll-mt-32` (8rem) das âncoras da página: é a folga do
+   header fixo. */
+.svc-journey-stage {
+  position: sticky;
+  top: clamp(6rem, 12vh, 8.5rem);
+  margin: 0;
+  display: grid;
+  min-height: min(74svh, 46rem);
+}
+
+/*
+ * O vídeo, em laço, e sozinho no palco: sem moldura, borda ou sombra em volta.
+ * O raio é do próprio vídeo, e por isso é generoso — sem caixa por fora, um raio
+ * pequeno lê como quadrado.
+ *
+ * `object-fit: cover` e não `contain`: `contain` deixaria faixa vazia de um dos
+ * lados, e sem painel atrás essa faixa é buraco no fundo da seção. `cover`
+ * recorta um fio das beiradas; é o preço de o quadro terminar no raio.
+ *
+ * `min-height: 0` fica: a linha do grid é `1fr`, que tem `min-height: auto` por
+ * padrão, e o vídeo estouraria a altura do palco.
+ */
+.svc-journey-video {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  align-self: stretch;
+  object-fit: cover;
+  border-radius: clamp(1.2rem, 2vw, 1.9rem);
+}
+
+/*
+ * Coluna da direita.
+ *
+ * `display: block`, e isto NÃO é indiferente — como `grid`, um filho `sticky`
+ * fica preso à SUA ÁREA DO GRID, não ao container: cada card grudaria por uma
+ * linha e iria embora, e a pilha morreria no fim do próprio card. Em fluxo normal
+ * o bloco continente é a coluna inteira, que é o que eles precisam percorrer.
+ */
+.svc-journey-steps {
+  --svc-pin: clamp(6rem, 12vh, 8.5rem);
+  --svc-gap: clamp(1rem, 2.4vh, 1.9rem);
+  /* O curso que o último card precisa para grudar — ver `.svc-journey-deck::after`. */
+  --svc-tail: min(72svh, 30rem);
+  /* Sobrescrita pelo componente com a altura REAL da abertura. O valor aqui é o
+     estado antes da primeira medição (e o estado definitivo se o JavaScript
+     morrer): melhor sobrar um vão de respiro do que faltar e o primeiro card
+     abrir cobrindo o título. */
+  --svc-intro-h: 17rem;
+  position: relative;
+  display: block;
+}
+
+/*
+ * O trilho da abertura.
+ *
+ * Ele termina `--svc-tail` antes do fim da coluna, e é isso que o justifica: a
+ * abertura é mais BAIXA que um card, então no mesmo bloco continente dos cards
+ * ela ficaria presa por mais scroll do que qualquer um deles — o último card
+ * subiria e passaria por cima do título. Encurtando o trilho, a abertura solta
+ * antes, e a ordem de saída se inverte.
+ *
+ * `pointer-events: none` no trilho e `auto` só na abertura: o trilho é uma caixa
+ * vazia sobre a coluna inteira e engoliria o clique dos cards.
+ */
+.svc-journey-head {
+  position: absolute;
+  z-index: 2;
+  inset: 0 0 calc(var(--svc-tail) + var(--svc-gap)) 0;
+  pointer-events: none;
+}
+
+.svc-journey-intro {
+  position: sticky;
+  top: var(--svc-pin);
+  display: grid;
+  gap: 0.75rem;
+  justify-items: start;
+  margin: 0;
+  pointer-events: auto;
+}
+
+/* O baralho começa DEPOIS da abertura: sem este respiro o primeiro card nasce
+   por cima dela. A altura vem medida do componente. */
+.svc-journey-deck {
+  padding-top: calc(var(--svc-intro-h) + var(--svc-gap));
+}
+
+/*
+ * O título é deliberadamente MENOR que o `text-section` da página
+ * (`clamp(2.2rem, 4.6vw, 4.1rem)`): aqui ele vive numa coluna de ~22rem, não na
+ * largura do container. No corpo cheio ele quebraria em quatro ou cinco linhas e
+ * a abertura empurraria a linha de travamento dos cards para fora da tela.
+ */
+.svc-journey-intro h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.2vw, 3rem);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  color: #fff;
+  text-wrap: balance;
+}
+
+.svc-journey-lead {
+  margin: 0;
+  max-width: 46ch;
+  font-size: clamp(0.95rem, 1.05vw, 1.05rem);
+  line-height: 1.6;
+  color: rgb(255 255 255 / 85%);
+}
+
+/*
+ * A cauda, e ela não é respiro.
+ *
+ * O último card é o último filho: o `sticky` não pode empurrá-lo além do fim do
+ * bloco continente, então sem cauda ele não tem curso nenhum para grudar — passa
+ * reto. Esta faixa vazia é o curso dele.
+ */
+.svc-journey-deck::after {
+  content: "";
+  display: block;
+  height: var(--svc-tail);
+}
+
+/*
+ * A pilha: quem gruda é o BLOCO, não o card.
+ *
+ * Um elemento `sticky` só percorre a altura do PAI. Com o `sticky` no card, o pai
+ * seria o próprio bloco, e no fim dele o card desgrudaria e subiria para fora da
+ * tela — quem já passou desapareceria em vez de ficar atrás. Com o `sticky` no
+ * bloco, o pai é a coluna inteira: cada card que trava fica travado até o fim da
+ * seção, e o seguinte — depois no documento, portanto pintado por cima — sobe e o
+ * cobre. Nenhum `z-index` é necessário: a ordem do documento já é a ordem da
+ * pilha.
+ *
+ * A altura não é espaçamento: é o curso do `sticky`, quanto scroll cada card
+ * segura antes de ser coberto pelo próximo.
+ */
+.svc-journey-step {
+  position: sticky;
+  /* A abertura presa entra na conta: os cards travam ABAIXO dela, não sob ela. */
+  top: calc(var(--svc-pin) + var(--svc-intro-h) + var(--svc-gap));
+  display: grid;
+  align-items: start;
+  min-height: min(72svh, 30rem);
+  /* O bloco travado é uma caixa transparente de 72svh sobre os cards de baixo:
+     sem isto ele engoliria o clique e a seleção de texto de quem está por baixo. */
+  pointer-events: none;
+}
+
+/*
+ * O card. `relative` é a referência do filete `absolute` logo abaixo.
+ *
+ * O fundo é OPACO, e isto não é escolha estética: os cards se sobrepõem, e com
+ * fundo translúcido o texto do de baixo atravessa o de cima. É por isso que ele
+ * NÃO usa `.glass-card` — aquela classe é `backdrop-filter` + gradiente
+ * translúcido, exatamente o que não serve aqui. O navy sólido abaixo é o tom
+ * cheio da mesma paleta.
+ */
+.svc-journey-card {
+  pointer-events: auto;
+  position: relative;
+  display: grid;
+  gap: 0.7rem;
+  padding: clamp(1.2rem, 2vw, 1.7rem) clamp(1.2rem, 2vw, 1.7rem)
+    clamp(1.2rem, 2vw, 1.7rem) clamp(1.4rem, 2.4vw, 2rem);
+  border: 1px solid var(--border-soft);
+  border-radius: clamp(1.1rem, 1.6vw, 1.5rem);
+  background: linear-gradient(135deg, #0b3d68 0%, #072a4d 100%);
+  box-shadow:
+    0 18px 44px -18px rgb(2 16 36 / 78%),
+    inset 0 1px 0 rgb(255 255 255 / 8%);
+  transition:
+    opacity var(--dur-slow, 700ms) var(--ease-out),
+    transform var(--dur-slow, 700ms) var(--ease-out),
+    filter var(--dur-slow, 700ms) var(--ease-out),
+    box-shadow var(--dur-slow, 700ms) var(--ease-out);
+}
+
+/* Quem já passou fica como camada de fundo, e `--depth` (a distância até o card
+   em leitura, escrita pelo componente) é o que dá profundidade: cada camada mais
+   funda recua e encolhe um pouco mais. Sem isso dois cards passados receberiam o
+   mesmo recuo, ficariam exatamente um sobre o outro, e a pilha leria como duas
+   camadas em vez de quatro. O recuo é para cima — é o que deixa assomar a borda
+   superior de quem está atrás, a pista de que a pilha tem fundo. */
+.svc-journey-step.is-before .svc-journey-card {
+  opacity: calc(0.62 - var(--depth) * 0.1);
+  filter: blur(1px) saturate(0.72);
+  transform: translateY(calc(var(--depth) * -0.62rem)) scale(calc(1 - var(--depth) * 0.028));
+}
+
+/* Os que ainda vêm não estão empilhados: estão abaixo, subindo. Recuo fixo, sem
+   `--depth`, porque para eles a distância é vertical e o scroll já a mostra. */
+.svc-journey-step.is-after .svc-journey-card {
+  opacity: 0.5;
+  filter: blur(1px) saturate(0.75);
+  transform: scale(0.965) translateY(-0.7rem);
+}
+
+.svc-journey-step.is-active .svc-journey-card {
+  opacity: 1;
+  filter: none;
+  transform: none;
+}
+
+/* O card fora de leitura perde o relevo junto com o tom: sombra cheia num card
+   recuado o traz de volta para a frente e desfaz a hierarquia. */
+.svc-journey-step:not(.is-active) .svc-journey-card {
+  box-shadow: 0 8px 20px rgb(2 16 36 / 45%);
+}
+
+/* Filete à esquerda: cresce de cima para baixo quando o bloco entra em leitura.
+   `transform`, não `height`, para não repintar layout a cada troca. */
+.svc-journey-card::before {
+  content: "";
+  position: absolute;
+  inset: clamp(1.2rem, 2vw, 1.8rem) auto clamp(1.2rem, 2vw, 1.8rem) 0;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #0ed8f6, #0079cb);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--dur-slow, 700ms) var(--ease-out);
+}
+
+.svc-journey-step.is-active .svc-journey-card::before {
+  transform: scaleY(1);
+}
+
+/* O número (01–04). A cor vem inline, de `SOLUTIONS[].color`, como fazia a grade
+   que esta pilha substituiu. O traço se apaga depois dele. */
+.svc-journey-number {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.svc-journey-number::after {
+  content: "";
+  width: 3.6rem;
+  height: 1px;
+  background: linear-gradient(90deg, rgb(14 216 246 / 45%), transparent);
+}
+
+.svc-journey-card h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+.svc-journey-text {
+  margin: 0;
+  max-width: 46ch;
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  line-height: 1.62;
+  color: rgb(255 255 255 / 85%);
+}
+
+/*
+ * Dica que segue o ponteiro: diz que a seção anda com scroll.
+ *
+ * `pointer-events: none` é obrigatório — sem isso a própria dica ficaria embaixo
+ * do cursor, roubaria o `pointermove` do contêiner e piscaria sem parar.
+ */
+.svc-journey-cursor {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  color: #041b37;
+  background: #0ed8f6;
+  box-shadow: 0 10px 24px rgb(2 16 36 / 45%);
+  /* O deslocamento de 1rem tira o rótulo de baixo da seta do sistema. */
+  transform: translate(var(--cx, 0), var(--cy, 0)) translate(1rem, 1rem);
+  /* `scale` como propriedade própria, fora do `transform`: o `transform` já
+     carrega a posição do ponteiro e é reescrito a cada evento. */
+  scale: 0.9;
+  transition:
+    opacity var(--dur-fast, 250ms) var(--ease-out),
+    scale var(--dur-fast, 250ms) var(--ease-out);
+}
+
+.svc-journey-cursor[data-visible="true"] {
+  opacity: 1;
+  scale: 1;
+}
+
+.svc-journey-cursor svg {
+  width: 0.6rem;
+  flex: none;
+  color: #041b37;
+  animation: svc-journey-nudge 1.6s ease-in-out infinite;
+}
+
+@keyframes svc-journey-nudge {
+  50% {
+    transform: translateY(2px);
+  }
+}
+
+/* Onde não há ponteiro fino não há dica: num toque ela apareceria travada no
+   último ponto tocado. */
+@media (pointer: coarse) {
+  .svc-journey-cursor {
+    display: none;
+  }
+}
+
+/* Tela média: o vídeo continua ao lado, mais baixo, e a coluna de texto aperta. */
+@media (max-width: 74rem) {
+  .svc-journey-body {
+    grid-template-columns: minmax(0, 1fr) minmax(19rem, 0.9fr);
+  }
+
+  .svc-journey-stage {
+    min-height: min(62svh, 34rem);
+  }
+}
+
+/* Sem duas colunas não há o que prender ao lado: o vídeo volta ao fluxo, acima
+   dos cards, e os quatro passam a ser lidos em sequência. */
+@media (max-width: 64rem) {
+  .svc-journey-body {
+    display: block;
+  }
+
+  .svc-journey-stage-wrap {
+    height: auto;
+    margin-bottom: clamp(1.5rem, 5vh, 2.5rem);
+  }
+
+  .svc-journey-stage {
+    position: static;
+    min-height: min(78vw, 30rem);
+  }
+
+  /* Numa coluna só a abertura vira o cabeçalho da seção, no fluxo, acima do
+     vídeo: presa, ela comeria a tela inteira que os cards precisam. O trilho
+     perde a razão de existir e volta a ser um bloco comum. */
+  .svc-journey-head {
+    position: static;
+    inset: auto;
+    pointer-events: auto;
+  }
+
+  .svc-journey-intro {
+    position: static;
+    margin-bottom: clamp(1.6rem, 5vw, 2.6rem);
+  }
+
+  .svc-journey-deck {
+    padding-top: 0;
+  }
+
+  /* Altura por bloco só faz sentido com a cena presa ao lado. Aqui os quatro
+     viram uma lista. */
+  .svc-journey-step,
+  .svc-journey-step.is-active,
+  .svc-journey-step.is-before,
+  .svc-journey-step.is-after {
+    min-height: 0;
+    margin-bottom: 1.1rem;
+  }
+
+  /* Sem pilha: os cards voltam ao fluxo, um abaixo do outro, e todos no tom cheio
+     — recuar o tom apagaria conteúdo que o scroll já alcança. */
+  .svc-journey-step,
+  .svc-journey-step .svc-journey-card {
+    position: static;
+    pointer-events: auto;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .svc-journey-deck::after {
+    display: none;
+  }
+
+  /* A dica do ponteiro sobra: aqui a lista é rolagem comum. */
+  .svc-journey-cursor {
+    display: none;
+  }
+
+  .svc-journey-step .svc-journey-card::before {
+    transform: scaleY(1);
+  }
+}
+
+/*
+ * Movimento reduzido: o vídeo solta o lado e os cards voltam ao fluxo.
+ *
+ * O ponto crítico não é o `sticky` — é o ESTADO INICIAL. Card fora de leitura
+ * vive a 0.5 de opacidade e desfocado, e o reset global de movimento mata a
+ * transição que o traria ao tom cheio. Sem estas regras a seção congelaria com
+ * três quartos do texto quase invisível.
+ *
+ * O seletor é `html[data-motion="reduce"]`, e não `@media
+ * (prefers-reduced-motion: reduce)`, porque neste projeto a preferência do
+ * visitante (três estados, escolhidos no diálogo de movimento) é resolvida em
+ * `app/layout.tsx` e escrita nesse atributo — o `@media` só veria o valor do SO.
+ */
+html[data-motion="reduce"] {
+  & .svc-journey-body {
+    display: block;
+  }
+
+  & .svc-journey-stage-wrap {
+    height: auto;
+    margin-bottom: 1.5rem;
+  }
+
+  & .svc-journey-stage {
+    position: static;
+    min-height: min(78vw, 30rem);
+  }
+
+  & .svc-journey-head {
+    position: static;
+    inset: auto;
+    pointer-events: auto;
+  }
+
+  & .svc-journey-intro {
+    position: static;
+    margin-bottom: 1.8rem;
+  }
+
+  /* Sem abertura presa não há o que evitar cobrir: o respiro medido sairia como
+     um vão vazio no topo do primeiro card. */
+  & .svc-journey-deck {
+    padding-top: 0;
+  }
+
+  & .svc-journey-step,
+  & .svc-journey-step.is-active,
+  & .svc-journey-step.is-before,
+  & .svc-journey-step.is-after {
+    min-height: 0;
+    margin-bottom: 1.1rem;
+  }
+
+  & .svc-journey-step,
+  & .svc-journey-step .svc-journey-card {
+    position: static;
+    pointer-events: auto;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  & .svc-journey-deck::after {
+    display: none;
+  }
+
+  & .svc-journey-card::before {
+    transform: scaleY(1);
+  }
+
+  /* A seta que balança e a dica que persegue o cursor são movimento por
+     movimento: as duas saem. */
+  & .svc-journey-cursor {
+    display: none;
+  }
+}

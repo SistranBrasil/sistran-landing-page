@@ -5,11 +5,39 @@ export const metadata = {
   title: 'Política de cookies · Sistran',
 };
 
-/* Escrita verbatim de /politica-de-privacidade/. O titulo da pagina no site é
-   "Política de cookies" (o link do rodape diz "Privacidade") e o conteudo é
-   somente a politica de cookies — nao ha politica de privacidade/LGPD escrita
-   em lugar nenhum do site, entao nada foi acrescentado aqui.
+/* Escrita verbatim de /politica-de-privacidade/, COM UMA EXCEÇÃO, registrada
+   abaixo. O titulo da pagina no site é "Política de cookies" (o link do rodape
+   diz "Privacidade") e o conteudo é somente a politica de cookies — nao ha
+   politica de privacidade/LGPD escrita em lugar nenhum do site, entao nada foi
+   acrescentado aqui.
    Fonte: .claude/conteudo-site/11-legal.md (A) */
+
+/* SIS-123 — O QUE MUDOU E O QUE NÃO MUDOU NESTA PÁGINA.
+   Mudou uma coisa só: a seção "Google Analytics" saiu, porque declarava uma
+   coleta que não acontece. Está comentada mais abaixo, com o motivo no lugar.
+   Isso quebra o "verbatim" do comentário acima, e é por isso que ele agora abre
+   com "COM UMA EXCEÇÃO" — sem essa ressalva, a próxima pessoa trataria o arquivo
+   como espelho fiel da fonte e reporia o trecho.
+
+   O QUE O SITE REALMENTE ARMAZENA, conferido por varredura em `src/`:
+   • nenhum cookie. Não existe `document.cookie` em lugar nenhum do projeto, nem
+     script de medição (`gtag`, `googletagmanager`, `analytics`) — daí a remoção;
+   • um único item de `localStorage`, escrito em `src/app/layout.tsx`: a
+     preferência de movimento da primeira visita. Não é cookie, não sai do
+     navegador e não identifica ninguém.
+   Quer dizer que o texto que sobra ainda descreve mais do que o site faz (fala de
+   cookies necessários e de estatística, e não há cookie nenhum). CORRIGIR ISSO É
+   ESCREVER TEXTO LEGAL, e texto legal não é meu: fica parado na issue, junto com
+   a política de privacidade/LGPD que a rota promete pelo nome e não tem (base
+   legal, direitos do titular, prazo de retenção, canal do encarregado).
+
+   O RÓTULO DO RODAPÉ ("Privacidade") E O `<h1>` ("Política de cookies")
+   CONTINUAM DIVERGINDO, e é decisão consciente não escolher agora: o rótulo está
+   certo para onde a rota VAI (é aqui que a política de privacidade deve morar,
+   e a URL já diz isso), e o `<h1>` está certo para o que a rota TEM. Alinhar
+   pelo lado errado — renomear a URL para cookies, com redirect — seria desfazer
+   trabalho no dia em que o texto de privacidade chegar. Quem decide qual dos
+   dois lados vale é quem escreve o texto. */
 export default function Page() {
   return (
     <PageShell>
@@ -29,7 +57,7 @@ export default function Page() {
             </p>
 
             <article className="space-y-3">
-              <h2 className="font-display text-2xl font-bold text-white">O que são cookies?</h2>
+              <h2 className="font-display text-2xl text-white">O que são cookies?</h2>
               <p className="text-base leading-relaxed text-white/85">
                 Cookies são arquivos digitais contendo pequenos fragmentos de dados (geralmente com
                 um identificador único) armazenados em seu dispositivo através do navegador ou
@@ -38,7 +66,7 @@ export default function Page() {
             </article>
 
             <article className="space-y-3">
-              <h2 className="font-display text-2xl font-bold text-white">
+              <h2 className="font-display text-2xl text-white">
                 Para que servem os cookies?
               </h2>
               <p className="text-base leading-relaxed text-white/85">
@@ -58,7 +86,7 @@ export default function Page() {
             </article>
 
             <article className="space-y-3">
-              <h2 className="font-display text-2xl font-bold text-white">
+              <h2 className="font-display text-2xl text-white">
                 Que tipo de cookies utilizamos?
               </h2>
               <p className="text-base leading-relaxed text-white/85">
@@ -75,22 +103,38 @@ export default function Page() {
               </p>
             </article>
 
-            <article className="space-y-3">
-              <h2 className="font-display text-2xl font-bold text-white">Google Analytics</h2>
-              <p className="text-base leading-relaxed text-white/85">
-                Nós utilizamos o serviço de análise web da Google Analytics da Google, para otimizar
-                os nossos websites e os serviços fornecidos através deles. O serviço da Google
-                Analytics utiliza cookies com a finalidade de avaliar a utilização dos nossos
-                websites, de compilar relatórios sobre a interação dos utilizadores nos mesmos, assim
-                como nos fornecer serviços da internet adicionais. Em particular, o serviço recolhe
-                cookies primários, que contêm dados sobre o dispositivo ou navegador que utiliza, o
-                seu endereço do Protocolo da Internet (IP) e as atividades que realiza nos nossos
-                websites.
-              </p>
-            </article>
+            {/* SIS-123 — A SEÇÃO "GOOGLE ANALYTICS" SAIU DA TELA, e o texto fica
+                aqui inteiro para o dia em que a medição entrar.
+                Ela declarava, em documento legal, a coleta do endereço IP, do
+                dispositivo/navegador e das atividades do visitante. Nada disso
+                acontece: não há `gtag`, `googletagmanager` nem qualquer script de
+                medição em `src/` — conferido por varredura, e não por leitura de
+                um arquivo só. Declarar coleta que não existe é informação
+                incorreta onde ela pesa mais, e é a saída que a própria issue
+                autoriza ("se não há medição, a seção de Google Analytics sai").
+                COMENTADA, e não apagada, de propósito: no dia em que o Analytics
+                entrar, o texto tem de voltar JUNTO com o script — e com o banner
+                de consentimento, porque cookie de estatística não é o cookie
+                tecnicamente necessário que dispensa consentimento. Descomentar
+                sem o banner recria o problema do outro lado.
+
+                <article className="space-y-3">
+                  <h2 className="font-display text-2xl text-white">Google Analytics</h2>
+                  <p className="text-base leading-relaxed text-white/85">
+                    Nós utilizamos o serviço de análise web da Google Analytics da Google, para otimizar
+                    os nossos websites e os serviços fornecidos através deles. O serviço da Google
+                    Analytics utiliza cookies com a finalidade de avaliar a utilização dos nossos
+                    websites, de compilar relatórios sobre a interação dos utilizadores nos mesmos, assim
+                    como nos fornecer serviços da internet adicionais. Em particular, o serviço recolhe
+                    cookies primários, que contêm dados sobre o dispositivo ou navegador que utiliza, o
+                    seu endereço do Protocolo da Internet (IP) e as atividades que realiza nos nossos
+                    websites.
+                  </p>
+                </article>
+            */}
 
             <article className="space-y-3">
-              <h2 className="font-display text-2xl font-bold text-white">
+              <h2 className="font-display text-2xl text-white">
                 Como desabilitar cookies?
               </h2>
               <p className="text-base leading-relaxed text-white/85">

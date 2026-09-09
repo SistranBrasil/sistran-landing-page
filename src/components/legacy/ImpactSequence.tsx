@@ -1,8 +1,8 @@
 "use client"
 
 import "./legacy.css"
-import { motion, useScroll, useSpring, useTransform, type MotionValue } from "motion/react"
-import { useRef } from "react"
+import { motion, useScroll, useSpring, useTransform } from "motion/react"
+import { useEffect, useRef, useState } from "react"
 import { ScrollVideo } from "@/components/primitives/ScrollVideo"
 import { useReducedMotion } from "@/lib/motion"
 import { useVisibilityGate } from "@/lib/useVisibilityGate"
@@ -42,74 +42,47 @@ import { impactSequence } from "@/data/legacy"
  */
 const SHRINK = [0.72, 0.97] as const
 
-/**
- * Meia-vida de um capítulo: quanto do percurso ele leva para entrar e para sair.
- * Os capítulos estão a 0.24 de distância (ver `impactSequence.chapters`), então
- * 0.07 deixa cada um parado e legível na maior parte da sua vez, com uma
- * passagem curta em que o que sai e o que entra se cruzam — em vez de um corte
- * seco ou de dois textos sobrepostos por muito tempo.
- */
-const CAP_BORDA = 0.07
+/* SIS-99 — os três capítulos (`Compreender`, `Transformar`, `Validar e evoluir`)
+   saíram a pedido, e com eles todo o maquinário que os sustentava: o componente
+   `SequenceChapter`, as constantes `CAP_PASSO` (0.24, distância entre os `at`) e
+   `CAP_BORDA` (0.07, meia-vida de entrada/saída), a máscara de troca por
+   `clipPath` e o portão de seleção que escondia de verdade os parágrafos em
+   `opacity: 0`.
 
-/**
- * Um capítulo. Componente próprio, e não um `useTransform` dentro de `.map`:
- * hooks em laço só são legítimos com comprimento garantido, e "garantido por
- * enquanto" é o tipo de invariante que a próxima edição de `legacy.ts` quebra em
- * silêncio. Aqui a regra é estrutural — um capítulo, um componente, seus hooks.
- *
- * Sob movimento reduzido não recebe `style` nenhum: os três ficam visíveis,
- * empilhados pelo CSS, e a seção lê como um bloco de texto com três subtítulos.
- * É a mesma política do resto da página (estado final é o default).
- */
-function SequenceChapter({
-  progress,
-  at,
-  title,
-  text,
-  reduced,
-}: {
-  progress: MotionValue<number>
-  at: number
-  title: string
-  text: string
-  reduced: boolean
-}) {
-  /* Vai de 0.28 a 1, NÃO de 0 a 1 — e isso é decisão de acessibilidade, não de
-     estética. Se os capítulos desaparecessem por completo, os três teriam de
-     dividir o mesmo lugar na tela (senão a coluna cresceria com dois blocos
-     invisíveis), e aí a legibilidade de dois terços do texto passaria a depender
-     da animação: sem JavaScript, ou se o gesto parasse no meio, o leitor ficaria
-     com um capítulo e dois fantasmas empilhados.
+   Com isso SIS-92 — "textos sobrepostos entre etapas" — deixa de ter objeto: a
+   sobreposição acontecia justamente na janela em que um capítulo saía e o
+   seguinte entrava na mesma célula de grade. Sem etapas, não há troca.
 
-     Ficando os três em fluxo normal e sempre presentes, o percurso muda a
-     ÊNFASE — o capítulo da vez acende, os outros recuam para um cinza legível —
-     e o pior caso possível é ler os três com o mesmo peso. Que é exatamente o
-     que a seção entrega sob movimento reduzido. */
-  const opacity = useTransform(
-    progress,
-    [at - CAP_BORDA, at, at + 0.24 - CAP_BORDA, at + 0.24],
-    [0.28, 1, 1, 0.28],
-  )
-  /* Sobe pouco: 10px. A cena atrás já se move, e um texto que viaja junto com
-     ela compete com o vídeo em vez de comentá-lo. Como os três ficam em fluxo,
-     o deslocamento tem de ser pequeno o suficiente para não parecer que o bloco
-     saiu do lugar em relação aos vizinhos. */
-  const y = useTransform(progress, [at - CAP_BORDA, at], [10, 0])
-
-  return (
-    <motion.div
-      className="sequence-chapter"
-      style={reduced ? undefined : { opacity, y }}
-    >
-      <h3 className="sequence-chapter-title">{title}</h3>
-      <p className="sequence-chapter-text">{text}</p>
-    </motion.div>
-  )
-}
+   O que sobrou da seção é o cabeçalho: kicker "Desafios no desenvolvimento de
+   software", o `<h2>` "Sobre o Luminna AI" e o parágrafo. O `data-dirigindo`
+   CONTINUA sendo escrito, e não é resíduo das etapas: ele também é o portão da
+   escala grande do título (`.sequence[data-dirigindo] .sequence-copy
+   .lp-display`, em `legacy.css`), que é agora a única voz do sticky. */
 
 export function ImpactSequence() {
   const section = useRef<HTMLElement>(null)
   const reduced = useReducedMotion()
+
+  /* `data-dirigindo` é o mesmo portão que `Solutions` e `Metrics` usam: escrito
+     só pelo JS, só acima de 1024px, só sem movimento reduzido. Todo o CSS que
+     empilha os três capítulos no MESMO lugar vive atrás dele, então o default
+     servido — sem JS, em telas estreitas, com movimento reduzido — continua
+     sendo os três em fluxo, legíveis, sem depender de animação.
+
+     Nasce em `false` nos dois lados (servidor e primeiro render) para a árvore
+     hidratar idêntica; converge depois de montar. */
+  const [dirigindo, setDirigindo] = useState(false)
+  useEffect(() => {
+    if (reduced) {
+      setDirigindo(false)
+      return
+    }
+    const mq = window.matchMedia("(min-width: 1024px)")
+    const aplicar = () => setDirigindo(mq.matches)
+    aplicar()
+    mq.addEventListener("change", aplicar)
+    return () => mq.removeEventListener("change", aplicar)
+  }, [reduced])
 
   const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] })
 
@@ -119,7 +92,27 @@ export function ImpactSequence() {
 
   // Encolhimento em card: montagem terminada, a cena full bleed recua até o
   // centro da tela e ganha raio, revelando o fundo da seção ao redor.
-  const scale = useTransform(scrollYProgress, [SHRINK[0], SHRINK[1]], [1, 0.42])
+  /* Enquadramento. Antes de SIS-99 esta curva tinha cinco paradas casadas com as
+     batidas dos capítulos (0.08 / 0.32 / 0.56): cada etapa recebia um recorte um
+     pouco diferente, para o quadro reagir à troca de texto. Sem etapas, aquelas
+     paradas não marcam mais nada — mantê-las seria um zoom que aperta e alivia em
+     pontos que nenhum conteúdo justifica.
+
+     No lugar, uma aproximação única e lenta ao longo de toda a montagem: 1.04 ->
+     1.10, resolvida antes do recuo começar. Ela dá o mesmo que as cinco paradas
+     davam de útil (o quadro não fica inerte durante duas telas de rolagem) sem
+     fingir batidas.
+
+     É multiplicado pelo `SHRINK` em vez de ser uma segunda transformação num
+     segundo elemento: um só `scale` no `.sequence-visual`, um só relógio. Os
+     fatores ficam >= 1 para o recorte nunca descolar das bordas e revelar o fundo
+     da seção por dentro da moldura. */
+  const enquadramento = useTransform(scrollYProgress, [0, SHRINK[0]], [1.04, 1.1])
+  const recuo = useTransform(scrollYProgress, [SHRINK[0], SHRINK[1]], [1, 0.42])
+  const scale = useTransform([recuo, enquadramento], ([r, e]: number[]) => r * e)
+  /* `quadroX` saiu com SIS-99: o deslocamento lateral de 3% existia para o quadro
+     abrir espaço à esquerda no capítulo do meio, o mais apertado dos três. Sem
+     capítulos não há aperto, e um quadro que desliza sem motivo é só drift. */
   const radius = useTransform(scrollYProgress, [SHRINK[0], SHRINK[1]], [0, 28])
   // Texto e véu saem assim que o recuo começa: legenda sobrando fora de um card
   // pequeno não lê, e o gradiente escuro mancharia o fundo claro da seção.
@@ -133,6 +126,7 @@ export function ImpactSequence() {
       ref={section}
       className="sequence lp-section--cream"
       data-static={reduced ? "true" : undefined}
+      data-dirigindo={dirigindo ? "true" : undefined}
       aria-labelledby="impacto-title"
     >
       <div className="sequence-sticky">
@@ -171,26 +165,13 @@ export function ImpactSequence() {
             {impactSequence.title}
           </h2>
           <p className="lp-lead">{impactSequence.text}</p>
+          {/* SIS-99 — os três capítulos (`<h3>` "Compreender", "Transformar" e
+              "Validar e evoluir") ficavam aqui, num `.sequence-chapters`. Saíram
+              a pedido: a seção termina no parágrafo sobre o Luminna AI.
 
-          {/* Três capítulos que se sucedem no percurso (Prioridade 4). O
-              cabeçalho acima fica: ele nomeia a seção, e os capítulos contam o
-              que a montagem do vídeo está mostrando em cada trecho.
-
-              A ordem no DOM é a ordem de leitura, e é a mesma dos `at`: sem
-              JavaScript, com movimento reduzido ou com o vídeo indisponível, os
-              três aparecem juntos, em sequência, e o texto continua completo. */}
-          <div className="sequence-chapters">
-            {impactSequence.chapters.map((cap) => (
-              <SequenceChapter
-                key={cap.id}
-                progress={scrollYProgress}
-                at={cap.at}
-                title={cap.title}
-                text={cap.text}
-                reduced={reduced}
-              />
-            ))}
-          </div>
+              Com eles foi também o único `<h3>` da seção, então a hierarquia de
+              títulos aqui passa a ser só o `<h2>` — não há salto de nível a
+              corrigir. */}
         </motion.div>
       </div>
     </section>

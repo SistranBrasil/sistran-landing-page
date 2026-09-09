@@ -296,7 +296,7 @@ export default function CompanySignature() {
             <div key={s.label} className="flex flex-col gap-1">
               {/* Cada número puxa um tom distinto da paleta */}
               <span
-                className="font-display text-xl font-black leading-none md:text-2xl"
+                className="font-display text-xl leading-none md:text-2xl"
                 style={{
                   background: `linear-gradient(135deg, ${s.tone}, #ffffff 85%)`,
                   WebkitBackgroundClip: 'text',

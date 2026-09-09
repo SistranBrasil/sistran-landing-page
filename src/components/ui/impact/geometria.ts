@@ -39,18 +39,27 @@ export const coord = (n: number): number => Number(n.toFixed(3));
  * duas vezes a largura util de um monitor de 1280px, e por isso so o ativo e um
  * vizinho apareciam.
  *
- * Agora: 13,5% da largura, entre 150px e 250px. Em 1280px o vao fica em ~173px
- * (6 x 173 = 1037px de desenho, com folga nas duas pontas) e em 1920px em 250px
- * (1500px). A lente acompanha — ela é derivada do vao no CSS
- * (`--impact-lente`), e nao um `clamp` independente: era o desencontro entre os
- * dois que fazia o conteudo dos vizinhos cair dentro dela.
+ * ── Por que os SETE deixaram de caber na tela ao mesmo tempo ────────────────
+ * O requisito virou o oposto. Com 13,5% da largura (vao de ~173px em 1280px) os
+ * sete de facto apareciam juntos — e era exactamente isso o defeito: sete blocos
+ * de ~210px cada dividindo o palco, nenhum deles grande o bastante para ser
+ * editorial. A refatoracao proporcional (docs/PROMPT-SISTRAN-PROPORCAO-VISUAL-V2
+ * §5) pede o contrario: UM quadro ativo de 86vw a 92vw, os vizinhos a 55vw do
+ * centro e "apenas partes deles" nas bordas.
  *
- * Os vizinhos nao brigam com a lente porque estao deslocados na VERTICAL
- * (`DESVIOS_TRILHO`), onde o circulo da lente ja é estreito — o cruzamento é
- * horizontal, nao area.
+ * Entao o vao passa a ser 55% da largura da janela — literalmente o `x: ±55vw`
+ * dos estados adjacentes escritos no prompt. Em 1440px da 792px: o vizinho
+ * imediato nasce em x=1512 e x=-72, ou seja, so a aba dele entra no quadro.
+ *
+ * A lente continua DERIVADA do vao (`--impact-lente`, em globals.css), e é por
+ * isso que basta mexer aqui: o quadro ativo, a posicao dos indicadores, dos nodes,
+ * a largura do SVG, o deslocamento da trilha e o path saem todos deste numero.
+ *
+ * Piso de 420px para telas de 1024px (o modo dirigido nao existe abaixo disso) e
+ * teto de 900px para o quadro nao passar dos 92vw em monitores muito largos.
  */
 export function vaoEntreEtapas(larguraViewport: number): number {
-  return Math.min(250, Math.max(150, larguraViewport * 0.135));
+  return Math.min(900, Math.max(420, larguraViewport * 0.55));
 }
 
 /**
@@ -71,7 +80,12 @@ export function vaoEntreEtapas(larguraViewport: number): number {
  * desencontrado do da curva. Com 22px o desvio do conteudo domina, que é o que
  * deve dominar.
  */
-export const AMPLITUDE = 22;
+/* 22 -> 54 junto com o vao de 55vw. A amplitude é relativa ao vao: 22px sobre um
+   vao de 173px era um relevo de 13%, visivel; os mesmos 22px sobre 792px viram
+   uma reta com um cochicho no meio, e a "linha-sinal com sete marcacoes" pedida
+   no prompt deixaria de ler como percurso. 54px devolve a mesma proporcao de
+   relevo (~7% do vao, ainda tenso) numa escala quatro vezes maior. */
+export const AMPLITUDE = 54;
 
 /** Distancia dos pontos de controle, como fracao do vao. */
 const CONTROLE = 0.34;
@@ -86,7 +100,12 @@ const CONTROLE = 0.34;
  * com o vao de ~173px que faz os sete caberem na tela, dois vizinhos do mesmo
  * lado a essa distancia encostariam um no outro.
  */
-export const DESVIOS_TRILHO = [-132, 128, -138, 134, -128, 138, -132];
+/* Encolhidos de ~±132px para ~±64px. O desvio existia para o vizinho NAO bater
+   no quadro ativo, e com o vao de 55vw o vizinho ja nasce na borda da tela — nao
+   ha mais colisao a evitar. O que sobra é ritmo: um desvio curto mantem a
+   alternancia legivel na aba que aparece, e um desvio de 132px agora empurraria o
+   vizinho para fora da faixa da propria curva, lendo como elemento solto. */
+export const DESVIOS_TRILHO = [-64, 62, -68, 66, -62, 68, -64];
 
 /** Lado da onda no trecho que TERMINA no indicador `i`. */
 const sentido = (i: number) => (i % 2 === 0 ? -1 : 1);

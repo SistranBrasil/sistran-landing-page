@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import PageShell from '@/components/PageShell';
 import PageHero from '@/components/PageHero';
+import HeroVideoBackdrop from '@/components/ui/HeroVideoBackdrop';
 import About from '@/components/About';
 import PositioningEcosystem from '@/components/PositioningEcosystem';
 import RecognitionTheater from '@/components/RecognitionTheater';
@@ -9,15 +10,18 @@ import Metrics from '@/components/Metrics';
 import ContactCTA from '@/components/ContactCTA';
 import TechnologyShowcase from '@/components/TechnologyShowcase';
 import EssenceAccordion from '@/components/EssenceAccordion';
+import CircularEngagementModel from '@/components/CircularEngagementModel';
 /* SIS-69: `BuildingShowcase` saiu da pagina — o import volta junto com o bloco,
    documentado mais abaixo, entre Tecnologias e Diferenciais. */
 import OfficesScene from '@/components/ui/OfficesScene';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import TituloAceso from '@/components/ui/TituloAceso';
-import ProgressoLateral from '@/components/ui/ProgressoLateral';
+// Import comentado junto com o consumo do trilho de progresso (ver a nota SIS-100
+// no lugar dele, no topo do `PageShell` desta página): deixá-lo ativo quebraria o
+// lint por import não utilizado, e removê-lo apagaria a pista de como religar.
+// import ProgressoLateral from '@/components/ui/ProgressoLateral';
 import NotchDivider from '@/components/ui/NotchDivider';
 import {
-  ABORDAGEM,
   COMO_AGIMOS,
   DIFERENCIAIS_6,
   ISG,
@@ -56,9 +60,36 @@ const DEGRAU = ['', 'degrau-2', 'degrau-3', 'degrau-2'] as const;
 export default function Page() {
   return (
     <PageShell>
-      <ProgressoLateral />
+      {/* SIS-100 — `<ProgressoLateral />` saiu daqui. Ele é `position: fixed` na
+          MESMA borda esquerda que o navegador lateral de seções, que a partir de
+          agora existe nesta rota (montado no `PageShell`): dois fixos na mesma
+          borda se sobrepõem, e o trilho de 2px passaria por trás dos traços do
+          navegador.
 
-      <PageHero eyebrow="Sobre nós" title="A" highlight="Sistran" />
+          A escolha entre os dois não é de gosto: o trilho era decoração
+          (`aria-hidden`, sem ponteiro) e dizia só QUANTO falta; o navegador diz
+          ONDE se está, com o nome da seção, e leva até ela. Ele contém a
+          informação do outro e acrescenta a que faltava.
+
+          Removido o consumo, não o componente: `ui/ProgressoLateral.tsx` e o
+          bloco `.progresso-lateral` do `globals.css` continuam intactos. Religar
+          é descomentar esta linha e o import no topo — mas só faz sentido em
+          rota que NÃO tenha navegador lateral, e hoje as duas coisas se excluem
+          nesta borda.
+      <ProgressoLateral />
+      */}
+
+      {/* Vídeo em laço atrás da abertura, mesmo tratamento de /solucoes.
+          Aqui o `HeroVideoBackdrop` envolve SÓ o hero: diferente de /solucoes,
+          esta página nao tem barra "NESTA PÁGINA" — o que vem depois é o chanfro
+          para o bloco claro, e ele precisa nascer sobre o navy chapado, nao
+          sobre o take. */}
+      <HeroVideoBackdrop
+        src="/videos/quem-somos-hero-loop.mp4"
+        poster="/videos/quem-somos-hero-loop-poster.webp"
+      >
+        <PageHero eyebrow="Sobre nós" title="A" highlight="Sistran" />
+      </HeroVideoBackdrop>
 
       {/* Fronteiras claro/escuro em chanfro: o separador fica FORA do bloco
           claro, porque `.section-light` tem `isolation: isolate` e pintaria o
@@ -109,24 +140,34 @@ export default function Page() {
       <div className="section-light">
         {/* Escritórios BRASIL */}
         <section aria-labelledby="escritorios" className="section-py">
+          {/* SIS-161 — O TITULO DESTA SECAO MUDOU DE CASA, e nao de palavras: ele
+              agora é impresso DENTRO de `OfficesScene`, na coluna de leitura a
+              esquerda do mapa, pelo mesmo `TituloAceso` com o mesmo `id` e o
+              mesmo texto. Foi a composicao de uma tela que pediu isso — titulo
+              fora e mapa dentro dariam dois blocos empilhados, e a referencia tem
+              titulo e mapa lado a lado.
+              O `aria-labelledby` acima continua resolvendo porque o `id`
+              `escritorios` continua existindo, só que um nivel mais para dentro.
+
           <div className="container-lp">
             <TituloAceso
               id="escritorios"
               texto="Escritórios"
               destaque="BRASIL"
-              className="font-display text-section font-bold text-ink"
+              className="font-display text-section text-ink"
             />
           </div>
-          {/* Mapa com as fotos dos escritorios: a rolagem percorre Pato Branco
-              e Sao Paulo. As descricoes sao as mesmas de antes, agora sobre o
-              mapa. O Rio de Janeiro saiu da cena por ora — continua no rodape e
-              na pagina de contato.
-              Fica fora do container de proposito: em telas largas o mapa toma a
-              largura inteira da janela. Em tela estreita a cena volta a ser
-              lista, e por isso ela mesma reaplica a margem lateral. */}
-          <div className="mt-10">
-            <OfficesScene />
-          </div>
+          */}
+          {/* Mapa e fotos dos escritorios, Pato Branco e Sao Paulo, com as
+              descricoes que o site ja tinha. O Rio de Janeiro saiu da cena por
+              ora — continua no rodape e na pagina de contato.
+              Fica fora do container de proposito: em telas largas a cena toma a
+              largura inteira da janela. Em tela estreita ela volta a ser lista, e
+              por isso ela mesma reaplica a margem lateral.
+              SIS-169 — "telas largas" passou a querer dizer 1280px e 760px de
+              altura: abaixo de qualquer um dos dois o percurso nao cabe e a cena é
+              lista. A conta esta no `matchMedia` de `OfficesScene.tsx`. */}
+          <OfficesScene />
         </section>
 
         {/* Tecnologias. Pinta o proprio fundo azul-marinho e sangra na largura
@@ -144,18 +185,41 @@ export default function Page() {
                 <div className="container-lp"><BuildingShowcase /></div>
               </section>
 
-            A TORRE nao saiu: `OfficesScene`, logo acima, monta o mesmo
-            `BuildingExplorer` no trecho de Sao Paulo com o 2º andar marcado —
-            lá dirigida pela rolagem e sem aceitar o ponteiro. Com uma cena só na
-            rota, o `three` agora tem um consumidor em vez de dois, e nao existe
-            mais a disputa de "só uma delas desenha por vez". */}
+            SIS-161 — A TORRE TAMBEM SAIU. O paragrafo que estava aqui dizia que
+            `OfficesScene` montava o mesmo `BuildingExplorer` no trecho de Sao
+            Paulo com o 2º andar marcado, e que por isso "o `three` agora tem um
+            consumidor em vez de dois". As duas frases ficaram falsas quando a
+            cena virou uma tela só: sem percurso de rolagem nao havia trecho
+            final, e a torre passou a estar comentada dentro de
+            `OfficesScene.tsx`, com o motivo escrito la.
+
+            SIS-169 — E O PERCURSO VOLTOU, mas isto NAO reabilita o WebGL. A cena
+            é outra vez presa (`sticky`) com um trecho esfregado de transito, entao
+            a frase acima sobre "nao ha trecho final" deixou de valer como estado
+            atual — fica registrada porque é a razao de a torre 3D ter saido. O que
+            ocupa o trecho final hoje é a IMAGEM da torre, como a SIS-163 deixou:
+            `BuildingExplorer` continua intacto e sem nenhum consumidor, e `three`
+            continua fora do que esta rota baixa.
+            O que isso quer dizer para esta rota: `BuildingExplorer` esta INTACTO
+            no repositorio e sem NENHUM consumidor — os dois entravam por
+            `dynamic()`, entao `three` e `OrbitControls` deixaram de ser baixados
+            aqui. Nao ha mais nem a disputa de "só uma delas desenha por vez", nem
+            uma delas desenhando.
+
+            SIS-163 — E CONTINUA SEM CONSUMIDOR, mesmo com a torre de volta na
+            tela. A cena voltou a mostrar o predio de Sao Paulo, mas como IMAGEM
+            (`/images/escritorios/torre-sp-*.webp`), nao como WebGL: `three` e
+            `OrbitControls` seguem fora do pacote desta rota, e `BuildingExplorer`
+            e `BuildingShowcase` seguem os dois intactos e sem ninguem que os
+            importe. Vale registrar porque a frase acima — "sem NENHUM consumidor"
+            — parece contradita por quem ve a torre na pagina, e nao esta. */}
         {/* Diferenciais — os 6 itens, so titulo, como no site */}
         <section aria-labelledby="diferenciais-6" className="section-py">
           <div className="container-lp">
             <TituloAceso
               id="diferenciais-6"
               texto="Diferenciais"
-              className="font-display text-section font-bold text-ink"
+              className="font-display text-section text-ink"
             />
             <ul className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {DIFERENCIAIS_6.map((d, i) => (
@@ -163,7 +227,7 @@ export default function Page() {
                   as="li"
                   indice={i}
                   key={d}
-                  className="glass-card notch-card barra-sinal p-6 font-display text-base font-bold leading-snug text-ink"
+                  className="glass-card notch-card barra-sinal p-6 font-display text-base leading-snug text-ink"
                 >
                   {d}
                 </ScrollReveal>
@@ -172,6 +236,17 @@ export default function Page() {
           </div>
         </section>
 
+      </div>
+
+      {/* Bloco claro proprio, e nao o mesmo dos Escritorios/Diferenciais acima.
+          O fundo de `.section-light` é um radial (`--claro-base`) resolvido
+          contra a altura da caixa: num bloco de ~6.500px ele clareia o meio e
+          termina antes do fim, e o que aparece embaixo é o azul do `body`. Esta
+          secao era a ultima do bloco, ou seja, caia justamente fora do claro —
+          era por isso que o titulo `text-ink` (navy) ficava navy sobre azul e
+          quase invisivel. Com um bloco proprio o radial é resolvido contra a
+          altura DESTA secao e a superficie volta a ser clara. */}
+      <div className="section-light">
         <Differentials />
       </div>
 
@@ -187,56 +262,39 @@ export default function Page() {
           `src/data/essencia.ts`. */}
       <EssenceAccordion />
 
-      {/* SIS-75: candidata a Modelo A — claro↔claro (branco → `#f2f9fe` da
-          Abordagem). Mesmo caso da fronteira acima. */}
-      <NotchDivider cor="#f2f9fe" invertido />
+      {/* SIS-99: era `#f2f9fe`, o azul-gelo da Abordagem. Os Modelos de atuação
+          nasceram em fundo branco, e o chanfro é da cor do bloco que avança —
+          logo, branco sobre branco: a junta some, o que é o certo aqui. */}
+      <NotchDivider cor="#ffffff" invertido />
 
-      {/* Abordagem de projetos */}
-      {/* SIS-77 — 1ª das duas fronteiras com sobreposição: os quatro cartões
-          numerados atravessam o chanfro e entram no escuro de "Como Agimos". Foi
-          escolhida porque os dois blocos já usam `num-monumental` no
-          `.etapa-num` — é o mesmo dispositivo do `04` fantasma da referência. */}
-      <section
-        aria-labelledby="abordagem"
-        className="vaza-fonte section-py section-light section-light-blue"
-      >
-        <div className="container-lp">
-          <TituloAceso
-            id="abordagem"
-            texto="Temos uma abordagem completa de projetos para o mercado Segurador"
-            className="max-w-3xl font-display text-section font-bold text-ink"
-          />
-          <ol className="vaza-cartoes mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {ABORDAGEM.map((etapa, i) => (
-              <ScrollReveal
-                as="li"
-                indice={i}
-                key={etapa}
-                className={`glass-card notch-card barra-sinal p-6 ${DEGRAU[i % 4]}`}
-              >
-                <span className="etapa-num num-monumental">{String(i + 1).padStart(2, '0')}</span>
-                <h3 className="mt-2 font-display text-lg font-bold text-ink">{etapa}</h3>
-              </ScrollReveal>
-            ))}
-          </ol>
-        </div>
-      </section>
+      {/* Modelos de atuação (SIS-99).
+          Era "Abordagem de projetos": quatro `glass-card` numerados de 01 a 04
+          dentro de uma `<ol>`. A numeração dizia que havia ordem, e não há —
+          Consultoria não vem antes de Outsourcing. Agora são quatro modelos de
+          engajamento em órbita de um núcleo, sem início nem fim. O título é o
+          mesmo, palavra por palavra.
 
-      {/* SIS-75: chanfro mantido por decisao — claro↔escuro (Abordagem → Como Agimos). */}
-      <NotchDivider cor="#cfe7f7" />
+          A sobreposição do SIS-77 saiu junto: `vaza-fonte`/`vaza-cartoes`
+          existiam para os cartões numerados atravessarem o chanfro, e o
+          `num-monumental` que justificava aquela escolha não existe mais nesta
+          seção. Sem ela, `recebe-vazamento` em "Como Agimos" abaixo passaria a
+          reservar um respiro que ninguém ocupa — por isso ele também saiu. A
+          outra fronteira com vazamento na página continua intacta. */}
+      <CircularEngagementModel />
+
+      {/* SIS-75: chanfro mantido por decisao — claro↔escuro (Modelos → Como Agimos).
+          SIS-99: a cor acompanha o fundo branco da seção que avança. */}
+      <NotchDivider cor="#ffffff" />
 
       {/* Como Agimos */}
-      <section
-        aria-labelledby="como-agimos"
-        className="recebe-vazamento section-py relative overflow-hidden"
-      >
+      <section aria-labelledby="como-agimos" className="section-py relative overflow-hidden">
         <div aria-hidden className="grade-tecnica" />
         <div className="container-lp">
           <TituloAceso
             id="como-agimos"
             texto="Como"
             destaque="Agimos"
-            className="font-display text-section font-bold text-white"
+            className="font-display text-section text-white"
           />
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-white/85">
             Nossos valores são a base da nossa cultura organizacional. Respeitando as
@@ -251,7 +309,7 @@ export default function Page() {
                 className={`glass-card-hover notch-card barra-sinal p-6 ${DEGRAU[i % 4]}`}
               >
                 <span className="etapa-num num-monumental">{String(i + 1).padStart(2, '0')}</span>
-                <h3 className="mt-2 font-display text-base font-bold text-white">{v}</h3>
+                <h3 className="mt-2 font-display text-base text-white">{v}</h3>
               </ScrollReveal>
             ))}
           </ol>
@@ -296,7 +354,7 @@ export default function Page() {
           <TituloAceso
             id="isg"
             texto="ISG Provider Lens"
-            className="font-display text-section font-bold text-ink"
+            className="font-display text-section text-ink"
           />
           <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
             {/* O `Reveal` envolve a citacao em vez de substituir a tag: o
@@ -304,7 +362,7 @@ export default function Page() {
             {ISG.map((i, ordem) => (
               <ScrollReveal indice={ordem} key={i.term}>
                 <blockquote className="glass-card notch-card barra-sinal h-full p-7">
-                  <p className="font-display text-base font-bold text-ink">{i.term}</p>
+                  <p className="font-display text-base text-ink">{i.term}</p>
                   <p className="mt-3 text-sm leading-relaxed text-ink-muted">
                     &ldquo;{i.quote}&rdquo;
                   </p>
@@ -339,7 +397,7 @@ export default function Page() {
             id="por-que-sistran"
             texto="Por que"
             destaque="SISTRAN?"
-            className="font-display text-section font-bold text-white"
+            className="font-display text-section text-white"
           />
           <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2">
             {POR_QUE_SISTRAN.map((b, i) => (
@@ -352,7 +410,7 @@ export default function Page() {
                 }`}
               >
                 <span aria-hidden className="corner-accent" />
-                <h3 className="font-display text-lg font-bold leading-snug text-white">
+                <h3 className="font-display text-lg leading-snug text-white">
                   {b.title}
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-white/85">{b.text}</p>
@@ -378,7 +436,7 @@ export default function Page() {
           <TituloAceso
             id="mais-quem-somos"
             texto="Conheça também"
-            className="font-display text-section font-bold text-ink"
+            className="font-display text-section text-ink"
           />
           <div className="vaza-cartoes mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
             <ScrollReveal indice={0}>
@@ -386,7 +444,7 @@ export default function Page() {
                 href="/sistran-labs"
                 className="glass-card notch-card barra-sinal block h-full p-7 transition-transform hover:-translate-y-1"
               >
-                <h3 className="font-display text-xl font-bold text-ink">
+                <h3 className="font-display text-xl text-ink">
                   Sistran Labs: Laboratório de INOVAÇÃO
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-ink-muted">
@@ -400,7 +458,7 @@ export default function Page() {
                 href="/sistran-university"
                 className="glass-card notch-card barra-sinal block h-full p-7 transition-transform hover:-translate-y-1"
               >
-                <h3 className="font-display text-xl font-bold text-ink">Sistran University</h3>
+                <h3 className="font-display text-xl text-ink">Sistran University</h3>
                 <p className="mt-3 text-sm leading-relaxed text-ink-muted">
                   Autossuficiência em capacitação de recursos: programa de capacitação intensiva da
                   Sistran.

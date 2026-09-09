@@ -1,0 +1,687 @@
+{
+  "tag": "depois",
+  "quando": "2026-08-31T18:08:40.457Z",
+  "viewports": {
+    "1440x900": {
+      "hero:secao": {
+        "seletor": "#top, .hero-cinematic, [data-hero]",
+        "w": 1440,
+        "h": 2340,
+        "alturaTrilha": 2340,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 2.6
+      },
+      "hero:titulo": {
+        "seletor": ".hero-caption-title",
+        "w": 979.2,
+        "h": 309.9,
+        "alturaTrilha": 326,
+        "fontSize": 112.3,
+        "lineHeight": "103.334px",
+        "maxWidth": "1060.35px",
+        "fracaoLargura": 0.68,
+        "fracaoAltura": 0.344
+      },
+      "hero:apoio": {
+        "seletor": ".hero-caption-lead",
+        "w": 466,
+        "h": 124.4,
+        "alturaTrilha": 124,
+        "fontSize": 19.4,
+        "lineHeight": "31.104px",
+        "maxWidth": "466.028px",
+        "fracaoLargura": 0.324,
+        "fracaoAltura": 0.138
+      },
+      "hero:video": {
+        "seletor": "#top video, .hero-cinematic video",
+        "w": 1526.4,
+        "h": 954,
+        "alturaTrilha": 900,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "100%",
+        "fracaoLargura": 1.06,
+        "fracaoAltura": 1.06
+      },
+      "mosaico:secao": {
+        "seletor": ".stack-scenes, [data-stack-scenes]",
+        "w": 1440,
+        "h": 1548,
+        "alturaTrilha": 1548,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 1.72
+      },
+      "mosaico:card": {
+        "seletor": "[data-carrier-origem]",
+        "w": 468.8,
+        "h": 641.2,
+        "alturaTrilha": 614,
+        "fontSize": 15.2,
+        "lineHeight": "19px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.326,
+        "fracaoAltura": 0.712
+      },
+      "solucoes:secao": {
+        "seletor": "#solucoes",
+        "w": 1440,
+        "h": 2736,
+        "alturaTrilha": 2736,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 3.04
+      },
+      "solucoes:sticky": {
+        "seletor": ".solutions-sticky",
+        "w": 1440,
+        "h": 900,
+        "alturaTrilha": 900,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 1
+      },
+      "solucoes:titulo": {
+        "seletor": ".solutions-titulo",
+        "w": 1324.8,
+        "h": 63.6,
+        "alturaTrilha": 71,
+        "fontSize": 66.2,
+        "lineHeight": "63.5904px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.92,
+        "fracaoAltura": 0.071
+      },
+      "solucoes:midia": {
+        "seletor": ".solution-cena[data-estado=\"ativo\"] .solution-viewport",
+        "w": 903.8,
+        "h": 632.9,
+        "alturaTrilha": 635,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.628,
+        "fracaoAltura": 0.703
+      },
+      "solucoes:info-titulo": {
+        "seletor": ".solution-cena[data-estado=\"ativo\"] .solution-info-titulo",
+        "w": 467.8,
+        "h": 203.2,
+        "alturaTrilha": 208,
+        "fontSize": 51.8,
+        "lineHeight": "50.8032px",
+        "maxWidth": "531.183px",
+        "fracaoLargura": 0.325,
+        "fracaoAltura": 0.226
+      },
+      "numeros:secao": {
+        "seletor": "#resultados",
+        "w": 1440,
+        "h": 3060,
+        "alturaTrilha": 3060,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 3.4
+      },
+      "numeros:sticky": {
+        "seletor": ".impact-sticky",
+        "w": 1440,
+        "h": 900,
+        "alturaTrilha": 900,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 1
+      },
+      "numeros:titulo": {
+        "seletor": ".impact-titulo",
+        "w": 1110.7,
+        "h": 140.8,
+        "alturaTrilha": 150,
+        "fontSize": 74.9,
+        "lineHeight": "70.3872px",
+        "maxWidth": "1110.69px",
+        "fracaoLargura": 0.771,
+        "fracaoAltura": 0.156
+      },
+      "numeros:item-ativo": {
+        "seletor": ".impact-item[data-estado=\"ativo\"]",
+        "w": 717.3,
+        "h": 289.6,
+        "alturaTrilha": 298,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.498,
+        "fracaoAltura": 0.322
+      },
+      "numeros:numero": {
+        "seletor": ".impact-item[data-estado=\"ativo\"] .impact-numero",
+        "w": 379.5,
+        "h": 161.3,
+        "alturaTrilha": 198,
+        "fontSize": 192.2,
+        "lineHeight": "165.293px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.264,
+        "fracaoAltura": 0.179
+      },
+      "numeros:lente": {
+        "seletor": ".impact-lente",
+        "w": 1064.4,
+        "h": 483.8,
+        "alturaTrilha": 772,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.739,
+        "fracaoAltura": 0.538
+      },
+      "numeros:contextual": {
+        "seletor": ".impact-contextual",
+        "w": 429.1,
+        "h": 464.4,
+        "alturaTrilha": 576,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.298,
+        "fracaoAltura": 0.516
+      },
+      "parceiros:secao": {
+        "seletor": ".lp-signals",
+        "w": 1440,
+        "h": 255.4,
+        "alturaTrilha": 253,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 0.284
+      },
+      "parceiros:logo": {
+        "seletor": ".lp-partner",
+        "w": 66.2,
+        "h": 51.8,
+        "alturaTrilha": 52,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.046,
+        "fracaoAltura": 0.058
+      },
+      "luminna:secao": {
+        "seletor": "#impacto",
+        "w": 1440,
+        "h": 1944,
+        "alturaTrilha": 1944,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 2.16
+      },
+      "luminna:sticky": {
+        "seletor": ".sequence-sticky",
+        "w": 1440,
+        "h": 900,
+        "alturaTrilha": 918,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 1
+      },
+      "luminna:titulo": {
+        "seletor": "#impacto-title",
+        "w": 1144.6,
+        "h": 94.7,
+        "alturaTrilha": 108,
+        "fontSize": 100.8,
+        "lineHeight": "94.752px",
+        "maxWidth": "1144.63px",
+        "fracaoLargura": 0.795,
+        "fracaoAltura": 0.105
+      },
+      "luminna:capitulos": {
+        "seletor": ".sequence-chapters",
+        "w": 1408,
+        "h": 149,
+        "alturaTrilha": 173,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.978,
+        "fracaoAltura": 0.166
+      },
+      "luminna:cap-titulo": {
+        "seletor": ".sequence-chapter-title",
+        "w": 662.4,
+        "h": 38.7,
+        "alturaTrilha": 41,
+        "fontSize": 34.6,
+        "lineHeight": "38.7072px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.46,
+        "fracaoAltura": 0.043
+      },
+      "contato:secao": {
+        "seletor": "#contato",
+        "w": 1440,
+        "h": 990,
+        "alturaTrilha": 990,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 1.1
+      },
+      "contato:palco": {
+        "seletor": ".ct-palco",
+        "w": 1376,
+        "h": 877.1,
+        "alturaTrilha": 1147,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.956,
+        "fracaoAltura": 0.975
+      },
+      "contato:painel": {
+        "seletor": ".ct-painel",
+        "w": 1240,
+        "h": 877.1,
+        "alturaTrilha": 877,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.861,
+        "fracaoAltura": 0.975
+      },
+      "contato:titulo": {
+        "seletor": "#contato-titulo",
+        "w": 638.9,
+        "h": 141.1,
+        "alturaTrilha": 149,
+        "fontSize": 72,
+        "lineHeight": "70.56px",
+        "maxWidth": "797.062px",
+        "fracaoLargura": 0.444,
+        "fracaoAltura": 0.157
+      },
+      "contato:grid": {
+        "seletor": ".contact-dialog-grid",
+        "w": 1238,
+        "h": 875.1,
+        "alturaTrilha": 901,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.86,
+        "fracaoAltura": 0.972
+      },
+      "_pagina": {
+        "alturaTotal": 14033,
+        "viewport": {
+          "w": 1440,
+          "h": 900
+        },
+        "telas": 15.6
+      }
+    },
+    "390x844": {
+      "hero:secao": {
+        "seletor": "#top, .hero-cinematic, [data-hero]",
+        "w": 390,
+        "h": 1434.8,
+        "alturaTrilha": 1435,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 1.7
+      },
+      "hero:titulo": {
+        "seletor": ".hero-caption-title",
+        "w": 265.2,
+        "h": 331.2,
+        "alturaTrilha": 341,
+        "fontSize": 72,
+        "lineHeight": "66.24px",
+        "maxWidth": "679.711px",
+        "fracaoLargura": 0.68,
+        "fracaoAltura": 0.392
+      },
+      "hero:apoio": {
+        "seletor": ".hero-caption-lead",
+        "w": 265.2,
+        "h": 188.1,
+        "alturaTrilha": 188,
+        "fontSize": 16.8,
+        "lineHeight": "26.88px",
+        "maxWidth": "402.501px",
+        "fracaoLargura": 0.68,
+        "fracaoAltura": 0.223
+      },
+      "hero:video": {
+        "seletor": "#top video, .hero-cinematic video",
+        "w": 413.4,
+        "h": 894.6,
+        "alturaTrilha": 844,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "100%",
+        "fracaoLargura": 1.06,
+        "fracaoAltura": 1.06
+      },
+      "mosaico:secao": {
+        "seletor": ".stack-scenes, [data-stack-scenes]",
+        "w": 390,
+        "h": 1451.7,
+        "alturaTrilha": 1452,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 1.72
+      },
+      "mosaico:card": {
+        "seletor": "[data-carrier-origem]",
+        "w": 291.6,
+        "h": 387.6,
+        "alturaTrilha": 384,
+        "fontSize": 15.2,
+        "lineHeight": "19px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.748,
+        "fracaoAltura": 0.459
+      },
+      "solucoes:secao": {
+        "seletor": "#solucoes",
+        "w": 390,
+        "h": 3461.4,
+        "alturaTrilha": 3461,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 4.101
+      },
+      "solucoes:sticky": {
+        "seletor": ".solutions-sticky",
+        "w": 390,
+        "h": 3292.7,
+        "alturaTrilha": 3293,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 3.901
+      },
+      "solucoes:titulo": {
+        "seletor": ".solutions-titulo",
+        "w": 350,
+        "h": 73.7,
+        "alturaTrilha": 78,
+        "fontSize": 38.4,
+        "lineHeight": "36.864px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.897,
+        "fracaoAltura": 0.087
+      },
+      "solucoes:midia": {
+        "seletor": ".solution-cena[data-estado=\"ativo\"] .solution-viewport",
+        "w": 700.5,
+        "h": 525.3,
+        "alturaTrilha": 523,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1.796,
+        "fracaoAltura": 0.622
+      },
+      "solucoes:info-titulo": {
+        "seletor": ".solution-cena[data-estado=\"ativo\"] .solution-info-titulo",
+        "w": 452.9,
+        "h": 41.7,
+        "alturaTrilha": 42,
+        "fontSize": 16.8,
+        "lineHeight": "20.832px",
+        "maxWidth": "min(452.871px, 72%)",
+        "fracaoLargura": 1.161,
+        "fracaoAltura": 0.049
+      },
+      "numeros:secao": {
+        "seletor": "#resultados",
+        "w": 390,
+        "h": 1540.7,
+        "alturaTrilha": 1541,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 1.825
+      },
+      "numeros:sticky": {
+        "seletor": ".impact-sticky",
+        "w": 390,
+        "h": 1540.7,
+        "alturaTrilha": 1541,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 1.825
+      },
+      "numeros:titulo": {
+        "seletor": ".impact-titulo",
+        "w": 350,
+        "h": 67.8,
+        "alturaTrilha": 70,
+        "fontSize": 32,
+        "lineHeight": "33.92px",
+        "maxWidth": "474.719px",
+        "fracaoLargura": 0.897,
+        "fracaoAltura": 0.08
+      },
+      "numeros:item-ativo": {
+        "seletor": ".impact-item[data-estado=\"ativo\"]",
+        "w": 350,
+        "h": 140.8,
+        "alturaTrilha": 141,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.897,
+        "fracaoAltura": 0.167
+      },
+      "numeros:numero": {
+        "seletor": ".impact-item[data-estado=\"ativo\"] .impact-numero",
+        "w": 80.9,
+        "h": 38,
+        "alturaTrilha": 43,
+        "fontSize": 40,
+        "lineHeight": "38px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.207,
+        "fracaoAltura": 0.045
+      },
+      "numeros:lente": {
+        "seletor": ".impact-lente",
+        "w": 0,
+        "h": 0,
+        "alturaTrilha": 0,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0,
+        "fracaoAltura": 0
+      },
+      "numeros:contextual": {
+        "seletor": ".impact-contextual",
+        "w": 0,
+        "h": 0,
+        "alturaTrilha": 0,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0,
+        "fracaoAltura": 0
+      },
+      "parceiros:secao": {
+        "seletor": ".lp-signals",
+        "w": 390,
+        "h": 162,
+        "alturaTrilha": 160,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 0.192
+      },
+      "parceiros:logo": {
+        "seletor": ".lp-partner",
+        "w": 61.3,
+        "h": 48,
+        "alturaTrilha": 48,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.157,
+        "fracaoAltura": 0.057
+      },
+      "luminna:secao": {
+        "seletor": "#impacto",
+        "w": 390,
+        "h": 1823,
+        "alturaTrilha": 1823,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 2.16
+      },
+      "luminna:sticky": {
+        "seletor": ".sequence-sticky",
+        "w": 390,
+        "h": 844,
+        "alturaTrilha": 861,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 1
+      },
+      "luminna:titulo": {
+        "seletor": "#impacto-title",
+        "w": 358,
+        "h": 35.3,
+        "alturaTrilha": 40,
+        "fontSize": 38.4,
+        "lineHeight": "35.328px",
+        "maxWidth": "629.85px",
+        "fracaoLargura": 0.918,
+        "fracaoAltura": 0.042
+      },
+      "luminna:capitulos": {
+        "seletor": ".sequence-chapters",
+        "w": 358,
+        "h": 342.3,
+        "alturaTrilha": 352,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "992px",
+        "fracaoLargura": 0.918,
+        "fracaoAltura": 0.406
+      },
+      "luminna:cap-titulo": {
+        "seletor": ".sequence-chapter-title",
+        "w": 358,
+        "h": 19.2,
+        "alturaTrilha": 20,
+        "fontSize": 16,
+        "lineHeight": "19.2px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.918,
+        "fracaoAltura": 0.023
+      },
+      "contato:secao": {
+        "seletor": "#contato",
+        "w": 390,
+        "h": 1217.7,
+        "alturaTrilha": 1218,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 1,
+        "fracaoAltura": 1.443
+      },
+      "contato:palco": {
+        "seletor": ".ct-palco",
+        "w": 351,
+        "h": 1089.7,
+        "alturaTrilha": 1090,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.9,
+        "fracaoAltura": 1.291
+      },
+      "contato:painel": {
+        "seletor": ".ct-painel",
+        "w": 327,
+        "h": 1089.7,
+        "alturaTrilha": 1090,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.838,
+        "fracaoAltura": 1.291
+      },
+      "contato:titulo": {
+        "seletor": "#contato-titulo",
+        "w": 277,
+        "h": 56.3,
+        "alturaTrilha": 57,
+        "fontSize": 25.6,
+        "lineHeight": "28.16px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.71,
+        "fracaoAltura": 0.067
+      },
+      "contato:grid": {
+        "seletor": ".contact-dialog-grid",
+        "w": 325,
+        "h": 1087.7,
+        "alturaTrilha": 1088,
+        "fontSize": 16,
+        "lineHeight": "24px",
+        "maxWidth": "none",
+        "fracaoLargura": 0.833,
+        "fracaoAltura": 1.289
+      },
+      "_pagina": {
+        "alturaTotal": 13194,
+        "viewport": {
+          "w": 390,
+          "h": 844
+        },
+        "telas": 15.6
+      }
+    }
+  },
+  "errosConsole": []
+}

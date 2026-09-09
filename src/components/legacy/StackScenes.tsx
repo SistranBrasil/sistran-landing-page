@@ -1,9 +1,9 @@
 "use client"
 
 import "./legacy.css"
-import { motion, useScroll, useSpring, useTransform } from "motion/react"
+import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from "motion/react"
 import Image from "next/image"
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 // Imports comentados junto com o consumo (abertura do Método, os quatro
 // movimentos, o vídeo e o tile viajante, mais abaixo): ativos, quebrariam o lint
 // por import não utilizado, e o `ScrollVideo` puxaria um componente para o bundle
@@ -42,6 +42,12 @@ const CARRIER = "microservicos"
  *   ffmpeg -i process.mp4 -an -c:v libx264 -preset slow -crf 30 -g 1 -keyint_min 1 -sc_threshold 0 -pix_fmt yuv420p -movflags +faststart process-scroll.mp4
  */
 const CARRIER_VIDEO = "/videos/process-scroll.mp4"
+
+/* Havia aqui um `GRUPO_TILE` que dividia os dez cartões em três grupos de
+   leitura e deixava só um grupo visível por trecho da rolagem. Saiu junto com o
+   portão de visibilidade em `legacy.css`: com três de dez em cena as goteiras
+   ficavam praticamente vazias. Os grupos que sobraram são os do palco de fotos,
+   derivados direto do progresso em `aplicarGrupo`. */
 
 /** Deslocamento acumulado de um nó até `root`, em valores de layout. */
 function offsetIn(node: HTMLElement, root: HTMLElement) {
@@ -88,6 +94,26 @@ type Travel = { dx: number; dy: number; sx: number; sy: number }
  * neutro, em vez da escrita específica da home.
  */
 type Variante = "legado" | "home"
+
+/**
+ * SIS-90 — o palco da home é UMA foto: a do time (`escritoriosp.jpg`).
+ *
+ * Eram três, trocando por grupo de leitura ao lado do texto, em duas colunas.
+ * Duas coisas derrubaram esse arranjo: a foto ao lado do título competia com ele
+ * (e o prédio visto de baixo, `sistransphist.jpg`, não é o assunto que o texto
+ * afirma), e a composição pedida é a de `/transformacao-legado` — texto centrado,
+ * cartões nas duas goteiras, a imagem CENTRADA ABAIXO, no lugar que lá é do
+ * cartão "Arquitetura modular e escalável".
+ *
+ * Com uma foto só, não há mais troca: o `data-grupo-ativo` deixou de ter
+ * consumidor e não é mais escrito. O que sobra do relógio é `data-em-cena`, o
+ * portão da entrada.
+ *
+ * `escritoriosp.jpg` não é escolha estética: é a foto que o viajante do
+ * `MosaicHandoff` carrega até o card 01 de "Soluções de Negócios". A que está no
+ * palco tem de ser exatamente a que viaja — trocar aqui quebra a emenda.
+ */
+const PALCO_HOME = ["/images/home/escritoriosp.jpg"] as const
 
 export function StackScenes({ variante = "legado" }: { variante?: Variante } = {}) {
   const naHome = variante === "home"
@@ -219,6 +245,44 @@ export function StackScenes({ variante = "legado" }: { variante?: Variante } = {
   const copyDrift = useTransform(stackProgress, [0, 0.5, 1], [56, 0, -56])
   const copyY = useSpring(copyDrift, { stiffness: 90, damping: 26, mass: 0.6 })
 
+  /* ── Os dez cartões em cena ─────────────────────────────────────────────────
+     Por um tempo os tiles foram divididos em três grupos de leitura e só um
+     grupo ficava visível por trecho da rolagem. O efeito em tela era o oposto do
+     pretendido: as duas goteiras têm altura de várias telas e passavam quase
+     vazias, com um cartão de cada lado ou nenhum. Voltaram todos, que já era o
+     estado sem JS e com movimento reduzido — e por isso a camada de tiles não
+     recebe mais atributo de grupo. */
+  /* SIS-90 — o palco da home tem uma foto só, então não há mais grupo de leitura
+     para escrever: `data-grupo-ativo` saiu daqui e do CSS junto com as outras
+     duas fotos. O que resta do relógio é o portão da entrada. */
+  const palco = useRef<HTMLDivElement>(null)
+  const aplicarGrupo = (p: number) => {
+    if (reduced) return
+    /* SIS-90 — `em-cena` é o portão da entrada do palco: só existe enquanto o
+       mosaico está de facto no enquadramento. Sem ele a animação de entrada
+       dispararia no mount, com a seção telas abaixo do fold, e o visitante
+       chegaria à foto já parada. As pontas (0 e 1) acontecem com a seção fora do
+       enquadramento — o relógio é `start end`→`end start`. */
+    const emCena = p > 0.02 && p < 0.98
+    const no = palco.current
+    if (!no) return
+    if (emCena) {
+      if (no.dataset.emCena === undefined) no.dataset.emCena = ""
+    } else if (no.dataset.emCena !== undefined) {
+      delete no.dataset.emCena
+    }
+  }
+  useMotionValueEvent(stackProgress, "change", aplicarGrupo)
+  /* `useMotionValueEvent` só dispara na MUDANÇA: quem chega pelo meio da página
+     (link com hash, recarregamento com a rolagem restaurada) não veria evento
+     nenhum e o palco não saberia que já está em cena. Uma leitura no mount
+     resolve. Sob movimento reduzido `aplicarGrupo` não escreve nada — e sem
+     `data-em-cena` a foto já está no lugar, parada, que é o estado final. */
+  useEffect(() => {
+    aplicarGrupo(stackProgress.get())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduced])
+
   /* Relógio do vídeo e travessia do tile, comentados junto com os dois.
      `handoff` media o percurso pela caixa de destino (`media`), que não existe
      mais; `cx`/`cy`/`csx`/`csy` aplicavam a geometria medida, `label` apagava o
@@ -290,8 +354,66 @@ export function StackScenes({ variante = "legado" }: { variante?: Variante } = {
 
   return (
     <div ref={wrap} className="stack-scenes">
-      <section id="sinais" ref={stack} className="mosaic" aria-labelledby="sinais-title">
-        <motion.div className="mosaic-copy" style={reduced ? undefined : { y: copyY }}>
+      <section
+        id="sinais"
+        ref={stack}
+        className="mosaic"
+        /* SIS-90 — o atributo é o portão de TODA a mudança de layout desta issue.
+           `/transformacao-legado` monta o mesmo componente sem `variante`, não
+           recebe o atributo e continua com o texto centrado e o cartão dominante
+           no meio, exatamente como antes. */
+        data-variante={naHome ? "home" : undefined}
+        aria-labelledby="sinais-title"
+      >
+        {/* SIS-90 — `.mosaic-duo` existe nas duas variantes e é inerte no legado
+            (uma grade de uma coluna centrada, que era o que o `.mosaic` já fazia
+            com o texto). Envolver sempre, em vez de só na home, evita duas
+            árvores diferentes para o mesmo componente — e é o que permite ao CSS
+            virar duas colunas com um seletor só. */}
+        <div className="mosaic-duo">
+          {/* ── Palco da foto, só na home ──────────────────────────────────────
+              A foto do time era o cartão dominante (`left: 50%`, `top: 56%`, até
+              34rem), centrado e sobreposto ao texto — a sobreposição que a SIS-90
+              reportou. Passou então a ser a coluna da esquerda de uma linha de
+              duas colunas, e aí competia com o título.
+              Agora é o que a composição de `/transformacao-legado` faz: célula
+              seguinte da MESMA coluna, portanto centrada ABAIXO do texto, no
+              lugar que lá é do cartão "Arquitetura modular e escalável". Duas
+              células de grade, nunca duas camadas — sobreposição continua
+              impossível por construção.
+              `aria-hidden`: a foto ilustra o texto e não acrescenta informação —
+              o mesmo critério dos tiles do mosaico, que também vão com
+              `alt=""`. */}
+          {naHome ? (
+            <div
+              ref={palco}
+              className="mosaic-palco"
+              aria-hidden="true"
+              /* Ponta de origem da travessia até a foto do card 01 de Soluções
+                 (`ui/MosaicHandoff`). Migrou para cá do cartão dominante, que
+                 nesta variante não é renderizado: o viajante mede
+                 `[data-carrier-origem]` por `getBoundingClientRect`, então basta
+                 a marca estar na caixa que o visitante está de facto vendo. */
+              data-carrier-origem=""
+            >
+              {/* Camada só da entrada. Separada da caixa porque a caixa já tem a
+                  opacidade tomada pelo handoff (`--carrier-fonte`, regra global
+                  `[data-carrier-origem]`) — duas animações de opacidade no mesmo
+                  nó e uma anula a outra. */}
+              <div className="mosaic-palco-entrada">
+                {PALCO_HOME.map((foto) => (
+                  <span key={foto} className="mosaic-palco-quadro">
+                    {/* `sizes` acompanha a caixa: 28vw no desktop (ver
+                        `.mosaic-palco` em `legacy.css`), largura útil no
+                        telefone. Errar aqui faz o Next servir um arquivo maior
+                        do que a caixa jamais mostra. */}
+                    <Image src={foto} alt="" fill sizes="(max-width: 64rem) 92vw, 30vw" />
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : null}
+          <motion.div className="mosaic-copy" style={reduced ? undefined : { y: copyY }}>
           {/* Sem kicker na home: a tag foi removida a pedido. A seção não fica
               sem nome acessível — o `aria-labelledby` aponta para o próprio
               `<h2 id="sinais-title">`, que continua aqui nas duas variantes. */}
@@ -335,7 +457,8 @@ export function StackScenes({ variante = "legado" }: { variante?: Variante } = {
               })}
             </ul>
           ) : null}
-        </motion.div>
+          </motion.div>
+        </div>
 
         {/* O `aria-hidden` saiu da camada e passou a ser por tile: três deles são
             links para a LP da frente, e conteúdo focável dentro de uma subárvore
@@ -347,6 +470,7 @@ export function StackScenes({ variante = "legado" }: { variante?: Variante } = {
             <motion.div
               key={tile.id}
               className="mosaic-tile mosaic-tile--3d"
+              data-dominante={tile.id === CARRIER ? "" : undefined}
               aria-hidden={tile.href ? undefined : true}
               // O tile viajante é renderizado fora desta camada (o `overflow`
               // daqui cortaria o percurso), mas continua ocupando a vaga:
@@ -370,8 +494,14 @@ export function StackScenes({ variante = "legado" }: { variante?: Variante } = {
                   /* Ponta de origem da travessia até a foto do card 01 de
                      "Soluções de Negócios" (`ui/MosaicHandoff`): é a face que o
                      viajante mede e substitui. Marca de medição apenas — sem o
-                     efeito o tile continua aqui, parado e visível. */
-                  data-carrier-origem={tile.id === CARRIER ? '' : undefined}
+                     efeito o tile continua aqui, parado e visível.
+
+                     SIS-90 — na home a marca migrou para o `.mosaic-palco`: o
+                     cartão dominante não é renderizado nessa variante, e
+                     `MosaicHandoff` usa `querySelector`, que pararia no primeiro
+                     nó marcado do documento — um cartão de largura zero, o que
+                     desliga a travessia inteira. */
+                  data-carrier-origem={tile.id === CARRIER && !naHome ? '' : undefined}
                   className={`mosaic-face${tile.video || tile.image ? " mosaic-face--media" : ""}${
                     tile.href ? " mosaic-face--link" : ""
                   }`}

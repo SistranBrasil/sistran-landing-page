@@ -26,7 +26,25 @@ export default function Page() {
 
       <section aria-label="Publicações" className="section-py">
         <div className="container-lp">
-          <ul className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {/* SIS-118 — A GRADE ACOMPANHA O NÚMERO DE POSTS. Era fixa em
+              `lg:grid-cols-3` com um post publicado: um cartão na primeira coluna
+              e dois terços de largura vazios em qualquer tela grande.
+              As colunas saem de `POSTS.length` para que o layout não volte a
+              descrever um blog que não existe — com o segundo post ela vira duas
+              colunas, com o terceiro volta a três, sem ninguém precisar lembrar de
+              editar esta linha. `max-w-md` limita o cartão único: sem isso, ele
+              esticaria a caixa de texto por 1920px de largura, que é ilegível.
+              Contagem em UM lugar só, aqui — nada mais no arquivo afirma quantos
+              posts existem. */}
+          <ul
+            className={
+              POSTS.length === 1
+                ? 'grid max-w-md grid-cols-1 gap-6'
+                : POSTS.length === 2
+                  ? 'grid grid-cols-1 gap-6 md:grid-cols-2'
+                  : 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'
+            }
+          >
             {POSTS.map((p) => (
               <li key={p.slug} className="glass-card-hover relative overflow-hidden p-7">
                 <span aria-hidden className="corner-accent" />
@@ -40,7 +58,7 @@ export default function Page() {
                 <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-ink-faint">
                   {p.category}
                 </p>
-                <h2 className="mt-3 font-display text-lg font-bold leading-snug text-white">
+                <h2 className="mt-3 font-display text-lg leading-snug text-white">
                   <Link href={`/blog/${p.slug}`} className="hover:underline underline-offset-4">
                     {p.title}
                   </Link>

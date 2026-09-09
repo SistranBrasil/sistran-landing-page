@@ -87,7 +87,7 @@ export default function PillarsCarousel() {
             >
               <Icon className="h-7 w-7" style={{ color: current.color }} strokeWidth={1.8} />
             </div>
-            <h3 className="font-display text-xl font-bold leading-tight text-white md:text-2xl">
+            <h3 className="font-display text-xl leading-tight text-white md:text-2xl">
               {current.title}
             </h3>
           </motion.div>

@@ -17,7 +17,7 @@
      cabecalho na pagina, nao de um vao dentro do shell. */
   padding: 16px 0 80px;
   color: var(--ink);
-  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  font-family: var(--font-interface);
   /* Sem cor de base (era `#0E639F` chapado): o shell comecava numa borda reta
      logo abaixo do titulo da pagina e parecia um bloco solto, separado do
      cabecalho. Agora o fundo da pagina atravessa e so a malha + o brilho

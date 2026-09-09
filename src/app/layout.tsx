@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Sora } from 'next/font/google';
+import { Instrument_Serif, Inter } from 'next/font/google';
 import './globals.css';
 import Background from '@/components/Background';
 import SmoothScroll from '@/components/ui/SmoothScroll';
@@ -133,7 +133,25 @@ const REDUCED_MOTION_OVERRIDE_SCRIPT = `
 `;
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
-const sora = Sora({ subsets: ['latin'], variable: '--font-sora', display: 'swap' });
+/* TIPOGRAFIA.md — o display do site deixou de ser sans geométrico e passou a ser
+   serifa editorial: `Sora` saiu, `Instrument Serif` entrou. O corpo segue Inter.
+
+   `weight: '400'` não é opcional: a fonte NÃO é variável, e omitir o peso quebra
+   o build com `Missing weight for font Instrument_Serif`. É também a razão de
+   toda a hierarquia de display vir de tamanho e `letter-spacing`, nunca de peso —
+   qualquer valor acima de 400 seria negrito sintetizado pelo navegador, que
+   engrossa e borra as serifas.
+
+   O itálico entra porque a home e `/transformacao-legado` já o usavam quando a
+   serifa era declarada por rota (`--font-legacy-serif`); centralizada aqui, ela
+   precisa continuar oferecendo os dois estilos. */
+const serif = Instrument_Serif({
+  weight: '400',
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  variable: '--font-serif',
+  display: 'swap',
+});
 
 const SITE_TITLE = 'Sistran · Beyond Technology';
 const SITE_DESCRIPTION =
@@ -185,12 +203,55 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${sora.variable}`}>
-      <head>
-        {/* Antes do primeiro paint: grava `data-motion` e intercepta matchMedia. */}
-        <script dangerouslySetInnerHTML={{ __html: REDUCED_MOTION_OVERRIDE_SCRIPT }} />
-      </head>
+    /* `suppressHydrationWarning` só aqui, e por um motivo específico: o script
+       inline abaixo grava `data-motion` em `<html>` ANTES do primeiro paint, que
+       é justamente o que evita o flash de movimento. O atributo não existe no
+       HTML do servidor, então a hidratação sempre acusaria divergência nesse nó.
+       O escopo é o atributo deste elemento — não silencia os filhos. */
+    <html
+      lang="pt-BR"
+      className={`${inter.variable} ${serif.variable}`}
+      suppressHydrationWarning
+    >
+      {/* O `<head>` manual SAIU daqui, e o script que vivia dentro dele desceu
+          para a primeira posição do `<body>`:
+
+            <head>
+              <script dangerouslySetInnerHTML={{ __html: REDUCED_MOTION_OVERRIDE_SCRIPT }} />
+            </head>
+
+          Por quê: no App Router o `<head>` é gerado pelo Next, e o que se escreve
+          num `<head>` manual é hoistado pelo React 19. Na hidratação este
+          `<script>` não casava com nenhum nó do HTML do servidor e era RECRIADO no
+          cliente — e é esse caminho que dispara o erro "Encountered a script tag
+          while rendering React component" (em `react-dom-client`, o `case
+          "script"` que troca o nó por um `div` e avisa). O `<script
+          type="application/ld+json"` mais abaixo nunca avisou pelo mesmo motivo
+          invertido: `isScriptDataBlock` isenta tipos não executáveis.
+
+          Por que NÃO virou `next/script` com `strategy="beforeInteractive"`: no
+          app dir o `next/script` embrulha conteúdo inline em
+          `(self.__next_s=self.__next_s||[]).push(...)` e deixa o runtime do Next
+          executar depois — ou seja DEPOIS do primeiro paint, que é exatamente o
+          flash de movimento que este script existe para evitar. Conferido no
+          fonte, em `next/dist/client/script.js`.
+
+          Por que a primeira posição do `<body>` preserva a garantia: script
+          inline em `<body>` não é hoistável, então ele fica onde está e a
+          hidratação o casa (sem recriação, sem aviso). Ele executa durante o
+          parse do HTML, quando `<html>` já existe e nenhum elemento visível
+          existe ainda — e as duas únicas coisas que ele toca são
+          `document.documentElement` e `window.matchMedia`, nenhuma delas
+          dependente de estar no `<head>`. As folhas de estilo do `<head>` já
+          foram baixadas nesse ponto, mas o paint só acontece depois, então
+          `data-motion` continua gravado antes de o CSS resolver a política. */}
       <body className="font-sans antialiased">
+        {/* Antes do primeiro paint: grava `data-motion` e intercepta matchMedia.
+            Tem de continuar sendo o primeiro filho do body no JSX — ver a nota
+            acima. No HTML servido o React põe um `<div hidden>` vazio antes
+            dele; é placeholder de Suspense, não conteúdo, e não muda a ordem de
+            execução. Conferido no `curl`. */}
+        <script dangerouslySetInnerHTML={{ __html: REDUCED_MOTION_OVERRIDE_SCRIPT }} />
         {/* Primeiro foco do documento, antes de qualquer coisa: quem navega por
             teclado ou leitor de tela pula o header e o menu de uma vez.
             Aponta para o `<main id="conteudo" tabIndex={-1}>` de cada rota

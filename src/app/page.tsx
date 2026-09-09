@@ -1,4 +1,3 @@
-import { Instrument_Serif } from 'next/font/google';
 import Header from '@/components/Header';
 import HeroCinematic from '@/components/HeroCinematic';
 // Import comentado junto com o consumo da seção logo abaixo (ver o comentário
@@ -7,6 +6,7 @@ import HeroCinematic from '@/components/HeroCinematic';
 // import Differentials from '@/components/Differentials';
 import Metrics from '@/components/Metrics';
 import Solutions from '@/components/Solutions';
+import ProofJourney from '@/components/ProofJourney';
 import Social from '@/components/Social';
 import Contact from '@/components/Contact';
 // Import comentado junto com o consumo do bloco "Fale com a Gente!" no fim do
@@ -30,25 +30,23 @@ import MosaicHandoff from '@/components/ui/MosaicHandoff';
 // — deixá-lo importado quebraria o lint por import não utilizado.
 // import SectionReveal from '@/components/ui/SectionReveal';
 import OptionalMorphIntro from '@/components/intro/OptionalMorphIntro';
-import NotchDivider from '@/components/ui/NotchDivider';
+// Imports comentados junto com a saída do chanfro e da faixa de logos daqui (ver
+// a nota SIS-101 dentro do `<ProofJourney>`): deixá-los ativos quebraria o lint
+// por import não utilizado, e removê-los apagaria a pista do que havia ali.
+// import NotchDivider from '@/components/ui/NotchDivider';
 import { StackScenes } from '@/components/legacy/StackScenes';
 // Import comentado junto com o consumo da faixa logo abaixo (ver o comentário em
 // volta de `<MetricsStrip />`): deixá-lo ativo quebraria o lint por import não
 // utilizado, e removê-lo apagaria a pista de como religar a faixa.
 // import { MetricsStrip } from '@/components/legacy/MetricsStrip';
-import { SignalMarquee } from '@/components/legacy/SignalMarquee';
+// SIS-101 — a faixa de logos agora é montada por `Metrics.tsx`, como rodapé da
+// seção dos números. A home não a consome mais diretamente.
+// SIS-156 — e na home ela deixou de ser faixa: o rodapé daquela seção agora é a
+// grade estática `BrandGrid`, montada no mesmo lugar. A faixa rolante segue viva
+// em `/contato` e `/parceiros-e-implementacoes`; a home não a consome de nenhuma
+// forma.
+// import { SignalMarquee } from '@/components/legacy/SignalMarquee';
 import { ImpactSequence } from '@/components/legacy/ImpactSequence';
-
-/* A serifa editorial existe só para o mosaico (e para /transformacao-legado) —
-   o layout raiz continua com Inter + Sora. Exposta como `--font-legacy-serif`,
-   nome que `legacy.css` consome em `--font-editorial`. */
-const editorial = Instrument_Serif({
-  subsets: ['latin'],
-  weight: '400',
-  style: ['normal', 'italic'],
-  variable: '--font-legacy-serif',
-  display: 'swap',
-});
 
 export default function Page() {
   return (
@@ -58,11 +56,13 @@ export default function Page() {
       <OptionalMorphIntro />
       <Header />
       <ScrollSpy />
-      {/* A serifa editorial é declarada no `main`, e não num wrapper em volta do
-          hero: um `<div>` ali quebraria `#top + *` no `globals.css` — a seção
-          seguinte deixaria de ser irmã do hero e perderia o `z-index` que a faz
-          subir por cima dele. */}
-      <main id="conteudo" tabIndex={-1} className={editorial.variable}>
+      {/* TIPOGRAFIA.md — a serifa editorial saiu daqui: ela é do layout raiz
+          agora, para o site inteiro, e não mais uma fonte declarada por rota. O
+          `<main>` continua sendo irmão direto das seções por outro motivo, que
+          segue valendo: um `<div>` em volta do hero quebraria `#top + *` no
+          `globals.css` — a seção seguinte deixaria de ser irmã do hero e perderia
+          o `z-index` que a faz subir por cima dele. */}
+      <main id="conteudo" tabIndex={-1}>
         {/* Fio condutor comentado a pedido: a linha lateral que costurava hero
             -> contato e acendia um nó por seção passava por cima do conteúdo e
             incomodava mais do que orientava.
@@ -89,7 +89,7 @@ export default function Page() {
             e vídeo saíram a pedido), sobrou só o mosaico, e a travessia foi
             comentada junto: sem caixa de destino ela não tinha onde pousar.
             Conteúdo em `src/data/legacy.ts`. */}
-        <div className={editorial.variable}>
+        <div>
           {/* SIS-68: variante da home — abertura "Entrega com Alta Performance
               e Comprometimento" e os quatro pilares dentro do bloco de texto.
               `/transformacao-legado` monta o mesmo componente sem a prop e
@@ -107,14 +107,23 @@ export default function Page() {
             mesmo motivo de "Sistran em números": a seção é palco preso ao scroll
             (sticky + trilha de 400vh), e um ancestral com `transform` cria
             contexto e faz o sticky perder a referência da viewport. */}
-        <Solutions />
-        {/* Travessia do tile "Arquitetura modular e escalável" até a foto do card
-            01 de Soluções. Fica DEPOIS das duas seções, e é irmão direto delas:
-            o viajante é `position: fixed`, que morre sob ancestral com
-            `transform`/`filter`, e a ordem na árvore é o que o faz pintar por
-            cima do fundo de Soluções sem disputa de `z-index`. Decorativo e
-            `aria-hidden` — sem ele o tile fica no mosaico e a foto no palco. */}
-        <MosaicHandoff />
+        {/* ── Jornada de prova: UM percurso, UM relógio ──────────────────────
+            Soluções, o handoff, "Sistran em números" e os parceiros eram três
+            seções independentes em sequência, cada uma com o seu ScrollTrigger.
+            Agora são capítulos de um percurso só: o `ProofJourney` mede a faixa
+            de rolagem de cada um e entrega a fração local a quem se inscreveu.
+            Nenhum capítulo tem gatilho próprio enquanto está aqui dentro — e
+            todos continuam funcionando sozinhos fora daqui, porque sem a jornada
+            em volta o `useJornada` devolve `dirigindo: false` e cada um recria o
+            gatilho dele.
+
+            O wrapper não pode ganhar `transform`, `filter`, `contain` nem
+            `overflow`: os três primeiros matariam o `position: fixed` dos
+            condutores decorativos e o último viraria scrollport, matando os
+            `sticky` internos dos capítulos. A nota está também no `globals.css`,
+            em `.proof-journey`. */}
+        <ProofJourney>
+          <Solutions />
         {/* "Sistran em números" subiu para cá, a pedido: passa a ocupar o lugar
             que era do bloco "Resultados | evidências dos casos", logo depois do
             mosaico e de Soluções.
@@ -130,7 +139,7 @@ export default function Page() {
             do próprio componente — um degradê do navy na borda de cima da faixa,
             que se dissipa conforme a seção entra (`--impact-entrada`, variável
             que o único ScrollTrigger da seção já escreve). */}
-        <Metrics />
+          <Metrics />
         {/* Condutor da emenda Soluções -> Números: o fio que se dissipa à direita
             do último nó de Soluções se estende com o scroll até a boca de entrada
             da onda da Metrics, para os dois traços lerem como um só.
@@ -172,33 +181,46 @@ export default function Page() {
             então religar é descomentar a linha abaixo e o import no topo.
             <MetricsStrip />
         */}
-        <div className={editorial.variable}>
-          {/* `--deep` continua declarada em `:root` pelo `legacy.css` — com o
-              `MetricsStrip` comentado, quem passa a importá-lo aqui é o
-              `SignalMarquee` logo abaixo (e o `ImpactSequence` mais adiante). */}
-          {/* SIS-75 — esta é a ÚNICA fronteira escuro↔escuro do site: palco navy
-              da Metrics (`#041a33`) → `--deep` (`#004d8a`) do marquee. O chanfro
-              fica: as duas cores são escuras mas bem diferentes, e sem o SVG a
-              junta lê como degrau de azul, não como continuidade. Modelo A aqui
-              exigiria as duas seções compartilhando `--fundo-marca`, e o marquee
-              pinta o próprio `--deep` do `legacy.css`.
-              É também a fronteira que justificaria `.grade-tecnica--continua` —
-              e não justifica, porque nenhuma das duas desenha a grade (ver a nota
-              no lugar da classe removida, em `globals.css`). */}
-          <NotchDivider cor="var(--deep)" />
-          <SignalMarquee />
-        </div>
+        {/* SIS-101 — o `<NotchDivider cor="#f5faff" invertido />` e o
+            `<SignalMarquee />` ficavam aqui, num wrapper de serifa editorial.
+            Os dois saíram deste lugar, por motivos diferentes:
+
+            O CHANFRO foi REMOVIDO. Ele existia para negociar a fronteira entre o
+            palco da Metrics e a faixa de logos, e já vinha sendo recalibrado duas
+            vezes (SIS-75 o pintava de `--deep`, para uma fronteira escuro↔escuro;
+            SIS-91 o inverteu e o pintou de `#f5faff`, quando a faixa virou
+            off-white). SIS-101 corta a premissa em vez de recalibrar de novo: com
+            a faixa dentro da seção dos números, não há duas seções para chanfrar.
+            Um chanfro precisa de dois blocos; com um só, a diagonal termina no
+            vazio — que é exatamente o defeito relatado.
+
+            A FAIXA foi MOVIDA para dentro de `Metrics.tsx`, depois do percurso do
+            palco, como rodapé da seção "Escala que transforma o mercado de
+            seguros." A nota longa está lá. O wrapper da serifa não foi com ela: a
+            faixa é só logos, não tem uma palavra de texto.
+
+            O componente `ui/NotchDivider.tsx` continua no projeto e é usado por
+            outras páginas — só este consumo saiu. */}
+        </ProofJourney>
+        {/* Travessia do tile "Arquitetura modular e escalável" até a foto do card
+            01 de Soluções. Fica DEPOIS da jornada inteira, e é irmão direto dela:
+            o viajante é `position: fixed`, que morre sob ancestral com
+            `transform`/`filter`, e a ordem na árvore é o que o faz pintar por
+            cima do fundo de Soluções sem disputa de `z-index`. Decorativo e
+            `aria-hidden` — sem ele o tile fica no mosaico e a foto no palco. */}
+        <MosaicHandoff />
         {/* "Sobre nós / A Sistran" saiu da home a pedido: o texto institucional
             agora vive só em `/quem-somos`, que já monta o mesmo `<About />`.
             Duplicá-lo aqui repetia a apresentação da empresa duas vezes no
             mesmo funil — e era a cópia da home que ainda dizia "150 clientes"
             em vez de 130. Componente preservado; só o consumo daqui saiu. */}
-        {/* Montagem presa ao scroll. Portada da
-            apresentação de legado junto com o vídeo; o wrapper da serifa é o que
-            fornece `--font-legacy-serif`, que o `legacy.css` consome no título.
-            Conteúdo em `src/data/legacy.ts` (`impactSequence`). Fora do
-            `SectionReveal`: a seção já tem o próprio percurso de scroll. */}
-        <div className={editorial.variable}>
+        {/* Montagem presa ao scroll. Portada da apresentação de legado junto com
+            o vídeo. O wrapper existia para gravar `--font-legacy-serif`; com a
+            serifa no layout raiz (TIPOGRAFIA.md) ele não carrega mais nada, e
+            ficou só como o `<div>` que já delimitava a seção. Conteúdo em
+            `src/data/legacy.ts` (`impactSequence`). Fora do `SectionReveal`: a
+            seção já tem o próprio percurso de scroll. */}
+        <div>
           <ImpactSequence />
         </div>
         {/* "Entrega com Alta Performance e Comprometimento" comentada a pedido —
@@ -238,10 +260,23 @@ export default function Page() {
 
             A regra `.emenda-de-escuro` continua no `globals.css`, intacta, para
             a próxima emenda escuro -> claro que aparecer. */}
-        <div className="section-light">
+        {/* SIS-103 — `emenda-luminna` é o que resolve a fronteira com a montagem
+            logo acima: tira o fio branco de 1px que `.section-light` pinta no topo
+            (feito para bloco claro sobre navy, e aqui em cima não há navy) e traz
+            o `--cream` da montagem como primeira camada do fundo, dissolvido em
+            26svh. Regra e justificativa completas em `globals.css`.
+
+            A classe é só desta emenda: se a montagem sair daqui ou deixar de ser
+            a vizinha de cima, ela sai com ela. */}
+        <div className="section-light emenda-luminna">
           <Contact />
         </div>
-        <Social />
+        {/* SIS-107 — a EMENDA 6 (o `#d2e5ed` do fim do contato dissolvido em
+            220px) saiu da regra base de `.palco-reativo` e virou esta classe: ela
+            só faz sentido onde a vizinha de cima é clara, e isso só acontece na
+            home. Nas outras duas rotas que montam a Social o que vem acima é
+            escuro, e lá o degradê era uma faixa clara sobre navy. */}
+        <Social className="palco-emenda-de-claro" />
         {/* "Fale com a Gente!" comentado a pedido — o cartão azul com o título,
             as duas linhas ("Quer conversar com um de nossos especialistas?..." /
             "Temos uma equipe qualificada...") e o botão "Fale com a SISTRAN".
@@ -249,11 +284,15 @@ export default function Page() {
             depois.
 
             Comentado, e não removido: `src/components/ContactCTA.tsx` continua
-            intacto e fecha OUTRAS NOVE páginas (`/blog`, `/blog/[slug]`, `/esg`,
-            `/eventos-inovacao`, `/quem-somos`, `/sistran-labs`,
-            `/sistran-university`, `/solucoes`, `/solucoes/[slug]`) — todas
-            seguem como estavam. Religar é descomentar a linha abaixo e o import
-            no topo do arquivo.
+            intacto e fecha OUTRAS OITO páginas (`/blog`, `/blog/[slug]`, `/esg`,
+            `/quem-somos`, `/sistran-labs`, `/sistran-university`, `/solucoes`,
+            `/solucoes/[slug]`) — todas seguem como estavam. Religar é descomentar
+            a linha abaixo e o import no topo do arquivo.
+
+            Eram nove, e `/eventos-inovacao` estava na lista: a SIS-152 comentou o
+            bloco lá também, pelo mesmo motivo e do mesmo jeito. Contagem conferida
+            uma a uma (`grep '<ContactCTA' src/app`): dez chamadas no repositório,
+            duas comentadas — esta e a de `/eventos-inovacao`.
 
             A prop `motionShowcase` (digitação do título, entrada encadeada e
             grafismo técnico) só era usada aqui, então é a única coisa que sai de

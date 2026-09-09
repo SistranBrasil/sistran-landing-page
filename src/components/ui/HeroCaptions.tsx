@@ -73,8 +73,17 @@ function Linha({
   const opacity = useTransform(progress, janela, [0, 1, 1, 0]);
   const y = useTransform(progress, janela, [sobe, 0, 0, -sobe * 0.5]);
 
+  /* Com movimento reduzido NAO basta `style={undefined}`, e isto era um defeito
+     MEDIDO: com `prefers-reduced-motion: reduce` a 1440x900 as tres legendas
+     ficavam em `opacity: 0` do inicio ao fim do percurso — o hero sem texto
+     nenhum. A causa e a ordem dos renders: `useReducedMotion` nasce `false`
+     (tem de nascer, senao o servidor e o cliente divergem — ver `@/lib/motion`),
+     entao no PRIMEIRO render o `motion` escreve `opacity: 0` no `style` inline
+     do no; quando `rm` vira `true`, `undefined` so faz o `motion` PARAR de
+     cuidar da propriedade, e o zero que ele ja gravou fica no elemento para
+     sempre. So um valor explicito o sobrescreve. */
   return (
-    <motion.p className={className} style={rm ? undefined : { opacity, y }}>
+    <motion.p className={className} style={rm ? { opacity: 1, y: 0 } : { opacity, y }}>
       {children}
     </motion.p>
   );
@@ -124,8 +133,18 @@ function Legenda({
   // 3. Assenta: vem de um pouco maior, como uma camera que estabiliza.
   const scale3 = useTransform(progress, janela, [1.1, 1, 1, 0.98]);
 
+  /* Mesmo motivo da nota em `Linha`: o repouso tem de ser ESCRITO. E aqui nao e
+     so a opacidade — o primeiro render tambem grava `blur(16px)`, `clip-path:
+     inset(… 100% …)` (que apaga o bloco inteiro) e `translateX(-64px)`, e cada
+     um deles sobreviveria a troca para `undefined`. */
   const estilo = rm
-    ? undefined
+    ? {
+        opacity: 1,
+        filter: "none",
+        x: 0,
+        clipPath: "none",
+        scale: 1,
+      }
     : indice === 0
       ? { opacity, filter: filter1 }
       : indice === 1

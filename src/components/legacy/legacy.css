@@ -46,10 +46,13 @@
   --base: 400ms;
   --slow: 700ms;
 
-  /* `--font-legacy-serif` é gravada pela página (next/font, Instrument Serif);
-     sem ela a escala editorial cai no serif do sistema. */
-  --font-editorial: var(--font-legacy-serif), Georgia, "Times New Roman", serif;
-  --font-interface: var(--font-inter), Inter, system-ui, sans-serif;
+  /* TIPOGRAFIA.md — a serifa editorial deixou de ser gravada por página
+     (`--font-legacy-serif`, declarada na home e em `/transformacao-legado`) e
+     passou a vir do layout raiz, para o site inteiro. `--font-editorial` e
+     `--font-interface` agora são definidas uma única vez no `:root` do
+     `globals.css`: redefini-las aqui criaria duas fontes de verdade, e a daqui
+     ganharia por vir depois. Os ~10 usos de `var(--font-editorial)` neste arquivo
+     continuam valendo, resolvidos pelo token global. */
 }
 
 /* ---- Utilidades da fonte, com prefixo (ver nota 1 acima) ---- */
@@ -528,6 +531,171 @@ html[data-motion="reduce"] .scene-media-frame {
   }
 }
 
+/* ── SIS-90 · duas colunas na home ───────────────────────────────────────────
+   O bloco de texto era centrado e a foto do time era o CARTÃO DOMINANTE do
+   mosaico: `left: 50%`, `top: 56%`, até 34rem de largura. Ou seja, a foto ficava
+   no meio da coluna de texto — e como a cópia é `sticky` no alto e cresceu com os
+   quatro pilares da SIS-68, as duas caixas se cruzavam. Era a sobreposição
+   reportada.
+
+   Nada disso muda em `/transformacao-legado`: tudo aqui está atrás de
+   `[data-variante="home"]`, atributo que só a home escreve.
+
+   `.mosaic-duo` é inerte fora da home — uma grade de uma coluna centrada, que é o
+   que o `.mosaic` já fazia com o texto. */
+.mosaic-duo {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+}
+
+.mosaic[data-variante="home"] .mosaic-duo {
+  /* O `sticky` sai da cópia e passa para a LINHA. É isso que garante que a foto e
+     o texto atravessem o mosaico lado a lado: uma caixa presa, não duas presas em
+     paralelo com alturas diferentes e portanto pontos de soltura diferentes. */
+  position: sticky;
+  top: clamp(6rem, 15svh, 11rem);
+  /* Mesmo papel do `margin-bottom` que estava na cópia: encurta o alcance do
+     sticky para a linha soltar antes do fim do mosaico, e não ficar presa
+     enquanto a seção seguinte já sobe. */
+  margin-bottom: 42svh;
+  z-index: 2;
+  /* Três limites, e o terceiro é o que evita colisão: `calc(100% - 24rem)` reserva
+     12rem de goteira em cada lado para os cartões periféricos (11vw, no máximo
+     11rem nesta variante) passarem sem cruzar a linha. Em 1440px dá 992px de
+     linha e 224px de goteira; em 1024px, 640px e 192px. */
+  width: min(100%, 62rem, calc(100% - 24rem));
+  justify-items: center;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+/* Uma coluna, texto em cima e foto embaixo — a composição de
+   `/transformacao-legado`. Houve aqui um `grid-template-columns` de duas colunas
+   (foto à esquerda, texto à direita) e a foto disputava a atenção com o título.
+   A ordem do DOM é palco→cópia, então a inversão é por `order`: mexer no DOM
+   colocaria a foto decorativa antes do `<h2>` na leitura sequencial. */
+.mosaic[data-variante="home"] .mosaic-copy {
+  order: 1;
+}
+
+.mosaic[data-variante="home"] .mosaic-palco {
+  order: 2;
+}
+
+/* Abaixo de 64rem não há goteira para reservar, e a linha volta a ocupar a
+   largura útil. A foto acompanha: o teto de 28vw é do desktop, onde ela divide a
+   tela com os cartões periféricos; no telefone os cartões não existem (a camada
+   é `display: none`) e uma foto de 16rem no meio de 390px fica um selo. */
+@media (max-width: 63.99rem) {
+  .mosaic[data-variante="home"] .mosaic-duo {
+    position: static;
+    width: min(100%, 34rem);
+    margin-bottom: 0;
+    padding-inline: clamp(1rem, 5vw, 2rem);
+  }
+
+  .mosaic[data-variante="home"] .mosaic-palco {
+    width: 100%;
+  }
+}
+
+/* A cópia perde o sticky (agora é da linha) e a escala grande, mas volta a ser
+   centrada: com a foto embaixo, e não ao lado, um bloco alinhado à esquerda
+   dentro de uma coluna centrada ficaria pendurado num canto. */
+.mosaic[data-variante="home"] .mosaic-copy {
+  position: static;
+  top: auto;
+  margin-bottom: 0;
+  max-width: 40rem;
+  padding: 0;
+  text-align: center;
+}
+
+/* Escala reduzida, o segundo pedido da issue: o título ocupava a largura toda em
+   `lp-display--lg`. Sobrescrito por variável própria e não por `!important` —
+   o seletor aqui (0,3,0 com o elemento) já vence `.lp-display--lg`. */
+.mosaic[data-variante="home"] .mosaic-copy h2 {
+  font-size: clamp(1.7rem, 2.9vw, 2.9rem);
+  line-height: 1.1;
+}
+
+.mosaic[data-variante="home"] .mosaic-copy .lp-lead {
+  margin-inline: auto;
+  max-width: 34rem;
+  font-size: clamp(0.98rem, 1.15vw, 1.12rem);
+}
+
+/* Os quatro pilares seguem alinhados à esquerda DENTRO de um bloco centrado:
+   são uma lista, e centrar item por item deixaria as quatro linhas com começos
+   diferentes — ilegível como lista. */
+.mosaic[data-variante="home"] .mosaic-pilares {
+  margin-inline: auto;
+  justify-items: start;
+  text-align: left;
+  width: max-content;
+  max-width: 100%;
+}
+
+/* Palco de fotos. A caixa é opaca e tem raio próprio, então nenhum cartão pode
+   aparecer por dentro dela — os tiles ficam em `z-index` menor e passam atrás.
+   A opacidade desta caixa é da travessia (`--carrier-fonte`, regra global de
+   `[data-carrier-origem]` no `globals.css`); a entrada mora no filho. */
+.mosaic-palco {
+  position: relative;
+  /* Mesma medida do cartão dominante de `/transformacao-legado`
+     (`--dominante-w`), porque é o lugar dele que a foto passa a ocupar. Presa a
+     um teto: cópia + foto vivem dentro de uma linha `sticky`, e uma foto de 34rem
+     de largura somada ao texto e aos quatro pilares passava da altura da janela
+     em 1440×900 — a base ficava cortada. */
+  width: min(100%, clamp(16rem, 28vw, 30rem));
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--panel);
+  box-shadow: 0 30px 70px rgb(0 26 61 / 22%);
+}
+
+.mosaic-palco-entrada {
+  position: absolute;
+  inset: 0;
+}
+
+/* Entrada suave, uma vez, quando o mosaico entra em cena. O portão é
+   `data-em-cena`, escrito só por JS e só fora do movimento reduzido: sem o
+   atributo não há animação nenhuma e a foto já está no lugar, que é o estado
+   final pedido pela issue. */
+.mosaic-palco[data-em-cena] .mosaic-palco-entrada {
+  animation: mosaic-palco-entra 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes mosaic-palco-entra {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0) scale(0.965);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+/* A foto. Eram três empilhadas, trocando por opacidade conforme
+   `data-grupo-ativo`; o portão saiu junto com as outras duas — uma foto só não
+   troca, e a regra deixaria de ter estado "ativo" para acender. */
+.mosaic-palco-quadro {
+  position: absolute;
+  inset: 0;
+}
+
+.mosaic-palco-quadro img {
+  object-fit: cover;
+}
+
+html[data-motion="reduce"] .mosaic-palco[data-em-cena] .mosaic-palco-entrada {
+  animation: none;
+}
+
 /* Camada de mídia periférica: absoluta no desktop, grid no mobile.
    Sem `perspective` aqui de propósito: com um ponto de fuga único no centro, um
    cartão distante dele ganha um deslocamento de projeção proporcional à
@@ -543,7 +711,10 @@ html[data-motion="reduce"] .scene-media-frame {
   position: absolute;
   display: grid;
   align-content: end;
-  width: clamp(6rem, 11vw, 11rem);
+  /* 11vw dava 159px medidos em 1440 — miniatura. Com no máximo quatro tiles por
+     vez (grupos abaixo) sobra espaço para a escala secundária pedida,
+     clamp(10rem, 15vw, 15rem), sem que os cartões se cruzem. */
+  width: clamp(8rem, 15vw, 15rem);
   aspect-ratio: 3 / 4;
   padding: 0.7rem;
   border-radius: var(--radius-md);
@@ -918,6 +1089,107 @@ html[data-motion="reduce"] .stack-carrier {
 .mosaic-tile:nth-child(9) { left: 5%; top: 87%; }
 .mosaic-tile:nth-child(10) { right: 6%; top: 89%; }
 
+/* ── Cartão dominante ──────────────────────────────────────────────────────────
+   `microservicos` deixa de ser o nono cartãozinho encostado na borda esquerda e
+   passa a ser a peça de 28vw–38vw que ancora a cena — é dele que parte a
+   travessia até a foto do card 01 das Frentes.
+
+   Fica no meio e embaixo: a cópia é `sticky` no ALTO do bloco (top ~28svh) e
+   solta antes do fim, então a metade de baixo do centro era o vazio que a
+   refatoração manda reduzir. Sem sobreposição com o texto.
+
+   `margin-left` negativo em vez de `translateX(-50%)`: o `transform` deste nó é
+   escrito inline pelo Motion (parallax) e qualquer transform aqui seria
+   sobrescrito no primeiro quadro. */
+.mosaic-tile[data-dominante] {
+  --dominante-w: clamp(18rem, 32vw, 34rem);
+
+  left: 50%;
+  right: auto;
+  top: 56%;
+  width: var(--dominante-w);
+  margin-left: calc(var(--dominante-w) / -2);
+  /* Acima dos secundários e abaixo da cópia (`z-index: 2`). */
+  z-index: 1;
+  font-size: 0.95rem;
+}
+
+/* ── SIS-90 · cartões periféricos fora do caminho da linha ───────────────────
+   Na home o cartão dominante sai de cena. Ele é `left: 50%`, quase 34rem de
+   largura, e essa faixa central passou a ser o palco de fotos do `.mosaic-duo`:
+   os dois no mesmo lugar é exatamente a sobreposição ao texto que a issue
+   descreve. Ele continua inteiro em `/transformacao-legado`, onde o miolo é dele
+   — e é lá que o vídeo `process-scroll.mp4` da "arquitetura modular e escalável"
+   aparece, como na apresentação de origem.
+
+   Os nove restantes encolhem de `clamp(8rem, 15vw, 15rem)` para
+   `clamp(7rem, 11vw, 11rem)` e encostam nas bordas. Somado à goteira de 12rem que
+   a linha reserva (`calc(100% - 24rem)`), nenhum deles alcança o texto nem a
+   foto: em 1440px o cartão vai de 21px a 179px e a linha começa em 224px, folga
+   que absorve a amplitude da flutuação (±16px). */
+.mosaic[data-variante="home"] .mosaic-tile[data-dominante] {
+  display: none;
+}
+
+/* Abaixo de 64rem não há goteira: a coluna de texto ocupa a largura toda e os
+   cartões caíam em cima do título e dos quatro pilares, ilegíveis por baixo das
+   imagens. A decoração é do desktop, onde existe margem para ela; no telefone o
+   assunto é o texto e o palco de fotos. */
+@media (max-width: 63.9375rem) {
+  .mosaic[data-variante="home"] .mosaic-layer {
+    display: none;
+  }
+}
+
+@media (min-width: 64rem) {
+  .mosaic[data-variante="home"] .mosaic-tile {
+    width: clamp(7rem, 11vw, 11rem);
+  }
+
+  /* Lado por cartão, encostando nas bordas da tela: na home o miolo é ocupado
+     pelo texto e pelo palco de fotos, e as duas goteiras são o espaço que sobra.
+     A divisão não é por paridade, e não é arbitrária: cada lado leva cartões
+     espaçados na altura E das duas camadas de parallax. Como `mosaicTiles` alterna
+     `slow`/`fast` por posição, tomar de cada lado dois de cada camada evita o que
+     acontecia antes: uma goteira só de `slow` e a outra só de `fast` derivavam em
+     velocidades diferentes e a de `slow` chegava quase vazia ao enquadramento.
+
+     Os `top` são reescritos aqui, mais espalhados que a tabela geral: 3/27/51/76%
+     à esquerda e 7/23/44/65/89% à direita. Nenhum par coincide de altura entre os
+     dois lados, e os dois lados juntos cobrem a cena de 3% a 89% em degraus de
+     ~11% — é isso que faz a leitura de cartões dispersos em vez de duas colunas.
+
+     O recuo horizontal também alterna (0,6%–2,8%), mas dentro de um teto estreito:
+     a goteira reservada pela linha é de 12rem e o cartão mede até 11vw, então em
+     1440px sobram ~50px de folga contando a amplitude da flutuação (±16px). Recuo
+     maior que ~3% e o cartão entra na faixa do texto.
+
+     Cada regra zera o lado oposto: os `:nth-child` originais declaram só um dos
+     dois, e sem o `auto` o cartão ficaria preso pelas duas bordas e esticaria. */
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(1) { left: 0.6%; right: auto; top: 3%; }
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(4) { left: 2.8%; right: auto; top: 27%; }
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(5) { left: 1%;   right: auto; top: 51%; }
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(8) { left: 2.4%; right: auto; top: 76%; }
+
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(2)  { right: 1%;   left: auto; top: 7%; }
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(3)  { right: 2.8%; left: auto; top: 23%; }
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(6)  { right: 0.6%; left: auto; top: 44%; }
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(7)  { right: 2.4%; left: auto; top: 65%; }
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(10) { right: 1.2%; left: auto; top: 89%; }
+}
+
+/* ── Cartões: todos em cena, não em grupos de três ─────────────────────────────
+   Havia aqui um portão por `data-grupo-ativo` que revelava três cartões por vez
+   (capacidade → tecnologia → entrega) e escondia os outros sete com
+   `opacity: 0; visibility: hidden`. Em tela isso lia como mosaico vazio: as duas
+   goteiras têm altura de várias telas e chegavam a ficar com um único cartão, ou
+   nenhum do lado esquerdo, porque o grupo 0 é composto pelos cartões 3, 5 e 7.
+
+   O estado dos dez visíveis já era o fallback sem JS e com movimento reduzido —
+   agora é o único. As goteiras ficam povoadas em toda a altura da cena, que é o
+   ponto do mosaico. O atributo não é mais escrito por ninguém: o palco de fotos
+   era o último consumidor e hoje tem uma foto só, sem troca. */
+
 /* Ângulos de repouso e ritmo da flutuação, por tile.
    Ímpares estão à esquerda, pares à direita: giram para dentro, mostrando a face
    oposta à borda em que se encostam. Os tempos são primos entre si o suficiente
@@ -932,6 +1204,17 @@ html[data-motion="reduce"] .stack-carrier {
 .mosaic-tile:nth-child(8)  { --tilt-y: -9deg;  --tilt-x: -3deg; --float-time: 5.7s; --float-delay: -0.4s; --float-y: -48px; --float-x: -14px; --float-rot: -2.8deg; --float-ry: -11deg; --float-rx: 4deg; }
 .mosaic-tile:nth-child(9)  { --tilt-y: 10deg;  --tilt-x: 4deg;  --float-time: 7.5s; --float-delay: -2.1s; --float-y: -32px; --float-x: 9px;  --float-rot: 3.4deg;  --float-ry: 8deg;   --float-rx: -6deg; }
 .mosaic-tile:nth-child(10) { --tilt-y: -9deg;  --tilt-x: 4deg;  --float-time: 4.6s; --float-delay: -1.4s; --float-y: -38px; --float-x: -13px; --float-rot: -2.4deg; --float-ry: -9deg;  --float-rx: 5deg; }
+
+/* Na home os lados não seguem a paridade (ver a divisão acima), então quatro
+   cartões trocam de goteira e o giro deixaria de ser "para dentro": mostrariam a
+   face virada para a borda em que se encostam. Espelhar só os eixos Y é o
+   suficiente — X é o mesmo dos dois lados. */
+@media (min-width: 64rem) {
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(4) { --tilt-y: 8deg;  --float-x: 11px;  --float-rot: 2.2deg;  --float-ry: 8deg; }
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(8) { --tilt-y: 9deg;  --float-x: 14px;  --float-rot: 2.8deg;  --float-ry: 11deg; }
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(3) { --tilt-y: -7deg; --float-x: -10px; --float-rot: -3.4deg; --float-ry: -7deg; }
+  .mosaic[data-variante="home"] .mosaic-tile:nth-child(7) { --tilt-y: -8deg; --float-x: -12px; --float-rot: -2.2deg; --float-ry: -9deg; }
+}
 
 /* Tudo aqui é decoração: com reduced motion o cartão fica reto, parado e com a
    sombra no lugar — nenhum conteúdo depende do movimento. */
@@ -2224,19 +2507,20 @@ html.has-dialog {
    depender da barra de URL móvel, que mudaria o curso no meio do gesto. */
 .sequence {
   position: relative;
-  /* 320svh -> 216svh (orquestração visual, Prioridade 4). Três telas e um terço
-     de rolagem para UMA legenda era o trecho com a pior razão entre curso e
-     conteúdo da página. Agora a seção tem três capítulos que se sucedem no
-     percurso (ver `impactSequence.chapters` em `src/data/legacy.ts` e
-     `.sequence-chapter` mais abaixo), então cada tela de rolagem entrega texto
-     novo — e ainda sobra o trecho de encolhimento em card (`SHRINK`, a partir de
-     0.72 do percurso), que é o que emenda na seção seguinte.
+  /* 320svh -> 216svh -> 200svh. Os 216svh estavam calibrados para os três
+     capítulos que se sucediam no percurso; SIS-99 os removeu, e manter o curso
+     antigo devolveria o defeito original da seção — duas telas e um sexto de
+     rolagem cobradas para entregar um cabeçalho.
 
-     216svh, e não os 180svh do piso sugerido: o `currentTime` do vídeo é
-     conduzido por este curso, e abaixo de ~200svh o seek passa a andar mais de um
-     quadro por giro de roda em telas grandes — a montagem sai aos saltos, que é
-     exatamente o defeito que a mola do `useSpring` existe para esconder. */
-  height: 216svh;
+     200svh, e não menos, e o motivo NÃO é o conteúdo: é o vídeo. O `currentTime`
+     é conduzido por este curso, e abaixo de ~200svh o seek passa a andar mais de
+     um quadro por giro de roda em telas grandes — a montagem sai aos saltos, que
+     é exatamente o defeito que a mola do `useSpring` existe para esconder. Este
+     é o piso técnico do seek, então é aqui que a redução para.
+
+     Dentro dos 200svh, o trecho de encolhimento em card (`SHRINK`, a partir de
+     0.72 do percurso) continua sendo o que emenda na seção seguinte. */
+  height: 200svh;
   /* EMENDA 4 — `.lp-signals` (faixa de parceiros, `--paper`) -> ImpactSequence
      (`--cream`). O passo é curto (branco para azul-claríssimo), mas a faixa tem
      `border-block` e o encontro das duas linhas retas fazia ler como corte. O
@@ -2249,6 +2533,30 @@ html.has-dialog {
   background:
     linear-gradient(to bottom, var(--paper) 0, rgb(255 255 255 / 0%) 40svh),
     var(--cream);
+}
+
+/* EMENDA 4, parte visível. A camada de background acima resolve a passagem para o
+   FUNDO da seção — e o fundo da seção não é o que se vê no topo dela: o
+   `.sequence-visual` abre em full bleed e encosta em `top: 0`, então quem toca a
+   faixa de parceiros é o quadro do vídeo. A medição pegou #F5FAFF colado em
+   #183242 na mesma linha, que é o corte mais duro que restava na home.
+
+   Daí o véu: o mesmo `--paper` da faixa de cima, dissolvido em 220px por CIMA do
+   quadro. Tem de ser pseudo-elemento, e da SEÇÃO — não do `.sequence-sticky`, que
+   trava na tela e levaria o véu junto durante todo o percurso, nem do
+   `.sequence-visual`, que encolhe em card no fim e levaria o véu para dentro dele.
+   Ancorado na seção, o véu sai da tela com a rolagem, como uma borda.
+
+   `z-index: 2` porque `.sequence-sticky` é `z-index: auto`; `pointer-events: none`
+   porque a copy do primeiro capítulo passa por baixo dele. */
+.sequence::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 220px;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(to bottom, var(--paper) 0, rgb(255 255 255 / 0%) 100%);
 }
 
 .sequence-sticky {
@@ -2388,74 +2696,37 @@ html.has-dialog {
   /* Sem isso o título cabe numa linha só e cruza a tela de ponta a ponta por
      cima da montagem. */
   max-width: 26ch;
-  /* Honra o `\n` do título sem impedir a quebra automática: em telas estreitas
-     cada uma das duas linhas ainda pode se dividir de novo. */
+  /* Honra um `\n` no título sem impedir a quebra automática: em telas estreitas
+     cada linha ainda pode se dividir de novo. O título atual ("Sobre o Luminna
+     AI", desde SIS-99) não tem `\n` — a regra fica porque o texto vem de
+     `src/data/legacy.ts` e voltar a ter duas linhas é uma edição de dados, não
+     de CSS. */
   white-space: pre-line;
 }
 
-/* ── Capítulos (orquestração visual, Prioridade 4) ─────────────────────────────
-   Compreender / Transformar / Validar e evoluir, os três em FLUXO NORMAL: nada
-   aqui os empilha no mesmo lugar, e é de propósito. O percurso muda a ênfase (a
-   opacidade vem de `ImpactSequence.tsx`, entre 0.28 e 1), nunca a existência —
-   sem JavaScript ou com movimento reduzido a seção é o cabeçalho seguido dos
-   três capítulos, lido de cima para baixo.
+/* ── Capítulos: REMOVIDOS (SIS-99) ────────────────────────────────────────────
+   Aqui viviam `.sequence-chapters`, `.sequence-chapter`,
+   `.sequence-chapter-title`, `.sequence-chapter-text`, a variante de movimento
+   reduzido e as quatro regras de `[data-dirigindo]` que empilhavam os três
+   capítulos na mesma célula de grade (`grid-area: cap`).
 
-   Colunas, e não uma lista vertical, porque a cópia mora na metade de baixo do
-   sticky: três blocos empilhados ali empurrariam o texto para fora da tela junto
-   com o vídeo. Em telas estreitas viram uma coluna só — e aí o modo dirigido nem
-   existe (é de 1024px para cima). */
-.sequence-chapters {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1.25rem, 2.5vw, 2.5rem);
-  margin-top: clamp(1.5rem, 3vw, 2.5rem);
-  max-width: 62rem;
-}
+   Saíram inteiras junto com os capítulos: seletor sem elemento correspondente é
+   CSS morto que ninguém consegue provar que é morto seis meses depois. O
+   histórico do git é a pista de como era.
 
-@media (max-width: 900px) {
-  .sequence-chapters {
-    grid-template-columns: 1fr;
-  }
-}
+   O que NÃO saiu é a regra logo abaixo: `[data-dirigindo]` continua sendo
+   escrito pelo `ImpactSequence.tsx` porque é ele que liga a escala grande do
+   título. Se algum dia o atributo parecer órfão, é esta regra que o justifica. */
 
-.sequence-chapter {
-  /* Fio na borda de cima em vez de numeração: os três são etapas de um método,
-     e a linha curta é o mesmo vocabulário da linha-sinal que atravessa a
-     página. `border-top` e não um pseudo-elemento — é uma aresta, não um
-     desenho. */
-  border-top: 1px solid rgb(255 255 255 / 28%);
-  padding-top: 0.75rem;
-}
-
-.sequence-chapter-title {
-  font-family: var(--font-sora), system-ui, sans-serif;
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--paper);
-  /* Mesmo halo da cópia acima: o fundo é o vídeo, que muda de quadro a quadro. */
-  text-shadow:
-    0 0 2px rgb(0 26 61 / 95%),
-    0 0 10px rgb(0 26 61 / 80%);
-}
-
-.sequence-chapter-text {
-  margin-top: 0.35rem;
-  font-size: clamp(0.875rem, 1.05vw, 0.95rem);
-  line-height: 1.5;
-  color: color-mix(in srgb, var(--paper) 90%, transparent);
-  text-shadow:
-    0 0 2px rgb(0 26 61 / 95%),
-    0 0 10px rgb(0 26 61 / 75%);
-}
-
-/* Movimento reduzido: os três com o mesmo peso, sem depender de `style` inline
-   (o componente não passa nenhum nesse modo). Explícito de qualquer forma —
-   `opacity` herdada de um render anterior do `motion` não sobreviveria a um
-   recarregamento com a preferência ligada, mas a regra documenta a intenção. */
-html[data-motion="reduce"] .sequence-chapter {
-  opacity: 1 !important;
-  transform: none !important;
+/* O título da seção dominava menos que a legenda do hero, no mesmo vídeo em tela
+   cheia. Aqui ele é a única voz do sticky — desde SIS-99, literalmente a única —
+   então recebe a escala grande. E só em modo dirigido, porque em telas estreitas
+   7vw estouraria a altura útil. */
+.sequence[data-dirigindo] .sequence-copy .lp-display {
+  font-size: clamp(3.8rem, 7vw, 7.5rem);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+  max-width: 18ch;
 }
 
 /* Menos movimento: sem curso de scroll, sem seek. O quadro do pôster fica parado
@@ -2640,59 +2911,63 @@ html[data-motion="reduce"] .sequence-chapter {
    (`.marquee-*`) — aqui é só o desenho. */
 .lp-signals {
   position: relative;
-  padding-block: clamp(1.2rem, 2.5vw, 2rem);
-  border-block: 1px solid var(--line);
-  background: var(--paper);
+  /* SIS-91 — histórico das duas correções, porque elas se opõem e a próxima
+     pessoa precisa das duas.
+
+     Era `clamp(1.2rem, 2.5vw, 2rem)` (36px): uma tarja, que lia como separador e
+     não como o capítulo claro que encerra a jornada azul. Foi para
+     `clamp(3.5rem, 7vw, 6.5rem)` — e aí passou dos 36px para **100px de cada
+     lado**, medidos a 1440px: uma faixa de 255px de altura para logos de 52px.
+     Sobrava um vazio claro maior que o conteúdo.
+
+     Este valor é o meio: 40px a 1440px, faixa de ~130px. O respiro continua sendo
+     o de um capítulo (é mais que o dobro da tarja original) sem que a área vazia
+     domine as marcas. */
+  padding-block: clamp(1.5rem, 2.8vw, 2.75rem);
+  /* Só embaixo, e agora por um motivo diferente do original (que era não colidir
+     com a linha-base ciano, removida em SIS-101): em cima a faixa encosta no
+     degradê azul da seção dos números, e a diferença de superfície JÁ é a aresta
+     — um fio de 1px ali seria uma terceira linha entre duas cores que não
+     precisam de ajuda para se distinguir. Embaixo ela encosta no creme da
+     montagem, claro contra claro, e aí o fio é o que separa. */
+  border-bottom: 1px solid var(--line);
+  /* Off-white explícito `#F5FAFF` (a superfície nomeada no prompt) em vez de
+     `--paper`: o azul de dentro do branco é o que faz a faixa ler como saída da
+     jornada azul, e não como um branco qualquer sem relação com ela. */
+  background: #f5faff;
   color: var(--ink);
 }
 
-/* ── Linha-base da passagem Números → Parceiros (Prioridade 1) ─────────────────
-   A curva de "Sistran em números" assenta numa reta horizontal no fim do
-   percurso daquela seção; esta é a continuação do traço, rente à borda de cima
-   da faixa. Desenha-se da esquerda para a direita na chegada (`data-chegou`,
-   escrito por `SignalMarquee.tsx`) e as marcas sobem dela.
+/* ── Linha-base ciano: REMOVIDA (SIS-101) ──────────────────────────────────────
+   Aqui viviam `.lp-signals-base` (traço de 2px a `top: -1px`, degradê ciano com
+   as pontas dissolvidas, animado por `transform: scaleX`) e o estado de entrada
+   `.lp-signals[data-chegou="0"] .lp-signals-base`.
 
-   `transform: scaleX` a partir da esquerda, e não `width`: largura animada é
-   reflow por quadro, e este é um traço de 1px atravessando a tela inteira. */
-.lp-signals-base {
-  position: absolute;
-  top: -1px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(
-    to right,
-    rgb(14 216 246 / 0%),
-    rgb(14 216 246 / 85%) 12%,
-    rgb(14 216 246 / 85%) 88%,
-    rgb(14 216 246 / 0%)
-  );
-  transform-origin: left center;
-  transition: transform var(--motion-slow, 900ms) var(--ease-enter, ease-out);
-  /* Acima do fundo da faixa, abaixo das marcas: o traço passa por trás dos
-     logos, como um fio de onde eles pendem. */
-  z-index: 1;
-  pointer-events: none;
-}
+   O motivo da remoção está em `SignalMarquee.tsx`, onde o `<span>` também saiu:
+   o traço lia como um risco luminoso cortando a área das logos, e a continuidade
+   que ele buscava (prolongar a reta em que a curva dos números aterrissa) passou
+   a ser estrutural — a faixa é o rodapé daquela seção, não uma seção depois dela.
 
-/* ESTADO FINAL É O DEFAULT, como no resto da página: a linha inteira e as marcas
-   no lugar. Quem PEDE o estado de entrada é o JavaScript, escrevendo
-   `data-chegou="0"` ao montar — então sem JS, com o observador nunca disparando
-   ou com movimento reduzido não existe caminho em que a faixa fique invisível.
-   Era o inverso disto (esconder por default e revelar na entrada) que produzia a
-   classe de bug mais grave desta refatoração: conteúdo preso em `opacity: 0`. */
-.lp-signals[data-chegou="0"] .lp-signals-base {
-  transform: scaleX(0);
-}
+   `data-chegou` continua vivo: ele agora governa só a subida das marcas, na
+   regra abaixo. */
 
-/* As marcas sobem da linha, depois de ela existir: o atraso é o que faz o gesto
-   ler como "os logos emergem dela", e não como duas coisas aparecendo juntas. */
+/* As marcas sobem na entrada da faixa. O atraso de 240ms era o intervalo entre a
+   linha-base terminar de se desenhar e as marcas emergirem dela; sem a linha ele
+   fica como respiro entre a faixa entrar em quadro e o conteúdo assentar — 240ms
+   depois de a seção dos números terminar de aterrissar logo acima, que é o que
+   dá o encadeamento em vez de duas coisas aparecendo juntas. */
 .lp-signals .marquee-viewport {
   transition:
     opacity var(--motion-base, 600ms) var(--ease-enter, ease-out) 240ms,
     transform var(--motion-base, 600ms) var(--ease-enter, ease-out) 240ms;
 }
 
+/* ESTADO FINAL É O DEFAULT, como no resto da página: as marcas no lugar. Quem
+   PEDE o estado de entrada é o JavaScript, escrevendo `data-chegou="0"` ao montar
+   — então sem JS, com o observador nunca disparando ou com movimento reduzido não
+   existe caminho em que a faixa fique invisível. Era o inverso disto (esconder
+   por default e revelar na entrada) que produzia a classe de bug mais grave desta
+   refatoração: conteúdo preso em `opacity: 0`. */
 .lp-signals[data-chegou="0"] .marquee-viewport {
   opacity: 0;
   transform: translate3d(0, 14px, 0);
@@ -2704,10 +2979,102 @@ html[data-motion="reduce"] .sequence-chapter {
    ele que faz a largura da cópia incluir o último vão, e sem isso o
    `translate3d(-50%)` deixaria de valer uma cópia exata e o loop pularia a cada
    volta. */
-.lp-signals-copy {
+/* O seletor é `.lp-signals .marquee-copy` (0,2,0) e NÃO `.lp-signals-copy`
+   (0,1,0), e isso é a correção de um defeito real, não preferência de escrita.
+
+   `.marquee-copy { gap: 0.75rem }` mora no `globals.css`, que a raiz importa;
+   este arquivo é importado pelo componente. Com a MESMA especificidade nas duas
+   regras, quem ganha é quem vier depois no bundle — e vinha o `globals.css`. O
+   efeito era o pior possível, porque só metade da faixa perdia: as logos ficavam
+   com o vão pequeno das placas do `ClientWall` (12px) enquanto o ponto separador
+   continuava a ser deslocado por `--lp-signals-vao / 2` (~44px), que é variável
+   local e não estava em disputa. O ponto então caía DENTRO da logo seguinte, em
+   vez de no meio do vazio.
+
+   Subir a especificidade tira a regra da disputa de ordem de uma vez. Vencer por
+   `!important` resolveria o vão e deixaria o `padding-right` na mesma situação;
+   e reordenar imports resolveria hoje e voltaria a quebrar no próximo arquivo
+   que importasse `legacy.css` de outro lugar.
+
+   Comentado, e não apagado, o seletor antigo:
+   .lp-signals-copy {
+     --lp-signals-vao: clamp(3rem, 5.5vw, 5.5rem);
+     gap: var(--lp-signals-vao);
+     padding-right: var(--lp-signals-vao);
+   } */
+.lp-signals .marquee-copy {
   align-items: center;
-  gap: clamp(2.4rem, 4.5vw, 4rem);
-  padding-right: clamp(2.4rem, 4.5vw, 4rem);
+  /* Os dois valores TÊM de ser o mesmo `clamp` (ver a nota acima: é o
+     `padding-right` que faz a largura da cópia incluir o último vão). Subiu junto
+     com a altura das logos, para manter ~7 marcas por quadro.
+
+     SIS-102 — declarado como variável porque agora TRÊS coisas dependem do mesmo
+     número: o vão, o `padding-right` que o replica no fim da cópia, e o
+     deslocamento do ponto separador, que precisa cair na METADE do vão. Com o
+     `clamp` escrito três vezes, calibrar a faixa exigiria acertar as três
+     ocorrências e o ponto sairia do centro na primeira que escapasse.
+
+     O piso subiu de 3rem para 3.5rem: com o vão finalmente valendo, o ponto de
+     6px precisa de espaço em branco visível dos DOIS lados para ler como
+     separador e não como sujeira colada na logo. A 3.5rem sobram ~25px de cada
+     lado do ponto no pior caso (telas estreitas), e o teto continua em 5.5rem
+     para as ~7 marcas por quadro não virarem 4. */
+  --lp-signals-vao: clamp(3.5rem, 5.5vw, 5.5rem);
+  gap: var(--lp-signals-vao);
+  padding-right: var(--lp-signals-vao);
+}
+
+/* ── Ponto separador entre as marcas (SIS-102) ─────────────────────────────────
+   O mesmo ponto do resto do site: 6px, redondo, da família do ciano
+   `#0ed8f6` de `.solutions-eyebrow-ponto`. A diferença é o fundo — lá o ponto
+   está sobre navy, aqui sobre o off-white `#f5faff`, e `#0ed8f6` puro sobre
+   near-white rende ~2:1 de contraste: uma mancha pálida, não um ponto. O
+   `color-mix` puxa o MESMO ciano na direção do azul da marca até ele render sobre
+   claro, em vez de introduzir um azul novo que não pertence a nenhuma escala.
+
+   Um ponto por ITEM (e não entre pares) é o que resolve a emenda do loop: o ponto
+   do último item de uma cópia cai no vão que antecede a primeira marca da cópia
+   seguinte. Numa faixa infinita não existe "último" — existe vão, e todo vão tem
+   o seu ponto.
+
+   `position: absolute` é o que mantém o ponto FORA da largura medida da cópia,
+   que é o número que alimenta o `translate3d(-50%)` do loop. Sem isso a inclusão
+   do separador mudaria a largura e a volta passaria a saltar.
+
+   `content: ''` sem texto: não há o que um leitor de tela anuncie, então o
+   `aria-hidden` pedido está cumprido sem marcar nada no HTML. */
+.lp-partner::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  height: 6px;
+  width: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, #0ed8f6 55%, #003f73);
+  /* Centro do ponto no centro do vão: metade do vão, menos metade do próprio
+     diâmetro. Os `-3px` são o raio — se o diâmetro mudar, mudam os dois. */
+  margin-top: -3px;
+  margin-left: calc(var(--lp-signals-vao) / 2 - 3px);
+  pointer-events: none;
+}
+
+/* Com movimento reduzido a faixa vira lista rolável e a cópia duplicada sai de
+   cena (`globals.css`), então aí — e SÓ aí — existe um último item de verdade, e
+   o ponto dele ficaria pendurado no fim da lista sem nada depois. */
+@media (prefers-reduced-motion: reduce) {
+  .lp-signals-copy .lp-partner:last-child::after {
+    display: none;
+  }
+}
+
+/* `forced-colors`: o ponto é decoração pura e some junto com o resto do
+   grafismo — quem usa o modo não perde informação, porque a cadência das marcas
+   nunca foi a informação. */
+@media (forced-colors: active) {
+  .lp-partner::after {
+    display: none;
+  }
 }
 
 /* Item da faixa: só a logo, sem placa nem chip.
@@ -2718,10 +3085,23 @@ html[data-motion="reduce"] .sequence-chapter {
    Em repouso a marca fica dessaturada e um pouco recuada: são 15 logos de paletas
    conflitantes passando em loop, e todas em cor cheia competem com o conteúdo da
    página em vez de servirem de rodapé de credibilidade. */
+/* SIS-102 — a dessaturação e a opacidade de repouso desceram do item para o
+   `<img>`, e isso é requisito, não arrumação: com `filter: grayscale(1)` no item,
+   o `::after` que virou o ponto separador seria filtrado junto e o ciano sairia
+   cinza. `filter` também cria bloco de contenção para descendentes absolutos, e o
+   ponto é absoluto — no item ele passaria a se posicionar contra uma referência
+   que só existe por causa do filtro.
+
+   `position: relative` é a âncora do ponto: ele é posicionado a partir da borda
+   direita do item (`left: 100%`). */
 .lp-partner {
+  position: relative;
   flex: none;
   display: inline-flex;
   align-items: center;
+}
+
+.lp-partner img {
   filter: grayscale(1);
   opacity: 0.62;
   transition:
@@ -2730,19 +3110,27 @@ html[data-motion="reduce"] .sequence-chapter {
 }
 
 /* A cor volta no ponteiro. Só onde há ponteiro fino: em toque o estado de hover
-   fica preso depois do tap. */
+   fica preso depois do tap. O gatilho continua no ITEM (é ele que tem a área
+   apontável), mas o que muda é a imagem. */
 @media (hover: hover) and (pointer: fine) {
-  .lp-partner:hover {
+  .lp-partner:hover img {
     filter: grayscale(0);
     opacity: 1;
   }
 }
 
 /* Sem movimento não há hover útil (a faixa vira lista rolável e a pessoa
-   percorre com o dedo/teclado): as marcas nascem em cor cheia. O mesmo vale para
-   `forced-colors`, onde `grayscale` só atrapalha. */
+   percorre com o dedo/teclado): as marcas nascem em cor cheia. */
 @media (prefers-reduced-motion: reduce) {
-  .lp-partner {
+  .lp-partner img {
+    filter: none;
+    opacity: 1;
+  }
+}
+
+/* `forced-colors`: `grayscale` só atrapalha, e o modo já substitui as cores. */
+@media (forced-colors: active) {
+  .lp-partner img {
     filter: none;
     opacity: 1;
   }
@@ -2753,7 +3141,10 @@ html[data-motion="reduce"] .sequence-chapter {
    tamanho da outra. */
 .lp-partner img {
   width: auto;
-  height: clamp(2.2rem, 3.4vw, 3.1rem);
+  /* 3–4.5rem -> 2.5–3.5rem (SIS-91): 40px a 1440px em vez de 52px. Com a faixa
+     apertada, uma logo de 52px encostava nas duas bordas; e o vão de ~5vw mantém
+     as ~7 marcas por quadro, que era o motivo da altura maior. */
+  height: clamp(2.25rem, 2.8vw, 3.5rem);
   /* Teto de largura: os lockups vão de quadrados a ~4:1, e sem isto os mais
      largos esticariam o item muito além dos vizinhos. */
   max-width: 11rem;

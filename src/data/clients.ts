@@ -26,7 +26,14 @@ export const CLIENTS: readonly Client[] = [
   { name: 'FRISS', logo: '/images/Friss.png' },
   { name: 'Sensedia', logo: '/images/Sensedia-logo-website-UPDATED2.png' },
   { name: 'SAP', logo: '/images/SAP.png' },
-  { name: 'Picsel', logo: '/images/Picsel-logo.png' },
+  /* SIS-91 — o `Picsel-logo.png` original é opaco: um retângulo chapado de
+     rgb(72,108,85) em volta da marca (o PNG não tem canal alfa, só paleta). Na
+     faixa de parceiros, onde todos os outros logos são recortados, ele lia como
+     uma caixa cinza-esverdeada no meio da fileira.
+     `Picsel-logo-transparente.png` é o MESMO arquivo com essa cor chapada
+     transformada em alfa e a folga aparada — derivado do asset que já existia,
+     nada redesenhado. O original fica no lugar como fonte. */
+  { name: 'Picsel', logo: '/images/Picsel-logo-transparente.png' },
   { name: 'Earnix', logo: '/images/Earnix_logo.png' },
   { name: 'Dacadoo', logo: '/images/Dacadoo-Logo_1.png' },
 

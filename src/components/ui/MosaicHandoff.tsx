@@ -5,10 +5,10 @@ import { useEffect, useRef } from 'react';
 import { useReducedMotion } from '@/lib/motion';
 
 /**
- * Travessia do tile "Arquitetura modular e escalável" até a foto do card 01 de
- * "Soluções de Negócios".
+ * Travessia da foto do time até a foto do card 01 de "Soluções de Negócios".
  *
- * O tile sai do mosaico, desce com o scroll e pousa exatamente sobre a janela da
+ * A foto sai do palco do mosaico — é a última das três, e é essa que faz a
+ * passagem para a seção seguinte —, desce com o scroll e pousa sobre a janela da
  * foto — que é a MESMA imagem (`escritoriosp.jpg`, ver o comentário em
  * `src/data/legacy.ts`). É isso que torna a emenda invisível: no fim do percurso
  * o viajante e a foto real mostram o mesmo conteúdo na mesma caixa, então basta
@@ -32,9 +32,13 @@ import { useReducedMotion } from '@/lib/motion';
  * tile fica parado no mosaico e a foto aparece no palco, como antes.
  */
 
-/** Mesma foto do tile e do card 01. Trocar aqui exige trocar nos dois lugares. */
+/** Mesma foto do palco e do card 01. Trocar aqui exige trocar nos dois lugares. */
 const IMAGEM = '/images/home/escritoriosp.jpg';
-const ROTULO = 'Arquitetura modular e escalável';
+/* Não há rótulo. Havia "Arquitetura modular e escalável", herdado de quando a
+   origem era o cartão dominante do mosaico — mas quem viaja é a foto do time, e
+   uma foto de pessoas legendada como arquitetura afirma o que a imagem não
+   mostra. O rótulo continua onde pertence: no cartão dominante, que é o vídeo
+   `process-scroll.mp4`. */
 
 /* Antecipação do percurso, em telas: a viagem começa quando `#solucoes` ainda
    está 1,25 tela abaixo do topo. Mais curto que isso e o tile parece pular a
@@ -48,13 +52,11 @@ const entre = (de: number, para: number, e: number) => de + (para - de) * e;
 export default function MosaicHandoff() {
   const rm = useReducedMotion();
   const caixaRef = useRef<HTMLDivElement>(null);
-  const rotuloRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (rm) return;
 
     const caixa = caixaRef.current;
-    const rotulo = rotuloRef.current;
     if (!caixa) return;
 
     let quadro = 0;
@@ -144,9 +146,6 @@ export default function MosaicHandoff() {
          só imagem trocando de dono. */
       esconderDestino(p > 0.94 ? Math.min(1, (p - 0.94) / 0.06).toFixed(3) : '0');
 
-      // O rótulo sai cedo: a caixa muda de proporção e o texto ficaria à deriva.
-      if (rotulo) rotulo.style.opacity = Math.max(0, 1 - p / 0.22).toFixed(3);
-
       // A origem só desaparece depois que o viajante está por cima dela.
       esconderOrigem(p > 0.05 ? 0 : 1);
     };
@@ -181,9 +180,6 @@ export default function MosaicHandoff() {
         fill
         sizes="(max-width: 1023px) 45vw, 68vw"
       />
-      <span ref={rotuloRef} className="mosaic-handoff-rotulo">
-        {ROTULO}
-      </span>
     </div>
   );
 }

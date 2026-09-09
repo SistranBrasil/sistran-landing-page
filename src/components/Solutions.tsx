@@ -13,6 +13,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SOLUTIONS } from '@/data/solutions';
 import { getIcon } from '@/lib/icons';
 import { useReducedMotion } from '@/lib/motion';
+import { useJornada } from '@/components/ProofJourney';
 
 /**
  * Teatro de soluções: um palco só, preso ao scroll, onde as quatro soluções se
@@ -70,6 +71,9 @@ const MESMA_GEO = (a: Geo | null, b: Geo): boolean =>
 
 export default function Solutions() {
   const rm = useReducedMotion();
+  /* Fora da `ProofJourney` isto devolve `dirigindo: false`, e a seção volta a ter
+     o gatilho dela — é o que mantém o componente utilizável sozinho. */
+  const jornada = useJornada();
   const [isDesktop, setIsDesktop] = useState(false);
   const [ativo, setAtivo] = useState(0);
   const [geo, setGeo] = useState<Geo | null>(null);
@@ -93,31 +97,20 @@ export default function Solutions() {
     return () => mq.removeEventListener('change', atualizar);
   }, []);
 
-  useEffect(() => {
-    if (!dirigindo) return;
-    const secao = secaoRef.current;
-    const palco = palcoRef.current;
-    if (!secao || !palco) return;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Divisor do parallax contínuo (ver o `onUpdate`). Escrito uma vez.
-    palco.style.setProperty('--sol-total', String(total));
-
-    /* UM trigger. O progresso vai para o DOM por `ref` (uma escrita de custom
-       property por quadro, sem re-render); o índice vai para o estado, e só
-       quando muda de fato. `0.999999` impede que o último quadro (progress === 1)
-       calcule um índice fora do array. */
-    const trigger = ScrollTrigger.create({
-      trigger: secao,
-      start: 'top top',
-      end: 'bottom bottom',
-      onToggle: (self) => {
-        palco.dataset.visivel = self.isActive ? '1' : '0';
-      },
-      onUpdate: (self) => {
-        const p = self.progress;
-        palco.style.setProperty('--sol-p', p.toFixed(4));
+  /**
+   * Um quadro do capítulo, dado o progresso 0..1 do percurso de Soluções.
+   *
+   * Extraído do `onUpdate` do gatilho que vivia aqui, e sem uma linha de
+   * diferença: quem chama passou a ser a `ProofJourney` (que recorta o progresso
+   * da jornada nesta faixa) quando a seção está dentro dela, e o gatilho local
+   * quando não está. É a mesma conta nos dois casos — só o relógio mudou de
+   * dono.
+   */
+  const aplicar = useCallback(
+    (p: number) => {
+      const palco = palcoRef.current;
+      if (!palco) return;
+      palco.style.setProperty('--sol-p', p.toFixed(4));
         /* `--sol-passo-p` (progresso DENTRO da etapa, `(p * total) % 1`) saiu
            daqui: era a origem dos "pulinhos". Sendo dente de serra, ela voltava
            de 1 para 0 na fronteira de cada etapa, e o parallax que a consumia
@@ -128,14 +121,55 @@ export default function Solutions() {
            cada cena, o que dá a mesma amplitude por etapa sem nenhum retorno.
            `--sol-total` é o divisor dessa conta, publicado aqui para o CSS não
            precisar repetir o 4 na mão. */
-        const seguro = Math.min(p, 0.999999);
-        const idx = Math.min(total - 1, Math.max(0, Math.floor(seguro * total)));
-        setAtivo((prev) => (prev === idx ? prev : idx));
+        /* Passagem Soluções -> Números: durante a janela de saída a cópia e a
+           navegação lateral já saíram por opacidade (ver `--sol-saida` no CSS), e
+           controle invisível continua focável. Este atributo é o que os tira da
+           ordem de tabulação — escrito no `dataset`, como o progresso, então não
+           custa um re-render. 0.93 é depois de a opacidade ter chegado a zero. */
+        const saindo = p > 0.93 ? '1' : undefined;
+        if (palco.dataset.saindo !== saindo) {
+          if (saindo) palco.dataset.saindo = saindo;
+          else delete palco.dataset.saindo;
+        }
+      const seguro = Math.min(p, 0.999999);
+      const idx = Math.min(total - 1, Math.max(0, Math.floor(seguro * total)));
+      setAtivo((prev) => (prev === idx ? prev : idx));
+    },
+    [total],
+  );
+
+  useEffect(() => {
+    if (!dirigindo) return;
+    const palco = palcoRef.current;
+    if (!palco) return;
+    // Divisor do parallax contínuo (ver `aplicar`). Escrito uma vez.
+    palco.style.setProperty('--sol-total', String(total));
+  }, [dirigindo, total]);
+
+  /* Relógio da cena. DENTRO da `ProofJourney` não existe gatilho aqui: a jornada
+     tem um só, e este capítulo recebe dele a fatia que lhe cabe. Fora dela — em
+     qualquer outra página que monte a seção — o gatilho local continua sendo
+     criado, com os mesmos `start`/`end` de sempre. Nunca os dois: dois relógios
+     escrevendo `--sol-p` no mesmo nó é a origem clássica do tremor. */
+  useEffect(() => {
+    if (!dirigindo || jornada.dirigindo) return;
+    const secao = secaoRef.current;
+    const palco = palcoRef.current;
+    if (!secao || !palco) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const trigger = ScrollTrigger.create({
+      trigger: secao,
+      start: 'top top',
+      end: 'bottom bottom',
+      onToggle: (self) => {
+        palco.dataset.visivel = self.isActive ? '1' : '0';
       },
+      onUpdate: (self) => aplicar(self.progress),
     });
 
     /* Fontes com `display: swap` refluem o texto depois da medição: sem o
-       refresh os limites do pin ficam em posições velhas e a troca de cena
+       refresh os limites do percurso ficam em posições velhas e a troca de cena
        acontece fora da etapa correspondente. */
     ScrollTrigger.refresh();
     const onResize = () => ScrollTrigger.refresh();
@@ -146,7 +180,22 @@ export default function Solutions() {
       window.removeEventListener('resize', onResize);
       trigger.kill();
     };
-  }, [dirigindo, total]);
+  }, [dirigindo, jornada.dirigindo, aplicar]);
+
+  /* Inscrição na jornada. `aoAlternar` cobre o que o `onToggle` do gatilho local
+     cobria: o movimento interno da cena só roda com o capítulo na tela. */
+  useEffect(() => {
+    if (!dirigindo || !jornada.dirigindo) return;
+    const palco = palcoRef.current;
+    if (!palco) return;
+    return jornada.registrar('solutions', {
+      alvo: () => secaoRef.current,
+      aplicar,
+      aoAlternar: (visivel) => {
+        palco.dataset.visivel = visivel ? '1' : '0';
+      },
+    });
+  }, [dirigindo, jornada, aplicar]);
 
   /* Medição da linha de processo. Nada aqui é constante escolhida a olho: a
      saída sai do retângulo real do item ativo e a chegada do retângulo real da
@@ -319,7 +368,15 @@ export default function Solutions() {
       </div>
 
       <div ref={palcoRef} className="solutions-sticky">
-        <div className="solutions-caixa">
+        {/* `data-ativo` é o único lugar de onde sai a cor de acento da etapa
+            (§4 da refatoração proporcional: "cada troca altera mídia, título,
+            posição da linha de sinal E cor de acento"). Vai na caixa, não na
+            cena, porque a linha de sinal e a régua lateral são irmãs das cenas —
+            precisam do mesmo token em escopo.
+
+            É `ativo` (estado, uma troca por etapa), não o progresso contínuo:
+            cor que interpola a 60 Hz não é acento, é cintilação. */}
+        <div className="solutions-caixa" data-ativo={ativo}>
           <div className="solutions-cabecalho">
             {/* Sobretítulo e título verbatim do bloco "Soluções de Negócios" da
                 home. Fonte: .claude/conteudo-site/00-home.md (seção 5). */}

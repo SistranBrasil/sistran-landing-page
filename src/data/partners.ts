@@ -147,10 +147,31 @@ export const PARTNERS: readonly Partner[] = [
   },
   {
     id: 'nuclea',
-    title: 'Nuclea',
+    /* SIS-158 — A DECISÃO VEIO: a grafia é `Núclea`, COM acento. Estava
+       estacionada porque acentuar nome de terceiro em material publicado é de
+       quem responde pelo conteúdo, não de quem escreve o código.
+       Trocada em quatro lugares, e só nestes quatro: o `title` aqui, o `logoAlt`
+       logo abaixo, o valor travado no `copy-lock.json` e a escrita de
+       `.claude/conteudo-site/05-parceiros-e-implementacoes.md`, que é a fonte.
+       O ARQUIVO DA PLACA NÃO FOI RENOMEADO — `Nuclea-logo.png` continua com esse
+       nome no disco e no campo `logo`: nome de arquivo não é escrita publicada, e
+       renomear quebraria a referência sem ganho nenhum.
+       O acento já era publicado em outro lugar do site antes desta issue:
+       `src/data/timeline.ts:30` traz `'Seguros Unimed · Núclea'`. Ou seja, a
+       divergência era interna — o mesmo nome saía das duas formas em duas telas.
+       Aquela linha não foi tocada; era esta que estava fora do passo. */
+    title: 'Núclea',
     focus: 'Conexão e Inteligência com Dados',
     category: 'dados',
     icon: 'Cog',
+    /* O arquivo já estava versionado e só não estava ligado — este card era o
+       único dos dezesseis sem placa, e o `{!p.logo && <div className="flex-1" />}`
+       do `PartnersGrid` deixava o vão no lugar dela.
+       `logoAlt` com o nome, e não vazio: o `PartnersGrid` faz
+       `aria-hidden={p.logoAlt ? undefined : true}`, então sem este campo a placa
+       entraria como decorativa — que é o oposto do padrão dos outros quinze. */
+    logo: '/images/Nuclea-logo.png',
+    logoAlt: 'Núclea',
     description:
       'Atua no setor financeiro, oferecendo soluções inovadoras para o mercado de pagamentos e registros de ativos.',
   },

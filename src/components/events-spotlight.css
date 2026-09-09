@@ -1,0 +1,1031 @@
+/* SIS-166 — cena única de destaque de `/eventos-inovacao` (`EventsSpotlight.tsx`).
+   Arquivo próprio, no padrão de `brand-grid.css`, `essence-accordion.css` e
+   `positioning-ecosystem.css`: nada aqui é consumido por outra tela, e deixar em
+   `globals.css` misturaria uma peça de uma seção com o que serve o site inteiro.
+   O CSS do mosaico e do palco que esta cena substitui continua no `globals.css`,
+   intacto e sem consumidor — ver o comentário de saída no `page.tsx`. */
+
+/* ==========================================================================
+   A SUPERFÍCIE, E POR QUE ELA ABRE E FECHA EM NAVY
+
+   A cena tem DOIS VIZINHOS ESCUROS: o hero fecha em `rgb(4 27 61 / 78%)` (véu de
+   `.hero-backdrop--eventos`) e a `<Social className="palco-de-cena-escura">` logo
+   abaixo já espera escuro em cima. O desenho pede fundo CLARO (é onde a descrição
+   de corpo é lida, com piso de 4,5:1).
+   Quem muda de cor é o PRÓPRIO BLOCO, num degradê só: nasce no navy do hero,
+   clareia no meio e volta a fechar em navy. Nenhuma emenda nova em nenhuma das
+   duas pontas — é a mesma receita que o mosaico usava, e é ela que faz a troca de
+   dois blocos por um não criar fronteira de cor nova. Uma superfície clara de
+   ponta a ponta criaria DUAS fronteiras onde hoje não há nenhuma, que é
+   exatamente a armadilha que a SIS-107 removeu.
+
+   O FIO CIANO DO TOPO continua sendo o que o fio do hero encontra aceso: o elo
+   `hero -> eventos` da rota é por LINHA, e a linha continua. Os valores são os do
+   `.pagehero-fio`, repetidos de propósito (lá eles são escalados por `--hp`,
+   porque o fio é DESENHADO durante a partida do hero; aqui a linha já está
+   inteira). Ele mora no topo do bloco, e o topo do bloco é navy — ciano de 3px
+   com halo sobre navy é o que ele era no hero.
+   ========================================================================== */
+
+.eventos-destaque {
+  /* Abaixo de 1024px a cena não existe: quem entra é `.eventos-lista`. Não é
+     "esconder conteúdo" — é a OUTRA versão do mesmo conteúdo, e é `display: none`
+     justamente para a escondida ficar fora da árvore de acessibilidade (nada é
+     lido duas vezes, e nenhuma das duas é `aria-hidden`). */
+  display: none;
+}
+
+.eventos-lista {
+  display: block;
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    #041b3d 0%,
+    #082a4e 3%,
+    #eaf2fb 9%,
+    #f6fafd 50%,
+    #e6eff9 74%,
+    #0a2b4d 92%,
+    #041d37 100%
+  );
+  padding-block: clamp(2.5rem, 8vw, 4rem) clamp(3rem, 9vw, 5rem);
+}
+
+@media (min-width: 1024px) {
+  .eventos-lista {
+    display: none;
+  }
+
+  .eventos-destaque {
+    display: block;
+    position: relative;
+    /* `clip`, NUNCA `hidden`: `hidden` faria deste bloco um contêiner de scroll e
+       mataria o `position: sticky` do palco aqui dentro. */
+    overflow: clip;
+    background: linear-gradient(
+      180deg,
+      #041b3d 0%,
+      #082a4e 2%,
+      #eaf2fb 6%,
+      #f6fafd 45%,
+      #e6eff9 80%,
+      #0a2b4d 96%,
+      #041d37 100%
+    );
+    /* Quanto de rolagem cada evento consome. A ALTURA DA SEÇÃO NÃO É ESCRITA em
+       nenhum lugar: ela é a soma das quinze sentinelas mais a cauda, então a
+       contagem de eventos existe num lugar só (`EVENTS.length`, no componente) e
+       o CSS não tem um "15" para divergir dela. */
+    --evt-passo: 56svh;
+
+    /* SIS-167 — AMPLITUDE DA FLUTUAÇÃO, e ela é PRÓPRIA desta cena, menor que a
+       de `/transformacao-legado`. Não é gosto: é a conta da colisão do item 3 da
+       issue, feita antes de escrever o CSS.
+       Com os valores do mosaico (`--float-x: 12px`, `--float-rot: 2.6deg`) a
+       excursão PARA A ESQUERDA é -8,4px (a parada de 62% é `x -0.7`) e a projeção
+       da rotação numa vaga de 95x53px é `(h/2) * sen 2,6deg` ~ 1,2px. A folga de
+       repouso da faixa contra o `ScrollSpy` é 19px em 1440 (122 - 103), o que
+       deixaria ~9,4px: positivo, mas margem de erro e não folga — e a colisão
+       daquela pílula é justamente o defeito do mosaico que esta cena não devia
+       reimportar.
+       Com 9px/2deg a excursão à esquerda cai para ~6,3 + 1,0 = 7,3px. O recuo
+       mínimo do `nth-child` é 4% da faixa e nunca 0%, no mesmo espírito da nota
+       de `legacy.css` ("recuos mínimos de 4%: com a flutuação somada, 2% deixava
+       o cartão raspando a borda").
+       Medido depois com `scripts/medir-cena-eventos.mjs`, que passou a subtrair
+       esta amplitude do recuo — a folga verdadeira é "recuo menos excursão", não
+       o recuo. */
+    --evt-float-x: 9px;
+    /* ⚠️ ZERO NO EIXO VERTICAL, e este é o número mais importante deste bloco.
+       Era `-22px`, copiado da amplitude de `/transformacao-legado`. Lá cabe; aqui
+       não cabe, e o "aqui" tem medida: com as vagas em fluxo (`space-between`), a
+       faixa fica CHEIA. A sonda mediu a folga de repouso entre vagas vizinhas em
+       ~10px em 1670x940 e ~1,6px em 1366x768 — oito miniaturas de ~87px numa faixa
+       de ~707px úteis. Uma deriva vertical de 22px, com a vizinha de cima descendo
+       0,78 disso ao mesmo tempo, faz as duas se cruzarem: foi assim que a arte de
+       uma vaga foi pintar sobre o rótulo da outra em 1366 (`elementsFromPoint`
+       devolveu o `IMG` da vaga seguinte no centro da placa).
+       Não há valor pequeno que resolva: em 1366 a folga é de 1,6px, então QUALQUER
+       componente vertical percebível cruza. A flutuação fica sendo deriva
+       horizontal (`--evt-float-x`) mais inclinação (`--evt-float-rot`/`-ry`/`-rx`),
+       que é onde há espaço de sobra — a faixa é larga e a excursão lateral já está
+       medida contra o `ScrollSpy`. O `@keyframes` continua lendo esta variável, e é
+       por isso que ela fica em `0px` em vez de sair das paradas: um dia em que a
+       faixa ganhar altura, mexer aqui devolve o eixo inteiro de uma vez.
+       A projeção vertical que SOBRA é a da rotação, `(largura/2) × sen 2deg` ~
+       1,7px por ponta — abaixo da folga mais apertada, e a sonda confere isso na
+       asserção 20. */
+    --evt-float-y: 0px;
+    --evt-float-rot: 2deg;
+    --evt-float-ry: 5deg;
+    --evt-float-rx: -3deg;
+
+    /* Largura da vaga. Vive aqui, e não na regra dela, porque a AMPLITUDE DE
+       RECUO da faixa é `largura da faixa - largura da vaga`: os dois números têm
+       de ser lidos juntos ou o `left` em porcentagem do `nth-child` estoura a
+       faixa sem ninguém ver. */
+    /* ⚠️ ERA `clamp(4.5rem, 6vw, 7rem)`, e ENCOLHEU porque a faixa não tem a altura
+       que eu supus. `.eventos-destaque-coluna` é `top: 0; bottom: 0`, mas o bloco de
+       contenção dela não é o palco inteiro: medida pela sonda, a faixa tem 658px em
+       1670x940 e 503px em 1366x768. Oito miniaturas do tamanho antigo somavam mais
+       que 503px, então o espaço livre do `space-between` ficava NEGATIVO — os vãos
+       colapsavam a zero e as vagas transbordavam a faixa por ~111px, encavalando-se.
+       Um `space-between` sem folga não distribui nada.
+       Com `4.8vw` e o rótulo de uma linha (ver `--evt-rotulo-linhas`), oito vagas
+       somam ~452px em 1366 e sobram ~51px para os sete vãos. A conta refeita está na
+       SIS-167 junto das larguras de faixa medidas. */
+    --evt-vaga-w: clamp(3.8rem, 4.8vw, 5.8rem);
+    --evt-faixa-w: clamp(7rem, 10vw, 12rem);
+
+    /* O corpo do rótulo vive AQUI, e não na regra dele, porque a ALTURA DA VAGA é
+       calculada a partir dele (`--evt-vaga-h`). Se o `clamp` estivesse escrito só na
+       `font-size`, a altura da vaga e o tamanho da letra passariam a ser dois
+       números capazes de divergir — o defeito que a nota de `--evt-vaga-w` descreve,
+       de novo. */
+    --evt-rotulo-fs: clamp(0.55rem, 0.62vw, 0.68rem);
+    --evt-rotulo-lh: 1.18;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     SIS-167 — A FLUTUAÇÃO.
+
+     UM `@keyframes` só, com variação por custom property e por atraso — nunca um
+     keyframes por cartão. A estrutura é a de `mosaic-float` (`legacy.css`) e as
+     TRÊS PARADAS intermediárias existem pelo motivo que está escrito lá: com dois
+     quadros o cartão descreve sempre a mesma reta e, nesta amplitude, lê como
+     pêndulo. As paradas 2 e 3 derivam dos MESMOS vars por `calc()`, então um
+     ajuste em `--evt-float-y` continua governando o percurso inteiro.
+
+     A `perspective()` é LOCAL (na função, não herdada): é ela que faz o `rotateY`
+     girar em profundidade em vez de achatar, e local para o cartão projetar em
+     torno do próprio centro sem escorregar para fora da faixa.
+     ══════════════════════════════════════════════════════════════════════════ */
+  @keyframes eventos-flutua {
+    0%,
+    100% {
+      transform: perspective(1100px) translate3d(0, 0, 0) rotate(0deg)
+        rotateY(0deg) rotateX(0deg);
+    }
+    30% {
+      transform: perspective(1100px)
+        translate3d(var(--evt-float-x), var(--evt-float-y), 0)
+        rotate(var(--evt-float-rot)) rotateY(var(--evt-float-ry))
+        rotateX(var(--evt-float-rx));
+    }
+    62% {
+      transform: perspective(1100px)
+        translate3d(
+          calc(var(--evt-float-x) * -0.7),
+          calc(var(--evt-float-y) * 0.5),
+          0
+        )
+        rotate(calc(var(--evt-float-rot) * -0.65))
+        rotateY(calc(var(--evt-float-ry) * -0.8))
+        rotateX(calc(var(--evt-float-rx) * -0.7));
+    }
+    84% {
+      transform: perspective(1100px)
+        translate3d(
+          calc(var(--evt-float-x) * 0.35),
+          calc(var(--evt-float-y) * 0.78),
+          0
+        )
+        rotate(calc(var(--evt-float-rot) * 0.4))
+        rotateY(calc(var(--evt-float-ry) * 0.35))
+        rotateX(calc(var(--evt-float-rx) * 0.4));
+    }
+  }
+
+  .eventos-destaque-fio {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    pointer-events: none;
+    z-index: 3;
+    background: linear-gradient(
+      90deg,
+      #0ed8f6 0%,
+      #0ed8f6 18%,
+      #a5f0ff 62%,
+      rgba(165, 240, 255, 0.55) 100%
+    );
+    box-shadow: 0 0 22px rgba(14, 216, 246, 0.6);
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      #000 0%,
+      #000 72%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(90deg, #000 0%, #000 72%, transparent 100%);
+  }
+
+  /* O PALCO. `sticky`, nunca `pin: true` — regra do repositório, e o cabeçalho
+     desta rota diz que nada aqui é pinado com ScrollTrigger.
+     `100svh` e não `100vh`: em telas com barra de navegação dinâmica o `vh` mede
+     a janela maior e o contador ficaria fora de quadro. */
+  .eventos-destaque-palco {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    z-index: 2;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding-block: calc(var(--header-h, 88px) + 0.75rem) 1.25rem;
+  }
+
+  .eventos-destaque-cabecalho {
+    text-align: center;
+  }
+
+  .eventos-destaque-corpo {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 0;
+  }
+
+  /* AS COLUNAS.
+     A folga contra a borda é `clamp(7.5rem, 8.5vw, 10rem)`, escrita nas duas
+     regras de posição logo abaixo, e o número é MEDIDO: a caixa do `ScrollSpy`
+     chega a x=103 em 1440×900 (o rótulo dele fica no fluxo mesmo com
+     `opacity: 0`, então a largura já está na conta — não é o hover que muda a
+     geometria, é a leitura). 7,5rem = 120px deixa ~17px de folga em 1366 e em
+     1440. O valor anterior, `clamp(5.5rem, 7vw, 9rem)`, punha a coluna em 100px:
+     TRÊS pixels DENTRO da pílula, a colisão do mosaico de volta, e por três
+     pixels ninguém desconfiaria olhando. Foi a sonda
+     (`scripts/medir-cena-eventos.mjs`) que pegou.
+     `width: clamp(5.5rem, 6.6vw, 8rem)` abaixo é a LARGURA da coluna, não a
+     folga: aquele 5,5rem está certo e não é resto do valor trocado.
+     ⚠️ SIS-167 REESCREVEU O PARÁGRAFO QUE VINHA AQUI. Ele dizia: "o outro defeito
+     que o mosaico tinha e este arranjo não pode ter: placa da legenda cortada
+     pelo `overflow: clip`. Aqui as colunas não flutuam nem giram — não há
+     `--flutua-x` nem projeção de rotação para estourar a caixa." Isso deixou de
+     ser verdade: as vagas AGORA flutuam e giram, de propósito, e a condição
+     daquele defeito voltou. O que a substitui não é a ausência de movimento, são
+     três coisas medidas: amplitude própria e menor (ver `--evt-float-x` no bloco
+     de `.eventos-destaque`), recuo mínimo de 4% da faixa, e a sonda subtraindo a
+     excursão do recuo em 1024/1280/1440/>=1670. Manter o parágrafo antigo seria
+     deixar um comentário sustentando afirmação falsa. */
+
+  /* SIS-167 — A COLUNA VIROU FAIXA.
+     Era uma coluna vertical de `width: clamp(5.5rem, 6.6vw, 8rem)` empilhando as
+     vagas em `flex-direction: column` com `gap: 0.4rem` e `justify-content:
+     center` — as oito colapsadas no meio, coladas umas nas outras. Aquelas três
+     declarações saem de cena e ficam comentadas logo abaixo, porque o que as
+     substitui é posicionamento absoluto por `nth-child`.
+     A largura passou a `--evt-faixa-w` (`clamp(7rem, 10vw, 12rem)`), e a
+     diferença contra `--evt-vaga-w` é a AMPLITUDE DE RECUO: ~40px em 1024, ~58px
+     em 1440. É pouco de propósito. `/transformacao-legado` espalha pela largura
+     toda porque lá não existe cartão central disputando o centro; aqui o cartão é
+     o conteúdo da rota, e o espalhamento pesado é VERTICAL (a faixa já vai de
+     `top: 0` a `bottom: 0` — distribuir por `top` não custa um pixel de largura de
+     ninguém). A apuração do vazio disponível está na SIS-167. */
+  .eventos-destaque-coluna {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: var(--evt-faixa-w);
+    z-index: 1;
+    /* ⚠️ O FLUXO FLEX VOLTOU, e a razão é um defeito medido, não recuo de opinião.
+       A primeira versão desta issue distribuía as vagas por `top` em PORCENTAGEM da
+       faixa, com `position: absolute`. Isso mistura duas unidades que não escalam
+       juntas: o espaçamento vertical é % da ALTURA DA JANELA e a altura da vaga é px
+       (`--evt-vaga-w` × `aspect-ratio`). Em 1440x900 dava ~45px de passo contra 64px
+       de vaga e já era justo; em 1366x768 o passo caiu para 32px e as vagas passaram
+       a SE SOBREPOR. A sonda pegou isso pelo caminho mais torto possível — o
+       contraste do rótulo despencou para 1,01:1 porque quem pintava sobre a placa
+       era a ARTE DA VAGA SEGUINTE (`elementsFromPoint` no centro da placa devolveu
+       `IMG` > `.eventos-vaga-arte` de outra vaga). Contraste era o sintoma;
+       sobreposição era a doença.
+       `justify-content: space-between` resolve por CONSTRUÇÃO e não por conta: dois
+       itens de flex nunca se sobrepõem. Se a faixa encurtar além do que cabe, o
+       espaço entre elas vira zero e elas se encostam — degradação feia, mas legível,
+       contra texto coberto por imagem. Nenhuma aritmética de % sobre altura de
+       janela dá essa garantia, por mais bem calibrada que esteja para as cinco
+       larguras que eu medi.
+       O ESPALHAMENTO HORIZONTAL FICA: é ele que faz a constelação, e ali a
+       porcentagem é segura porque a largura da faixa e a da vaga vêm as duas de
+       `clamp()` sobre `vw` — escalam juntas. Ele só troca de mecanismo, de
+       `position: absolute` + `left` para `position: relative` + `left`, que desloca
+       o mesmo tanto sem tirar a vaga do fluxo.
+       `padding-block` para as extremas não encostarem na borda da faixa, no lugar
+       do que os antigos `top: 3%` e `top: 87%` faziam. */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Vão MÍNIMO, para a inclinação de uma vaga não raspar a vizinha quando o teto
+       de `max-height` estiver valendo e o `space-between` não tiver sobra para
+       distribuir. A projeção da rotação é ~1,7px por ponta (a conta está na nota de
+       `--evt-float-y`); 0,35rem cobre as duas com margem. */
+    gap: 0.35rem;
+    padding-block: 4%;
+  }
+
+  /* A medida e o motivo estão no bloco de `.eventos-destaque-coluna`, acima. À
+     direita o mesmo valor por simetria: lá não há `ScrollSpy`, mas coluna
+     assimétrica leria como desalinho. */
+  .eventos-destaque-coluna--esq {
+    left: clamp(7.5rem, 8.5vw, 10rem);
+  }
+
+  .eventos-destaque-coluna--dir {
+    right: clamp(7.5rem, 8.5vw, 10rem);
+  }
+
+  /* SIS-167 — a vaga saiu do fluxo e passou a ser posicionada dentro da faixa.
+     `width` por `--evt-vaga-w` multiplicado por `--evt-prof`, que é o que dá as
+     DUAS PROFUNDIDADES: cartão de longe é menor e respira mais devagar. Multiplico
+     a largura por `calc()` em vez de usar `scale()` porque o `transform` já é
+     inteiramente da flutuação — somar uma escala ali obrigaria a repetir o
+     `scale` nas quatro paradas do `@keyframes`, e um esquecimento numa delas viria
+     como um pulo de tamanho no meio do ciclo. */
+  .eventos-vaga {
+    /* `relative` e não `absolute` — o motivo está no bloco da faixa, acima:
+       `absolute` foi o que permitiu a sobreposição em 1366. `relative` mantém o
+       deslocamento horizontal por `left`/`right` (que continua sendo % da largura da
+       faixa, idêntico ao de antes) e devolve a vaga ao fluxo, onde o flex garante
+       que ninguém cobre ninguém. */
+    position: relative;
+    width: calc(var(--evt-vaga-w) * var(--evt-prof, 1));
+    /* ALTURA EXPLÍCITA, e é ela que sustenta a promessa da vaga em destaque de
+       "ocupar a mesma vaga que o botão ocuparia". Com as vagas em fluxo, essa
+       promessa deixou de sair de graça: um `<div>` de destaque mais baixo que um
+       `<button>` faria a faixa se reorganizar A CADA TROCA de evento, quinze vezes
+       na rolagem — exactamente o salto que a nota da vaga em destaque diz evitar.
+       A conta é a soma real do conteúdo: arte (16/9 da largura) + `gap` + rótulo de
+       uma linha com o `padding` dele. Sai das mesmas variáveis usadas pelas regras
+       de baixo, então não há um segundo número para envelhecer. */
+    --evt-vaga-h: calc(
+      var(--evt-vaga-w) * var(--evt-prof, 1) * 0.5625 + 0.2rem +
+        var(--evt-rotulo-lh) * var(--evt-rotulo-fs) + 0.5rem
+    );
+    /* ⚠️ `flex` E `max-height`, NÃO `height`. Uma altura fixa ainda podia somar mais
+       que a faixa — foi o que a sonda mediu depois de eu encolher a vaga: 1440
+       ficou verde e 1366 continuou com treze pares sobrepostos, porque "encolhi o
+       suficiente" é calibragem, e calibragem para cinco larguras não é garantia.
+       A base é `--evt-vaga-h` e o crescimento é ZERO: toda vaga tem a mesma base,
+       e a base não depende do que há dentro. Tentei `flex: 1 1 0` antes, dividindo a
+       altura da faixa — e ela é boa contra sobreposição, mas devolve a altura de cada
+       vaga ao seu conteúdo mínimo, e o conteúdo da vaga em destaque (ícone + placa +
+       `padding` + borda) não é o de um botão (arte + placa). A sonda mediu 12px de
+       deslocamento de topo na troca em 1670 e 1366 — a faixa se reorganizando a cada
+       um dos quinze eventos, que é exactamente o que o item 6 pede para não acontecer.
+       Com base igual e `grow: 0`, a posição de cada vaga depende só da paridade
+       (`--evt-prof`), nunca do evento aceso.
+       `shrink: 0` também, e isto foi medido, não escolhido por simetria: com
+       `shrink: 1` a base de 60,68px em 1366 virava 46,73px num botão e 49,41px na
+       vaga em destaque — o encolhimento para no piso de conteúdo de cada item, e o
+       conteúdo do destaque tem piso maior (`padding`, borda, placa que não encolhe).
+       Base igual mais encolhimento desigual é base desigual, e a faixa voltava a se
+       reorganizar 3px na troca. Sem encolhimento, altura usada É a base.
+       O preço: a soma das bases mais os `gap` tem de caber na faixa, senão o
+       transbordo volta e com ele a sobreposição. Não é fé — é a asserção 20 da sonda,
+       nas cinco larguras, e é por isso que o `padding-block` da faixa é folgado.
+       Não há `max-height`: a base já é a altura, e um teto separado só criaria uma
+       segunda fonte de verdade para a mesma medida.
+       `min-height: 0` fica porque o padrão `auto` de um item de flex se recusa a
+       ficar menor que o conteúdo: sem ele, uma vaga cuja arte não caiba na base
+       estouraria a base em vez de recortar a arte. */
+    flex: 0 0 var(--evt-vaga-h);
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    text-align: left;
+  }
+
+  /* Só as CATORZE flutuam. A vaga em destaque não — ver a nota dela adiante. */
+  .eventos-vaga--botao {
+    cursor: pointer;
+    border-radius: 0.5rem;
+    animation: eventos-flutua var(--evt-float-time, 7s)
+      var(--evt-float-delay, 0s) ease-in-out infinite;
+    /* Só nos que flutuam, nunca em tudo: `will-change` espalhado consome memória
+       de GPU sem devolver nada e fica pior que não ter. São catorze camadas
+       compostas, contra as dez de `/transformacao-legado`. */
+    will-change: transform;
+  }
+
+  /* O afago de hover NÃO pode ser `transform`: ele brigaria com a animação da
+     flutuação (uma propriedade, dois donos — e a animação vence, então o hover
+     simplesmente não aconteceria). Vira brilho e nitidez, que a flutuação não
+     usa. Era `transform: translateY(-2px)`, e fica registrado aqui porque o
+     motivo da troca é a issue e não estética. */
+  .eventos-vaga--botao:hover {
+    filter: brightness(1.08);
+    opacity: 1;
+  }
+
+  /* ── AS QUINZE POSIÇÕES ────────────────────────────────────────────────────
+     Padrão de `legacy.css` (`.mosaic-tile:nth-child(n)`): pares recuo + `top`
+     escritos à mão, alternando o recuo para o conjunto não ler como coluna.
+
+     `nth-child` AQUI É FUNÇÃO DO ÍNDICE DO CATÁLOGO, e isso não é coincidência.
+     A faixa esquerda recebe os pares e a direita os ímpares (decisão da SIS-166,
+     `EventsSpotlight.tsx`), então o k-ésimo filho da esquerda é sempre o evento
+     `2(k-1)` e o da direita sempre `2k-1` — bijeção fixa, que não depende de qual
+     evento está em destaque. É exactamente por isso que a posição de cada
+     miniatura NÃO muda quando o destaque troca; se a divisão fosse "os catorze
+     restantes", as vagas saltariam de lugar quinze vezes ao rolar.
+
+     RECUO MÍNIMO 4%, NUNCA 0%: a flutuação empurra ~7,3px para a esquerda (a
+     conta está no bloco de `--evt-float-x`) e o `ScrollSpy` está logo ali.
+     RECUO MÁXIMO 34%: a amplitude útil é `faixa - vaga` = 40% da faixa, então 34%
+     deixa o cartão dentro dela com margem em vez de encostado no limite.
+
+     ⚠️ O `top` DE CADA PAR FOI REMOVIDO, e ficou comentado ao lado de cada regra em
+     vez de apagado, porque são esses quinze números que documentam a tentativa que
+     falhou. Eram 3% a 87% à esquerda e 9% a 83% à direita, desencontrados para as
+     duas faixas não lerem como fileiras alinhadas. O desencontro se perde com o
+     `space-between` — as duas faixas voltam a distribuir no mesmo passo, e a
+     `space-between` — CORREÇÃO: em boa parte ele NÃO se perde, e a versão anterior
+     desta nota dava por pago um preço que não foi cobrado. A esquerda tem 8 vagas
+     (7 vãos) e a direita 7 (6 vãos), na MESMA altura de faixa: os passos são
+     ~1/7 e ~1/6 do trecho útil, diferentes por construção. Só a primeira e a
+     última vaga de cada faixa se alinham; nas treze posições do meio o desencontro
+     sobrevive por aritmética, sem número escrito à mão. O que se perdeu de fato é o
+     CONTROLE sobre ele — não se escolhe mais qual vaga fica onde na vertical.
+     A assimetria restante vem do recuo horizontal, das duas profundidades e dessa
+     diferença de passo. É o preço de não deixar vaga cobrindo vaga em 1366, e é
+     mais barato do que eu tinha escrito: a razão completa está no bloco de
+     `.eventos-destaque-coluna`.
+
+     Se um dia se quiser o desencontro DE PROPÓSITO, e não como resto: `padding-block`
+     assimétrico só na faixa direita (mais em cima, menos embaixo) desce o grupo meio
+     passo sem trazer de volta porcentagem de altura de janela na conta — que é a
+     causa raiz do defeito de 1366. O `space-between` continua garantindo por
+     construção que ninguém cobre ninguém dentro de cada faixa. */
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(1) { left: 6%; /* top: 3%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(2) { left: 30%; /* top: 15%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(3) { left: 4%; /* top: 27%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(4) { left: 34%; /* top: 39%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(5) { left: 8%; /* top: 51%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(6) { left: 28%; /* top: 63%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(7) { left: 4%; /* top: 75%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(8) { left: 32%; /* top: 87%; */ }
+
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(1) { right: 8%; /* top: 9%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(2) { right: 30%; /* top: 21%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(3) { right: 4%; /* top: 33%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(4) { right: 32%; /* top: 45%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(5) { right: 6%; /* top: 58%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(6) { right: 28%; /* top: 70%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(7) { right: 5%; /* top: 83%; */ }
+
+  /* ── AS DUAS PROFUNDIDADES ─────────────────────────────────────────────────
+     `/transformacao-legado` faz profundidade com parallax de ROLAGEM
+     (`useTransform` sobre `scrollYProgress`, duas velocidades). NÃO trago esse
+     mecanismo, e a razão é de arquitetura, não de esforço: esta cena tem de
+     propósito UM só assinante de rolagem — um `IntersectionObserver` sem fração
+     de progresso (o cabeçalho de `EventsSpotlight.tsx` explica) — e o palco é
+     `sticky` dentro de `overflow: clip`. Pendurar um progresso de rolagem aqui
+     reintroduz a divergência de duas medidas que a nota da SIS-156 nomeia.
+     As duas velocidades vêm da FLUTUAÇÃO: ímpares ficam de longe (menores,
+     mais lentos, amplitude reduzida) e pares de perto. A leitura de profundidade
+     é a mesma — ritmos e tamanhos distintos —, sem assinante novo.
+     A divergência está declarada por escrito na SIS-167, não escondida. */
+  .eventos-destaque-coluna .eventos-vaga:nth-child(odd) {
+    --evt-prof: 0.86;
+    --evt-float-time: 9.5s;
+    --evt-float-x: 6px;
+    /* `-15px` aqui, e o motivo de ser `0px` agora está na nota de
+       `--evt-float-y` na raiz da cena: não há folga vertical entre vagas em fluxo.
+       A amplitude reduzida das ímpares — que é o que dá a segunda profundidade —
+       sobrevive no eixo horizontal (6px contra 9px) e no tempo (9,5s contra 7s). */
+    --evt-float-y: 0px;
+  }
+
+  .eventos-destaque-coluna .eventos-vaga:nth-child(even) {
+    --evt-prof: 1.06;
+    --evt-float-time: 7s;
+  }
+
+  /* Atrasos diferentes por vaga: sem eles as catorze respiram em uníssono e o
+     conjunto lê como uma coisa tremendo, não como profundidade. `4n`/`3n` em vez
+     de um atraso por cartão para o padrão não ficar periódico com o par/ímpar
+     acima. */
+  .eventos-destaque-coluna .eventos-vaga:nth-child(3n) {
+    --evt-float-delay: -2.3s;
+  }
+
+  .eventos-destaque-coluna .eventos-vaga:nth-child(4n) {
+    --evt-float-delay: -4.7s;
+  }
+
+  .eventos-vaga--botao:focus-visible {
+    outline: 2px solid #0ed8f6;
+    outline-offset: 3px;
+  }
+
+  .eventos-vaga-arte {
+    display: block;
+    /* A arte é o que CEDE quando a faixa é curta, e é a escolha certa: recortar
+       imagem custa nada de informação (o `object-fit: cover` já recorta), encolher o
+       rótulo custa uma linha de texto. `aspect-ratio` fica como proporção
+       PREFERIDA — o `flex-basis: auto` deixa ela mandar quando há espaço — mas com
+       `min-height: 0` para poder ser comprimida em vez de estourar a vaga. */
+    flex: 1 1 auto;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 0.4rem;
+    box-shadow: 0 8px 20px -14px rgba(8, 33, 63, 0.6);
+  }
+
+  .eventos-vaga-arte img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* A placa clara sob o título, herdada da legenda do mosaico e pelo mesmo
+     motivo: as vagas de cima e de baixo passam sobre o navy das travessias de cor
+     e as do meio sobre o claro. Com a placa, a medida de contraste é UMA e vale
+     para as quinze, em qualquer altura do bloco. */
+  .eventos-vaga-rotulo {
+    /* SIS-167 (item 10) — POR QUE O RÓTULO TRANSBORDAVA, apurado e não deduzido.
+       O `-webkit-line-clamp: 2` + `line-clamp: 2` + `overflow: hidden` deveriam
+       bastar. Não bastavam, e a razão só apareceu lendo o CSS COMPILADO servido
+       pelo `next dev`: a declaração `display: -webkit-box` NÃO CHEGA AO NAVEGADOR.
+       O transformador de CSS do Next 16 a descarta ao normalizar o par
+       `-webkit-line-clamp`/`line-clamp`, e sem `display: -webkit-box` o
+       `-webkit-line-clamp` do Chromium não faz nada: o `<span>` fica `flow-root`
+       (conferido no `getComputedStyle`) e não há clamp por linhas nenhum.
+       O sintoma não era texto escapando: era pior de ler, porque a caixa ainda
+       tinha `overflow: hidden` e o corte caía NO MEIO DA TERCEIRA LINHA — meia
+       altura de glifo aparecendo sob a segunda. Foi visto na captura de
+       `docs/capturas/sis167-faixa-dir.png`, não no número.
+       A CORREÇÃO é `max-height` em LINHAS INTEIRAS, que nenhum transformador pode
+       reinterpretar: 2 × `line-height` (1.18) mais os 0,5rem de `padding` vertical
+       (`box-sizing: border-box` é global aqui). Com isso o corte cai sempre ENTRE
+       linhas. O trio `line-clamp` fica onde está: onde ele sobreviver, ganha-se a
+       elipse de graça; onde não, o `max-height` já resolveu.
+       `overflow-wrap: anywhere` fica por conta própria: os títulos trazem `·` e
+       palavras longas sem hífen, e uma palavra mais larga que a placa não quebra
+       em `normal`. `min-width: 0` idem, para o mínimo automático de flex item não
+       impedir o recorte na horizontal.
+       A sonda passou a exigir que a altura útil seja MÚLTIPLO INTEIRO da
+       `line-height` — a asserção anterior comparava `scrollHeight` com
+       `clientHeight`, e isso reprova qualquer texto clampado, defeito ou não. */
+    min-width: 0;
+    overflow-wrap: anywhere;
+    /* NÃO ENCOLHE. Quem cede é a arte (ver a nota dela). Sem isto o `flex` da faixa
+       comprimia a placa junto com a imagem, e a sonda mediu dez das quinze com a
+       altura útil fora do múltiplo da `line-height` — ou seja, texto cortado no meio
+       da linha, o defeito do item 10 de volta por outro caminho. */
+    flex-shrink: 0;
+    /* UMA linha, não duas. Duas era o que a SIS-166 tinha, e não cabe mais: a
+       altura da vaga passou a ser explícita para a faixa não se reorganizar na troca
+       de destaque, e cada linha extra de rótulo multiplica por oito na soma da
+       coluna — foi a segunda linha, somada à largura antiga, que estourava os 503px
+       de faixa em 1366. Título comprido termina em elipse, que é o comportamento
+       normal de miniatura; o título inteiro está no cartão central e no `title`/texto
+       acessível do botão. */
+    max-height: calc(var(--evt-rotulo-lh) * 1em + 0.5rem);
+    padding: 0.25rem 0.35rem;
+    border-radius: 0.4rem;
+    background: rgba(255, 255, 255, 0.94);
+    color: #123a63;
+    font-size: var(--evt-rotulo-fs);
+    font-weight: 600;
+    line-height: var(--evt-rotulo-lh);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  /* A VAGA VAZIA do evento em destaque — é ela que amarra coluna e centro.
+     SIS-167 (item 6) — ELA NÃO FLUTUA, e isso sai de graça da construção: a
+     animação está em `.eventos-vaga--botao`, e a vaga em destaque é um `<div>`
+     que NÃO tem aquela classe (os dois estados de `miniatura`, no componente).
+     Não há `animation: none` a escrever, e é melhor assim: um `none` poderia ser
+     removido por quem não soubesse do acordo, a ausência da classe não.
+     O motivo: ela é o único alvo que o leitor precisa localizar, é o par visual
+     do cartão, e troca quinze vezes na rolagem — alvo que se move E troca ao
+     mesmo tempo é o pior caso de leitura. As catorze flutuam, ela fica parada e
+     acesa. Ocupa a MESMA vaga que o botão ocuparia, então a faixa não se
+     reorganiza na troca. */
+  .eventos-vaga--destaque {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    /* aspect-ratio: 16 / 9;
+       Sem consumidor: a altura agora vem de `--evt-vaga-h`, em `.eventos-vaga`, que
+       é a MESMA para o botão e para o destaque — é isso que impede a faixa de se
+       reorganizar quando o destaque troca. Uma `aspect-ratio` aqui seria ignorada
+       (largura e altura já estão determinadas) e, pior, mentiria sobre quem manda na
+       altura. Fica comentada porque era ela que documentava o formato de arte da
+       vaga vazia. */
+    border: 1px dashed rgba(14, 216, 246, 0.75);
+    border-radius: 0.4rem;
+    /* SIS-167 (item 9) — A BASE PRECISA SER OPACA, e o motivo é uma consequência
+       do item 1 desta issue, não um capricho de cor.
+       Antes: `background: rgba(14, 216, 246, 0.08)`. Funcionava enquanto as vagas
+       eram uma pilha centrada na faixa, sempre sobre o claro. Ao espalhá-las em
+       porcentagem, as extremas foram para `top: 3%` e `top: 87%` — ou seja, para
+       DENTRO do navy das travessias de cor da seção. E `.eventos-vaga--destaque
+       .eventos-vaga-rotulo` remove a placa clara (`background: none`), justamente
+       a placa que o comentário acima de `.eventos-vaga-rotulo` diz existir por
+       causa dessas alturas. Resultado medido pela sonda: 1,00:1 em 1670, 1366,
+       1280 e 1024, e 8,65:1 em 1440 — passava só na largura em que o destaque
+       calhava de cair no trecho claro. Piso que depende da largura da janela não
+       é piso.
+       Uma cor opaca resolve para as quinze posições de uma vez, o que a placa por
+       rótulo não faria: o ícone e o fio também são tinta escura sobre a mesma
+       caixa. O acento ciano continua, agora por cima de branco em vez de por cima
+       do que houver atrás. */
+    background: #f2fbfe;
+    padding: 0.3rem;
+    text-align: center;
+  }
+
+  .eventos-vaga--destaque .eventos-vaga-rotulo {
+    background: none;
+    color: #0b3a5c;
+    padding: 0;
+    /* UMA linha, igual às vizinhas. Tentei duas — a vaga em destaque é a que o leitor
+       está procurando, e uma linha a mais parecia barato. Não é: com a placa marcada
+       `flex-shrink: 0`, duas linhas tornam o conteúdo incompressível do destaque mais
+       alto que o de um botão (arte + uma linha), a vaga em destaque resolve numa
+       altura diferente e a faixa se REORGANIZA a cada troca de evento — a sonda mediu
+       12px de deslocamento de topo em 1670 e 1366, e é exatamente a promessa que o
+       item 6 pede para manter. O título completo já está no cartão central; aqui a
+       função da placa é dizer QUAL vaga está acesa, e uma linha diz isso.
+       O `max-height` tem de ser reescrito junto com o `line-clamp`, sempre: aqui o
+       `padding` é zero e o herdado embute os 0,5rem do padding das vizinhas. */
+    max-height: calc(var(--evt-rotulo-lh) * 1em + 0.1rem);
+    /* E `width: 100%` porque esta placa é a única com `align-items: center` acima
+       dela (`.eventos-vaga--destaque`): centralizada, a caixa é dimensionada pelo
+       conteúdo e ULTRAPASSA a vaga em vez de quebrar. A sonda mediu 3px de
+       escapada em 1280 — só ali, porque só ali a palavra mais larga do título em
+       destaque não caberia. `min-width: 0` não resolve este caso: o problema não é
+       mínimo automático, é a caixa não ter largura definida para o texto quebrar
+       contra. */
+    width: 100%;
+  }
+
+  .eventos-vaga-icone {
+    color: #0b7fa8;
+  }
+
+  /* O FIO da vaga até o cartão, com o nó aceso na ponta (o `::after`). Desenhado
+     em CSS a partir da própria vaga, e NÃO medido entre duas caixas: geometria
+     medida entre dois nós que trocam quinze vezes é o tipo de cálculo que
+     desalinha em um resize e ninguém vê. Aqui o traço nasce na borda interna da
+     vaga e some antes do cartão — a leitura é de ligação, não de régua.
+     SIS-167 — a issue supunha que o espalhamento quebraria este fio ("com as vagas
+     em `top` variável, um fio horizontal de largura fixa deixa de encostar no
+     cartão"). Ele NUNCA encostou: é um toco que sai da própria vaga e apaga. Então
+     o espalhamento não invalida nada aqui — e a decisão de não medir entre duas
+     caixas, tomada na SIS-166 pela razão do resize, ganhou uma SEGUNDA razão que
+     vale registrar: se o fio fosse régua até o cartão, esta issue o teria
+     quebrado nas quinze vagas de uma vez. Nada a mudar, por decisão e não por
+     omissão. */
+  .eventos-vaga-fio {
+    position: absolute;
+    top: 50%;
+    height: 2px;
+    width: clamp(2rem, 5vw, 5.5rem);
+    background: linear-gradient(
+      90deg,
+      #0ed8f6 0%,
+      rgba(165, 240, 255, 0.15) 100%
+    );
+    box-shadow: 0 0 14px rgba(14, 216, 246, 0.55);
+    pointer-events: none;
+  }
+
+  .eventos-destaque-coluna--esq .eventos-vaga-fio {
+    left: 100%;
+  }
+
+  .eventos-destaque-coluna--dir .eventos-vaga-fio {
+    right: 100%;
+    background: linear-gradient(
+      270deg,
+      #0ed8f6 0%,
+      rgba(165, 240, 255, 0.15) 100%
+    );
+  }
+
+  .eventos-vaga-fio::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 7px;
+    height: 7px;
+    margin: -3.5px 0 0 -3.5px;
+    border-radius: 50%;
+    background: #0ed8f6;
+    box-shadow: 0 0 12px rgba(14, 216, 246, 0.9);
+  }
+
+  .eventos-destaque-coluna--dir .eventos-vaga-fio::after {
+    left: auto;
+    right: 0;
+    margin: -3.5px -3.5px 0 0;
+  }
+
+  /* O CARTÃO CENTRAL. Placa branca, pelo mesmo motivo das vagas: ele percorre a
+     seção inteira e passa por cima de navy e de claro. */
+  /* SIS-167 (item 11) — A ARTE CRESCEU, e o espaço veio de onde estava sobrando.
+     Era `min(38vw, 36rem)`. A issue diz que o que limita a arte é a ALTURA, e é
+     verdade dentro do cartão: `.eventos-destaque-arte` é `aspect-ratio: 16/9` com
+     `min-height: 0` e é a última a receber espaço num flex column. Mas a saída não
+     é redistribuir a altura — seria tirar do texto, e a descrição é o CONTEÚDO da
+     rota (o cabeçalho do componente registra que ela passou a ser lida só aqui).
+     Com `aspect-ratio` fixo, quem cresce a arte em ALTURA é a LARGURA dela: em
+     1440, 38vw = 547px de cartão dão ~292px de arte; 42vw = 605px dão ~347px.
+     +19% linear, +42% de área, sem tocar em uma linha de texto.
+     E a largura saiu do VAZIO MEDIDO: com a coluna de 95px começando em 122px e o
+     cartão em 446px, havia 229px de vazio morto de cada lado. Depois desta mudança
+     e do alargamento da faixa: faixa 122->266, cartão 417->1022, 151px de folga
+     entre os dois em 1440; 65px em 1024. O palco continua em `100svh` e o contador
+     continua em quadro — conferido pela sonda, não presumido. */
+  .eventos-destaque-cartao {
+    width: min(42vw, 38rem);
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: clamp(1rem, 1.4vw, 1.5rem);
+    border-radius: 1rem;
+    border: 1px solid rgba(18, 58, 99, 0.1);
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 30px 60px -40px rgba(4, 32, 62, 0.55);
+  }
+
+  .eventos-destaque-arte {
+    width: 100%;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 0.6rem;
+  }
+
+  .eventos-destaque-arte img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* O CONTADOR: fio vertical curto, nó (o `::after` do fio) e o rótulo. */
+  .eventos-destaque-contador {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .eventos-destaque-contador-fio {
+    position: relative;
+    width: 2px;
+    height: clamp(1.25rem, 2.4vh, 2rem);
+    background: linear-gradient(
+      180deg,
+      rgba(14, 216, 246, 0.1) 0%,
+      #0ed8f6 100%
+    );
+  }
+
+  .eventos-destaque-contador-fio::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 7px;
+    height: 7px;
+    margin: 0 0 -3.5px -3.5px;
+    border-radius: 50%;
+    background: #0ed8f6;
+    box-shadow: 0 0 12px rgba(14, 216, 246, 0.9);
+  }
+
+  /* A TRILHA de sentinelas. Ela sobe `-100svh` para começar no topo da seção: com
+     isso o percurso do `sticky` e o da trilha são a MESMA caixa, e a armadilha da
+     SIS-156 (gatilho na seção, sticky numa caixa interna) não existe aqui.
+     A CAUDA no fim não é respiro: sem ela, o centro da última sentinela cairia
+     DEPOIS de o palco começar a desencostar do topo — a décima quinta seria
+     alcançada fora de quadro. A conta é `(N - 0,5) × passo - 50svh` (quando a
+     última chega ao centro) contra `N × passo + cauda - 100svh` (quando o palco
+     solta): com `cauda >= 50svh` a primeira é sempre menor. É a mesma aritmética
+     que a SIS-156 mediu, resolvida por construção em vez de por calibragem. */
+  .eventos-destaque-trilha {
+    position: relative;
+    margin-top: -100svh;
+    z-index: 0;
+    pointer-events: none;
+    padding-bottom: 60svh;
+  }
+
+  .eventos-destaque-sentinela {
+    display: block;
+    height: var(--evt-passo);
+  }
+}
+
+/* ── Escrita comum às duas versões ───────────────────────────────────────── */
+
+.eventos-destaque-sobretitulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-size: clamp(0.62rem, 0.72vw, 0.72rem);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: #0b7fa8;
+}
+
+.eventos-destaque-traco {
+  width: clamp(1.25rem, 2.5vw, 2.5rem);
+  height: 1px;
+  background: rgba(14, 216, 246, 0.75);
+}
+
+/* Serifa por `--font-display`, que vem do layout raiz (TIPOGRAFIA.md): nenhuma
+   fonte é declarada por rota. */
+.eventos-destaque-titulo {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 3.4vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: #04203e;
+  margin-top: 0.4rem;
+}
+
+.eventos-destaque-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid;
+  border-radius: 999px;
+  font-size: clamp(0.58rem, 0.66vw, 0.7rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.eventos-destaque-chip-no {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.eventos-destaque-cartao-titulo {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.15rem, 1.7vw, 1.6rem);
+  line-height: 1.15;
+  color: #04203e;
+}
+
+/* `#123a63` sobre a placa branca: 11,6:1, muito acima do piso de 4,5:1 da
+   descrição — e é o mesmo par de cores da legenda do mosaico, já medido. */
+.eventos-destaque-cartao-texto {
+  font-size: clamp(0.82rem, 0.95vw, 0.95rem);
+  line-height: 1.5;
+  color: #123a63;
+  max-width: 62ch;
+}
+
+.eventos-destaque-botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  background: #0b4e86;
+  color: #eaf6ff;
+  font-size: clamp(0.62rem, 0.72vw, 0.74rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  transition: background 0.25s var(--ease-out);
+}
+
+.eventos-destaque-botao:hover {
+  background: #0a3f6d;
+}
+
+.eventos-destaque-botao:focus-visible {
+  outline: 2px solid #0ed8f6;
+  outline-offset: 3px;
+}
+
+.eventos-destaque-contador-numero {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
+  color: #04203e;
+}
+
+.eventos-destaque-contador-total {
+  color: #0b7fa8;
+}
+
+.eventos-destaque-contador-rotulo {
+  font-size: clamp(0.55rem, 0.66vw, 0.66rem);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: #0b5f80;
+}
+
+/* ── A lista, abaixo de 1024px ────────────────────────────────────────────── */
+
+.eventos-lista-cabecalho {
+  text-align: center;
+  padding-inline: 1.25rem;
+  margin-bottom: clamp(1.5rem, 6vw, 2.5rem);
+}
+
+.eventos-lista-itens {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 4vw, 1.5rem);
+  padding-inline: clamp(1rem, 5vw, 2rem);
+}
+
+.eventos-lista-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: clamp(0.9rem, 4vw, 1.25rem);
+  border-radius: 1rem;
+  border: 1px solid rgba(18, 58, 99, 0.1);
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 24px 50px -40px rgba(4, 32, 62, 0.55);
+}
+
+.eventos-lista-item .eventos-destaque-arte {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 0.6rem;
+}
+
+.eventos-lista-item .eventos-destaque-arte img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* MOVIMENTO REDUZIDO.
+
+   ⚠️ SIS-167 REESCREVEU ESTE CABEÇALHO. Ele abria com "aqui não há nada a
+   congelar", o que era verdade na SIS-166 e deixou de ser: agora catorze vagas
+   flutuam. Deixá-lo como estava seria comentário sustentando afirmação falsa.
+
+   Pela régua de `~/.claude/skills/reduced-motion-conteudo`: a pergunta é "se isso
+   parar para sempre, o usuário perde acesso a alguma informação?". Aqui NÃO — as
+   catorze miniaturas continuam nos seus `left`/`top`, visíveis, focáveis e
+   clicáveis; a flutuação é o cartão respirando em volta da posição que ele já
+   ocupa. Logo é DECORAÇÃO e morre, ao contrário de um marquee, cujo movimento é o
+   único meio de alcançar os itens de fora da tela.
+   `animation: none` termina no quadro de 0%/100% do `@keyframes`, que é
+   `translate3d(0,0,0)` sem rotação — ou seja, exactamente a posição de repouso, com
+   `opacity` intocada. Nada fica preso invisível nem deslocado.
+   A troca de destaque continua ligada porque ela não anima nada: é o
+   `IntersectionObserver` montando outro evento. E o pulo das miniaturas já é
+   instantâneo (`behavior: 'auto'`, no componente) — é ele que garante que os
+   quinze são alcançáveis sem rolar. */
+@media (prefers-reduced-motion: reduce) {
+  .eventos-vaga--botao,
+  .eventos-destaque-botao {
+    transition: none;
+  }
+
+  /* `will-change` sai junto: sem animação ele só reserva memória de GPU para
+     catorze camadas que não vão se mover. */
+  .eventos-vaga--botao {
+    animation: none;
+    will-change: auto;
+  }
+
+  .eventos-vaga--botao:hover {
+    /* `transform: none` era o par do afago antigo, `translateY(-2px)`. O afago
+       virou `filter: brightness()` (não podia ser `transform`, que agora é da
+       flutuação), então o que se desliga é o brilho. A linha do `transform` fica
+       comentada porque nada mais o escreve — e se voltar a escrever, é aqui que a
+       exceção tem de reaparecer. */
+    filter: none;
+    /* transform: none; */
+  }
+}
+
+/* Espelho do bloco acima para o interruptor manual do site (`html[data-motion]`),
+   no mesmo padrão que `legacy.css` usa para `.stack-carrier`: quem desliga
+   movimento pela interface tem de receber o mesmo tratamento de quem o desliga no
+   sistema operacional, senão o botão mente. */
+html[data-motion="reduce"] .eventos-vaga--botao {
+  animation: none;
+  will-change: auto;
+  transition: none;
+}

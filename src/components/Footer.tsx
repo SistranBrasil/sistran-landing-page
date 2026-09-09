@@ -24,8 +24,13 @@ export default function Footer() {
           <Image
             src="/images/sistran-corp-logo.png"
             alt="Sistran"
-            width={360}
-            height={124}
+            /* Proporcao real do arquivo (560x374). O par 360x124 anterior nao era
+               a do PNG e distorcia o placeholder gerado pelo Next. */
+            width={560}
+            height={374}
+            /* Foi apontada como LCP pelo aviso do next/image: carrega sem lazy
+               para nao atrasar a maior pintura. */
+            loading="eager"
             className="lp-rodape-logo h-20 w-auto md:h-24"
           />
           <h4 className="lp-rodape-titulo mt-6 text-xs font-semibold uppercase tracking-[0.18em] text-[#0ed8f6]">
@@ -115,6 +120,27 @@ export default function Footer() {
             Institucional
           </h4>
           <ul className="lp-rodape-nav space-y-2">
+            {/* SIS-118 · O BLOG ENTRA NA NAVEGAÇÃO, e entra AQUI. Até agora a
+                única referência a `/blog` em todo o `src/` fora da própria rota
+                era o `sitemap.ts`: a seção era indexável e inalcançável navegando.
+                Das duas saídas que a issue oferece — entrar na navegação ou sair
+                do sitemap —, esta é a que não joga conteúdo real fora: o post
+                existe, é institucional e é o tipo de página que se chega por
+                busca. Tirá-lo do sitemap resolveria a incoerência apagando o lado
+                certo dela.
+                Rodapé e não menu: são as sete entradas do topo que carregam a
+                oferta, e um blog com uma publicação de 2024 ao lado delas promete
+                uma frequência que não existe. O rodapé é onde o próprio site já
+                põe o que é institucional e de baixa frequência (Privacidade,
+                Transparência Salarial), e é alcançável de qualquer página.
+                Fica na coluna "Institucional" — e NÃO na coluna "Navegação", que é
+                gerada de `NAV_ITEMS` e não deve ganhar item que o header não tem,
+                sob pena de as duas listas passarem a divergir. */}
+            <li>
+              <Link href="/blog" className="text-sm text-ink-muted transition-colors hover:text-white">
+                Blog
+              </Link>
+            </li>
             <li>
               <Link
                 href="/politica-de-privacidade"

@@ -274,6 +274,41 @@
 .eco-rail-links circle {
   fill: rgba(32, 215, 242, 0.55);
 }
+/* SIS-95 — pulso de luz correndo pelo caminho. O truque é um tracejado com um
+   traco CURTO e um vao enorme: só um pedaco do fio fica aceso por vez, e mover o
+   `stroke-dashoffset` faz esse pedaco viajar. O total (14 + 620) é maior que o
+   comprimento de qualquer um dos tres caminhos, entao nunca aparecem dois pulsos
+   no mesmo fio. */
+.eco-rail-fluxo {
+  fill: none;
+  stroke: var(--eco-ciano);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 14 620;
+  stroke-dashoffset: 634;
+  filter: drop-shadow(0 0 4px rgba(32, 215, 242, 0.6));
+  animation: eco-fluxo 3.4s linear var(--eco-atraso, 0s) infinite;
+}
+@keyframes eco-fluxo {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+/* Os nos acendem no compasso do ramo — mesmo `--eco-atraso` do fluxo, entao a
+   junção pisca quando o pulso sai dela. */
+.eco-rail-no {
+  filter: drop-shadow(0 0 3px rgba(32, 215, 242, 0.5));
+  animation: eco-no-acende 3.4s ease-out var(--eco-atraso, 0s) infinite;
+}
+@keyframes eco-no-acende {
+  0% {
+    opacity: 1;
+  }
+  18%,
+  100% {
+    opacity: 0.45;
+  }
+}
 
 /* ---------- Rede ---------- */
 .eco-network {
@@ -343,12 +378,68 @@
     stroke-dashoffset: 0;
   }
 }
+/* SIS-95 — mesmo mecanismo do fluxo do trilho, num segmento reto de 120 unidades:
+   traco de 12, vao de 128, total maior que o caminho. O sentido é sempre PARA o
+   nucleo, o que no lado direito significa `dashoffset` crescendo em vez de
+   diminuindo. */
+.eco-link-fluxo {
+  stroke: var(--eco-ciano);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 12 128;
+  stroke-dashoffset: 140;
+  filter: drop-shadow(0 0 4px rgba(32, 215, 242, 0.55));
+  animation: eco-fluxo-link 3.4s linear var(--eco-atraso, 0s) infinite;
+}
+.eco-link-fluxo-inverso {
+  stroke-dashoffset: 0;
+  animation-name: eco-fluxo-link-inverso;
+}
+@keyframes eco-fluxo-link {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes eco-fluxo-link-inverso {
+  to {
+    stroke-dashoffset: 140;
+  }
+}
 .eco-node {
   fill: rgba(99, 185, 236, 0.45);
   transition: fill 300ms ease;
 }
 .eco-link.is-ativo .eco-node {
   fill: var(--eco-ciano);
+}
+
+/* ---------- Foco por hover (SIS-95) ----------
+   Apontar um bloco acende o fio dele e esmaece os outros. Fica em `:has()` e nao
+   em estado de React de proposito: é mudanca puramente visual, disparada por
+   ponteiro, e subir isso para o estado faria a secao re-renderizar a cada
+   passagem do mouse — sem contar que `ativo` ja significa outra coisa aqui
+   (o modulo escolhido) e sobrecarregar esse estado misturaria as duas leituras.
+   O ramo esmaecido continua DESENHADO, nunca some: a relacao entre os blocos é
+   informacao, e informacao nao pode depender de onde o mouse esta. */
+.eco-stage:has(.eco-net-cel-esq:hover) .eco-net-cel-dir .eco-link,
+.eco-stage:has(.eco-net-cel-dir:hover) .eco-net-cel-esq .eco-link,
+.eco-stage:has(.eco-net-cel-esq:hover) .eco-rail-links,
+.eco-stage:has(.eco-net-cel-dir:hover) .eco-rail-links,
+.eco-stage:has(.eco-rail:hover) .eco-link {
+  opacity: 0.26;
+}
+.eco-stage:has(.eco-net-cel-esq:hover) .eco-net-cel-esq .eco-link-base,
+.eco-stage:has(.eco-net-cel-dir:hover) .eco-net-cel-dir .eco-link-base,
+.eco-stage:has(.eco-rail:hover) .eco-rail-links path:not(.eco-rail-fluxo) {
+  opacity: 0.8;
+  stroke: var(--eco-ciano);
+}
+.eco-link,
+.eco-rail-links,
+.eco-link-base {
+  transition:
+    opacity 260ms ease,
+    stroke 260ms ease;
 }
 
 /* Particula: viaja UMA vez, do modulo ao nucleo, e desaparece. Nao circula. */
@@ -546,12 +637,23 @@
 }
 
 /* ---------- Nucleo ---------- */
+/* Camada só do tilt de rolagem. A perspectiva dela vem de `transformPerspective`
+   no proprio componente, e nao de `perspective` aqui: `perspective` age nos
+   FILHOS de quem a declara, e a rotacao acontece neste no — declarada aqui, ela
+   nao o alcancaria e a esfera giraria em projecao chapada. */
+.eco-nucleo-tilt {
+  transform-style: preserve-3d;
+}
 .eco-nucleo {
   position: relative;
   display: grid;
   place-items: center;
   width: var(--eco-core);
   height: var(--eco-core);
+  /* SIS-95 — `perspective` mora aqui, no pai: sem ela o `rotateX` dos aneis
+     orbitais achata em projecao ortogonal e eles voltam a parecer elipses
+     desenhadas em vez de circunferencias inclinadas. */
+  perspective: 760px;
   /* Remontado por `key` a cada ativacao: a resposta roda uma vez e para. */
   animation: eco-nucleo-responde 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -582,10 +684,36 @@
   /* Respiracao quase imperceptivel, 4s. Sai por completo em movimento reduzido. */
   animation: eco-respira 4s ease-in-out infinite;
 }
+/* SIS-95 — os dois aneis tracejados sao ORBITAS, nao circunferencias coplanares:
+   cada um tem inclinacao propria em `rotateX`/`rotateZ` e gira em sentido
+   contrario ao outro, em velocidades diferentes. É esse desencontro que da
+   profundidade — dois aneis concentricos girando iguais continuariam lendo como
+   um desenho chapado, que era o caso antes.
+   A rotacao só é visivel porque o traco é `dashed`: um anel continuo girando nao
+   muda um pixel. */
 .eco-anel-2 {
-  inset: 8%;
-  border-color: rgba(32, 215, 242, 0.22);
+  inset: 4%;
+  border-color: rgba(32, 215, 242, 0.3);
   border-style: dashed;
+  transform: rotateX(66deg);
+  animation: eco-orbita 26s linear infinite;
+}
+.eco-anel-3 {
+  inset: -7%;
+  border-color: rgba(120, 201, 248, 0.2);
+  border-style: dashed;
+  transform: rotateX(74deg) rotateZ(18deg);
+  animation: eco-orbita-inversa 38s linear infinite;
+}
+@keyframes eco-orbita {
+  to {
+    transform: rotateX(66deg) rotateZ(360deg);
+  }
+}
+@keyframes eco-orbita-inversa {
+  to {
+    transform: rotateX(74deg) rotateZ(-342deg);
+  }
 }
 @keyframes eco-respira {
   0%,
@@ -598,23 +726,65 @@
     opacity: 0.9;
   }
 }
+/* SIS-95 — o disco era um degradê chapado com um aro escuro. Agora tem uma fonte
+   de luz declarada, em 34% 24%, e TODAS as sombras derivam dela: o degradê
+   escurece na direcao oposta, a sombra interna cai no quadrante contrario, a
+   projetada sai para baixo-direita e o especular fica na borda de cima. Sombra
+   sem direcao unica é o que faz um circulo parecer adesivo. */
 .eco-nucleo-disco {
+  position: relative;
   display: grid;
   place-items: center;
-  gap: 0.35rem;
+  gap: 0.5rem;
   width: 76%;
   height: 76%;
   border-radius: 999px;
-  background: radial-gradient(circle at 50% 30%, #ffffff, #dcefff 78%, #c6e4fb);
+  background: radial-gradient(
+    circle at 34% 24%,
+    #ffffff 0%,
+    #f2faff 26%,
+    #d8ecfd 58%,
+    #b3d5f1 82%,
+    #96bfe0 100%
+  );
   box-shadow:
+    /* aro que separa do palco — o unico efeito que já existia */
     0 0 0 8px rgba(4, 24, 54, 0.55),
-    0 0 46px rgba(32, 215, 242, 0.35);
+    0 0 46px rgba(32, 215, 242, 0.35),
+    /* projetada: a luz vem de cima-esquerda, entao ela cai a baixo-direita */
+    16px 24px 44px -18px rgba(2, 12, 30, 0.8),
+    /* interna no lado oposto a luz — é ela que "enche" a esfera */
+    inset -12px -16px 28px rgba(56, 103, 148, 0.42),
+    /* especular na borda superior */
+    inset 0 3px 2px rgba(255, 255, 255, 0.9);
+}
+/* Reflexo curto no quadrante da luz. Elipse e nao circulo: numa esfera o reflexo
+   se achata perto da borda. */
+.eco-nucleo-disco::before {
+  content: "";
+  position: absolute;
+  top: 7%;
+  left: 16%;
+  width: 46%;
+  height: 26%;
+  border-radius: 999px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.95), transparent 72%);
+  pointer-events: none;
 }
 /* O simbolo oficial entra como MASCARA alpha do PNG branco do site — é o mesmo
    arquivo do resto da marca, nao ha logotipo redesenhado a mao aqui. */
 .eco-simbolo {
-  width: 42%;
-  height: 42%;
+  /* SIS-95 — era `42% / 42%`, e o `42%` de ALTURA era o defeito: altura em
+     porcentagem dentro de uma linha de grade dimensionada por conteudo nao tem
+     contra o que resolver, e o navegador acabava desenhando a caixa em 84x36.
+     Com `contain`, o emblema — que é quase quadrado (442x457) — cabia nos 36px
+     de altura e renderizava com ~35px de lado dentro de um disco de 199px.
+     Daí a queixa de "logo pequeno": nao era a largura, era a altura colapsada.
+     Agora a altura vem do `aspect-ratio` do proprio arquivo, entao só a largura
+     é declarada e o emblema desenha ~80px — mais de duas vezes o que era, sem
+     um pixel de distorcao. */
+  width: 40%;
+  aspect-ratio: 442 / 457;
   background: linear-gradient(135deg, #0079cb, #0ed8f6 60%, #20d7f2);
   -webkit-mask: url("/images/sistran-logo.png") center / contain no-repeat;
   mask: url("/images/sistran-logo.png") center / contain no-repeat;
@@ -818,6 +988,22 @@
   .eco-modulo.is-ativo .eco-item {
     animation: none;
   }
+  /* SIS-95 — os pulsos SAEM; os fios de base continuam desenhados por completo,
+     entao nenhuma ligacao deixa de existir. Os aneis orbitais param inclinados,
+     que é o estado onde o volume do nucleo se le. */
+  .eco-rail-fluxo,
+  .eco-link-fluxo {
+    animation: none;
+    opacity: 0;
+  }
+  .eco-rail-no {
+    animation: none;
+    opacity: 1;
+  }
+  .eco-anel-2,
+  .eco-anel-3 {
+    animation: none;
+  }
   .eco-modulo,
   .eco-modulo.is-ativo,
   .eco-modulo:hover:not(.is-ativo),
@@ -842,8 +1028,19 @@ html[data-motion="reduce"] .eco-link-ativa {
 }
 html[data-motion="reduce"] .eco-nucleo,
 html[data-motion="reduce"] .eco-anel-1,
+html[data-motion="reduce"] .eco-anel-2,
+html[data-motion="reduce"] .eco-anel-3,
+html[data-motion="reduce"] .eco-rail-no,
 html[data-motion="reduce"] .eco-modulo.is-ativo .eco-item {
   animation: none !important;
+}
+html[data-motion="reduce"] .eco-rail-no {
+  opacity: 1 !important;
+}
+html[data-motion="reduce"] .eco-rail-fluxo,
+html[data-motion="reduce"] .eco-link-fluxo {
+  animation: none !important;
+  opacity: 0 !important;
 }
 html[data-motion="reduce"] .eco-modulo,
 html[data-motion="reduce"] .eco-modulo.is-ativo,

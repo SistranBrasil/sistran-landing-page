@@ -1,0 +1,766 @@
+/**
+ * Modelos de atuacao em orbita (SIS-99).
+ *
+ * ── Fundo branco, e ele é a regra ───────────────────────────────────────────
+ * A secao anterior aqui era `section-light-blue` com quatro cartoes de vidro. O
+ * branco é intencional: o desenho da orbita só existe se o fundo nao competir
+ * com ele. Nenhum cartao escuro, nenhum degrade sobre texto, nenhuma esfera azul
+ * grande — o azul aparece em traco de 1px e em sombra difusa, nada mais.
+ *
+ * ── Onde estao os numeros ──────────────────────────────────────────────────
+ * As estacoes ficam no angulo parametrico de 45° de cada quadrante. Em
+ * porcentagem do palco isso é, na elipse larga (1120x600, rx 330, ry 200):
+ *   x = 50% ± 330·0,7071/1120 = 29,16% / 70,84%
+ *   y = 50% ± 200·0,7071/600  = 26,43% / 73,57%
+ * e no circulo do celular (360x360, r 132): 24,07% / 75,93% nos dois eixos.
+ * Os mesmos senos estao em `CircularEngagementModel.tsx`, que desenha as linhas
+ * radiais — se um mudar, o outro muda.
+ *
+ * ── O que se move sozinho ──────────────────────────────────────────────────
+ * Uma coisa: a esfera na orbita, e ela é SMIL dentro do SVG. Todo o resto é
+ * `transition` disparada por `data-ativo` / `data-entrou`. Nao ha `will-change`
+ * espalhado, nao ha filtro de SVG, e o `box-shadow` existe em dois lugares.
+ */
+
+.cem-secao {
+  position: relative;
+  background: #ffffff;
+  color: #0a3f7d;
+}
+
+/* ── Cabecalho ───────────────────────────────────────────────────────────── */
+.cem-cabecalho {
+  max-width: 920px;
+  margin-inline: auto;
+  text-align: center;
+}
+.cem-eyebrow {
+  color: #0ed8f6;
+  font-size: clamp(0.75rem, 0.9vw, 0.9375rem);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.cem-titulo {
+  margin-top: 20px;
+  color: #001a3d;
+  font-size: clamp(2.25rem, 4vw, 4.75rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+/* Duas linhas de sentido, cada uma entrando por conta propria. `inline-block`
+   para o `translateY` valer — `span` normal nao aceita transformacao. */
+.cem-titulo-linha {
+  display: inline-block;
+}
+.cem-dica {
+  margin-top: 22px;
+  color: rgba(10, 63, 125, 0.68);
+  font-size: 0.9375rem;
+}
+/* Em tela sem ponteiro a frase seria mentira: lá o gesto é toque. */
+@media (hover: none) {
+  .cem-dica {
+    display: none;
+  }
+}
+
+/* Entrada do cabecalho: eyebrow, depois as duas linhas do titulo, depois a dica. */
+.cem-eyebrow,
+.cem-titulo-linha,
+.cem-dica {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cem-titulo-linha:nth-child(1) {
+  transition-delay: 0.12s;
+}
+.cem-titulo-linha:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.cem-dica {
+  transition-delay: 0.34s;
+}
+.cem-secao[data-entrou='1'] .cem-eyebrow,
+.cem-secao[data-entrou='1'] .cem-titulo-linha,
+.cem-secao[data-entrou='1'] .cem-dica {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Palco ───────────────────────────────────────────────────────────────── */
+.cem-area {
+  position: relative;
+  margin-top: clamp(40px, 5vw, 72px);
+}
+.cem-palco {
+  position: relative;
+  width: min(1120px, 100%);
+  /* 1120x600 cai dentro da faixa de 560–640px de altura pedida, e é a proporcao
+     que da a perspectiva leve sem esticar traco nenhum. */
+  aspect-ratio: 1120 / 600;
+  margin-inline: auto;
+}
+.cem-arte {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+/* A arte compacta só existe no celular, e a larga só fora dele. Duas artes em vez
+   de um `viewBox` esticado: `preserveAspectRatio="none"` engrossaria o traco num
+   eixo e afinaria no outro. */
+.cem-arte[data-variante='compacto'] {
+  display: none;
+}
+
+/* ── Aneis ───────────────────────────────────────────────────────────────── */
+.cem-anel {
+  fill: none;
+  stroke: rgba(0, 77, 138, 0.22);
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+  /* `pathLength=1000` no elemento: um unico par de valores serve para a elipse e
+     para o circulo, que tem perimetros bem diferentes. */
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.32s;
+}
+.cem-anel--interno {
+  stroke: rgba(0, 77, 138, 0.13);
+  stroke-width: 1;
+  transition-delay: 0.44s;
+}
+.cem-secao[data-entrou='1'] .cem-anel {
+  stroke-dashoffset: 0;
+}
+
+/* Trecho claro perto do ativo. 200 de 1000 do perimetro; o deslocamento leva o
+   traco ao quadrante. A elipse comeca no ponto mais a direita e corre em sentido
+   horario, entao 125 = baixo-direita, 375 = baixo-esquerda, 625 = alto-esquerda,
+   875 = alto-direita — e o offset é o centro do traco menos 100. */
+.cem-realce {
+  fill: none;
+  stroke: #0ed8f6;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 200 800;
+  opacity: 0;
+  transition:
+    stroke-dashoffset 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s ease-out 1.9s;
+}
+.cem-secao[data-entrou='1'] .cem-realce {
+  opacity: 0.55;
+}
+.cem-palco[data-pos='bottom-right'] .cem-realce {
+  stroke-dashoffset: -25;
+}
+.cem-palco[data-pos='bottom-left'] .cem-realce {
+  stroke-dashoffset: -275;
+}
+.cem-palco[data-pos='top-left'] .cem-realce {
+  stroke-dashoffset: -525;
+}
+.cem-palco[data-pos='top-right'] .cem-realce {
+  stroke-dashoffset: -775;
+}
+
+/* ── Linhas radiais ──────────────────────────────────────────────────────── */
+.cem-radial-trilho,
+.cem-radial-luz {
+  fill: none;
+  stroke-width: 1.25;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.cem-radial-trilho {
+  stroke: #a5f0ff;
+  opacity: 0;
+  transition:
+    opacity 0.6s ease-out,
+    stroke 0.24s ease-out;
+}
+.cem-secao[data-entrou='1'] .cem-radial-trilho {
+  opacity: 0.25;
+  transition-delay: 1.9s;
+}
+.cem-radial[data-ativo='true'] .cem-radial-trilho {
+  stroke: #0ed8f6;
+  opacity: 1;
+  transition-delay: 0s;
+}
+/* A luz corre da estacao para o nucleo. `pathLength=100` deixa o traco em
+   porcentagem do comprimento, que muda de linha para linha. Uma passada só: a
+   animacao existe enquanto a regra casa, e nao repete. */
+.cem-radial-luz {
+  stroke: #0ed8f6;
+  stroke-dasharray: 20 100;
+  opacity: 0;
+}
+.cem-radial[data-ativo='true'] .cem-radial-luz {
+  animation: cem-luz 0.76s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes cem-luz {
+  from {
+    stroke-dashoffset: 20;
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  to {
+    stroke-dashoffset: -100;
+    opacity: 0;
+  }
+}
+
+/* ── Nucleo ──────────────────────────────────────────────────────────────── */
+.cem-nucleo-vidro {
+  opacity: 0;
+  transition: opacity 0.5s ease-out 1.18s;
+}
+.cem-secao[data-entrou='1'] .cem-nucleo-vidro {
+  opacity: 1;
+}
+.cem-nucleo-camada {
+  fill: rgba(255, 255, 255, 0.72);
+  stroke: rgba(14, 216, 246, 0.3);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+/* As duas de baixo aparecem so pela borda — é o que da a espessura de vidro sem
+   nenhum `filter`, que num SVG desta area custaria repaint da secao inteira. */
+.cem-nucleo-camada--2 {
+  fill: rgba(244, 250, 253, 0.6);
+  stroke: rgba(14, 216, 246, 0.18);
+}
+.cem-nucleo-camada--3 {
+  fill: rgba(244, 250, 253, 0.45);
+  stroke: rgba(14, 216, 246, 0.1);
+}
+.cem-nucleo-camada--1 {
+  fill: rgba(255, 255, 255, 0.86);
+}
+/* Respiracao: 1,5% de escala e nada mais. Nao é pulso — se der para perceber o
+   inicio e o fim do ciclo, esta forte demais. */
+.cem-secao[data-entrou='1'] .cem-nucleo-camada--1 {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: cem-respirar 5.5s ease-in-out 1.7s infinite;
+}
+@keyframes cem-respirar {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.015);
+  }
+}
+
+.cem-nucleo-texto {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 24%;
+  color: #001a3d;
+  font-size: clamp(0.72rem, 1.08vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.34;
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.5s ease-out 1.38s;
+}
+.cem-nucleo-texto span {
+  display: block;
+}
+.cem-nucleo-texto-2 {
+  margin-top: 6px;
+  color: rgba(10, 63, 125, 0.68);
+  font-weight: 600;
+}
+.cem-secao[data-entrou='1'] .cem-nucleo-texto {
+  opacity: 1;
+}
+
+/* ── Esfera da orbita ────────────────────────────────────────────────────── */
+.cem-orbe {
+  fill: #0ed8f6;
+  opacity: 0;
+  transition: opacity 0.5s ease-out 2.4s;
+}
+.cem-secao[data-entrou='1'] .cem-orbe {
+  opacity: 0.9;
+}
+
+/* ── Estacoes ────────────────────────────────────────────────────────────── */
+.cem-palco {
+  --cem-est: 92px;
+}
+.cem-estacao {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: var(--cem-est);
+  height: var(--cem-est);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  /* A centragem entra no PROPRIO `transform`, e nao na propriedade `translate`.
+     Descoberto medindo o CSS de producao: com `translate` e `transform` na mesma
+     regra, o minificador do Next descarta o `translate` — ele assume que quem
+     escreveu as duas queria so a segunda. O resultado era um deslocamento de meia
+     estacao em cada quadrante. */
+  transform: translate(-50%, -50%);
+  /* O atraso da cascata de entrada vive numa variavel, e só a `opacity` o usa. Se
+     ele estivesse no `transition-delay` do atalho, a elevacao do estado ativo
+     tambem ficaria atrasada — e depois da entrada, passar o cursor demoraria
+     1,5s para responder. */
+  transition:
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s ease-out var(--cem-atraso, 0s);
+}
+.cem-estacao[data-pos='top-left'] {
+  left: 29.16%;
+  top: 26.43%;
+}
+.cem-estacao[data-pos='top-right'] {
+  left: 70.84%;
+  top: 26.43%;
+}
+.cem-estacao[data-pos='bottom-right'] {
+  left: 70.84%;
+  top: 73.57%;
+}
+.cem-estacao[data-pos='bottom-left'] {
+  left: 29.16%;
+  top: 73.57%;
+}
+
+/* Entrada em cascata de 90ms, na ordem da orbita. */
+.cem-estacao {
+  opacity: 0;
+}
+.cem-secao[data-entrou='1'] .cem-estacao {
+  opacity: 1;
+  --cem-atraso: calc(1.5s + var(--cem-ordem) * 0.09s);
+}
+
+.cem-base {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(14, 216, 246, 0.3);
+  box-shadow: 0 10px 26px rgba(0, 77, 138, 0.12);
+  transition:
+    border-color 0.24s ease-out,
+    box-shadow 0.24s ease-out,
+    background-color 0.24s ease-out;
+}
+/* Segunda base: nasce escondida atras da primeira e só desce no estado ativo. É
+   o que faz o ativo parecer levantado, e é a razao de o estado nao depender de
+   cor — quem nao distingue ciano de azul ainda ve o degrau e a escala. */
+.cem-base--fundo {
+  background: #f4fafd;
+  border-color: rgba(14, 216, 246, 0.16);
+  box-shadow: none;
+  opacity: 0;
+  transform: translateY(0);
+  transition:
+    opacity 0.32s ease-out,
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cem-icone {
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: #004d8a;
+  transition: color 0.24s ease-out;
+}
+.cem-icone-svg {
+  width: 44px;
+  height: 44px;
+}
+.cem-label {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 190px;
+  color: rgba(10, 63, 125, 0.68);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.28;
+  text-align: center;
+  transition:
+    color 0.24s ease-out,
+    font-weight 0.24s ease-out;
+}
+/* Rotulo por fora da orbita: acima nas estacoes de cima, abaixo nas de baixo. */
+.cem-estacao[data-pos^='top'] .cem-label {
+  bottom: calc(100% + 12px);
+}
+.cem-estacao[data-pos^='bottom'] .cem-label {
+  top: calc(100% + 12px);
+}
+.cem-label-curto {
+  display: none;
+}
+
+/* Hover e foco sinalizam; o estado cheio é `data-ativo`, que o React calcula a
+   partir de previa-ou-selecao. */
+.cem-estacao:hover .cem-base {
+  border-color: rgba(14, 216, 246, 0.55);
+}
+.cem-estacao:focus-visible {
+  outline: none;
+}
+.cem-estacao:focus-visible .cem-base {
+  outline: 2px solid #004d8a;
+  outline-offset: 4px;
+}
+
+.cem-estacao[data-ativo='true'] {
+  transform: translate(-50%, -50%) translateY(-11px) scale(1.06);
+}
+.cem-estacao[data-ativo='true'] .cem-base {
+  border-color: rgba(14, 216, 246, 0.8);
+  box-shadow:
+    0 18px 38px rgba(0, 77, 138, 0.16),
+    inset 0 0 22px rgba(165, 240, 255, 0.55);
+}
+.cem-estacao[data-ativo='true'] .cem-base--fundo {
+  opacity: 1;
+  transform: translateY(9px);
+}
+.cem-estacao[data-ativo='true'] .cem-icone {
+  color: #0ed8f6;
+}
+.cem-estacao[data-ativo='true'] .cem-label {
+  color: #001a3d;
+  font-weight: 700;
+}
+
+/* ── Painel ──────────────────────────────────────────────────────────────── */
+.cem-painel {
+  width: min(420px, 100%);
+  margin: clamp(28px, 4vw, 44px) auto 0;
+  padding: 20px 22px;
+  border: 1px solid rgba(14, 216, 246, 0.3);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 14px 34px rgba(0, 77, 138, 0.12);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.4s ease-out 1.62s;
+}
+.cem-secao[data-entrou='1'] .cem-painel {
+  opacity: 1;
+}
+.cem-painel-titulo {
+  color: #001a3d;
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+.cem-painel-texto {
+  margin-top: 8px;
+  color: rgba(10, 63, 125, 0.68);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+/* Troca de conteudo: o `key` do React remonta o corpo, e a animacao roda no
+   nascimento do elemento. Nada de salto de layout — o painel tem a mesma caixa
+   antes e depois, porque as quatro frases sao curtas e de tamanho parecido. */
+.cem-painel-corpo {
+  animation: cem-trocar 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes cem-trocar {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Desktop: o painel vai para o lado da estacao ativa ──────────────────────
+   Só a partir de 1200px. Abaixo disso a largura util nao cabe orbita e painel na
+   mesma linha sem o painel sair do container — e sair do container era proibido.
+   Os itens da esquerda abrem para a esquerda e os da direita para a direita: a
+   folga esta ali, e abrir "para o centro" passaria por cima do nucleo, que é o
+   unico texto que nao pode ser encoberto. */
+@media (min-width: 1200px) {
+  .cem-painel {
+    position: absolute;
+    width: clamp(180px, 18vw, 224px);
+    margin: 0;
+    text-align: left;
+    /* A troca de lado nao é animada de proposito: ver o painel voar de um canto
+       ao outro da orbita a cada hover seria o movimento mais chamativo da tela. */
+    transition: opacity 0.4s ease-out 1.62s;
+  }
+  .cem-painel[data-pos='top-left'],
+  .cem-painel[data-pos='top-right'] {
+    top: 26.43%;
+  }
+  .cem-painel[data-pos='bottom-left'],
+  .cem-painel[data-pos='bottom-right'] {
+    top: 73.57%;
+  }
+  .cem-painel[data-pos$='-left'] {
+    right: 79%;
+    transform: translateY(-50%);
+  }
+  .cem-painel[data-pos$='-right'] {
+    left: 79%;
+    transform: translateY(-50%);
+  }
+  .cem-painel[data-pos$='-right'] {
+    text-align: left;
+  }
+  .cem-painel[data-pos$='-left'] {
+    text-align: right;
+  }
+
+  /* Linha fina + dois pontos ligando o painel a estacao. A linha é o `::before`;
+     o segundo ponto é a sombra deslocada do primeiro, e nao um terceiro
+     elemento. */
+  .cem-painel::before,
+  .cem-painel::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+  }
+  .cem-painel::before {
+    width: 46px;
+    height: 1px;
+    margin-top: -0.5px;
+    background: rgba(14, 216, 246, 0.55);
+  }
+  .cem-painel::after {
+    width: 5px;
+    height: 5px;
+    margin-top: -2.5px;
+    border-radius: 999px;
+    background: #0ed8f6;
+  }
+  .cem-painel[data-pos$='-left']::before {
+    left: 100%;
+  }
+  .cem-painel[data-pos$='-left']::after {
+    left: 100%;
+    box-shadow: 41px 0 0 0 #0ed8f6;
+  }
+  .cem-painel[data-pos$='-right']::before {
+    right: 100%;
+  }
+  .cem-painel[data-pos$='-right']::after {
+    right: 100%;
+    box-shadow: -41px 0 0 0 #0ed8f6;
+  }
+}
+
+/* ── Tablet ──────────────────────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+  .cem-palco {
+    width: min(1120px, 92vw);
+    --cem-est: 78px;
+  }
+  .cem-icone-svg {
+    width: 38px;
+    height: 38px;
+  }
+  .cem-label {
+    max-width: 150px;
+    font-size: 0.875rem;
+  }
+}
+
+/* ── Celular ─────────────────────────────────────────────────────────────────
+   A elipse larga vira circulo: em 360px de largura, 200px de raio vertical
+   deixaria a orbita com 130px de altura e as quatro estacoes empilhadas. */
+@media (max-width: 767px) {
+  .cem-palco {
+    width: min(360px, calc(100vw - 40px));
+    aspect-ratio: 1;
+    --cem-est: 64px;
+  }
+  .cem-arte[data-variante='largo'] {
+    display: none;
+  }
+  .cem-arte[data-variante='compacto'] {
+    display: block;
+  }
+  .cem-estacao[data-pos='top-left'] {
+    left: 24.07%;
+    top: 24.07%;
+  }
+  .cem-estacao[data-pos='top-right'] {
+    left: 75.93%;
+    top: 24.07%;
+  }
+  .cem-estacao[data-pos='bottom-right'] {
+    left: 75.93%;
+    top: 75.93%;
+  }
+  .cem-estacao[data-pos='bottom-left'] {
+    left: 24.07%;
+    top: 75.93%;
+  }
+  .cem-icone-svg {
+    width: 30px;
+    height: 30px;
+  }
+  /* O rotulo cheio nao cabe em 34% da largura do palco. "Especialistas" fica na
+     tela; "Alocação de Especialistas" continua no `aria-label` do botao e no
+     painel — quem usa leitor de tela ouve o nome inteiro. */
+  .cem-label {
+    max-width: 34%;
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+  .cem-estacao[data-pos^='top'] .cem-label {
+    bottom: calc(100% + 7px);
+  }
+  .cem-estacao[data-pos^='bottom'] .cem-label {
+    top: calc(100% + 7px);
+  }
+  .cem-label-cheio:has(+ .cem-label-curto) {
+    display: none;
+  }
+  .cem-label-curto {
+    display: block;
+  }
+  .cem-nucleo-texto {
+    width: 30%;
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+  }
+  .cem-titulo {
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Telas muito estreitas (320px): o palco encolhe, e as estacoes precisam manter
+   os 44px de area de toque. */
+@media (max-width: 359px) {
+  .cem-palco {
+    --cem-est: 54px;
+  }
+  .cem-icone-svg {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* ── Movimento reduzido ──────────────────────────────────────────────────────
+   Nada fica escondido: o estado final aparece direto. Sai a esfera, sai o
+   desenho do anel, sai a respiracao, sai a luz correndo. O que sobra sao trocas
+   de opacidade de 120ms, que existem para a mudanca nao ser um corte seco.
+   As duas listas sao necessarias: `useReducedMotion` do projeto le só a
+   preferencia do sistema, enquanto `html[data-motion='reduce']` é a chave que o
+   proprio site oferece — e nenhuma media query cobre a segunda. */
+@media (prefers-reduced-motion: reduce) {
+  /* Só o cabecalho sobe na entrada; zerar o `transform` das estacoes, do painel
+     e do nucleo apagaria a centragem deles, que vive nessa mesma propriedade. */
+  .cem-secao .cem-eyebrow,
+  .cem-secao .cem-titulo-linha,
+  .cem-secao .cem-dica {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: opacity 120ms linear !important;
+  }
+  .cem-secao .cem-estacao,
+  .cem-secao .cem-painel,
+  .cem-secao .cem-nucleo-vidro,
+  .cem-secao .cem-nucleo-texto {
+    opacity: 1 !important;
+    transition: opacity 120ms linear !important;
+  }
+  .cem-secao .cem-anel {
+    stroke-dashoffset: 0 !important;
+    transition: none !important;
+  }
+  .cem-secao .cem-radial-trilho {
+    opacity: 0.25;
+    transition: none !important;
+  }
+  .cem-secao .cem-radial-luz {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+  .cem-secao .cem-nucleo-camada--1 {
+    animation: none !important;
+  }
+  .cem-secao .cem-painel-corpo {
+    animation: none !important;
+  }
+  .cem-secao .cem-realce {
+    opacity: 0.55;
+    transition: none !important;
+  }
+  /* A esfera é a unica coisa que desaparece: ela é movimento continuo, e parada
+     no meio da orbita nao significa nada. Nenhum conteudo depende dela. */
+  .cem-secao .cem-orbe {
+    display: none;
+  }
+  /* A elevacao do ativo continua — é estado, nao enfeite —, mas sem percurso. */
+  .cem-secao .cem-estacao[data-ativo='true'] {
+    transform: translate(-50%, -50%) translateY(-11px) scale(1.06);
+  }
+}
+html[data-motion='reduce'] .cem-eyebrow,
+html[data-motion='reduce'] .cem-titulo-linha,
+html[data-motion='reduce'] .cem-dica {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: opacity 120ms linear !important;
+}
+html[data-motion='reduce'] .cem-estacao,
+html[data-motion='reduce'] .cem-painel,
+html[data-motion='reduce'] .cem-nucleo-vidro,
+html[data-motion='reduce'] .cem-nucleo-texto {
+  opacity: 1 !important;
+  transition: opacity 120ms linear !important;
+}
+html[data-motion='reduce'] .cem-anel {
+  stroke-dashoffset: 0 !important;
+  transition: none !important;
+}
+html[data-motion='reduce'] .cem-radial-trilho {
+  opacity: 0.25;
+  transition: none !important;
+}
+html[data-motion='reduce'] .cem-radial-luz {
+  animation: none !important;
+  opacity: 0 !important;
+}
+html[data-motion='reduce'] .cem-nucleo-camada--1,
+html[data-motion='reduce'] .cem-painel-corpo {
+  animation: none !important;
+}
+html[data-motion='reduce'] .cem-realce {
+  opacity: 0.55;
+  transition: none !important;
+}
+html[data-motion='reduce'] .cem-orbe {
+  display: none;
+}
+html[data-motion='reduce'] .cem-estacao[data-ativo='true'] {
+  transform: translate(-50%, -50%) translateY(-11px) scale(1.06);
+}

@@ -1,0 +1,152 @@
+/* SIS-156 — grade estática de marcas (`BrandGrid.tsx`).
+   Arquivo próprio, no padrão de `essence-accordion.css` e
+   `positioning-ecosystem.css`: nada aqui é consumido por outra tela, e deixar em
+   `globals.css` misturaria uma peça de uma seção com o que serve o site inteiro. */
+
+/* A superfície é CLARA, e é a mesma decisão que a faixa já tinha tomado: as 15
+   logos de `clients.ts` são desenhadas para fundo claro, e esta seção pinta o
+   degradê azul da marca. Fundo escuro exigiria versão em negativo de cada uma —
+   asset novo — ou uma placa branca por logo, que é a moldura que a referência não
+   tem.
+   O off-white é o mesmo `#f5faff` explícito de `.lp-signals`, e não `--paper`,
+   pelo mesmo motivo de lá: o azul dentro do branco é o que faz a superfície ler
+   como saída da jornada azul.
+   O `border-bottom` também vem de lá: em cima a grade encosta no degradê azul e a
+   diferença de superfície JÁ é a aresta; embaixo ela encosta no creme da montagem
+   (EMENDA 4, em `legacy.css`), claro contra claro, e aí o fio é o que separa. É
+   por isso que a troca de faixa por grade não precisa de recurso de emenda novo:
+   quem costura é a superfície clara, e ela continua clara. */
+.marcas-grade {
+  background: #f5faff;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding-block: clamp(3rem, 5.5vw, 5.5rem);
+}
+
+/* Título editorial acima da grade — a metade da referência que a faixa não tinha
+   ("a faixa é só logos, não tem uma palavra de texto", nota da SIS-101 em
+   `page.tsx`). O texto é aprovado e está travado no `copy-lock.json`; não é cópia
+   solta para ser reescrita na próxima varredura.
+   Serifa por `--font-display`, no mesmo registro dos outros títulos editoriais.
+   `max-width` em `ch` porque a medida que importa é a da LINHA, não a da coluna:
+   uma frase longa atravessando 1728px viraria uma faixa de texto de uma linha só,
+   que é o oposto do bloco editorial da referência. */
+.marcas-grade-titulo {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 3.1vw, 2.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  max-width: 34ch;
+  margin-bottom: clamp(2rem, 3.5vw, 3.25rem);
+  text-wrap: balance;
+}
+
+/* A MALHA.
+   As linhas são o `gap` da grade deixando ver o fundo dela, e cada célula pinta o
+   off-white por cima. Escrito assim, e não com `border` por célula, porque com
+   `border` fechar a fileira e a coluna EXTERNAS exigiria `:nth-child` calculado
+   sobre o número de colunas — e o número de colunas muda em 1024px. O
+   `padding: 1px` é o que fecha as quatro bordas de fora: o fundo aparece em volta
+   do bloco inteiro com a mesma espessura das linhas internas, então nenhuma
+   célula fica aberta e a grade não lê como tabela mal fechada.
+   Consequência de usar o gap como linha: as linhas nunca somem por
+   arredondamento, porque não há duas bordas adjacentes se somando — é sempre
+   exatamente 1px.
+
+   GEOMETRIA: 5 × 3 aqui e 3 × 5 abaixo de 1024px. Quinze é divisível por cinco e
+   por três, então as DUAS arrumações fecham exatas — nenhuma fileira incompleta,
+   que numa malha de bordas visíveis apareceria como buraco e não como respiro. Não
+   há célula atravessando duas colunas: um logo esticado dominaria justamente a
+   fileira que a normalização de altura óptica existe para equalizar.
+   Duas arrumações só, e não quatro: em 2 colunas sobraria um órfão. */
+.marcas-grade-malha {
+  list-style: none;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  padding: 1px;
+  background: var(--line);
+}
+
+@media (min-width: 1024px) {
+  .marcas-grade-malha {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* A célula. `aspect-ratio` em vez de altura fixa: as células precisam ser
+   comparáveis lado a lado (é o que expõe logo desproporcional), e a proporção
+   acompanha a largura da coluna sozinha nas duas arrumações. */
+.marcas-grade-celula {
+  background: #f5faff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 9;
+  padding: clamp(0.75rem, 1.6vw, 1.5rem);
+}
+
+/* TAMANHO ÓPTICO NORMALIZADO — o ponto 10 da issue, e o que a grade expõe mais que
+   a faixa, porque aqui as células são comparáveis lado a lado.
+   Dois tetos, não um: `max-height` em `%` da célula equaliza os desenhos altos
+   (`Samplemed` é vertical) e `max-width` em `%` equaliza os largos (`Virtusa` é
+   1200×416, ~2,9:1). Com um teto só, o outro eixo escapa: limitando apenas a
+   altura, o lockup largo atravessa a célula de borda a borda; limitando apenas a
+   largura, o vertical fica duas vezes mais alto que os vizinhos.
+   Em `%` e não em `rem` porque a célula já é fluida — em `rem` a logo pararia de
+   crescer com a coluna e a malha ficaria com vazio crescente em telas largas.
+   `object-fit: contain` garante que nenhum desenho seja cortado ou distorcido. */
+.marcas-grade-celula img {
+  width: auto;
+  height: auto;
+  max-height: 46%;
+  max-width: 68%;
+  object-fit: contain;
+  /* Repouso dessaturado e recuado, como na faixa e como na referência: são 15
+     paletas conflitantes na mesma tela, e todas em cor cheia disputam com o
+     conteúdo da página em vez de servirem de rodapé de credibilidade. */
+  filter: grayscale(1);
+  opacity: 0.62;
+  transition:
+    filter var(--base) var(--ease),
+    opacity var(--base) var(--ease);
+}
+
+/* A cor volta no ponteiro, e só onde há ponteiro fino: em toque o estado de hover
+   fica preso depois do tap. O gatilho é a CÉLULA (é ela que tem área apontável) e
+   o que muda é a imagem. */
+@media (hover: hover) and (pointer: fine) {
+  .marcas-grade-celula:hover img {
+    filter: grayscale(0);
+    opacity: 1;
+  }
+}
+
+/* `prefers-reduced-motion`: não há regra de movimento a desligar aqui — a grade é
+   parada, e é esse o ganho da troca. A única coisa animada é a transição de cor no
+   hover, que o reset global de `globals.css` já reduz a 0,01ms, e sem esconder
+   nada: o estado final do hover é a logo em cor cheia, visível.
+   Fica registrado para que ninguém procure o par `html[data-motion="reduce"]` que
+   as outras cenas têm: aqui ele não existe porque não há o que congelar. */
+
+/* `forced-colors`: `grayscale` só atrapalha num modo que já substitui as cores, e
+   a malha desenhada com `background` desapareceria — `--line` não é cor de sistema.
+   As linhas voltam como borda, que o modo respeita. */
+@media (forced-colors: active) {
+  .marcas-grade-celula img {
+    filter: none;
+    opacity: 1;
+  }
+  .marcas-grade-malha {
+    gap: 0;
+    padding: 0;
+  }
+  .marcas-grade-celula {
+    border: 1px solid CanvasText;
+    /* Sem `margin: -1px` as bordas adjacentes somam e a malha fica com linha
+       dupla no meio e simples na borda. */
+    margin: 0 -1px -1px 0;
+  }
+}

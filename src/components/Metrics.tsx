@@ -47,13 +47,34 @@
  * dirija.
  */
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { animate } from 'motion/react';
 import { METRICS } from '@/data/metrics';
 import { prefersReducedMotion } from '@/lib/motion';
 import ImpactVisual from '@/components/ui/impact/ImpactVisuais';
+import { useJornada } from '@/components/ProofJourney';
+/* SIS-101 — a faixa de logos passa a ser o rodapé desta seção (antes era uma
+   seção independente montada na `page.tsx`). Ver a nota no lugar do consumo.
+   SIS-156 — o rodapé continua sendo as marcas, mas PARADAS: entrou a grade
+   estática e o import da faixa fica comentado junto com o mount. Comentado, e não
+   deletado, é a pista de como religar; ativo, quebraria o lint por import não
+   utilizado.
+   import { SignalMarquee } from '@/components/legacy/SignalMarquee'; */
+import { BrandGrid } from '@/components/BrandGrid';
+/* SIS-165 — este import NAO acompanhou o modo dirigido para fora, e a razao foi
+   verificada no build, nao presumida: `geometria.ts` continua com consumidor vivo
+   e incondicional fora daqui — `coord` é usado por
+   `src/components/ui/impact/ImpactVisuais.tsx`, que desenha o visual de CADA um
+   dos sete indicadores tambem no modo lista. Comentar o modulo derrubaria os sete
+   visuais, que ficam.
+   Dentro deste arquivo os seis nomes seguem usados pelo `useMemo` da geometria e
+   pelo SVG das curvas: aquele markup ainda é renderizado, e fica inerte pelo CSS
+   (`.impact-lente` em `display: none` e as regras prefixadas por
+   `[data-dirigindo]`), nao por gate no TSX — ver a nota dos blocos inertes em
+   `globals.css`. Conferir com:
+     grep -rn "impact/geometria" src/ */
 import {
   DESVIOS_TRILHO,
   coord,
@@ -73,15 +94,42 @@ const ENTRADA_FIM = 0.14;
 /** Trecho em que os sete indicadores se sucedem. Sobra folga no fim para o
     estado de conclusao (path todo aceso, `07 / 07`) antes de liberar a rolagem. */
 const ETAPAS_INICIO = 0.16;
-const ETAPAS_FIM = 0.94;
+/** Fim das etapas — MEDIDO, não constante, e a SIS-156 é a razão.
+ *
+ * O gatilho está ancorado na SEÇÃO (`top top` → `bottom bottom`), que mede a
+ * caixa do percurso (`340vh`) MAIS a altura do rodapé de marcas. Já o palco
+ * `sticky` viaja só a caixa do percurso: ele desencosta do topo quando ela
+ * termina, e o resto do progresso da seção acontece com a cena subindo para fora
+ * de quadro.
+ *
+ * O `0.94` que estava escrito aqui não era folga escolhida: era exatamente esse
+ * ponto de soltura, para a altura do rodapé DAQUELA época — medido a 1440×900 com
+ * a faixa rolante (rodapé de ~130px), `(3060 − 900) / (3190 − 900) = 0,943`. Com a
+ * grade estática o rodapé passou a ~690px, o denominador foi para `3750 − 900` e o
+ * mesmo ponto de soltura caiu em `0,758`. Deixar `0.94` fixo faria a sétima etapa
+ * ser alcançada 527px DEPOIS de o palco ter começado a sair — medido, e é o modo
+ * silencioso de quebrar que a issue avisava: a cena continua bonita, e o `07 / 07`
+ * acontece fora de quadro.
+ *
+ * Então o número certo não é 0,94 nem 0,758: é a razão entre os dois percursos,
+ * lida do DOM. Assim qualquer mudança futura na altura deste rodapé — outra
+ * geometria de grade, um título de duas linhas, o retorno da faixa — reescala a
+ * partitura sozinha, em vez de exigir que alguém se lembre de recalibrar uma
+ * constante que não parece ter relação com a altura de um rodapé.
+ *
+ * O valor fica como reserva para antes da primeira medição e para o caso de a
+ * caixa não ser encontrada: é o comportamento anterior, e nunca é pior que ele. */
+const ETAPAS_FIM_PADRAO = 0.94;
 /** O pulso aparece no meio da passagem entre dois indicadores e some ao chegar. */
 const PULSO_SUBIDA = 0.2;
 /** Trecho final em que a onda perde amplitude e vira a linha-base horizontal que
     entrega a narrativa aos parceiros (orquestração visual, Prioridade 1). Começa
     em `ETAPAS_FIM`: o sétimo indicador já é o da vez, `07 / 07` está na tela, e o
     que resta do percurso é a passagem — não sobra tempo morto entre as duas
-    coisas, que era o "reset visual" a evitar. */
-const ATERRAR_INICIO = ETAPAS_FIM;
+    coisas, que era o "reset visual" a evitar.
+   Segue igual a `ETAPAS_FIM` — que agora é medido —, e por isso deixou de ser
+   constante: a aterragem tem de começar onde as etapas acabam, e não num ponto
+   fixo que ficaria ora antes, ora depois. */
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const doisDigitos = (n: number) => String(n).padStart(2, '0');
@@ -93,8 +141,13 @@ const doisDigitos = (n: number) => String(n).padStart(2, '0');
    exatamente o mesmo `d`, sem aviso de hidratacao. */
 const MEDIDA_PADRAO = { larguraTela: 1440, alturaPalco: 620 };
 
-/** Fracao da altura do palco onde fica a linha-base da curva e o centro da lente. */
-const LINHA_BASE = 0.55;
+/** Fracao da altura do palco onde fica a linha-base da curva e o centro da lente.
+ *
+ * 0.55 -> 0.50 com a refatoracao proporcional: o quadro ativo passou a ter 64svh
+ * de altura e o palco sobrou com ~66svh depois da faixa do titulo. Centrado em
+ * 55% ele ultrapassava a aresta de baixo (que o `overflow: clip` do palco
+ * cortava); em 50% ele cabe com folga igual nos dois lados. */
+const LINHA_BASE = 0.5;
 
 /**
  * Contador do indicador.
@@ -115,6 +168,26 @@ const LINHA_BASE = 0.55;
  * ficava com o numero DUAS vezes ("850850"); como ele tem largura reservada e
  * `line-height: 0.95`, o excedente quebrava linha e as duas linhas se
  * sobrepunham. Por ref nao ha texto vindo de dois lugares.
+ */
+/**
+ * ── SIS-85: a largura reservada passa a ser um GABARITO, não uma conta em `ch` ──
+ * A versão anterior reservava `Nch` (N = digitos do pico da mola) e alinhava o
+ * texto à direita, para o `+` não escorregar durante a contagem. As duas coisas
+ * juntas eram a origem do número deslocado: medido em 1440, o `ch` da fonte do
+ * número mede ~145px enquanto o digito tabular renderizado mede ~87px — a
+ * reserva saía 1,7x maior que o texto, e o `text-align: right` empurrava o número
+ * 45px para a direita do eixo do rótulo. `ch` é a largura do "0" da fonte; com
+ * `letter-spacing: -0.045em` e `tabular-nums` ela deixou de descrever o que
+ * aparece na tela.
+ *
+ * O gabarito é o próprio valor final, invisível (`visibility: hidden`) e
+ * `aria-hidden`, empilhado na MESMA célula de grid do número vivo. A largura passa
+ * a ser exatamente a do texto final, em qualquer fonte e qualquer tamanho: o `+`
+ * continua parado e a primeira glifa do número nasce no eixo, ao pixel.
+ *
+ * Grid e não `position: absolute`: o gradiente do número é `background-clip: text`
+ * no `.impact-valor`, e um descendente posicionado é pintado noutra passagem —
+ * arriscaria o número sair sem cor. Em grid os dois filhos continuam em fluxo.
  */
 function ImpactNumero({ valor, ativo }: { valor: number; ativo: boolean }) {
   const alvo = useRef<HTMLSpanElement>(null);
@@ -163,20 +236,19 @@ function ImpactNumero({ valor, ativo }: { valor: number; ativo: boolean }) {
   }, [ativo, valor]);
 
   return (
-    <span
-      ref={alvo}
-      className="impact-numero"
-      /* Largura reservada pelo numero final: contando 0 -> 850 o texto passa de
-         um para tres digitos, e sem a reserva o `+` ao lado escorregaria.
-
-         SIS-72: a reserva agora conta o PICO da mola, nao o valor final. Nos
-         sete valores de hoje (850/23/130/650/230/35/25) da no mesmo — nenhum
-         esta na fronteira de digito. Mas um `99+` viraria `103` por dois
-         quadros, ganharia um digito e empurraria o `+`; com a margem embutida o
-         proximo numero que entrar na lista nao reabre esse bug. */
-      style={{ minWidth: `${String(Math.ceil(valor * 1.08)).length}ch` }}
-    >
-      {valor}
+    <span className="impact-numero">
+      {/* Gabarito de largura. SIS-72 embutia no cálculo o PICO da mola (`valor *
+          1.08`), porque um `99+` que passa por 103 ganha um dígito e empurraria o
+          `+`. A margem continua aqui, agora como texto real medido pelo motor de
+          layout em vez de contagem de caracteres. */}
+      <span aria-hidden className="impact-numero-gabarito">
+        {Math.ceil(valor * 1.08)}
+      </span>
+      {/* O número vivo é o texto ACESSÍVEL e o que o servidor entrega: sem
+          JavaScript ou com movimento reduzido é ele que fica na tela. */}
+      <span ref={alvo} className="impact-numero-vivo">
+        {valor}
+      </span>
     </span>
   );
 }
@@ -185,7 +257,73 @@ export default function Metrics() {
   /* -1 antes de a rolagem entrar nas etapas; no modo lista fica em 0, e o CSS
      do modo lista ignora `data-estado` de qualquer forma. */
   const [ativo, setAtivo] = useState(0);
-  const [dirigindo, setDirigindo] = useState(false);
+  /**
+   * SIS-165 — O MODO DIRIGIDO SAI DE DESKTOP, e é esta constante que o desliga.
+   *
+   * A seção volta a ser o que já era abaixo de 1024px e com movimento reduzido:
+   * os sete indicadores numa fileira só, sempre no mesmo lugar, acendendo
+   * conforme a rolagem passa por essa linha estática. Sai o percurso de 340vh, o
+   * interior `sticky`, a trilha horizontal, a lente, a onda, os nós, a faixa de
+   * atalhos e o marcador `03 / 07`.
+   *
+   * POR QUE UMA CONSTANTE, E NÃO APAGAR O MODO DIRIGIDO. A issue pede o modo
+   * dirigido comentado no lugar, com o motivo e com os valores — e nem JSX nem
+   * CSS têm comentário que ANINHA. A cena dirigida são ~500 linhas de markup e
+   * ~1700 de CSS, todas cheias de `{/* … *\/}` e `/* … *\/` por dentro: envolver
+   * qualquer um dos dois num comentário maior fecharia o bloco no primeiro `*\/`
+   * interno e quebraria o arquivo. Então o mecanismo é o único que a linguagem
+   * permite sem perder uma linha de história: `dirigindo` deixa de ser medido e
+   * passa a ser `false`, e tudo o que pendia dele fica inerte de uma vez —
+   *   · o `@media (min-width: 1024px)` de `globals.css`, inteiro, porque cada
+   *     regra dele é prefixada por `.impact-scroll[data-dirigindo]` e o atributo
+   *     nunca mais é escrito (a nota está na abertura do bloco lá);
+   *   · os dois relógios (gatilho local e inscrição na `ProofJourney`), que
+   *     retornam na primeira linha;
+   *   · a faixa de atalhos e o marcador `03 / 07`, que já rendiam sob `dirigindo`.
+   * A curva, a lente e os nós continuam no markup e continuam `display: none`
+   * pelo CSS base — exactamente como já ficavam em 390px hoje.
+   *
+   * `: boolean` de propósito: sem a anotação o TypeScript estreitaria o tipo para
+   * o literal `false` e os ramos do outro modo passariam a `never`, o que é o
+   * mesmo que apagá-los — e apagá-los é o que esta nota existe para não fazer.
+   *
+   * RELIGAR é devolver as três linhas comentadas logo abaixo (estado + efeito da
+   * media query) e apagar esta constante. Nenhum CSS precisa mudar.
+   *
+   * const [dirigindo, setDirigindo] = useState(false);
+   */
+  const dirigindo: boolean = false;
+  /**
+   * SIS-165 — os SETE ACESOS, e a garantia de alcance POR CONSTRUÇÃO.
+   *
+   * A faixa de atalhos era o canal de TECLADO da cena dirigida. Ela sai, e o que
+   * a substitui não é outro canal: é o conteúdo estar todo no DOM e todo visível,
+   * sem depender de gatilho nenhum. Daí a inversão que importa aqui — o
+   * `data-observando` da fileira só é escrito DEPOIS de existir quem acenda os sete
+   * `<li>` e de a primeira conferência ter corrido. Enquanto ele não estiver lá, o
+   * CSS base pinta os sete acesos.
+   *
+   * O atributo é escrito no DOM pelo efeito, e NÃO é estado do React: ele existe só
+   * para o CSS, nada aqui o lê, e como estado ele custava um render inteiro da
+   * fileira logo depois da montagem — que é justamente o que
+   * `react-hooks/set-state-in-effect` aponta. Escrever no DOM é o que um efeito
+   * deve fazer: sincronizar com o sistema de fora.
+   *
+   * Ou seja: se o efeito não rodar, se a
+   * seção montar fora da tela, se houver movimento reduzido — os sete estão
+   * legíveis. Nada fica preso em `opacity: 0` esperando gatilho que pode não
+   * disparar. É a mesma disciplina do `entrada.play()` de segurança da SIS-161,
+   * com o sinal trocado: lá o gatilho era garantido, aqui o gatilho é dispensável.
+   *
+   * `Set` que só CRESCE: acender é de mão única. Rolar de volta para cima não
+   * apaga ninguém — apagar seria transformar movimento decorativo em movimento
+   * que esconde conteúdo, que é a régua de `reduced-motion-conteudo`.
+   */
+  const [acesos, setAcesos] = useState<ReadonlySet<number>>(new Set());
+  const fileiraRef = useRef<HTMLOListElement>(null);
+  /* Fora da `ProofJourney` devolve `dirigindo: false`, e a seção volta a criar o
+     gatilho dela — é o que a mantém utilizável sozinha. */
+  const jornada = useJornada();
   const secaoRef = useRef<HTMLElement>(null);
   const palcoRef = useRef<HTMLDivElement>(null);
   const cenaRef = useRef<HTMLDivElement>(null);
@@ -195,6 +333,12 @@ export default function Metrics() {
      botões precisa saber, e ela vem do MESMO gatilho que dita o índice ativo:
      nenhum segundo medidor do percurso. */
   const gatilhoRef = useRef<ScrollTrigger | null>(null);
+  const percursoRef = useRef<HTMLDivElement>(null);
+  /* SIS-156 — fim das etapas, medido. Ver a nota longa em `ETAPAS_FIM_PADRAO`.
+     Em `ref` e não em estado: quem lê é a partitura, que roda a cada quadro de
+     rolagem, e um `setState` aqui remontaria os gatilhos a cada resize sem que
+     nada da geometria da cena tivesse mudado. */
+  const etapasFimRef = useRef(ETAPAS_FIM_PADRAO);
   /* Largura da tela e altura util do palco. Sao a UNICA entrada da geometria, e
      mudam so em resize — nao em rolagem. */
   const [medida, setMedida] = useState(MEDIDA_PADRAO);
@@ -202,12 +346,124 @@ export default function Metrics() {
   /* Mesma decisao do `OfficesScene`: o scrollytelling é de tela larga e sem
      movimento reduzido. A avaliacao vive num efeito porque durante o render o
      valor precisa ser o do servidor. */
+  /* SIS-165 — medição da largura COMENTADA junto com o modo dirigido. Ver a nota
+     longa em `dirigindo`, logo acima: era este efeito o único lugar que escrevia
+     `true` ali, e por isso desligá-lo desliga a cena inteira.
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)');
     const avaliar = () => setDirigindo(mq.matches && !prefersReducedMotion());
     avaliar();
     mq.addEventListener('change', avaliar);
     return () => mq.removeEventListener('change', avaliar);
+  }, []);
+  */
+
+  /**
+   * SIS-165 — quais indicadores já passaram pela linha de leitura.
+   *
+   * MEDIÇÃO DE RETÂNGULO, e NÃO `IntersectionObserver`. A primeira versão era um
+   * observador com `threshold: 0.55`, e ele foi trocado por um limite do contrato
+   * da própria API, não por gosto: o observador avisa quando o estado de interseção
+   * MUDA. Num salto, o indicador vai de "abaixo da janela, sem interseção" para
+   * "acima da janela, sem interseção" — o estado não mudou, e a função de retorno
+   * nunca corre. Não há `rootMargin` nem `threshold` que resolva, porque o que
+   * falha é a premissa de que existiria uma notificação; e nenhuma verificação
+   * dentro da função de retorno resolve, porque ela não é chamada. Atinge âncora,
+   * `scrollTo`, restauração de posição do navegador e F5 no meio da página.
+   *
+   * ⚠️ Isto é raciocínio sobre a API, e não uma leitura que eu tenha feito da
+   * versão com observador: o cenário está COBERTO por sonda
+   * (`docs/medidas/sis165/comportamento.mjs` salta para depois da fileira e exige
+   * zero apagados), e é ela que garante o comportamento, seja qual for o mecanismo
+   * de quem vier depois. O que não fica registrado como fato é uma reprovação do
+   * observador que não foi medida.
+   *
+   * Legível não seria o mesmo que correto: 0,55 de opacidade passa o contraste (é
+   * por isso que o piso é 0,55, ver `globals.css`), então nada ficaria escondido —
+   * mas a seção pareceria meio apagada por um gatilho sem como disparar. É a
+   * armadilha que a issue manda evitar, e a saída é a disciplina do
+   * `entrada.play()` de segurança da SIS-161: não confiar no aviso, CONFERIR o
+   * estado.
+   *
+   * `conferir()` lê o retângulo dos que ainda não acenderam e acende todo aquele
+   * cujo topo já esteja acima da linha de leitura — o que inclui, sem caso
+   * especial, quem passou há muito. Roda uma vez ao montar e a cada rolagem.
+   *
+   * O CUSTO é conhecido e pequeno: no máximo sete `getBoundingClientRect` por
+   * quadro de rolagem, e o laço encolhe a cada aceso porque a lista de pendentes
+   * é consumida. Chegando a zero, o ouvinte se remove — o estado final não custa
+   * nada. Não há `setState` sem mudança: `conferir` só escreve quando há novos.
+   *
+   * `passive: true` no ouvinte: isto nunca chama `preventDefault`, e sem a flag o
+   * navegador tem de esperar pelo retorno antes de rolar.
+   *
+   * A linha de leitura é 82% da altura da janela: o indicador acende quando o topo
+   * dele entra no último quinto da tela, um pouco antes de estar confortavelmente
+   * lido. Em telas altas os sete cruzam juntos, e isso é o comportamento certo —
+   * o escalonado é do CSS (`transition-delay` por índice), não daqui.
+   *
+   * Com movimento reduzido nada disto corre: o efeito retorna na primeira linha,
+   * `data-observando` nunca é escrito, o CSS ignora os `data-aceso` e os sete
+   * nascem acesos com o valor final. É também o que garante o valor final nunca ser
+   * 0 (ver `ImpactNumero`).
+   */
+  useEffect(() => {
+    if (prefersReducedMotion()) return;
+    const fileira = fileiraRef.current;
+    if (!fileira) return;
+    /* Mapa de pendentes, não array: acender é remover, e remover de um `Map` não
+       reindexa nada. A chave é o índice do indicador. */
+    const pendentes = new Map<number, HTMLElement>();
+    fileira.querySelectorAll<HTMLElement>('[data-indicador-i]').forEach((n) => {
+      const i = Number(n.dataset.indicadorI);
+      if (Number.isFinite(i)) pendentes.set(i, n);
+    });
+    if (!pendentes.size) return;
+
+    const conferir = () => {
+      const linha = window.innerHeight * 0.82;
+      const novos: number[] = [];
+      pendentes.forEach((n, i) => {
+        if (n.getBoundingClientRect().top < linha) {
+          novos.push(i);
+          pendentes.delete(i);
+        }
+      });
+      if (novos.length) {
+        setAcesos((antes) => {
+          const depois = new Set(antes);
+          for (const i of novos) depois.add(i);
+          return depois;
+        });
+      }
+      /* Todos acesos: o trabalho acabou e o ouvinte sai. */
+      if (!pendentes.size) window.removeEventListener('scroll', conferir);
+    };
+
+    window.addEventListener('scroll', conferir, { passive: true });
+    /* A primeira conferência num quadro de animação, e NÃO aqui no corpo do efeito.
+       Dois motivos, e os dois valem por si:
+
+       1. É ela que cobre a seção montada já dentro da tela e o salto que aconteceu
+          antes deste efeito correr — mas no corpo do efeito ela chamaria `setAcesos`
+          de forma síncrona, o que é render em cascata (o `react-hooks` avisa, e o
+          aviso está certo: a fileira renderizaria duas vezes só para assentar).
+       2. Dentro do `raf` o layout já está resolvido, e é de layout que ela vive:
+          `getBoundingClientRect` no mesmo tique da montagem pode ler a caixa antes
+          de as fontes assentarem.
+
+       O `data-observando` é escrito DEPOIS dessa primeira passagem, no mesmo quadro:
+       é esta ordem que faz o estado apagado ser inalcançável antes de existir quem o
+       acenda. Enquanto o atributo não estiver lá, o CSS pinta os sete acesos. */
+    const quadro = requestAnimationFrame(() => {
+      conferir();
+      fileira.dataset.observando = '1';
+    });
+    return () => {
+      cancelAnimationFrame(quadro);
+      window.removeEventListener('scroll', conferir);
+      delete fileira.dataset.observando;
+    };
   }, []);
 
   /* Medicao da cena. `ResizeObserver` no proprio palco em vez de `resize` na
@@ -237,6 +493,45 @@ export default function Metrics() {
     return () => ro.disconnect();
   }, [dirigindo]);
 
+  /* SIS-156 — a razão entre o percurso PRESO e o percurso da SEÇÃO, que é o fim
+     real das etapas. Ver a nota de `ETAPAS_FIM_PADRAO`.
+     Observador nas DUAS caixas: a de baixo (a seção) cresce quando o rodapé de
+     marcas cresce — e é justamente essa a mudança que a razão precisa acompanhar —,
+     e a de cima (o percurso) é `340vh`, que muda com a altura da janela. Observar
+     só uma deixaria a razão velha em metade dos casos.
+     A guarda de um milésimo é a mesma ideia da de meio pixel acima: o
+     `getBoundingClientRect` devolve float, e sem ela cada quadro reescreveria o
+     valor. Aqui não há render em jogo (é `ref`), mas gravar sem mudança é ruído. */
+  useEffect(() => {
+    if (!dirigindo) return;
+    const secao = secaoRef.current;
+    const percurso = percursoRef.current;
+    if (!secao || !percurso) return;
+
+    const medirFatia = () => {
+      const vh = window.innerHeight;
+      const presa = percurso.getBoundingClientRect().height - vh;
+      const total = secao.getBoundingClientRect().height - vh;
+      if (presa <= 0 || total <= 0) return;
+      /* Sem `clamp01`: uma razão > 1 significaria seção MENOR que o percurso, que
+         não existe (o percurso é filho dela) — e um teto silencioso aqui
+         esconderia o erro em vez de o expor. O piso de `ETAPAS_INICIO` é o que
+         importa: abaixo dele as etapas não teriam trecho nenhum para acontecer. */
+      const fatia = Math.max(ETAPAS_INICIO + 0.05, Math.min(1, presa / total));
+      if (Math.abs(etapasFimRef.current - fatia) < 0.001) return;
+      etapasFimRef.current = fatia;
+      /* O atalho da faixa de botões inverte esta mesma conta, então o novo valor
+         tem de estar em vigor antes de qualquer clique — e a partitura recalcula
+         no próximo quadro de rolagem sozinha. */
+    };
+
+    medirFatia();
+    const ro = new ResizeObserver(medirFatia);
+    ro.observe(secao);
+    ro.observe(percurso);
+    return () => ro.disconnect();
+  }, [dirigindo]);
+
   /**
    * Geometria da cena. UM vao alimenta tudo: posicao do conteudo de cada
    * indicador, posicao dos nodes, largura do SVG, deslocamento da trilha e o
@@ -261,39 +556,51 @@ export default function Metrics() {
     return { vao, centroX, centroY, altura: medida.alturaPalco, dPlano, ...onda };
   }, [medida]);
 
-  useEffect(() => {
-    if (!dirigindo) return;
-    const secao = secaoRef.current;
-    const palco = palcoRef.current;
-    if (!secao || !palco) return;
-
-    gsap.registerPlugin(ScrollTrigger);
-    const gatilho = ScrollTrigger.create({
-      trigger: secao,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 1,
-      /* Movimento interno da lente pausado fora da tela: sem isso os aneis
-         girariam pela pagina toda, gastando compositor por nada. */
-      onToggle: (self) => {
-        palco.dataset.visivel = self.isActive ? '1' : '';
-      },
-      onUpdate: (self) => {
-        const p = self.progress;
-        palco.style.setProperty('--impact-p', String(p));
-        palco.style.setProperty('--impact-entrada', String(clamp01(p / ENTRADA_FIM)));
+  /**
+   * Um quadro do capítulo, dado o progresso 0..1 do percurso de Números.
+   *
+   * Extraído do `onUpdate` do gatilho que vivia aqui, sem mudar uma conta: dentro
+   * da `ProofJourney` quem chama é o relógio único da jornada (que recorta o
+   * progresso dela nesta faixa); fora dela, o gatilho local logo abaixo. Nunca os
+   * dois — dois relógios escrevendo `--impact-etapa` no mesmo nó fariam a trilha
+   * tremer.
+   */
+  /**
+   * SIS-89 — `chegada` é "quanto esta seção já chegou", 0..1, e é ela que move a
+   * entrada. Antes a entrada saía de `p / ENTRADA_FIM`, com `p` medido do pixel em
+   * que o palco PRENDE: a seção subia a janela inteira ainda vazia (título fora do
+   * recorte, curva escura embaixo, grade apagada) e só começava a se montar depois
+   * de já ocupar a tela toda. Era a metade "travada" da emenda reportada.
+   *
+   * Dentro da jornada quem informa é o relógio único, que mede a aproximação e
+   * ainda a faz invadir a saída de Soluções (ver `SOBREPOSICAO` em
+   * `ProofJourney.tsx`). Fora dela o gatilho local passa a MESMA conta de antes —
+   * `p / ENTRADA_FIM` — então a seção montada sozinha em outra página não muda em
+   * nada.
+   */
+  const aplicar = useCallback(
+    (p: number, chegada: number) => {
+      const palco = palcoRef.current;
+      if (!palco) return;
+      palco.style.setProperty('--impact-p', String(p));
+        /* Lido UMA vez por quadro, e as três contas abaixo usam o mesmo valor: se
+           uma delas relesse a `ref` depois de um resize no meio do quadro, a
+           aterragem e as etapas discordariam sobre onde o percurso acaba. */
+        const etapasFim = etapasFimRef.current;
+        const aterrarInicio = etapasFim;
+        palco.style.setProperty('--impact-entrada', String(clamp01(chegada)));
         /* Aterragem: 0 enquanto a cena é a onda, 1 quando ela já é a linha-base.
            O CSS cruza as duas camadas de path com esta variável. */
         palco.style.setProperty(
           '--impact-aterrar',
-          String(clamp01((p - ATERRAR_INICIO) / (1 - ATERRAR_INICIO))),
+          String(clamp01((p - aterrarInicio) / (1 - aterrarInicio))),
         );
 
         /* Posicao continua na sequencia, em indices: 0 = primeiro indicador,
            TOTAL-1 = ultimo. É dela que sai TUDO — deslocamento da trilha, trecho
            aceso da curva, pulso e indice ativo. Um progresso, uma fonte. */
         const etapa =
-          clamp01((p - ETAPAS_INICIO) / (ETAPAS_FIM - ETAPAS_INICIO)) * (TOTAL - 1);
+          clamp01((p - ETAPAS_INICIO) / (etapasFim - ETAPAS_INICIO)) * (TOTAL - 1);
 
         /* Posicao continua em ETAPAS, nao em fracao de trilha: o CSS multiplica
            por `--impact-vao` e a trilha anda exatamente um vao por indicador.
@@ -338,11 +645,57 @@ export default function Metrics() {
         );
 
         /* Unica coisa que vira estado React: muda sete vezes na secao inteira. */
-        const indice = Math.min(TOTAL - 1, Math.round(etapa));
-        if (indice === ativoRef.current) return;
-        ativoRef.current = indice;
-        setAtivo(indice);
+      const indice = Math.min(TOTAL - 1, Math.round(etapa));
+      if (indice === ativoRef.current) return;
+      ativoRef.current = indice;
+      setAtivo(indice);
+    },
+    /* A geometria entra nas dependências porque a função lê `geo`: em resize ela
+       é recriada com as medidas novas. Fora de resize nada aqui muda. */
+    [geo],
+  );
+
+  /** Limpa tudo o que `aplicar` escreve. Usada nos dois modos de relógio. */
+  const limpar = useCallback(() => {
+    const palco = palcoRef.current;
+    if (!palco) return;
+    delete palco.dataset.visivel;
+    for (const nome of [
+      '--impact-p',
+      '--impact-entrada',
+      '--impact-aterrar',
+      '--impact-etapa',
+      '--impact-aceso-x',
+      '--impact-pulso-x',
+      '--impact-pulso-y',
+      '--impact-pulso-op',
+      '--impact-passagem',
+    ]) {
+      palco.style.removeProperty(nome);
+    }
+  }, []);
+
+  /* Relógio local: só FORA da jornada (outras páginas que montem a seção). */
+  useEffect(() => {
+    if (!dirigindo || jornada.dirigindo) return;
+    const secao = secaoRef.current;
+    const palco = palcoRef.current;
+    if (!secao || !palco) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const gatilho = ScrollTrigger.create({
+      trigger: secao,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1,
+      /* Movimento interno da lente pausado fora da tela: sem isso ela respiraria
+         pela pagina toda, gastando compositor por nada. */
+      onToggle: (self) => {
+        palco.dataset.visivel = self.isActive ? '1' : '';
       },
+      /* Fora da jornada não existe aproximação medida: a entrada continua sendo o
+         primeiro trecho do próprio percurso, exatamente como antes de SIS-89. */
+      onUpdate: (self) => aplicar(self.progress, clamp01(self.progress / ENTRADA_FIM)),
     });
 
     gatilhoRef.current = gatilho;
@@ -355,25 +708,27 @@ export default function Metrics() {
          seções da página têm gatilhos próprios e sobrevivem a este desmonte. */
       gatilho.kill();
       gatilhoRef.current = null;
-      delete palco.dataset.visivel;
-      for (const nome of [
-        '--impact-p',
-        '--impact-entrada',
-        '--impact-aterrar',
-        '--impact-etapa',
-        '--impact-aceso-x',
-        '--impact-pulso-x',
-        '--impact-pulso-y',
-        '--impact-pulso-op',
-        '--impact-passagem',
-      ]) {
-        palco.style.removeProperty(nome);
-      }
+      limpar();
     };
-    /* A geometria entra nas dependências porque o handler lê `geo`: em resize o
-       gatilho é recriado com as medidas novas, e o `refresh` recalcula o
-       percurso. Fora de resize nada aqui muda. */
-  }, [dirigindo, geo]);
+  }, [dirigindo, jornada.dirigindo, aplicar, limpar]);
+
+  /* Relógio da jornada: o capítulo se inscreve e recebe a fatia dele. */
+  useEffect(() => {
+    if (!dirigindo || !jornada.dirigindo) return;
+    const palco = palcoRef.current;
+    if (!palco) return;
+    const baixa = jornada.registrar('metrics', {
+      alvo: () => secaoRef.current,
+      aplicar,
+      aoAlternar: (visivel) => {
+        palco.dataset.visivel = visivel ? '1' : '';
+      },
+    });
+    return () => {
+      baixa();
+      limpar();
+    };
+  }, [dirigindo, jornada, aplicar, limpar]);
 
   /**
    * SIS-73 — atalho para o indicador `i`.
@@ -392,10 +747,19 @@ export default function Metrics() {
    * duração de 0,9s é movimento, e é justamente o que a preferência recusa.
    */
   const irParaIndicador = (i: number) => {
+    /* Mesma `ref` que a partitura lê: o atalho continua sendo o inverso EXATO da
+       conta de `aplicar`, e não uma segunda verdade sobre onde as etapas acabam. */
+    const p =
+      ETAPAS_INICIO + (i / (TOTAL - 1)) * (etapasFimRef.current - ETAPAS_INICIO);
+    /* Duas origens possíveis para a altura, e nunca as duas ao mesmo tempo: o
+       gatilho local (fora da jornada) ou a jornada (que é quem tem o gatilho
+       quando a seção é um capítulo dela). A conta de `p` é a mesma nos dois
+       casos — inverso exato da conta de `aplicar`. */
     const gatilho = gatilhoRef.current;
-    if (!gatilho) return;
-    const p = ETAPAS_INICIO + (i / (TOTAL - 1)) * (ETAPAS_FIM - ETAPAS_INICIO);
-    const alvo = gatilho.start + p * (gatilho.end - gatilho.start);
+    const alvo = gatilho
+      ? gatilho.start + p * (gatilho.end - gatilho.start)
+      : jornada.alturaDe('metrics', p);
+    if (alvo === null) return;
     const rm = prefersReducedMotion();
     const lenis = (window as unknown as { __lenis?: { scrollTo: (t: number, o?: object) => void } })
       .__lenis;
@@ -413,6 +777,43 @@ export default function Metrics() {
          nunca aparece, e a secao é a lista completa. */
       data-dirigindo={dirigindo ? '1' : undefined}
     >
+      {/* SIS-101 — o percurso ganhou uma caixa própria, e ela existe por uma
+          razão só: dar à faixa de logos um lugar DEPOIS do sticky.
+
+          `position: sticky` viaja dentro do bloco pai. Enquanto o `.impact-sticky`
+          era filho direto da seção, ele viajava as 340vh inteiras — e qualquer
+          irmão depois dele teria a posição estática dele como origem, ou seja, a
+          100svh do topo da seção: a faixa nasceria no MEIO do percurso e passaria
+          as 240vh restantes escondida atrás do palco opaco, para nunca aparecer.
+
+          Com o percurso numa caixa de 340vh, o sticky viaja aquela caixa e o rodapé
+          é o que vem logo abaixo dela: nos últimos pixels da seção o palco
+          desencosta do topo e sobe, e as marcas entram em quadro por baixo. É esse
+          o "rodapé da seção" que SIS-101 pede — e é a mesma cena que a curva já
+          contava, porque a aterragem começa onde as etapas acabam e achata a curva
+          numa reta horizontal justo antes disso. A reta aterrissa, o palco sai, as
+          marcas entram. Sem chanfro, sem degrau, e sem a linha ciano que existia só
+          para costurar duas seções que agora são uma.
+
+          SIS-156 — o "~130px" que estava escrito aqui era a altura da FAIXA, e o
+          ponto de soltura deixou de ser um número para ser uma razão medida: ver a
+          nota de `ETAPAS_FIM_PADRAO`. Com a grade estática o rodapé mede ~690px a
+          1440×900, e é por isso que a partitura passou a lê-lo do DOM em vez de o
+          ter cravado em `0.94`.
+
+          O `min-height: 340vh` mudou de dono junto (era `.impact-scroll
+          [data-dirigindo]`, agora é esta caixa) — ver `globals.css`. O gatilho
+          continua ancorado na SEÇÃO (`start: top top` / `end: bottom bottom`), que
+          agora mede 340vh + o rodapé.
+
+          E aqui estava um erro de premissa que a SIS-156 desmentiu com medida: "as
+          fatias se reescalam sozinhas sobre o progresso normalizado" é verdade só
+          para as PROPORÇÕES, não para o ponto de soltura. Normalizar sobre uma
+          caixa que inclui o rodapé faz o fim das etapas migrar para dentro do
+          trecho em que o palco já está saindo, tanto mais quanto mais alto for o
+          rodapé — e nada avisa. O que reescala sozinho, agora, é `ETAPAS_FIM`:
+          medido como a razão entre esta caixa e a seção. */}
+      <div ref={percursoRef} className="impact-percurso">
       <div ref={palcoRef} className="impact-sticky">
         <div className="impact-topo">
           {/* Emenda de entrada COMENTADA: era ela a faixa clara e plana no topo da
@@ -446,7 +847,19 @@ export default function Metrics() {
               <span aria-hidden className="impact-meta-fio" />
 
               {/* Marcador de etapa. O numero em texto é o que cumpre "nao indicar
-                  o item ativo so por cor"; os traços sao reforco visual. */}
+                  o item ativo so por cor"; os traços sao reforco visual.
+
+                  SIS-165 — SÓ NO MODO DIRIGIDO, e como `dirigindo` agora é
+                  sempre `false` (ver a nota longa lá) ele não entra em nenhuma
+                  largura. O motivo é que ele deixou de ter o que numerar: com os
+                  sete na tela ao mesmo tempo não existe "o terceiro de sete" —
+                  existe o terceiro, ali, ao lado dos outros seis. `03 / 07`
+                  descrevia um percurso, e o percurso saiu.
+                  Comentar o bloco no lugar era impossível: ele já contém um
+                  comentário JSX por dentro (o trilho de pontos da SIS-74) e
+                  comentários não aninham. Fica sob `dirigindo`, que é o mesmo
+                  mecanismo usado no resto da cena. */}
+              {dirigindo && (
               <div className="impact-marcador">
                 <p className="impact-marcador-num">
                   <span className="impact-marcador-atual">{doisDigitos(ativo + 1)}</span>
@@ -489,14 +902,58 @@ export default function Metrics() {
                 </div>
                 */}
               </div>
+              )}
             </div>
 
             {/* O ponto final em ciano é um `span` proprio: é pontuacao, nao
-                palavra, e nao deve entrar no gradiente do titulo. */}
+                palavra, e nao deve entrar no gradiente do titulo.
+
+                SIS-165 — o ciano deixa de ser SÓ o ponto e passa a ser a última
+                PALAVRA, como na referência: "…o mercado de **seguros.**". O texto
+                não muda uma letra — segue o mesmo do `copy-lock.json` —, muda de
+                quem é o destaque. O ponto continua num `span` próprio dentro do
+                destaque porque a razão original não caducou: ele é pontuação, e
+                o gradiente do título é `background-clip: text` (ver
+                `.impact-titulo`), que numa glifa de 4px de largura sai como uma
+                mancha e não como cor. */}
             <h2 id="impact-titulo" className="impact-titulo">
-              Escala que transforma o mercado de seguros
-              <span className="impact-ponto">.</span>
+              Escala que transforma o mercado de{' '}
+              <span className="impact-titulo-destaque">
+                seguros
+                <span className="impact-ponto">.</span>
+              </span>
             </h2>
+
+            {/* SIS-165 — LUGAR RESERVADO, e deliberadamente vazio: o parágrafo de
+                apoio e os três microrrótulos da referência NÃO entram nesta
+                passada. O texto deles não existe em `.claude/conteudo-site/`, e
+                escrevê-lo aqui seria decisão de conteúdo tomada no código, que é
+                o que a Regra Zero proíbe. Fica o lugar e fica a referência, para
+                quem aprovar o texto saber exactamente onde ele vai:
+
+                  <p className="impact-apoio">[parágrafo de apoio — 1 a 2 linhas,
+                    entre o título e a fileira]</p>
+                  <ul className="impact-microrrotulos">
+                    <li>[microrrótulo 1]</li>
+                    <li>[microrrótulo 2]</li>
+                    <li>[microrrótulo 3]</li>
+                  </ul>
+
+                Os microrrótulos são caixa-alta pequena, e é por isso que eles são
+                o item mais provável de reprovar no contraste sobre o azul-marinho
+                — quem os aprovar precisa remedir. Nenhum CSS foi adiantado para
+                eles: classe sem uso é classe que envelhece sozinha. */}
+
+            {/* SIS-165 — `ROLE PARA REVELAR`. Entra porque diz a verdade sobre o
+                que acontece: os sete estão todos aqui, e o que a rolagem faz é
+                acendê-los. Não é instrução para alcançar conteúdo — se ninguém
+                rolar, e se o efeito nunca correr, os sete continuam legíveis
+                (ver a nota de `acesos`). É por isso que ele pode ser
+                `aria-hidden`: para quem ouve, não há nada a revelar. */}
+            <p aria-hidden className="impact-role">
+              <span className="impact-role-fio" />
+              ROLE PARA REVELAR
+            </p>
           </div>
         </div>
 
@@ -528,6 +985,48 @@ export default function Metrics() {
           */}
 
           <span aria-hidden className="impact-grade" />
+
+          {/* SIS-165 — CURVAS DE LUZ e MALHA DE PONTOS, o fundo gráfico da
+              referência. Nenhum arquivo novo: a malha é a `.impact-grade` logo
+              acima (duas linhas em `linear-gradient`, que a SIS-165 passou a
+              pontilhar) e as curvas são este SVG inline, três `<path>` sem
+              preenchimento. `aria-hidden` porque não dizem nada — e é isso que os
+              autoriza a existir: são a única decoração que entrou.
+
+              `preserveAspectRatio="none"` aqui é seguro, ao contrário do que era
+              na `.impact-borda` (ver a nota dela): lá o problema era a ESPESSURA
+              aparente do traço mudar com a largura da tela e as pontas deixarem de
+              encostar limpas nas bordas. Estas curvas usam
+              `vector-effect="non-scaling-stroke"`, então a espessura é 1px real em
+              qualquer largura, e elas atravessam o quadro de borda a borda de
+              propósito — não há ponta para encostar torto.
+
+              SEM FOTO DE PRÉDIO. A referência traz uma; ela não entra, e o lugar é
+              aqui — logo atrás da fileira, à direita. O arquivo não existe no
+              repositório e escolher uma imagem institucional é decisão de
+              conteúdo, não de layout. Quando houver, entra como
+              `<Image aria-hidden className="impact-predio" … />` neste ponto,
+              com `next/image` e sem `priority` (esta seção não é o LCP da home). */}
+          <svg
+            aria-hidden
+            className="impact-curvas"
+            viewBox="0 0 1440 620"
+            preserveAspectRatio="none"
+            focusable="false"
+          >
+            <path
+              vectorEffect="non-scaling-stroke"
+              d="M-40 470 C 300 470 460 300 720 300 C 980 300 1140 130 1480 130"
+            />
+            <path
+              vectorEffect="non-scaling-stroke"
+              d="M-40 540 C 320 540 500 380 720 380 C 940 380 1120 220 1480 220"
+            />
+            <path
+              vectorEffect="non-scaling-stroke"
+              d="M-40 610 C 340 610 540 460 720 460 C 900 460 1100 310 1480 310"
+            />
+          </svg>
 
           {/* A cena. Tres camadas com a MESMA referencia (pixels do palco):
               o caminho (estacionario, com a curva transladada dentro), a lente
@@ -676,11 +1175,31 @@ export default function Metrics() {
             </span>
 
             <div className="impact-track">
-              <ol className="impact-lista" aria-label="Indicadores institucionais da Sistran">
+              <ol
+                ref={fileiraRef}
+                className="impact-lista"
+                aria-label="Indicadores institucionais da Sistran"
+                /* SIS-165 — o atributo que LIGA o apagamento, e ele mora no pai
+                   de propósito: uma chave só, escrita depois de os sete estarem
+                   conferidos pelo efeito. Sem ela o CSS pinta a fileira acesa,
+                   que é o estado final e o padrão. */
+                        >
                 {METRICS.map((m, i) => (
                   <li
                     key={m.id}
                     className="impact-item"
+                    /* SIS-165 — âncora da conferência. `data-indicador-i` e não
+                       `nth-child` no JS: o índice fica escrito no nó, então quem
+                       confere os retângulos não precisa reconstruir a ordem. */
+                    data-indicador-i={i}
+                    /* `data-aceso` é escrito SEMPRE, inclusive antes da primeira
+                       conferência, e isso é seguro: quem decide se "nao" significa
+                       apagado é o `data-observando` da FILEIRA, que só aparece
+                       depois. Sem ele, o CSS ignora este atributo e pinta o
+                       indicador aceso. Duas condições no mesmo lugar davam a
+                       impressão de dupla proteção e na prática eram um render
+                       extra — a proteção está no seletor, não aqui. */
+                    data-aceso={acesos.has(i) ? 'sim' : 'nao'}
                     data-estado={i === ativo ? 'ativo' : i < ativo ? 'feito' : 'proximo'}
                     /* SIS-62 — `data-dist` e `data-lado`, os dois derivados do que
                        o item já tem. `data-dist` é a distancia em etapas até o
@@ -728,14 +1247,33 @@ export default function Metrics() {
                         item, e nao dentro da lente: duplicar o valor la faria o
                         leitor de tela ler cada indicador duas vezes. */}
                     <p className="impact-valor">
-                      <ImpactNumero valor={m.value} ativo={i === ativo} />
+                      {/* SIS-165 — o gatilho da contagem passa a ser "acendeu",
+                          não "virou o ativo". No modo dirigido havia UM ativo e a
+                          contagem era dele; na fileira estática os sete acendem
+                          conforme a rolagem passa, cada um contando uma vez. A
+                          expressão guarda os dois casos — o de cima está inerte
+                          enquanto `dirigindo` for `false` (ver a nota lá).
+                          Sem conferência (efeito que não correu, ou movimento
+                          reduzido) `acesos` fica vazio, nada conta, e o que fica
+                          na tela é o valor final que já está no HTML. */}
+                      <ImpactNumero
+                        valor={m.value}
+                        ativo={dirigindo ? i === ativo : acesos.has(i)}
+                      />
                       {/* Fora do contador de proposito: dentro dele o `+` seria
                           reescrito a cada quadro da contagem. */}
                       <span className="impact-mais">{m.suffix}</span>
                     </p>
 
                     <p className="impact-rotulo">{m.label}</p>
+                    {/* SIS-165 — a legenda de contexto sai por REGRA ZERO, não por
+                        desenho: as sete frases são o único texto desta seção fora
+                        de `.claude/conteudo-site/`. Ficam comentadas em
+                        `src/data/metrics.ts`, uma por uma, com o texto integral; o
+                        campo `caption` do tipo passou a opcional para permitir
+                        isso. Religar é descomentar os três lugares.
                     <p className="impact-caption">{m.caption}</p>
+                    */}
                   </li>
                 ))}
               </ol>
@@ -809,6 +1347,65 @@ export default function Metrics() {
           <span aria-hidden className="impact-vinheta" />
         </div>
       </div>
+      </div>
+      {/* SIS-101 — a faixa de logos de parceiros, agora como rodapé desta seção
+          em vez de seção independente. Ver a nota na abertura do
+          `.impact-percurso` acima e o cabeçalho de `SignalMarquee.tsx`.
+
+          Ela traz o próprio fundo off-white (`#f5faff`), e isso é escolha, não
+          herança acidental: as 15 marcas de `clients.ts` são todas desenhadas para
+          fundo claro, e esta seção pinta o degradê azul da marca. Herdar o fundo
+          exigiria devolver as placas brancas do `ClientWall` — uma moldura por
+          logo, que é justamente o peso que a faixa não tem. A superfície clara é
+          também o que emenda no creme da montagem logo depois (EMENDA 4, em
+          `legacy.css`), então a faixa continua fazendo o trabalho de transição que
+          fazia solta, só sem os chanfros órfãos.
+
+          Sem `aria-hidden` e sem wrapper: o componente já é um `role="region"`
+          rotulado, e não tem texto — não precisa da serifa editorial que o
+          envolvia na home. */}
+      {/* SIS-156 — a FAIXA ROLANTE saiu daqui e entrou a grade estática
+          (`BrandGrid`), no formato de `terminal-industries.com`: título editorial
+          acima e as marcas paradas numa malha de linhas finas. O
+          `<SignalMarquee />` fica comentado, não deletado:
+
+              <SignalMarquee />
+
+          Ele NÃO saiu do projeto — `/contato:133` e
+          `/parceiros-e-implementacoes:105` continuam montando a faixa rolante, e
+          essa divergência é deliberada: a issue troca só a home. Por isso também
+          nenhum CSS ficou órfão com a troca (o kit `.marquee-*` de `globals.css` e
+          o desenho `.lp-signals`/`.lp-partner` de `legacy.css` seguem com dois
+          consumidores) — não há o que comentar lá, e comentar seria quebrar as
+          outras duas telas.
+
+          O que a grade traz de volta é o TÍTULO, que era a metade da referência
+          que a faixa não tinha (a nota da SIS-101 em `page.tsx` registra que o
+          wrapper de serifa editorial não a acompanhou porque "a faixa é só logos,
+          não tem uma palavra de texto"). O texto é aprovado e está no
+          `copy-lock.json`, na mesma passada desta implementação — fora dele, a
+          próxima varredura o trataria como cópia solta e o reescreveria.
+
+          A EMENDA continua resolvida pelo mesmo recurso: a grade traz o mesmo
+          off-white `#f5faff` da faixa e o mesmo `border-bottom` de `--line`, então
+          quem costura o palco escuro acima e o creme da montagem abaixo é a
+          superfície clara, como antes. Nada de `NotchDivider` — ver o parágrafo do
+          `.impact-percurso` no topo desta seção.
+
+          E O QUE FOI MEDIDO, porque é o que quebrou em silêncio de verdade: a caixa
+          do percurso mede 340vh MAIS a altura deste rodapé, e a grade é ~690px
+          contra os ~130px da faixa. Com `ETAPAS_FIM` cravado em `0.94`, a sétima
+          etapa passou a ser alcançada 527px DEPOIS de o palco começar a sair do
+          topo — `07 / 07` fora de quadro, cena aparentemente intacta. A correção
+          está em `ETAPAS_FIM_PADRAO` e no efeito que mede a razão entre as duas
+          caixas.
+          ABAIXO de 1024px não há partitura a conferir, e isso é achado, não
+          desculpa: `dirigindo` exige `min-width: 1024px`, então na arrumação de
+          cinco fileiras a seção é a lista completa, sem sticky e sem etapas. A
+          grade mais alta não tem o que reescalar lá.
+          Medido em 1440×900, 1366×768 e 900×800 por
+          `scripts/medir-percurso-marcas.mjs`. */}
+      <BrandGrid />
     </section>
   );
 }

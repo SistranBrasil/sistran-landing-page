@@ -1,0 +1,254 @@
+/* SIS-159 — trilha horizontal dos parceiros (`PartnersTrack.tsx`).
+
+   Arquivo próprio e COLOCADO, no padrão de `events-spotlight.css`,
+   `brand-grid.css` e `essence-accordion.css`. O código de referência da issue
+   trazia um `PartnersTrack.module.css`; CSS Modules NÃO existe neste
+   repositório (nenhum `*.module.css` em `src/`), e criar a segunda convenção de
+   estilo por causa de um componente é o item 5 da issue. Os VALORES da
+   referência foram portados; o mecanismo é o da casa.
+
+   ══════════════════════════════════════════════════════════════════════════
+   COMO A CENA SE MOVE, E POR QUE NÃO TEM ScrollTrigger
+
+   `position: sticky` no palco, NUNCA `pin: true`. A proibição está escrita em
+   seis lugares deste repositório (quatro notas no `globals.css` — uma delas
+   literalmente "nunca `pin: true` do GSAP" — mais os cabeçalhos de
+   `Contact.tsx`, `Metrics.tsx`, `ProofJourney.tsx`, `ui/BuildingShowcase.tsx` e
+   `ui/OfficesScene.tsx`). O motivo: `pin` reparenta o nó no DOM e dessincroniza
+   com o Lenis. Sticky não reparenta nada, e por isso o item 10 da issue (a
+   ponte Lenis↔ScrollTrigger, o `refresh()` depois das fontes e das imagens)
+   deixa de existir em vez de ser resolvido: não há ScrollTrigger nesta cena.
+
+   O deslocamento horizontal é UMA conta de CSS:
+
+     translateX = -(w/2) - t * (N - 1) * (w + gap)
+
+   `w` e `gap` são comprimentos declarados aqui, então a DISTÂNCIA É DERIVÁVEL
+   sem medir `scrollWidth`. É isso que dissolve o item 10 da issue: nada aqui
+   depende do layout final, então não há o que remedir quando as fontes ou os
+   dezesseis logos terminam de carregar. O `-(w/2)` combinado com `left: 50%`
+   centraliza o PRIMEIRO painel no palco — e não o centro da trilha, que é o que
+   um `justify-content: center` faria.
+
+   `t` é o progresso normalizado. `--par-p` vem do `useProgressoDeSecao` em modo
+   `saida` (0 quando o topo da seção encosta no topo da janela, 1 quando a base
+   encosta), e `--par-esc` corrige a diferença entre "a seção inteira" e "o
+   trecho em que o palco está preso": o palco solta 100svh antes do fim. Os dois
+   números são escritos pelo componente, que é onde a contagem e o passo vivem —
+   o CSS não tem um `16` nem um `520vh` para divergir do dado.
+
+   ══════════════════════════════════════════════════════════════════════════
+   A ALTURA DA SEÇÃO NÃO ESTÁ ESCRITA EM LUGAR NENHUM
+
+   Item 2 da issue: o `520vh` do CSS de referência foi feito para uma lista
+   menor. Aqui a altura é a soma das N sentinelas mais a cauda, exatamente como
+   em `events-spotlight.css`. Trocar o número de parceiros em `partners.ts` já
+   ajusta a altura, e a trilha continua terminando quando o último painel chega.
+
+   O QUE SOBRA no fim não é respiro escolhido: o recuo das duas pontas da faixa
+   de sentinelas é `50 - passo/2`, e ele existe para a sentinela `i` cruzar o
+   centro da janela no MESMO instante em que o painel `i` fica centrado. A
+   primeira versão desta cena escolheu uma cauda a olho e as duas medidas
+   divergiram — a sonda pegou o décimo sexto painel 406px fora do centro, com
+   `--par-t` em 0,943. A derivação completa (as duas condições que fecham a conta)
+   está no bloco de constantes de `PartnersTrack.tsx`, que é onde os números
+   moram.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Estado padrão: a LISTA. ───────────────────────────────────────────────
+   A trilha é a exceção, e não o contrário. Escrito nesta ordem de propósito: o
+   fallback do item 9 da issue é layout completo, e ele é o que vale enquanto
+   nenhuma condição de trilha estiver satisfeita — largura pequena, movimento
+   reduzido, ou CSS de mídia não avaliado. Nenhum painel pode ficar preso em
+   `opacity: .42` por causa de uma regra de acessibilidade.
+   `display: none` (e não `aria-hidden`) na versão que não entra: é o que
+   mantém a escondida FORA da árvore de acessibilidade, então nada é lido duas
+   vezes e nenhuma das duas é `aria-hidden`. */
+.parceiros-trilha {
+  display: none;
+}
+
+/* `.parceiros-lista` NÃO declara `display` fora da media query, e é de propósito:
+   o `display` dela é a grade do Tailwind na própria marcação. Escrever
+   `display: block` aqui criaria uma disputa de mesma especificidade com aquela
+   utilitária, decidida pela ordem dos arquivos — o tipo de conflito que só
+   aparece quando alguém reordena os imports. A única coisa que este arquivo
+   afirma sobre ela é quando ela SAI de cena. */
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .parceiros-lista {
+    display: none;
+  }
+
+  .parceiros-trilha {
+    display: block;
+    position: relative;
+    /* `clip`, NUNCA `hidden`: `hidden` faria deste bloco um contêiner de scroll
+       e mataria o `position: sticky` do palco aqui dentro. */
+    overflow: clip;
+
+    /* O passo e os recuos da faixa de sentinelas NÃO estão aqui de propósito:
+       eles são escritos no estilo das próprias sentinelas, pelo componente, que é
+       onde `--par-esc` é derivada deles. Repetir o passo neste arquivo criaria o
+       segundo lugar de onde ele pode divergir. Daqui o CSS só recebe `--par-n` e
+       `--par-esc`. */
+
+    /* Largura do painel e vão. Estes dois são a DISTÂNCIA da trilha (ver a nota
+       do topo): mexer aqui muda o percurso inteiro sem tocar em JS. */
+    --par-w: clamp(21rem, 44vw, 36rem);
+    --par-gap: clamp(1.25rem, 2.5vw, 2.5rem);
+    --par-travel: calc(
+      (var(--par-n, 16) - 1) * (var(--par-w) + var(--par-gap))
+    );
+
+    /* O progresso normalizado, num lugar só. `clamp` com números crus: depois
+       de o palco soltar, `t` fica travado em 1 e o último painel permanece
+       centrado enquanto a cauda rola. */
+    --par-t: clamp(0, calc(var(--par-p, 0) * var(--par-esc, 1)), 1);
+  }
+
+  /* ── O PALCO ─────────────────────────────────────────────────────────────
+     `100svh` e não `100vh`: em telas com barra de navegação dinâmica o `vh`
+     mede a janela maior e o contador ficaria fora de quadro. */
+  .parceiros-trilha-palco {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    z-index: 2;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding-block: calc(var(--header-h, 88px) + 0.75rem) 1.5rem;
+    /* `clip` de novo, e aqui é o que impede o painel que já passou de aparecer
+       por baixo do cabeçalho da seção. */
+    overflow: clip;
+  }
+
+  /* ── OS ATALHOS POR CATEGORIA ────────────────────────────────────────────
+     Item 3 da issue, saída (b), que a própria issue recomenda: os filtros não
+     filtram — PULAM para o primeiro parceiro da categoria. Filtrar mudaria a
+     contagem de painéis, que muda `--par-travel` e a altura da seção, no meio
+     de uma cena presa: é a receita para a página saltar sob o dedo de quem
+     rola. Pular preserva a função de navegar por categoria e a largura da
+     trilha não muda nunca. */
+  .parceiros-trilha-atalhos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+  }
+
+  /* ── A TRILHA ────────────────────────────────────────────────────────────
+     `left: 50%` mais `-(w/2)` no transform: é o primeiro painel que nasce
+     centrado. `will-change: transform` fica — é o que mantém o deslize na GPU
+     (item 12). O que NÃO entra aqui é `backdrop-filter`: o card antigo tinha
+     `backdrop-blur-xl`, e num painel de 36rem que se move isso é repaint caro a
+     cada quadro. */
+  .parceiros-trilha-track {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: flex;
+    align-items: stretch;
+    gap: var(--par-gap);
+    width: max-content;
+    transform: translate3d(
+      calc(var(--par-w) / -2 - var(--par-t) * var(--par-travel)),
+      -50%,
+      0
+    );
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  .parceiros-painel {
+    position: relative;
+    flex: 0 0 var(--par-w);
+    width: var(--par-w);
+    /* `62vh` da referência, em `svh` pelo mesmo motivo do palco. */
+    height: min(62svh, 34rem);
+    opacity: 0.42;
+    transform: scale(0.88);
+    transition:
+      opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity;
+  }
+
+  .parceiros-painel--ativo {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ── O DETALHE ───────────────────────────────────────────────────────────
+     Absoluto DENTRO do painel: é isso que faz o detalhe abrir sem mudar o
+     tamanho do painel, então `--par-travel` não muda e a trilha não pula. Um
+     detalhe em fluxo empurraria a largura e a cena inteira escorregaria. */
+  .parceiros-painel-detalhe {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: clamp(1.5rem, 2.4vw, 2.25rem);
+    border-radius: 1.5rem;
+    background: linear-gradient(
+      160deg,
+      rgba(4, 29, 55, 0.97),
+      rgba(6, 38, 69, 0.99)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s ease;
+  }
+
+  .parceiros-painel-detalhe[data-aberto='true'] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* ── A BARRA DE PROGRESSO ────────────────────────────────────────────────
+     `scaleX` do mesmo `--par-t` que move a trilha: uma medida só, então a barra
+     não pode discordar da posição. */
+  .parceiros-trilha-barra-preenche {
+    transform: scaleX(var(--par-t));
+    transform-origin: left center;
+  }
+}
+
+/* ── ESPELHO DO INTERRUPTOR MANUAL (`html[data-motion="reduce"]`) ───────────
+   Este site tem DOIS jeitos de reduzir movimento: a preferência do sistema e o
+   botão da interface. O botão funciona porque `layout.tsx` embrulha o
+   `window.matchMedia`, então todo hook de JS vê o valor escolhido — mas uma
+   `@media (prefers-reduced-motion: …)` de verdade NÃO é interceptável, e o
+   bloco acima é uma dessas. Sem este espelho a cena fica pela metade: o
+   `useReducedMotion()` para de escrever `--par-p`, e a media query continua
+   casando, então a trilha permanece montada e CONGELADA no painel 01. Medido a
+   1440×900: com a preferência em `full`, 16 de 16 painéis alcançados; com
+   `reduce` escolhido na interface, **2 de 16**, mais cinco telas de rolagem
+   morta. Quatorze parceiros desaparecem porque uma regra de acessibilidade não
+   foi espelhada. Mesmo padrão e mesmo motivo de `events-spotlight.css:1023` e
+   de `legacy.css` com `.stack-carrier`: quem desliga movimento pela interface
+   tem de receber o mesmo tratamento de quem o desliga no sistema, senão o botão
+   mente.
+
+   ESPECIFICIDADE, que é o que faz isto funcionar: `html[data-motion] .x` é
+   (0,2,1) e vence os (0,1,0)/(0,1,1) de dentro da `@media` — media query não
+   soma especificidade — e vence a utilitária do Tailwind. O `display: grid`
+   explícito é obrigatório: a utilitária `grid` da marcação empata com o
+   `display: none` de lá em cima e perderia pela ordem dos arquivos. As
+   utilitárias `grid-cols-*` responsivas só mexem em `grid-template-columns`,
+   então as colunas dos três breakpoints seguem intactas. */
+html[data-motion='reduce'] .parceiros-trilha {
+  display: none;
+}
+
+html[data-motion='reduce'] .parceiros-lista {
+  display: grid;
+}

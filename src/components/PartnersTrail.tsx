@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { TIMELINE_EVENTS, TIMELINE_CATEGORY_META } from '@/data/timeline';
 import { buildTrail } from '@/lib/trail';
 import { useReducedMotion } from '@/lib/motion';
@@ -27,39 +27,87 @@ export default function PartnersTrail({ id }: { id?: string }) {
 
   const stageRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
-  const [progress, setProgress] = useState(0);
-  const [traveler, setTraveler] = useState({ x: 0, y: 0 });
+  const travelerRef = useRef<HTMLSpanElement>(null);
 
   const rm = useReducedMotion();
 
-  const update = useCallback(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
-
-    const rect = stage.getBoundingClientRect();
-    /* A rota avança conforme a metade inferior da tela varre o palco: 0 quando
-       o topo do palco cruza esse ponto, 1 quando o fim dele cruza. */
-    const anchor = window.innerHeight * 0.65;
-    const raw = (anchor - rect.top) / Math.max(rect.height, 1);
-    setProgress(Math.min(1, Math.max(0, raw)));
-  }, []);
-
+  /**
+   * O progresso NÃO mora em estado do React, e isso é a correção de um bug real,
+   * não preferência de estilo.
+   *
+   * A versão anterior fazia `setProgress` no scroll e, num segundo `useEffect`
+   * dependente de `progress`, fazia `setTraveler`. Cada quadro virava uma cadeia
+   * commit → efeito → commit, ou seja, um update ANINHADO. O contador de updates
+   * aninhados do React só zera quando um commit não vem de dentro de outro — com
+   * a cadeia se repetindo a cada quadro ele nunca zerava, e depois de ~50 quadros
+   * de rolagem contínua (cerca de um segundo) estourava em
+   * "Maximum update depth exceeded". Medido: em repouso a página é estável (um
+   * único evento de scroll, altura constante), então não havia realimentação de
+   * layout — o laço era só essa cadeia de estado.
+   *
+   * Escrevendo direto no DOM, o scroll deixa de renderizar o componente: são
+   * zero commits por quadro em vez de dois, o erro fica estruturalmente
+   * impossível e as 15 paradas param de re-renderizar a cada pixel rolado.
+   */
   useEffect(() => {
+    const stage = stageRef.current;
+    const path = pathRef.current;
+    const traveler = travelerRef.current;
+    if (!stage || !path || !traveler) return;
+
+    const stops = Array.from(stage.querySelectorAll<HTMLElement>('.trail-stop'));
+    const passos = Math.max(stops.length - 1, 1);
+    /* Comprimento da curva em unidades do viewBox: não muda quando o palco
+       redimensiona, então basta medir uma vez. */
+    const total = path.getTotalLength();
+    let ultimo = -1;
+
+    const aplicar = (valor: number) => {
+      // Faixa morta: sem ela, o mesmo valor reescreveria o DOM a cada quadro.
+      if (Math.abs(valor - ultimo) < 0.0005) return;
+      ultimo = valor;
+
+      path.style.strokeDashoffset = `${1 - valor}`;
+
+      if (total) {
+        // Posição sobre a curva de verdade (getPointAtLength), não uma
+        // interpolação linear entre as paradas.
+        const ponto = path.getPointAtLength(total * valor);
+        traveler.style.setProperty('--x', `${(ponto.x / trail.width) * 100}%`);
+        traveler.style.setProperty('--y', `${(ponto.y / trail.height) * 100}%`);
+      }
+
+      stops.forEach((stop, i) => {
+        const at = i / passos;
+        stop.dataset.reached = valor >= at - 0.02 ? 'true' : 'false';
+      });
+    };
+
     if (rm) {
-      setProgress(1);
+      // Rota inteira, todas as paradas visíveis, viajante escondido pelo CSS.
+      aplicar(1);
       return;
     }
+
+    const medir = () => {
+      const rect = stage.getBoundingClientRect();
+      /* A rota avança conforme a metade inferior da tela varre o palco: 0 quando
+         o topo do palco cruza esse ponto, 1 quando o fim dele cruza. */
+      const anchor = window.innerHeight * 0.65;
+      const raw = (anchor - rect.top) / Math.max(rect.height, 1);
+      aplicar(Math.min(1, Math.max(0, raw)));
+    };
 
     let frame = 0;
     const onScroll = () => {
       if (frame) return;
       frame = window.requestAnimationFrame(() => {
         frame = 0;
-        update();
+        medir();
       });
     };
 
-    update();
+    medir();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll);
     return () => {
@@ -67,21 +115,7 @@ export default function PartnersTrail({ id }: { id?: string }) {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
-  }, [rm, update]);
-
-  // Posição do viajante sobre a curva de verdade (getPointAtLength), não uma
-  // interpolação linear entre as paradas.
-  useEffect(() => {
-    const path = pathRef.current;
-    if (!path) return;
-    const total = path.getTotalLength();
-    if (!total) return;
-    const point = path.getPointAtLength(total * progress);
-    setTraveler({
-      x: (point.x / trail.width) * 100,
-      y: (point.y / trail.height) * 100,
-    });
-  }, [progress, trail.width, trail.height]);
+  }, [rm, trail.width, trail.height]);
 
   return (
     <div id={id} className="container-lp scroll-mt-32">
@@ -100,32 +134,29 @@ export default function PartnersTrail({ id }: { id?: string }) {
             className="trail-route-live"
             d={trail.d}
             pathLength={1}
-            style={{ strokeDashoffset: 1 - progress }}
           />
         </svg>
 
-        <span
-          className="trail-traveler"
-          style={{ '--x': `${traveler.x}%`, '--y': `${traveler.y}%` } as React.CSSProperties}
-          aria-hidden
-        />
+        {/* Sem estilo inline: o estado inicial (rota apagada, viajante no
+            começo) vem dos valores padrão do CSS, e o efeito assume daí. */}
+        <span ref={travelerRef} className="trail-traveler" aria-hidden />
 
         {/* A lista real fica aqui: o SVG é decoração, as paradas são HTML. */}
         <ol className="contents">
           {events.map((e, i) => {
             const point = trail.points[i];
             const meta = TIMELINE_CATEGORY_META[e.category];
-            // Progresso aproximado da parada pelo seu índice: a curva tem
-            // passos iguais, então o índice normalizado acompanha o viajante.
-            const at = i / Math.max(events.length - 1, 1);
-            const reached = progress >= at - 0.02;
 
             return (
               <li
                 key={e.id}
                 className="trail-stop"
                 data-side={i % 2 === 0 ? 'left' : 'right'}
-                data-reached={reached ? 'true' : 'false'}
+                /* `data-reached` passa a ser escrito pelo efeito. O valor inicial
+                   é o do servidor, para não haver divergência na hidratação: a
+                   parada nasce oculta e o primeiro quadro já a corrige. O limiar
+                   por índice mora no efeito, porque a curva tem passos iguais. */
+                data-reached="false"
                 style={
                   {
                     '--x': `${(point.x / trail.width) * 100}%`,
@@ -158,7 +189,7 @@ export default function PartnersTrail({ id }: { id?: string }) {
               >
                 {e.generation}
               </span>
-              <strong className="mt-1 block font-display text-base font-bold leading-snug text-white">
+              <strong className="mt-1 block font-display text-base leading-snug text-white">
                 {e.company}
               </strong>
               <span className="mt-1 block text-sm leading-relaxed text-white/70">{e.detail}</span>

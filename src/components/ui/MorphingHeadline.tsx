@@ -88,7 +88,7 @@ export default function MorphingHeadline({ index = 0 }: { index?: number }) {
   return (
     <h1
       ref={rootRef}
-      className="font-display font-black tracking-tight text-white"
+      className="font-display tracking-tight text-white"
       style={{
         // Escala pela coluna, não pela viewport: em 7vw o título estourava a
         // metade esquerda do grid do hero.

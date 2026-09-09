@@ -11,3 +11,7 @@ scroll-world/
 .env*
 
 tsconfig.tsbuildinfo
+
+# SIS-132: worker do MapLibre copiado de node_modules por scripts/copiar-worker-maplibre.mjs
+# (predev/prebuild). Versionar a cópia a deixaria envelhecer em silêncio.
+public/maplibre/

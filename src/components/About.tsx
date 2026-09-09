@@ -86,7 +86,7 @@ function CountUpNumber({
     <span
       ref={ref}
       aria-hidden
-      className="font-display font-black leading-none tabular-nums"
+      className="font-display leading-none tabular-nums"
       style={{
         fontSize: 'clamp(3.25rem, 7.5vw, 6rem)',
         letterSpacing: '-0.05em',
@@ -140,7 +140,7 @@ export default function About() {
             </motion.span>
             <motion.h2
               variants={vTitle}
-              className="mt-5 font-display text-section font-bold text-ink"
+              className="mt-5 font-display text-section text-ink"
             >
               A <span className="text-gradient-brand">Sistran</span>
             </motion.h2>
