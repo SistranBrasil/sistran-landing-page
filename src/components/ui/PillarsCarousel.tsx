@@ -1,5 +1,16 @@
 'use client';
 
+/**
+ * SIS-188 — GUARDADO.
+ *
+ * Consumido só pelo `Hero.tsx` órfão. Nenhuma `page.tsx` importa este arquivo.
+ *
+ * Substituto atual: a home usa `HeroCinematic` (sem este carrossel).
+ * Rota/issue que retirou: saída do `Hero` da home (`REDESIGN.md`).
+ * Volta se o `Hero.tsx` voltar a ser montado, ou se uma rota/hero nova montar
+ * este carrossel de propósito.
+ */
+
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { DIFFERENTIALS } from '@/data/differentials';

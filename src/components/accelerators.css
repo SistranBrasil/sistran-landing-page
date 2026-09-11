@@ -1,0 +1,152 @@
+/* SIS-217 — a placa da logo no card de acelerador (`Accelerators.tsx`).
+
+   POR QUE EM CSS E NÃO EM UTILITÁRIAS TAILWIND
+   O estado de repouso caberia em classe utilitária, mas o de movimento reduzido
+   não: a política do projeto tem DOIS canais (a media query do sistema e o
+   `html[data-motion='reduce']` que o script inline do `layout.tsx` grava), e o
+   segundo precisa VENCER as regras de hover. Utilitária `group-hover:` e
+   seletor de atributo empatam em especificidade, e o desempate por ordem de
+   arquivo é frágil. Aqui os dois canais desligam o efeito no mesmo lugar, com o
+   mesmo par de regras — o arranjo que `partner-terminal-cards.css` já usa.
+
+   O que é dinâmico por item (o `tone` da marca: fundo, borda e sombra da placa)
+   continua em `style` inline no TSX, porque é dado, não folha de estilo. */
+
+/* 11/09 — A PLACA CRESCEU, e o espaço veio de onde o título estava.
+   A usuária pediu a logo em destaque e sem o título visível; o `<h3>` foi para
+   `sr-only` (ver a nota no TSX), o que devolveu ~40px de altura ao card. A logo
+   ocupa essa folga em vez de deixar buraco: caixa de 52px → 72px de altura
+   mínima, teto de largura de 14rem → 18rem e a arte de 28px → 44px de altura.
+   Valores anteriores, na ordem em que aparecem abaixo: `min-width: 3.25rem`,
+   `max-width: min(14rem, 68%)`, `min-height: 3.25rem`, `padding: 0.625rem
+   0.875rem` e, na arte, `max-height: 1.75rem`.
+
+   O 76% É O QUE O ORDINAL PERMITE, e o número não é gosto: a placa divide esta
+   linha com o "01…07" (`justify-between`), que mede ~30px em `text-3xl` mono
+   mais 12px de vão. A coluna mais estreita do arranjo é a de três colunas a
+   1440 — 358px de card, 302px de conteúdo depois do `p-7` —, onde 76% dá 230px
+   e sobram 42px para ordinal e vão, justo o necessário. Subir daqui encosta a
+   logo no número.
+   ⚠️ `padding` e o `inset` do eco são o MESMO valor, em dois lugares: o eco é
+   posicionado por `inset` para ficar alinhado à arte da frente. Mexer num sem o
+   outro tira o halo de registro. */
+.accel-logo {
+  position: relative;
+  display: flex;
+  min-width: 4rem;
+  /* Teto de largura, não largura: a placa acompanha a proporção da logo, que vai
+     de 1,8:1 (Connect API) a 6,7:1 (Match AI). Forçar 1:1 — a caixa de 52px do
+     glifo que estava aqui — espremeria as horizontais a ~8px de altura. */
+  max-width: min(18rem, 76%);
+  min-height: 4.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  transition: transform 300ms var(--ease-out);
+}
+
+.accel-logo__img {
+  position: relative;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 2.75rem;
+  object-fit: contain;
+  transition: transform 300ms var(--ease-out);
+}
+
+/* O ECO: a mesma logo, atrás da de cima, com o halo ciano da marca.
+
+   Mesma receita da SIS-201 (`.partner-terminal__eco`), com duas diferenças que
+   vêm do tamanho do palco. Aqui o card tem 300px de altura mínima e o título
+   começa logo abaixo desta linha, então o eco NÃO cresce até 1,45 — ele fica
+   dentro da placa (escala 1,12), e o que o torna perceptível é o halo, não o
+   tamanho. E o `filter` é estático: só `opacity` e `transform` animam, que é o
+   pedido da issue e o que mantém o efeito fora de layout e de paint. */
+.accel-logo__eco {
+  position: absolute;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inset: 0.75rem 1rem;
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity 260ms ease,
+    transform 340ms var(--ease-out);
+  pointer-events: none;
+}
+
+.accel-logo__eco-img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 2.75rem;
+  object-fit: contain;
+  /* Duas camadas, como no card de parceiro: a fechada acende a borda da tinta,
+     a aberta alcança o navy em volta. Ciano da marca (#0ed8f6) + azul (#096bad),
+     os mesmos dois tons do eco da SIS-201. */
+  filter: drop-shadow(0 0 0.75rem rgba(14, 216, 246, 0.85))
+    drop-shadow(0 0 2rem rgba(9, 107, 173, 0.7));
+}
+
+.accel-card:hover .accel-logo,
+.accel-card:focus-within .accel-logo {
+  transform: translateY(-2px);
+}
+
+.accel-card:hover .accel-logo__img,
+.accel-card:focus-within .accel-logo__img {
+  transform: scale(1.06);
+}
+
+.accel-card:hover .accel-logo__eco,
+.accel-card:focus-within .accel-logo__eco {
+  opacity: 0.55;
+  transform: scale(1.12);
+}
+
+/* Movimento reduzido — os dois canais, com o mesmo conteúdo.
+
+   O eco sai de cena por `display: none`, e não por transição desligada: com a
+   transição morta ele APARECERIA de estalo no hover, que é o oposto do pedido
+   (mesmo raciocínio registrado em `partner-terminal-cards.css`). A logo perde a
+   escala e a placa perde o deslocamento: as duas ficam estáticas. Nada de
+   conteúdo se perde — a logo é decorativa, e o nome do produto continua em texto
+   no `<h3>` logo abaixo, que desde 11/09 é `sr-only`: some da tela, permanece no
+   documento e no leitor de tela. */
+@media (prefers-reduced-motion: reduce) {
+  .accel-logo,
+  .accel-logo__img {
+    transition: none;
+  }
+
+  .accel-card:hover .accel-logo,
+  .accel-card:focus-within .accel-logo,
+  .accel-card:hover .accel-logo__img,
+  .accel-card:focus-within .accel-logo__img {
+    transform: none;
+  }
+
+  .accel-logo__eco {
+    display: none;
+  }
+}
+
+html[data-motion='reduce'] .accel-logo,
+html[data-motion='reduce'] .accel-logo__img {
+  transition: none;
+}
+
+html[data-motion='reduce'] .accel-card:hover .accel-logo,
+html[data-motion='reduce'] .accel-card:focus-within .accel-logo,
+html[data-motion='reduce'] .accel-card:hover .accel-logo__img,
+html[data-motion='reduce'] .accel-card:focus-within .accel-logo__img {
+  transform: none;
+}
+
+html[data-motion='reduce'] .accel-logo__eco {
+  display: none;
+}

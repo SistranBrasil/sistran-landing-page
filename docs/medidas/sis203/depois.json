@@ -1,0 +1,90 @@
+{
+  "fase": "depois",
+  "desktop": {
+    "alinhamentos": [
+      {
+        "celula": 151.85,
+        "ponto": 151.84,
+        "delta": 0.01
+      },
+      {
+        "celula": 341.23,
+        "ponto": 341.22,
+        "delta": 0.01
+      },
+      {
+        "celula": 530.61,
+        "ponto": 530.61,
+        "delta": 0
+      },
+      {
+        "celula": 719.99,
+        "ponto": 719.98,
+        "delta": 0.01
+      },
+      {
+        "celula": 909.38,
+        "ponto": 909.38,
+        "delta": 0
+      },
+      {
+        "celula": 1098.76,
+        "ponto": 1098.75,
+        "delta": 0.01
+      },
+      {
+        "celula": 1288.14,
+        "ponto": 1288.14,
+        "delta": 0
+      }
+    ],
+    "hover": {
+      "acesa": {
+        "antes": "none",
+        "durante": "matrix(1, 0, 0, 1, 0, -6)",
+        "opacidade": "1"
+      },
+      "apagadaForcada": {
+        "antes": "matrix(1, 0, 0, 1, 0, 12)",
+        "durante": "matrix(1, 0, 0, 1, 0, -6)",
+        "opacidade": "0.56"
+      }
+    },
+    "painel": {
+      "left": 40,
+      "right": 1400,
+      "width": 1360,
+      "borderRadius": "24px",
+      "background": "linear-gradient(105deg, rgba(8, 61, 112, 0.14), rgba(0, 0, 0, 0) 45%) repeat scroll 0% 0% / auto padding-box border-box, rgba(4, 27, 61, 0.76) none repeat scroll 0% 0% / auto padding-box border-box"
+    },
+    "nevoaSuperior": "radial-gradient(70% 60% at 20% 10%, rgba(0, 121, 203, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(50% 60% at 90% 90%, rgba(14, 216, 246, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(70% 80%, rgb(255, 255, 255) 0%, rgb(242, 247, 252) 55%, rgb(228, 237, 247) 100%)",
+    "nevoaSuperiorOpacidade": "0.28",
+    "larguraDocumento": 1440,
+    "larguraViewport": 1440,
+    "arteDentroDoPainel": {
+      "metodo": "mesmo recorte de .impact-track, grafismos internos ocultos, comparado com .impact-fundo visível e visibility:hidden",
+      "pixels": 481440,
+      "pixelsAlterados": 331590,
+      "percentualAlterado": 68.87,
+      "deltaRgbMedio": 1.73,
+      "maiorDeltaPorCanal": 58,
+      "coresDistintasComArte": 1592
+    }
+  },
+  "mobile": {
+    "colunas": "316px",
+    "pontos": 7,
+    "trilhoDisplay": "grid",
+    "larguraPainel": 358,
+    "larguraDocumento": 390,
+    "larguraViewport": 390
+  },
+  "reducedMotion": {
+    "sistema": "none",
+    "atributo": "none"
+  },
+  "forcedColors": {
+    "imagemDisplay": "none",
+    "painelBackground": "rgb(255, 255, 255)"
+  }
+}

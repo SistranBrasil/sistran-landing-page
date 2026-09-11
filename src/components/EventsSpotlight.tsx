@@ -95,11 +95,14 @@
  * • SEM LOGOS de patrocinador: `SistranEvent` não tem o campo, e o par
  *   evento↔marca não existe no catálogo. As marcas já aparecem DENTRO da arte.
  * • O BOTÃO aponta para o CANAL, de `YOUTUBE_URL` (`src/data/contact.ts`) —
- *   constante única, decisão registrada na issue. Ele aparece nos QUINZE porque a
- *   URL existe para os quinze: "sem URL, não mostra o botão" governa o dia em que
- *   `src/data/events.ts` ganhar um campo `youtube` por evento, e aí o botão usa a
- *   específica quando houver e cai no canal quando não. Nenhum link morto hoje.
- *   Custo assumido e escrito na issue: os quinze levam ao mesmo lugar.
+ *   constante única, decisão registrada na issue. Ele aparecia nos QUINZE, todos
+ *   para o mesmo lugar; SIS-205 fechou isso: o botão só aparece onde há GRAVAÇÃO
+ *   publicada, hoje `web-summit-ai` e `suitability-ai`, pela flag `youtube` de
+ *   `src/data/events.ts`. Quem manda é o data, não uma lista de ids aqui, porque
+ *   este mesmo botão é renderizado em DOIS lugares — o palco e a lista estreita.
+ *   O destino dos dois continua sendo o canal: URL por vídeo ainda não existe
+ *   (ex-SIS-131; `DECISOES-PENDENTES.md`). Quando existir, `youtube` pode se
+ *   alargar para `true | string` e o botão usa a específica quando houver.
  * • SEM FILTRO nesta issue. As sete pílulas moravam no `EventsGrid` e saem com
  *   ele; se o filtro voltar, ele governa o percurso e o contador passa a ser
  *   `01 / N do recorte`.
@@ -126,6 +129,63 @@ const TOTAL = EVENTS.length;
 export default function EventsSpotlight() {
   const [ativo, setAtivo] = useState(0);
   const trilhaRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * SIS-204 (item 1) — A CESSÃO DO TÍTULO.
+   *
+   * A rota tem DUAS leituras do mesmo «Eventos & Inovação»: o `h1` do hero
+   * (`PageHero title="Eventos &" highlight="Inovação"`) e o `h2` desta cena. Na
+   * rolagem do hero para o palco `sticky` os dois ficavam em quadro ao mesmo
+   * tempo — a sonda mediu isso em 1440, 1366 e 1024, em todos os passos em que a
+   * base do hero ainda estava na janela.
+   *
+   * O gatilho é LITERALMENTE o critério de aceite: não mais de um título dominante
+   * em quadro. Em vez de derivar um progresso de rolagem e calibrar onde um apaga
+   * e o outro acende — dois números a envelhecer, e uma segunda medida a divergir
+   * da primeira, que é a armadilha da SIS-156 —, o observador assiste ao PRÓPRIO
+   * `h1` do hero: enquanto ele intersecta a janela, o hero é quem lê o título e o
+   * `h2` desta cena está cedido; quando ele sai, a cena assume. Não existe
+   * instante com os dois acesos porque a condição do gatilho é a negação do
+   * defeito.
+   *
+   * NADA SAI DO DOM E NADA VIRA `aria-hidden`: a cessão é `opacity` mais um
+   * deslocamento. O `h2` continua sendo o heading da seção e o alvo do
+   * `aria-labelledby`, então a hierarquia e o nome acessível não mudam em nenhum
+   * dos dois estados — o que muda é qual dos dois títulos está VISÍVEL.
+   *
+   * `null` como estado inicial é deliberado: sem atributo, o CSS não aplica cessão
+   * nenhuma e o `h2` aparece — é o estado de hoje, e é o que fica de pé para quem
+   * não tem JavaScript. Nascer em `'cedido'` deixaria o título invisível para
+   * sempre nesse caso, que é conteúdo fora do alcance. `transicao` só liga um
+   * quadro depois da primeira resolução: assim a PRIMEIRA aplicação é instantânea
+   * (sem o título piscando no carregamento no topo da página) e as seguintes, as
+   * da rolagem, são as que atravessam.
+   *
+   * O seletor `#topo h1` acopla esta cena ao `PageHero`, e o acoplamento está
+   * assumido em vez de escondido: `#topo` é a âncora fixa que o `PageHero` sempre
+   * escreve. Se um dia a abertura desta rota não tiver `h1`, o `else` abaixo faz a
+   * cena ASSUMIR o título — nunca ceder para um dono que não existe.
+   */
+  const [cessao, setCessao] = useState<"cedido" | "assumido" | null>(null);
+  const [transicao, setTransicao] = useState(false);
+
+  useEffect(() => {
+    const heroTitulo = document.querySelector<HTMLElement>("#topo h1");
+    if (!heroTitulo) {
+      setCessao("assumido");
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entrada]) => setCessao(entrada.isIntersecting ? "cedido" : "assumido"),
+      { threshold: 0 },
+    );
+    io.observe(heroTitulo);
+    const relogio = window.setTimeout(() => setTransicao(true), 120);
+    return () => {
+      io.disconnect();
+      window.clearTimeout(relogio);
+    };
+  }, []);
 
   /* Pares à esquerda, ímpares à direita — ver a nota do cabeçalho sobre por que a
      divisão é por índice do catálogo e não "o destaque sai da lista". */
@@ -210,7 +270,22 @@ export default function EventsSpotlight() {
           {/* Legível, não `aria-hidden`: quem ouve precisa saber que a vaga da
               coluna é a do evento que está no cartão — sem isso a lista lateral
               perde um item sem explicação. */}
-          <span className="eventos-vaga-rotulo">{e.title} (em destaque)</span>
+          {/* SIS-204 (item 3): o `(em destaque)` saiu do texto VISÍVEL e virou
+              `.sr-only` IRMÃO da placa. Duas razões, as duas medidas:
+              • o texto visível da vaga em destaque ficou igual ao do botão, e é
+                daí que sai a altura igual entre os dois estados (mesmo texto e
+                mesma largura de quebra dão o mesmo número de linhas). É a
+                invariante da SIS-167 — "a faixa não se reorganiza na troca" —
+                agora por construção, e não por aritmética de alturas fixas;
+              • fora da placa, e não dentro: `.sr-only` é `position: absolute` com
+                `clip`, e dentro da placa o retângulo dele entrava nas caixas de
+                linha que a guarda da SIS-167 usa para ver se alguma linha escapa
+                (`Range.getClientRects()`) — o item 15 reprovava nas cinco larguras
+                por causa de um retângulo sem tinta.
+              Continua LIDO, e na mesma ordem: quem ouve segue sabendo qual vaga
+              está no cartão. */}
+          <span className="eventos-vaga-rotulo">{e.title}</span>
+          <span className="sr-only"> (em destaque)</span>
           {/* Fio ciano da vaga até o cartão, com nó aceso na ponta. Decorativo:
               a relação que ele desenha já está dita no rótulo acima. */}
           <span className="eventos-vaga-fio" aria-hidden="true" />
@@ -244,10 +319,17 @@ export default function EventsSpotlight() {
   return (
     <>
       {/* ── DESKTOP: a cena ────────────────────────────────────────────────── */}
+      {/* SIS-204 (item 1): `data-titulo` e `data-titulo-transicao` são os dois
+          atributos da cessão do título (o gatilho está no `useEffect` acima, o
+          efeito no CSS). Ficam na SEÇÃO DESKTOP, então a lista estreita — que tem
+          `h2` próprio e nunca convive com o hero em quadro — segue intocada.
+          `undefined` remove o atributo, que é o estado "sem cessão". */}
       <section
         id="eventos"
         className="eventos-destaque"
         aria-labelledby="eventos-titulo"
+        data-titulo={cessao ?? undefined}
+        data-titulo-transicao={transicao ? "ligada" : undefined}
       >
         {/* A linha ciano que o fio do hero encontra aceso na entrada: é o elo
             `hero -> eventos` da rota, que é por LINHA. Mesmos valores do
@@ -302,23 +384,32 @@ export default function EventsSpotlight() {
               <p className="eventos-destaque-cartao-texto">
                 {evento.description}
               </p>
-              <a
-                className="eventos-destaque-botao"
-                href={YOUTUBE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <PlayCircle
-                  className="h-4 w-4"
-                  strokeWidth={1.8}
-                  aria-hidden="true"
-                />
-                ASSISTA NO YOUTUBE
-                <span className="sr-only">
-                  {" "}
-                  (abre o canal da Sistran em nova aba)
-                </span>
-              </a>
+              {/* SIS-205 — botão SÓ nos eventos com gravação publicada (hoje
+                  `web-summit-ai` e `suitability-ai`). Quem decide é a flag
+                  `youtube` do data, não uma lista de ids aqui: este mesmo botão
+                  existe no bloco da lista estreita, mais abaixo, e ids no JSX
+                  fariam a próxima gravação depender de lembrar dos dois lugares.
+                  O destino continua sendo o CANAL — URL por vídeo não existe
+                  ainda (ex-SIS-131). */}
+              {evento.youtube && (
+                <a
+                  className="eventos-destaque-botao"
+                  href={YOUTUBE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <PlayCircle
+                    className="h-4 w-4"
+                    strokeWidth={1.8}
+                    aria-hidden="true"
+                  />
+                  ASSISTA NO YOUTUBE
+                  <span className="sr-only">
+                    {" "}
+                    (abre o canal da Sistran em nova aba)
+                  </span>
+                </a>
+              )}
               <div className="eventos-destaque-arte">
                 {/* `alt` com o nome do evento: aqui a arte é conteúdo, não
                     decoração — não há um palco ao lado repetindo o título. */}
@@ -423,23 +514,29 @@ export default function EventsSpotlight() {
                     loading="lazy"
                   />
                 </div>
-                <a
-                  className="eventos-destaque-botao"
-                  href={YOUTUBE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <PlayCircle
-                    className="h-4 w-4"
-                    strokeWidth={1.8}
-                    aria-hidden="true"
-                  />
-                  ASSISTA NO YOUTUBE
-                  <span className="sr-only">
-                    {" "}
-                    (abre o canal da Sistran em nova aba)
-                  </span>
-                </a>
+                {/* SIS-205 — mesma regra do palco: botão só com gravação
+                    publicada. A lista estreita é a ÚNICA leitura do conteúdo
+                    abaixo de 1024px, então esquecer este bloco deixaria treze
+                    botões vivos no celular. */}
+                {e.youtube && (
+                  <a
+                    className="eventos-destaque-botao"
+                    href={YOUTUBE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <PlayCircle
+                      className="h-4 w-4"
+                      strokeWidth={1.8}
+                      aria-hidden="true"
+                    />
+                    ASSISTA NO YOUTUBE
+                    <span className="sr-only">
+                      {" "}
+                      (abre o canal da Sistran em nova aba)
+                    </span>
+                  </a>
+                )}
               </li>
             );
           })}

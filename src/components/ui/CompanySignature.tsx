@@ -1,6 +1,14 @@
 'use client';
 
 /**
+ * SIS-188 — RASCUNHO.
+ *
+ * Sem importador atual: nenhuma rota nem o `Hero` / `HeroCinematic` monta este
+ * arquivo. É o painel institucional do lado direito do hero antigo.
+ *
+ * Não comentamos o export: não há mount ativo, e comentar o export só criaria
+ * ruído interno. Volta só com montagem explícita aprovada em rota ou hero.
+ *
  * CompanySignature — painel institucional do lado direito do hero.
  *
  * Representa a Sistran como um sistema: um núcleo (a marca) e os domínios de

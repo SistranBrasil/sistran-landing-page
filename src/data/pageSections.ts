@@ -33,6 +33,17 @@
  *   aqui; o título completo continua no `<h2>` da seção.
  * • `/latam` é a única rota com rótulos em espanhol, porque a página inteira
  *   está em espanhol.
+ * • `tom?: 'claro' | 'medio'` NÃO pinta nada. É sinal só do indicador lateral
+ *   (`ScrollSpy`): o nav é `fixed` e a cascata do CSS não o alcança, então ele
+ *   precisa saber se a seção ativa é clara para trocar rótulo/traço/foco para o
+ *   par adequado. O valor descreve o fundo na **margem esquerda** (onde a
+ *   coluna vive: `fixed left-3`), não o meio nem a direita da seção — um hero
+ *   claro à esquerda com vídeo à direita continua `claro`. `medio` é o azul
+ *   intermediário em que nem o branco nem o navy padrão fecham 4,5:1; ele usa
+ *   a combinação medida própria, sem placa atrás do texto. Ausente = escuro,
+ *   que é a maioria. Superfícies que já são `.section-light` não precisam de
+ *   `claro`: o ScrollSpy mantém `closest('.section-light')` como reserva. Um
+ *   `tom` explícito sempre ganha da reserva (SIS-181).
  */
 import { ACCELERATOR_PAGES, idDoBloco } from '@/data/acceleratorPages';
 
@@ -41,11 +52,17 @@ export type PageSection = {
   id: string;
   /** Rótulo curto exibido na coluna. */
   label: string;
+  /** Tom do FUNDO da seção na margem esquerda, onde o indicador vive.
+   *  `medio` = azul intermediário que exige o terceiro par medido; ausente =
+   *  escuro. Só do contraste do ScrollSpy, sem placa nem pintura na página. */
+  tom?: 'claro' | 'medio';
 };
 
 export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
   '/': [
-    { id: 'top', label: 'Início' },
+    /* SIS-181 — hero-sheet `#f4f8fc` na margem esquerda (vídeo à direita). Não
+       é `.section-light`; sem `tom` o rótulo saía branco e sumia. */
+    { id: 'top', label: 'Início', tom: 'claro' },
     { id: 'solucoes', label: 'Soluções' },
     { id: 'resultados', label: 'Números' },
     { id: 'contato', label: 'Contato' },
@@ -59,20 +76,34 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
     { id: 'premiacoes', label: 'Premiações' },
     { id: 'isg', label: 'ISG' },
     { id: 'por-que-sistran', label: 'Por que Sistran' },
-    { id: 'mais-quem-somos', label: 'Conheça também' },
+    /* SIS-181 — a seção clara vaza sobre o azul intermediário do CTA na margem;
+       o pior raster foi rgb(26 127 197), então o tom explícito ganha do
+       `.section-light` durante a sobreposição. */
+    { id: 'mais-quem-somos', label: 'Conheça também', tom: 'medio' },
   ],
   '/solucoes': [
     { id: 'topo', label: 'Início' },
     { id: 'tecnologia-disruptiva', label: 'Tecnologia' },
     { id: 'servicos-diferenciais', label: 'Serviços' },
     { id: 'consultoria', label: 'Consultoria' },
-    { id: 'transformacao-legado', label: 'Legado' },
   ],
   '/parceiros-e-implementacoes': [
     { id: 'topo', label: 'Início' },
     { id: 'parceiros', label: 'Parceiros' },
-    { id: 'implementacoes', label: 'Implementações' },
-    { id: 'linha-do-tempo', label: 'Linha do tempo' },
+    /* SIS-181 — a seção "volta ao escuro", mas o azul visível na margem mede
+       rgb(21 125 196): branco e navy padrão ficam abaixo de 4,5:1. */
+    { id: 'implementacoes', label: 'Implementações', tom: 'medio' },
+    /* SIS-202 — era `tom: 'medio'` porque a trilha antiga ficava DENTRO da seção
+       escura. A seção agora é a mesma `.lp-section--cream` de
+       `/transformacao-legado`, ou seja `--cream` (#e2effa) na margem esquerda e
+       sem `.section-light` — exatamente a leitura registrada logo abaixo para
+       `#roadmap`, então o tom passa a ser o mesmo: 'claro'.
+       O `label` fica: 'Linha do tempo' continua sendo o nome desta seção — na
+       correção da issue (opção 2) só o LAYOUT vem do legado, e o cabeçalho é o
+       desta rota, com este mesmo rótulo como título. A âncora `#linha-do-tempo`
+       também fica — é a que esta rota
+       já publicava, e é ela que o `id` do componente recebe. */
+    { id: 'linha-do-tempo', label: 'Linha do tempo', tom: 'claro' },
   ],
   '/latam': [
     { id: 'topo', label: 'Inicio' },
@@ -92,9 +123,11 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
   ],
   '/esg': [
     { id: 'topo', label: 'Início' },
-    { id: 'esg-environment', label: 'Environment' },
+    /* SIS-181 — azul intermediário medido na margem esquerda: rgb(21 125 196). */
+    { id: 'esg-environment', label: 'Environment', tom: 'medio' },
     { id: 'esg-social', label: 'Social' },
-    { id: 'esg-governance', label: 'Governance' },
+    /* SIS-181 — azul intermediário medido na margem esquerda: rgb(22 129 201). */
+    { id: 'esg-governance', label: 'Governance', tom: 'medio' },
   ],
   '/sistran-labs': [
     { id: 'topo', label: 'Início' },
@@ -104,7 +137,8 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
        com conteúdo da rota fora do navegador lateral. O título dela é `sr-only`
        (o rótulo visível da parada é este aqui), pelo motivo escrito na página. */
     { id: 'labs-o-que-e', label: 'O Labs' },
-    { id: 'labs-solucoes', label: 'Soluções' },
+    /* SIS-181 — azul intermediário medido na margem esquerda: rgb(21 125 196). */
+    { id: 'labs-solucoes', label: 'Soluções', tom: 'medio' },
     { id: 'labs-principais', label: 'Principais' },
   ],
   /* SIS-116 · item 2 — a rota ENTRA, e a exclusão que a nomeava no cabeçalho
@@ -119,7 +153,8 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
   '/sistran-university': [
     { id: 'topo', label: 'Início' },
     { id: 'university-programa', label: 'O Programa' },
-    { id: 'university-unidep', label: 'Unidep' },
+    /* SIS-181 — azul intermediário medido na margem esquerda: rgb(21 125 196). */
+    { id: 'university-unidep', label: 'Unidep', tom: 'medio' },
     { id: 'university-numeros', label: 'Números' },
   ],
   /* SIS-119 · itens 1 e 3 — a rota ENTRA, e a exclusão que estava escrita no
@@ -143,8 +178,12 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
      | { id: 'sistema', label: 'Método' }, */
   '/transformacao-legado': [
     { id: 'topo', label: 'Início' },
-    { id: 'sinais', label: 'Arquitetura' },
-    { id: 'roadmap', label: 'Roadmap' },
+    /* SIS-181 — `.mosaic` é `--paper` (#ffffff) na margem esquerda, sem
+       `.section-light`. */
+    { id: 'sinais', label: 'Arquitetura', tom: 'claro' },
+    /* SIS-181 — `.lp-section--cream` é `--cream` (#e2effa) na margem esquerda,
+       sem `.section-light`. */
+    { id: 'roadmap', label: 'Roadmap', tom: 'claro' },
   ],
   '/eventos-inovacao': [
     { id: 'topo', label: 'Início' },
@@ -197,24 +236,51 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
    deixá-lo embaixo derrubava o módulo inteiro num `ReferenceError`. */
 const VAZIO: readonly PageSection[] = [];
 
+/* SIS-181 — as paradas continuam DERIVADAS de `ACCELERATOR_PAGES`; este mapa
+   acrescenta somente o tom medido na margem esquerda. Não duplica id nem
+   rótulo. As demais paradas derivadas são escuras e seguem sem chave.
+   Fundos raster a 1440:
+   match/o-que-faz: rgb(21 127 197);
+   lumina/beneficios, fast/o-que-oferece e smart-miner/onde-usar:
+   rgb(21 125 196);
+   fast/beneficios: rgb(22 129 201);
+   guru/de-onde-pode-ser-acessada: rgb(22 127 199). */
+const TOM_MEDIO_DE_ACELERADOR: Readonly<Record<string, ReadonlySet<string>>> = {
+  'match-ai': new Set(['o-que-o-match-ai-faz']),
+  'lumina-ai': new Set(['beneficios']),
+  fast: new Set(['o-que-o-fast-oferece', 'beneficios']),
+  'smart-miner': new Set(['onde-usar-o-smart-miner']),
+  'guru-de-seguros': new Set(['de-onde-pode-ser-acessada']),
+};
+
 const SECOES_DE_ACELERADOR: Readonly<Record<string, readonly PageSection[]>> = Object.fromEntries(
   ACCELERATOR_PAGES.map((p) => {
     const paradas: PageSection[] = [
       { id: 'topo', label: 'Início' },
       ...p.blocks
         .filter((b) => b.heading)
-        .map((b) => ({ id: idDoBloco(b.heading!), label: b.navLabel ?? b.heading! })),
+        .map((b): PageSection => {
+          const id = idDoBloco(b.heading!);
+          return {
+            id,
+            label: b.navLabel ?? b.heading!,
+            ...(TOM_MEDIO_DE_ACELERADOR[p.id]?.has(id) ? { tom: 'medio' } : {}),
+          };
+        }),
     ];
     return [p.id, paradas.length >= 3 ? paradas : VAZIO];
   }),
 );
 
 /* SIS-170 — AO ACRESCENTAR OU RENOMEAR RÓTULO AQUI: o limiar de 1439,98px que
-   recolhe o rótulo do indicador lateral foi MEDIDO contra o rótulo mais largo
-   deste arquivo (`/quem-somos`, 150px de caixa). Rótulo novo mais comprido
-   empurra esse limiar, e a conta não é derivável em CSS porque depende do texto.
-   A medição e o motivo estão no bloco SIS-170 de `src/app/globals.css`. O aviso
-   fica aqui, e não só lá, porque é aqui que se mexe. */
+   recolhe o rótulo do indicador lateral foi REMEDIDO na Geist contra o rótulo
+   mais largo deste arquivo (`/quem-somos`, "Conheça também"). Tinta 131,53px
+   antes (Inter) → 127,08px depois (Geist); borda/caixa 169,53px → 165,08px;
+   limiar mínimo calculado 1430,16px. O breakpoint 1439,98px foi preservado
+   com folga. Rótulo novo mais comprido empurra esse limiar, e a conta não é
+   derivável em CSS porque depende do texto. A medição e o motivo estão no
+   bloco SIS-170 de `src/app/globals.css`. O aviso fica aqui, e não só lá,
+   porque é aqui que se mexe. */
 /* SIS-121 — IDIOMA DOS RÓTULOS, por rota.
    O `ScrollSpy` é irmão do `<main>` em `PageShell.tsx` (é `fixed`, e morreria sob
    ancestral com `transform` — está escrito lá), e o `lang="es"` de `/latam` está

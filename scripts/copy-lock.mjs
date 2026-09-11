@@ -51,7 +51,23 @@ const RAIZ = join(import.meta.dirname, '..');
 const SRC = join(RAIZ, 'src');
 const LOCK = join(RAIZ, 'copy-lock.json');
 
-const EXTENSOES = ['.ts', '.tsx'];
+/**
+ * SIS-216 — `.json` entrou na lista, e só ele mudou de natureza aqui: sob
+ * `src/data/` passou a existir catálogo em JSON (`events.json`), porque quem o
+ * reescreve agora é o admin de eventos, e máquina não reescreve `.ts` sem risco
+ * de quebrar o build.
+ *
+ * Sem esta linha o portão viraria um portão CEGO — exatamente o defeito que a
+ * SIS-171 corrigiu, só que por outro caminho: os 43 textos dos quinze eventos
+ * sairiam do lock por TROCA DE EXTENSÃO, e daí em diante toda edição de título
+ * ou descrição feita pelo admin seria invisível para `npm run test:copy`. O
+ * caminho de menor esforço para escapar da Regra Zero não pode ser "salvar em
+ * outro formato".
+ *
+ * JSON fora de `src/data/` continua de fora (ver `extrair`): ali não é conteúdo,
+ * é configuração.
+ */
+const EXTENSOES = ['.ts', '.tsx', '.json'];
 
 function arquivos(dir, acc = []) {
   for (const nome of readdirSync(dir).sort()) {
@@ -237,6 +253,17 @@ function pareceCodigo(s) {
   if (/(?<![A-Za-zÀ-ÿ])(?:export|function|const|let|var|return|import|typeof|async|await|new|declare|catch|throw|class|interface)(?![A-Za-zÀ-ÿ])/.test(s))
     return true;
   if (/\bfrom\s+["']/.test(s)) return true;
+  /* SIS-175 — cast de TypeScript inteiro, e nada alem dele: `} as CSSProperties}`
+     chega aqui como no de texto porque o `}` do objeto abre a captura do JSX, e
+     nenhuma regra de forma o alcanca (nao tem `;`, `=`, `{}` nem chamada).
+     A regra é ESTREITA de proposito, porque `as` é artigo em portugues: só passa
+     `as const`, um identificador QUALIFICADO (`as React.CSSProperties`) ou um
+     nome com pelo menos DUAS maiusculas (`as CSSProperties`, `as HTMLElement`).
+     "as Sistran", que tem uma maiuscula só e nenhum ponto, continua sendo texto.
+     Esta é uma das passagens abertas pelo afrouxamento da SIS-171/SIS-173: antes
+     o cast caia de raspao noutra regra, e ao afrouxá-las ele passou a entrar. */
+  if (/^as\s+(?:const|[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*)+|[A-Z][a-z0-9]*(?:[A-Z][\w$]*)+)$/.test(s.trim()))
+    return true;
   if (/\w\(|\$\{|\$$/.test(s)) return true;
   /* Restos de objeto/tipo colhidos entre `}` e `{`: `, contactPoint:`,
      `: Props)`, `], keywords: [`. Escrita para o visitante nao comeca com dois
@@ -273,11 +300,31 @@ function pareceCodigo(s) {
     /^!/.test(t) || // `!text-white`
     /^-?\d*\.?\d+(?:px|rem|em|%|vh|vw|svh)$/.test(t) || // numero com unidade
     /^[a-z]+(?:-[a-z0-9.]+)+$/.test(t); // `items-center`, `gap-2`, `bg-white`
+  /* SIS-175 — hex em valor arbitrario é escrito em MAIUSCULA metade das vezes
+     (`text-[#B8DDF6]`, `bg-[#0079CB]/10`), e a exigencia de "todos os tokens
+     minusculos" derrubava a cadeia inteira por causa disso. O hex sai da conta
+     antes do teste de caixa; o resto do token continua tendo de ser minusculo.
+     Nao é passagem larga: `[#RRGGBB]` nao ocorre em portugues corrido. */
+  const semHexArbitrario = (t) => t.replace(/\[#[0-9a-fA-F]{3,8}\]/g, '[#]');
+  const caixaDeUtilitario = (t) =>
+    /^[a-z0-9:[\]/#().,%_!*-]+$/.test(semHexArbitrario(t)) && !/[À-ÿ]/.test(t);
   if (
     tokens.length >= 2 &&
-    tokens.every((t) => /^[a-z0-9:[\]/#().,%_!*-]+$/.test(t) && !/[À-ÿ]/.test(t)) &&
+    tokens.every(caixaDeUtilitario) &&
     tokens.some(utilitario) &&
     !/[.!?]$/.test(s.trim())
+  ) {
+    return true;
+  }
+  /* SIS-175 — utilitario SOZINHO. A regra acima pede dois tokens porque uma
+     palavra minuscula solta é palavra, nao classe; mas `max-w-[22ch]` e
+     `!text-white` trazem marcador que palavra nenhuma tem — valor arbitrario
+     entre colchetes preso a um prefixo (`-[…]`), ou o `!` de importante do
+     Tailwind. Estes dois marcadores, e só eles, dispensam o segundo token. */
+  if (
+    tokens.length === 1 &&
+    caixaDeUtilitario(tokens[0]) &&
+    (/^![a-z]/.test(tokens[0]) || /^-?[a-z][a-z0-9]*(?:-[a-z0-9.]+)*-\[[^\s\]]+\]$/.test(tokens[0]))
   ) {
     return true;
   }
@@ -301,6 +348,19 @@ function pareceCodigo(s) {
     !/\.(?:com|br|net|org|io|app|ai|dev)\b/i.test(s)
   )
     return true;
+  /* SIS-175 — as duas formas de acesso a membro que a regra acima deixa passar,
+     porque ela exige EXATAMENTE dois segmentos, ambos minusculos:
+       `labels.text.fill`, `labels.text.stroke` -> tres segmentos, e o terceiro
+         faz o `(?![\w.])` da regra anterior falhar;
+       `m.RoadmapStopDialog`, `m.BuildingExplorer` -> segundo segmento em
+         maiuscula (componente do Motion), que o `[a-z]` dela nao aceita.
+     A excecao de dominio é a MESMA e continua valendo por cima das duas: sem
+     ela `descubra.luminna.sistran.com.br`, que é escrita visivel e tem cinco
+     segmentos, cairia justamente pela primeira. */
+  const acessoQualificado =
+    /(?<![\w.$])[a-z][\w$]*(?:\.[A-Za-z_$][\w$]*){2,}(?![\w.$])/.test(s) ||
+    /(?<![\w.$])[a-z][\w$]*\.[A-Z][\w$]*(?![\w.$])/.test(s);
+  if (acessoQualificado && !/\.(?:com|br|net|org|io|app|ai|dev)\b/i.test(s)) return true;
   if (/(?:^|\s)[a-z]+[A-Z][\w$]*:$/.test(s.trim())) return true;
   /* `}, passo)` → ultimo argumento de chamada: virgula, um identificador, fim.
      Trecho de frase que continua depois de um destaque tem mais de uma palavra
@@ -663,10 +723,57 @@ function propsDeTexto(codigo) {
   return achados;
 }
 
+/**
+ * SIS-216 — todo valor de string de um JSON de conteudo, em ordem de leitura.
+ *
+ * É o analogo de `literais()` para `src/data`: ali a regra é "todo literal
+ * conta", e num JSON isso é exatamente "todo valor de string". CHAVE nao entra —
+ * chave de JSON é nome de campo (`title`, `kind`, `image`), nao escrita do site,
+ * e é o mesmo criterio que `NOMES_TECNICOS` aplica no TSX.
+ *
+ * `JSON.parse` em vez de varredura por caractere porque aqui, diferente do TSX,
+ * existe um parser correto de graca — e ele ainda desfaz os escapes (`\"` no
+ * meio da descricao do Suitability) sem regex nenhuma.
+ */
+function stringsDeJson(bruto) {
+  const achados = [];
+  const anda = (v) => {
+    if (typeof v === 'string') achados.push(v);
+    else if (Array.isArray(v)) v.forEach(anda);
+    else if (v && typeof v === 'object') Object.values(v).forEach(anda);
+  };
+  anda(JSON.parse(bruto));
+  return achados;
+}
+
 function extrair() {
   const mapa = {};
   for (const caminho of arquivos(SRC)) {
     const rel = relative(RAIZ, caminho).split(sep).join('/');
+    /**
+     * SIS-216 — o `/admin` fica FORA do lock, e a razão é o que o lock é: a
+     * escrita PUBLICADA do site, aquela que ninguém troca sem que apareça no
+     * diff. Rótulo de formulário interno, atrás de senha, visto só por quem
+     * atualiza os eventos, não é isso — travá-lo faria o portão da Regra Zero
+     * gritar por causa de um botão renomeado numa ferramenta, e cada grito falso
+     * gasta a credibilidade do portão que protege os textos de verdade.
+     *
+     * Note que o CONTEÚDO que o admin edita continua travado, porque ele mora em
+     * `src/data/events.json` — o que sai daqui é a interface, não os eventos.
+     */
+    if (rel.startsWith('src/app/admin/')) continue;
+    /* SIS-216 — JSON só conta como conteudo dentro de `src/data/`. Fora dali é
+       configuracao, e travar configuracao no lock de copy é ruido. */
+    if (rel.endsWith('.json')) {
+      if (!rel.startsWith('src/data/')) continue;
+      let n = 0;
+      for (const bruto of stringsDeJson(readFileSync(caminho, 'utf8'))) {
+        const texto = comEntidadesResolvidas(bruto.replace(/\s+/g, ' ').trim());
+        if (!texto || pareceCodigo(texto)) continue;
+        mapa[`${rel}:${n++}`] = texto;
+      }
+      continue;
+    }
     /* Comentario fora ANTES de tudo (SIS-171). Nenhum passo abaixo consegue
        distinguir prosa de comentario de prosa de pagina, e nao é para tentar. */
     const codigo = tiraComentarios(readFileSync(caminho, 'utf8'));
@@ -757,12 +864,43 @@ function autoteste() {
     ['frase com numero', '450 horas economizadas para cada 1.000 processos.', false],
     ['frase com exclamacao', 'fale com a gente!', false],
     ['frase de cinco palavras', 'projetos reais para o mercado de seguros', false],
-    /* Minusculo de proposito: a regra exige todos os tokens sem maiuscula e sem
-       acento, então `hover:text-[#A5F0FF]` (hex maiusculo) NUNCA passou por
-       aqui — quem barra aquela cadeia é o `NOMES_TECNICOS` de `className`. */
     ['cadeia com variante', 'transition-colors hover:text-white', true],
     ['cadeia simples', 'flex items-center gap-3', true],
     ['cadeia com opacidade', 'bg-white/10 text-white', true],
+    /* SIS-175 — a nota antiga aqui dizia que cadeia com hex MAIUSCULO nunca
+       chegava a `pareceCodigo()` porque `NOMES_TECNICOS` a barrava pelo nome
+       `className`. Era falso, e o lock provava: `!text-[#B8DDF6]
+       hover:!text-white` estava travado como se fosse escrita. O motivo é que
+       `literaisDeDados` procura o nome do atributo nos 40 caracteres ANTERIORES
+       ao literal, e dentro de um `clsx()` de varias linhas o `className=` fica
+       muito alem dessa janela — a cadeia chega sem nome, e quem tem de recusá-la
+       é a forma. */
+    ['cadeia com hex maiusculo', 'transition-colors hover:text-[#A5F0FF]', true],
+    ['cadeia com hex minusculo', 'transition-colors hover:text-[#a5f0ff]', true],
+    ['cadeia com hex e opacidade', 'bg-[#0079CB]/10 !text-[#5c7a9e]', true],
+    /* SIS-175 — utilitario sozinho, pelos dois marcadores. */
+    ['utilitario unico com valor arbitrario', 'max-w-[22ch]', true],
+    ['utilitario unico com !', '!text-white', true],
+    ['negacao de uma letra', '!v', true],
+    /* ... e o que o marcador NAO pode arrastar junto: palavra e frase curta. */
+    ['palavra unica publicada', 'Contato', false],
+    ['frase curta com maiuscula', 'Beyond Technology', false],
+    /* SIS-175 — cast de TypeScript, nas quatro formas que o lock trazia. */
+    ['cast qualificado', 'as React.CSSProperties', true],
+    ['cast de tipo importado', 'as CSSProperties', true],
+    ['cast de elemento', 'as HTMLElement', true],
+    ['cast const', 'as const', true],
+    /* `as` é artigo: a regra do cast nao pode comer nome proprio depois dele. */
+    ['artigo as com nome proprio', 'as Américas em um só lugar', false],
+    ['artigo as com uma maiuscula', 'as Sistran', false],
+    /* SIS-175 — acesso a membro de tres segmentos e com segmento maiusculo. */
+    ['membro de tres segmentos', 'labels.text.fill', true],
+    ['membro de tres segmentos (2)', 'labels.text.stroke', true],
+    ['membro com segmento maiusculo', 'm.RoadmapStopDialog', true],
+    ['membro com segmento maiusculo (2)', 'm.BuildingExplorer', true],
+    /* ... sem levar junto o dominio visivel, que tem cinco segmentos. */
+    ['dominio de tres segmentos', 'luminna.sistran.com.br', false],
+    ['dominio de cinco segmentos', 'descubra.luminna.sistran.com.br', false],
   ];
   for (const [rotulo, texto, esperado] of codigo) {
     if (pareceCodigo(texto) !== esperado) {

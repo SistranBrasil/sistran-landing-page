@@ -22,7 +22,32 @@ import type { Metric } from './types';
 
    Religar é descomentar os tres lugares: as sete linhas aqui, o `<p>` no TSX e a
    volta de `caption` a obrigatorio no tipo. Nada de CSS muda — `.impact-caption`
-   segue declarado em `globals.css`. */
+   segue declarado em `globals.css`.
+
+   ── SIS-200: o icone de cada celula NAO mora aqui, e a razao é o copy-lock ───
+   A issue pede um icone por indicador na fileira, e o lugar obvio seria um campo
+   `icon` ao lado de `visual`, neste arquivo. Foi tentado, e o portao reprovou: o
+   extrator do lock trata `src/data/` como conteudo e ali TODO literal conta
+   (`scripts/copy-lock.mjs`, na regra por posicao — "`src/data` é conteudo, e ali
+   todo literal conta"). Sete `icon: 'Users'` entraram no relatorio como sete
+   textos novos do site, ao lado de "Clientes" e "Premios e Reconhecimentos".
+
+   Atualizar o lock faria a reprovacao passar, e é a saida errada: o lock deixaria
+   de descrever o que o visitante le e passaria a incluir nomes de componente.
+   Ninguem consegue revisar uma lista de copy em que "Workflow" e "Mil horas de
+   Capacidade Produtiva no Brasil" sao a mesma coisa — e o alarme que grita por
+   ruido é o alarme que se aprende a ignorar.
+
+   Entao o mapa vive na camada de componente, chaveado pelo `visual` que ja esta
+   aqui: `src/components/ui/impact/ImpactIcones.ts`. Os valores de lá sao
+   COMPONENTES importados, nao literais, e por isso nenhum deles é texto para o
+   extrator — o lock continua descrevendo so o que a tela escreve.
+
+   ⚠️ Consequencia para quem acrescentar um indicador: `visual` é a chave dos
+   DOIS mapas (o grafismo de `ImpactVisuais.tsx` e o icone de `ImpactIcones.ts`),
+   e os dois sao `Record<ImpactVisual, …>` completos — esquecer um deles é erro de
+   tipo, nao celula sem icone em producao. Foi por isso que a chave é `visual` e
+   nao `id`. */
 export const METRICS: readonly Metric[] = [
   {
     id: 'membros',

@@ -1,0 +1,1487 @@
+{
+  "estado": "antes",
+  "quadros": [
+    {
+      "quadro": "primeiro",
+      "largura": 1280,
+      "altura": 760,
+      "arquivo": "primeiro-1280x760.png",
+      "modo": "scroll",
+      "ativa": "pr",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1280,
+        "altura": 760
+      },
+      "colunaEsquerda": 64,
+      "cartaoVsPalco": {
+        "topo": 286.7,
+        "direita": 720,
+        "base": 18.4,
+        "esquerda": 0
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 0,
+        "direita": 720,
+        "base": -60.4,
+        "esquerda": 0
+      },
+      "colunaCortada": true,
+      "desenhoVsSvg": {
+        "topo": -85.3,
+        "direita": 100.7,
+        "base": -280.1,
+        "esquerda": 4.5
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -85.3,
+        "direita": 100.7,
+        "base": -280.1,
+        "esquerda": 4.5
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 6.3,
+        "direita": 130.2,
+        "base": 69.9,
+        "esquerda": 89.4
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": false,
+        "opacidade": "0",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": null,
+        "sobreTitulo": null,
+        "sobreAbas": null,
+        "sobreCartao": null,
+        "sobreColuna": null
+      },
+      "header": {
+        "top": 16,
+        "right": 1260,
+        "bottom": 104,
+        "left": 20
+      },
+      "headerSobreOlho": -22,
+      "emenda": 126.2
+    },
+    {
+      "quadro": "pouso-pr",
+      "largura": 1280,
+      "altura": 760,
+      "arquivo": "pouso-pr-1280x760.png",
+      "modo": "scroll",
+      "ativa": "pr",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1280,
+        "altura": 760
+      },
+      "colunaEsquerda": 64,
+      "cartaoVsPalco": {
+        "topo": 286.7,
+        "direita": 720,
+        "base": 18.4,
+        "esquerda": 0
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 0,
+        "direita": 720,
+        "base": -60.4,
+        "esquerda": 0
+      },
+      "colunaCortada": true,
+      "desenhoVsSvg": {
+        "topo": -90,
+        "direita": 100.7,
+        "base": -275.4,
+        "esquerda": 4.5
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -90,
+        "direita": 100.7,
+        "base": -275.4,
+        "esquerda": 4.5
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 6.3,
+        "direita": 130.2,
+        "base": 69.9,
+        "esquerda": 89.4
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": false,
+        "opacidade": "0",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": null,
+        "sobreTitulo": null,
+        "sobreAbas": null,
+        "sobreCartao": null,
+        "sobreColuna": null
+      },
+      "header": {
+        "top": 16,
+        "right": 1260,
+        "bottom": 104,
+        "left": 20
+      },
+      "headerSobreOlho": -22,
+      "emenda": 316.2
+    },
+    {
+      "quadro": "pouso-sp",
+      "largura": 1280,
+      "altura": 760,
+      "arquivo": "pouso-sp-1280x760.png",
+      "modo": "scroll",
+      "ativa": "sp",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1280,
+        "altura": 760
+      },
+      "colunaEsquerda": 64,
+      "cartaoVsPalco": {
+        "topo": 286.7,
+        "direita": 0,
+        "base": 42.9,
+        "esquerda": 720
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 0,
+        "direita": 720,
+        "base": -60.4,
+        "esquerda": 0
+      },
+      "colunaCortada": true,
+      "desenhoVsSvg": {
+        "topo": 148.3,
+        "direita": 435.1,
+        "base": -41.4,
+        "esquerda": -35.9
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": 148.3,
+        "direita": 435.1,
+        "base": -41.4,
+        "esquerda": -35.9
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 194.7,
+        "direita": 447,
+        "base": 125.2,
+        "esquerda": 5.1
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": false,
+        "opacidade": "0",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": null,
+        "sobreTitulo": null,
+        "sobreAbas": null,
+        "sobreCartao": null,
+        "sobreColuna": null
+      },
+      "header": {
+        "top": 16,
+        "right": 1260,
+        "bottom": 104,
+        "left": 20
+      },
+      "headerSobreOlho": -22,
+      "emenda": 1456.2
+    },
+    {
+      "quadro": "primeiro",
+      "largura": 1366,
+      "altura": 768,
+      "arquivo": "primeiro-1366x768.png",
+      "modo": "scroll",
+      "ativa": "pr",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1366,
+        "altura": 768
+      },
+      "colunaEsquerda": 68.3,
+      "cartaoVsPalco": {
+        "topo": 294.4,
+        "direita": 797.4,
+        "base": 14.4,
+        "esquerda": 0
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 0,
+        "direita": 797.4,
+        "base": -60.9,
+        "esquerda": 0
+      },
+      "colunaCortada": true,
+      "desenhoVsSvg": {
+        "topo": -85.6,
+        "direita": 135.2,
+        "base": -283.6,
+        "esquerda": 38
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -85.6,
+        "direita": 135.2,
+        "base": -283.6,
+        "esquerda": 38
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 6.3,
+        "direita": 165,
+        "base": 70.6,
+        "esquerda": 123.8
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": false,
+        "opacidade": "0",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": null,
+        "sobreTitulo": null,
+        "sobreAbas": null,
+        "sobreCartao": null,
+        "sobreColuna": null
+      },
+      "header": {
+        "top": 16,
+        "right": 1303,
+        "bottom": 104,
+        "left": 63
+      },
+      "headerSobreOlho": -22.4,
+      "emenda": 126.6
+    },
+    {
+      "quadro": "pouso-pr",
+      "largura": 1366,
+      "altura": 768,
+      "arquivo": "pouso-pr-1366x768.png",
+      "modo": "scroll",
+      "ativa": "pr",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1366,
+        "altura": 768
+      },
+      "colunaEsquerda": 68.3,
+      "cartaoVsPalco": {
+        "topo": 294.4,
+        "direita": 797.4,
+        "base": 14.4,
+        "esquerda": 0
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 0,
+        "direita": 797.4,
+        "base": -60.9,
+        "esquerda": 0
+      },
+      "colunaCortada": true,
+      "desenhoVsSvg": {
+        "topo": -90.9,
+        "direita": 135.2,
+        "base": -278.3,
+        "esquerda": 38
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -90.9,
+        "direita": 135.2,
+        "base": -278.3,
+        "esquerda": 38
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 6.3,
+        "direita": 165,
+        "base": 70.6,
+        "esquerda": 123.8
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": false,
+        "opacidade": "0",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": null,
+        "sobreTitulo": null,
+        "sobreAbas": null,
+        "sobreCartao": null,
+        "sobreColuna": null
+      },
+      "header": {
+        "top": 16,
+        "right": 1303,
+        "bottom": 104,
+        "left": 63
+      },
+      "headerSobreOlho": -22.4,
+      "emenda": 318.6
+    },
+    {
+      "quadro": "pouso-sp",
+      "largura": 1366,
+      "altura": 768,
+      "arquivo": "pouso-sp-1366x768.png",
+      "modo": "scroll",
+      "ativa": "sp",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1366,
+        "altura": 768
+      },
+      "colunaEsquerda": 68.3,
+      "cartaoVsPalco": {
+        "topo": 294.4,
+        "direita": 0,
+        "base": 38.9,
+        "esquerda": 797.4
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 0,
+        "direita": 797.4,
+        "base": -60.9,
+        "esquerda": 0
+      },
+      "colunaCortada": true,
+      "desenhoVsSvg": {
+        "topo": 149.8,
+        "direita": 473.2,
+        "base": -41.8,
+        "esquerda": -2.8
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": 149.8,
+        "direita": 473.2,
+        "base": -41.8,
+        "esquerda": -2.8
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 196.8,
+        "direita": 485.1,
+        "base": 126.5,
+        "esquerda": 38.6
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": false,
+        "opacidade": "0",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": null,
+        "sobreTitulo": null,
+        "sobreAbas": null,
+        "sobreCartao": null,
+        "sobreColuna": null
+      },
+      "header": {
+        "top": 16,
+        "right": 1303,
+        "bottom": 104,
+        "left": 63
+      },
+      "headerSobreOlho": -22.4,
+      "emenda": 1470.6
+    },
+    {
+      "quadro": "primeiro",
+      "largura": 1440,
+      "altura": 900,
+      "arquivo": "primeiro-1440x900.png",
+      "modo": "scroll",
+      "ativa": "pr",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1440,
+        "altura": 900
+      },
+      "colunaEsquerda": 72,
+      "cartaoVsPalco": {
+        "topo": 325.6,
+        "direita": 864,
+        "base": 85,
+        "esquerda": 0
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 26,
+        "direita": 864,
+        "base": 26,
+        "esquerda": 0
+      },
+      "colunaCortada": false,
+      "desenhoVsSvg": {
+        "topo": -98.9,
+        "direita": 130.1,
+        "base": -327.7,
+        "esquerda": 17.6
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -98.9,
+        "direita": 130.1,
+        "base": -327.7,
+        "esquerda": 17.6
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 7.6,
+        "direita": 164.5,
+        "base": 81.9,
+        "esquerda": 116.9
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": true,
+        "opacidade": "1",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": {
+          "horizontal": 68.6,
+          "vertical": -127.5,
+          "sobrepoe": false
+        },
+        "sobreTitulo": {
+          "horizontal": 68.6,
+          "vertical": 14,
+          "sobrepoe": true
+        },
+        "sobreAbas": {
+          "horizontal": 68.6,
+          "vertical": -48.8,
+          "sobrepoe": false
+        },
+        "sobreCartao": {
+          "horizontal": 68.6,
+          "vertical": -141.8,
+          "sobrepoe": false
+        },
+        "sobreColuna": {
+          "horizontal": 68.6,
+          "vertical": 14,
+          "sobrepoe": true
+        }
+      },
+      "header": {
+        "top": 16,
+        "right": 1340,
+        "bottom": 104,
+        "left": 100
+      },
+      "headerSobreOlho": -55,
+      "emenda": 159.1
+    },
+    {
+      "quadro": "pouso-pr",
+      "largura": 1440,
+      "altura": 900,
+      "arquivo": "pouso-pr-1440x900.png",
+      "modo": "scroll",
+      "ativa": "pr",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1440,
+        "altura": 900
+      },
+      "colunaEsquerda": 72,
+      "cartaoVsPalco": {
+        "topo": 325.6,
+        "direita": 864,
+        "base": 85,
+        "esquerda": 0
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 26,
+        "direita": 864,
+        "base": 26,
+        "esquerda": 0
+      },
+      "colunaCortada": false,
+      "desenhoVsSvg": {
+        "topo": -104.9,
+        "direita": 130.1,
+        "base": -321.6,
+        "esquerda": 17.6
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -104.9,
+        "direita": 130.1,
+        "base": -321.6,
+        "esquerda": 17.6
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 7.6,
+        "direita": 164.5,
+        "base": 81.9,
+        "esquerda": 116.9
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": true,
+        "opacidade": "1",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": {
+          "horizontal": 68.6,
+          "vertical": -127.5,
+          "sobrepoe": false
+        },
+        "sobreTitulo": {
+          "horizontal": 68.6,
+          "vertical": 14,
+          "sobrepoe": true
+        },
+        "sobreAbas": {
+          "horizontal": 68.6,
+          "vertical": -48.8,
+          "sobrepoe": false
+        },
+        "sobreCartao": {
+          "horizontal": 68.6,
+          "vertical": -141.8,
+          "sobrepoe": false
+        },
+        "sobreColuna": {
+          "horizontal": 68.6,
+          "vertical": 14,
+          "sobrepoe": true
+        }
+      },
+      "header": {
+        "top": 16,
+        "right": 1340,
+        "bottom": 104,
+        "left": 100
+      },
+      "headerSobreOlho": -55,
+      "emenda": 384.1
+    },
+    {
+      "quadro": "pouso-sp",
+      "largura": 1440,
+      "altura": 900,
+      "arquivo": "pouso-sp-1440x900.png",
+      "modo": "scroll",
+      "ativa": "sp",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1440,
+        "altura": 900
+      },
+      "colunaEsquerda": 72,
+      "cartaoVsPalco": {
+        "topo": 325.6,
+        "direita": 0,
+        "base": 109.5,
+        "esquerda": 864
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 26,
+        "direita": 864,
+        "base": 26,
+        "esquerda": 0
+      },
+      "colunaCortada": false,
+      "desenhoVsSvg": {
+        "topo": 173.5,
+        "direita": 521.2,
+        "base": -48.1,
+        "esquerda": -29.5
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": 173.5,
+        "direita": 521.2,
+        "base": -48.1,
+        "esquerda": -29.5
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 227.8,
+        "direita": 534.7,
+        "base": 146.6,
+        "esquerda": 18.4
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": true,
+        "opacidade": "1",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": {
+          "horizontal": 68.6,
+          "vertical": -127.5,
+          "sobrepoe": false
+        },
+        "sobreTitulo": {
+          "horizontal": 68.6,
+          "vertical": 14,
+          "sobrepoe": true
+        },
+        "sobreAbas": {
+          "horizontal": 68.6,
+          "vertical": -48.8,
+          "sobrepoe": false
+        },
+        "sobreCartao": {
+          "horizontal": -795.4,
+          "vertical": -141.8,
+          "sobrepoe": false
+        },
+        "sobreColuna": {
+          "horizontal": 68.6,
+          "vertical": 14,
+          "sobrepoe": true
+        }
+      },
+      "header": {
+        "top": 16,
+        "right": 1340,
+        "bottom": 104,
+        "left": 100
+      },
+      "headerSobreOlho": -55,
+      "emenda": 1734.1
+    },
+    {
+      "quadro": "primeiro",
+      "largura": 1512,
+      "altura": 860,
+      "arquivo": "primeiro-1512x860.png",
+      "modo": "scroll",
+      "ativa": "pr",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1512,
+        "altura": 860
+      },
+      "colunaEsquerda": 75.6,
+      "cartaoVsPalco": {
+        "topo": 307.6,
+        "direita": 928.8,
+        "base": 69.5,
+        "esquerda": 0
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 8,
+        "direita": 928.8,
+        "base": 8,
+        "esquerda": 0
+      },
+      "colunaCortada": false,
+      "desenhoVsSvg": {
+        "topo": -96,
+        "direita": 169.7,
+        "base": -317.5,
+        "esquerda": 60.8
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -96,
+        "direita": 169.7,
+        "base": -317.5,
+        "esquerda": 60.8
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 7.1,
+        "direita": 203,
+        "base": 79.1,
+        "esquerda": 156.9
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": true,
+        "opacidade": "1",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": {
+          "horizontal": 65,
+          "vertical": -127.5,
+          "sobrepoe": false
+        },
+        "sobreTitulo": {
+          "horizontal": 65,
+          "vertical": 14,
+          "sobrepoe": true
+        },
+        "sobreAbas": {
+          "horizontal": 65,
+          "vertical": -48.8,
+          "sobrepoe": false
+        },
+        "sobreCartao": {
+          "horizontal": 65,
+          "vertical": -141.8,
+          "sobrepoe": false
+        },
+        "sobreColuna": {
+          "horizontal": 65,
+          "vertical": 14,
+          "sobrepoe": true
+        }
+      },
+      "header": {
+        "top": 16,
+        "right": 1376,
+        "bottom": 104,
+        "left": 136
+      },
+      "headerSobreOlho": -35,
+      "emenda": 139
+    },
+    {
+      "quadro": "pouso-pr",
+      "largura": 1512,
+      "altura": 860,
+      "arquivo": "pouso-pr-1512x860.png",
+      "modo": "scroll",
+      "ativa": "pr",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1512,
+        "altura": 860
+      },
+      "colunaEsquerda": 75.6,
+      "cartaoVsPalco": {
+        "topo": 307.6,
+        "direita": 928.8,
+        "base": 69.5,
+        "esquerda": 0
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 8,
+        "direita": 928.8,
+        "base": 8,
+        "esquerda": 0
+      },
+      "colunaCortada": false,
+      "desenhoVsSvg": {
+        "topo": -101.8,
+        "direita": 169.7,
+        "base": -311.7,
+        "esquerda": 60.8
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -101.8,
+        "direita": 169.7,
+        "base": -311.7,
+        "esquerda": 60.8
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 7.1,
+        "direita": 203,
+        "base": 79.1,
+        "esquerda": 156.9
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": true,
+        "opacidade": "1",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": {
+          "horizontal": 65,
+          "vertical": -127.5,
+          "sobrepoe": false
+        },
+        "sobreTitulo": {
+          "horizontal": 65,
+          "vertical": 14,
+          "sobrepoe": true
+        },
+        "sobreAbas": {
+          "horizontal": 65,
+          "vertical": -48.8,
+          "sobrepoe": false
+        },
+        "sobreCartao": {
+          "horizontal": 65,
+          "vertical": -141.8,
+          "sobrepoe": false
+        },
+        "sobreColuna": {
+          "horizontal": 65,
+          "vertical": 14,
+          "sobrepoe": true
+        }
+      },
+      "header": {
+        "top": 16,
+        "right": 1376,
+        "bottom": 104,
+        "left": 136
+      },
+      "headerSobreOlho": -35,
+      "emenda": 354
+    },
+    {
+      "quadro": "pouso-sp",
+      "largura": 1512,
+      "altura": 860,
+      "arquivo": "pouso-sp-1512x860.png",
+      "modo": "scroll",
+      "ativa": "sp",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1512,
+        "altura": 860
+      },
+      "colunaEsquerda": 75.6,
+      "cartaoVsPalco": {
+        "topo": 307.6,
+        "direita": 0,
+        "base": 94,
+        "esquerda": 928.8
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 8,
+        "direita": 928.8,
+        "base": 8,
+        "esquerda": 0
+      },
+      "colunaCortada": false,
+      "desenhoVsSvg": {
+        "topo": 167.8,
+        "direita": 548.4,
+        "base": -46.8,
+        "esquerda": 15.2
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": 167.8,
+        "direita": 548.4,
+        "base": -46.8,
+        "esquerda": 15.2
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 220.3,
+        "direita": 561.5,
+        "base": 141.7,
+        "esquerda": 61.6
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": true,
+        "opacidade": "1",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": {
+          "horizontal": 65,
+          "vertical": -127.5,
+          "sobrepoe": false
+        },
+        "sobreTitulo": {
+          "horizontal": 65,
+          "vertical": 14,
+          "sobrepoe": true
+        },
+        "sobreAbas": {
+          "horizontal": 65,
+          "vertical": -48.8,
+          "sobrepoe": false
+        },
+        "sobreCartao": {
+          "horizontal": -863.8,
+          "vertical": -141.8,
+          "sobrepoe": false
+        },
+        "sobreColuna": {
+          "horizontal": 65,
+          "vertical": 14,
+          "sobrepoe": true
+        }
+      },
+      "header": {
+        "top": 16,
+        "right": 1376,
+        "bottom": 104,
+        "left": 136
+      },
+      "headerSobreOlho": -35,
+      "emenda": 1644
+    },
+    {
+      "quadro": "primeiro",
+      "largura": 1920,
+      "altura": 1080,
+      "arquivo": "primeiro-1920x1080.png",
+      "modo": "scroll",
+      "ativa": "pr",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1920,
+        "altura": 1080
+      },
+      "colunaEsquerda": 80,
+      "cartaoVsPalco": {
+        "topo": 406.6,
+        "direita": 1328,
+        "base": 144.3,
+        "esquerda": 0
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 107,
+        "direita": 1328,
+        "base": 107,
+        "esquerda": 0
+      },
+      "colunaCortada": false,
+      "desenhoVsSvg": {
+        "topo": -93.6,
+        "direita": 358.1,
+        "base": -320.3,
+        "esquerda": 247
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -93.6,
+        "direita": 358.1,
+        "base": -320.3,
+        "esquerda": 247
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 11.3,
+        "direita": 392.1,
+        "base": 84.7,
+        "esquerda": 345.1
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": true,
+        "opacidade": "1",
+        "texto": "Escritórios",
+        "caixaDireita": 148.6,
+        "tintaDireita": 148.6,
+        "sobreOlho": {
+          "horizontal": 68.6,
+          "vertical": -127,
+          "sobrepoe": false
+        },
+        "sobreTitulo": {
+          "horizontal": 68.6,
+          "vertical": 14,
+          "sobrepoe": true
+        },
+        "sobreAbas": {
+          "horizontal": 68.6,
+          "vertical": -49.3,
+          "sobrepoe": false
+        },
+        "sobreCartao": {
+          "horizontal": 68.6,
+          "vertical": -142.3,
+          "sobrepoe": false
+        },
+        "sobreColuna": {
+          "horizontal": 68.6,
+          "vertical": 14,
+          "sobrepoe": true
+        }
+      },
+      "header": {
+        "top": 16,
+        "right": 1580,
+        "bottom": 104,
+        "left": 340
+      },
+      "headerSobreOlho": -145.4,
+      "emenda": 249
+    },
+    {
+      "quadro": "pouso-pr",
+      "largura": 1920,
+      "altura": 1080,
+      "arquivo": "pouso-pr-1920x1080.png",
+      "modo": "scroll",
+      "ativa": "pr",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1920,
+        "altura": 1080
+      },
+      "colunaEsquerda": 80,
+      "cartaoVsPalco": {
+        "topo": 406.6,
+        "direita": 1328,
+        "base": 144.3,
+        "esquerda": 0
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 107,
+        "direita": 1328,
+        "base": 107,
+        "esquerda": 0
+      },
+      "colunaCortada": false,
+      "desenhoVsSvg": {
+        "topo": -99.9,
+        "direita": 358.1,
+        "base": -314,
+        "esquerda": 247
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -99.9,
+        "direita": 358.1,
+        "base": -314,
+        "esquerda": 247
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 11.3,
+        "direita": 392.1,
+        "base": 84.7,
+        "esquerda": 345.1
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": true,
+        "opacidade": "1",
+        "texto": "Escritórios",
+        "caixaDireita": 148.6,
+        "tintaDireita": 148.6,
+        "sobreOlho": {
+          "horizontal": 68.6,
+          "vertical": -127.5,
+          "sobrepoe": false
+        },
+        "sobreTitulo": {
+          "horizontal": 68.6,
+          "vertical": 14,
+          "sobrepoe": true
+        },
+        "sobreAbas": {
+          "horizontal": 68.6,
+          "vertical": -48.8,
+          "sobrepoe": false
+        },
+        "sobreCartao": {
+          "horizontal": 68.6,
+          "vertical": -141.8,
+          "sobrepoe": false
+        },
+        "sobreColuna": {
+          "horizontal": 68.6,
+          "vertical": 14,
+          "sobrepoe": true
+        }
+      },
+      "header": {
+        "top": 16,
+        "right": 1580,
+        "bottom": 104,
+        "left": 340
+      },
+      "headerSobreOlho": -145,
+      "emenda": 518.5
+    },
+    {
+      "quadro": "pouso-sp",
+      "largura": 1920,
+      "altura": 1080,
+      "arquivo": "pouso-sp-1920x1080.png",
+      "modo": "scroll",
+      "ativa": "sp",
+      "revelado": "sim",
+      "janela": {
+        "largura": 1920,
+        "altura": 1080
+      },
+      "colunaEsquerda": 80,
+      "cartaoVsPalco": {
+        "topo": 406.6,
+        "direita": 0,
+        "base": 168.8,
+        "esquerda": 1328
+      },
+      "cartaoCortado": false,
+      "colunaVsPalco": {
+        "topo": 107,
+        "direita": 1328,
+        "base": 107,
+        "esquerda": 0
+      },
+      "colunaCortada": false,
+      "desenhoVsSvg": {
+        "topo": 175.3,
+        "direita": 744.6,
+        "base": -43.7,
+        "esquerda": 200.4
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": 175.3,
+        "direita": 744.6,
+        "base": -43.7,
+        "esquerda": 200.4
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 228.9,
+        "direita": 758,
+        "base": 148.6,
+        "esquerda": 247.7
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": true,
+        "opacidade": "1",
+        "texto": "Escritórios",
+        "caixaDireita": 148.6,
+        "tintaDireita": 148.6,
+        "sobreOlho": {
+          "horizontal": 68.6,
+          "vertical": -127.5,
+          "sobrepoe": false
+        },
+        "sobreTitulo": {
+          "horizontal": 68.6,
+          "vertical": 14,
+          "sobrepoe": true
+        },
+        "sobreAbas": {
+          "horizontal": 68.6,
+          "vertical": -48.8,
+          "sobrepoe": false
+        },
+        "sobreCartao": {
+          "horizontal": -1259.4,
+          "vertical": -141.8,
+          "sobrepoe": false
+        },
+        "sobreColuna": {
+          "horizontal": 68.6,
+          "vertical": 14,
+          "sobrepoe": true
+        }
+      },
+      "header": {
+        "top": 16,
+        "right": 1580,
+        "bottom": 104,
+        "left": 340
+      },
+      "headerSobreOlho": -145,
+      "emenda": 2138.5
+    },
+    {
+      "quadro": "lista-1440x720",
+      "largura": 1440,
+      "altura": 720,
+      "arquivo": "lista-1440x720.png",
+      "paddingSecao": "128px",
+      "fichas": [
+        {
+          "id": "pr",
+          "opacidade": "1",
+          "display": "block",
+          "inert": false,
+          "ariaHidden": null
+        },
+        {
+          "id": "sp",
+          "opacidade": "1",
+          "display": "block",
+          "inert": false,
+          "ariaHidden": null
+        }
+      ],
+      "modo": "lista",
+      "ativa": null,
+      "revelado": null,
+      "janela": {
+        "largura": 1440,
+        "altura": 720
+      },
+      "colunaEsquerda": 154,
+      "cartaoVsPalco": null,
+      "cartaoCortado": null,
+      "colunaVsPalco": {
+        "topo": 0,
+        "direita": 0,
+        "base": 1050.2,
+        "esquerda": 0
+      },
+      "colunaCortada": false,
+      "desenhoVsSvg": {
+        "topo": -44.8,
+        "direita": 212.7,
+        "base": -433.3,
+        "esquerda": 11.6
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -16.8,
+        "direita": 212.7,
+        "base": -461.3,
+        "esquerda": 11.6
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 90.8,
+        "direita": 251.6,
+        "base": 149.2,
+        "esquerda": 149.8
+      },
+      "scrollSpy": {
+        "ativo": "#topo",
+        "visivel": true,
+        "opacidade": "1",
+        "texto": "Início",
+        "caixaDireita": 92,
+        "tintaDireita": 92,
+        "sobreOlho": {
+          "horizontal": -62,
+          "vertical": -77.7,
+          "sobrepoe": false
+        },
+        "sobreTitulo": {
+          "horizontal": -62,
+          "vertical": -118,
+          "sobrepoe": false
+        },
+        "sobreAbas": null,
+        "sobreCartao": null,
+        "sobreColuna": {
+          "horizontal": -62,
+          "vertical": -77.7,
+          "sobrepoe": false
+        }
+      },
+      "header": {
+        "top": 16,
+        "right": 1340,
+        "bottom": 104,
+        "left": 100
+      },
+      "headerSobreOlho": -144.5,
+      "emenda": 128
+    },
+    {
+      "quadro": "lista-1279x900",
+      "largura": 1279,
+      "altura": 900,
+      "arquivo": "lista-1279x900.png",
+      "paddingSecao": "128px",
+      "fichas": [
+        {
+          "id": "pr",
+          "opacidade": "1",
+          "display": "block",
+          "inert": false,
+          "ariaHidden": null
+        },
+        {
+          "id": "sp",
+          "opacidade": "1",
+          "display": "block",
+          "inert": false,
+          "ariaHidden": null
+        }
+      ],
+      "modo": "lista",
+      "ativa": null,
+      "revelado": null,
+      "janela": {
+        "largura": 1279,
+        "altura": 900
+      },
+      "colunaEsquerda": 73.5,
+      "cartaoVsPalco": null,
+      "cartaoCortado": null,
+      "colunaVsPalco": {
+        "topo": 0,
+        "direita": 0,
+        "base": 1050.2,
+        "esquerda": 0
+      },
+      "colunaCortada": false,
+      "desenhoVsSvg": {
+        "topo": -44.8,
+        "direita": 212.7,
+        "base": -433.3,
+        "esquerda": 11.6
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -18.2,
+        "direita": 212.7,
+        "base": -459.8,
+        "esquerda": 11.6
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 90.8,
+        "direita": 251.6,
+        "base": 149.2,
+        "esquerda": 149.8
+      },
+      "scrollSpy": {
+        "ativo": null,
+        "visivel": false,
+        "opacidade": null,
+        "texto": null,
+        "caixaDireita": null,
+        "tintaDireita": null,
+        "sobreOlho": null,
+        "sobreTitulo": null,
+        "sobreAbas": null,
+        "sobreCartao": null,
+        "sobreColuna": null
+      },
+      "header": {
+        "top": 16,
+        "right": 1259.5,
+        "bottom": 104,
+        "left": 19.5
+      },
+      "headerSobreOlho": -144.2,
+      "emenda": 128
+    },
+    {
+      "quadro": "lista-reduced-1440x900",
+      "largura": 1440,
+      "altura": 900,
+      "arquivo": "lista-reduced-1440x900.png",
+      "paddingSecao": "128px",
+      "fichas": [
+        {
+          "id": "pr",
+          "opacidade": "1",
+          "display": "block",
+          "inert": false,
+          "ariaHidden": null
+        },
+        {
+          "id": "sp",
+          "opacidade": "1",
+          "display": "block",
+          "inert": false,
+          "ariaHidden": null
+        }
+      ],
+      "modo": "lista",
+      "ativa": null,
+      "revelado": null,
+      "janela": {
+        "largura": 1440,
+        "altura": 900
+      },
+      "colunaEsquerda": 154,
+      "cartaoVsPalco": null,
+      "cartaoCortado": null,
+      "colunaVsPalco": {
+        "topo": 0,
+        "direita": 0,
+        "base": 1050.2,
+        "esquerda": 0
+      },
+      "colunaCortada": false,
+      "desenhoVsSvg": {
+        "topo": -44.8,
+        "direita": 212.7,
+        "base": -433.3,
+        "esquerda": 11.6
+      },
+      "desenhoCortadoSvg": true,
+      "desenhoVsColuna": {
+        "topo": -44.8,
+        "direita": 212.7,
+        "base": -433.3,
+        "esquerda": 11.6
+      },
+      "desenhoCortadoColuna": true,
+      "paisVsSvg": {
+        "topo": 90.8,
+        "direita": 251.6,
+        "base": 149.2,
+        "esquerda": 149.8
+      },
+      "scrollSpy": {
+        "ativo": "#escritorios",
+        "visivel": true,
+        "opacidade": "1",
+        "texto": "Escritórios",
+        "caixaDireita": 140.6,
+        "tintaDireita": 140.6,
+        "sobreOlho": {
+          "horizontal": -13.4,
+          "vertical": -38.6,
+          "sobrepoe": false
+        },
+        "sobreTitulo": {
+          "horizontal": -13.4,
+          "vertical": 14,
+          "sobrepoe": false
+        },
+        "sobreAbas": null,
+        "sobreCartao": null,
+        "sobreColuna": {
+          "horizontal": -13.4,
+          "vertical": 14,
+          "sobrepoe": false
+        }
+      },
+      "header": {
+        "top": 16,
+        "right": 1340,
+        "bottom": 104,
+        "left": 100
+      },
+      "headerSobreOlho": -143.9,
+      "emenda": 128
+    }
+  ]
+}

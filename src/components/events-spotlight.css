@@ -6,25 +6,62 @@
    intacto e sem consumidor — ver o comentário de saída no `page.tsx`. */
 
 /* ==========================================================================
-   A SUPERFÍCIE, E POR QUE ELA ABRE E FECHA EM NAVY
+   A SUPERFÍCIE — CLARA DE PONTA A PONTA (SIS-215)
 
-   A cena tem DOIS VIZINHOS ESCUROS: o hero fecha em `rgb(4 27 61 / 78%)` (véu de
-   `.hero-backdrop--eventos`) e a `<Social className="palco-de-cena-escura">` logo
-   abaixo já espera escuro em cima. O desenho pede fundo CLARO (é onde a descrição
-   de corpo é lida, com piso de 4,5:1).
-   Quem muda de cor é o PRÓPRIO BLOCO, num degradê só: nasce no navy do hero,
-   clareia no meio e volta a fechar em navy. Nenhuma emenda nova em nenhuma das
-   duas pontas — é a mesma receita que o mosaico usava, e é ela que faz a troca de
-   dois blocos por um não criar fronteira de cor nova. Uma superfície clara de
-   ponta a ponta criaria DUAS fronteiras onde hoje não há nenhuma, que é
-   exatamente a armadilha que a SIS-107 removeu.
+   ── O QUE ERA, E POR QUE CADUCOU ─────────────────────────────────────────────
+   A premissa antiga está preservada abaixo porque ela explica de onde vinham os
+   dois navys; o que ela NÃO previu é o efeito na tela durante a rolagem, que é o
+   defeito da SIS-215:
+
+   | A cena tem DOIS VIZINHOS ESCUROS: o hero fecha em `rgb(4 27 61 / 78%)` (véu de
+   | `.hero-backdrop--eventos`) e a `<Social className="palco-de-cena-escura">` logo
+   | abaixo já espera escuro em cima. (...) Quem muda de cor é o PRÓPRIO BLOCO, num
+   | degradê só: nasce no navy do hero, clareia no meio e volta a fechar em navy.
+   | (...) Uma superfície clara de ponta a ponta criaria DUAS fronteiras onde hoje
+   | não há nenhuma, que é exatamente a armadilha que a SIS-107 removeu.
+
+   O ERRO DE RACIOCÍNIO: as rampas foram calibradas como FRAÇÃO de um bloco de
+   8.100px (2% e 96% a 1024+), e uma fração pequena desse bloco é uma faixa GRANDE
+   na tela. Medido a 1440 por `scripts/medir-bandas-eventos-sis215.mjs` (o "antes"
+   está na issue): o navy chapado ocupava os primeiros ~324px do bloco e a
+   escuridão da base começava em 0,80 do percurso — 1.300px de escurecimento mais
+   ~324px de navy fechado. Como o palco é `sticky` e mede uma tela, isso é a TELA
+   INTEIRA escura no fim do percurso e um terço dela escuro no começo. A razão de
+   luminância da ponta contra o miolo era 15,89:1 na base e 15,65:1 no topo do
+   `.eventos-lista` — isto é, a ponta e o miolo eram cores opostas, não vizinhas.
+   E havia um efeito colateral pior que a vinheta: TODA a tinta desta cena é
+   escura (`#04203e`, `#123a63`, `#0b7fa8` — ver as regras adiante), porque foi
+   desenhada para o miolo claro. Nos dois extremos do percurso o cartão central, o
+   contador e os rótulos das vagas ficavam com tinta escura sobre navy.
+
+   ── O QUE É AGORA ────────────────────────────────────────────────────────────
+   Um degradê claro só, sem nenhuma parada navy: `#eaf2fb` no topo, o miolo em
+   `#f6fafd` e o fecho em `#cfe7f7`. As duas fronteiras que a nota antiga temia
+   existem, e as duas foram RESOLVIDAS EM AZUL CLARO — nunca reintroduzindo navy
+   para emendar (item 2 da issue):
+
+   • hero -> cena. Fica ARESTA, sem recurso novo, e isso não é uma fronteira
+     inventada aqui: é literalmente o que `/parceiros-e-implementacoes` publica —
+     `section-light section-light-blue` encostando direto no hero escuro ("azul
+     claro, alternando com o hero escuro acima", `page.tsx:80`). O que a SIS-107
+     proibiu foi outra coisa: uma FAIXA clara nascendo do nada NO MEIO de uma
+     superfície navy. Trocar a superfície inteira não é isso.
+   • cena -> Social. A Social desta rota deixou de ser `.palco-de-cena-escura` e
+     passou a `.palco-emenda-de-claro-curta` (ver a nota no `page.tsx`), que é o
+     mecanismo JÁ PUBLICADO em `/contato` para receber seção clara: ele dissolve
+     `#cfe7f7` nos primeiros 150px e traz junto o `padding-top` maior e as
+     máscaras das luzes. O fecho desta cena é exatamente `#cfe7f7` de propósito —
+     cor igual encostando em cor igual, que é a doutrina da rota.
 
    O FIO CIANO DO TOPO continua sendo o que o fio do hero encontra aceso: o elo
    `hero -> eventos` da rota é por LINHA, e a linha continua. Os valores são os do
    `.pagehero-fio`, repetidos de propósito (lá eles são escalados por `--hp`,
    porque o fio é DESENHADO durante a partida do hero; aqui a linha já está
-   inteira). Ele mora no topo do bloco, e o topo do bloco é navy — ciano de 3px
-   com halo sobre navy é o que ele era no hero.
+   inteira). Ele mora no topo do bloco, e agora o topo do bloco é CLARO: o ciano
+   `#0ed8f6` de 3px passa a ser lido pelo croma e não pela luminância (1,58:1
+   contra `#eaf2fb`), e ele fica exatamente sobre a aresta hero -> cena, com o
+   navy do hero de um lado. É o mesmo fio, no mesmo lugar; ele não é — e nunca foi
+   — a banda de que a issue trata (item 4).
    ========================================================================== */
 
 .eventos-destaque {
@@ -38,15 +75,18 @@
 .eventos-lista {
   display: block;
   position: relative;
+  /* SIS-215 — claro de ponta a ponta, sem as duas pontas navy. Ver a nota da
+     superfície no topo do arquivo: as paradas antigas eram
+     `#041b3d 0% / #082a4e 3% / ... / #0a2b4d 92% / #041d37 100%`, e a de 92% já
+     começava a escurecer 460px antes do fim de um bloco de 6.578px.
+     O fecho é `#cfe7f7` porque é a cor de partida de
+     `.palco-emenda-de-claro-curta`, que é quem recebe esta cena embaixo. */
   background: linear-gradient(
     180deg,
-    #041b3d 0%,
-    #082a4e 3%,
-    #eaf2fb 9%,
-    #f6fafd 50%,
-    #e6eff9 74%,
-    #0a2b4d 92%,
-    #041d37 100%
+    #eaf2fb 0%,
+    #f6fafd 45%,
+    #eef5fc 78%,
+    #cfe7f7 100%
   );
   padding-block: clamp(2.5rem, 8vw, 4rem) clamp(3rem, 9vw, 5rem);
 }
@@ -62,15 +102,19 @@
     /* `clip`, NUNCA `hidden`: `hidden` faria deste bloco um contêiner de scroll e
        mataria o `position: sticky` do palco aqui dentro. */
     overflow: clip;
+    /* SIS-215 — gêmeo do degradê de `.eventos-lista`, e as duas pontas navy
+       saíram pelo mesmo motivo (a nota da superfície, no topo do arquivo). As
+       paradas antigas eram `#041b3d 0% / #082a4e 2% / #eaf2fb 6% / #f6fafd 45% /
+       #e6eff9 80% / #0a2b4d 96% / #041d37 100%`. Aqui a conta é mais dura que na
+       lista: o bloco mede 8.100px a 1440, então os 2% de navy chapado eram 162px
+       e a rampa de 80% -> 96% eram 1.300px de escurecimento — com o palco
+       `sticky` de uma tela por cima, é a tela inteira que escurecia. */
     background: linear-gradient(
       180deg,
-      #041b3d 0%,
-      #082a4e 2%,
-      #eaf2fb 6%,
+      #eaf2fb 0%,
       #f6fafd 45%,
-      #e6eff9 80%,
-      #0a2b4d 96%,
-      #041d37 100%
+      #eef5fc 82%,
+      #cfe7f7 100%
     );
     /* Quanto de rolagem cada evento consome. A ALTURA DA SEÇÃO NÃO É ESCRITA em
        nenhum lugar: ela é a soma das quinze sentinelas mais a cauda, então a
@@ -134,8 +178,62 @@
        Com `4.8vw` e o rótulo de uma linha (ver `--evt-rotulo-linhas`), oito vagas
        somam ~452px em 1366 e sobram ~51px para os sete vãos. A conta refeita está na
        SIS-167 junto das larguras de faixa medidas. */
-    --evt-vaga-w: clamp(3.8rem, 4.8vw, 5.8rem);
-    --evt-faixa-w: clamp(7rem, 10vw, 12rem);
+    /* ⚠️ SIS-204 — A VAGA DOBROU DE LARGURA, e o motivo é o item 3 da issue: o
+       título INTEIRO tem de caber em cada miniatura, sem elipse. Os valores antigos
+       ficam registrados aqui porque a conta acima ainda é a conta certa para eles:
+         --evt-vaga-w: clamp(3.8rem, 4.8vw, 5.8rem);
+         --evt-faixa-w: clamp(7rem, 10vw, 12rem);
+       Com 4,8vw a placa tinha 56px úteis em 1366 e o título mais longo do catálogo
+       ("Congresso Brasileiro dos Corretores de Seguros · FENACOR", 56 caracteres)
+       precisaria de cinco linhas; cinco linhas vezes oito vagas somam mais que a
+       faixa, que a sonda mediu com 502px de altura e 499px já ocupados. Não havia
+       um pixel vertical a distribuir — por isso o que cresce é a LARGURA, e a arte
+       passa a ficar AO LADO do rótulo em vez de acima (ver `.eventos-vaga`).
+       O espaço veio do vazio medido entre a faixa e o cartão: 139px de cada lado em
+       1366 e 65px em 1024. Depois desta mudança sobram ~112px em 1366 e ~19px em
+       1024 — a sonda `medir-cena-eventos-sis204.mjs` imprime essa folga nas três
+       larguras, e é ela que impede a faixa de encostar no cartão.
+       A RAZÃO ENTRE OS DOIS NÚMEROS É QUE NÃO PODE MUDAR: o recuo máximo do
+       `nth-child` é 34% da faixa, então a vaga tem de caber com folga em 66% dela,
+       senão o espalhamento horizontal joga miniatura para fora da faixa. 9,5/14,4 =
+       0,66 — mesma proporção de antes (5,8/12 = 0,48 dava margem de sobra; aqui a
+       margem é justa e por isso está escrita).
+       ⚠️ E ESSA CONTA ESTAVA INCOMPLETA: faltava `--evt-prof`. A vaga PAR é
+       desenhada a `1.06` da largura declarada, então quem tem de caber em 66% da
+       faixa é `--evt-vaga-w × 1,06`, e não `--evt-vaga-w`. Com 9,5/14,4 o par
+       media 110px contra 104px de espaço útil em 1024 e o recuo de `right: 30%`
+       (47px) empurrava a miniatura 28px POR CIMA DO CARTÃO — o `IMG` da vaga
+       "Pega World" ficou pintando dentro da caixa da descrição, e a guarda da
+       SIS-167 reprovou pelo caminho torto de sempre: contraste da descrição em
+       1,02:1, pior pixel rgb(49,59,38), só em 1024x768. As colunas são
+       `position: relative` em fluxo, então o recuo desloca a vaga PARA FORA da
+       faixa; nas larguras largas os ~112px de vazio até o cartão absorviam, em
+       1024 só havia 19px.
+       A relação escrita, agora completa: `--evt-faixa-w >= --evt-vaga-w × 1,06 /
+       0,66`, isto é `× 1,606`. 5,9 × 1,606 = 9,48 <= 9,85 · 7,2 × 1,606 = 11,56 <=
+       12 · 8,6 × 1,606 = 13,81 <= 14,4 — sobra nas três pernas do `clamp`.
+       O que a vaga perde de largura (~10px em 1024) é devolvido pela arte, que
+       encolhe de 0,34 para 0,30: a placa do rótulo continua com os mesmos ~62px em
+       que a sonda mediu zero título cortado. */
+    --evt-vaga-w: clamp(5.9rem, 7.2vw, 8.6rem);
+    --evt-faixa-w: clamp(9.85rem, 12vw, 14.4rem);
+
+    /* Fração da vaga que a ARTE ocupa na horizontal. Vive aqui, junto da largura,
+       pelo mesmo motivo de sempre: a altura de repouso da vaga (`--evt-vaga-h`) é
+       calculada a partir dela, e dois números para a mesma medida divergem. */
+    /* MEDIDO: com `0.42` a placa ficava com 38–50px de largura e os quatro títulos
+       mais longos do catálogo (Web Summit AI, Suitability, Congresso Brasileiro dos
+       Corretores, SPIW) precisavam de mais de sete linhas — batiam no teto e
+       voltavam a cortar, em 1024, 1366 e 1440. Estreitar a arte é o lever CERTO
+       porque a largura da placa entra no número de linhas de forma quase
+       recíproca: 0,34 devolve ~10px de texto por vaga, e cada linha economizada
+       vale ~10px de ALTURA, que é a medida escassa (a faixa de 1366 tem 502px e a
+       coluna direita já usava 470). Encolher a letra teria custado legibilidade
+       para ganhar o mesmo — e o rótulo já está em ~9px.
+       0,34 -> 0,30 junto com o encolhimento de `--evt-vaga-w` (ver a nota dela): a
+       largura da placa é `vaga × (1 - arte-fr)`, então baixar a fração devolve
+       exatamente os pixels de texto que a vaga mais estreita tirou. */
+    --evt-arte-fr: 0.3;
 
     /* O corpo do rótulo vive AQUI, e não na regra dele, porque a ALTURA DA VAGA é
        calculada a partir dele (`--evt-vaga-h`). Se o `clamp` estivesse escrito só na
@@ -144,6 +242,26 @@
        de novo. */
     --evt-rotulo-fs: clamp(0.55rem, 0.62vw, 0.68rem);
     --evt-rotulo-lh: 1.18;
+    /* SIS-204 — TETO DE LINHAS, e ele é REDE DE SEGURANÇA, não o alvo. O alvo é
+       nenhum título cortado: a sonda mede `scrollHeight` contra `clientHeight` nas
+       quinze placas, em 1024, 1366 e 1440, e o critério é zero cortadas. Seis linhas
+       é o que o título mais longo do catálogo pede na placa mais estreita (1024),
+       com uma linha de sobra; o teto existe para que um título futuro mais longo
+       ainda caia ENTRE linhas em vez de no meio de um glifo — o defeito do item 10
+       da SIS-167, cuja apuração continua escrita no bloco de `.eventos-vaga-rotulo`.
+       Quem realmente segura a altura da faixa não é este número: é a soma das vagas
+       contra a altura da faixa, que a sonda também imprime (~453px de 502 em 1366).
+       ⚠️ SEIS ERA POUCO, e a sonda pegou: quatro dos quinze títulos pediam sete
+       linhas ou mais na placa estreita, então o teto — que devia ser rede — passou
+       a ser ele o corte. Dez é folga sobre a pior medida depois de a arte estreitar
+       (cinco linhas em 1024). Se um título futuro chegar a dez, o número a mexer é
+       este; o que NÃO se faz é voltar a apertá-lo para caber na faixa, porque aí o
+       corte volta silenciosamente. */
+    /* 10 -> 12 ao estreitar a vaga (ver `--evt-vaga-w`): a sonda mediu 11 linhas nos
+       dois títulos mais longos em 1024, e um teto IGUAL à pior medida deixa de ser
+       rede. Doze é uma linha acima do pior medido; a soma das vagas continua dentro
+       da faixa (512px de 552 na coluna direita em 1024, o pior dos três larguras). */
+    --evt-rotulo-linhas: 12;
   }
 
   /* ══════════════════════════════════════════════════════════════════════════
@@ -235,6 +353,39 @@
 
   .eventos-destaque-cabecalho {
     text-align: center;
+  }
+
+  /* SIS-204 (item 1) — A CESSÃO DO TÍTULO, o lado do CSS.
+     O componente escreve `data-titulo` na seção: `cedido` enquanto o `h1` do hero
+     ainda intersecta a janela, `assumido` depois que ele sai (o porquê do gatilho
+     ser esse está no comentário do observador, em `EventsSpotlight.tsx`).
+     SEM ATRIBUTO NENHUMA DESTAS REGRAS PEGA e o cabeçalho aparece — é o estado de
+     hoje, e é o que sobra para quem não tem JavaScript. Escrever a cessão como
+     estado PADRÃO seria esconder o título de quem nunca vai receber o atributo
+     que o traz de volta.
+     `opacity` e deslocamento, nunca `display`, `visibility` ou `aria-hidden`: o
+     `h2` continua no DOM, continua sendo o heading da seção e continua sendo o
+     alvo do `aria-labelledby` nos dois estados. O que passa a vez é a LEITURA
+     visível, não a estrutura.
+     O sobretítulo vai junto porque ele é a mesma leitura — deixar «EVENTOS» aceso
+     sobre um título apagado seria um terceiro estado que ninguém pediu.
+     `pointer-events: none` no estado cedido porque não há nada clicável aí, mas
+     um título transparente por cima do corpo ainda intercepta seleção de texto. */
+  .eventos-destaque[data-titulo="cedido"] .eventos-destaque-cabecalho {
+    opacity: 0;
+    transform: translate3d(0, 0.75rem, 0);
+    pointer-events: none;
+  }
+
+  /* A transição só liga UM QUADRO depois da primeira resolução do observador
+     (`data-titulo-transicao`, escrito por um `setTimeout` curto no componente).
+     Sem essa espera, abrir a página no topo mostraria o `h2` e o apagaria em
+     seguida — o título piscando no carregamento. Com ela, a primeira aplicação é
+     instantânea e as que atravessam são as da rolagem, que é o que a issue pede. */
+  .eventos-destaque[data-titulo-transicao="ligada"] .eventos-destaque-cabecalho {
+    transition:
+      opacity 0.45s var(--ease-out, ease-out),
+      transform 0.45s var(--ease-out, ease-out);
   }
 
   .eventos-destaque-corpo {
@@ -332,6 +483,28 @@
     right: clamp(7.5rem, 8.5vw, 10rem);
   }
 
+  /* SIS-204 — A VAGA DA DIREITA ENCOSTA NA BORDA DIREITA DA FAIXA, e isto é o que
+     impede a coluna de pintar sobre o cartão.
+     As vagas estão em fluxo (`position: relative`), então o recuo do `nth-child`
+     (`right: 4%..32%` da largura da faixa) desloca a miniatura a partir da posição
+     natural dela. Sem esta linha a posição natural é FLUSH-LEFT — a borda da faixa
+     que fica virada para o cartão — e o recuo empurra a vaga PARA FORA da faixa, na
+     direção do centro. Com o alargamento das vagas desta issue sobraram 19px entre
+     faixa e cartão em 1024, contra 47px do recuo máximo: a arte da vaga "Pega World"
+     entrou 28px dentro da caixa da descrição (medido: vaga em 699..799, cartão
+     termina em 727) e a guarda da SIS-167 reprovou o contraste da descrição em
+     1,02:1 — o pior pixel era a fotografia da miniatura, não o fundo do cartão.
+     Ancorada à direita, o mesmo recuo passa a correr PARA DENTRO da faixa: a vaga
+     mais recuada fica em 757, com 30px de folga contra o cartão, e a menos recuada
+     não passa da borda direita da faixa (que a asserção 6 da guarda afere).
+     A coluna da esquerda não precisa do espelho: lá o flush-left já é a borda
+     EXTERNA, e o recuo de `left: %` corre para dentro da faixa — o que a mantém
+     longe do cartão é a relação `--evt-faixa-w >= --evt-vaga-w × 1,606` escrita na
+     nota daquelas variáveis. */
+  .eventos-destaque-coluna--dir .eventos-vaga {
+    margin-left: auto;
+  }
+
   /* SIS-167 — a vaga saiu do fluxo e passou a ser posicionada dentro da faixa.
      `width` por `--evt-vaga-w` multiplicado por `--evt-prof`, que é o que dá as
      DUAS PROFUNDIDADES: cartão de longe é menor e respira mais devagar. Multiplico
@@ -355,9 +528,28 @@
        A conta é a soma real do conteúdo: arte (16/9 da largura) + `gap` + rótulo de
        uma linha com o `padding` dele. Sai das mesmas variáveis usadas pelas regras
        de baixo, então não há um segundo número para envelhecer. */
+    /* ⚠️ SIS-204 — A CONTA MUDOU DE NATUREZA: era a ALTURA da vaga, agora é o PISO
+       dela. A fórmula antiga somava arte + `gap` + uma linha de rótulo, e valia
+       enquanto o rótulo tinha número de linhas FIXO:
+         --evt-vaga-h: calc(var(--evt-vaga-w) * var(--evt-prof, 1) * 0.5625 + 0.2rem
+                            + var(--evt-rotulo-lh) * var(--evt-rotulo-fs) + 0.5rem);
+       Com o título inteiro (item 3), o número de linhas passa a depender do título:
+       "CONEC" ocupa uma, "Web Summit AI · Ofertas Personalizadas de Seguros" ocupa
+       cinco. Uma altura fixa para as duas ou corta a segunda ou deixa um vazio do
+       tamanho de quatro linhas em treze das quinze.
+       A INVARIANTE QUE ISSO PARECIA AMEAÇAR — "a faixa não se reorganiza quando o
+       destaque troca" — passou a ser garantida por CONSTRUÇÃO, e não por aritmética:
+       a vaga em destaque agora tem a MESMA CAIXA que o botão que ela substitui
+       (mesma fila, mesma largura de arte/ícone, mesmo `padding`, mesma borda, mesmo
+       rótulo com a mesma largura de quebra — ver `.eventos-vaga--destaque`). Mesma
+       estrutura e mesmo texto quebram no mesmo número de linhas, então as duas
+       alturas são iguais sem ninguém as calcular. Isso é mais forte que a fórmula
+       antiga, que dependia de eu manter dois conteúdos diferentes na mesma altura.
+       O piso continua existindo para a vaga não ficar mais baixa que a arte quando o
+       título tem uma linha só: arte (16/9 da fração dela) mais `padding` e borda. */
     --evt-vaga-h: calc(
-      var(--evt-vaga-w) * var(--evt-prof, 1) * 0.5625 + 0.2rem +
-        var(--evt-rotulo-lh) * var(--evt-rotulo-fs) + 0.5rem
+      var(--evt-vaga-w) * var(--evt-prof, 1) * var(--evt-arte-fr) * 0.5625 + 0.6rem +
+        2px
     );
     /* ⚠️ `flex` E `max-height`, NÃO `height`. Uma altura fixa ainda podia somar mais
        que a faixa — foi o que a sonda mediu depois de eu encolher a vaga: 1440
@@ -386,12 +578,40 @@
        `min-height: 0` fica porque o padrão `auto` de um item de flex se recusa a
        ficar menor que o conteúdo: sem ele, uma vaga cuja arte não caiba na base
        estouraria a base em vez de recortar a arte. */
-    flex: 0 0 var(--evt-vaga-h);
-    min-height: 0;
+    /* ⚠️ SIS-204 — `flex: 0 0 auto` + `min-height`, e não `flex: 0 0 <altura>`. A
+       linha antiga era `flex: 0 0 var(--evt-vaga-h)`, e o parágrafo acima explica por
+       que a base deixou de poder ser um número: a altura passou a vir do título.
+       O que se PRESERVA da decisão antiga é o que importava nela — `grow: 0` e
+       `shrink: 0`. Sem `shrink: 0` a altura usada volta a ser "base menos o quanto o
+       flex resolveu comprimir", que é diferente por item (a apuração de 1366, com
+       60,68px virando 46,73px num botão e 49,41px na vaga em destaque, continua
+       valendo como advertência). Sem `grow: 0` a faixa distribuiria a sobra e a
+       posição de cada vaga voltaria a depender das vizinhas.
+       O preço também é o mesmo e continua medido: a soma das alturas mais os `gap`
+       tem de caber na faixa. Em 1366 são ~282px de 502 — a sonda desta issue imprime
+       a soma e a altura lado a lado, e a asserção 20 de `medir-cena-eventos.mjs`
+       continua sendo a guarda contra vaga cobrindo vaga. */
+    flex: 0 0 auto;
+    min-height: var(--evt-vaga-h);
     display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+    /* SIS-204 — A FILA. Era `column` (arte em cima, rótulo embaixo), o que amarrava
+       a largura do rótulo à largura da arte: placa de 56px em 1366, cinco linhas para
+       o título mais longo, e cinco linhas não cabem oito vezes numa faixa de 502px.
+       Em fila, a arte fica pequena e de largura FIXA e o rótulo recebe o resto — a
+       mesma vaga passa a caber duas a três linhas de texto na altura de uma arte.
+       `align-items: center` para o rótulo de uma linha não ficar alto na caixa. */
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3rem;
     text-align: left;
+    /* `padding` e BORDA TRANSPARENTE nos dois estados. A borda tracejada da vaga em
+       destaque e o `padding` dela existiam só nela, e é isso que fazia a caixa dos
+       dois estados ter tamanhos diferentes: o `box-sizing: border-box` global salva a
+       largura, não a quebra de linha do rótulo (que é medida no CONTEÚDO). Reservando
+       os mesmos 0,3rem e o mesmo 1px em ambos, o destaque só troca a COR da borda —
+       e a promessa de "a faixa não se reorganiza na troca" sai da estrutura. */
+    padding: 0.3rem;
+    border: 1px solid transparent;
   }
 
   /* Só as CATORZE flutuam. A vaga em destaque não — ver a nota dela adiante. */
@@ -519,17 +739,26 @@
 
   .eventos-vaga-arte {
     display: block;
-    /* A arte é o que CEDE quando a faixa é curta, e é a escolha certa: recortar
-       imagem custa nada de informação (o `object-fit: cover` já recorta), encolher o
-       rótulo custa uma linha de texto. `aspect-ratio` fica como proporção
-       PREFERIDA — o `flex-basis: auto` deixa ela mandar quando há espaço — mas com
-       `min-height: 0` para poder ser comprimida em vez de estourar a vaga. */
-    flex: 1 1 auto;
-    min-height: 0;
+    /* ⚠️ SIS-204 — DE "quem cede" PARA "quem não cede". A regra antiga era
+       `flex: 1 1 auto; min-height: 0` com a nota "a arte é o que CEDE quando a faixa
+       é curta: recortar imagem custa nada de informação, encolher o rótulo custa uma
+       linha de texto". O raciocínio era do eixo VERTICAL, e em fila o eixo do flex é
+       o horizontal: ali "ceder" significaria a arte roubando ou devolvendo LARGURA ao
+       rótulo, e largura de rótulo variável é número de linhas variável — ou seja, a
+       altura da vaga passaria a depender de quanto o flex resolveu apertar a imagem.
+       Base fixa e sem crescer nem encolher: o rótulo recebe exatamente o resto, e a
+       quebra de linha dele é previsível (é isso que a sonda mede nas quinze). */
+    flex: 0 0 calc(var(--evt-vaga-w) * var(--evt-prof, 1) * var(--evt-arte-fr));
     aspect-ratio: 16 / 9;
     overflow: hidden;
     border-radius: 0.4rem;
-    box-shadow: 0 8px 20px -14px rgba(8, 33, 63, 0.6);
+    /* SIS-204 (item 2) — MESMO VOCABULÁRIO DA SOMBRA DO CARTÃO, em escala menor.
+       Era `0 8px 20px -14px rgba(8, 33, 63, 0.6)`, navy escuro: sobre o navy das
+       travessias de cor da cena ela não existia, e sobre o claro do meio lia como
+       sujeira cinza. O par ciano (halo + assentamento) aparece nos dois fundos. */
+    box-shadow:
+      0 5px 14px -8px rgba(14, 216, 246, 0.6),
+      0 1px 4px -2px rgba(11, 127, 168, 0.28);
   }
 
   .eventos-vaga-arte img {
@@ -569,19 +798,35 @@
        `clientHeight`, e isso reprova qualquer texto clampado, defeito ou não. */
     min-width: 0;
     overflow-wrap: anywhere;
-    /* NÃO ENCOLHE. Quem cede é a arte (ver a nota dela). Sem isto o `flex` da faixa
-       comprimia a placa junto com a imagem, e a sonda mediu dez das quinze com a
-       altura útil fora do múltiplo da `line-height` — ou seja, texto cortado no meio
-       da linha, o defeito do item 10 de volta por outro caminho. */
-    flex-shrink: 0;
-    /* UMA linha, não duas. Duas era o que a SIS-166 tinha, e não cabe mais: a
-       altura da vaga passou a ser explícita para a faixa não se reorganizar na troca
-       de destaque, e cada linha extra de rótulo multiplica por oito na soma da
-       coluna — foi a segunda linha, somada à largura antiga, que estourava os 503px
-       de faixa em 1366. Título comprido termina em elipse, que é o comportamento
+    /* ⚠️ SIS-204 — DE `flex-shrink: 0` PARA `flex: 1 1 0`. A linha antiga era
+       `flex-shrink: 0`, com a nota "não encolhe, quem cede é a arte", e ela era certa
+       na coluna: lá encolher significava COMPRIMIR A ALTURA da placa, e foi assim que
+       dez das quinze ficaram com a altura útil fora do múltiplo da `line-height`
+       (texto cortado no meio da linha, o item 10 da SIS-167). Em fila o eixo é outro:
+       encolher aqui é RECEBER MENOS LARGURA, e é justamente o que se quer — a placa
+       ocupa todo o resto da vaga depois da arte, que agora tem base fixa. A altura
+       deixou de ser negociada pelo flex, então o defeito daquela nota não tem por onde
+       voltar; quem o vigia continua sendo a sonda, pela mesma medida. */
+    flex: 1 1 0;
+    /* ⚠️ SIS-204 (item 3) — O CLAMP DE UMA LINHA CAIU. A SIS-167 escrevia aqui: "UMA
+       linha, não duas. (…) Título comprido termina em elipse, que é o comportamento
        normal de miniatura; o título inteiro está no cartão central e no `title`/texto
-       acessível do botão. */
-    max-height: calc(var(--evt-rotulo-lh) * 1em + 0.5rem);
+       acessível do botão."
+       A issue CANCELA essa decisão de propósito: o título inteiro tem de ser legível
+       em cada miniatura, e "está no cartão central" deixou de ser resposta — o cartão
+       central mostra UM dos quinze. As duas linhas que o valor antigo tinha:
+         max-height: calc(var(--evt-rotulo-lh) * 1em + 0.5rem);
+         -webkit-line-clamp: 1; line-clamp: 1;
+       O teto agora é `--evt-rotulo-linhas` (a nota está na declaração dele) e continua
+       escrito em LINHAS INTEIRAS, que é a correção do item 10 da SIS-167 e não pode
+       ser desfeita: 2 × `line-height` seria a conta de antes, e o que nenhum
+       transformador de CSS pode reinterpretar é `max-height`, nunca `display:
+       -webkit-box`. O trio `line-clamp` fica pelo mesmo motivo de antes: onde
+       sobreviver, dá a elipse de graça; onde não, o `max-height` já cortou entre
+       linhas. Com os números medidos, nenhum dos quinze chega ao teto. */
+    max-height: calc(
+      var(--evt-rotulo-lh) * var(--evt-rotulo-linhas) * 1em + 0.5rem
+    );
     padding: 0.25rem 0.35rem;
     border-radius: 0.4rem;
     background: rgba(255, 255, 255, 0.94);
@@ -589,12 +834,29 @@
     font-size: var(--evt-rotulo-fs);
     font-weight: 600;
     line-height: var(--evt-rotulo-lh);
+    /* SIS-204 (item 2) — a PLACA também recebe sombra, e é a menor escala das três.
+       A issue pede sombra atrás das miniaturas laterais "arte e/ou placa"; aqui são as
+       duas, porque a placa é a parte que percorre o navy nas vagas de cima e de baixo
+       e é ela que precisa se separar do fundo. Mesmo par ciano, raio menor. */
+    box-shadow:
+      0 3px 10px -6px rgba(14, 216, 246, 0.55),
+      0 1px 3px -2px rgba(11, 127, 168, 0.24);
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    line-clamp: 1;
+    -webkit-line-clamp: var(--evt-rotulo-linhas);
+    line-clamp: var(--evt-rotulo-linhas);
     text-overflow: ellipsis;
     overflow: hidden;
+    /* SIS-204 (item 3) — a placa tem ~55px e o catálogo tem palavras de quinze
+       letras ("Personalizadas", "Innovation"). Numa caixa mais estreita que a
+       palavra, a quebra por palavra não acontece e o excedente é CORTADO NA
+       HORIZONTAL — o mesmo defeito com outro nome, e é o `scrollWidth` da sonda que
+       o pega. `hyphens` primeiro para que a quebra saia com hífen onde o idioma
+       permite (o `lang` da página é pt-BR, então o dicionário existe);
+       `overflow-wrap: anywhere` é o último recurso, para a palavra que nem
+       hifenizada cabe. */
+    hyphens: auto;
+    overflow-wrap: anywhere;
   }
 
   /* A VAGA VAZIA do evento em destaque — é ela que amarra coluna e centro.
@@ -610,8 +872,19 @@
      reorganiza na troca. */
   .eventos-vaga--destaque {
     position: relative;
-    align-items: center;
-    justify-content: center;
+    /* ⚠️ SIS-204 — as três declarações abaixo saíram, e é isso que iguala as duas
+       caixas:
+         align-items: center; justify-content: center; text-align: center;
+       Elas centravam o ícone e a placa numa vaga que era coluna. Agora a vaga é FILA
+       e os dois estados usam a MESMA fila herdada de `.eventos-vaga`: ícone na largura
+       exata em que a arte estaria, rótulo recebendo o mesmo resto. Texto igual com
+       largura de quebra igual dá número de linhas igual, e é daí que sai a altura
+       igual — a promessa do item 6 da SIS-167 (a faixa não se reorganiza na troca)
+       deixou de depender de aritmética. Centrar o conteúdo aqui a desfaria: a placa
+       centrada é dimensionada pelo conteúdo, não pela largura disponível, e quebraria
+       em outro ponto.
+       O `padding` e a borda também subiram para `.eventos-vaga` pelo mesmo motivo (a
+       nota está lá); aqui fica só a COR da borda tracejada. */
     gap: 0.3rem;
     /* aspect-ratio: 16 / 9;
        Sem consumidor: a altura agora vem de `--evt-vaga-h`, em `.eventos-vaga`, que
@@ -620,7 +893,8 @@
        (largura e altura já estão determinadas) e, pior, mentiria sobre quem manda na
        altura. Fica comentada porque era ela que documentava o formato de arte da
        vaga vazia. */
-    border: 1px dashed rgba(14, 216, 246, 0.75);
+    border-style: dashed;
+    border-color: rgba(14, 216, 246, 0.75);
     border-radius: 0.4rem;
     /* SIS-167 (item 9) — A BASE PRECISA SER OPACA, e o motivo é uma consequência
        do item 1 desta issue, não um capricho de cor.
@@ -639,37 +913,48 @@
        caixa. O acento ciano continua, agora por cima de branco em vez de por cima
        do que houver atrás. */
     background: #f2fbfe;
-    padding: 0.3rem;
-    text-align: center;
+  }
+
+  /* O ÍCONE ocupa a MESMA caixa que a arte ocuparia — é o que mantém a largura de
+     quebra do rótulo idêntica nos dois estados (ver a nota de `.eventos-vaga`). */
+  .eventos-vaga--destaque .eventos-vaga-icone {
+    flex: 0 0 calc(var(--evt-vaga-w) * var(--evt-prof, 1) * var(--evt-arte-fr));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 16 / 9;
   }
 
   .eventos-vaga--destaque .eventos-vaga-rotulo {
     background: none;
     color: #0b3a5c;
-    padding: 0;
-    /* UMA linha, igual às vizinhas. Tentei duas — a vaga em destaque é a que o leitor
-       está procurando, e uma linha a mais parecia barato. Não é: com a placa marcada
-       `flex-shrink: 0`, duas linhas tornam o conteúdo incompressível do destaque mais
-       alto que o de um botão (arte + uma linha), a vaga em destaque resolve numa
-       altura diferente e a faixa se REORGANIZA a cada troca de evento — a sonda mediu
-       12px de deslocamento de topo em 1670 e 1366, e é exatamente a promessa que o
-       item 6 pede para manter. O título completo já está no cartão central; aqui a
-       função da placa é dizer QUAL vaga está acesa, e uma linha diz isso.
-       O `max-height` tem de ser reescrito junto com o `line-clamp`, sempre: aqui o
-       `padding` é zero e o herdado embute os 0,5rem do padding das vizinhas. */
-    max-height: calc(var(--evt-rotulo-lh) * 1em + 0.1rem);
-    /* E `width: 100%` porque esta placa é a única com `align-items: center` acima
-       dela (`.eventos-vaga--destaque`): centralizada, a caixa é dimensionada pelo
-       conteúdo e ULTRAPASSA a vaga em vez de quebrar. A sonda mediu 3px de
-       escapada em 1280 — só ali, porque só ali a palavra mais larga do título em
-       destaque não caberia. `min-width: 0` não resolve este caso: o problema não é
-       mínimo automático, é a caixa não ter largura definida para o texto quebrar
-       contra. */
-    width: 100%;
+    /* Sem sombra: aqui a placa não é placa — a base opaca da vaga (`#f2fbfe`, item 9
+       da SIS-167) já a separa do fundo, e halo sobre halo lê como borrão. */
+    box-shadow: none;
+    /* ⚠️ SIS-204 — as duas medidas próprias desta placa CAÍRAM, e as duas eram
+       consequência de coisas que deixaram de existir:
+         max-height: calc(var(--evt-rotulo-lh) * 1em + 0.1rem);
+         width: 100%;
+       A primeira era "uma linha, igual às vizinhas", e a razão escrita era exatamente
+       a que esta issue derruba: "o título completo já está no cartão central". Ela
+       também embutia um segundo número (0,1rem em vez dos 0,5rem das vizinhas) porque
+       o `padding` daqui era zero — e o `padding` daqui deixou de ser zero, justamente
+       para a quebra de linha ser a mesma do botão. Um `max-height` próprio voltaria a
+       criar duas alturas para a mesma vaga.
+       A segunda existia porque esta era a única placa sob `align-items: center`, e a
+       caixa centrada é dimensionada pelo conteúdo (a sonda mediu 3px de escapada em
+       1280). O `center` saiu; sem ele a placa é um item de flex com `flex: 1 1 0`, que
+       já recebe largura em vez de a pedir.
+       Herdar as duas das vizinhas não é economia de linha: é o que garante que o
+       destaque e o botão daquele mesmo slot resolvem na MESMA altura. */
   }
 
   .eventos-vaga-icone {
-    color: #0b7fa8;
+    /* SIS-215 — acompanha o tom novo do sobretítulo e do contador. Este é o único
+       dos três usos que é DECORAÇÃO (ícone da vaga vazia, sem texto ao lado), então
+       não é o piso de 4,5:1 que manda aqui — é a consistência: três ciano-azuis
+       diferentes na mesma tela é que se veria. */
+    color: #0a6788;
   }
 
   /* O FIO da vaga até o cartão, com o nó aceso na ponta (o `::after`). Desenhado
@@ -758,7 +1043,20 @@
     border-radius: 1rem;
     border: 1px solid rgba(18, 58, 99, 0.1);
     background: rgba(255, 255, 255, 0.96);
-    box-shadow: 0 30px 60px -40px rgba(4, 32, 62, 0.55);
+    /* ⚠️ SIS-204 (item 2) — A SOMBRA SAIU DO NAVY E VIROU AZUL CLARO. Era
+       `0 30px 60px -40px rgba(4, 32, 62, 0.55)`, e o defeito é de fundo, não de gosto:
+       o cartão percorre a seção inteira, do navy do topo ao claro do meio e de volta ao
+       navy — sombra navy sobre navy não existe, e sobre o claro ela lia como uma faixa
+       cinza sob o cartão. O `-40px` de espalhamento negativo agravava, porque puxava a
+       mancha para debaixo da caixa, onde ela só escurece.
+       O par é o mesmo das miniaturas, em escala maior: um HALO ciano largo (a família
+       do `#0ed8f6`, a cor do fio, do nó e da borda tracejada desta cena — não uma cor
+       nova) e um assentamento curto em azul médio, que é o que ainda dá volume no
+       trecho claro, onde só ciano leria como brilho solto. O espalhamento sai de -40px
+       para -28px: com o halo mais claro é preciso que ele APAREÇA além da borda. */
+    box-shadow:
+      0 18px 44px -28px rgba(14, 216, 246, 0.6),
+      0 3px 12px -6px rgba(11, 127, 168, 0.3);
   }
 
   .eventos-destaque-arte {
@@ -840,7 +1138,17 @@
   font-size: clamp(0.62rem, 0.72vw, 0.72rem);
   font-weight: 700;
   letter-spacing: 0.28em;
-  color: #0b7fa8;
+  /* SIS-215 — era `#0b7fa8`, e a troca de superfície obrigou a mexer aqui: este
+     rótulo tem ~11,5px (o `clamp` satura em 0,72rem), então o piso é 4,5:1, e o
+     tom antigo dava 4,03 sobre `#eaf2fb` e 3,56 sobre o `#cfe7f7` do fecho —
+     REPROVADO nos dois. Note que ele já reprovava ANTES desta issue, sobre o
+     miolo: 4,34 sobre `#f6fafd`. O que a SIS-215 muda é que agora a cena é clara
+     de ponta a ponta, então não existe mais nenhum trecho em que este rótulo
+     esteja sobre navy — e com a superfície toda conhecida dá para fechar a conta
+     de uma vez, pelo PIOR fundo da cena (`#cfe7f7`).
+     `#0a6788` é o mesmo azul-ciano um degrau mais fundo: 5,62 sobre `#eaf2fb`,
+     6,05 sobre `#f6fafd` e 4,96 sobre `#cfe7f7`. Passa com folga nos três. */
+  color: #0a6788;
 }
 
 .eventos-destaque-traco {
@@ -927,7 +1235,11 @@
 }
 
 .eventos-destaque-contador-total {
-  color: #0b7fa8;
+  /* SIS-215 — era `#0b7fa8`, pelo mesmo motivo do sobretítulo acima: o "/ 15" tem
+     ~20px e peso normal, então não alcança a isenção de texto grande (que pede
+     ≥24px, ou ≥18,66px com peso ≥700) e responde ao piso de 4,5:1. Mesmo tom novo
+     para os dois, senão o contador ficaria mais fundo que o rótulo ao lado. */
+  color: #0a6788;
 }
 
 .eventos-destaque-contador-rotulo {
@@ -961,7 +1273,13 @@
   border-radius: 1rem;
   border: 1px solid rgba(18, 58, 99, 0.1);
   background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 24px 50px -40px rgba(4, 32, 62, 0.55);
+  /* SIS-204 (item 2) — a mesma troca do cartão central, na versão de baixo de 1024px.
+     A issue pede para conferir "a sombra mobile, se ainda existir": existe, é esta, e
+     era o mesmo navy `rgba(4, 32, 62, 0.55)` sobre o mesmo degradê que abre e fecha em
+     navy. Deixar as duas divergentes seria a cena ter duas identidades de sombra. */
+  box-shadow:
+    0 16px 40px -28px rgba(14, 216, 246, 0.6),
+    0 3px 12px -6px rgba(11, 127, 168, 0.3);
 }
 
 .eventos-lista-item .eventos-destaque-arte {
@@ -1009,6 +1327,22 @@
     will-change: auto;
   }
 
+  /* SIS-204 (item 1) — a cessão do título CONTINUA VALENDO em movimento reduzido,
+     e é isso que a issue pede: "estado final estático sem dois títulos
+     empilhados". O que morre é a travessia (a transição e o deslocamento); a troca
+     de qual título está visível é instantânea.
+     Documentado aqui porque a leitura contra-intuitiva é a de que reduce deveria
+     "desligar o efeito": desligar a cessão devolveria justamente o defeito — dois
+     «Eventos & Inovação» em quadro —, e reduzir movimento nunca é motivo para
+     duplicar conteúdo. */
+  .eventos-destaque[data-titulo-transicao="ligada"] .eventos-destaque-cabecalho {
+    transition: none;
+  }
+
+  .eventos-destaque[data-titulo="cedido"] .eventos-destaque-cabecalho {
+    transform: none;
+  }
+
   .eventos-vaga--botao:hover {
     /* `transform: none` era o par do afago antigo, `translateY(-2px)`. O afago
        virou `filter: brightness()` (não podia ser `transform`, que agora é da
@@ -1028,4 +1362,25 @@ html[data-motion="reduce"] .eventos-vaga--botao {
   animation: none;
   will-change: auto;
   transition: none;
+}
+/* SIS-183 · as duas linhas que faltavam ao espelho. Nenhuma é layout (é por isso
+   que passaram): a de cima só apaga uma transição, que o reset global de
+   `globals.css` já zera pela duração. A de baixo, não — `filter` de hover não é
+   transição, e sem esta regra o afago de brilho continuava acontecendo para quem
+   pediu menos movimento pelo botão. */
+html[data-motion="reduce"] .eventos-destaque-botao {
+  transition: none;
+}
+html[data-motion="reduce"] .eventos-vaga--botao:hover {
+  filter: none;
+}
+/* SIS-204 · o espelho da cessão do título. Especificidade (0,3,1) contra a (0,2,1)
+   da regra de origem, e o `html` na frente ainda soma — vence sem `!important`.
+   O `data-titulo="cedido"` NÃO é espelhado com `opacity`: a cessão vale nos dois
+   modos, o que reduce desliga é só o movimento dela. */
+html[data-motion="reduce"] .eventos-destaque[data-titulo-transicao="ligada"] .eventos-destaque-cabecalho {
+  transition: none;
+}
+html[data-motion="reduce"] .eventos-destaque[data-titulo="cedido"] .eventos-destaque-cabecalho {
+  transform: none;
 }

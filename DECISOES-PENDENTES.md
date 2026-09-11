@@ -64,13 +64,16 @@ comentado no lugar exato para quando a informação chegar. Nada disso bloqueia 
 
 | O que falta | Onde | Issue |
 |---|---|---|
-| As **três URLs dos vídeos** do ciclo de webinars (25/11, 02/12, 09/12) | `data/events.ts`, campo `youtube` | SIS-131 (em Backlog só por isso) |
+| As **URLs dos vídeos** (Web Summit AI + Suitability; canal ok enquanto não houver) | `data/events.ts`, campo `youtube` | SIS-205 (botão só nesses 2); URLs específicas ainda pendentes (ex-SIS-131 cancelada) |
+| **Admin de eventos** (senha, sem sessão/seção pública): escolher Basic / cookie-gate / host + onde persistir | `/admin/eventos` (esboço) | SIS-216 (Backlog — só esboço) |
 | A **lista regional de marcas** da seção de aseguradoras LATAM | `latam/page.tsx` | SIS-121 |
 | As **três URLs de notícias** da seção Noticias | `data/latam.ts` | SIS-121 |
 | Se entra **CTA em espanhol** na página LATAM (recusei escrever texto novo) | `latam/page.tsx` | SIS-121 |
 | A frase de abertura de **`/sistran-university`**, agramatical no site original | `sistran-university/page.tsx` | — |
 | A **`description` de `/transformacao-legado`** promete "método em quatro movimentos" — seção **retirada a pedido**, que não existe mais na página. É texto de busca publicado: mentindo hoje para quem chega do Google | `transformacao-legado/page.tsx:12-16` | SIS-119 |
 | O **relatório de transparência salarial** em si: PDF e período de referência, que só o MTE gera por CNPJ | `relatorio-de-transparencia-salarial/page.tsx` | SIS-124 (em Backlog só por isso) |
+| **Destino do currículo** em `/trabalhe-conosco` (e-mail RH, storage ou ATS) + base LGPD e prazo de guarda. Sem isso o envio fica no modo demonstração do Contato | `trabalhe-conosco/page.tsx`, action de formulário | SIS-223 (UI); SIS-117 (histórico) |
+| Confirmar se o campo legado **«Layout»** do WPForms deve existir (hoje omitido — rótulo vazado) | formulário carreira | SIS-223 |
 
 ### 2b. Um rótulo trocado que vale confirmar — SIS-121
 

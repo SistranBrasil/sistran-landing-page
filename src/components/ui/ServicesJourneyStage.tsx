@@ -296,7 +296,16 @@ export default function ServicesJourneyStage({
             >
               <div className="svc-journey-card">
                 <p className="svc-journey-number">
-                  <span className="tabular-nums" style={{ color: s.color }}>
+                  {/* SIS-155 — ordinal é METADADO: camada técnica via `font-mono`
+                      (`--font-mono` em `globals.css`). `font-semibold` NÃO é ênfase:
+                      a utilitária só troca a família, e sem peso este nó herdaria
+                      700 do `.svc-journey-number` — peso que o único corte
+                      carregado da Geist Mono (600) não tem. `"tnum" 1` ao lado de
+                      `tabular-nums` porque a issue pede os dois. */}
+                  <span
+                    className="font-mono font-semibold tabular-nums"
+                    style={{ color: s.color, fontFeatureSettings: '"tnum" 1' }}
+                  >
                     {String(index + 1).padStart(2, '0')}
                   </span>
                 </p>

@@ -1,0 +1,110 @@
+{
+  "repouso": [
+    {
+      "nomeNoDocumento": "Match AI",
+      "tituloVisivel": false,
+      "placa": [
+        228,
+        72
+      ],
+      "arte": [
+        194,
+        29
+      ],
+      "folgaAteOrdinal": 36
+    },
+    {
+      "nomeNoDocumento": "Lumina AI",
+      "tituloVisivel": false,
+      "placa": [
+        170,
+        72
+      ],
+      "arte": [
+        136,
+        44
+      ],
+      "folgaAteOrdinal": 95
+    },
+    {
+      "nomeNoDocumento": "Fast",
+      "tituloVisivel": false,
+      "placa": [
+        162,
+        72
+      ],
+      "arte": [
+        128,
+        44
+      ],
+      "folgaAteOrdinal": 103
+    },
+    {
+      "nomeNoDocumento": "QA Integrado",
+      "tituloVisivel": false,
+      "placa": [
+        208,
+        72
+      ],
+      "arte": [
+        174,
+        44
+      ],
+      "folgaAteOrdinal": 57
+    },
+    {
+      "nomeNoDocumento": "Connect API",
+      "tituloVisivel": false,
+      "placa": [
+        114,
+        72
+      ],
+      "arte": [
+        80,
+        44
+      ],
+      "folgaAteOrdinal": 151
+    },
+    {
+      "nomeNoDocumento": "Smart Miner",
+      "tituloVisivel": false,
+      "placa": [
+        196,
+        72
+      ],
+      "arte": [
+        162,
+        44
+      ],
+      "folgaAteOrdinal": 69
+    },
+    {
+      "nomeNoDocumento": "Guru de Seguros",
+      "tituloVisivel": false,
+      "placa": [
+        120,
+        72
+      ],
+      "arte": [
+        86,
+        44
+      ],
+      "folgaAteOrdinal": 144
+    }
+  ],
+  "hover": {
+    "arte": "matrix(1.06, 0, 0, 1.06, 0, 0)",
+    "placa": "matrix(1, 0, 0, 1, 0, -2)",
+    "ecoOpacidade": "0.55"
+  },
+  "preferenciaDoSistema": {
+    "arte": "none",
+    "placa": "none",
+    "ecoDisplay": "none"
+  },
+  "botaoDaInterface": {
+    "arte": "none",
+    "placa": "none",
+    "ecoDisplay": "none"
+  }
+}

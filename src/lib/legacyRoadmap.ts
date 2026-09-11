@@ -97,6 +97,17 @@ const STAGE_VISUAL: Record<string, StopVisual> = {
 }
 
 /**
+ * SIS-202 — gradiente para parada SEM estágio. A trilha passou a ser montada
+ * também com as paradas de `/parceiros-e-implementacoes`, que classificam por
+ * categoria (empresas grandes / PME / soluções) e não por estágio de entrega:
+ * lá não existe "entregue" nem "planejado" a representar, então o card veste o
+ * azul de marca e o que varia por parada é só o accent (a cor da categoria).
+ * É o mesmo valor de `entregue` porque é o gradiente cheio da marca — e não
+ * porque aquelas paradas sejam entregas.
+ */
+export const NEUTRAL_GRADIENT = STAGE_VISUAL.entregue.gradient
+
+/**
  * Visual de uma parada, resolvido pelo estágio. Para diferenciar uma frente
  * específica, acrescente uma entrada por `stop.id` antes deste fallback — é o
  * mesmo papel de `PROJECT_VISUALS` na vitrine (§2).

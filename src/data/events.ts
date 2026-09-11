@@ -1,4 +1,5 @@
-import type { IconName } from '@/lib/icons';
+import { ICONS, type IconName } from '@/lib/icons';
+import catalogo from './events.json';
 
 export type EventKind =
   | 'proprio' // idealizado ou realizado pela Sistran
@@ -33,6 +34,32 @@ export type SistranEvent = {
    * nome continuar valendo. Gerado com `sharp` (240px, WebP q74).
    */
   thumb?: string;
+  /**
+   * SIS-205 — o evento TEM GRAVAÇÃO publicada no canal da Sistran, e por isso é
+   * o único caso em que o botão `ASSISTA NO YOUTUBE` aparece no cartão.
+   *
+   * Até aqui o botão era renderizado nos quinze (SIS-166), apontando todos para
+   * o canal. É decisão de VISIBILIDADE, não de URL: os treze restantes não têm
+   * gravação, então o botão prometia um vídeo que não existe.
+   *
+   * A flag mora no data, e não uma lista de ids no componente, porque o botão é
+   * renderizado em DOIS lugares (palco sticky e lista estreita) — com ids no
+   * JSX, a próxima gravação publicada exigiria lembrar dos dois.
+   *
+   * Por que `boolean` e não `true | string` com a URL do vídeo: a URL por evento
+   * ainda não existe (ex-SIS-131, cancelada; `DECISOES-PENDENTES.md`) e inventar
+   * link está fora de escopo. Quando existir, este campo pode se alargar para
+   * `true | string` sem tocar em quem já o consome — mas note que sob `src/data/`
+   * o `copy-lock` conta TODO literal de string como cópia publicada, então a URL
+   * vai entrar no lock quando chegar. Hoje o destino dos dois continua sendo o
+   * canal, por `YOUTUBE_URL` de `src/data/contact.ts`.
+   *
+   * NÃO reaproveitei `featured`, que hoje está `true` exatamente nesses dois:
+   * a coincidência é de fato, não de significado — `featured` é "destaque
+   * editorial" e ficaria errado no dia em que um evento sem gravação for
+   * destacado. (`featured` não é lido por nenhum componente hoje.)
+   */
+  youtube?: boolean;
 };
 
 export const EVENT_KIND_META: Record<EventKind, { label: string; tone: string }> = {
@@ -79,159 +106,50 @@ export const EVENT_KIND_META: Record<EventKind, { label: string; tone: string }>
  * O caso do Web Summit é o mais visível: é o primeiro card da grade e o único
  * com `priority`, então a diferença de nitidez aparece ao lado dos demais.
  */
-export const EVENTS: readonly SistranEvent[] = [
-  {
-    id: 'web-summit-ai',
-    title: 'Web Summit AI · Ofertas Personalizadas de Seguros',
-    kind: 'proprio',
-    icon: 'Cpu',
-    featured: true,
-    /* SIS-104 — sem versão de alta qualidade ainda (ver a nota acima do array). */
-    image: '/images/EVENTOS/summit-julho-26.jpg',
-    thumb: '/images/EVENTOS/thumb/summit-julho-26.webp',
-    description:
-      'Realizado pela Sistran e com a presença de grandes líderes do mercado de seguros, o evento teve como foco mostrar o potencial da inteligência artificial na geração das ofertas de seguros assessorando os agentes e corretores. Vale a pena ver esse evento que está disponível no canal do YouTube da Sistran.',
-  },
-  {
-    id: 'itc-vegas',
-    title: 'ITC Vegas',
-    kind: 'global',
-    icon: 'Sparkles',
-    image: '/images/EVENTOS/itc-vegas-julho-26.webp',
-    thumb: '/images/EVENTOS/thumb/itc-vegas-julho-26.webp',
-    description:
-      'A Sistran todos os anos se une aos grandes nomes da tecnologia para esse que é o maior congresso focado em inovação e Insurtechs do mercado securitário global.',
-  },
-  {
-    id: 'cqcs-inovacao',
-    title: 'CQCS Inovação',
-    kind: 'global',
-    icon: 'Zap',
-    image: '/images/EVENTOS/cqcs-julho-2026.webp',
-    thumb: '/images/EVENTOS/thumb/cqcs-julho-2026.webp',
-    description:
-      'A Sistran consolidou sua participação efetiva como palestrante e expositora nas edições do CQCS Inovação que é o maior evento Latino Americano de Inovação em Seguros e um dos principais do mundo. Ocasião propícia para estreitar laços com clientes, parceiros, e claro, projetar novas oportunidades de negócios e crescimento.',
-  },
-  {
-    id: 'pega-world',
-    title: 'Pega World',
-    kind: 'parceiro',
-    icon: 'Boxes',
-    image: '/images/EVENTOS/Ev4-Pega-World.webp',
-    thumb: '/images/EVENTOS/thumb/Ev4-Pega-World.webp',
-    description:
-      'Confirmando nosso compromisso com a plataforma tecnológica Pegasystems, a Sistran considera fundamental participar dos encontros Pega World em Las Vegas. Uma verdadeira experiência imersiva no futuro da TI.',
-  },
-  {
-    id: 'insurtech-brasil',
-    title: 'Insurtech Brasil',
-    kind: 'nacional',
-    icon: 'Layers',
-    image: '/images/EVENTOS/insurtech-julho-26.webp',
-    thumb: '/images/EVENTOS/thumb/insurtech-julho-26.webp',
-    description:
-      'Importante evento de tecnologia e inovação para o mercado segurador, anualmente, o Insurtech Brasil conta com a presença da equipe Sistran em suas edições para compartilhar e adquirir conhecimentos.',
-  },
-  {
-    id: 'suitability-ai',
-    title: 'Suitability e AI em Seguros · Ruptura ou inovação?',
-    kind: 'proprio',
-    icon: 'ShieldCheck',
-    featured: true,
-    image: '/images/EVENTOS/Ev6-Weninar-Suitability.webp',
-    thumb: '/images/EVENTOS/thumb/Ev6-Weninar-Suitability.webp',
-    description:
-      'Idealizado pela Sistran, esse evento virtual abordou o desafio de como atender demandas de consumidores cada vez mais exigentes: atualizados, acostumados com autosserviços e informações instantâneas, eles esperam um nível mais sofisticado de serviços digitais, que já experimentam em outros setores. Essa "facilidade" traz para o segurado uma expectativa de maior aderência das ofertas às suas necessidades. Foram 3 dias de webinar que estão disponíveis no canal do YouTube da Sistran.',
-  },
-  {
-    id: 'open-summit',
-    title: 'Open Summit',
-    kind: 'proprio',
-    icon: 'Workflow',
-    image: '/images/EVENTOS/Ev7-Open-Summit.webp',
-    thumb: '/images/EVENTOS/thumb/Ev7-Open-Summit.webp',
-    description:
-      'O evento virtual Open Summit contou com uma semana de conteúdo com grandes palestrantes e especialistas em Open Banking, Payments, Moedas Digitais, Fintechs, Insurtechs e Open Innovation e a Sistran participou da curadoria do Open Insurance, dia especialmente voltado a Seguros, assessorando na seleção dos palestrantes, tema para os debates, assim como a divulgação do evento.',
-  },
-  {
-    id: 'fenacor',
-    title: 'Congresso Brasileiro dos Corretores de Seguros · FENACOR',
-    kind: 'nacional',
-    icon: 'Users',
-    image: '/images/EVENTOS/Ev8-Congresso-Brasileiro.webp',
-    thumb: '/images/EVENTOS/thumb/Ev8-Congresso-Brasileiro.webp',
-    description:
-      'O Congresso Brasileiro dos Corretores de Seguros, organizado pela FENACOR (Federação Nacional dos Corretores de Seguros), é o maior evento do setor de seguros no Brasil. Ele reúne corretores de seguros, seguradoras, empresas de tecnologia e outros profissionais do mercado para discutir as últimas tendências, desafios e oportunidades do setor.',
-  },
-  {
-    id: 'conec',
-    title: 'CONEC',
-    kind: 'nacional',
-    icon: 'HeartHandshake',
-    image: '/images/EVENTOS/conec-julho-26.webp',
-    thumb: '/images/EVENTOS/thumb/conec-julho-26.webp',
-    description:
-      'O Conec é um evento de grande relevância para o setor de seguros, organizado pelo Sincor (Sindicato dos Corretores de Seguros). Reúne milhares de profissionais da área para discutir as últimas tendências, compartilhar conhecimentos e fortalecer as relações entre os participantes.',
-  },
-  {
-    id: 'agile-trends',
-    title: 'Agile Trends',
-    kind: 'nacional',
-    icon: 'Zap',
-    image: '/images/EVENTOS/Agile2025.webp',
-    thumb: '/images/EVENTOS/thumb/Agile2025.webp',
-    description:
-      'O Agile Trends reúne os principais players do mercado para trazer tendências da metodologia ágil e práticas modernas de gestão. Equipe técnica da Sistran sempre presente.',
-  },
-  {
-    id: 'apix',
-    title: 'APIX',
-    kind: 'parceiro',
-    icon: 'Code2',
-    image: '/images/EVENTOS/apix-julho-26.webp',
-    thumb: '/images/EVENTOS/thumb/apix-julho-26.webp',
-    description:
-      'O APIX é um evento que promove discussões técnicas estratégicas sobre as principais tendências em APIs e tecnologias correlatas. Realizado pela Sensedia, nosso parceiro de Plataforma de Gerenciamento de APIs, a Sistran faz questão de estar presente ao longo das edições para firmar essa união, com foco em projetos futuros compartilhando expertise, comprometimento e colaboração.',
-  },
-  {
-    id: 'febraban-tech',
-    title: 'Febraban Tech',
-    kind: 'nacional',
-    icon: 'Building2',
-    image: '/images/EVENTOS/FebrabanTech2025.webp',
-    thumb: '/images/EVENTOS/thumb/FebrabanTech2025.webp',
-    description:
-      'A Sistran prioriza sua participação no Febraban Tech que é o maior evento de tecnologia e inovação do setor financeiro brasileiro.',
-  },
-  {
-    id: 'conseguro',
-    title: 'Conseguro',
-    kind: 'nacional',
-    icon: 'Briefcase',
-    image: '/images/EVENTOS/Conseguro2025.webp',
-    thumb: '/images/EVENTOS/thumb/Conseguro2025.webp',
-    description:
-      'O Conseguro é um dos principais eventos do setor de seguros no Brasil. Realizado pela CNseg, trata-se de um congresso nacional que reúne profissionais, empresas, executivos e especialistas da indústria de seguros, previdência e capitalização.',
-  },
-  {
-    id: 'spiw',
-    title: 'São Paulo Innovation Week · SPIW',
-    kind: 'nacional',
-    icon: 'Sparkles',
-    /* SIS-104 — sem versão de alta qualidade ainda (ver a nota acima do array). */
-    image: '/images/EVENTOS/SPIW-julho-2026.jpg',
-    thumb: '/images/EVENTOS/thumb/SPIW-julho-2026.webp',
-    description:
-      'Sistran esteve presente na primeira edição da São Paulo Innovation Week (SPIW) que consolidou a capital paulista no circuito global de tecnologia e negócios ao atrair mais de 80 mil pessoas. O festival contou com 33 palcos temáticos e 1.900 palestrantes nacionais e internacionais que debateram os impactos da inteligência artificial, sustentabilidade, saúde e inovação social.',
-  },
-  {
-    id: 'aws-summit-sp',
-    title: 'AWS Summit São Paulo',
-    kind: 'global',
-    icon: 'Cog',
-    image: '/images/EVENTOS/aws-summit-julho-26.webp',
-    thumb: '/images/EVENTOS/thumb/aws-summit-julho-26.webp',
-    description:
-      'A Sistran esteve presente no AWS Summit São Paulo para explorar as inovações mais recentes em computação, armazenamento e inteligência artificial generativa.',
-  },
-];
+/**
+ * SIS-216 — o CATÁLOGO saiu daqui e virou `src/data/events.json`.
+ *
+ * O motivo é o admin: `/admin/eventos` grava o catálogo de volta em disco, e
+ * gravar dentro de um `.ts` significaria reescrever CÓDIGO a cada edição de
+ * texto — reindentando, reescapando aspas e podendo quebrar o build por um
+ * caractere. JSON é o formato que uma máquina reescreve sem risco.
+ *
+ * O que NÃO mudou: este módulo continua sendo a porta de entrada única
+ * (`EventsSpotlight` importa `EVENTS` daqui, como antes), o tipo continua
+ * declarado aqui e a nota da SIS-104 acima segue valendo para as imagens.
+ *
+ * O array literal não ficou comentado logo abaixo, e esta é uma exceção
+ * DELIBERADA à regra do projeto de comentar o que sai de cena: nada foi
+ * removido, foi MOVIDO verbatim. Cópia comentada aqui seria uma segunda versão
+ * dos quinze textos, nascida desatualizada no primeiro salvamento do admin —
+ * ou seja, o oposto do que a regra protege. A pista de como religar é uma linha
+ * (o `import` no topo), não um bloco.
+ *
+ * Conferido por MEDIÇÃO, e não por leitura: os 43 textos que o `copy-lock`
+ * tinha travados a partir do array (os 4 rótulos de `EVENT_KIND_META` ficaram
+ * aqui) reaparecem no JSON, mesmo conjunto e mesma contagem. O portão
+ * `npm run test:copy` só continua passando por causa disso — e o extrator
+ * passou a ler `.json` sob `src/data/` para que a escrita do admin continue
+ * dentro da Regra Zero, em vez de escapar dela por trocar de extensão.
+ */
+export const EVENT_KINDS = ['proprio', 'global', 'nacional', 'parceiro'] as const;
+
+/**
+ * O JSON entra no TypeScript como `string` largo: `kind` e `icon` perdem a
+ * união fechada que o tipo declara. Conferir, em vez de só afirmar com `as`,
+ * porque este arquivo agora é ESCRITO POR MÁQUINA: um `kind` inválido gravado à
+ * mão renderizaria `undefined` no rótulo da categoria, e um `icon` inválido
+ * derrubaria o `getIcon` no meio da cena. Falhar aqui, com o id do evento no
+ * texto do erro, é o sinal legível — e ele chega no build, não no visitante.
+ */
+function conferido(bruto: (typeof catalogo)[number]): SistranEvent {
+  if (!(EVENT_KINDS as readonly string[]).includes(bruto.kind)) {
+    throw new Error(`events.json: evento "${bruto.id}" tem kind inválido: "${bruto.kind}"`);
+  }
+  if (!Object.prototype.hasOwnProperty.call(ICONS, bruto.icon)) {
+    throw new Error(`events.json: evento "${bruto.id}" tem icon inválido: "${bruto.icon}"`);
+  }
+  return { ...bruto, kind: bruto.kind as EventKind, icon: bruto.icon as IconName };
+}
+
+export const EVENTS: readonly SistranEvent[] = catalogo.map(conferido);

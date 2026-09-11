@@ -5,6 +5,7 @@ import { ExternalLink, MapPin, Phone } from 'lucide-react';
 import { UNITS, mapsHref } from '@/data/contact';
 import type { Unit } from '@/data/types';
 import { ESTILO_MAPA_ESCURO } from '@/data/mapaEstiloEscuro';
+import { useRouteLoadGate } from '@/components/loading/RouteLoadGate';
 /* CSS do MapLibre. Entra estático de propósito, ao contrário da biblioteca: são
    ~4 kB de folha de estilo, e ela precisa existir ANTES do primeiro quadro do
    mapa — é dela que sai o posicionamento do `<canvas>` e dos controles. Carregar
@@ -60,10 +61,16 @@ interface GMap {
 interface GMarker {
   setMap(map: GMap | null): void;
 }
+interface GMapsListener {
+  remove(): void;
+}
 interface GoogleMaps {
   maps: {
     Map: new (el: HTMLElement, opcoes: Record<string, unknown>) => GMap;
     Marker: new (opcoes: Record<string, unknown>) => GMarker;
+    event: {
+      addListenerOnce(instance: GMap, eventName: 'idle', handler: () => void): GMapsListener;
+    };
     /* SIS-129 — o controle de zoom precisa sair do canto onde o painel passou a
        ficar, e a posição é uma constante da API. Lida do objeto `google` em vez
        de escrita como número: os valores de `ControlPosition` são detalhe de
@@ -87,6 +94,7 @@ declare global {
    assume sozinho sem tocar no layout — o único ajuste que ele já traz pronto é o
    `zoomControlOptions` abaixo. */
 const CHAVE_GOOGLE = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
+const SEM_ACAO = () => undefined;
 
 /* Uma única promessa por carregamento de página. Sem isso, três unidades ou uma
    remontagem do componente injetariam o script várias vezes e a API reclama de
@@ -167,10 +175,12 @@ function MapaGoogle({
   unidade,
   chave,
   aoFalhar,
+  aoPronto,
 }: {
   unidade: Unit;
   chave: string;
   aoFalhar: () => void;
+  aoPronto: () => void;
 }) {
   const quadroRef = useRef<HTMLDivElement>(null);
   const mapaRef = useRef<GMap | null>(null);
@@ -192,6 +202,7 @@ function MapaGoogle({
     const quadro = quadroRef.current;
     if (!quadro) return;
     let vivo = true;
+    let idleListener: GMapsListener | null = null;
 
     carregarMaps(chave)
       .then((google) => {
@@ -230,7 +241,11 @@ function MapaGoogle({
               icon: { url: PINO_SVG, anchor: { x: 18, y: 36 } },
             }),
         );
-        setPronto(true);
+        idleListener = google.maps.event.addListenerOnce(mapa, 'idle', () => {
+          if (!vivo) return;
+          setPronto(true);
+          aoPronto();
+        });
       })
       .catch(() => {
         if (vivo) aoFalhar();
@@ -238,11 +253,12 @@ function MapaGoogle({
 
     return () => {
       vivo = false;
+      idleListener?.remove();
       marcadoresRef.current.forEach((m) => m.setMap(null));
       marcadoresRef.current = [];
       mapaRef.current = null;
     };
-  }, [chave, aoFalhar]);
+  }, [chave, aoFalhar, aoPronto]);
 
   // Troca de unidade: reposiciona a câmera, sem recarregar nada.
   useEffect(() => {
@@ -296,7 +312,15 @@ function temWebGL() {
   }
 }
 
-function MapaVetorial({ unidade, aoFalhar }: { unidade: Unit; aoFalhar: () => void }) {
+function MapaVetorial({
+  unidade,
+  aoFalhar,
+  aoPronto,
+}: {
+  unidade: Unit;
+  aoFalhar: () => void;
+  aoPronto: () => void;
+}) {
   const quadroRef = useRef<HTMLDivElement>(null);
   const mapaRef = useRef<MapaLibreGL | null>(null);
   const [pronto, setPronto] = useState(false);
@@ -399,7 +423,11 @@ function MapaVetorial({ unidade, aoFalhar }: { unidade: Unit; aoFalhar: () => vo
         });
         mapa.once('load', () => {
           carregou = true;
-          if (vivo) setPronto(true);
+          mapa?.once('idle', () => {
+            if (!vivo) return;
+            setPronto(true);
+            aoPronto();
+          });
         });
       })
       .catch(() => {
@@ -415,7 +443,7 @@ function MapaVetorial({ unidade, aoFalhar }: { unidade: Unit; aoFalhar: () => vo
       mapa?.remove();
       mapaRef.current = null;
     };
-  }, [aoFalhar]);
+  }, [aoFalhar, aoPronto]);
 
   // Troca de unidade: reposiciona a câmera, sem recarregar nada.
   useEffect(() => {
@@ -506,7 +534,20 @@ function paraTile(lat: number, lon: number, z: number) {
   return { x, y };
 }
 
-function Mosaico({ lat, lon, zoom }: { lat: number; lon: number; zoom: number }) {
+function Mosaico({
+  lat,
+  lon,
+  zoom,
+  aoPronto,
+}: {
+  lat: number;
+  lon: number;
+  zoom: number;
+  aoPronto?: () => void;
+}) {
+  const resolvidosRef = useRef(new Set<string>());
+  const carregadosRef = useRef(new Set<string>());
+  const prontoRef = useRef(false);
   const { x, y } = paraTile(lat, lon, zoom);
   const x0 = Math.floor(x) - (COLUNAS >> 1);
   const y0 = Math.floor(y) - (LINHAS >> 1);
@@ -523,6 +564,23 @@ function Mosaico({ lat, lon, zoom }: { lat: number; lon: number; zoom: number })
       tiles.push({ dx, dy, tx, ty });
     }
   }
+
+  const registrarTile = (chave: string, carregou: boolean) => {
+    resolvidosRef.current.add(chave);
+    if (carregou) carregadosRef.current.add(chave);
+
+    /* Vinte e quatro tiles resolvidos cobrem o quadro desktop usual (6×4);
+       doze carregados impedem que uma rajada de erros seja tratada como mapa
+       utilizável. Em telas estreitas esse limiar já excede o quadro visível. */
+    if (
+      !prontoRef.current &&
+      resolvidosRef.current.size >= Math.min(24, tiles.length) &&
+      carregadosRef.current.size >= Math.min(12, tiles.length)
+    ) {
+      prontoRef.current = true;
+      aoPronto?.();
+    }
+  };
 
   return (
     <div
@@ -551,6 +609,8 @@ function Mosaico({ lat, lon, zoom }: { lat: number; lon: number; zoom: number })
         <img
           key={`${t.tx}-${t.ty}`}
           src={url(zoom, t.tx, t.ty)}
+          onLoad={() => registrarTile(`${t.tx}-${t.ty}`, true)}
+          onError={() => registrarTile(`${t.tx}-${t.ty}`, false)}
           alt=""
           width={TAMANHO_TILE}
           height={TAMANHO_TILE}
@@ -580,8 +640,15 @@ function Mosaico({ lat, lon, zoom }: { lat: number; lon: number; zoom: number })
  *  DIREITA, do lado oposto ao painel, para nada o cobrir — nem no estreito, onde
  *  o véu vem de baixo mas o painel para antes por causa do `padding`. */
 function Atribuicao({ vetorial }: { vetorial: boolean }) {
+  /* SIS-174 — o `text-[10px]` daqui virou `text-xs`, e é PONTO NOVO em relação à
+     tabela da issue: ela lista este arquivo entre os que não entram em rota, e isso
+     caducou — a SIS-168 devolveu o mapa como fundo da seção "Onde Estamos", e
+     `/contato` importa e monta `MapaUnidades` (`src/app/contato/page.tsx:7` e
+     `:233`). Estando na rota, o piso volta a valer: é texto corrido com links, sem
+     caixa-alta e sem tracking, e é a atribuição que a licença ODbL dos tiles exige
+     — crédito que ninguém consegue ler não cumpre a licença. */
   return (
-    <p className="absolute bottom-0 right-0 z-10 bg-[#0a1f44]/70 px-2 py-1 text-[10px] leading-none text-white/70">
+    <p className="absolute bottom-0 right-0 z-10 bg-[#0a1f44]/70 px-2 py-1 text-xs leading-none text-white/70">
       {vetorial && (
         <>
           <a
@@ -622,11 +689,12 @@ function Atribuicao({ vetorial }: { vetorial: boolean }) {
  *  seção — trazê-los para cá tiraria as duas coisas do lugar onde elas se
  *  explicam. Opcional porque só a rota que sangra o mapa os manda. */
 export default function MapaUnidades({ cabecalho }: { cabecalho?: ReactNode }) {
+  const routeGate = useRouteLoadGate();
   const [ativa, setAtiva] = useState(UNITS[0].id);
   /* Mapa só entra depois que a seção aparece: são requisições que não podem
      competir com o LCP da página — e, no caso do Google, cada carregamento é
      cobrado. Rolar até "Onde Estamos" é o gatilho. */
-  const [visivel, setVisivel] = useState(false);
+  const [visivel, setVisivel] = useState(() => Boolean(routeGate?.forceMapLoad));
   const [googleFalhou, setGoogleFalhou] = useState(false);
   const [vetorialFalhou, setVetorialFalhou] = useState(false);
   /* Cada unidade já vista continua montada, para a troca ser um crossfade e não
@@ -643,8 +711,10 @@ export default function MapaUnidades({ cabecalho }: { cabecalho?: ReactNode }) {
     CHAVE_GOOGLE && !googleFalhou ? 'google' : vetorialFalhou ? 'mosaico' : 'vetorial';
   const aoFalharGoogle = useCallback(() => setGoogleFalhou(true), []);
   const aoFalharVetorial = useCallback(() => setVetorialFalhou(true), []);
+  const aoPronto = routeGate?.reportMapReady;
 
   useEffect(() => {
+    if (visivel) return;
     const el = quadroRef.current;
     if (!el) return;
     /* Sem IntersectionObserver (ou com JS desligado) o mapa simplesmente não
@@ -660,7 +730,7 @@ export default function MapaUnidades({ cabecalho }: { cabecalho?: ReactNode }) {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [visivel]);
 
   function selecionar(id: string) {
     setAtiva(id);
@@ -725,15 +795,24 @@ export default function MapaUnidades({ cabecalho }: { cabecalho?: ReactNode }) {
        O que NÃO muda: os dois links de telefone e de rota continuam com a cor em
        `style`, porque ela é a cor da marca sobre navy e não uma válvula de escape
        da regra da seção clara — funciona igual com ou sem `section-light`. */
-    <div className="mapa-cartao">
+    <div className="mapa-cartao" data-map-provider={visivel ? provedor : 'adiado'}>
       <div ref={quadroRef} className="mapa-cartao-mapa">
         {visivel && provedor === 'google' && (
-          <MapaGoogle unidade={unidade} chave={CHAVE_GOOGLE as string} aoFalhar={aoFalharGoogle} />
+          <MapaGoogle
+            unidade={unidade}
+            chave={CHAVE_GOOGLE as string}
+            aoFalhar={aoFalharGoogle}
+            aoPronto={aoPronto ?? SEM_ACAO}
+          />
         )}
 
         {visivel && provedor === 'vetorial' && (
           <>
-            <MapaVetorial unidade={unidade} aoFalhar={aoFalharVetorial} />
+            <MapaVetorial
+              unidade={unidade}
+              aoFalhar={aoFalharVetorial}
+              aoPronto={aoPronto ?? SEM_ACAO}
+            />
             <Atribuicao vetorial />
           </>
         )}
@@ -752,7 +831,12 @@ export default function MapaUnidades({ cabecalho }: { cabecalho?: ReactNode }) {
                   u.id === ativa ? 'scale-100 opacity-100' : 'scale-[1.06] opacity-0'
                 }`}
               >
-                <Mosaico lat={u.lat} lon={u.lon} zoom={u.zoom} />
+                <Mosaico
+                  lat={u.lat}
+                  lon={u.lon}
+                  zoom={u.zoom}
+                  aoPronto={u.id === ativa ? aoPronto : undefined}
+                />
               </div>
             ))}
 

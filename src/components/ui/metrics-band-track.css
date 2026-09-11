@@ -77,16 +77,21 @@
        clássico deste desenho. */
     overflow: clip;
 
-    /* Largura do cartão e vão. Estes dois SÃO a distância da trilha (ver a nota
-       do topo): mexer aqui muda o percurso inteiro sem tocar em JavaScript.
-       O teto de 22,5rem = 360px é a largura que a grade já dava a 1440 e a 1920
-       (358,7px medidos na SIS-143), então o cartão não muda de tamanho ao entrar
-       no percurso. O piso de 17,5rem é o mesmo mínimo da grade, e o motivo dele
-       está em `globals.css`: é o pior rótulo ("Mil horas de Capacidade Produtiva
-       no Brasil") em duas linhas ao lado do número. Quem mexer remede com ESSE
-       rótulo, não com "Clientes". */
-    --mb-w: clamp(17.5rem, 24vw, 22.5rem);
-    --mb-gap: clamp(1rem, 1.6vw, 1.25rem);
+    /* ── `--mb-w` E `--mb-gap` SÃO HERDADOS, E NÃO MAIS DECLARADOS AQUI ───────
+       Eles são a distância da trilha (ver a nota do topo), e por isso viviam neste
+       bloco — com uma nota em `globals.css` avisando que o `gap` da grade tinha de
+       ser o MESMO valor, porque a `custom property` do percurso não podia ser lida
+       de dentro daquele arquivo. Essa impossibilidade era a única razão da
+       duplicata, e ela caiu: a fileira de repouso agora também é uma linha de
+       largura fixa, então os dois tokens nascem em `.contato-indicadores` e chegam
+       aqui por herança. Um lugar, dois estados, nada para divergir.
+       Valores anteriores, que eram idênticos aos de lá:
+         --mb-w: clamp(17.5rem, 24vw, 22.5rem);
+         --mb-gap: clamp(1rem, 1.6vw, 1.25rem);
+       ⚠️ HERANÇA, e não cascata: `.contato-indicadores` é ancestral deste nó, então
+       uma declaração própria AQUI venceria o valor de lá em silêncio. Quem precisar
+       de outra largura só no percurso escreve isso na issue e mede as duas formas —
+       reintroduzir os dois números não é ajuste, é o defeito de volta. */
     /* A goteira que sobra nas duas pontas: o mesmo respiro lateral do
        `container-lp`, para o primeiro e o último cartão não encostarem na borda
        da janela nos extremos do percurso. */
@@ -111,25 +116,54 @@
        janela inteira desde antes de prender, então a emenda com o pé do hero
        continua sendo o `#0f2b4a` do topo dele; embaixo, o palco termina em
        `#071d36`, exatamente a cor da seção que aparece quando ele solta — a
-       diferença é zero, não é "pouca". */
-    background: #071d36;
+       diferença é zero, não é "pouca".
+
+       ── SIS-211 DESFEZ ESTE ARRANJO, E O MOTIVO DELE CADUCOU JUNTO ────────────
+       A faixa ficou CLARA e o fundo voltou a ser um só, da seção: `MetricsBand`
+       agora carrega `section-light section-light-blue`, e nenhuma das duas
+       declarações abaixo é necessária. Não há degradê para esticar por 208svh
+       (a variante clara é radiais + um `linear-gradient` de 160deg que a seção
+       inteira aguenta), e não há pé plano a preservar — a emenda com a faixa das
+       logos deixou de ser claro-contra-escuro. Os dois valores ficam comentados
+       porque são o que se religa com o fundo escuro, e nessa ordem: primeiro o
+       chapado da seção alta, depois o degradê do palco.
+         background: #071d36;                                       (aqui)
+         background: linear-gradient(180deg, #0f2b4a 0%, #0a2440 58%, #071d36 100%);
+                                                                    (no palco, abaixo)
+       ⚠️ TRANSPARENTE NÃO VAZA NADA: o palco continua com `overflow: clip`, então
+       cartão que já passou some na borda dele do mesmo jeito. O que aparece acima e
+       abaixo do palco é a própria seção clara, que é a cor certa nas duas pontas. */
   }
 
   /* ── O PALCO ─────────────────────────────────────────────────────────────
-     `100svh` e não `100vh`: em tela com barra de navegação dinâmica o `vh` mede
-     a janela maior e o conteúdo ficaria fora de quadro (ponto de atenção 9).
+     `svh` e não `vh`: em tela com barra de navegação dinâmica o `vh` mede a janela
+     maior e o conteúdo ficaria fora de quadro (ponto de atenção 9).
      `clip` de novo — é o que impede o cartão que já passou de aparecer fora do
-     palco. */
+     palco.
+
+     ── A ALTURA VEM DO COMPONENTE, E VOLTOU A COBRIR A JANELA ────────────────
+     Ela já foi `100svh` fixo aqui, virou `40svh` para tirar o vazio de dentro do
+     palco, e voltou a `100svh` porque o vazio só mudou de lado: palco mais curto que
+     a janela deixa à vista o `.mb-espaco`, que é espaçador VAZIO, e o percurso
+     inteiro passava a ter ~540px de fundo claro sem nada embaixo dos cartões. O
+     raciocínio completo está em `PercursoIndicadores`, na nota de `PALCO_SVH`.
+     Valor anterior, para religar a faixa curta:
+       (em `PercursoIndicadores`) const PALCO_SVH = 40;
+     A fonte é `var(--mb-palco)`, escrito pelo componente — e a razão de não ser um
+     número escrito aqui está lá: esta altura entra na conta de `ESCALA`, então CSS e
+     JavaScript teriam de concordar sobre ela. O fallback acompanha o valor de lá e
+     só vale se o atributo existir sem a variável. */
   .mb-percurso[data-percurso='ligado'] .mb-palco {
     position: sticky;
     top: 0;
-    height: 100svh;
+    height: var(--mb-palco, 100svh);
     z-index: 1;
     display: grid;
     align-content: center;
     overflow: clip;
     padding-block: calc(var(--header-h, 88px) + 0.75rem) 1.5rem;
-    background: linear-gradient(180deg, #0f2b4a 0%, #0a2440 58%, #071d36 100%);
+    /* SIS-211 — sem fundo próprio: ver a nota do bloco acima. O degradê antigo
+       está registrado lá, junto com o chapado que ele acompanhava. */
   }
 
   /* A seção externa cede o respiro ao palco: mantê-lo nos dois somaria duas
@@ -166,6 +200,21 @@
     width: max-content;
     gap: var(--mb-gap);
     padding-inline: var(--mb-goteira);
+    /* ── DOIS MECANISMOS NÃO PODEM MOVER A MESMA LINHA ────────────────────────
+       No repouso a fileira é um contêiner de rolagem (`overflow-x: auto` em
+       `globals.css`) — é assim que ela corre para o lado sem o percurso. Aqui quem
+       a move é o `transform` amarrado à rolagem vertical, e deixar a rolagem
+       nativa ligada junto daria duas posições somadas: o dedo empurraria a linha
+       para dentro do contêiner ENQUANTO o `transform` a desloca, e o último cartão
+       chegaria antes ou depois do fim do percurso conforme onde o usuário tivesse
+       deixado a barra. `visible` desliga o contêiner e devolve o percurso ao
+       comando único.
+       O `padding-block`/`margin-block` negativo que abria espaço para a sombra
+       também deixa de fazer sentido sem contêiner (nada corta nada), mas ele soma
+       zero em altura, então fica como está — desfazê-lo aqui seria uma terceira
+       cópia de números para manter em acordo. */
+    overflow: visible;
+    scroll-snap-type: none;
     transform: translate3d(calc(var(--mb-t) * var(--mb-dist) * -1), 0, 0);
     will-change: transform;
     backface-visibility: hidden;
@@ -173,10 +222,97 @@
 
   /* Largura fixa no percurso: é ela que a conta da distância usa. Sem
      `flex: 0 0`, o flex encolheria os cartões para caber na janela e a distância
-     calculada não corresponderia ao deslocamento real. */
+     calculada não corresponderia ao deslocamento real.
+     ⚠️ AS DUAS DECLARAÇÕES SAÍRAM porque `.contato-indicador` em `globals.css` já
+     as tem — a fileira de repouso passou a precisar exatamente da mesma largura
+     fixa, pelo mesmo motivo (flex encolhendo os sete para caber). O parágrafo acima
+     continua sendo a razão pela qual elas não podem desaparecer da folha, só mudou
+     de arquivo:
+       flex: 0 0 var(--mb-w);
+       width: var(--mb-w);   */
   .mb-percurso[data-percurso='ligado'] .contato-indicador {
-    flex: 0 0 var(--mb-w);
-    width: var(--mb-w);
+    /* ── SIS-211 · O ACENDIMENTO DA TRILHA ────────────────────────────────────
+       O que dá aos cartões a leitura de ETAPA das Implementações: o nó, o fio e o
+       contador de cada cartão acendem quando o percurso chega nele, como o
+       `is-reached` do `RoadmapTrail`. Lá o estado vem de JavaScript (a posição real
+       do viajante no `path`); aqui é uma conta de CSS sobre o MESMO `--mb-t` que
+       desloca a trilha — nenhum estado novo, nenhum `useState` por cartão, e o
+       componente segue sendo uma casca que recebe a faixa do servidor.
+
+         alc = clamp(0, t × (N - 1) - i + 1, 1)
+
+       Com N = 7 e t indo de 0 a 1: o 1º nasce aceso (t × 6 + 1 ≥ 1), e cada
+       seguinte acende quando t × 6 alcança o índice dele. Entre um e outro o valor é
+       FRACIONÁRIO, e é isso que faz o nó e o fio subirem em vez de piscarem — a
+       interpolação é o próprio progresso da rolagem, sem `transition` para fingir.
+
+       `--mb-i` é o índice do cartão e vem da escadinha de `nth-child` abaixo. Ele é
+       a única coisa desta cena escrita item por item, e é POSIÇÃO, não contagem: a
+       contagem continua vindo de `--mb-n`, que o componente escreve a partir de
+       `metrics.ts`. A escadinha vai até 9 de propósito — regra que não casa é
+       inerte, então dois indicadores a mais não pedem CSS novo; do 10º em diante,
+       sim, e é o que esta frase existe para avisar. */
+    --mb-alc: clamp(0, calc(var(--mb-t) * (var(--mb-n, 7) - 1) - var(--mb-i, 0) + 1), 1);
+
+    /* ── O CARTÃO DO PERCURSO É MAIS ALTO, MAS NÃO É UM PAINEL ────────────────
+       Com o palco cobrindo a janela, um cartão de ~150px no meio dela é a fileira
+       fininha no oceano de azul que motivou a redução para 40svh — então o cartão
+       cresce junto com o palco.
+       QUANTO ELE CRESCE FOI MEDIDO DUAS VEZES, e o primeiro valor está errado de
+       propósito no registro: `min(58svh, 30rem)` (480px a 900px de janela) é o molde
+       de `partners-track.css:169`, e aqui ele produziu cartão OCO — a etapa no alto,
+       o número no meio e ~150px de branco em cada ponta dentro da caixa. Lá o painel
+       é alto porque tem logo, texto e botão; aqui o conteúdo é um número e um rótulo
+       ao lado, e branco vazio DENTRO de uma caixa branca lê como defeito, enquanto o
+       mesmo vazio FORA dela lê como respiro (o fundo da seção é azul claro com a
+       malha técnica, não um vão chapado).
+       `min(42svh, 21rem)` dá 336px a 900px de janela: o bastante para o cartão
+       pertencer a um palco de tela cheia, pouco o bastante para o número não flutuar
+       sozinho no meio de nada.
+       `svh` pelo mesmo motivo do palco, e o teto em `rem` para o cartão não virar um
+       painel de 700px em monitor alto.
+       SÓ NO PERCURSO: a fileira de repouso (largura < 1024px, movimento reduzido,
+       sem JavaScript) continua com a altura do conteúdo, porque lá o cartão não
+       divide a tela com palco nenhum — ele é uma linha que corre por rolagem
+       nativa. */
+    height: min(42svh, 21rem);
+  }
+
+  /* O par número/rótulo fica no MEIO do cartão alto, com a fileira da etapa
+     ancorada no topo: `margin-block: auto` no corpo empurra a folga para os dois
+     lados dele sem mexer no `gap` da coluna, que é o que separa etapa e corpo nas
+     duas formas. Sem isto os dois blocos subiriam juntos e o cartão ficaria com
+     300px de branco pendurado embaixo. */
+  .mb-percurso[data-percurso='ligado'] .contato-indicador-corpo {
+    margin-block: auto;
+  }
+
+  .mb-percurso[data-percurso='ligado'] .contato-indicador:nth-child(1) {
+    --mb-i: 0;
+  }
+  .mb-percurso[data-percurso='ligado'] .contato-indicador:nth-child(2) {
+    --mb-i: 1;
+  }
+  .mb-percurso[data-percurso='ligado'] .contato-indicador:nth-child(3) {
+    --mb-i: 2;
+  }
+  .mb-percurso[data-percurso='ligado'] .contato-indicador:nth-child(4) {
+    --mb-i: 3;
+  }
+  .mb-percurso[data-percurso='ligado'] .contato-indicador:nth-child(5) {
+    --mb-i: 4;
+  }
+  .mb-percurso[data-percurso='ligado'] .contato-indicador:nth-child(6) {
+    --mb-i: 5;
+  }
+  .mb-percurso[data-percurso='ligado'] .contato-indicador:nth-child(7) {
+    --mb-i: 6;
+  }
+  .mb-percurso[data-percurso='ligado'] .contato-indicador:nth-child(8) {
+    --mb-i: 7;
+  }
+  .mb-percurso[data-percurso='ligado'] .contato-indicador:nth-child(9) {
+    --mb-i: 8;
   }
 }
 
@@ -198,11 +334,20 @@
    ESPECIFICIDADE: `html[data-motion] .x` é (0,2,1) e empata com o seletor de
    atributo de cima; o `:not()` não muda a conta, então quem decide é a ORDEM, e
    este bloco vem depois de propósito. Media query não soma especificidade. */
+/* ⚠️ `display: grid` SAIU DAQUI, e não por estética: o repouso deixou de ser grade.
+   Restaurar `grid` devolveria as três fileiras (3+3+1) que o pedido tirou, e só com
+   o botão ligado — a preferência do sistema entregaria a linha e o botão entregaria
+   a grade, que é exatamente a divergência entre os dois caminhos que este espelho
+   existe para não ter. O que ele desfaz agora é o que o percurso pôs: a largura de
+   `max-content`, a goteira, o `transform` e o `overflow: visible` que desligava a
+   rolagem nativa. Valor anterior: `display: grid`. */
 html[data-motion='reduce'] .mb-percurso .contato-indicadores-grade {
-  display: grid;
   width: auto;
   padding-inline: 0;
   transform: none;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
 }
 
 html[data-motion='reduce'] .mb-percurso .mb-palco {
@@ -216,6 +361,26 @@ html[data-motion='reduce'] .mb-percurso .mb-palco {
 html[data-motion='reduce'] .mb-percurso {
   overflow: visible;
   background: none;
+}
+
+/* SIS-211 — e a trilha volta a nascer TODA acesa. Sem esta linha, se o atributo do
+   percurso sobreviver a um quadro com o botão em `reduce`, `--mb-t` fica em 0 e seis
+   dos sete cartões ficam com o nó apagado numa grade em que todos estão à vista —
+   um "futuro" que não existe. Não é o defeito de acessibilidade da SIS-159 (nenhum
+   indicador fica inalcançável: o número e o rótulo não dependem disto), mas é a
+   mesma classe de divergência que o resto deste espelho corrige. */
+html[data-motion='reduce'] .mb-percurso .contato-indicador {
+  --mb-alc: 1;
+  /* A altura do palco cheio, desfeita pela mesma razão da linha acima: se o
+     atributo do percurso sobreviver a um quadro com o botão em `reduce`, os sete
+     cartões ficariam com 336px numa grade em que a altura tem de ser a do conteúdo
+     — a fileira de repouso não divide a tela com palco nenhum. Barato, e é a
+     segunda tranca que o resto deste espelho já pratica. */
+  height: auto;
+}
+
+html[data-motion='reduce'] .mb-percurso .contato-indicador-corpo {
+  margin-block: 0;
 }
 
 /* DUAS CORREÇÕES ENTRARAM POR MEDIÇÃO, não por simetria — a sonda ligou o botão a

@@ -4,7 +4,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { prefersReducedMotion } from "@/lib/motion";
+import { prefersReducedMotion, useReducedMotion } from "@/lib/motion";
+import { criarConsultaDeMedia } from "@/lib/mediaStore";
 import { OFFICES } from "@/data/aSistran";
 import TituloAceso from "./TituloAceso";
 import BrazilOfficesMap from "./BrazilOfficesMap";
@@ -401,8 +402,25 @@ const MARCADOR_INICIO = 0.56;
 const PREDIO_MONTAR = 0.06;
 */
 
+/* SIS-182 — a consulta desta cena, no formato da casa. Achada pela varredura
+   obrigatória (não estava entre os oito). É a única do conjunto com DUAS
+   condições, e por isso a única que um hook de breakpoint por nome não saberia
+   representar: a altura pesa tanto quanto a largura aqui.
+   ⚠️ Idêntica ao `@media` do bloco `modo scroll` em `globals.css`; as duas mudam
+   juntas. A conta (1152px úteis a 1280, faixa livre de 288px) está no comentário
+   do efeito substituído, mais abaixo. */
+const useCenaCabe = criarConsultaDeMedia(
+  "(min-width: 1280px) and (min-height: 760px)",
+);
+
 export default function OfficesScene() {
-  const [dirigindo, setDirigindo] = useState(false);
+  /* SIS-182 — era `useState(false)` + efeito com `matchMedia`. Como em
+     `BuildingShowcase`, a preferência de movimento passou a vir do store
+     (`useReducedMotion`), de modo que trocar a escolha na página desliga a cena
+     sem depender de um `change` de largura para reavaliar. */
+  const cenaCabe = useCenaCabe();
+  const rm = useReducedMotion();
+  const dirigindo = cenaCabe && !rm;
   /* SIS-161 — a cidade ativa nasce em 0 (Pato Branco), e nao mais em -1. O -1
      valia enquanto a rolagem escolhia: existia um trecho ANTES da primeira
      cidade. Agora quem escolhe é a aba, e uma lista de abas sem nenhuma
@@ -439,37 +457,41 @@ export default function OfficesScene() {
   const predioProgressoRef = useRef(0);
   */
 
-  useEffect(() => {
-    /* SIS-169 — ENTROU `min-height: 760px`, E O MOTIVO É MEDIDO. Com a cena presa
-       em 100svh, a coluna de leitura tem de CABER na tela; antes da SIS-161 nao
-       tinha, e antes desta issue a secao crescia com o conteudo. Medido em 1024
-       de largura por 700 de altura: a coluna dava 801px contra 539px de area util
-       (a altura menos a folga do cabecalho e o respiro de baixo) — 262px de
-       cartao cortados pelo `overflow: clip` do palco. As fotos encolheram em
-       `svh` no CSS e resolveram as janelas de 768 para cima; abaixo disso nao ha
-       encolhimento que salve, e cortar o cartao seria pior do que nao ter
-       percurso.
-       E O PISO DE LARGURA SUBIU DE 1024 PARA 1280 POR ARITMETICA, nao por
-       preferencia. O percurso pede TRES faixas na horizontal: o cartao parado a
-       esquerda, o mapa no meio e o cartao pousado a direita. O cartao mede 27rem
-       = 432px, e ele aparece duas vezes na conta (sai de uma borda e chega na
-       outra): 864px só de cartao. Em 1024 a area util é 922px — sobravam 58px
-       para o mapa, e medido a p=1 o desenho ficava inteiro debaixo do cartao. Nao
-       é ajuste de escala: nao cabe. Em 1280 a area util vai a 1152px e a faixa
-       livre passa a 288px, que é onde o pais recuado pousa (medido: 532..766).
-       Janela baixa OU estreita cai no modo LISTA, que é completo: as duas fichas,
-       a torre e o mapa inteiro, empilhados e roláveis. Nao se perde conteudo
-       nenhum.
-       ⚠️ Esta consulta é a MESMA do `@media` do bloco `modo scroll` no
-       `globals.css`, e as duas tem de mudar juntas: JavaScript nao le o breakpoint
-       do CSS, e se elas divergirem a cena fica presa sem a grade de duas colunas
-       (ou o contrario). */
-    const mq = window.matchMedia("(min-width: 1280px) and (min-height: 760px)");
-    const avaliar = () => setDirigindo(mq.matches && !prefersReducedMotion());
-    avaliar();
-    mq.addEventListener("change", avaliar);
-    return () => mq.removeEventListener("change", avaliar);
-  }, []);
+  // SIS-182 — substituído por `useCenaCabe()` + `useReducedMotion()` no topo do
+  // componente. Comentado com `//`, e não com `/* */`: o texto do SIS-169 abaixo já é
+  // um bloco, e aninhar fecharia o comentário externo na linha do ⚠️.
+  //
+  // useEffect(() => {
+  // /* SIS-169 — ENTROU `min-height: 760px`, E O MOTIVO É MEDIDO. Com a cena presa
+  //    em 100svh, a coluna de leitura tem de CABER na tela; antes da SIS-161 nao
+  //    tinha, e antes desta issue a secao crescia com o conteudo. Medido em 1024
+  //    de largura por 700 de altura: a coluna dava 801px contra 539px de area util
+  //    (a altura menos a folga do cabecalho e o respiro de baixo) — 262px de
+  //    cartao cortados pelo `overflow: clip` do palco. As fotos encolheram em
+  //    `svh` no CSS e resolveram as janelas de 768 para cima; abaixo disso nao ha
+  //    encolhimento que salve, e cortar o cartao seria pior do que nao ter
+  //    percurso.
+  //    E O PISO DE LARGURA SUBIU DE 1024 PARA 1280 POR ARITMETICA, nao por
+  //    preferencia. O percurso pede TRES faixas na horizontal: o cartao parado a
+  //    esquerda, o mapa no meio e o cartao pousado a direita. O cartao mede 27rem
+  //    = 432px, e ele aparece duas vezes na conta (sai de uma borda e chega na
+  //    outra): 864px só de cartao. Em 1024 a area util é 922px — sobravam 58px
+  //    para o mapa, e medido a p=1 o desenho ficava inteiro debaixo do cartao. Nao
+  //    é ajuste de escala: nao cabe. Em 1280 a area util vai a 1152px e a faixa
+  //    livre passa a 288px, que é onde o pais recuado pousa (medido: 532..766).
+  //    Janela baixa OU estreita cai no modo LISTA, que é completo: as duas fichas,
+  //    a torre e o mapa inteiro, empilhados e roláveis. Nao se perde conteudo
+  //    nenhum.
+  //    ⚠️ Esta consulta é a MESMA do `@media` do bloco `modo scroll` no
+  //    `globals.css`, e as duas tem de mudar juntas: JavaScript nao le o breakpoint
+  //    do CSS, e se elas divergirem a cena fica presa sem a grade de duas colunas
+  //    (ou o contrario). */
+  // const mq = window.matchMedia("(min-width: 1280px) and (min-height: 760px)");
+  // const avaliar = () => setDirigindo(mq.matches && !prefersReducedMotion());
+  // avaliar();
+  // mq.addEventListener("change", avaliar);
+  // return () => mq.removeEventListener("change", avaliar);
+  // }, []);
 
   useEffect(() => {
     if (!dirigindo) return;
@@ -888,11 +910,19 @@ export default function OfficesScene() {
                 referencia — o titulo em DOIS TONS (`destaque` no gradiente da
                 marca) e o RISCO fino que cresce embaixo — e por isso nao houve
                 componente novo para nenhum dos dois. */}
+            {/* SIS-185 item 2 — `titulo-escritorios-brasil` escopa o gradiente de
+                `BRASIL` NESTA cena: mesma marca, última parada em azul (`#1479ec`)
+                em vez do violeta `#7c3aed`. A decisão, os números medidos e a razão
+                de ser escopada em vez de global estão na regra em `globals.css`
+                (procurar por SIS-185). A classe vai no `<h2>` porque o `<span>` do
+                gradiente é montado dentro do `TituloAceso`: mexer lá mudaria os sete
+                chamadores por causa de um. */}
             <TituloAceso
               id="escritorios"
               texto="Escritórios"
               destaque="BRASIL"
-              className="font-display text-section text-ink"
+              /* `titulo-escritorios-brasil`: ver a nota da SIS-185 acima. */
+              className="font-display text-section text-ink titulo-escritorios-brasil"
             />
 
             {dirigindo && (

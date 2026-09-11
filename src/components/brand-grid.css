@@ -23,26 +23,197 @@
    em cima já não há degradê azul. Agora ela encosta na folha clara do hero, que a
    SIS-178 deixou em `#f4f8fc`.
 
-   `#f4f8fc` contra `#f5faff` é delta RGB de 1, 2, 3 — contraste 1,0163. A aresta
-   de cima não fica fraca, ela deixa de existir, e isso é DELIBERADO: a
-   `.hero-sheet` sempre existiu para "entregar a cor da seção seguinte" (nota dela
-   em `globals.css`), e enquanto a seção seguinte era o mosaico branco essa
-   promessa era aproximada. Com a grade aqui ela passa a ser exata. O fio em cima
-   desenharia justamente a emenda que a folha existe para apagar.
-   O `border-bottom` FICA: embaixo continua o mosaico, e lá a aresta é necessária.
+   SIS-187 — ERA: "`#f4f8fc` contra `#f5faff` é delta RGB de 1, 2, 3 — contraste
+   1,0163. A aresta de cima não fica fraca, ela deixa de existir, e isso é
+   DELIBERADO … O fio em cima desenharia justamente a emenda que a folha existe
+   para apagar."
+   A conclusão estava errada, e o raster diz onde: um delta de 3 num salto de UM
+   pixel não deixa de existir — ele lê como risco de largura cheia, que é o defeito
+   relatado. Medido em `scripts/medir-emenda-hero-grade.mjs`, a 1440 e a 390, na
+   coluna `x = 8` (fora do card do hero): acima `244,248,252`, abaixo
+   `245,250,255`, maior degrau entre pixels vizinhos **3, em dy=0**. O erro da nota
+   antiga foi tratar contraste (razão de luminância, que é mesmo ~1,02) como se
+   respondesse pela visibilidade de uma aresta — quem responde por isso é o
+   gradiente espacial, e ele estava concentrado em 1px.
 
-   ⚠️ As duas cores NÃO podem ser unificadas por uma varredura de "padronizar
-   cores", e elas se parecem o suficiente para tentar alguém. São duas superfícies
-   com dois motivos diferentes e escritos: `#f5faff` é o azul dentro do branco
-   como saída da jornada azul, explicitamente NÃO `--paper` (parágrafo acima, e
-   `.lp-signals` em `legacy.css`); `#f4f8fc` é escolha medida da solicitante,
-   entre três candidatos, e explicitamente NÃO é token (nota da `.hero-sheet`).
-   Unificar as duas apaga as duas decisões de uma vez. */
+   ── A SAÍDA É A 2 DA ISSUE, COM AVAL DA DONA DO PRODUTO
+   Não unificar as cores (saída 1) e não deixar o degrau (saída 3): DISSOLVER. A
+   borda de cima recebe `#f4f8fc` — a cor exata da `.hero-sheet` — dissolvido em
+   `clamp(56px, 7svh, 96px)` até o `#f5faff` da seção. O mesmo delta de 3
+   distribuído por dezenas de linhas cai a 1 por linha, que é o menor salto
+   representável em 8 bits: o mínimo possível sem unificar.
+   O `border-bottom` FICA: embaixo continua o creme da montagem, e lá a aresta é
+   necessária.
+
+   ⚠️ As duas cores continuam NÃO podendo ser unificadas por uma varredura de
+   "padronizar cores", e agora com um motivo a mais. São duas superfícies com dois
+   motivos diferentes e escritos: `#f5faff` é o azul dentro do branco como saída da
+   jornada azul, explicitamente NÃO `--paper` (parágrafo acima, e `.lp-signals` em
+   `legacy.css`); `#f4f8fc` é escolha medida da solicitante, entre três candidatos,
+   e explicitamente NÃO é token (nota da `.hero-sheet`). Unificar as duas apaga as
+   duas decisões de uma vez — e agora apagaria também a dissolução, que é
+   justamente o que permite manter o claro do hero como MOMENTO em vez de virar a
+   cor da página (o custo que a saída 1 tinha).
+
+   ⚠️ O primeiro `#f4f8fc` do degradê é uma CÓPIA da `.hero-sheet`, não uma cor
+   própria: se a folha do hero mudar de tom, este valor muda com ela, senão a
+   emenda volta — só deslocada para o começo da rampa. */
+/* ── SIS-199 · A SEÇÃO PASSA A SER O CANVAS DA HOME, E A RAMPA SAI COM ISSO ────
+   O pedido de 10/09 troca o backdrop da home inteira pela superfície de "Soluções
+   de Negócios" e manda, com essas palavras, acabar com as ilhas claras
+   inconsistentes: "hero sheet (`#f4f8fc`), BrandGrid (`#f5faff`) … todos devem LER
+   O MESMO azul claro".
+
+   Isso REVOGA, por decisão nova da mesma pessoa, os dois avisos acima de que as
+   duas cores não podem ser unificadas. Os avisos não estavam errados no que
+   afirmavam — `#f5faff` era o azul dentro do branco da jornada azul e `#f4f8fc` era
+   escolha medida dela entre três candidatos — mas as duas premissas caducaram
+   juntas: não há mais jornada azul para ser saída de (o canvas da home é claro do
+   topo ao Contato), e o claro do hero deixou de ser MOMENTO para ser a cor da
+   página, que é exatamente a saída 1 que a SIS-187 recusou por custo. O custo foi
+   pago de propósito.
+
+   ── ESTA É A ÚNICA ILHA QUE CONTINUA OPACA, E NÃO É ESCOLHA
+   As outras três (folha do hero, `#top`, `.story-solucoes`) viraram `transparent` e
+   mostram o canvas. Esta não pode: pela regra `#top + *` (`globals.css`) ela SOBE
+   por cima do hero enquanto a cena afunda, e transparente ela mostraria o vídeo.
+   Então ela repinta o canvas — o mesmo token com o mesmo `background-attachment:
+   fixed`, o que a torna o MESMO PIXEL na mesma altura de tela. A emenda de cima
+   deixa de existir por construção, não por medida: não há duas cores para diferir.
+
+   Some com isso a rampa da SIS-187 (`#f4f8fc` dissolvido em `clamp(56px, 7svh,
+   96px)` até `#f5faff`). Ela dissolvia um degrau de 3 entre duas cores; com uma cor
+   só o degrau é 0, e manter a rampa pintaria uma faixa de `#f4f8fc` sobre o canvas
+   — reintroduzindo como MANCHA o degrau que ela existia para apagar. Comentada, e
+   não apagada: religar as duas cores é descomentar as duas declarações abaixo e
+   desfazer o `background` desta regra.
+
+   O `border-bottom` de `--line` FICA: embaixo a vizinha continua sendo o creme da
+   montagem (EMENDA 4, `legacy.css`), que não é o canvas, e lá a aresta é
+   necessária.
+
+     background-color: #f5faff;
+     background-image: linear-gradient(
+       to bottom,
+       #f4f8fc 0,
+       rgba(244, 248, 252, 0) clamp(56px, 7svh, 96px)
+     );
+     background-repeat: no-repeat;
+*/
 .marcas-grade {
-  background: #f5faff;
+  background: var(--fundo-claro-secao);
+  /* O QUE FAZ A EMENDA SER ZERO. Sem isto o token resolve contra os 747px desta
+     seção e ganha foco de luz próprio, e aí a emenda com o canvas volta — só
+     espalhada, em vez de num pixel. Ver a nota longa do `.home-canvas` em
+     `globals.css`. */
+  background-attachment: fixed;
   color: var(--ink);
   border-bottom: 1px solid var(--line);
   padding-block: clamp(3rem, 5.5vw, 5.5rem);
+}
+
+/* SIS-199 — A GRADE FINA TAMBÉM ATRAVESSA ESTA SEÇÃO. A camada do canvas é
+   `position: fixed; z-index: -1`, e esta seção é opaca com `z-index: 1` (`#top + *`):
+   ela cobria a grade, e a página ficava com 747px sem malha entre o hero e Soluções —
+   o degrau de cor que a issue tirou voltaria como degrau de MALHA, que é exatamente o
+   erro documentado em `.home-canvas .section-light::before`.
+
+   Não dá para reaproveitar a camada do canvas aqui (ela está atrás de um elemento
+   opaco), então a malha é repetida por cima da seção. É a mesma receita, lida dos
+   mesmos tokens — nenhum número novo — e ancorada na JANELA como a do canvas, para
+   as linhas continuarem as mesmas linhas ao cruzar a aresta em vez de recomeçarem
+   na origem desta caixa.
+
+   `z-index: 0` e não negativo: em `z-index` negativo ela iria para trás do fundo
+   opaco da própria seção e desapareceria de novo. Fica acima do fundo e abaixo do
+   conteúdo (`.marcas-grade-titulo` e o campo são `position: relative`). A malha
+   grossa do campo (5 colunas, ~205px) é de outra escala e as duas se somam sem
+   disputar — foi conferido na captura `1440-2-marcas.png`. */
+.marcas-grade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--grade-fina-opacidade);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      var(--grade-fina-linha) 0 1px,
+      transparent 1px var(--grade-fina-modulo)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      var(--grade-fina-linha) 0 1px,
+      transparent 1px var(--grade-fina-modulo)
+    );
+  background-attachment: fixed;
+  mask-image: radial-gradient(ellipse 92% 84% at 50% 44%, #000 25%, transparent 82%);
+  -webkit-mask-image: radial-gradient(ellipse 92% 84% at 50% 44%, #000 25%, transparent 82%);
+}
+
+/* ── SIS-198 · A MESMA DISSOLUÇÃO, MAS ACIMA DA ARESTA — SÓ ABAIXO DE 1024 ────
+   A rampa acima resolve o par que a SIS-187 mediu: folha `#f4f8fc` em cima, grade
+   `#f5faff` embaixo. Ela pressupõe que quem está ACIMA da aresta é a folha.
+
+   Com a SIS-198 essa premissa deixou de valer abaixo de 1024px. O que punha a
+   folha ali era o `drop` (`0 -> 20svh`) somado ao `scale` (`1 -> 0.54`): no fim do
+   percurso o hero havia se recolhido, e a grade encontrava folha clara. Sem eles a
+   cena fica em sangria até a última linha, e a grade encontra VÍDEO. Medido em
+   `scripts/medir-emenda-hero-grade.mjs`, coluna `x = 8`:
+
+     1440  acima 243,247,251 · abaixo 244,248,252 · maior degrau **1** (dy=0)
+      390  acima  78, 84, 99 · abaixo 244,248,252 · maior degrau **167** (dy=0)
+
+   167 é o salto que a issue manda corrigir. A correção é a mesma dissolução da
+   SIS-187 espelhada para o outro lado da aresta: uma faixa de
+   `clamp(56px, 7svh, 96px)` colada em `bottom: 100%`, do transparente ao `#f4f8fc`
+   da folha. Assim o vídeo termina na cor da folha e a rampa de baixo recebe o que
+   sempre esperou receber.
+
+   POR QUE `::before` DA GRADE, E NÃO UMA BORDA NO HERO: uma faixa no rodapé da
+   cena ficaria visível o percurso inteiro — a 390 a cena é `sticky` de 100svh, e o
+   desvanecimento moraria no rodapé da JANELA do primeiro quadro ao último. Presa à
+   grade, ela viaja com a aresta: não existe na tela até a emenda chegar. É também
+   por isso que não se mexeu na geometria do hero para "devolver o `drop`" — o card
+   parado é o objeto desta issue.
+
+   `@media (max-width: 1023.98px)`: a 1440 o degrau já é 1, o melhor representável
+   em 8 bits. Pintar por cima do card ali seria véu claro sobre o traço ciano da
+   base, que é justamente o contorno que esta issue veio melhorar.
+
+   `.marcas-grade` já é `position: relative` com `z-index: 1` pela regra `#top + *`
+   (`globals.css:851`) — é ela que faz a grade subir por cima do hero, e é o que
+   permite a esta faixa pintar sobre a cena. Se aquela regra sair, esta faixa sai
+   com ela. */
+/* SIS-199 — ESTA FAIXA CONTINUA NECESSÁRIA, e é a única parte da dissolução que
+   sobrevive. O motivo é o que a nota acima já diz: abaixo de 1024px quem está ACIMA
+   da aresta é o VÍDEO, não superfície clara — e isso não mudou com o canvas, porque
+   a cena segue em sangria até a última linha. O degrau de 167 volta se ela sair.
+   A 1440 continua sem faixa, e agora com um motivo mais forte que antes: ali os dois
+   lados da aresta são a MESMA superfície ancorada na janela, degrau 0.
+
+   O QUE MUDOU É A COR DE CHEGADA. Ela ia a `#f4f8fc`, cópia declarada da
+   `.hero-sheet`; a folha não pinta mais nada, então esse valor virou uma quarta cor
+   solta — a rampa terminaria num tom que não existe em nenhum lugar da página.
+   Agora a faixa pinta o PRÓPRIO CANVAS (o token, ancorado na janela, como a seção) e
+   quem faz a dissolução é uma `mask` vertical em cima dele. É a única forma de ramper
+   até um radial ancorado na janela: um `linear-gradient` não sabe o valor de um
+   `background-attachment: fixed`, e escrever a cor à mão traria de volta a cópia
+   manual que a nota da SIS-187 avisava que dessincroniza.
+   Anterior: `background: linear-gradient(to bottom, rgba(244, 248, 252, 0) 0, #f4f8fc 100%);` */
+@media (max-width: 1023.98px) {
+  .marcas-grade::before {
+    content: '';
+    position: absolute;
+    inset: auto 0 100% 0;
+    height: clamp(56px, 7svh, 96px);
+    background: var(--fundo-claro-secao);
+    background-attachment: fixed;
+    mask-image: linear-gradient(to bottom, transparent 0, #000 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 100%);
+    pointer-events: none;
+  }
 }
 
 /* Título editorial acima da grade — a metade da referência que a faixa não tinha
@@ -182,9 +353,24 @@
      tinta porque o hover acende a cruz da célula apontada por
      `--malha-cruz` local (ver o bloco de hover), e cruz desenhada no campo não
      sabe qual célula está sob o ponteiro.
-     ⚠️ Se algum dia o fundo da seção deixar de ser `#f5faff`, esta tinta tem de
-     ser recalculada — ela é uma cor CHAPADA que imita transparência sobre um
-     fundo específico. */
+     ⚠️ SIS-199 — ESSE DIA CHEGOU: o fundo da seção não é mais `#f5faff`. E a
+     recalculada que a nota pedia NÃO É POSSÍVEL, o que é mais interessante do que
+     um valor novo. O fundo agora é o canvas da home, um radial ancorado na JANELA:
+     a seção tem 747px e atravessa a tela, então o que está atrás de uma cruz muda
+     conforme a rolagem. Nenhuma cor chapada imita transparência sobre um fundo que
+     se move — a premissa da imitação foi embora, não só o valor dela.
+
+     O tamanho do erro, medido a 1440 em `medir-canvas-home-sis199.mjs`: na emenda
+     de entrada da seção o canvas lê `237,244,250`, e 30% de `rgb(0 26 61)` sobre
+     isso daria `#a6b3c1`. O `#acb7c5` que está aqui é ~6 pontos de RGB mais claro,
+     e essa distância cresce/encolhe alguns pontos ao longo da rolagem porque o
+     radial varia de ~228 a 255 na vertical.
+
+     FICA CHAPADA, de propósito. Voltar a `rgb(0 26 61 / 30%)` acertaria a cor em
+     todo ponto e traria de volta os três degraus de 66 pontos descritos acima —
+     trocar um desvio de 6 pontos por um artefato de 66 é piorar. Se algum dia a
+     amplitude importar, a saída não é outra tinta chapada: é desenhar cada cruz uma
+     única vez, e aí resolver o problema do hover que este bloco descreve. */
   --malha-cruz: #acb7c5;
   /* Meia célula de calha nos quatro lados — é isto que põe os centros das
      quadrículas sobre as bordas das células. */
@@ -317,6 +503,19 @@
   background-repeat: no-repeat;
 }
 
+/* O nó de entrada é separado da imagem. Assim a cascata controla
+   `transform/opacity` no envelope, enquanto a imagem preserva sua transição de
+   `filter/opacity` para o hover azul. Ele ocupa exatamente a caixa que antes era
+   ocupada diretamente pela imagem; os tetos percentuais abaixo continuam sendo
+   resolvidos contra a área útil da célula. */
+.marcas-grade-logo-reveal {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* TAMANHO ÓPTICO NORMALIZADO — o ponto 10 da issue, e o que a grade expõe mais que
    a faixa, porque aqui as células são comparáveis lado a lado.
    Dois tetos, não um: `max-height` em `%` da célula equaliza os desenhos altos
@@ -326,12 +525,35 @@
    largura, o vertical fica duas vezes mais alto que os vizinhos.
    Em `%` e não em `rem` porque a célula já é fluida — em `rem` a logo pararia de
    crescer com a coluna e a malha ficaria com vazio crescente em telas largas.
-   `object-fit: contain` garante que nenhum desenho seja cortado ou distorcido. */
+   `object-fit: contain` garante que nenhum desenho seja cortado ou distorcido.
+
+   ── LOGOS MAIORES, E OS DOIS TETOS SUBIRAM JUNTOS
+   As marcas estavam pequenas demais para o tamanho que a célula ganhou: sobrava
+   vazio em volta e as de lockup fino (Samplemed, 4B, Picsel) ficavam ilegíveis.
+   Os dois tetos sobem MANTIDOS COMO PAR — subir só um reabre exatamente o defeito
+   que o parágrafo acima descreve: com `max-height` maior e `max-width` no valor
+   antigo, o lockup largo (Virtusa, ~2,9:1) para de crescer antes dos verticais e
+   a fileira volta a ficar desigual.
+     max-height: 46% → 58% → 68%   (fator acumulado 1,48)
+     max-width:  68% → 80% → 86%   (fator acumulado 1,26)
+   O `max-width` sobe menos de propósito, e a cada passo a distância entre os dois
+   aumenta. Ele é a folga que impede o desenho largo de encostar nos fios da malha,
+   e a malha aqui é conteúdo visível, não moldura: logo tocando a linha lê como
+   erro de alinhamento. A 86% ficam 7% de respiro de cada lado — a 1440, com célula
+   de ~223px e `padding` de 1,5rem, são ~13px de vão até o fio.
+   ⚠️ 86% é perto do limite útil. Acima disso o respiro fica menor que o próprio
+   `padding` da célula, e aí quem passa a mandar no enquadramento é o `padding`, não
+   este teto: a logo larga encosta na área de padding e o desenho perde a folga que
+   o parágrafo acima defende. Se pedirem mais tamanho, o número a subir é o
+   `max-height` — ou então reduzir o `padding` da célula, que é uma decisão
+   diferente e tem de ser tomada explicitamente.
+   Ambos continuam em `%`, pelo mesmo motivo de sempre: em `rem` a logo pararia de
+   crescer com a coluna. */
 .marcas-grade-celula img {
   width: auto;
   height: auto;
-  max-height: 46%;
-  max-width: 68%;
+  max-height: 68%;
+  max-width: 86%;
   object-fit: contain;
   /* Repouso dessaturado e recuado, como na faixa e como na referência: são 15
      paletas conflitantes na mesma tela, e todas em cor cheia disputam com o
@@ -341,6 +563,29 @@
   transition:
     filter var(--base) var(--ease),
     opacity var(--base) var(--ease);
+}
+
+/* ── EXCEÇÃO DE UMA LOGO SÓ: SAMPLEMED
+   Isto é uma quebra DELIBERADA da regra escrita acima ("os dois tetos sobem como
+   par, iguais para as 15"), e fica logo abaixo dela para que ninguém leia uma sem
+   a outra. A normalização óptica continua valendo para as outras 14.
+   Por que ela precisa de exceção: os dois tetos igualam a CAIXA, não o desenho
+   dentro dela. O Samplemed é o único lockup vertical do conjunto
+   (`samplemed-logo-vertical-rgb.png`) — símbolo empilhado sobre a palavra. Com
+   `max-height: 68%`, a altura que ele gasta é dividida entre duas fileiras de
+   desenho, e a palavra "samplemed" fica com menos da metade da altura de tipo que
+   as marcas horizontais têm na mesma célula. Duas caixas do mesmo tamanho com
+   pesos ópticos diferentes: é por isso que ele lê como o menor dos 15, e é o que
+   se pediu para corrigir.
+   Sobe só o `max-height` (68% → 88%): num desenho mais alto que largo é a altura
+   que limita, e o `max-width` de 86% nem chega a ser alcançado. Portanto NÃO se
+   aplica aqui o aviso do bloco acima sobre encostar nos fios da malha — o
+   respiro lateral do Samplemed a 88% de altura continua maior que os 7% da regra
+   geral. Se um dia o arquivo for trocado por um lockup horizontal, esta regra
+   perde a razão de existir e deve sair, não ser ajustada.
+   Vale para as duas malhas (3 e 5 colunas): o teto é % da própria célula. */
+.marcas-grade-celula[data-marca='samplemed'] img {
+  max-height: 88%;
 }
 
 /* A cor volta no ponteiro, e só onde há ponteiro fino: em toque o estado de hover

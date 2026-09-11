@@ -1,0 +1,68 @@
+{
+  "fase": "baseline",
+  "desktop": {
+    "alinhamentos": [
+      {
+        "celula": 116.71,
+        "ponto": 486.84,
+        "delta": 370.13
+      },
+      {
+        "celula": 317.8,
+        "ponto": 564.56,
+        "delta": 246.76
+      },
+      {
+        "celula": 518.9,
+        "ponto": 642.28,
+        "delta": 123.38
+      },
+      {
+        "celula": 719.99,
+        "ponto": 719.98,
+        "delta": 0.01
+      },
+      {
+        "celula": 921.09,
+        "ponto": 797.7,
+        "delta": 123.38
+      },
+      {
+        "celula": 1122.18,
+        "ponto": 875.42,
+        "delta": 246.76
+      },
+      {
+        "celula": 1323.27,
+        "ponto": 953.14,
+        "delta": 370.13
+      }
+    ],
+    "hover": {
+      "antes": "none",
+      "durante": "none"
+    },
+    "painel": {
+      "left": 0,
+      "right": 1440,
+      "width": 1440,
+      "borderRadius": "0px",
+      "background": "rgba(0, 0, 0, 0)"
+    },
+    "nevoaSuperior": "radial-gradient(70% 60% at 20% 10%, rgba(0, 121, 203, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(50% 60% at 90% 90%, rgba(14, 216, 246, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(70% 80%, rgb(255, 255, 255) 0%, rgb(242, 247, 252) 55%, rgb(228, 237, 247) 100%)",
+    "larguraDocumento": 1440,
+    "larguraViewport": 1440
+  },
+  "mobile": {
+    "colunas": "350px",
+    "pontos": 7,
+    "trilhoDisplay": "grid",
+    "larguraPainel": 390,
+    "larguraDocumento": 390,
+    "larguraViewport": 390
+  },
+  "reducedMotion": {
+    "sistema": "none",
+    "atributo": "none"
+  }
+}

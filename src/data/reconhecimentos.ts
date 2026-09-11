@@ -99,6 +99,48 @@ export const RECONHECIMENTOS: Reconhecimento[] = [
 ];
 
 export const REC_EYEBROW = 'Reconhecimento que comprova nossa trajetória';
-export const REC_TITULO = { linha1: 'Premiações, Certificações', linha2: 'e Reconhecimentos' } as const;
+export const REC_TITULO = {
+  linha1: 'Premiações, Certificações',
+  linha2: 'e Reconhecimentos',
+} as const;
 export const REC_NAV_TITULO = 'Nossa trajetória';
 export const REC_SELO_ATIVO = 'Destaque ativo';
+
+/**
+ * SIS-230 — o destaque Celent na abertura da seção.
+ *
+ * As duas frases NÃO são escrita nova: são a segunda nota de
+ * `PREMIACOES_NOTAS` (`src/data/aSistran.ts`), que estava montada como um
+ * parágrafo corrido depois do teatro. Ela SAIU de lá e veio para cá — a issue
+ * pede o texto ao lado do troféu, e deixá-lo nos dois lugares duplicaria a
+ * frase na mesma seção. A fonte é `.claude/conteudo-site/01-a-sistran.md` §11,
+ * com os espaços duplos do original ("Celent  com o  Technology", "mais alta
+ * categoria") normalizados, como já vinha sendo feito na nota.
+ *
+ * Os `alt` são descrição, não legenda: a arte já traz dentro dela o quadrante,
+ * os nomes e o texto "Único player com conhecimento local e clientes no
+ * Brasil", e a issue proíbe inventar legenda além do que a imagem mostra.
+ *
+ * SIS-238 — o troféu e a arte LATAM deixaram de ser dois assets montados por
+ * cima de um fundo navy: a cena inteira passou a ser UMA capa clara
+ * (`cele.png` -> `celent-capa.webp`), e o HTML só acrescenta a coluna
+ * tipográfica. Por isso `capaAlt` é novo e `trofeuAlt`/`latamAlt` saíram de
+ * cena — ficam comentados porque `trofeu.webp` e `celentlatam.webp` continuam
+ * no repo, e voltar atrás é trocar o markup, não reescrever descrição.
+ *
+ * `logoAlt` mudou de 'Celent' para o texto completo: o arquivo
+ * `logo-Celent.png` não é só a marca, ele traz a linha «Technology Standout
+ * 2023» desenhada abaixo do wordmark. Com `alt="Celent"` essa linha — que na
+ * referência é o segundo nível da coluna — não existiria para leitor de tela.
+ */
+export const REC_CELENT = {
+  linha1: 'A Sistran foi reconhecida pela Celent com o Technology Standout 2023.',
+  linha2: 'A mais alta categoria no quesito tecnologia',
+  logoAlt: 'Celent — Technology Standout 2023',
+  capaAlt:
+    'Troféu Technology Standout 2023 da Celent ao lado do quadrante XCelent Awards 2023 PAS LIFE da Celent LATAM, com a Sistran entre os Technology Standouts',
+  // SIS-238: fora de cena. Eram os `alt` de `/trofeu.webp` e `/celentlatam.webp`.
+  // trofeuAlt: 'Troféu Technology Standout 2023 da Celent',
+  // latamAlt:
+  //   'Quadrante XCelent Awards 2023 PAS LIFE da Celent LATAM, com a Sistran entre os Technology Standouts',
+} as const;

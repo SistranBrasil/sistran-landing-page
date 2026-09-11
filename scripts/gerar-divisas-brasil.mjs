@@ -20,7 +20,13 @@
  * derivado do IBGE). Baixado em tempo de geracao; o resultado é colado no
  * componente para o site nao depender da rede.
  *
- * Uso:  node scripts/gerar-divisas-brasil.mjs
+ * Uso:
+ *   node scripts/gerar-divisas-brasil.mjs
+ *   node scripts/gerar-divisas-brasil.mjs --aplicar
+ *
+ * Sem `--aplicar`, grava somente o cache para inspecao. Com a flag, tambem
+ * substitui `DIVISAS_BRASIL` no componente: assim o path publicado sempre pode
+ * ser reproduzido pelo algoritmo, sem retoque manual.
  */
 import { readFileSync, existsSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -70,11 +76,12 @@ const chave = (p) => `${p[0]}|${p[1]}`;
 const dados = JSON.parse(await baixar());
 const aneis = [];
 for (const f of dados.features) {
+  const uf = f.properties.SIGLA;
   const g = f.geometry;
   const poligonos = g.type === 'MultiPolygon' ? g.coordinates.flat() : g.coordinates;
   for (const anel of poligonos) {
     if (anel.some(([lon]) => lon > LON_CONTINENTE)) continue;
-    aneis.push(anel);
+    aneis.push({ uf, pontos: anel });
   }
 }
 
@@ -82,8 +89,8 @@ let lon0 = Infinity;
 let lon1 = -Infinity;
 let lat0 = Infinity;
 let lat1 = -Infinity;
-for (const anel of aneis) {
-  for (const [lon, lat] of anel) {
+for (const { pontos } of aneis) {
+  for (const [lon, lat] of pontos) {
     lon0 = Math.min(lon0, lon);
     lon1 = Math.max(lon1, lon);
     lat0 = Math.min(lat0, lat);
@@ -100,73 +107,116 @@ const projetar = ([lon, lat]) => [
   Math.round((caixa.y1 - (lat - lat0) * escalaY) * 10) / 10,
 ];
 
-/* Uma divisa entre dois estados aparece nos DOIS aneis vizinhos; a costa e as
-   fronteiras com outros paises aparecem em um só. É essa contagem que separa as
-   duas coisas — e SÓ as compartilhadas entram.
+/* Uma divisa entre dois estados aparece nos aneis de DUAS UFs diferentes; a
+   costa e as fronteiras com outros paises pertencem a uma só. É a identidade
+   dos donos — nao apenas o numero de ocorrencias — que separa as duas coisas.
+   Um mesmo anel pode repetir uma aresta, e isso nao a transforma em divisa.
+
+   A identidade é calculada na grade projetada de 0,1 px usada pelo SVG. O
+   arredondamento aproxima as bordas dos dois arquivos de estado, que nem sempre
+   repetem os mesmos decimais na origem. Colisoes com mais de duas UFs sao
+   ambiguas e descartadas; repeticoes dentro de uma unica UF tambem.
+
    Nao é economia de bytes: o encaixe por caixa acerta os extremos, mas o
    contorno do dataset nao é o mesmo desenho da silhueta do componente. Traçar a
    costa aqui poria uma segunda linha de litoral alguns pixels por DENTRO do
    pais, do lado que mais se olha. O que a arte pede é a malha interna, e a malha
    interna é exatamente o conjunto das arestas repetidas. */
-const contagem = new Map();
 const arestas = new Map();
-for (const anel of aneis) {
-  const pontos = anel.map(projetar);
-  for (let i = 1; i < pontos.length; i += 1) {
-    const a = pontos[i - 1];
-    const b = pontos[i];
-    if (a[0] === b[0] && a[1] === b[1]) continue;
+for (const { uf, pontos } of aneis) {
+  const projetados = pontos.map(projetar);
+  for (let i = 1; i < projetados.length; i += 1) {
+    const a = projetados[i - 1];
+    const b = projetados[i];
+    if (chave(a) === chave(b)) continue;
     const ka = chave(a);
     const kb = chave(b);
     const id = ka < kb ? `${ka}>${kb}` : `${kb}>${ka}`;
-    contagem.set(id, (contagem.get(id) || 0) + 1);
-    if (!arestas.has(id)) arestas.set(id, [a, b]);
+    if (!arestas.has(id)) {
+      arestas.set(id, {
+        a,
+        b,
+        ufs: new Set(),
+      });
+    }
+    arestas.get(id).ufs.add(uf);
   }
 }
 let soltas = 0;
-for (const [id] of [...arestas]) {
-  if (contagem.get(id) < 2) {
+let ambiguas = 0;
+for (const [id, aresta] of [...arestas]) {
+  if (aresta.ufs.size !== 2) {
     arestas.delete(id);
-    soltas += 1;
+    if (aresta.ufs.size < 2) soltas += 1;
+    else ambiguas += 1;
   }
 }
 
-/* Arestas soltas viram polilinhas: um `path` com muitos subcaminhos curtos
-   custa muito mais no arquivo do que poucos longos. */
-const vizinhos = new Map();
-for (const [, [a, b]] of arestas) {
-  for (const [p, q] of [
-    [a, b],
-    [b, a],
-  ]) {
-    const k = chave(p);
-    if (!vizinhos.has(k)) vizinhos.set(k, []);
-    vizinhos.get(k).push(q);
-  }
-}
-const usada = new Set();
-const idDe = (a, b) => {
+/* Arestas do MESMO PAR de UFs viram polilinhas. A versao anterior montava um
+   grafo nacional unico. Num encontro triplo, `find()` pegava a primeira aresta
+   livre e podia sair de PR-SP por SP-MS, por exemplo. O subpath continuava
+   tecnicamente aberto, mas percorria lados de estados diferentes e lia como um
+   quase-contorno/bolha quando simplificado.
+
+   Separar o grafo por par faz cada linha terminar no encontro triplo. Essa é a
+   propriedade topologica relevante: uma fronteira PR-SP nunca continua por uma
+   fronteira de outro par. */
+const porPar = new Map();
+for (const { a, b, ufs } of arestas.values()) {
+  const par = [...ufs].sort().join('-');
+  if (!porPar.has(par)) porPar.set(par, new Map());
   const ka = chave(a);
   const kb = chave(b);
-  return ka < kb ? `${ka}>${kb}` : `${kb}>${ka}`;
-};
+  const idDaGrade = ka < kb ? `${ka}>${kb}` : `${kb}>${ka}`;
+  porPar.get(par).set(idDaGrade, [a, b]);
+}
+
 const linhas = [];
-for (const [, [a, b]] of arestas) {
-  if (usada.has(idDe(a, b))) continue;
-  usada.add(idDe(a, b));
-  const linha = [a, b];
-  /* Estende pelas duas pontas enquanto houver aresta livre. */
-  for (const inicio of [false, true]) {
-    for (;;) {
-      const ponta = inicio ? linha[0] : linha[linha.length - 1];
-      const proximo = (vizinhos.get(chave(ponta)) || []).find((v) => !usada.has(idDe(ponta, v)));
-      if (!proximo) break;
-      usada.add(idDe(ponta, proximo));
-      if (inicio) linha.unshift(proximo);
-      else linha.push(proximo);
+let bifurcacoes = 0;
+for (const [par, arestasDoPar] of porPar) {
+  const vizinhos = new Map();
+  for (const [id, [a, b]] of arestasDoPar) {
+    for (const [p, q] of [
+      [a, b],
+      [b, a],
+    ]) {
+      const k = chave(p);
+      if (!vizinhos.has(k)) vizinhos.set(k, []);
+      vizinhos.get(k).push({ id, ponto: q });
     }
   }
-  linhas.push(linha);
+  bifurcacoes += [...vizinhos.values()].filter((lista) => lista.length > 2).length;
+
+  const usada = new Set();
+  const percorrer = (inicio, primeira) => {
+    const pontos = [inicio];
+    let aresta = primeira;
+    for (;;) {
+      usada.add(aresta.id);
+      pontos.push(aresta.ponto);
+      const incidentes = vizinhos.get(chave(aresta.ponto)) || [];
+      /* Grau diferente de 2 é costa, encontro ou colisao da grade: termina a
+         linha aqui em vez de escolher uma continuacao arbitraria. */
+      if (incidentes.length !== 2) break;
+      const proxima = incidentes.find((item) => !usada.has(item.id));
+      if (!proxima) break;
+      aresta = proxima;
+    }
+    linhas.push({ par, pontos });
+  };
+
+  /* Primeiro extrai cadeias abertas a partir de pontas e encontros. */
+  for (const [k, incidentes] of vizinhos) {
+    if (incidentes.length === 2) continue;
+    const inicio = k.split('|').map(Number);
+    for (const aresta of incidentes) {
+      if (!usada.has(aresta.id)) percorrer(inicio, aresta);
+    }
+  }
+  /* O que sobrar é um ciclo genuino do mesmo par (por exemplo, um enclave). */
+  for (const [id, [a, b]] of arestasDoPar) {
+    if (!usada.has(id)) percorrer(a, { id, ponto: b });
+  }
 }
 
 /* Douglas-Peucker por polilinha, com as pontas presas: sem isso as emendas
@@ -203,10 +253,19 @@ const partes = [];
 let pontosAntes = 0;
 let pontosDepois = 0;
 let migalhas = 0;
-for (const linha of linhas) {
+let retornosAoInicio = 0;
+let retornosSpPr = 0;
+let verticesRepetidosSpPr = 0;
+let arestasDuplicadasNaSaida = 0;
+const arestasDaSaida = new Set();
+for (const { par, pontos: linha } of linhas) {
   const xs = linha.map((p) => p[0]);
   const ys = linha.map((p) => p[1]);
-  if (Math.hypot(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys)) < MINIMO) {
+  const diagonal = Math.hypot(
+    Math.max(...xs) - Math.min(...xs),
+    Math.max(...ys) - Math.min(...ys),
+  );
+  if (diagonal < MINIMO) {
     migalhas += 1;
     continue;
   }
@@ -214,10 +273,29 @@ for (const linha of linhas) {
   const s = simplificar(linha, TOLERANCIA);
   if (s.length < 2) continue;
   pontosDepois += s.length;
+  const retorna =
+    s[0][0] === s[s.length - 1][0] && s[0][1] === s[s.length - 1][1];
+  if (retorna) retornosAoInicio += 1;
+  if (retorna && /(^|-)(PR|SP)(-|$)/.test(par)) retornosSpPr += 1;
+  if (/(^|-)(PR|SP)(-|$)/.test(par)) {
+    verticesRepetidosSpPr += s.length - new Set(s.map(chave)).size;
+  }
+  for (let i = 1; i < s.length; i += 1) {
+    const ka = chave(s[i - 1]);
+    const kb = chave(s[i]);
+    const id = ka < kb ? `${ka}>${kb}` : `${kb}>${ka}`;
+    if (arestasDaSaida.has(id)) arestasDuplicadasNaSaida += 1;
+    arestasDaSaida.add(id);
+  }
   partes.push(`M${s[0][0]} ${s[0][1]}` + s.slice(1).map((p) => `L${p[0]} ${p[1]}`).join(''));
 }
 
 const d = partes.join('');
+if (retornosSpPr > 0 || verticesRepetidosSpPr > 0 || arestasDuplicadasNaSaida > 0) {
+  throw new Error(
+    `topologia invalida: retornos SP/PR=${retornosSpPr}, vertices repetidos SP/PR=${verticesRepetidosSpPr}, arestas duplicadas=${arestasDuplicadasNaSaida}`,
+  );
+}
 console.log(
   JSON.stringify(
     {
@@ -228,8 +306,15 @@ console.log(
       aneis: aneis.length,
       arestasCompartilhadas: arestas.size,
       arestasDeCostaDescartadas: soltas,
+      arestasAmbiguasDescartadas: ambiguas,
+      paresDeUfs: porPar.size,
+      bifurcacoesDentroDoMesmoPar: bifurcacoes,
       migalhasDescartadas: migalhas,
       polilinhas: partes.length,
+      retornosAoInicio,
+      retornosSpPr,
+      verticesRepetidosSpPr,
+      arestasDuplicadasNaSaida,
       pontosAntes,
       pontosDepois,
       tamanhoD: d.length,
@@ -240,3 +325,13 @@ console.log(
 );
 writeFileSync(resolve('node_modules/.cache/divisas-brasil.txt'), d);
 console.log('d escrito em node_modules/.cache/divisas-brasil.txt');
+
+if (process.argv.includes('--aplicar')) {
+  const destino = resolve('src/components/ui/BrazilOfficesMap.tsx');
+  const fonte = readFileSync(destino, 'utf8');
+  const marcador = /const DIVISAS_BRASIL =\s*\n\s*'[^']*';/;
+  if (!marcador.test(fonte)) throw new Error('DIVISAS_BRASIL nao encontrado para aplicar');
+  writeFileSync(destino, fonte.replace(marcador, `const DIVISAS_BRASIL =\n  '${d}';`));
+  console.log('DIVISAS_BRASIL atualizado em src/components/ui/BrazilOfficesMap.tsx');
+}
+

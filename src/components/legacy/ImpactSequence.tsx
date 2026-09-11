@@ -2,11 +2,16 @@
 
 import "./legacy.css"
 import { motion, useScroll, useSpring, useTransform } from "motion/react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, type CSSProperties } from "react"
+import { useRevealTrigger } from "@/components/motion/useRevealTrigger"
 import { ScrollVideo } from "@/components/primitives/ScrollVideo"
 import { useReducedMotion } from "@/lib/motion"
 import { useVisibilityGate } from "@/lib/useVisibilityGate"
 import { impactSequence } from "@/data/legacy"
+import { criarConsultaDeMedia } from "@/lib/mediaStore"
+
+/* SIS-182 — o mesmo 1024 dos outros palcos dirigidos, no formato da casa. */
+const useSequenciaLarga = criarConsultaDeMedia("(min-width: 1024px)")
 
 /**
  * Sequência de montagem presa ao scroll — portada de `ImpactSequence.tsx` da
@@ -71,18 +76,23 @@ export function ImpactSequence() {
 
      Nasce em `false` nos dois lados (servidor e primeiro render) para a árvore
      hidratar idêntica; converge depois de montar. */
-  const [dirigindo, setDirigindo] = useState(false)
-  useEffect(() => {
-    if (reduced) {
-      setDirigindo(false)
-      return
-    }
-    const mq = window.matchMedia("(min-width: 1024px)")
-    const aplicar = () => setDirigindo(mq.matches)
-    aplicar()
-    mq.addEventListener("change", aplicar)
-    return () => mq.removeEventListener("change", aplicar)
-  }, [reduced])
+  /* SIS-182 — as duas metades agora são store, e o efeito inteiro saiu. Este era o
+     ÚNICO da família que o `react-hooks/set-state-in-effect` de fato acusava
+     (`ImpactSequence.tsx:77`, o `setDirigindo(false)` do atalho de movimento
+     reduzido); os outros escapavam do aviso por chamarem o `setState` através de
+     uma função nomeada, com o mesmo defeito. O corpo antigo:
+
+     const [dirigindo, setDirigindo] = useState(false)
+     useEffect(() => {
+       if (reduced) { setDirigindo(false); return }
+       const mq = window.matchMedia("(min-width: 1024px)")
+       const aplicar = () => setDirigindo(mq.matches)
+       aplicar()
+       mq.addEventListener("change", aplicar)
+       return () => mq.removeEventListener("change", aplicar)
+     }, [reduced]) */
+  const largo = useSequenciaLarga()
+  const dirigindo = largo && !reduced
 
   const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] })
 
@@ -120,6 +130,30 @@ export function ImpactSequence() {
   // `opacity: 0` ainda recebe seleção e foco: some de verdade ao chegar no fim.
   const copy = useVisibilityGate<HTMLDivElement>(copyFade, !reduced)
 
+  /* SIS-197 — a legenda desta seção só sabia SAIR: `copyFade` a apaga quando o
+     recuo começa (`SHRINK`), e nada nunca a trouxe. Ela aparecia pronta, no
+     mesmo quadro em que a seção encosta na tela, e essa era a entrada ad-hoc
+     inconsistente que o Efeito 4 vem uniformizar.
+     O escopo é o `.sequence-sticky`, e não o `.sequence-copy`: este último já
+     carrega `ref={copy}` do `useVisibilityGate`, e fundir dois refs num nó que
+     também recebe `style` de `motion` é risco sem ganho — o pai serve igual.
+     Marcar `transform` nos FILHOS do sticky é inócuo: só ancestrais do elemento
+     preso viram contexto de contenção, e o `.sequence-sticky` continua sem
+     nenhum ancestral transformado. */
+  /* Desestruturado, e não `legenda.ref`: o `react-hooks/refs` lê o acesso à
+     propriedade dentro do JSX como leitura de ref durante o render e acusa erro
+     (o portão de lint da casa é 0 erros). O nome sai do hook já como ref. */
+  const { ref: legendaRef } = useRevealTrigger<HTMLDivElement>()
+
+  /* SIS-214, alvo 4 (spy/rótulos) — NÃO HÁ NADA A MUDAR em
+     `src/data/pageSections.ts`, e fica escrito para a próxima pessoa não ir
+     procurar: o spy da home lista `top`, `solucoes`, `resultados`, `contato` e
+     `social` (`pageSections.ts:65-69`), e `impacto` NUNCA esteve lá. Nenhum link do
+     projeto aponta para `#impacto` (`grep '#impacto' src` volta vazio). O `id`
+     abaixo segue existindo porque é ele que casa com o `aria-labelledby` e serve de
+     âncora de URL — não porque alguma navegação dependa dele.
+     A hierarquia de títulos também não mudou: continua um `<h2>` só, e o que a
+     inversão trocou de lugar foi um `<p>`, não um nível de cabeçalho. */
   return (
     <section
       id="impacto"
@@ -129,7 +163,7 @@ export function ImpactSequence() {
       data-dirigindo={dirigindo ? "true" : undefined}
       aria-labelledby="impacto-title"
     >
-      <div className="sequence-sticky">
+      <div className="sequence-sticky" ref={legendaRef}>
         <motion.div
           className="sequence-visual"
           style={reduced ? undefined : { scale, borderRadius: radius }}
@@ -160,11 +194,65 @@ export function ImpactSequence() {
           className="lp-container sequence-copy"
           style={reduced ? undefined : { opacity: copyFade }}
         >
-          <p className="lp-eyebrow lp-tag">{impactSequence.kicker}</p>
-          <h2 id="impacto-title" className="lp-display lp-display--lg">
+          {/* SIS-214 — A ORDEM DE LEITURA DESTE BLOCO FOI INVERTIDA: o `kicker`
+              ("Desafios no desenvolvimento de software") ficava AQUI, acima do
+              `<h2>`, como sobretítulo. Agora ele é o último dos três, e o
+              capítulo abre pelo "Sobre o Luminna AI".
+
+              O pedido é de ORDEM na home — Números -> Sobre o Luminna AI ->
+              Desafios —, e a ordem que o leitor percebe é a desta pilha, não a
+              dos componentes em `src/app/page.tsx`: entre `<Metrics />` (id
+              `resultados`) e `<ImpactSequence />` não há nenhuma seção ativa (o
+              que há entre as duas no arquivo é comentário — `SolutionsToMetrics`,
+              `MetricsStrip`, `NotchDivider`, `SignalMarquee`, `MosaicHandoff`,
+              `About`). Ou seja: os dois títulos que a issue quer separar moram na
+              MESMA seção, e era só aqui que "Desafios" aparecia antes.
+
+              O QUE NÃO FOI FEITO, de propósito: nenhuma seção nova entre Números
+              e esta, e nenhuma etapa de volta. A issue diz "o que restar de
+              Desafios, se houver conteúdo além do kicker — não inventar etapas de
+              volta", e não restou nada: a SIS-99 removeu os três capítulos
+              (`Compreender`, `Transformar`, `Validar e evoluir`) e "Desafios" é
+              literalmente uma linha de texto. Criar um bloco para hospedá-la
+              seria inventar seção.
+
+              `--reveal-i` acompanha a ordem nova (SIS-197: é a ordem de leitura,
+              e o intervalo entre irmãos é `--motion-stagger-reveal`, 80ms) —
+              deixá-los como estavam faria o chip entrar primeiro e o título
+              depois, contra a leitura.
+
+              A margem do chip é corrigida por CSS, não por classe nova: ver
+              `.sequence-copy .lp-lead + .lp-eyebrow` em `legacy.css`. */}
+          {/* Mesma fronteira anotada na `SolutionsStory`: SIS-194 cobre títulos
+              por `RevealText`, e cobriu só `marcas-grade-titulo`. Este `<h2>` não
+              estava no lote nem tem `RevealText`. Se a SIS-194 voltar para ele, o
+              `data-reveal` daqui SAI — dois no mesmo nó seriam duas entradas
+              disputando o mesmo elemento. */}
+          <h2
+            id="impacto-title"
+            className="lp-display lp-display--lg"
+            data-reveal="fade-up"
+            style={{ "--reveal-i": 0 } as CSSProperties}
+          >
             {impactSequence.title}
           </h2>
-          <p className="lp-lead">{impactSequence.text}</p>
+          <p
+            className="lp-lead"
+            data-reveal="fade-up"
+            style={{ "--reveal-i": 1 } as CSSProperties}
+          >
+            {impactSequence.text}
+          </p>
+          {/* SIS-214 — o `kicker` desceu para cá (ver a nota longa acima). Segue
+              sendo o texto de `src/data/legacy.ts`, palavra por palavra, e segue
+              `lp-eyebrow lp-tag` — o chip é o mesmo, só mudou de lugar na pilha. */}
+          <p
+            className="lp-eyebrow lp-tag"
+            data-reveal="fade-up"
+            style={{ "--reveal-i": 2 } as CSSProperties}
+          >
+            {impactSequence.kicker}
+          </p>
           {/* SIS-99 — os três capítulos (`<h3>` "Compreender", "Transformar" e
               "Validar e evoluir") ficavam aqui, num `.sequence-chapters`. Saíram
               a pedido: a seção termina no parágrafo sobre o Luminna AI.

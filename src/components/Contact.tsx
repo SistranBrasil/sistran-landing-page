@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { prefersReducedMotion } from '@/lib/motion';
+import { useReducedMotion } from '@/lib/motion';
+import { criarConsultaDeMedia } from '@/lib/mediaStore';
 import PainelContato from './ContactPanel';
 
 /**
@@ -89,8 +90,25 @@ const INICIO = 'top 60%';
  */
 const RESERVA_CABECALHO = 88 + 48;
 
+/* SIS-182 — a LARGURA sai para o store; a ALTURA do painel não, e não pode: ela é
+   medição de DOM (`offsetHeight`), que só existe depois da montagem e muda com o
+   conteúdo. É o caso que a issue previu no item 3 — só a parte de media vira
+   assinatura externa, e o efeito de medição continua existindo, agora LENDO o
+   booleano em vez de consultar `matchMedia` por dentro. */
+const usePainelLargo = criarConsultaDeMedia('(min-width: 1024px)');
+
 export default function Contact() {
-  const [dirigindo, setDirigindo] = useState(false);
+  /* SIS-182 — o estado guarda SÓ o que precisa ser medido (o painel cabe na tela);
+     as duas condições declarativas entram por derivação. Antes o estado era o
+     `dirigindo` inteiro, e por isso o efeito tinha de escrever `false` nele nos
+     atalhos — que é justamente o `setState` síncrono que a issue persegue. */
+  const [cabe, setCabe] = useState(false);
+  const largo = usePainelLargo();
+  /* Store também para a preferência (era `prefersReducedMotion()` síncrono, lido
+     dentro do efeito): assim trocar a escolha de movimento na página derruba o
+     modo dirigido na hora, sem depender de um `resize` para reavaliar. */
+  const rm = useReducedMotion();
+  const dirigindo = largo && !rm && cabe;
   const trilhaRef = useRef<HTMLElement>(null);
   const painelRef = useRef<HTMLDivElement>(null);
   /* Ref, e não estado: virar `true` não deve re-renderizar a seção — e muito
@@ -115,28 +133,37 @@ export default function Contact() {
    * decisão não oscila.
    */
   useEffect(() => {
-    const avaliar = () => {
-      const painel = painelRef.current;
-      if (!painel || !window.matchMedia('(min-width: 1024px)').matches) {
-        setDirigindo(false);
-        return;
-      }
-      if (prefersReducedMotion()) {
-        setDirigindo(false);
-        return;
-      }
-      setDirigindo(painel.offsetHeight + RESERVA_CABECALHO <= window.innerHeight);
-    };
-    avaliar();
+    /* SIS-182 — as duas condições que NÃO dependem de medir nada saíram do corpo
+       do efeito para o render (`largo`, `rm`) e viraram a porta de entrada dele.
+       Antes eram dois `if` com `setDirigindo(false)` aqui dentro:
+
+         if (!painel || !window.matchMedia('(min-width: 1024px)').matches) { ... }
+         if (prefersReducedMotion()) { ... }
+
+       O observador e o listener de `resize` continuam, porque o que sobrou é o que
+       eles existem para vigiar: a altura do painel contra a da janela.
+
+       E a chamada de abertura (`avaliar()` solto, logo depois de declarado) TAMBÉM
+       saiu: era o último `setState` síncrono em efeito do arquivo. Não faltou
+       medição — o `ResizeObserver` entrega uma primeira observação do alvo assim
+       que ele é observado, de forma assíncrona, que é exatamente a medida que a
+       chamada solta buscava. Sair do caminho síncrono é o que tira este arquivo do
+       `react-hooks/set-state-in-effect`. */
+    if (!largo || rm) return;
+    const painel = painelRef.current;
+    if (!painel) return;
+
+    const avaliar = () =>
+      setCabe(painel.offsetHeight + RESERVA_CABECALHO <= window.innerHeight);
 
     const observador = new ResizeObserver(avaliar);
-    if (painelRef.current) observador.observe(painelRef.current);
+    observador.observe(painel);
     window.addEventListener('resize', avaliar);
     return () => {
       observador.disconnect();
       window.removeEventListener('resize', avaliar);
     };
-  }, []);
+  }, [largo, rm]);
 
   useEffect(() => {
     if (!dirigindo) return;

@@ -1,5 +1,19 @@
 'use client';
 
+/**
+ * SIS-188 — GUARDADO.
+ *
+ * Órfão de rota: `/eventos-inovacao` monta `EventsSpotlight` (SIS-166), não este
+ * palco. O import desta página está comentado de propósito, com o motivo, junto
+ * com o do `EventsMosaic`.
+ *
+ * Substituto atual: `EventsSpotlight`.
+ * Rota/issue que retirou: `/eventos-inovacao`, SIS-166.
+ * Volta se essa rota (ou outra) descomentar e montar de novo este palco de
+ * quinze telas no lugar do spotlight — decisão explícita, não por import
+ * acidental.
+ */
+
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
 import { motion } from 'motion/react';

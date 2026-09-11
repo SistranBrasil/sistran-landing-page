@@ -1,0 +1,38 @@
+imagem 1907×937
+direita   pico ciano  217 cor #0ed8f6 peso ~1px @ 1812,469
+topo      pico ciano  212 cor #0dd0f2 peso ~2px @ 1697,42
+base      pico ciano 193.5 cor #1ac5f2 peso ~2px @ 1697,892
+esquerda  pico ciano  9.5 cor #e0e6ed peso ~15px @ 84,469
+borda esquerda por cor: x 91 @ y 703 — folha #f4f8fc, fora #dee4eb (sombra, sem traço: ciano 9)
+
+margens (px de imagem → % da captura):
+  esquerda 91 → 4.77% da largura
+  direita  94 → 4.93% da largura
+  topo     42 → 4.48% da altura
+  base     44 → 4.70% da altura
+card 1721×850 (proporção 2.025)
+altura do card em % da captura: 90.72%
+canto sup. dir.: arco termina 13px depois da borda → raio ≈ 13px de imagem
+canto inf. dir.: arco termina 13px depois da borda → raio ≈ 13px de imagem
+
+intensidade do traço ao longo do percurso:
+  topo  (x:ciano) 114:6  228:7  342:99  456:99  570:98  684:98  798:98  912:98  1026:98  1140:99  1254:98  1368:99  1482:0  1596:203  1710:213  1824:6
+  base  (x:ciano) 114:10  228:16  342:16  456:16  570:16  684:16  798:16  912:46  1026:89  1140:119  1254:146  1368:165  1482:172  1596:174  1710:196  1824:7
+
+── EMENDA hero -> grade de marcas (scripts/medir-emenda-hero-grade.mjs, x=8) ──
+ANTES da correcao (com o ::before ainda ausente):
+  1440  acima 243,247,251 · aresta 244,248,252 · abaixo 244,248,253 · degrau 1 (dy=0)
+   390  acima  78, 84, 99 · aresta 244,248,252 · abaixo 244,248,253 · degrau 167 (dy=0)
+DEPOIS (.marcas-grade::before, so abaixo de 1024):
+  1440  degrau 1 (dy=0) — inalterado, o ::before nao vale nesta largura
+   390  acima 155,168,182 · aresta 244,248,252 · degrau 5 (dy=-22)
+        rampa lida linha a linha: 155 -> 242 nos 24px acima da aresta
+
+── GEOMETRIA DO CARD no percurso (scripts/capturar-hero-sis198.mjs, 900px de altura) ──
+1440, t=0 / 0.5 / 1: card 1300.3x817.2 · esq 69.8 · dir 69.8 · topo 41.4 · raio 20px · transform none
+ 390, t=0 / 0.5 / 1: card 390x900 (sangria) · margens 0 · raio 0px · transform none
+aresta da grade em top: 2340 / 1620 / 900 (1440) e 1530 / 1215 / 900 (390)
+  -> nas duas larguras a grade encosta no rodape da janela exatamente em t=1
+proporcao: 1300.3/817.2 = 1.591 a 1440x900. Nao e a 2.025 da referencia porque a
+  proporcao segue a JANELA: a mesma regra em 1907x937 devolve 1722x850.8 = 2.024,
+  que e a referencia de volta.

@@ -26,6 +26,9 @@ export type Partner = {
   icon: IconName;
   logo?: string;
   logoAlt?: string;
+  /** Imagem editorial usada no card horizontal da página de parceiros. */
+  cardImage: string;
+  cardImageAlt: string;
 };
 
 export const PARTNER_CATEGORIES: Record<PartnerCategory, { label: string }> = {
@@ -45,6 +48,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Shield',
     logo: '/images/samplemed-logo-vertical-rgb.png',
     logoAlt: 'Samplemed',
+    cardImage: '/parceiros-implementacoes/01.png',
+    cardImageAlt: 'Samplemed',
     description:
       'Um dos maiores especialistas no mercado de soluções de subscrição para seguros de pessoas. Oferece ecossistemas de soluções totalmente integráveis para os mais diversos níveis de riscos contribuindo para análises de riscos mais eficientes e democratizando o acesso aos seguros de pessoas.',
   },
@@ -55,6 +60,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Boxes',
     logo: '/images/PNG-LogoPega-Site.png',
     logoAlt: 'Pega',
+    cardImage: '/parceiros-implementacoes/02.png',
+    cardImageAlt: 'Pega',
     description:
       'Plataforma tecnológica de transformação digital presente nas maiores Seguradoras do mundo. Abordagem completa para desenhar e ativar aplicações omnichannel em tempo recorde, com foco em Customer Services, Marketing, Sales dentre outras.',
   },
@@ -66,6 +73,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Cpu',
     logo: '/images/st-it-sombra-branca.png',
     logoAlt: 'ST IT',
+    cardImage: '/parceiros-implementacoes/03-st-it-ai-ml-analytics-bg.png',
+    cardImageAlt: 'ST IT',
     description:
       'Empresa de tecnologia da informação que se destaca por oferecer soluções personalizadas em nuvem, otimizando operações, acelerando a inovação e impulsionando o crescimento sustentável de seus clientes.',
   },
@@ -76,6 +85,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Code2',
     logo: '/images/Microsoft-Azure.png',
     logoAlt: 'Microsoft Azure',
+    cardImage: '/parceiros-implementacoes/04-microsoft-azure-cloud-bg.png',
+    cardImageAlt: 'Microsoft Azure',
     description:
       'A Sistran Brasil é Microsoft Gold Certified Partner. Desenvolvimento de soluções com tecnologia Microsoft para prover soluções modernas e funcionais.',
   },
@@ -86,6 +97,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Workflow',
     logo: '/images/Logo-Virtusa-1200x416-1.png',
     logoAlt: 'Virtusa',
+    cardImage: '/parceiros-implementacoes/05-virtusa-pega-frameworks-bg.png',
+    cardImageAlt: 'Virtusa',
     description:
       'Maior fornecedora global de soluções Pega para seguradoras, com clientes na América, Europa, Japão e Oriente. Virtusa não só implanta soluções Pega como também é responsável pelo desenvolvimento de módulos da ferramenta, por encomenda da própria Pega; extensa cobertura de frameworks e aceleradores para Seguros e Life Sciences / Saúde, incluindo PLM (Provider Lifecycle Management) para gestão de profissionais, clínicas e hospitais contratados por planos de Saúde.',
   },
@@ -96,6 +109,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Layers',
     logo: '/images/AWS.png',
     logoAlt: 'AWS',
+    cardImage: '/parceiros-implementacoes/06-aws-cloud-ai-insurance-bg.png',
+    cardImageAlt: 'AWS',
     description:
       'Conheça a nova versão do Connect API na nuvem AWS, com acesso à tecnologia de ponta para alavancar processos e negócios em Seguros. Através de componentes de Inteligência Artificial para tratamento de texto, imagem e fraude, apoiados em Machine Learning, desenhamos as melhores soluções para Vendas e Sinistros, 100% customizadas a cada cliente.',
   },
@@ -107,6 +122,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Users',
     logo: '/images/Sys4b.png',
     logoAlt: 'Sys4b',
+    cardImage: '/parceiros-implementacoes/07-sys4b-crm-cx-bg.png',
+    cardImageAlt: 'Sys4b',
     description:
       'Consultoria especializada em soluções Salesforce, com foco em CRM (Customer Relationship Management) e CX (Customer Experience).',
   },
@@ -118,6 +135,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Briefcase',
     logo: '/images/Addactis-logo.png',
     logoAlt: 'Addactis',
+    cardImage: '/parceiros-implementacoes/08-addactis-actuarial-bg.png',
+    cardImageAlt: 'Addactis',
     /* No site este card repete, palavra por palavra, o texto da AWS — inclusive
        "Acesso ao site AWS". Nao ha descricao real da Addactis no site, então o
        card fica apenas com nome e area de atuacao, sem texto emprestado de
@@ -131,6 +150,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Building2',
     logo: '/images/itg-logo.png',
     logoAlt: 'ITG',
+    cardImage: '/parceiros-implementacoes/09-itg-accounting-treasury-bg.png',
+    cardImageAlt: 'ITG',
     description:
       'Soluções tecnológicas e serviços de consultoria para o mercado segurador, auxiliando as seguradoras a melhorar sua eficiência e cumprir as exigências regulatórias.',
   },
@@ -142,6 +163,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Shield',
     logo: '/images/Friss.png',
     logoAlt: 'FRISS',
+    cardImage: '/parceiros-implementacoes/10-friss-fraud-prevention-bg.png',
+    cardImageAlt: 'FRISS',
     description:
       'Soluções de detecção de fraudes e gerenciamento de riscos para o setor de seguros. Seu foco principal é auxiliar seguradoras a identificar e prevenir fraudes em sinistros, subscrição e investigações especiais.',
   },
@@ -172,6 +195,8 @@ export const PARTNERS: readonly Partner[] = [
        entraria como decorativa — que é o oposto do padrão dos outros quinze. */
     logo: '/images/Nuclea-logo.png',
     logoAlt: 'Núclea',
+    cardImage: '/parceiros-implementacoes/11-nuclea-data-integrations-bg.png',
+    cardImageAlt: 'Núclea',
     description:
       'Atua no setor financeiro, oferecendo soluções inovadoras para o mercado de pagamentos e registros de ativos.',
   },
@@ -183,6 +208,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Code2',
     logo: '/images/Sensedia-logo-website-UPDATED2.png',
     logoAlt: 'Sensedia',
+    cardImage: '/parceiros-implementacoes/12-sensedia-api-management-bg.png',
+    cardImageAlt: 'Sensedia',
     description:
       'Especializada em soluções de API (Interface de Programação de Aplicativos) e integração de sistemas. Promove a conexão dos seus sistemas, dados e serviços de forma segura e eficiente, impulsionando a transformação digital e a inovação.',
   },
@@ -194,6 +221,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Boxes',
     logo: '/images/SAP.png',
     logoAlt: 'SAP',
+    cardImage: '/parceiros-implementacoes/13-sap-erp-bg.png',
+    cardImageAlt: 'SAP',
     description:
       'Desenvolvimento de soluções de gestão empresarial (ERP - Enterprise Resource Planning). Fundada em 1972, a SAP se tornou uma das maiores empresas de software do mundo, com presença em mais de 180 países.',
   },
@@ -205,6 +234,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Leaf',
     logo: '/images/Picsel-logo.png',
     logoAlt: 'Picsel',
+    cardImage: '/parceiros-implementacoes/14-picsel-agro-insurance-bg.png',
+    cardImageAlt: 'Picsel',
     description:
       'A solução mais avançada para Distribuição, Monitoração e Sinistros em Agro, com Integrador de Sistemas.',
   },
@@ -216,6 +247,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Zap',
     logo: '/images/Earnix_logo.png',
     logoAlt: 'Earnix',
+    cardImage: '/parceiros-implementacoes/15-earnix-smart-pricing-bg.png',
+    cardImageAlt: 'Earnix',
     description:
       'Inteligência artificial para automatizar e aprimorar a precificação e a personalização de seguros em tempo real.',
   },
@@ -227,6 +260,8 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'HeartHandshake',
     logo: '/images/Dacadoo-Logo_1.png',
     logoAlt: 'Dacadoo',
+    cardImage: '/parceiros-implementacoes/16-dacadoo-life-risk-bg.png',
+    cardImageAlt: 'Dacadoo',
     /* Site: "ajudando seguros a promover o bem-estar" — falta a palavra
        "seguradoras"; completada para a frase fazer sentido. */
     description:

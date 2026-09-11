@@ -6,7 +6,6 @@ import Accelerators from '@/components/Accelerators';
 import Consulting from '@/components/Consulting';
 import ContactCTA from '@/components/ContactCTA';
 import ServicesJourneyStage from '@/components/ui/ServicesJourneyStage';
-import { scenesIntro, mosaicIntro } from '@/data/legacy';
 
 export const metadata = {
   title: 'Soluções, Serviços e Consultoria · Sistran',
@@ -45,7 +44,7 @@ export default function Page() {
       {/* SIS-100 — a barra passa a ser SÓ de tela estreita (`xl:hidden`).
 
           De 1280px para cima quem navega esta página é o navegador lateral de
-          seções (montado no `PageShell`), com os mesmos quatro destinos: manter
+          seções (montado no `PageShell`), com os mesmos três destinos: manter
           as duas seria a mesma navegação duas vezes na mesma tela, e a barra é a
           que atrapalha, porque ocupa altura logo abaixo do hero.
 
@@ -81,7 +80,6 @@ export default function Page() {
             <AnchorPill href="#tecnologia-disruptiva" label="Tecnologia Disruptiva" />
             <AnchorPill href="#servicos-diferenciais" label="Serviços" />
             <AnchorPill href="#consultoria" label="Consultoria" />
-            <AnchorPill href="#transformacao-legado" label="Transformação de Legado" />
           </div>
         </nav>
       </div>
@@ -146,30 +144,7 @@ export default function Page() {
              desde a SIS-93, a MESMA classe usada em Tecnologia Disruptiva. */}
       <Consulting />
 
-      {/* 4. Transformação de Legado — a pagina /transformacao-legado existia sem
-             nenhum link de entrada. Este é o ponto de acesso: o texto do card é
-             o proprio conteudo da pagina (scenesIntro/mosaicIntro em
-             src/data/legacy.ts), sem copy nova. */}
-      <section id="transformacao-legado" className="section-py scroll-mt-32 relative overflow-hidden">
-        <div aria-hidden className="grade-tecnica" />
-        <div className="container-lp">
-          <span className="tag-section">{scenesIntro.kicker}</span>
-          <h2 className="mt-4 max-w-3xl font-display text-section text-white">
-            Transformação de Legado
-          </h2>
-          <p className="mt-5 max-w-3xl text-lg leading-relaxed text-white/85">
-            {scenesIntro.text}
-          </p>
-          <p className="mt-4 max-w-3xl text-lg leading-relaxed text-white/85">
-            {mosaicIntro.text}
-          </p>
-          <Link href="/transformacao-legado" className="btn-primary mt-10 inline-flex">
-            Ver o método, a arquitetura e o roadmap
-          </Link>
-        </div>
-      </section>
-
-      {/* 5. CTA final */}
+      {/* 4. CTA final */}
       <ContactCTA />
     </PageShell>
   );

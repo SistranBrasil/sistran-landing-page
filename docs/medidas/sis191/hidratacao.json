@@ -1,0 +1,76 @@
+{
+  "capturas": [],
+  "hidratacao": [
+    {
+      "largura": 1440,
+      "altura": 900,
+      "semJavaScript": {
+        "modo": "lista",
+        "padding": "128px",
+        "alturaSecao": 4370.5,
+        "topoSecaoNoDocumento": 3124.9,
+        "alturaDocumento": 21208
+      },
+      "hidratado": {
+        "modo": "scroll",
+        "padding": "0px",
+        "alturaSecao": 2700,
+        "topoSecaoNoDocumento": 3124.9,
+        "alturaDocumento": 19538,
+        "janela": 900,
+        "rolagem": 0,
+        "cls": 0,
+        "deslocamentos": [
+          {
+            "valor": 0,
+            "entradaRecente": false,
+            "fontes": [
+              {
+                "no": "SPAN",
+                "classe": "scrollspy-rotulo ml-3 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.16em] transition-opacity text-white opacity-100"
+              }
+            ]
+          },
+          {
+            "valor": 0,
+            "entradaRecente": false,
+            "fontes": [
+              {
+                "no": "SPAN",
+                "classe": "scrollspy-rotulo ml-3 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.16em] transition-opacity text-white opacity-100"
+              }
+            ]
+          }
+        ]
+      },
+      "paddingQueSai": 128,
+      "variacaoDaSecao": -1670.5,
+      "distanciaDaJanela": 2224.9
+    },
+    {
+      "largura": 1280,
+      "altura": 760,
+      "semJavaScript": {
+        "modo": "lista",
+        "padding": "128px",
+        "alturaSecao": 4363.3,
+        "topoSecaoNoDocumento": 2908.8,
+        "alturaDocumento": 19982
+      },
+      "hidratado": {
+        "modo": "scroll",
+        "padding": "0px",
+        "alturaSecao": 2280,
+        "topoSecaoNoDocumento": 2908.8,
+        "alturaDocumento": 17899,
+        "janela": 760,
+        "rolagem": 0,
+        "cls": 0,
+        "deslocamentos": []
+      },
+      "paddingQueSai": 128,
+      "variacaoDaSecao": -2083.3,
+      "distanciaDaJanela": 2148.8
+    }
+  ]
+}

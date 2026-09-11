@@ -4,7 +4,9 @@
  * SIS-159 — TRILHA HORIZONTAL DOS PARCEIROS de `/parceiros-e-implementacoes`.
  *
  * Substitui a grade bento de dezesseis cards (`PartnersGrid`), que continua no
- * projeto, comentada na montagem do `page.tsx` com o motivo.
+ * projeto como GUARDADO (SIS-188). A rota hoje monta `PartnerTerminalCards`
+ * (SIS-201); este Track também saiu do mount e não há import comentado do
+ * `PartnersGrid` no `page.tsx`.
  *
  * O desenho: o palco prende na janela, os dezesseis painéis deslizam na
  * horizontal com o scroll, o ativo em opacidade e escala plenas e os vizinhos

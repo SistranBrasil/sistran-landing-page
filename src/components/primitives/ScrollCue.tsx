@@ -3,6 +3,13 @@
 import { motion, useMotionValue, useSpring } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { useReducedMotion } from '@/lib/motion';
+import { criarConsultaDeMedia } from '@/lib/mediaStore';
+
+/* SIS-182 — achada pela varredura: não é limiar de layout, é CAPACIDADE de
+   ponteiro, mas o defeito era o mesmo (`setAwake(true)` síncrono dentro do efeito,
+   que o lint acusava em `ScrollCue.tsx:43`). Sem cursor para seguir, a pastilha
+   nasce acordada e o listener nem entra. */
+const usePonteiroFino = criarConsultaDeMedia('(hover: hover) and (pointer: fine)');
 
 /**
  * Convite de scroll que acompanha o ponteiro.
@@ -26,7 +33,13 @@ export function ScrollCue({ label = 'Role para explorar' }: { label?: string }) 
   // esquerdo antes do primeiro movimento do ponteiro.
   const x = useMotionValue(-200);
   const y = useMotionValue(-200);
-  const [awake, setAwake] = useState(false);
+  const [seguiu, setSeguiu] = useState(false);
+  const ponteiroFino = usePonteiroFino();
+  /* SIS-182 — `awake` deixou de ser estado escrito pelo efeito e passou a ser
+     derivado: sem ponteiro fino ela já nasce acordada, com ponteiro fino ela
+     acorda no primeiro `pointermove`. Antes o mesmo resultado vinha de um
+     `setAwake(true)` síncrono dentro do efeito, que é o defeito da issue. */
+  const awake = !ponteiroFino || seguiu;
 
   /* Mola curta: o rastro atrasa o suficiente para o aviso parecer preso ao
      cursor sem grudar nele. Sob movimento reduzido a mola é rígida — a pastilha
@@ -38,21 +51,19 @@ export function ScrollCue({ label = 'Role para explorar' }: { label?: string }) 
   const smoothY = useSpring(y, config);
 
   useEffect(() => {
-    // Ponteiro grosso não tem cursor para seguir: o listener nem entra.
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-      setAwake(true);
-      return;
-    }
+    // Ponteiro grosso não tem cursor para seguir: o listener nem entra. A leitura
+    // vem do store (`ponteiroFino`), e não de `matchMedia` aqui dentro — SIS-182.
+    if (!ponteiroFino) return;
 
     const move = (event: PointerEvent) => {
       x.set(event.clientX);
       y.set(event.clientY);
-      setAwake(true);
+      setSeguiu(true);
     };
 
     window.addEventListener('pointermove', move, { passive: true });
     return () => window.removeEventListener('pointermove', move);
-  }, [x, y]);
+  }, [x, y, ponteiroFino]);
 
   return (
     <motion.div

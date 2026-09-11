@@ -139,7 +139,11 @@ export default function Page() {
 
       <div className="section-light">
         {/* Escritórios BRASIL */}
-        <section aria-labelledby="escritorios" className="section-py">
+        {/* SIS-191 — `section-py` saiu apenas daqui. O espaçamento equivalente
+            do modo lista passou para `.offices-section`; no modo scroll a cena
+            já reserva, dentro do palco, a folga do header, e somar os 8rem do
+            wrapper criava uma faixa clara vazia antes do primeiro quadro útil. */}
+        <section aria-labelledby="escritorios" className="offices-section">
           {/* SIS-161 — O TITULO DESTA SECAO MUDOU DE CASA, e nao de palavras: ele
               agora é impresso DENTRO de `OfficesScene`, na coluna de leitura a
               esquerda do mapa, pelo mesmo `TituloAceso` com o mesmo `id` e o

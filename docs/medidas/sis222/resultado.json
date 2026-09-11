@@ -1,0 +1,97 @@
+{
+  "baseURL": "http://localhost:3000",
+  "failures": [],
+  "results": {
+    "hardInitial": {
+      "busy": "true",
+      "inert": true,
+      "heroReady": "false",
+      "mapReady": "false",
+      "timedOut": "false",
+      "scrollLocked": true,
+      "provider": "vetorial",
+      "overlay": true
+    },
+    "hardReveal": {
+      "busy": "false",
+      "inert": false,
+      "heroReady": "true",
+      "mapReady": "true",
+      "timedOut": "false",
+      "scrollLocked": false,
+      "provider": "vetorial",
+      "canvas": 1
+    },
+    "softInitial": {
+      "busy": "true",
+      "inert": true,
+      "heroReady": "false",
+      "mapReady": "false",
+      "timedOut": "false",
+      "scrollLocked": true,
+      "provider": "vetorial"
+    },
+    "softReveal": {
+      "busy": "false",
+      "inert": false,
+      "heroReady": "true",
+      "mapReady": "true",
+      "timedOut": "false",
+      "scrollLocked": false,
+      "provider": "vetorial"
+    },
+    "softReturnInitial": {
+      "busy": "true",
+      "inert": true,
+      "heroReady": "true",
+      "mapReady": "false",
+      "timedOut": "false",
+      "scrollLocked": true,
+      "provider": "vetorial"
+    },
+    "softReturnReveal": {
+      "busy": "false",
+      "inert": false,
+      "heroReady": "true",
+      "mapReady": "true",
+      "timedOut": "false",
+      "scrollLocked": false,
+      "provider": "vetorial"
+    },
+    "timeout": {
+      "busy": "false",
+      "inert": false,
+      "heroReady": "false",
+      "mapReady": "true",
+      "timedOut": "true",
+      "scrollLocked": false,
+      "provider": "mosaico",
+      "elapsedMs": 11040
+    },
+    "reduce-sistema": {
+      "busy": "true",
+      "inert": true,
+      "heroReady": "false",
+      "mapReady": "false",
+      "timedOut": "false",
+      "scrollLocked": true,
+      "provider": "vetorial",
+      "transitionDuration": "1e-05s",
+      "signalAnimation": "none"
+    },
+    "reduce-manual": {
+      "busy": "true",
+      "inert": true,
+      "heroReady": "false",
+      "mapReady": "false",
+      "timedOut": "false",
+      "scrollLocked": true,
+      "provider": "vetorial",
+      "transitionDuration": "1e-05s",
+      "signalAnimation": "none"
+    },
+    "isolation": {
+      "overlays": 0
+    }
+  }
+}

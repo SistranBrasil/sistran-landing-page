@@ -1,0 +1,876 @@
+{
+  "fase": "depois",
+  "viewport": "1440x900",
+  "metodo": "docs/medidas/COMO-MEDIR-CONTRASTE.md",
+  "resultados": [
+    {
+      "nome": "rótulo 1 (16px) — aceso",
+      "seletor": ".impact-item:nth-child(1) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        4,
+        33,
+        70
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        248,
+        250,
+        252
+      ],
+      "contrasteCalculado": 15.31,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 94,
+        "y": 444,
+        "width": 136.7,
+        "height": 48
+      }
+    },
+    {
+      "nome": "rótulo 1 (16px) — apagado",
+      "seletor": ".impact-item:nth-child(1) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        3,
+        32,
+        69
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        140,
+        154,
+        171
+      ],
+      "contrasteCalculado": 5.65,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 94,
+        "y": 444,
+        "width": 136.7,
+        "height": 48
+      }
+    },
+    {
+      "nome": "número 1 (ponta escura do degradê) — aceso",
+      "seletor": ".impact-item:nth-child(1) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        4,
+        33,
+        70
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        127,
+        230,
+        255
+      ],
+      "contrasteCalculado": 11.18,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 94,
+        "y": 405.61,
+        "width": 67.53,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "número 1 (ponta escura do degradê) — apagado",
+      "seletor": ".impact-item:nth-child(1) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        4,
+        33,
+        70
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        73,
+        143,
+        174
+      ],
+      "contrasteCalculado": 4.44,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 94,
+        "y": 405.61,
+        "width": 67.53,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "rótulo 2 (16px) — aceso",
+      "seletor": ".impact-item:nth-child(2) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        4,
+        32,
+        68
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        248,
+        250,
+        252
+      ],
+      "contrasteCalculado": 15.5,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 283.38,
+        "y": 444,
+        "width": 136.7,
+        "height": 72
+      }
+    },
+    {
+      "nome": "rótulo 2 (16px) — apagado",
+      "seletor": ".impact-item:nth-child(2) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        4,
+        32,
+        68
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        141,
+        154,
+        171
+      ],
+      "contrasteCalculado": 5.67,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 283.38,
+        "y": 444,
+        "width": 136.7,
+        "height": 72
+      }
+    },
+    {
+      "nome": "número 2 (ponta escura do degradê) — aceso",
+      "seletor": ".impact-item:nth-child(2) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        4,
+        32,
+        68
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        127,
+        230,
+        255
+      ],
+      "contrasteCalculado": 11.32,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 283.38,
+        "y": 405.61,
+        "width": 49.28,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "número 2 (ponta escura do degradê) — apagado",
+      "seletor": ".impact-item:nth-child(2) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        4,
+        31,
+        68
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        73,
+        142,
+        173
+      ],
+      "contrasteCalculado": 4.48,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 283.38,
+        "y": 405.61,
+        "width": 49.28,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "rótulo 3 (16px) — aceso",
+      "seletor": ".impact-item:nth-child(3) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        4,
+        31,
+        66
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        248,
+        250,
+        252
+      ],
+      "contrasteCalculado": 15.68,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 472.75,
+        "y": 444,
+        "width": 63.25,
+        "height": 24
+      }
+    },
+    {
+      "nome": "rótulo 3 (16px) — apagado",
+      "seletor": ".impact-item:nth-child(3) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        3,
+        30,
+        66
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        140,
+        153,
+        170
+      ],
+      "contrasteCalculado": 5.72,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 472.75,
+        "y": 444,
+        "width": 63.25,
+        "height": 24
+      }
+    },
+    {
+      "nome": "número 3 (ponta escura do degradê) — aceso",
+      "seletor": ".impact-item:nth-child(3) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        4,
+        30,
+        66
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        127,
+        230,
+        255
+      ],
+      "contrasteCalculado": 11.55,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 472.75,
+        "y": 405.61,
+        "width": 67.53,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "número 3 (ponta escura do degradê) — apagado",
+      "seletor": ".impact-item:nth-child(3) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        3,
+        30,
+        66
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        72,
+        142,
+        172
+      ],
+      "contrasteCalculado": 4.53,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 472.75,
+        "y": 405.61,
+        "width": 67.53,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "rótulo 4 (16px) — aceso",
+      "seletor": ".impact-item:nth-child(4) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        3,
+        30,
+        65
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        248,
+        250,
+        252
+      ],
+      "contrasteCalculado": 15.86,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 662.14,
+        "y": 444,
+        "width": 136.7,
+        "height": 96
+      }
+    },
+    {
+      "nome": "rótulo 4 (16px) — apagado",
+      "seletor": ".impact-item:nth-child(4) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        3,
+        30,
+        65
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        140,
+        153,
+        170
+      ],
+      "contrasteCalculado": 5.73,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 662.14,
+        "y": 444,
+        "width": 136.7,
+        "height": 96
+      }
+    },
+    {
+      "nome": "número 4 (ponta escura do degradê) — aceso",
+      "seletor": ".impact-item:nth-child(4) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        3,
+        29,
+        65
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        127,
+        230,
+        255
+      ],
+      "contrasteCalculado": 11.68,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 662.14,
+        "y": 405.61,
+        "width": 67.53,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "número 4 (ponta escura do degradê) — apagado",
+      "seletor": ".impact-item:nth-child(4) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        3,
+        29,
+        65
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        72,
+        142,
+        171
+      ],
+      "contrasteCalculado": 4.56,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 662.14,
+        "y": 405.61,
+        "width": 67.53,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "rótulo 5 (16px) — aceso",
+      "seletor": ".impact-item:nth-child(5) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        4,
+        53,
+        96
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        248,
+        250,
+        252
+      ],
+      "contrasteCalculado": 11.92,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 851.52,
+        "y": 444,
+        "width": 136.72,
+        "height": 48
+      }
+    },
+    {
+      "nome": "rótulo 5 (16px) — apagado",
+      "seletor": ".impact-item:nth-child(5) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        4,
+        53,
+        96
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        141,
+        163,
+        183
+      ],
+      "contrasteCalculado": 4.79,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 851.52,
+        "y": 444,
+        "width": 136.72,
+        "height": 48
+      }
+    },
+    {
+      "nome": "número 5 (ponta escura do degradê) — aceso",
+      "seletor": ".impact-item:nth-child(5) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        5,
+        38,
+        73
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        127,
+        230,
+        255
+      ],
+      "contrasteCalculado": 10.63,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 851.52,
+        "y": 405.61,
+        "width": 67.53,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "número 5 (ponta escura do degradê) — apagado",
+      "seletor": ".impact-item:nth-child(5) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        5,
+        38,
+        73
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        73,
+        146,
+        175
+      ],
+      "contrasteCalculado": 4.36,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 851.52,
+        "y": 405.61,
+        "width": 67.53,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "rótulo 6 (16px) — aceso",
+      "seletor": ".impact-item:nth-child(6) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        3,
+        30,
+        66
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        248,
+        250,
+        252
+      ],
+      "contrasteCalculado": 15.83,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 1040.91,
+        "y": 444,
+        "width": 136.7,
+        "height": 48
+      }
+    },
+    {
+      "nome": "rótulo 6 (16px) — apagado",
+      "seletor": ".impact-item:nth-child(6) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        3,
+        30,
+        66
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        140,
+        153,
+        170
+      ],
+      "contrasteCalculado": 5.72,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 1040.91,
+        "y": 444,
+        "width": 136.7,
+        "height": 48
+      }
+    },
+    {
+      "nome": "número 6 (ponta escura do degradê) — aceso",
+      "seletor": ".impact-item:nth-child(6) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        4,
+        36,
+        76
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        127,
+        230,
+        255
+      ],
+      "contrasteCalculado": 10.77,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 1040.91,
+        "y": 405.61,
+        "width": 49.28,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "número 6 (ponta escura do degradê) — apagado",
+      "seletor": ".impact-item:nth-child(6) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        3,
+        36,
+        76
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        72,
+        145,
+        176
+      ],
+      "contrasteCalculado": 4.38,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 1040.91,
+        "y": 405.61,
+        "width": 49.28,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "rótulo 7 (16px) — aceso",
+      "seletor": ".impact-item:nth-child(7) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        5,
+        31,
+        67
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        248,
+        250,
+        252
+      ],
+      "contrasteCalculado": 15.64,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 1230.28,
+        "y": 456,
+        "width": 136.72,
+        "height": 48
+      }
+    },
+    {
+      "nome": "rótulo 7 (16px) — apagado",
+      "seletor": ".impact-item:nth-child(7) .impact-rotulo",
+      "piso": 4.5,
+      "tamanho": "16px",
+      "tintaBase": [
+        248,
+        250,
+        252
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        3,
+        30,
+        67
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        140,
+        153,
+        171
+      ],
+      "contrasteCalculado": 5.71,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 1230.28,
+        "y": 456,
+        "width": 136.72,
+        "height": 48
+      }
+    },
+    {
+      "nome": "número 7 (ponta escura do degradê) — aceso",
+      "seletor": ".impact-item:nth-child(7) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 1,
+      "piorFundo": [
+        3,
+        29,
+        64
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        127,
+        230,
+        255
+      ],
+      "contrasteCalculado": 11.7,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 1230.28,
+        "y": 417.61,
+        "width": 49.28,
+        "height": 30.39
+      }
+    },
+    {
+      "nome": "número 7 (ponta escura do degradê) — apagado",
+      "seletor": ".impact-item:nth-child(7) .impact-valor",
+      "piso": 3,
+      "tamanho": "32px",
+      "tintaBase": [
+        127,
+        230,
+        255
+      ],
+      "alfaEfetivo": 0.56,
+      "piorFundo": [
+        3,
+        28,
+        64
+      ],
+      "tintaEfetivaNoPiorFundo": [
+        72,
+        141,
+        171
+      ],
+      "contrasteCalculado": 4.56,
+      "passa": true,
+      "proveniencia": "retângulo do próprio alvo; toda tinta da lista, ícones, divisórias, curvas, malha e trilho ocultos; .impact-valor sem background-image e filter",
+      "retangulo": {
+        "x": 1230.28,
+        "y": 417.61,
+        "width": 49.28,
+        "height": 30.39
+      }
+    }
+  ],
+  "todosPassam": true
+}

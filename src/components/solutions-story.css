@@ -1,0 +1,414 @@
+/* SIS-196 — storytelling em fluxo + mídia sticky.
+   O estado sem `data-dirigindo` é o fallback seguro para mobile, reduce e no-JS. */
+
+.story-solucoes {
+  /* Variantes sobre fundo claro, medidas contra o tom mais escuro do gradiente
+     (#cfe7f7): ink 13.36:1, muted 4.76:1 e signal 4.52:1. */
+  --motion-ink: #041b3d;
+  --motion-muted: #4d6579;
+  --motion-signal: #006f89;
+  --story-ink: var(--motion-ink);
+  --story-muted: var(--motion-muted);
+  --story-signal: var(--motion-signal);
+  /* Sombra das mídias — duas camadas, nas tintas da marca e sempre em `filter:
+     drop-shadow()`, nunca `box-shadow`: o painel do desktop é RECORTADO, e
+     `box-shadow` desenharia o retângulo da caixa, não a silhueta com o degrau da
+     esquerda. `drop-shadow` lê o canal alfa do que foi pintado, então segue o
+     recorte (e, nas figures, a borda arredondada).
+     Corpo em navy da própria seção (`--motion-ink`, #041b3d) para a foto pousar;
+     contato curto no azul de marca (#0079cb) para a aresta não ficar cinza. As
+     opacidades são baixas de propósito (0.14/0.10): sobre o claro da home a
+     sombra tem de sugerir profundidade, não desenhar uma moldura.
+     Os dois valores das figures são MENORES por medida de espaço, não de gosto:
+     a 390px a figure deixa 15,6px até a aresta de `overflow: clip` da seção, e
+     desfoque maior que isso seria sombra cortada. Com 12px sobram 3,6px de folga
+     na conta conservadora da sonda (deslocamento + desfoque INTEIRO, o dobro do
+     alcance visível). O painel, que a 1440 tem 57,6px de corredor, cabe folgado
+     com 22px. */
+  --story-sombra-painel:
+    drop-shadow(0 10px 22px rgba(4, 27, 61, 0.14)) drop-shadow(0 2px 6px rgba(0, 121, 203, 0.1));
+  --story-sombra-figura:
+    drop-shadow(0 8px 12px rgba(4, 27, 61, 0.13)) drop-shadow(0 1px 4px rgba(0, 121, 203, 0.09));
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  padding-block: clamp(72px, 10vh, 128px) clamp(88px, 12vh, 144px);
+  color: var(--story-ink);
+  background: var(--fundo-claro-secao);
+}
+
+.story-solucoes__fundo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* SIS-199 — os três números desta grade (passo 64px, tinta `rgba(4,58,99,.08)`,
+   opacidade 0.32) foram promovidos a superfície da home inteira e viraram tokens no
+   `:root` (`--grade-fina-*`). Passam a ser lidos daqui, e não repetidos: com dois
+   consumidores em arquivos distantes, um passo escrito duas vezes é como as duas
+   malhas divergem sem ninguém ver — a mesma razão escrita em `--grade-modulo`.
+   Os valores não mudaram; só saíram de literal para token.
+
+   ⚠️ NA HOME ESTA CAMADA ESTÁ `display: none` (`.home-canvas .story-solucoes__grade`,
+   em `globals.css`), porque o canvas já pinta a mesma malha no mesmo ancoramento e
+   as duas somariam — a seção ficaria com o dobro da tinta, um degrau de MALHA no
+   lugar do degrau de cor que a issue veio tirar. A regra fica viva aqui para a seção
+   continuar de pé se algum dia for montada fora da home. */
+.story-solucoes__grade {
+  position: absolute;
+  inset: 0;
+  opacity: var(--grade-fina-opacidade);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      var(--grade-fina-linha) 0 1px,
+      transparent 1px var(--grade-fina-modulo)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      var(--grade-fina-linha) 0 1px,
+      transparent 1px var(--grade-fina-modulo)
+    );
+  mask-image: radial-gradient(ellipse 92% 84% at 50% 44%, #000 25%, transparent 82%);
+  -webkit-mask-image: radial-gradient(ellipse 92% 84% at 50% 44%, #000 25%, transparent 82%);
+}
+
+.story-solucoes__brilho {
+  position: absolute;
+  right: -8%;
+  top: 17%;
+  width: 48vw;
+  height: 48vw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(14, 216, 246, 0.13), transparent 68%);
+}
+
+.story-solucoes__layout {
+  position: relative;
+  z-index: 1;
+  width: min(92vw, 1640px);
+  margin-inline: auto;
+}
+
+.story-solucoes__copy {
+  min-width: 0;
+}
+
+.story-solucoes__cabecalho {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(0.8rem, 1.4vw, 1.25rem);
+  margin-bottom: clamp(2.75rem, 7vh, 6rem);
+}
+
+.story-solucoes__eyebrow {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  max-width: 48ch;
+  font-size: clamp(0.82rem, 0.95vw, 0.98rem);
+  line-height: 1.5;
+  color: #375a77;
+}
+
+.story-solucoes__eyebrow-ponto {
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  margin-top: 0.45em;
+  border-radius: 50%;
+  background: var(--story-signal);
+}
+
+.story-solucoes__titulo {
+  margin: 0;
+  color: var(--story-ink);
+  font-size: clamp(2rem, 3.4vw, 3.4rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+}
+
+.story-solucoes__rotulo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  color: #345c7b;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.story-solucoes__rotulo-linha {
+  width: clamp(28px, 4vw, 52px);
+  height: 1px;
+  background: #198fb0;
+}
+
+.story-solucoes__contador {
+  display: none;
+}
+
+.story-passos {
+  display: grid;
+  gap: clamp(3.25rem, 8vw, 6rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.story-passo {
+  display: grid;
+  gap: 1rem;
+}
+
+.story-passo__titulo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin: 0;
+  max-width: 42ch;
+  color: #294f6c;
+  font-size: clamp(0.9rem, 1.1vw, 1.05rem);
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.story-passo__num {
+  flex: 0 0 auto;
+  color: var(--story-signal);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.14em;
+}
+
+.story-frase {
+  max-width: 19ch;
+  margin: 0;
+  color: var(--story-ink);
+  font-size: clamp(1.65rem, 3.1vw, 3.85rem);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+}
+
+.story-frase .progressive-char {
+  display: inline;
+}
+
+.story-passo__midia,
+.story-solucoes__midia {
+  position: relative;
+  margin: 0;
+}
+
+/* O painel do desktop deixou de recortar e de pintar: quem faz as duas coisas é o
+   nó interno (`__midia-recorte`), e o painel fica sendo só a caixa `sticky` que
+   carrega a sombra. Precisa ser assim para a sombra existir:
+   `clip-path` é aplicado DEPOIS do `filter`, então painel recortado + painel com
+   `drop-shadow` recortaria a própria sombra que acabou de desenhar; e um fundo
+   opaco no painel faria o `drop-shadow` seguir o RETÂNGULO dele, não o degrau.
+   Superfície, recorte e `overflow` desceram um nível — dimensões, `sticky` e o
+   crossfade continuam onde estavam. */
+.story-solucoes__midia-recorte {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #d7e8f3;
+}
+
+.story-passo__midia {
+  overflow: hidden;
+  width: 100%;
+  height: min(58svh, 34rem);
+  margin-top: 0.5rem;
+  border-radius: 0.75rem;
+  background: #d7e8f3;
+  /* A figure não tem recorte, então a sombra vai nela mesma. Não pode ir no
+     `.story-media__item`: `html[data-motion="reduce"]` zera `filter` nessa classe
+     (globals.css) e a sombra sumiria justamente no modo em que ela é a única
+     coisa que separa a foto do fundo. */
+  filter: var(--story-sombra-figura);
+}
+
+.story-passo__midia img,
+.story-solucoes__midia img {
+  object-fit: cover;
+}
+
+/* O painel desktop é desligado por padrão: assim no-JS nunca empilha imagens. */
+.story-solucoes__midia-col {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .story-solucoes[data-dirigindo] {
+    padding-block: clamp(80px, 11vh, 132px) clamp(64px, 8vh, 96px);
+  }
+
+  .story-solucoes[data-dirigindo] .story-solucoes__layout {
+    display: grid;
+    /* 46/54 é estrutural: as caixas pertencem a colunas distintas e não podem
+       intersectar, independentemente do conteúdo ou do z-index. */
+    grid-template-columns: minmax(0, 46fr) minmax(0, 54fr);
+    column-gap: clamp(2rem, 4vw, 5rem);
+    align-items: start;
+  }
+
+  .story-solucoes[data-dirigindo] .story-solucoes__copy {
+    display: grid;
+    grid-template-columns: clamp(3rem, 4vw, 4.5rem) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .story-solucoes[data-dirigindo] .story-solucoes__cabecalho {
+    grid-column: 1 / -1;
+    margin-bottom: clamp(4rem, 9vh, 8rem);
+  }
+
+  .story-solucoes[data-dirigindo] .story-solucoes__contador {
+    grid-column: 1;
+    grid-row: 2;
+    position: sticky;
+    top: 50vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    color: var(--story-muted);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+  }
+
+  .story-solucoes__contador-atual {
+    color: var(--story-signal);
+    font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+  }
+
+  .story-solucoes__contador-total {
+    color: var(--story-muted);
+    font-size: 0.72rem;
+  }
+
+  .story-solucoes[data-dirigindo] .story-passos {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .story-solucoes[data-dirigindo] .story-passo {
+    min-height: 78vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(0.9rem, 1.4vw, 1.4rem);
+  }
+
+  .story-solucoes[data-dirigindo] .story-passo__titulo {
+    color: var(--story-muted);
+    transition: color 450ms var(--motion-ease-out);
+  }
+
+  .story-solucoes[data-dirigindo] .story-passo[data-ativo] .story-passo__titulo {
+    color: #183f5d;
+  }
+
+  .story-solucoes[data-dirigindo] .story-passo__num {
+    opacity: 0.62;
+    transform: translateY(8px);
+    transition:
+      color 450ms var(--motion-ease-out),
+      opacity 450ms var(--motion-ease-out),
+      transform 450ms var(--motion-ease-out);
+  }
+
+  .story-solucoes[data-dirigindo] .story-passo[data-ativo] .story-passo__num {
+    color: var(--story-signal);
+    opacity: 1;
+    transform: none;
+  }
+
+  .story-solucoes[data-dirigindo] .story-frase {
+    max-width: 18ch;
+    font-size: clamp(2.25rem, 3.1vw, 3.85rem);
+  }
+
+  .story-solucoes[data-dirigindo] .story-passo__midia {
+    display: none;
+  }
+
+  .story-solucoes[data-dirigindo] .story-solucoes__midia-col {
+    display: block;
+    align-self: stretch;
+    min-width: 0;
+  }
+
+  .story-solucoes[data-dirigindo] .story-solucoes__midia {
+    position: sticky;
+    top: calc(var(--header-h, 88px) + 20px);
+    height: calc(100svh - var(--header-h, 88px) - 32px);
+    /* Sem `overflow` e sem fundo aqui — os dois estão no nó recortado. A sombra
+       sai por fora da caixa e nenhum ancestral a corta: a coluna não tem
+       `overflow`, e o `overflow: clip` da seção fica a ~57px (1440) e ~41px
+       (1024) das arestas do painel, contra 32px de alcance da sombra. */
+    filter: var(--story-sombra-painel);
+  }
+
+  .story-solucoes[data-dirigindo] .story-solucoes__midia-recorte {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 61%, 3.2% 54%, 3.2% 19%, 0 12%);
+  }
+
+  .story-midia__item {
+    position: absolute;
+    inset: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 500ms cubic-bezier(0.19, 1, 0.22, 1),
+      visibility 0s linear 500ms;
+  }
+
+  .story-midia__item[data-active='true'] {
+    visibility: visible;
+    transition-delay: 0s;
+  }
+}
+
+@supports not (clip-path: polygon(0 0)) {
+  .story-solucoes[data-dirigindo] .story-solucoes__midia-recorte {
+    clip-path: none;
+    border-radius: 0.75rem 0 0 0.75rem;
+  }
+}
+
+/* Ambas as chaves forçam o mesmo fluxo seguro: sem sticky, scrub ou split. */
+@media (prefers-reduced-motion: reduce) {
+  .story-solucoes__contador-atual,
+  .story-passo__num,
+  .story-passo__titulo,
+  .story-midia__item {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+html[data-motion='reduce'] .story-solucoes__contador-atual,
+html[data-motion='reduce'] .story-passo__num,
+html[data-motion='reduce'] .story-passo__titulo,
+html[data-motion='reduce'] .story-midia__item {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}

@@ -42,6 +42,7 @@ export default function HeroImageBackdrop({ src, alt, foco, className, children 
     <div className={className ? `hero-backdrop ${className}` : 'hero-backdrop'}>
       <div aria-hidden className="hero-backdrop-midia">
         <Image
+          data-route-critical-media=""
           className="hero-backdrop-video"
           src={src}
           alt={alt}

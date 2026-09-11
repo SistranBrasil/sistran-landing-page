@@ -1,8 +1,10 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import PageShell from '@/components/PageShell';
 import PageHero from '@/components/PageHero';
 import ContactCTA from '@/components/ContactCTA';
+import HeroImageBackdrop from '@/components/ui/HeroImageBackdrop';
 import { CONTACT_EMAIL } from '@/data/contact';
 import { ACCELERATORS } from '@/data/accelerators';
 import { getIcon } from '@/lib/icons';
@@ -84,16 +86,27 @@ export default function Page() {
           `min-height` própria (o comentário está em `PageHero.tsx`), e era
           justamente esta rota que ocupava 104% da janela a 1440 — o caso extremo
           que a normalização existe para conter. */}
-      <PageHero
-        title="Sistran Labs:"
-        /* Caixa mista, das duas saídas que a issue oferece para o item 3 ("passar
-           para CSS, ou reescrever em caixa mista"): aqui `highlight` é `string`
-           tipada, não nó, então não há onde pendurar um `uppercase` sem trocar a
-           forma da prop que as outras treze rotas usam. Nos dois trechos do corpo,
-           onde é JSX, foi feita a outra saída — o texto volta a caixa mista e o
-           `uppercase` vai para a classe, então a tela continua igual. */
-        highlight="Laboratório de Inovação"
-      />
+      {/* SIS-227 — a arte é decorativa: o h1 já identifica o Labs e
+          "Technology First!" permanece apenas desenhado na capa, sem duplicação
+          na árvore acessível. O recorte responsivo e o véu ficam escopados em
+          `.hero-backdrop--labs`, pois a área livre e escura está à esquerda e o
+          S/logo com sua escrita precisam permanecer visíveis à direita. */}
+      <HeroImageBackdrop
+        src="/images/sistran-labs/labs-hero.webp"
+        alt=""
+        className="hero-backdrop--labs"
+      >
+        <PageHero
+          title="Sistran Labs:"
+          /* Caixa mista, das duas saídas que a issue oferece para o item 3 ("passar
+             para CSS, ou reescrever em caixa mista"): aqui `highlight` é `string`
+             tipada, não nó, então não há onde pendurar um `uppercase` sem trocar a
+             forma da prop que as outras treze rotas usam. Nos dois trechos do corpo,
+             onde é JSX, foi feita a outra saída — o texto volta a caixa mista e o
+             `uppercase` vai para a classe, então a tela continua igual. */
+          highlight="Laboratório de Inovação"
+        />
+      </HeroImageBackdrop>
 
       {/* `id` novo, registrado em `src/data/pageSections.ts` na mesma leva: o
           `ui/ScrollSpy` desta rota lista as âncoras dali, e seção com conteúdo
@@ -192,7 +205,7 @@ export default function Page() {
 
       <section
         aria-labelledby="labs-principais"
-        className="section-py section-light section-light-blue"
+        className="labs-principais section-py section-light section-light-blue"
       >
         <div className="container-lp">
           <span className="tag-section">Sistran Labs</span>
@@ -202,6 +215,23 @@ export default function Page() {
           >
             Principais Soluções Sistran Labs
           </h2>
+
+          {/* SIS-229 — peça principal em largura generosa, sem card ou aresta
+              dura. O PNG de origem permanece como matriz, mas a página entrega
+              o WebP otimizado explicitamente porque este projeto desliga o
+              otimizador de imagens do Next. O `contain` preserva os seis nós e
+              seus rótulos no mobile; a grade abaixo continua sendo a fonte
+              textual e clicável dos produtos. */}
+          <figure className="labs-principais-arte">
+            <Image
+              src="/images/sistran-labs/principais-solucoes.webp"
+              alt="Hub tecnológico conectado a seis frentes de soluções digitais"
+              width={1672}
+              height={941}
+              sizes="(min-width: 1180px) 1116px, calc(100vw - 2.5rem)"
+              className="labs-principais-imagem"
+            />
+          </figure>
 
           <ul className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {ACCELERATORS.map((a) => {

@@ -1,0 +1,307 @@
+{
+  "estado": "baseline",
+  "scroll": [
+    {
+      "largura": 1280,
+      "altura": 760,
+      "cidade": "pr",
+      "modo": "scroll",
+      "ativa": "pr",
+      "paisVsSvg": {
+        "topo": 6.3,
+        "direita": 130.2,
+        "base": 69.9,
+        "esquerda": 89.4
+      },
+      "paisVsColuna": {
+        "topo": 6.3,
+        "direita": 130.2,
+        "base": 69.9,
+        "esquerda": 89.4
+      },
+      "paisCortadoSvg": false,
+      "paisCortadoColuna": false,
+      "faixaLivreCartao": 0,
+      "emendaAtePrimeiroQuadro": 254.2,
+      "header": {
+        "topo": 16,
+        "base": 104
+      },
+      "titulo": {
+        "topo": 166.3,
+        "base": 279.3
+      },
+      "abas": {
+        "topo": 319.7,
+        "base": 363.7
+      },
+      "headerCobreTitulo": false,
+      "headerCobreAbas": false
+    },
+    {
+      "largura": 1280,
+      "altura": 760,
+      "cidade": "sp",
+      "modo": "scroll",
+      "ativa": "sp",
+      "paisVsSvg": {
+        "topo": 194.7,
+        "direita": 447,
+        "base": 125.2,
+        "esquerda": 5.1
+      },
+      "paisVsColuna": {
+        "topo": 194.7,
+        "direita": 447,
+        "base": 125.2,
+        "esquerda": 5.1
+      },
+      "paisCortadoSvg": false,
+      "paisCortadoColuna": false,
+      "faixaLivreCartao": 15,
+      "emendaAtePrimeiroQuadro": 1584.2,
+      "header": {
+        "topo": 16,
+        "base": 104
+      },
+      "titulo": {
+        "topo": 166.3,
+        "base": 279.3
+      },
+      "abas": {
+        "topo": 319.7,
+        "base": 363.7
+      },
+      "headerCobreTitulo": false,
+      "headerCobreAbas": false
+    },
+    {
+      "largura": 1366,
+      "altura": 900,
+      "cidade": "pr",
+      "modo": "scroll",
+      "ativa": "pr",
+      "paisVsSvg": {
+        "topo": 7.6,
+        "direita": 132.7,
+        "base": 81.9,
+        "esquerda": 85.1
+      },
+      "paisVsColuna": {
+        "topo": 7.6,
+        "direita": 132.7,
+        "base": 81.9,
+        "esquerda": 85.1
+      },
+      "paisCortadoSvg": false,
+      "paisCortadoColuna": false,
+      "faixaLivreCartao": 0,
+      "emendaAtePrimeiroQuadro": 289.6,
+      "header": {
+        "topo": 16,
+        "base": 104
+      },
+      "titulo": {
+        "topo": 201.9,
+        "base": 322.6
+      },
+      "abas": {
+        "topo": 363,
+        "base": 407
+      },
+      "headerCobreTitulo": false,
+      "headerCobreAbas": false
+    },
+    {
+      "largura": 1366,
+      "altura": 900,
+      "cidade": "sp",
+      "modo": "scroll",
+      "ativa": "sp",
+      "paisVsSvg": {
+        "topo": 227.8,
+        "direita": 502.9,
+        "base": 146.6,
+        "esquerda": -13.5
+      },
+      "paisVsColuna": {
+        "topo": 227.8,
+        "direita": 502.9,
+        "base": 146.6,
+        "esquerda": -13.5
+      },
+      "paisCortadoSvg": true,
+      "paisCortadoColuna": true,
+      "faixaLivreCartao": 70.9,
+      "emendaAtePrimeiroQuadro": 1864.3,
+      "header": {
+        "topo": 16,
+        "base": 104
+      },
+      "titulo": {
+        "topo": 201.9,
+        "base": 322.6
+      },
+      "abas": {
+        "topo": 363,
+        "base": 407
+      },
+      "headerCobreTitulo": false,
+      "headerCobreAbas": false
+    },
+    {
+      "largura": 1440,
+      "altura": 900,
+      "cidade": "pr",
+      "modo": "scroll",
+      "ativa": "pr",
+      "paisVsSvg": {
+        "topo": 7.6,
+        "direita": 164.5,
+        "base": 81.9,
+        "esquerda": 116.9
+      },
+      "paisVsColuna": {
+        "topo": 7.6,
+        "direita": 164.5,
+        "base": 81.9,
+        "esquerda": 116.9
+      },
+      "paisCortadoSvg": false,
+      "paisCortadoColuna": false,
+      "faixaLivreCartao": 0,
+      "emendaAtePrimeiroQuadro": 287.1,
+      "header": {
+        "topo": 16,
+        "base": 104
+      },
+      "titulo": {
+        "topo": 199.3,
+        "base": 325.2
+      },
+      "abas": {
+        "topo": 365.6,
+        "base": 409.6
+      },
+      "headerCobreTitulo": false,
+      "headerCobreAbas": false
+    },
+    {
+      "largura": 1440,
+      "altura": 900,
+      "cidade": "sp",
+      "modo": "scroll",
+      "ativa": "sp",
+      "paisVsSvg": {
+        "topo": 227.8,
+        "direita": 534.7,
+        "base": 146.6,
+        "esquerda": 18.4
+      },
+      "paisVsColuna": {
+        "topo": 227.8,
+        "direita": 534.7,
+        "base": 146.6,
+        "esquerda": 18.4
+      },
+      "paisCortadoSvg": false,
+      "paisCortadoColuna": false,
+      "faixaLivreCartao": 102.7,
+      "emendaAtePrimeiroQuadro": 1862.1,
+      "header": {
+        "topo": 16,
+        "base": 104
+      },
+      "titulo": {
+        "topo": 199.3,
+        "base": 325.2
+      },
+      "abas": {
+        "topo": 365.6,
+        "base": 409.6
+      },
+      "headerCobreTitulo": false,
+      "headerCobreAbas": false
+    }
+  ],
+  "lista": [
+    {
+      "cenario": "largura-1279",
+      "modo": "lista",
+      "cidades": [
+        {
+          "id": "pr",
+          "visivel": true,
+          "ariaHidden": null,
+          "inert": false,
+          "titulo": "Pato Branco"
+        },
+        {
+          "id": "sp",
+          "visivel": true,
+          "ariaHidden": null,
+          "inert": false,
+          "titulo": "São Paulo"
+        }
+      ],
+      "paisVsSvg": {
+        "topo": 90.8,
+        "direita": 251.6,
+        "base": 149.2,
+        "esquerda": 149.8
+      }
+    },
+    {
+      "cenario": "altura-759",
+      "modo": "lista",
+      "cidades": [
+        {
+          "id": "pr",
+          "visivel": true,
+          "ariaHidden": null,
+          "inert": false,
+          "titulo": "Pato Branco"
+        },
+        {
+          "id": "sp",
+          "visivel": true,
+          "ariaHidden": null,
+          "inert": false,
+          "titulo": "São Paulo"
+        }
+      ],
+      "paisVsSvg": {
+        "topo": 90.8,
+        "direita": 251.6,
+        "base": 149.2,
+        "esquerda": 149.8
+      }
+    },
+    {
+      "cenario": "movimento-reduzido",
+      "modo": "lista",
+      "cidades": [
+        {
+          "id": "pr",
+          "visivel": true,
+          "ariaHidden": null,
+          "inert": false,
+          "titulo": "Pato Branco"
+        },
+        {
+          "id": "sp",
+          "visivel": true,
+          "ariaHidden": null,
+          "inert": false,
+          "titulo": "São Paulo"
+        }
+      ],
+      "paisVsSvg": {
+        "topo": 90.8,
+        "direita": 251.6,
+        "base": 149.2,
+        "esquerda": 149.8
+      }
+    }
+  ]
+}

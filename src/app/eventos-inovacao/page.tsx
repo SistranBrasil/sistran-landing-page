@@ -37,8 +37,18 @@ export const metadata = {
                            que é higiene, não elo: a cena é escura como o hero, e
                            o véu existe sobretudo para manter o cabeçalho fixo
                            legível sobre qualquer uma das quinze fotos.
-     eventos -> social ... COR. A cena escura converge para `#0b4e86`, a primeira
-                           parada do degradê da Social.
+                           SIS-215 — o `.evento-veu-topo` é do `EventsGrid`, que
+                           saiu da rota na SIS-166; e a cena que ficou não é mais
+                           escura em cima. A passagem continua sendo por LINHA (o
+                           fio ciano), agora sobre aresta: hero navy encostando em
+                           `#eaf2fb`, como `/parceiros-e-implementacoes` publica.
+     eventos -> social ... COR, e agora em AZUL CLARO. Era "a cena escura converge
+                           para `#0b4e86`, a primeira parada do degradê da Social".
+                           SIS-215: a cena fecha em `#cfe7f7` e a Social passou a
+                           `.palco-emenda-de-claro-curta`, que dissolve esse mesmo
+                           `#cfe7f7` nos primeiros 150px dela. A convergência
+                           mudou de lado da fronteira — quem dissolve agora é quem
+                           recebe.
    SIS-152 — a terceira passagem (`social -> contato`, COR: a Social fecha em
    `#1273bc` e o contato recebia aquele azul no topo pela `.emenda-de-azul-medio`)
    deixou de existir junto com o capítulo de contato, que saiu da rota. Não sobrou
@@ -150,16 +160,45 @@ export default function Page() {
           `<Social className="palco-de-cena-escura">` logo abaixo já espera escuro
           em cima. Nenhuma fronteira nova foi criada: a superfície da cena é clara
           no meio (é lá que se lê a descrição) mas nasce e morre no navy dos dois
-          vizinhos, num degradê só — a mesma receita do mosaico. */}
+          vizinhos, num degradê só — a mesma receita do mosaico.
+          ⚠️ SIS-215 — este parágrafo descreve o que a cena ERA. As duas pontas
+          navy saíram (a superfície é clara de ponta a ponta) e a Social desta rota
+          trocou de classe. O que valia é o que está escrito ao lado de cada um dos
+          dois blocos, logo abaixo e no cabeçalho deste arquivo. */}
       <EventsSpotlight />
 
-      {/* SIS-107 — sem `palco-emenda-de-claro`: aqui o que vem acima é a cena
-          ESCURA de eventos, que já entrega o azul por conta própria (ver
-          `.eventos-emenda-base`). O degradê claro que a Social pintava na regra
-          base era, nesta rota, uma faixa clara nascendo do nada sobre navy — o
-          segundo corte da issue. O que sobra é ajustar o respiro de cima, porque
-          sem a faixa de 220px a seção abria com um vazio grande demais. */}
-      <Social className="palco-de-cena-escura" />
+      {/* SIS-215 — A CLASSE MUDOU: `palco-de-cena-escura` -> `palco-emenda-de-claro-curta`.
+
+          A nota da SIS-107 fica registrada porque a premissa dela era verdadeira
+          quando foi escrita, e é ela que explica por que a emenda de claro havia
+          sido retirada daqui:
+
+          | SIS-107 — sem `palco-emenda-de-claro`: aqui o que vem acima é a cena
+          | ESCURA de eventos, que já entrega o azul por conta própria (ver
+          | `.eventos-emenda-base`). O degradê claro que a Social pintava na regra
+          | base era, nesta rota, uma faixa clara nascendo do nada sobre navy — o
+          | segundo corte da issue.
+
+          A PREMISSA CADUCOU: a cena de eventos NÃO É MAIS ESCURA EM CIMA NEM
+          EMBAIXO. A SIS-215 tirou as duas pontas navy dela (ver a nota da
+          superfície em `src/components/events-spotlight.css`), e a cena agora
+          FECHA em `#cfe7f7`. Com isso a faixa clara da emenda deixa de "nascer do
+          nada sobre navy": ela é a continuação da cor que a cena entrega. Manter
+          `palco-de-cena-escura` aqui é que passaria a ser o defeito — ela abre em
+          `#0b4e86` chapado, e claro encostando em azul médio numa linha reta de
+          ponta a ponta é exatamente o corte que a SIS-107 combateu, só do outro
+          lado da fronteira (medido antes desta issue: degrau de 79/255 no verde
+          entre `#041d37` e `#0b4e86`).
+
+          POR QUE A VARIANTE `curta` e não `.palco-emenda-de-claro`: a curta parte
+          de `#cfe7f7` (a longa parte de `#d2e5ed`, a cor com que a home entrega a
+          borda) e é a mesma que `/contato` publica. Cor igual encostando em cor
+          igual, sem inventar uma quarta variante. Ela traz junto os dois ajustes
+          que a rampa exige e que já foram medidos na SIS-130: `padding-top` de
+          11/13rem, para o título branco não cair DENTRO dos 150px claros, e as
+          máscaras que fazem as duas luzes e o orb ciano entrarem do zero nesses
+          mesmos 150px, em vez de nascerem acesos na borda clara. */}
+      <Social className="palco-emenda-de-claro-curta" />
 
       {/* SIS-152 — "Fale com a Gente!" comentado a pedido. Quem fecha a rota agora
           é o `<Social />` acima, e o `<Footer />` vem logo depois.

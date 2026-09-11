@@ -183,8 +183,10 @@ export default function PartnersTrail({ id }: { id?: string }) {
           const meta = TIMELINE_CATEGORY_META[e.category];
           return (
             <li key={e.id} className="glass-card p-5">
+              {/* SIS-174 — era `text-[0.66rem]` (10,56px), abaixo do piso de 11px.
+                  Label caixa-alta com tracking: vai para 11px exatos. */}
               <span
-                className="text-[0.66rem] font-semibold uppercase tracking-[0.18em]"
+                className="text-[11px] font-semibold uppercase tracking-[0.18em]"
                 style={{ color: meta.color }}
               >
                 {e.generation}

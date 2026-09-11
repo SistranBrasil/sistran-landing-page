@@ -1,0 +1,409 @@
+[
+  {
+    "viewport": "1440x900",
+    "motionAttr": null,
+    "reducedQuery": false,
+    "dirigindo": true,
+    "layout": {
+      "x": 57.59375,
+      "y": -940.515625,
+      "width": 1324.796875,
+      "height": 3039.9375,
+      "top": -940.515625,
+      "right": 1382.390625,
+      "bottom": 2099.421875,
+      "left": 57.59375
+    },
+    "copy": {
+      "x": 57.59375,
+      "y": -940.515625,
+      "width": 582.90625,
+      "height": 3039.9375,
+      "top": -940.515625,
+      "right": 640.5,
+      "bottom": 2099.421875,
+      "left": 57.59375
+    },
+    "mediaCol": {
+      "x": 698.09375,
+      "y": -940.515625,
+      "width": 684.296875,
+      "height": 3039.9375,
+      "top": -940.515625,
+      "right": 1382.390625,
+      "bottom": 2099.421875,
+      "left": 698.09375
+    },
+    "media": {
+      "x": 698.09375,
+      "y": 108,
+      "width": 684.296875,
+      "height": 780,
+      "top": 108,
+      "right": 1382.390625,
+      "bottom": 888,
+      "left": 698.09375
+    },
+    "header": {
+      "x": 100,
+      "y": 16,
+      "width": 1240,
+      "height": 88,
+      "top": 16,
+      "right": 1340,
+      "bottom": 104,
+      "left": 100
+    },
+    "grid": [
+      0.45999432806007323,
+      0.5400056719399268
+    ],
+    "gapEmenda": 0,
+    "inlineImagesVisiveis": 0,
+    "fundo": "radial-gradient(70% 60% at 20% 10%, rgba(0, 121, 203, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(50% 60% at 90% 90%, rgba(14, 216, 246, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(70% 80%, rgb(255, 255, 255) 0%, rgb(242, 247, 252) 55%, rgb(228, 237, 247) 100%)",
+    "maiorOverlap": 0,
+    "stickyTop": {
+      "min": 21.421875,
+      "max": 108
+    },
+    "trocas": [
+      {
+        "esperado": 0,
+        "ativo": 0,
+        "midiaAtiva": 0
+      },
+      {
+        "esperado": 1,
+        "ativo": 1,
+        "midiaAtiva": 1
+      },
+      {
+        "esperado": 2,
+        "ativo": 2,
+        "midiaAtiva": 2
+      },
+      {
+        "esperado": 3,
+        "ativo": 3,
+        "midiaAtiva": 3
+      }
+    ],
+    "cls": 0.01894216039440759
+  },
+  {
+    "viewport": "1280x800",
+    "motionAttr": null,
+    "reducedQuery": false,
+    "dirigindo": true,
+    "layout": {
+      "x": 51.203125,
+      "y": -825.953125,
+      "width": 1177.59375,
+      "height": 2707.3125,
+      "top": -825.953125,
+      "right": 1228.796875,
+      "bottom": 1881.359375,
+      "left": 51.203125
+    },
+    "copy": {
+      "x": 51.203125,
+      "y": -825.953125,
+      "width": 518.140625,
+      "height": 2707.3125,
+      "top": -825.953125,
+      "right": 569.34375,
+      "bottom": 1881.359375,
+      "left": 51.203125
+    },
+    "mediaCol": {
+      "x": 620.53125,
+      "y": -825.953125,
+      "width": 608.265625,
+      "height": 2707.3125,
+      "top": -825.953125,
+      "right": 1228.796875,
+      "bottom": 1881.359375,
+      "left": 620.53125
+    },
+    "media": {
+      "x": 620.53125,
+      "y": 108,
+      "width": 608.265625,
+      "height": 680,
+      "top": 108,
+      "right": 1228.796875,
+      "bottom": 788,
+      "left": 620.53125
+    },
+    "header": {
+      "x": 20,
+      "y": 16,
+      "width": 1240,
+      "height": 88,
+      "top": 16,
+      "right": 1260,
+      "bottom": 104,
+      "left": 20
+    },
+    "grid": [
+      0.45999445138021916,
+      0.5400055486197808
+    ],
+    "gapEmenda": 0,
+    "inlineImagesVisiveis": 0,
+    "fundo": "radial-gradient(70% 60% at 20% 10%, rgba(0, 121, 203, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(50% 60% at 90% 90%, rgba(14, 216, 246, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(70% 80%, rgb(255, 255, 255) 0%, rgb(242, 247, 252) 55%, rgb(228, 237, 247) 100%)",
+    "maiorOverlap": 0,
+    "stickyTop": {
+      "min": 32.359375,
+      "max": 108
+    },
+    "trocas": [
+      {
+        "esperado": 0,
+        "ativo": 0,
+        "midiaAtiva": 0
+      },
+      {
+        "esperado": 1,
+        "ativo": 1,
+        "midiaAtiva": 1
+      },
+      {
+        "esperado": 2,
+        "ativo": 2,
+        "midiaAtiva": 2
+      },
+      {
+        "esperado": 3,
+        "ativo": 3,
+        "midiaAtiva": 3
+      }
+    ],
+    "cls": 0
+  },
+  {
+    "viewport": "1024x768",
+    "motionAttr": null,
+    "reducedQuery": false,
+    "dirigindo": true,
+    "layout": {
+      "x": 40.953125,
+      "y": -783.53125,
+      "width": 942.078125,
+      "height": 2588.15625,
+      "top": -783.53125,
+      "right": 983.03125,
+      "bottom": 1804.625,
+      "left": 40.953125
+    },
+    "copy": {
+      "x": 40.953125,
+      "y": -783.53125,
+      "width": 414.515625,
+      "height": 2588.15625,
+      "top": -783.53125,
+      "right": 455.46875,
+      "bottom": 1804.625,
+      "left": 40.953125
+    },
+    "mediaCol": {
+      "x": 496.421875,
+      "y": -783.53125,
+      "width": 486.59375,
+      "height": 2588.15625,
+      "top": -783.53125,
+      "right": 983.015625,
+      "bottom": 1804.625,
+      "left": 496.421875
+    },
+    "media": {
+      "x": 496.421875,
+      "y": 108,
+      "width": 486.59375,
+      "height": 648,
+      "top": 108,
+      "right": 983.015625,
+      "bottom": 756,
+      "left": 496.421875
+    },
+    "header": {
+      "x": 16,
+      "y": 16,
+      "width": 992,
+      "height": 88,
+      "top": 16,
+      "right": 1008,
+      "bottom": 104,
+      "left": 16
+    },
+    "grid": [
+      0.46000589551074195,
+      0.539994104489258
+    ],
+    "gapEmenda": 0,
+    "inlineImagesVisiveis": 0,
+    "fundo": "radial-gradient(70% 60% at 20% 10%, rgba(0, 121, 203, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(50% 60% at 90% 90%, rgba(14, 216, 246, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(70% 80%, rgb(255, 255, 255) 0%, rgb(242, 247, 252) 55%, rgb(228, 237, 247) 100%)",
+    "maiorOverlap": 0,
+    "stickyTop": {
+      "min": 35.625,
+      "max": 108
+    },
+    "trocas": [
+      {
+        "esperado": 0,
+        "ativo": 0,
+        "midiaAtiva": 0
+      },
+      {
+        "esperado": 1,
+        "ativo": 1,
+        "midiaAtiva": 1
+      },
+      {
+        "esperado": 2,
+        "ativo": 2,
+        "midiaAtiva": 2
+      },
+      {
+        "esperado": 3,
+        "ativo": 3,
+        "midiaAtiva": 3
+      }
+    ],
+    "cls": 0
+  },
+  {
+    "viewport": "1023x768",
+    "motionAttr": null,
+    "reducedQuery": false,
+    "dirigindo": false,
+    "layout": {
+      "x": 40.921875,
+      "y": -926.984375,
+      "width": 941.15625,
+      "height": 2838.84375,
+      "top": -926.984375,
+      "right": 982.078125,
+      "bottom": 1911.859375,
+      "left": 40.921875
+    },
+    "copy": {
+      "x": 40.921875,
+      "y": -926.984375,
+      "width": 941.15625,
+      "height": 2838.84375,
+      "top": -926.984375,
+      "right": 982.078125,
+      "bottom": 1911.859375,
+      "left": 40.921875
+    },
+    "mediaCol": {
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "top": 0,
+      "right": 0,
+      "bottom": 0,
+      "left": 0
+    },
+    "media": {
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "top": 0,
+      "right": 0,
+      "bottom": 0,
+      "left": 0
+    },
+    "header": {
+      "x": 16,
+      "y": 16,
+      "width": 991,
+      "height": 88,
+      "top": 16,
+      "right": 1007,
+      "bottom": 104,
+      "left": 16
+    },
+    "grid": [
+      1,
+      0
+    ],
+    "gapEmenda": 0,
+    "inlineImagesVisiveis": 4,
+    "fundo": "radial-gradient(70% 60% at 20% 10%, rgba(0, 121, 203, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(50% 60% at 90% 90%, rgba(14, 216, 246, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(70% 80%, rgb(255, 255, 255) 0%, rgb(242, 247, 252) 55%, rgb(228, 237, 247) 100%)",
+    "maiorOverlap": 0,
+    "stickyTop": null,
+    "trocas": [],
+    "cls": 0
+  },
+  {
+    "viewport": "390x844",
+    "motionAttr": null,
+    "reducedQuery": false,
+    "dirigindo": false,
+    "layout": {
+      "x": 15.59375,
+      "y": -901.9375,
+      "width": 358.796875,
+      "height": 2862.359375,
+      "top": -901.9375,
+      "right": 374.390625,
+      "bottom": 1960.421875,
+      "left": 15.59375
+    },
+    "copy": {
+      "x": 15.59375,
+      "y": -901.9375,
+      "width": 358.796875,
+      "height": 2862.359375,
+      "top": -901.9375,
+      "right": 374.390625,
+      "bottom": 1960.421875,
+      "left": 15.59375
+    },
+    "mediaCol": {
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "top": 0,
+      "right": 0,
+      "bottom": 0,
+      "left": 0
+    },
+    "media": {
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "top": 0,
+      "right": 0,
+      "bottom": 0,
+      "left": 0
+    },
+    "header": {
+      "x": 16,
+      "y": 16,
+      "width": 358,
+      "height": 72,
+      "top": 16,
+      "right": 374,
+      "bottom": 88,
+      "left": 16
+    },
+    "grid": [
+      1,
+      0
+    ],
+    "gapEmenda": 0,
+    "inlineImagesVisiveis": 4,
+    "fundo": "radial-gradient(70% 60% at 20% 10%, rgba(0, 121, 203, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(50% 60% at 90% 90%, rgba(14, 216, 246, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(70% 80%, rgb(255, 255, 255) 0%, rgb(242, 247, 252) 55%, rgb(228, 237, 247) 100%)",
+    "maiorOverlap": 0,
+    "stickyTop": null,
+    "trocas": [],
+    "cls": 0
+  }
+]

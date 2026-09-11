@@ -32,6 +32,17 @@ export type Metric = {
    * ficar sem elas sem que ninguém precise escrever cópia por conta própria.
    * Quando o texto voltar aprovado, descomentar as sete e voltar a `string`. */
   caption?: string;
+  /** SIS-200 — este campo passou a ter DOIS consumidores, e é de propósito.
+   *
+   * Era só a chave do grafismo contextual de 200x200 da lente
+   * (`ImpactVisuais.tsx`). Agora é também a chave do ÍCONE de ~52px que cada
+   * célula da fileira mostra (`ImpactIcones.ts`). Os dois mapas são
+   * `Record<ImpactVisual, …>` completos: acrescentar um indicador obriga a
+   * preencher os dois, ou o TypeScript reprova.
+   *
+   * O ícone NÃO virou campo desta struct porque `src/data/` é território do
+   * copy-lock, e ali todo literal conta como texto do site — a nota longa está em
+   * `src/data/metrics.ts`. */
   visual: ImpactVisual;
 };
 /** `color` = accent sobre fundo azul (lista lateral). `colorOnLight` = mesmo

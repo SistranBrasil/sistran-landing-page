@@ -1,5 +1,17 @@
 'use client';
 
+/**
+ * SIS-188 — GUARDADO.
+ *
+ * Órfão de rota: a home monta `HeroCinematic` (`src/app/page.tsx`), não este
+ * arquivo. A troca está em `REDESIGN.md` (`Hero` → `HeroCinematic`); este
+ * componente permanece no disco com export e implementação intactos.
+ *
+ * Substituto atual: `HeroCinematic`.
+ * Volta só com montagem explícita deste hero de passos de scroll no lugar do
+ * cinematográfico — em rota, não por import acidental.
+ */
+
 import { useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { gsap } from 'gsap';

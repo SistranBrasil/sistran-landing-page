@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * ProofJourney — Soluções → Handoff → Números → Parceiros como UMA jornada.
+ * ProofJourney — Números → Parceiros como UMA jornada.
  *
  * Antes eram três seções independentes em sequência, cada uma com o seu próprio
  * `ScrollTrigger` e o seu próprio `sticky`. Visualmente funcionava, mas cada
@@ -16,9 +16,8 @@
  * próprio: eles se INSCREVEM aqui e recebem o seu progresso local já recortado.
  *
  * ── Partitura ────────────────────────────────────────────────────────────────
- * As fronteiras vêm da refatoração proporcional (0–38% quatro soluções, 38–46%
- * transformação, 46–91% sete números, 91–100% parceiros). Cada capítulo recebe
- * `0..1` DENTRO da sua faixa, então nem `Solutions` nem `Metrics` precisam saber
+ * As fronteiras são medidas a partir dos capítulos efetivamente inscritos. Cada capítulo recebe
+ * `0..1` DENTRO da sua faixa, então `Metrics` não precisa saber
  * que existe uma jornada em volta: o número que chega neles é o mesmo `progress`
  * que os gatilhos antigos entregavam.
  *
@@ -47,11 +46,15 @@ import {
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotion } from '@/lib/motion';
+import { criarConsultaDeMedia } from '@/lib/mediaStore';
 
-export type CapituloJornada = 'solutions' | 'metrics' | 'partners';
+/* A string fica escrita aqui para ser conferida contra a media query do palco. */
+const useJornadaLarga = criarConsultaDeMedia('(min-width: 1024px)');
+
+export type CapituloJornada = 'metrics' | 'partners';
 
 /** Ordem de leitura dos capítulos. */
-export const ORDEM: readonly CapituloJornada[] = ['solutions', 'metrics', 'partners'];
+export const ORDEM: readonly CapituloJornada[] = ['metrics', 'partners'];
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 
@@ -119,7 +122,7 @@ const JornadaContext = createContext<Contexto | null>(null);
 
 /**
  * Usado pelos capítulos. Fora de uma `ProofJourney` devolve `dirigindo: false`,
- * e é isso que faz `Solutions`/`Metrics` continuarem funcionando sozinhas em
+ * e é isso que faz `Metrics` continuar funcionando sozinha em
  * qualquer outra página onde estejam montadas.
  */
 export function useJornada(): Contexto {
@@ -139,10 +142,13 @@ export default function ProofJourney({ children }: { children: ReactNode }) {
      não pode provocar re-render do pai — seria um laço de montagem. */
   const inscritos = useRef(new Map<CapituloJornada, Inscricao>());
   const ativoRef = useRef<CapituloJornada | null>(null);
-  const [isDesktop, setIsDesktop] = useState(false);
+  /* SIS-182 — era `useState(false)` + o efeito comentado abaixo. */
+  const isDesktop = useJornadaLarga();
   const rm = useReducedMotion();
   const dirigindo = isDesktop && !rm;
 
+  /* SIS-182 — substituído por `useJornadaLarga()`. O `atualizar()` de abertura é
+     `setState` síncrono no efeito: um segundo render em toda montagem.
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)');
     const atualizar = () => setIsDesktop(mq.matches);
@@ -150,6 +156,7 @@ export default function ProofJourney({ children }: { children: ReactNode }) {
     mq.addEventListener('change', atualizar);
     return () => mq.removeEventListener('change', atualizar);
   }, []);
+  */
 
   const gatilhoRef = useRef<ScrollTrigger | null>(null);
   /* Faixa de rolagem de cada capítulo, em pixels de documento. Medida, não
@@ -185,8 +192,20 @@ export default function ProofJourney({ children }: { children: ReactNode }) {
          A faixa presa não muda (a partitura de cada capítulo depende dela). O que
          passa a existir é a fração da APROXIMAÇÃO, para o capítulo poder ENTRAR
          enquanto chega — que é o que a rolagem já está mostrando. */
+      /* SIS-196 — o PRIMEIRO capítulo também tem corredor de chegada.
+         ERA: `anteriorFim === null ? topo : ...`, o que dava corredor zero ao
+         primeiro capítulo e cravava a fração de chegada dele em 1. Não aparecia
+         porque o primeiro capítulo era Soluções, e Soluções não usa `chegada`.
+         Com Soluções desacoplada (ver a nota em `page.tsx`), o primeiro é
+         Números — e ela entra INTEIRA por `--impact-entrada`, que é essa fração:
+         corredor zero apagaria a entrada da seção, que passaria a chegar pronta
+         no primeiro quadro. O corredor é o mesmo `SOBREPOSICAO` de janela, agora
+         medido a partir do topo do próprio capítulo quando não há capítulo antes
+         dele para invadir. */
       const chegadaDe =
-        anteriorFim === null ? topo : Math.min(topo, anteriorFim - SOBREPOSICAO * vh);
+        anteriorFim === null
+          ? topo - SOBREPOSICAO * vh
+          : Math.min(topo, anteriorFim - SOBREPOSICAO * vh);
       faixas.current.set(nome, { inicio: topo, fim, chegadaDe });
       anteriorFim = fim;
     }
@@ -236,7 +255,12 @@ export default function ProofJourney({ children }: { children: ReactNode }) {
         palco.style.setProperty('--pj-p', p.toFixed(4));
 
         const y = self.scroll();
-        let atual: CapituloJornada = ORDEM[0];
+        /* SIS-196 — o primeiro INSCRITO, não o primeiro da `ORDEM`: com Soluções
+           desacoplada, `ORDEM[0]` é um capítulo que não está montado, e o palco
+           ficaria com `data-capitulo="solutions"` até a rolagem alcançar Números
+           — sem nunca avisar Números de que ela é a da vez (`aoAlternar`). */
+        let atual: CapituloJornada =
+          ORDEM.find((n) => inscritos.current.has(n)) ?? ORDEM[0];
         for (const nome of ORDEM) {
           const inscricao = inscritos.current.get(nome);
           const faixa = faixas.current.get(nome);
@@ -294,10 +318,8 @@ export default function ProofJourney({ children }: { children: ReactNode }) {
       /* Só o que este componente escreveu. As camadas limpam o que é delas. */
       for (const nome of [
         '--pj-p',
-        '--pj-solutions',
         '--pj-metrics',
         '--pj-partners',
-        '--pj-chegada-solutions',
         '--pj-chegada-metrics',
         '--pj-chegada-partners',
       ]) {
@@ -320,7 +342,7 @@ export default function ProofJourney({ children }: { children: ReactNode }) {
         className="proof-journey"
         data-dirigindo={dirigindo ? '' : undefined}
       >
-        <div ref={palcoRef} className="pj-stage" data-capitulo="solutions">
+        <div ref={palcoRef} className="pj-stage" data-capitulo="metrics">
           {children}
         </div>
       </section>

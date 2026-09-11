@@ -1,0 +1,106 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+  background:
+    radial-gradient(circle at 50% 44%, rgb(14 216 246 / 14%), transparent 28rem),
+    linear-gradient(145deg, #041b3d 0%, #071d36 54%, #0a3156 100%);
+  opacity: 1;
+  transition: opacity 240ms ease-out;
+}
+
+:global(html[data-route-scroll-locked]),
+:global(html[data-route-scroll-locked] body) {
+  overflow: hidden !important;
+}
+
+/* O overlay já vem no HTML do servidor; `:has()` trava a rolagem nesse primeiro
+   paint, antes de o efeito poder publicar o atributo acima. */
+:global(html:has([data-route-loading])),
+:global(body:has([data-route-loading])) {
+  overflow: hidden !important;
+}
+
+.overlay::before {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background-image:
+    linear-gradient(rgb(42 196 255 / 6%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(42 196 255 / 6%) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(circle at center, #000, transparent 72%);
+}
+
+.overlay[data-state='exiting'] {
+  opacity: 0;
+}
+
+.brand {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+}
+
+.wordmark {
+  color: #fff;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-size: clamp(2rem, 7vw, 4.75rem);
+  font-weight: 760;
+  letter-spacing: 0.16em;
+  line-height: 1;
+}
+
+.signal {
+  display: block;
+  width: min(15rem, 54vw);
+  height: 2px;
+  overflow: hidden;
+  background: rgb(42 196 255 / 22%);
+}
+
+.signal::after {
+  display: block;
+  width: 42%;
+  height: 100%;
+  content: '';
+  background: #2ac4ff;
+  box-shadow: 0 0 18px rgb(42 196 255 / 85%);
+  animation: route-gate-signal 900ms ease-in-out infinite alternate;
+}
+
+@keyframes route-gate-signal {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(138%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    transition: none;
+  }
+
+  .signal::after {
+    width: 100%;
+    animation: none;
+  }
+}
+
+:global(html[data-motion='reduce']) .overlay {
+  transition: none;
+}
+
+:global(html[data-motion='reduce']) .signal::after {
+  width: 100%;
+  animation: none;
+}

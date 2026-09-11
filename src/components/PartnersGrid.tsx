@@ -1,5 +1,18 @@
 'use client';
 
+/**
+ * SIS-188 — GUARDADO.
+ *
+ * Órfão de rota: `/parceiros-e-implementacoes` não importa este arquivo.
+ * A SIS-159 o substituiu pelo `PartnersTrack`; a SIS-201 desmontou o Track e
+ * passou a montar `PartnerTerminalCards`. Não há import comentado na página
+ * (de propósito); a substituição está documentada lá e neste cabeçalho.
+ *
+ * Substituto atual: `PartnerTerminalCards`.
+ * Volta só com montagem explícita da grade bento na rota de parceiros (ou em
+ * outra rota), no lugar dos cards de terminal.
+ */
+
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'motion/react';

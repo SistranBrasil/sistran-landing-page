@@ -1,0 +1,21 @@
+{
+  "1440x900": {
+    "janela": 900,
+    "percursoLigado": "ligado",
+    "palcoAltura": 900,
+    "cartaoAltura": 336,
+    "vazioAcima": 312,
+    "vazioAbaixo": 220,
+    "secaoAltura": 1872,
+    "espacoAltura": 972,
+    "presoDe": 696,
+    "presoAte": 1632,
+    "trechoPreso": 936,
+    "deslocamentoMaximo": 1191,
+    "deslocamentoNoQuadroDeSoltura": 1191,
+    "cartoesAlcancados": 7,
+    "totalCartoes": 7,
+    "quadroDaCaptura": 1176,
+    "docAltura": 5882
+  }
+}

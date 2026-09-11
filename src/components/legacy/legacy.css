@@ -1698,6 +1698,17 @@ html[data-motion="reduce"] {
   border-style: dashed;
 }
 
+/* SIS-202 — card SEM `data-stage`: são as paradas de
+   `/parceiros-e-implementacoes`, que classificam por categoria (empresas
+   grandes / PME / soluções) e não por estágio de entrega. A pílula ali é a
+   categoria, então ela veste o accent da própria parada — a mesma cor que o nó
+   recebe, que é a de `TIMELINE_CATEGORY_META`. Sem esta regra a pílula herdaria
+   `currentcolor` do corpo do card e a borda sairia branca, indistinguível da
+   pílula "Concluído" do legado. */
+.roadmap-card:not([data-stage]) .roadmap-stage-tag {
+  color: color-mix(in srgb, var(--stop-accent) 85%, var(--paper));
+}
+
 /* Chips no accent — três por card, sempre na mesma linha de leitura. */
 .roadmap-chips {
   display: flex;
@@ -1759,8 +1770,14 @@ html[data-motion="reduce"] {
   /* Troca, não acúmulo: na parada em destaque o checklist assume o corpo do card
      e o resumo sai. Os dois juntos diziam a mesma coisa duas vezes e o card
      ficava alto demais para o espaço da trilha. O resumo continua no HTML das
-     outras paradas, na linha do tempo vertical e, por inteiro, no modal. */
-  .roadmap-stop[aria-current="step"] .roadmap-text {
+     outras paradas, na linha do tempo vertical e, por inteiro, no modal.
+
+     SIS-202 — a troca passa a ser condicionada a EXISTIR checklist
+     (`:has(.roadmap-topics)`). Nas paradas de `/parceiros-e-implementacoes` não
+     há `detail.done`, então o checklist não é renderizado: sem esta condição o
+     resumo saía sem nada assumir o lugar dele, e a parada em destaque — a única
+     que o leitor está lendo — era justamente a que ficava sem texto algum. */
+  .roadmap-stop[aria-current="step"] .roadmap-card:has(.roadmap-topics) .roadmap-text {
     display: none;
   }
 }
@@ -1910,6 +1927,74 @@ html[data-motion="reduce"] {
 .roadmap-traveler img {
   width: 78%;
   height: auto;
+}
+
+/* SIS-202 — a linha do tempo vertical abaixo de 64rem, que o JSDoc de
+   `RoadmapTrail` já descrevia ("o CSS descarta a curva e a mesma lista vira uma
+   linha do tempo vertical") mas que NÃO existia em nenhuma regra deste arquivo:
+   `.roadmap-stops` seguia `position: absolute; inset: 0` e cada `.roadmap-stop`
+   seguia posicionada em `--x/--y` com `width: 0`, então em 390px as dez paradas
+   empilhavam umas sobre as outras dentro do palco e o texto ficava ilegível.
+   Fotografado nas DUAS rotas antes desta regra, com o mesmo resultado — é defeito
+   antigo de `/transformacao-legado`, não algo que a montagem nova tenha criado.
+   Corrigido aqui porque `/parceiros-e-implementacoes` tinha mobile funcionando
+   (a `PartnersTrail` desmontada trazia a sua própria pilha de cards) e "mobile
+   OK" é critério de aceite da issue: deixar como estava trocaria uma seção
+   legível por uma ilegível naquela largura.
+
+   A curva sai porque ela pressupõe as duas colunas: em 390px não há para onde
+   serpentear. O que fica é a ordem da `<ol>`, que é o conteúdo. O nó de cada
+   parada vira o marcador da linha, com o fio contínuo desenhado pela borda
+   esquerda da lista — o mesmo vocabulário, sem depender de rolagem para
+   alcançar parada nenhuma. */
+@media (max-width: 63.99rem) {
+  /* O SVG é quem dava altura ao palco; sem ele o palco passa a medir a lista. */
+  .roadmap-svg,
+  .roadmap-traveler {
+    display: none;
+  }
+
+  .roadmap-stops {
+    position: static;
+    display: grid;
+    gap: clamp(1.4rem, 5vw, 2.2rem);
+    padding-left: 1.6rem;
+    border-left: 2px dashed color-mix(in srgb, var(--ink) 26%, transparent);
+  }
+
+  .roadmap-stop,
+  .roadmap-stop--left,
+  .roadmap-stop--right {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+  }
+
+  /* O nó volta a marcar a linha, agora sobre a borda da lista. */
+  .roadmap-node {
+    left: -1.6rem;
+    top: 1.6rem;
+  }
+
+  /* Os cards nascem inclinados e recuados pela trilha (--card-z/--card-rot) e só
+     se endireitam quando a rolagem os alcança. Fora da curva isso não tem
+     função: aqui todos ficam de frente, legíveis desde o HTML servido. */
+  .roadmap-card,
+  .roadmap-stop--left .roadmap-card,
+  .roadmap-stop--right .roadmap-card,
+  .roadmap-stop.is-reached .roadmap-card,
+  .roadmap-stop--right.is-reached .roadmap-card,
+  .roadmap-stop[aria-current="step"] .roadmap-card {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+    max-width: none;
+    transform: none;
+    opacity: 1;
+  }
 }
 
 /* ---- 9b. Detalhe da parada (dialog nativo) ---- */
@@ -2559,7 +2644,13 @@ html.has-dialog {
      Camada de background em vez de pseudo-elemento: a seção é alta com interior
      `sticky` e `.sequence-visual` tem `transform` — mexer em `z-index` aqui é
      onde os problemas nascem. `.lp-section--cream` já define `background`, e
-     esta regra vem depois na folha, então é ela que vale. */
+     esta regra vem depois na folha, então é ela que vale.
+
+     SIS-176 — O TEXTO ACIMA É HISTÓRICO: `.lp-signals` não é mais a vizinha; a
+     SIS-179 levou a grade para depois do hero. Agora quem chega é
+     `.impact-saida`, que dissolve a foto de “Sistran em números” no mesmo
+     `--paper`. Este background continua sendo a segunda metade da passagem:
+     `--paper` entra e se resolve no `--cream` da sequência. */
   background:
     linear-gradient(to bottom, var(--paper) 0, rgb(255 255 255 / 0%) 40svh),
     var(--cream);
@@ -2578,15 +2669,45 @@ html.has-dialog {
    Ancorado na seção, o véu sai da tela com a rolagem, como uma borda.
 
    `z-index: 2` porque `.sequence-sticky` é `z-index: auto`; `pointer-events: none`
-   porque a copy do primeiro capítulo passa por baixo dele. */
+   porque a copy do primeiro capítulo passa por baixo dele.
+
+   SIS-176 — A PREMISSA VELHA FICA COMO HISTÓRICO: não há mais faixa de parceiros
+   colada ao quadro. O véu permanece porque agora recebe o `--paper` entregue por
+   `.impact-saida` e impede o quadro escuro do vídeo de reabrir um corte logo
+   abaixo da dissolução. Ele começa dentro da `.sequence`, portanto não clareia a
+   foto nem o topo do palco anterior; a cor composta foi conferida por raster na
+   medição desta issue. Se `.impact-saida` sair, esta justificativa caduca junto.
+
+   ALTURA REDUZIDA (era 220px). Os 220px foram calibrados quando a vizinha de cima
+   entregava 192px de dissolução: as duas somavam ~400px de branco contínuo, e o
+   que se lia entre os números e o primeiro capítulo era uma faixa vazia. A
+   `.impact-saida` caiu para ~96px e este véu acompanha, na mesma proporção — ele
+   continua cobrindo o topo escuro do quadro de vídeo, que é a razão de existir.
+
+   SIS-213 — A RESSALVA ACIMA SE CUMPRIU: “se `.impact-saida` sair, esta
+   justificativa caduca junto.” Ela saiu. O `--paper` chegava de cima e este véu era
+   a segunda metade da mesma passagem; somados, os dois punham ~216px de quase
+   branco entre o navy dos números e o quadro escuro do vídeo. Medido a 1440 por
+   `scripts/medir-emenda-numeros-sequencia-sis213.mjs`: `rgb(240 243 245)` no último
+   pixel de cima e `rgb(244 245 246)` no primeiro de baixo, com `rgb(1 43 90)` e
+   `rgb(67 83 93)` sendo o que as duas superfícies pintam de verdade ali.
+
+   O véu FICA, e pelo motivo original — sem ele o quadro escuro do vídeo abre um
+   corte reto na fronteira. O que muda é a tinta: em vez do branco que vinha da
+   vizinha clara de outrora, ele carrega o `#041b3d` que a Metrics mantém sob a arte
+   (`.impact-scroll`, `globals.css`). A emenda passa a ser escuro→escuro, que é o que
+   as duas seções são hoje.
+
+   ANTERIOR:
+   background: linear-gradient(to bottom, var(--paper) 0, rgb(255 255 255 / 0%) 100%); */
 .sequence::after {
   content: '';
   position: absolute;
   inset: 0 0 auto 0;
-  height: 220px;
+  height: 120px;
   z-index: 2;
   pointer-events: none;
-  background: linear-gradient(to bottom, var(--paper) 0, rgb(255 255 255 / 0%) 100%);
+  background: linear-gradient(to bottom, #041b3d 0, rgb(4 27 61 / 0%) 100%);
 }
 
 .sequence-sticky {
@@ -2714,6 +2835,21 @@ html.has-dialog {
 .sequence-copy .lp-tag::before {
   background: var(--signal);
   animation-name: lp-tag-pulse;
+}
+
+/* SIS-214 — O CHIP AGORA É O ÚLTIMO DA PILHA, e a margem dele estava toda do lado
+   errado. `.lp-eyebrow` traz `margin: 0 0 1rem` porque nasceu sobretítulo: espaço
+   ABAIXO, nada acima. Depois de a ordem virar (título -> parágrafo -> "Desafios no
+   desenvolvimento de software"), isso encostava o chip no parágrafo — zero de folga
+   em cima — e sobrava 1rem morto contra o `padding-block` do bloco.
+   Aqui a margem é espelhada: 1,6rem em cima, que é exatamente o `margin-top` que o
+   `.lp-lead` usa para se afastar do título (`legacy.css:189`), então os dois vãos da
+   pilha ficam iguais.
+   Por seletor de irmão, e não por classe nova no JSX: a regra vale enquanto o chip
+   estiver DEPOIS do parágrafo, e volta a não valer sozinha se a ordem for revertida
+   — não sobra classe pendurada num nó que mudou de papel. */
+.sequence-copy .lp-lead + .lp-eyebrow {
+  margin: 1.6rem 0 0;
 }
 
 /* 78% de branco (padrão do `.lp-lead`) é pouco para um fundo que varia de quadro
@@ -3097,6 +3233,14 @@ html.has-dialog {
     display: none;
   }
 }
+/* SIS-183 · espelho para o botão da interface. Este é o par obrigatório da regra
+   acima: quem tira a cópia duplicada de cena é `html[data-motion="reduce"]
+   .marquee-copy[aria-hidden="true"]` em `globals.css`, que é espelho e vale para o
+   botão — então com o botão em `reduce` também existe um último item de verdade, e
+   sem esta linha o ponto separador dele ficava pendurado no fim da lista. */
+html[data-motion='reduce'] .lp-signals-copy .lp-partner:last-child::after {
+  display: none;
+}
 
 /* `forced-colors`: o ponto é decoração pura e some junto com o resto do
    grafismo — quem usa o modo não perde informação, porque a cadência das marcas
@@ -3156,6 +3300,14 @@ html.has-dialog {
     filter: none;
     opacity: 1;
   }
+}
+/* SIS-183 · espelho para o botão da interface, pelo mesmo motivo: é o espelho de
+   `globals.css` que transforma a faixa em lista rolável quando a preferência vem
+   do botão, e nessa lista não há hover útil — as quinze marcas têm de nascer em cor
+   cheia nos dois caminhos, não só no do sistema. */
+html[data-motion='reduce'] .lp-partner img {
+  filter: none;
+  opacity: 1;
 }
 
 /* `forced-colors`: `grayscale` só atrapalha, e o modo já substitui as cores. */

@@ -1,11 +1,14 @@
 import Header from '@/components/Header';
 import HeroCinematic from '@/components/HeroCinematic';
+/* SIS-196 — CSS estrutural importado pelo entry point servidor da rota. Assim o
+   App Router inclui a folha no HTML inicial também quando JavaScript não roda. */
+import '@/components/solutions-story.css';
 // Import comentado junto com o consumo da seção logo abaixo (ver o comentário
 // em volta de `<Differentials />`): deixá-lo ativo quebraria o lint por import
 // não utilizado, e removê-lo apagaria a pista de como religar a seção.
 // import Differentials from '@/components/Differentials';
 import Metrics from '@/components/Metrics';
-import Solutions from '@/components/Solutions';
+import SolutionsStory from '@/components/SolutionsStory';
 import ProofJourney from '@/components/ProofJourney';
 import Social from '@/components/Social';
 import Contact from '@/components/Contact';
@@ -20,7 +23,11 @@ import ScrollSpy from '@/components/ui/ScrollSpy';
 // import não utilizado, e removê-lo apagaria a pista de como religar o fio.
 // import ScrollSpine from '@/components/ui/ScrollSpine';
 import BackToTop from '@/components/ui/BackToTop';
-import MosaicHandoff from '@/components/ui/MosaicHandoff';
+// SIS-192 — o handoff saiu da home junto com o mosaico (não há tile de origem
+// para viajar). Import comentado junto com o consumo (ver a nota no lugar dele):
+// deixá-lo ativo quebraria o lint por import não utilizado, e removê-lo apagaria
+// a pista de como religar.
+// import MosaicHandoff from '@/components/ui/MosaicHandoff';
 // Import comentado junto com o consumo do condutor Soluções -> Números (ver o
 // comentário no lugar dele, depois de `<Metrics />`): deixá-lo ativo quebraria o
 // lint por import não utilizado, e removê-lo apagaria a pista de como religar.
@@ -34,7 +41,11 @@ import OptionalMorphIntro from '@/components/intro/OptionalMorphIntro';
 // a nota SIS-101 dentro do `<ProofJourney>`): deixá-los ativos quebraria o lint
 // por import não utilizado, e removê-los apagaria a pista do que havia ali.
 // import NotchDivider from '@/components/ui/NotchDivider';
-import { StackScenes } from '@/components/legacy/StackScenes';
+// SIS-192 — o mosaico saiu da HOME. Import comentado junto com o consumo (ver a
+// nota no lugar dele): deixá-lo ativo quebraria o lint por import não utilizado, e
+// removê-lo apagaria a pista de como religar. O componente continua montado em
+// `/transformacao-legado`, sem `variante`, e essa rota não foi tocada.
+// import { StackScenes } from '@/components/legacy/StackScenes';
 // Import comentado junto com o consumo da faixa logo abaixo (ver o comentário em
 // volta de `<MetricsStrip />`): deixá-lo ativo quebraria o lint por import não
 // utilizado, e removê-lo apagaria a pista de como religar a faixa.
@@ -67,7 +78,20 @@ export default function Page() {
           segue valendo: um `<div>` em volta do hero quebraria `#top + *` no
           `globals.css` — a seção seguinte deixaria de ser irmã do hero e perderia
           o `z-index` que a faz subir por cima dele. */}
-      <main id="conteudo" tabIndex={-1}>
+      {/* SIS-199 — `home-canvas` é o backdrop claro da home: `--fundo-claro-secao`
+          mais a grade leve de "Soluções de Negócios", os dois ancorados na JANELA
+          para serem UMA superfície ao longo dos ~11.000px da página em vez de uma
+          por seção. Regra e decisões (opção 1, palcos escuros que ficam) em
+          `globals.css`, no bloco "SIS-199 — O CANVAS DA HOME É CLARO".
+
+          A classe fica AQUI, no `<main>`, e não no `body`: pintar o `body` levaria
+          o claro para as outras treze rotas, que são desenhadas contra o navy.
+
+          ⚠️ Some com o canvas se este `<main>` — ou qualquer ancestral dele —
+          ganhar `transform`, `filter` ou `perspective`: os três fazem o
+          `background-attachment: fixed` voltar a resolver por caixa, e o degrau de
+          cor entre as seções volta calado. */}
+      <main id="conteudo" className="home-canvas" tabIndex={-1}>
         {/* Fio condutor comentado a pedido: a linha lateral que costurava hero
             -> contato e acendia um nó por seção passava por cima do conteúdo e
             incomodava mais do que orientava.
@@ -96,45 +120,67 @@ export default function Page() {
               1. o `<BrandGrid />` tem de ficar aqui, irmão DIRETO, nunca dentro de
                  um wrapper — é a mesma razão escrita na nota do `<main>` acima;
               2. a faixa tem fundo opaco (`#f5faff`) e passa por cima do hero. Foi
-                 medido que ela não corta o card antes da hora: o card fecha e
-                 desce (`drop`) dentro das 320svh do `#top`, e a grade só encosta
-                 no topo dele no fim do percurso — é exatamente o encontro que o
-                 `drop` existe para produzir, não um corte.
-            A emenda de cor com o hero é deliberadamente invisível: a `.hero-sheet`
-            é `#f4f8fc` e esta seção é `#f5faff`. Ver a nota de `brand-grid.css`,
-            que também registra por que as duas cores NÃO podem ser unificadas. */}
+                 medido que ela não corta o card antes da hora: a aresta de cima da
+                 grade chega a `top: 900` (o rodapé da janela) exatamente em `t = 1`
+                 do percurso do `#top`, nas duas larguras medidas — ou seja ela só
+                 encosta no card quando o percurso termina.
+                 SIS-198 — ERA: "o card fecha e desce (`drop`) dentro das 320svh do
+                 `#top` … é exatamente o encontro que o `drop` existe para
+                 produzir". O `drop` e o `scale` saíram (o card não encolhe mais), e
+                 com eles esse motivo. O encontro continua no mesmo lugar, mas quem
+                 o produz agora é só a geometria do percurso, medida em
+                 `scripts/capturar-hero-sis198.mjs`.
+            SIS-187 — ERA: "A emenda de cor com o hero é deliberadamente
+            invisível: a `.hero-sheet` é `#f4f8fc` e esta seção é `#f5faff`."
+            Não era invisível — as duas cores diferem por 1, 2, 3, e um delta de 3
+            concentrado em UM pixel de largura cheia lê como risco. Medido por
+            raster em `scripts/medir-emenda-hero-grade.mjs`.
+            O estado atual: a emenda é DISSOLVIDA. A borda de cima desta seção
+            recebe o `#f4f8fc` da folha do hero em degradê até o `#f5faff` dela, em
+            `clamp(56px, 7svh, 96px)` — saída 2 da issue, com aval da dona do
+            produto. A nota de `brand-grid.css` tem os números e registra por que as
+            duas cores continuam NÃO podendo ser unificadas.
+            A dissolução é só de COR e não toca em geometria: nada aqui muda a
+            geometria do hero nem o empilhamento `#top + *` acima.
+            SIS-198 — abaixo de 1024px essa dissolução ganhou um espelho ACIMA da
+            aresta (`.marcas-grade::before`), porque sem o `drop` quem a grade
+            encontra em sangria é o VÍDEO e não a folha: o degrau medido era 167. A
+            nota em `brand-grid.css` tem os números dos dois lados. */}
         <BrandGrid />
-        {/* Sem separador aqui: o hero encolhia em card sobre fundo claro e já
-            entregava a cor do mosaico. SIS-179 — a grade entrou no meio, então quem
-            encosta no mosaico agora é ela, com o `border-bottom` de `--line` que ela
-            já tinha. Segue sem separador, e por um motivo a mais: são duas
-            superfícies claras seguidas, e o fio de 1px da grade é a aresta.
+        {/* ── SIS-192 · O MOSAICO SAIU DA HOME ─────────────────────────────────
+            Aqui ficava o `<StackScenes variante="home" />`: a abertura "Entrega
+            com Alta Performance e Comprometimento", o apoio, os quatro pilares e
+            os tiles de arquitetura ao lado.
 
-            O `StackScenes` era mosaico e Método num bloco só, porque o tile
-            "Arquitetura modular e escalável" saía do mosaico, descia e se
-            expandia até virar a caixa de vídeo do Método — separar cortaria o
-            percurso na emenda. Com o Método comentado (texto, quatro movimentos
-            e vídeo saíram a pedido), sobrou só o mosaico, e a travessia foi
-            comentada junto: sem caixa de destino ela não tinha onde pousar.
-            Conteúdo em `src/data/legacy.ts`. */}
+            O MOTIVO É A ESCRITA, NÃO O DESENHO. Essa abertura passou a ser a
+            manchete do hero, na coluna ao lado do vídeo (`ui/HeroPitch.tsx`), e
+            é a MESMA escrita — `mosaicIntroHome` e os títulos de `DIFFERENTIALS`,
+            os dois arquivos intactos. Mantendo o mosaico, a home diria a mesma
+            frase duas vezes, a segunda com menos força e a duas telas de rolagem
+            da primeira. Os tiles e a travessia saem com ela: eram a moldura
+            daquele bloco de texto, não conteúdo próprio.
+
+            A nota antiga que ficava aqui explicava por que o bloco não precisava
+            de separador acima (o hero fecha em card e já entrega a cor da seção
+            de baixo) e por que o mosaico e o Método eram um componente só. A
+            primeira parte continua valendo e mudou de dono: quem recebe o card
+            do hero é a `<BrandGrid />` logo acima, com o `border-bottom` de
+            `--line` que ela já tem. A segunda virou história de
+            `/transformacao-legado`, que é onde o `StackScenes` continua vivo.
+
+            Comentado, e não removido: `legacy/StackScenes.tsx`, os tiles, o CSS
+            de `legacy/legacy.css` e os dados de `src/data/legacy.ts` continuam
+            intactos, e `/transformacao-legado` monta o mesmo componente SEM a
+            prop `variante` — aquela rota abre em "Arquitetura…" e não foi tocada.
+            Religar aqui é descomentar este bloco e o import no topo.
         <div>
-          {/* SIS-68: variante da home — abertura "Entrega com Alta Performance
-              e Comprometimento" e os quatro pilares dentro do bloco de texto.
-              `/transformacao-legado` monta o mesmo componente sem a prop e
-              continua com a abertura "Arquitetura". */}
           <StackScenes variante="home" />
         </div>
-        {/* Soluções ocupa agora o lugar do Método, a pedido: é o teatro preso ao
-            scroll com a pílula "Veja como a Sistran pode ajudar sua Seguradora
-            nos mais variados desafios de negócios." e o título "Soluções de
-            Negócios". Só esse cabeçalho fica — o kicker "Método | quatro
-            movimentos" foi embora com o `SectionIntro`, então não há título
-            duplicado no lugar.
-
-            Fora do wrapper da serifa editorial e fora do `SectionReveal`, pelo
-            mesmo motivo de "Sistran em números": a seção é palco preso ao scroll
-            (sticky + trilha de 400vh), e um ancestral com `transform` cria
-            contexto e faz o sticky perder a referência da viewport. */}
+        */}
+        {/* SIS-196 — quatro etapas em fluxo na coluna esquerda e mídia sticky
+            independente na direita. Fora de wrappers animados para preservar a
+            referência da viewport do sticky. */}
+        <SolutionsStory />
         {/* ── Jornada de prova: UM percurso, UM relógio ──────────────────────
             Soluções, o handoff, "Sistran em números" e os parceiros eram três
             seções independentes em sequência, cada uma com o seu ScrollTrigger.
@@ -150,8 +196,11 @@ export default function Page() {
             condutores decorativos e o último viraria scrollport, matando os
             `sticky` internos dos capítulos. A nota está também no `globals.css`,
             em `.proof-journey`. */}
+        {/* SIS-196 — opção 2: Soluções fica irmã da ProofJourney. Seus passos
+            precisam de altura real e sua mídia sticky precisa soltar no fim da
+            própria seção; colocá-la no palco absoluto criaria dois stickies.
+            A jornada passa a começar em Metrics. */}
         <ProofJourney>
-          <Solutions />
         {/* "Sistran em números" subiu para cá, a pedido: passa a ocupar o lugar
             que era do bloco "Resultados | evidências dos casos", logo depois do
             mosaico e de Soluções.
@@ -188,10 +237,8 @@ export default function Page() {
             ficou feia. Religar sem mudar as duas âncoras traz a diagonal de
             volta.
 
-            Comentado, e não removido: `ui/SolutionsToMetrics.tsx`, as marcas
-            `[data-fio-saida]` (em `Solutions.tsx`) e `[data-fio-chegada]` (em
-            `Metrics.tsx`) e o bloco `.fio-travessia` do `globals.css` continuam
-            intactos — religar é descomentar a linha abaixo e o import no topo.
+            Comentado, e não removido: `ui/SolutionsToMetrics.tsx` e a marca
+            `[data-fio-chegada]` em `Metrics.tsx` continuam intactos.
             Se voltar, precisa continuar aqui: irmão direto das duas seções,
             nunca dentro de um wrapper animado.
         <SolutionsToMetrics />
@@ -230,13 +277,26 @@ export default function Page() {
             O componente `ui/NotchDivider.tsx` continua no projeto e é usado por
             outras páginas — só este consumo saiu. */}
         </ProofJourney>
-        {/* Travessia do tile "Arquitetura modular e escalável" até a foto do card
-            01 de Soluções. Fica DEPOIS da jornada inteira, e é irmão direto dela:
-            o viajante é `position: fixed`, que morre sob ancestral com
-            `transform`/`filter`, e a ordem na árvore é o que o faz pintar por
-            cima do fundo de Soluções sem disputa de `z-index`. Decorativo e
-            `aria-hidden` — sem ele o tile fica no mosaico e a foto no palco. */}
+        {/* SIS-192 — A TRAVESSIA SAIU COM O MOSAICO, e não por escolha de
+            desenho: ela era o tile "Arquitetura modular e escalável" viajando até
+            a foto do card 01 de Soluções, e sem mosaico não existe ponto de
+            partida. Deixá-la montada não quebraria nada (o `medir()` de
+            `MosaicHandoff` não encontra `[data-carrier-origem]` e chama
+            `desligar()`), mas seria um efeito `fixed` medindo o DOM a cada
+            rolagem para concluir que não tem o que fazer.
+
+            CONFERIDO que Soluções abre sem ela, e é o ponto que a issue manda
+            conferir: a foto do card 01 é escondida durante a viagem por
+            `[data-carrier-alvo] .solution-image { opacity: var(--carrier-destino, 1) }`
+            (`globals.css`). A variável só é escrita PELO handoff — sem ele o
+            fallback do `var()` é `1`, e a foto nasce visível. Nenhum estado
+            inicial de Soluções depende do pouso.
+
+            Comentado, e não removido: `ui/MosaicHandoff.tsx` e as regras
+            `[data-carrier-origem]` / `[data-carrier-alvo]` do `globals.css`
+            continuam intactas. Religar depende de definir um novo destino.
         <MosaicHandoff />
+        */}
         {/* "Sobre nós / A Sistran" saiu da home a pedido: o texto institucional
             agora vive só em `/quem-somos`, que já monta o mesmo `<About />`.
             Duplicá-lo aqui repetia a apresentação da empresa duas vezes no
@@ -263,9 +323,7 @@ export default function Page() {
           <SectionReveal><Differentials /></SectionReveal>
         </div>
         */}
-        {/* `<Metrics />` saía daqui: subiu para o lugar do bloco "Resultados |
-            evidências dos casos", logo depois do `MosaicHandoff`. `<Solutions />`
-            também já não é daqui — foi para o lugar do Método. */}
+        {/* `<Metrics />` saía daqui: subiu para depois de Soluções. */}
         {/* Ordem da home do site: contato -> LinkedIn -> "Fale com a Gente!"
 
             Os três `SectionReveal` que envolviam Contato, Social e ContactCTA

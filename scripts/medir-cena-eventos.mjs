@@ -532,8 +532,13 @@ saida["390x844"] = await mob.evaluate(() => {
     "11-listaVisivel": getComputedStyle(lista).display !== "none",
     "12-quinzeItens":
       lista.querySelectorAll(".eventos-lista-item").length === 15,
-    "13-quinzeBotoes":
-      lista.querySelectorAll("a.eventos-destaque-botao").length === 15,
+    /* SIS-205 — ERAM QUINZE, SÃO DOIS, e não é perda: o botão de vídeo passou a
+       depender da flag `youtube` do evento, que hoje só `web-summit-ai` e
+       `suitability-ai` têm. Contar quinze aqui reprovava a lista por um botão que
+       não deve existir. (Reaplicado na SIS-204 — eu apaguei este ajuste ao devolver
+       o arquivo ao HEAD para conferir um recorte de contraste.) */
+    "13-doisBotoes":
+      lista.querySelectorAll("a.eventos-destaque-botao").length === 2,
   };
 });
 await mob.close();

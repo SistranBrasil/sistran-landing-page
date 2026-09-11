@@ -2,8 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { navIdiomaForPath, sectionsForPath } from '@/data/pageSections';
+import {
+  navIdiomaForPath,
+  sectionsForPath,
+  type PageSection,
+} from '@/data/pageSections';
 import { prefersReducedMotion } from '@/lib/motion';
+import { criarConsultaDeMedia } from '@/lib/mediaStore';
+
+/* SIS-182 — o limiar da coluna, lido por `useSyncExternalStore`.
+   ⚠️ Esta string é citada por `globals.css:498` e por `latam/page.tsx:93` como "o
+   `matchMedia` de `ScrollSpy.tsx:37`" — a linha andou, a string é a mesma. Ela e a
+   `@media` correspondente mudam juntas. A razão dos 1280 está no comentário do
+   efeito que ela substituiu, logo abaixo. */
+const useColunaVisivel = criarConsultaDeMedia('(min-width: 1280px)');
 
 /**
  * Navegador lateral de seções: coluna de traços na borda esquerda, o da seção
@@ -24,37 +36,55 @@ export default function ScrollSpy() {
   const idioma = navIdiomaForPath(pathname);
 
   const [active, setActive] = useState('');
-  const [wide, setWide] = useState(false);
-  /** A seção ativa está sobre fundo claro? O nav é `fixed` (fora de
-   *  `.section-light`), então a cascata do CSS não o alcança. */
-  const [onLight, setOnLight] = useState(false);
+  /* SIS-182 — era `useState(false)` + o efeito comentado abaixo. */
+  const wide = useColunaVisivel();
+  /** Tom da seção ativa na margem esquerda. O nav é `fixed` (fora da árvore da
+   *  seção), então a cascata do CSS não o alcança — o contraste do rótulo/traço/
+   *  foco precisa de estado próprio.
+   *  SIS-181 — duas fontes, nesta ordem: (1) `tom: 'claro' | 'medio'` explícito
+   *  na entrada do mapa; (2) `closest('.section-light')` como reserva apenas
+   *  quando `tom` está ausente. Assim `medio` também ganha da classe de pintura,
+   *  e o fallback mantém certas as claras que já usam `.section-light`. */
+  const [tomAtivo, setTomAtivo] = useState<'escuro' | NonNullable<PageSection['tom']>>(
+    'escuro',
+  );
+  const onLight = tomAtivo === 'claro';
+  const onMedium = tomAtivo === 'medio';
 
-  useEffect(() => {
-    /* SIS-100 — 1280px, e não os 1440px de antes. A coluna vive na margem
-       esquerda, fora do `container-lp`: o que ela precisa é de margem sobrando,
-       e a 1280 já sobra (o container satura antes disso). Com o corte em 1440 o
-       recurso não existia em notebook nenhum, que é a tela da maior parte do
-       público desta LP. Abaixo de 1280 ele continua OCULTO, de propósito: em
-       tablet e celular a coluna disputaria a borda com o conteúdo, e nenhuma
-       informação se perde — os mesmos destinos estão no menu do header e nas
-       navegações internas de cada página. */
-    const mq = window.matchMedia('(min-width: 1280px)');
-    const update = () => setWide(mq.matches);
-    update();
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
-  }, []);
+  // SIS-182 — substituído por `useColunaVisivel()` no topo do arquivo. O corpo
+  // fica registrado porque a RAZÃO do limiar (SIS-100) é o que se consulta ao
+  // mexer na coluna, e ela não cabe numa linha ao lado da string. Comentado com
+  // `//` de propósito: o texto do SIS-100 já era um bloco `/* */`, e aninhar
+  // fecharia o comentário externo no meio.
+  //
+  // SIS-100 — 1280px, e não os 1440px de antes. A coluna vive na margem
+  // esquerda, fora do `container-lp`: o que ela precisa é de margem sobrando,
+  // e a 1280 já sobra (o container satura antes disso). Com o corte em 1440 o
+  // recurso não existia em notebook nenhum, que é a tela da maior parte do
+  // público desta LP. Abaixo de 1280 ele continua OCULTO, de propósito: em
+  // tablet e celular a coluna disputaria a borda com o conteúdo, e nenhuma
+  // informação se perde — os mesmos destinos estão no menu do header e nas
+  // navegações internas de cada página.
+  //
+  // useEffect(() => {
+  //   const mq = window.matchMedia('(min-width: 1280px)');
+  //   const update = () => setWide(mq.matches);
+  //   update();
+  //   mq.addEventListener('change', update);
+  //   return () => mq.removeEventListener('change', update);
+  // }, []);
 
   useEffect(() => {
     if (!wide || sections.length === 0) return;
-    /* Elemento observado -> id do item. Muitas rotas guardam o id no `<h2>` da
-       seção, porque esses ids nasceram como destino de `aria-labelledby`. Um
-       `<h2>` é baixo o bastante para ATRAVESSAR a faixa de 5% do `rootMargin`
-       entre dois quadros de scroll rápido sem nunca ser marcado, e ainda por cima
-       não serve para detectar fundo claro/escuro. Então o que se observa é a
-       `<section>` mais próxima, quando existe — e o id do item continua sendo o
-       alvo do link, intacto. */
-    const alvos = new Map<Element, string>();
+    /* Elemento observado -> entrada do item (`PageSection`). Muitas rotas
+       guardam o id no `<h2>` da seção, porque esses ids nasceram como destino de
+       `aria-labelledby`. Um `<h2>` é baixo o bastante para ATRAVESSAR a faixa de
+       5% do `rootMargin` entre dois quadros de scroll rápido sem nunca ser
+       marcado, e ainda por cima não serve para detectar fundo claro/escuro.
+       Então o que se observa é a `<section>` mais próxima, quando existe — e o
+       id do item continua sendo o alvo do link, intacto. A entrada inteira
+       (não só o id) chega até aqui porque SIS-181 precisa do `tom`. */
+    const alvos = new Map<Element, PageSection>();
     /* Ordem de documento das seções observadas, e o conjunto das que estão
        cruzando a faixa AGORA. Os dois existem porque "último `entry` com
        `isIntersecting` ganha" está errado, e erra de um jeito que só aparece na
@@ -66,6 +96,13 @@ export default function ScrollSpy() {
        acima da faixa, era o último a falar e ficava marcado como ativo, com o
        fundo dele decidindo o contraste. Era isso que deixava o traço ciano sobre
        a seção clara.
+
+       Dois problemas distintos, ambos com o mesmo sintoma (traço ciano / rótulo
+       branco onde o fundo é claro): (A) a ORDEM dos `entries` — resolvida aqui
+       pelo conjunto `cruzando` + varredura de `ordem` de baixo para cima; (B) o
+       VOCABULÁRIO do detector, que só conhecia `.section-light` e lia como
+       escura toda superfície clara sem essa classe — resolvido em SIS-181 pelo
+       campo `tom` no mapa, com o `closest` como reserva.
 
        Com o conjunto, cada callback só ATUALIZA a participação de quem falou
        (entra ou sai) e a seção ativa é escolhida no fim: a mais ABAIXO na página
@@ -81,13 +118,17 @@ export default function ScrollSpy() {
         for (let i = ordem.length - 1; i >= 0; i -= 1) {
           const el = ordem[i];
           if (!cruzando.has(el)) continue;
-          /* O id do ITEM, não `el.id`: o que está sendo observado pode ser a
+          /* A entrada do ITEM, não `el.id`: o que está sendo observado pode ser a
              `<section>` que embrulha o `<h2>` que carrega o id (ver abaixo), e
              nesse caso `el.id` é vazio ou é outro id. */
-          const item = alvos.get(el);
-          if (!item) return;
-          setActive(item);
-          setOnLight(!!el.closest('.section-light'));
+          const secao = alvos.get(el);
+          if (!secao) return;
+          setActive(secao.id);
+          /* SIS-181 — o tom explícito (`claro` ou `medio`) sempre ganha; o
+             `closest` só classifica como claro quando o mapa ficou ausente. */
+          setTomAtivo(
+            secao.tom ?? (el.closest('.section-light') ? 'claro' : 'escuro'),
+          );
           return;
         }
         /* Nada cruzando a faixa (respiro entre duas seções, fim de página): a
@@ -105,7 +146,7 @@ export default function ScrollSpy() {
       const el = document.getElementById(s.id);
       if (!el) return;
       const observado = el.closest('section') ?? el;
-      alvos.set(observado, s.id);
+      alvos.set(observado, s);
       /* A ordem do mapa é a ordem da página — as listas em `pageSections.ts` são
          escritas na sequência em que as seções aparecem, que é o que o próprio
          indicador desenha na coluna. Não há segunda ordenação a manter em dia. */
@@ -165,8 +206,19 @@ export default function ScrollSpy() {
             aria-current={isActive ? 'true' : undefined}
             /* `focus-visible` explícito: o traço tem 6px de altura e o anel
                padrão do navegador em cima dele é invisível na prática. O alvo de
-               clique tem 44px de altura (`h-11`), que é o mínimo de toque. */
-            className="group relative flex h-11 items-center rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-[#0ed8f6] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
+               clique tem 44px de altura (`h-11`), que é o mínimo de toque.
+               SIS-181 — o anel entra no mesmo par de cores do traço: ciano no
+               escuro, `#0079CB` no claro e `#02070e` no médio. O último é uma
+               cor documentada na paleta histórica dos palcos escuros e foi a
+               mais clara desse repertório que fechou 4,5:1 em todos os azuis
+               intermediários medidos. */
+            className={`group relative flex h-11 items-center rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${
+              onLight
+                ? 'focus-visible:ring-[#0079CB]'
+                : onMedium
+                  ? 'focus-visible:ring-[#02070e]'
+                : 'focus-visible:ring-[#0ed8f6]'
+            }`}
           >
             <span
               aria-hidden
@@ -174,14 +226,24 @@ export default function ScrollSpy() {
                 isActive
                   ? onLight
                     ? 'w-6 bg-[#0079CB]'
+                    : onMedium
+                      ? 'w-6 bg-[#02070e]'
                     : 'w-6 bg-[#0ed8f6]'
                   : onLight
                     ? 'w-1.5 bg-[#0a1f44]/30 group-hover:w-3 group-hover:bg-[#0a1f44]/60'
+                    : onMedium
+                      ? 'w-1.5 bg-[#02070e]/45 group-hover:w-3 group-hover:bg-[#02070e]'
                     : 'w-1.5 bg-white/25 group-hover:w-3 group-hover:bg-white/60'
               }`}
               style={
                 isActive
-                  ? { boxShadow: onLight ? '0 0 12px rgba(0,121,203,0.55)' : '0 0 12px #0ed8f6' }
+                  ? {
+                      boxShadow: onLight
+                        ? '0 0 12px rgba(0,121,203,0.55)'
+                        : onMedium
+                          ? '0 0 12px rgba(2,7,14,0.6)'
+                          : '0 0 12px #0ed8f6',
+                    }
                   : undefined
               }
             />
@@ -199,18 +261,25 @@ export default function ScrollSpy() {
                 hero (a conta e o motivo estão em `globals.css`, no bloco
                 SIS-170). Lá ele sai do FLUXO, não de vista: continua sendo o
                 nome acessível do link. O 1440 vive só no CSS; o 1280 que decide
-                se este componente monta vive só no `matchMedia` acima. E o 1440
-                foi MEDIDO contra o rótulo mais largo de `pageSections.ts`
-                (`/quem-somos`, 150px): seção nova com rótulo mais comprido pede
+                se este componente monta vive só no `matchMedia` acima. O limiar
+                foi REMEDIDO na Geist contra o rótulo mais largo de
+                `pageSections.ts` (`/quem-somos`): tinta 131,53px (Inter) →
+                127,08px (Geist); borda/caixa 169,53px → 165,08px; limiar
+                mínimo calculado 1430,16px. O breakpoint 1439,98px foi
+                preservado com folga. Seção nova com rótulo mais comprido pede
                 remedir o limiar. */}
             <span
               className={`scrollspy-rotulo ml-3 whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.16em] transition-opacity ${
                 isActive
                   ? onLight
                     ? 'text-[#0a1f44] opacity-100'
+                    : onMedium
+                      ? 'text-[#02070e] opacity-100'
                     : 'text-white opacity-100'
                   : onLight
                     ? 'text-[#0a1f44]/70 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100'
+                    : onMedium
+                      ? 'text-[#02070e] opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100'
                     : 'text-white/60 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100'
               }`}
             >

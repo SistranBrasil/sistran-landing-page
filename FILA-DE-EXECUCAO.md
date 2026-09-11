@@ -92,3 +92,57 @@ item 2 da **SIS-185** (violeta de `BRASIL`).
 | **SIS-185** | Backlog | Divisas SP/PR + token violeta `BRASIL` |
 | **SIS-187** | Backlog | Emenda hero → grade (precisa do seu aval) |
 | **SIS-188** | Backlog | Componentes órfãos |
+
+## Doc Terminal Industries → home (09/09)
+
+Spec: `docs/efeitos-scroll-terminal-industries.md`. Cores = Sistran (ciano, não verde-limão).
+Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloqueiam em 193.
+
+| Issue | Status | Efeito | O quê |
+|---|---|---|---|
+| **SIS-193** | Todo | base | Tokens motion + primitiva Reveal |
+| **SIS-195** | Todo | 1 | BrandGrid: cascata fade-up das logos |
+| **SIS-194** | Todo | 2 | Títulos: revelação por linha/palavra |
+| **SIS-196** | Todo | 3 + layout | Soluções de Negócios: **redesenho inteiro** sticky storytelling (`docs/secao-sticky-storytelling-terminal.md`) — não só efeito em cima do teatro atual |
+| **SIS-197** | Todo | 4 | Presets `data-reveal` nos blocos estáticos |
+| **SIS-198** | Todo | hero | Tamanho fixo (sem scale/drop) + contorno ciano melhorado — ref 2ª captura; skills `.claude/gsap-skills` |
+| **SIS-199** | Todo | home | Backdrop inteiro = azul claro + grade leve (igual Soluções / `--fundo-claro-secao`) |
+| **SIS-200** | In Review | números | Sete células iguais + ícone dinâmico por métrica |
+| **SIS-203** | Todo | números | Hover fluido nas células, menos névoa branca, bolinhas sob cada número |
+| **SIS-201** | In Review | parceiros | Cards horizontais Terminal + logos/eco (conferir) |
+| **SIS-202** | In Review | parceiros | Etapas: **layout** RoadmapTrail + textos `TIMELINE_EVENTS` (reparo: sem copy Luminna) |
+| **SIS-218** | Todo | parceiros | Parceiros: seção fixa + avanço lateral com scroll da página (irmã da 219) |
+| **SIS-219** | Todo | parceiros | Logos dos cards bem maiores e mais destacadas (irmã da 218) |
+| **SIS-220** | Todo | parceiros | Linha do tempo: viajante = logo Luminna igual `/transformacao-legado` |
+| **SIS-204** | Todo | eventos | `/eventos-inovacao`: título único com scroll + sombra azul clara + rótulos inteiros nas miniaturas |
+| **SIS-205** | Todo | eventos | Botão YouTube só em Web Summit AI + Suitability (demais cards sem botão) |
+| **SIS-206** | Todo | esg | Reparo: título da abertura quebrado (frase ESG) |
+| **SIS-207** | Todo | esg | SOCIAL: foguete silhueta branca + trajeto em toda a seção |
+| **SIS-208** | Todo | esg | ENVIRONMENT: cards da captura (círculo, sombra, flutuação) |
+| **SIS-209** | Todo | esg | SOCIAL: Huerta Niño + Aguas mesmo tamanho + flutuação leve |
+| **SIS-210** | Todo | esg | GOVERNANCE: mesmos cards da captura (sombra + flutuação) |
+| **SIS-211** | Todo | contato | Números: fundo azul claro + cards tipo Implementações + seção mais baixa |
+| **SIS-212** | Todo | contato | Negrito em «Preencha o formulário e fale com a gente!» |
+| **SIS-213** | Todo | home | Números: retirar sombra/faixa branca do fundo |
+| **SIS-214** | Todo | home | Sobre o Luminna AI entre Números e Desafios |
+| **SIS-215** | Todo | eventos | Retirar/clarear bandas azuis escuras no início e fim do scroll |
+| **SIS-216** | Backlog | eventos | Esboço: admin com senha (sem sessão/seção pública) — não implementar ainda |
+| **SIS-217** | Todo | solucoes | Cards aceleradores: logos `public/images/logos` + reação no hover |
+| **SIS-221** | Todo | quem-somos | Escritórios BRASIL: baixar marcador do 2º andar SP na torre |
+| **SIS-222** | Todo | contato | Loading a cada entrada até página + mapa prontos |
+| **SIS-223** | Todo | trabalhe-conosco | Formulário em card no scroll (envio tipo Contato) |
+| **SIS-224** | Todo | trabalhe-conosco | Suavizar véu/sombra feia da abertura |
+| **SIS-225** | Todo | parceiros | Capa `fundocapaparceiros` no fundo do título + descrição |
+| **SIS-226** | Todo | home | Hero: escritas alternando no vídeo (3 slides + pitch final) |
+| **SIS-227** | Todo | sistran-labs | Capa `SISTRAN-LABS.png` no fundo do título |
+| **SIS-228** | Todo | parceiros | Sombra atrás do título + descrição na abertura (pós-225) |
+| **SIS-229** | Todo | sistran-labs | Principais Soluções: arte `principaissolucoes` bem integrada |
+| **SIS-230** | In Review | quem-somos | Premiações Celent (montagem 230) — supersedida visualmente por SIS-238 |
+| **SIS-231** | Todo | solucoes | Remover seção Transformação de Legado (método / quatro movimentos) |
+| **SIS-232** | Todo | eventos | Miniaturas laterais maiores e mais perto do card em destaque |
+| **SIS-233** | Todo | esg | Título e descrição da abertura iguais ao padrão de /contato |
+| **SIS-234** | Todo | esg | SOCIAL: foguete do scroll colorido e 3D (logo Gerando Talentos) |
+| **SIS-235** | Todo | eventos | Tag «Realizado pela Sistran» vira componente carimbo |
+| **SIS-236** | Todo | parceiros | Tirar tarja azul clara da capa / emenda |
+| **SIS-237** | Todo | esg | ENVIRONMENT + GOVERNANCE: flutuação e hover bem perceptíveis |
+| **SIS-238** | Todo | quem-somos | Premiações: fundo cele.png + layout escritas/logo (exemplcelent) |

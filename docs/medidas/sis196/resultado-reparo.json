@@ -1,0 +1,2166 @@
+{
+  "quando": "2026-09-10T16:09:10.309Z",
+  "url": "http://127.0.0.1:43197",
+  "cssInicial": {
+    "hrefs": [
+      "http://127.0.0.1:43197/_next/static/chunks/1o205rfao5_66.css",
+      "http://127.0.0.1:43197/_next/static/chunks/40k6fgm85cy08.css",
+      "http://127.0.0.1:43197/_next/static/chunks/2zdm87-zb_e-f.css",
+      "http://127.0.0.1:43197/_next/static/chunks/2sivkis4ozeah.css"
+    ],
+    "presente": true,
+    "href": "http://127.0.0.1:43197/_next/static/chunks/2zdm87-zb_e-f.css"
+  },
+  "raster": {
+    "caixa": {
+      "left": 698.09375,
+      "right": 1382.390625,
+      "top": 108,
+      "height": 780,
+      "width": 684.296875
+    },
+    "recuoDoDegrauPx": 21.9,
+    "escuridaoArestaReta": 16.4,
+    "escuridaoNoDegrau": 3.4,
+    "escuridaoDireita": 15.8,
+    "segueORecorte": true,
+    "visivel": true
+  },
+  "resultados": [
+    {
+      "nome": "no-js-1440",
+      "dirigindo": false,
+      "sombra": {
+        "painel": {
+          "filter": "none",
+          "boxShadow": "none",
+          "clipPath": "none",
+          "overflow": "visible/visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "willChange": "auto",
+          "corte": null
+        },
+        "recorte": {
+          "clipPath": "none",
+          "overflow": "hidden/hidden",
+          "background": "rgb(215, 232, 243)",
+          "filter": "none",
+          "mesmaCaixa": null,
+          "box": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "figuras": [
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 45.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 45.6
+                }
+              ],
+              "folga": 45.6
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 45.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 45.6
+                }
+              ],
+              "folga": 45.6
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 45.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 45.6
+                }
+              ],
+              "folga": 45.6
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 45.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 45.6
+                }
+              ],
+              "folga": 45.6
+            }
+          }
+        ],
+        "fotos": [
+          {
+            "alt": "Equipe Sistran no escritório de São Paulo, em frente aos monitores de desenvolvimento.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Profissionais da Sistran reunidos em volta de uma mesa no escritório de São Paulo.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Time da Sistran em atividade conjunta no escritório.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Colaboradores da Sistran em ambiente de trabalho compartilhado.",
+            "coberta": "figure.story-passo__midia"
+          }
+        ]
+      },
+      "cssAplicado": true,
+      "figuras": [
+        {
+          "figure": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 3633.78125,
+            "right": 1382.390625,
+            "bottom": 4155.78125,
+            "left": 57.59375
+          },
+          "image": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 3633.78125,
+            "right": 1382.390625,
+            "bottom": 4155.78125,
+            "left": 57.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 4471.96875,
+            "right": 1382.390625,
+            "bottom": 4993.96875,
+            "left": 57.59375
+          },
+          "image": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 4471.96875,
+            "right": 1382.390625,
+            "bottom": 4993.96875,
+            "left": 57.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 5310.15625,
+            "right": 1382.390625,
+            "bottom": 5832.15625,
+            "left": 57.59375
+          },
+          "image": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 5310.15625,
+            "right": 1382.390625,
+            "bottom": 5832.15625,
+            "left": 57.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 6043,
+            "right": 1382.390625,
+            "bottom": 6565,
+            "left": 57.59375
+          },
+          "image": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 6043,
+            "right": 1382.390625,
+            "bottom": 6565,
+            "left": 57.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        }
+      ],
+      "maiorOverlapFiguras": 0,
+      "painel": {
+        "display": "none",
+        "position": "relative",
+        "box": {
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "grid": [
+        1,
+        0
+      ],
+      "overlapColunas": 0,
+      "overflowX": 0,
+      "antigo": false,
+      "gapEmenda": 0,
+      "cls": null,
+      "trocas": []
+    },
+    {
+      "nome": "desktop-1440",
+      "dirigindo": true,
+      "sombra": {
+        "painel": {
+          "filter": "drop-shadow(rgba(4, 27, 61, 0.14) 0px 10px 22px) drop-shadow(rgba(0, 121, 203, 0.1) 0px 2px 6px)",
+          "boxShadow": "none",
+          "clipPath": "none",
+          "overflow": "visible/visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "willChange": "auto",
+          "corte": {
+            "sombras": [
+              {
+                "cor": "rgba(4, 27, 61, 0.14)",
+                "x": 0,
+                "y": 10,
+                "desfoque": 22
+              },
+              {
+                "cor": "rgba(0, 121, 203, 0.1)",
+                "x": 0,
+                "y": 2,
+                "desfoque": 6
+              }
+            ],
+            "alcance": {
+              "esquerda": 22,
+              "direita": 22,
+              "cima": 12,
+              "baixo": 32
+            },
+            "cortadores": [
+              {
+                "no": "section.story-solucoes",
+                "overflow": "clip/clip",
+                "folga": 35.6
+              },
+              {
+                "no": "body",
+                "overflow": "clip/visible",
+                "folga": 35.6
+              }
+            ],
+            "folga": 35.6
+          }
+        },
+        "recorte": {
+          "clipPath": "polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%, 0px 61%, 3.2% 54%, 3.2% 19%, 0px 12%)",
+          "overflow": "hidden/hidden",
+          "background": "rgb(215, 232, 243)",
+          "filter": "none",
+          "mesmaCaixa": true,
+          "box": {
+            "width": 684.296875,
+            "height": 780,
+            "top": 3119.484375,
+            "right": 1382.390625,
+            "bottom": 3899.484375,
+            "left": 698.09375
+          }
+        },
+        "figuras": [
+          {
+            "display": "none",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": null
+          },
+          {
+            "display": "none",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": null
+          },
+          {
+            "display": "none",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": null
+          },
+          {
+            "display": "none",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": null
+          }
+        ],
+        "fotos": [
+          {
+            "alt": "Equipe Sistran no escritório de São Paulo, em frente aos monitores de desenvolvimento.",
+            "coberta": "div.story-solucoes__midia"
+          },
+          {
+            "alt": "Profissionais da Sistran reunidos em volta de uma mesa no escritório de São Paulo.",
+            "coberta": "div.story-solucoes__midia"
+          },
+          {
+            "alt": "Time da Sistran em atividade conjunta no escritório.",
+            "coberta": "div.story-solucoes__midia"
+          },
+          {
+            "alt": "Colaboradores da Sistran em ambiente de trabalho compartilhado.",
+            "coberta": "div.story-solucoes__midia"
+          }
+        ]
+      },
+      "cssAplicado": true,
+      "figuras": [
+        {
+          "figure": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "image": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "positiva": false,
+          "fluxo": false,
+          "ancorada": false,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "image": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "positiva": false,
+          "fluxo": false,
+          "ancorada": false,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "image": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "positiva": false,
+          "fluxo": false,
+          "ancorada": false,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "image": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "positiva": false,
+          "fluxo": false,
+          "ancorada": false,
+          "copy": true
+        }
+      ],
+      "maiorOverlapFiguras": 0,
+      "painel": {
+        "display": "block",
+        "position": "sticky",
+        "box": {
+          "width": 684.296875,
+          "height": 3039.9375,
+          "top": 3119.484375,
+          "right": 1382.390625,
+          "bottom": 6159.421875,
+          "left": 698.09375
+        }
+      },
+      "grid": [
+        0.45999432806007323,
+        0.5400056719399268
+      ],
+      "overlapColunas": 0,
+      "overflowX": 0,
+      "antigo": false,
+      "gapEmenda": 0,
+      "cls": 0,
+      "trocas": [
+        {
+          "esperado": 0,
+          "passo": 0,
+          "imagem": 0
+        },
+        {
+          "esperado": 1,
+          "passo": 1,
+          "imagem": 1
+        },
+        {
+          "esperado": 2,
+          "passo": 2,
+          "imagem": 2
+        },
+        {
+          "esperado": 3,
+          "passo": 3,
+          "imagem": 3
+        }
+      ]
+    },
+    {
+      "nome": "desktop-1024",
+      "dirigindo": true,
+      "sombra": {
+        "painel": {
+          "filter": "drop-shadow(rgba(4, 27, 61, 0.14) 0px 10px 22px) drop-shadow(rgba(0, 121, 203, 0.1) 0px 2px 6px)",
+          "boxShadow": "none",
+          "clipPath": "none",
+          "overflow": "visible/visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "willChange": "auto",
+          "corte": {
+            "sombras": [
+              {
+                "cor": "rgba(4, 27, 61, 0.14)",
+                "x": 0,
+                "y": 10,
+                "desfoque": 22
+              },
+              {
+                "cor": "rgba(0, 121, 203, 0.1)",
+                "x": 0,
+                "y": 2,
+                "desfoque": 6
+              }
+            ],
+            "alcance": {
+              "esquerda": 22,
+              "direita": 22,
+              "cima": 12,
+              "baixo": 32
+            },
+            "cortadores": [
+              {
+                "no": "section.story-solucoes",
+                "overflow": "clip/clip",
+                "folga": 19
+              },
+              {
+                "no": "body",
+                "overflow": "clip/visible",
+                "folga": 19
+              }
+            ],
+            "folga": 19
+          }
+        },
+        "recorte": {
+          "clipPath": "polygon(0px 0px, 100% 0px, 100% 100%, 0px 100%, 0px 61%, 3.2% 54%, 3.2% 19%, 0px 12%)",
+          "overflow": "hidden/hidden",
+          "background": "rgb(215, 232, 243)",
+          "filter": "none",
+          "mesmaCaixa": true,
+          "box": {
+            "width": 486.59375,
+            "height": 648,
+            "top": 2623.46875,
+            "right": 983.015625,
+            "bottom": 3271.46875,
+            "left": 496.421875
+          }
+        },
+        "figuras": [
+          {
+            "display": "none",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": null
+          },
+          {
+            "display": "none",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": null
+          },
+          {
+            "display": "none",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": null
+          },
+          {
+            "display": "none",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": null
+          }
+        ],
+        "fotos": [
+          {
+            "alt": "Equipe Sistran no escritório de São Paulo, em frente aos monitores de desenvolvimento.",
+            "coberta": "div.story-solucoes__midia"
+          },
+          {
+            "alt": "Profissionais da Sistran reunidos em volta de uma mesa no escritório de São Paulo.",
+            "coberta": "div.story-solucoes__midia"
+          },
+          {
+            "alt": "Time da Sistran em atividade conjunta no escritório.",
+            "coberta": "div.story-solucoes__midia"
+          },
+          {
+            "alt": "Colaboradores da Sistran em ambiente de trabalho compartilhado.",
+            "coberta": "div.story-solucoes__midia"
+          }
+        ]
+      },
+      "cssAplicado": true,
+      "figuras": [
+        {
+          "figure": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "image": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "positiva": false,
+          "fluxo": false,
+          "ancorada": false,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "image": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "positiva": false,
+          "fluxo": false,
+          "ancorada": false,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "image": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "positiva": false,
+          "fluxo": false,
+          "ancorada": false,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "image": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "positiva": false,
+          "fluxo": false,
+          "ancorada": false,
+          "copy": true
+        }
+      ],
+      "maiorOverlapFiguras": 0,
+      "painel": {
+        "display": "block",
+        "position": "sticky",
+        "box": {
+          "width": 486.59375,
+          "height": 2588.15625,
+          "top": 2623.46875,
+          "right": 983.015625,
+          "bottom": 5211.625,
+          "left": 496.421875
+        }
+      },
+      "grid": [
+        0.46000589551074195,
+        0.539994104489258
+      ],
+      "overlapColunas": 0,
+      "overflowX": 0,
+      "antigo": false,
+      "gapEmenda": 0,
+      "cls": 0,
+      "trocas": [
+        {
+          "esperado": 0,
+          "passo": 0,
+          "imagem": 0
+        },
+        {
+          "esperado": 1,
+          "passo": 1,
+          "imagem": 1
+        },
+        {
+          "esperado": 2,
+          "passo": 2,
+          "imagem": 2
+        },
+        {
+          "esperado": 3,
+          "passo": 3,
+          "imagem": 3
+        }
+      ]
+    },
+    {
+      "nome": "mobile-1023",
+      "dirigindo": false,
+      "sombra": {
+        "painel": {
+          "filter": "none",
+          "boxShadow": "none",
+          "clipPath": "none",
+          "overflow": "visible/visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "willChange": "auto",
+          "corte": null
+        },
+        "recorte": {
+          "clipPath": "none",
+          "overflow": "hidden/hidden",
+          "background": "rgb(215, 232, 243)",
+          "filter": "none",
+          "mesmaCaixa": null,
+          "box": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "figuras": [
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 28.9
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 28.9
+                }
+              ],
+              "folga": 28.9
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 28.9
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 28.9
+                }
+              ],
+              "folga": 28.9
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 28.9
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 28.9
+                }
+              ],
+              "folga": 28.9
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 28.9
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 28.9
+                }
+              ],
+              "folga": 28.9
+            }
+          }
+        ],
+        "fotos": [
+          {
+            "alt": "Equipe Sistran no escritório de São Paulo, em frente aos monitores de desenvolvimento.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Profissionais da Sistran reunidos em volta de uma mesa no escritório de São Paulo.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Time da Sistran em atividade conjunta no escritório.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Colaboradores da Sistran em ambiente de trabalho compartilhado.",
+            "coberta": "figure.story-passo__midia"
+          }
+        ]
+      },
+      "cssAplicado": true,
+      "figuras": [
+        {
+          "figure": {
+            "width": 941.15625,
+            "height": 445.4375,
+            "top": 2785.203125,
+            "right": 982.078125,
+            "bottom": 3230.640625,
+            "left": 40.921875
+          },
+          "image": {
+            "width": 941.15625,
+            "height": 445.4375,
+            "top": 2785.203125,
+            "right": 982.078125,
+            "bottom": 3230.640625,
+            "left": 40.921875
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 941.15625,
+            "height": 445.4375,
+            "top": 3484.890625,
+            "right": 982.078125,
+            "bottom": 3930.328125,
+            "left": 40.921875
+          },
+          "image": {
+            "width": 941.15625,
+            "height": 445.4375,
+            "top": 3484.890625,
+            "right": 982.078125,
+            "bottom": 3930.328125,
+            "left": 40.921875
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 941.15625,
+            "height": 445.4375,
+            "top": 4184.578125,
+            "right": 982.078125,
+            "bottom": 4630.015625,
+            "left": 40.921875
+          },
+          "image": {
+            "width": 941.15625,
+            "height": 445.4375,
+            "top": 4184.578125,
+            "right": 982.078125,
+            "bottom": 4630.015625,
+            "left": 40.921875
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 941.15625,
+            "height": 445.4375,
+            "top": 4809.421875,
+            "right": 982.078125,
+            "bottom": 5254.859375,
+            "left": 40.921875
+          },
+          "image": {
+            "width": 941.15625,
+            "height": 445.4375,
+            "top": 4809.421875,
+            "right": 982.078125,
+            "bottom": 5254.859375,
+            "left": 40.921875
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        }
+      ],
+      "maiorOverlapFiguras": 0,
+      "painel": {
+        "display": "none",
+        "position": "relative",
+        "box": {
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "grid": [
+        1,
+        0
+      ],
+      "overlapColunas": 0,
+      "overflowX": 0,
+      "antigo": false,
+      "gapEmenda": 0,
+      "cls": 0,
+      "trocas": []
+    },
+    {
+      "nome": "mobile-390",
+      "dirigindo": false,
+      "sombra": {
+        "painel": {
+          "filter": "none",
+          "boxShadow": "none",
+          "clipPath": "none",
+          "overflow": "visible/visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "willChange": "auto",
+          "corte": null
+        },
+        "recorte": {
+          "clipPath": "none",
+          "overflow": "hidden/hidden",
+          "background": "rgb(215, 232, 243)",
+          "filter": "none",
+          "mesmaCaixa": null,
+          "box": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "figuras": [
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 3.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 3.6
+                }
+              ],
+              "folga": 3.6
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 3.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 3.6
+                }
+              ],
+              "folga": 3.6
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 3.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 3.6
+                }
+              ],
+              "folga": 3.6
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 3.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 3.6
+                }
+              ],
+              "folga": 3.6
+            }
+          }
+        ],
+        "fotos": [
+          {
+            "alt": "Equipe Sistran no escritório de São Paulo, em frente aos monitores de desenvolvimento.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Profissionais da Sistran reunidos em volta de uma mesa no escritório de São Paulo.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Time da Sistran em atividade conjunta no escritório.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Colaboradores da Sistran em ambiente de trabalho compartilhado.",
+            "coberta": "figure.story-passo__midia"
+          }
+        ]
+      },
+      "cssAplicado": true,
+      "figuras": [
+        {
+          "figure": {
+            "width": 358.796875,
+            "height": 489.515625,
+            "top": 2362.796875,
+            "right": 374.390625,
+            "bottom": 2852.3125,
+            "left": 15.59375
+          },
+          "image": {
+            "width": 358.796875,
+            "height": 489.515625,
+            "top": 2362.796875,
+            "right": 374.390625,
+            "bottom": 2852.3125,
+            "left": 15.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 358.796875,
+            "height": 489.515625,
+            "top": 3057.9375,
+            "right": 374.390625,
+            "bottom": 3547.453125,
+            "left": 15.59375
+          },
+          "image": {
+            "width": 358.796875,
+            "height": 489.515625,
+            "top": 3057.9375,
+            "right": 374.390625,
+            "bottom": 3547.453125,
+            "left": 15.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 358.796875,
+            "height": 489.515625,
+            "top": 3753.078125,
+            "right": 374.390625,
+            "bottom": 4242.59375,
+            "left": 15.59375
+          },
+          "image": {
+            "width": 358.796875,
+            "height": 489.515625,
+            "top": 3753.078125,
+            "right": 374.390625,
+            "bottom": 4242.59375,
+            "left": 15.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 358.796875,
+            "height": 489.515625,
+            "top": 4385.90625,
+            "right": 374.390625,
+            "bottom": 4875.421875,
+            "left": 15.59375
+          },
+          "image": {
+            "width": 358.796875,
+            "height": 489.515625,
+            "top": 4385.90625,
+            "right": 374.390625,
+            "bottom": 4875.421875,
+            "left": 15.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        }
+      ],
+      "maiorOverlapFiguras": 0,
+      "painel": {
+        "display": "none",
+        "position": "relative",
+        "box": {
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "grid": [
+        1,
+        0
+      ],
+      "overlapColunas": 0,
+      "overflowX": 0,
+      "antigo": false,
+      "gapEmenda": 0,
+      "cls": 0,
+      "trocas": []
+    },
+    {
+      "nome": "reduce-sistema",
+      "dirigindo": false,
+      "sombra": {
+        "painel": {
+          "filter": "none",
+          "boxShadow": "none",
+          "clipPath": "none",
+          "overflow": "visible/visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "willChange": "auto",
+          "corte": null
+        },
+        "recorte": {
+          "clipPath": "none",
+          "overflow": "hidden/hidden",
+          "background": "rgb(215, 232, 243)",
+          "filter": "none",
+          "mesmaCaixa": null,
+          "box": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "figuras": [
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 45.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 45.6
+                }
+              ],
+              "folga": 45.6
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 45.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 45.6
+                }
+              ],
+              "folga": 45.6
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 45.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 45.6
+                }
+              ],
+              "folga": 45.6
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 45.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 45.6
+                }
+              ],
+              "folga": 45.6
+            }
+          }
+        ],
+        "fotos": [
+          {
+            "alt": "Equipe Sistran no escritório de São Paulo, em frente aos monitores de desenvolvimento.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Profissionais da Sistran reunidos em volta de uma mesa no escritório de São Paulo.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Time da Sistran em atividade conjunta no escritório.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Colaboradores da Sistran em ambiente de trabalho compartilhado.",
+            "coberta": "figure.story-passo__midia"
+          }
+        ]
+      },
+      "cssAplicado": true,
+      "figuras": [
+        {
+          "figure": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 2110.96875,
+            "right": 1382.390625,
+            "bottom": 2632.96875,
+            "left": 57.59375
+          },
+          "image": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 2110.96875,
+            "right": 1382.390625,
+            "bottom": 2632.96875,
+            "left": 57.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 2949.15625,
+            "right": 1382.390625,
+            "bottom": 3471.15625,
+            "left": 57.59375
+          },
+          "image": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 2949.15625,
+            "right": 1382.390625,
+            "bottom": 3471.15625,
+            "left": 57.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 3787.34375,
+            "right": 1382.390625,
+            "bottom": 4309.34375,
+            "left": 57.59375
+          },
+          "image": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 3787.34375,
+            "right": 1382.390625,
+            "bottom": 4309.34375,
+            "left": 57.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 4520.1875,
+            "right": 1382.390625,
+            "bottom": 5042.1875,
+            "left": 57.59375
+          },
+          "image": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 4520.1875,
+            "right": 1382.390625,
+            "bottom": 5042.1875,
+            "left": 57.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        }
+      ],
+      "maiorOverlapFiguras": 0,
+      "painel": {
+        "display": "none",
+        "position": "relative",
+        "box": {
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "grid": [
+        1,
+        0
+      ],
+      "overlapColunas": 0,
+      "overflowX": 0,
+      "antigo": false,
+      "gapEmenda": 0,
+      "cls": 0,
+      "trocas": []
+    },
+    {
+      "nome": "reduce-opcao",
+      "dirigindo": false,
+      "sombra": {
+        "painel": {
+          "filter": "none",
+          "boxShadow": "none",
+          "clipPath": "none",
+          "overflow": "visible/visible",
+          "background": "rgba(0, 0, 0, 0)",
+          "willChange": "auto",
+          "corte": null
+        },
+        "recorte": {
+          "clipPath": "none",
+          "overflow": "hidden/hidden",
+          "background": "rgb(215, 232, 243)",
+          "filter": "none",
+          "mesmaCaixa": null,
+          "box": {
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "figuras": [
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 45.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 45.6
+                }
+              ],
+              "folga": 45.6
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 45.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 45.6
+                }
+              ],
+              "folga": 45.6
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 45.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 45.6
+                }
+              ],
+              "folga": 45.6
+            }
+          },
+          {
+            "display": "block",
+            "filter": "drop-shadow(rgba(4, 27, 61, 0.13) 0px 8px 12px) drop-shadow(rgba(0, 121, 203, 0.09) 0px 1px 4px)",
+            "boxShadow": "none",
+            "willChange": "auto",
+            "corte": {
+              "sombras": [
+                {
+                  "cor": "rgba(4, 27, 61, 0.13)",
+                  "x": 0,
+                  "y": 8,
+                  "desfoque": 12
+                },
+                {
+                  "cor": "rgba(0, 121, 203, 0.09)",
+                  "x": 0,
+                  "y": 1,
+                  "desfoque": 4
+                }
+              ],
+              "alcance": {
+                "esquerda": 12,
+                "direita": 12,
+                "cima": 4,
+                "baixo": 20
+              },
+              "cortadores": [
+                {
+                  "no": "section.story-solucoes",
+                  "overflow": "clip/clip",
+                  "folga": 45.6
+                },
+                {
+                  "no": "body",
+                  "overflow": "clip/visible",
+                  "folga": 45.6
+                }
+              ],
+              "folga": 45.6
+            }
+          }
+        ],
+        "fotos": [
+          {
+            "alt": "Equipe Sistran no escritório de São Paulo, em frente aos monitores de desenvolvimento.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Profissionais da Sistran reunidos em volta de uma mesa no escritório de São Paulo.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Time da Sistran em atividade conjunta no escritório.",
+            "coberta": "figure.story-passo__midia"
+          },
+          {
+            "alt": "Colaboradores da Sistran em ambiente de trabalho compartilhado.",
+            "coberta": "figure.story-passo__midia"
+          }
+        ]
+      },
+      "cssAplicado": true,
+      "figuras": [
+        {
+          "figure": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 2110.96875,
+            "right": 1382.390625,
+            "bottom": 2632.96875,
+            "left": 57.59375
+          },
+          "image": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 2110.96875,
+            "right": 1382.390625,
+            "bottom": 2632.96875,
+            "left": 57.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 2949.15625,
+            "right": 1382.390625,
+            "bottom": 3471.15625,
+            "left": 57.59375
+          },
+          "image": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 2949.15625,
+            "right": 1382.390625,
+            "bottom": 3471.15625,
+            "left": 57.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 3787.34375,
+            "right": 1382.390625,
+            "bottom": 4309.34375,
+            "left": 57.59375
+          },
+          "image": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 3787.34375,
+            "right": 1382.390625,
+            "bottom": 4309.34375,
+            "left": 57.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        },
+        {
+          "figure": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 4520.1875,
+            "right": 1382.390625,
+            "bottom": 5042.1875,
+            "left": 57.59375
+          },
+          "image": {
+            "width": 1324.796875,
+            "height": 522,
+            "top": 4520.1875,
+            "right": 1382.390625,
+            "bottom": 5042.1875,
+            "left": 57.59375
+          },
+          "positiva": true,
+          "fluxo": true,
+          "ancorada": true,
+          "copy": true
+        }
+      ],
+      "maiorOverlapFiguras": 0,
+      "painel": {
+        "display": "none",
+        "position": "relative",
+        "box": {
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      "grid": [
+        1,
+        0
+      ],
+      "overlapColunas": 0,
+      "overflowX": 0,
+      "antigo": false,
+      "gapEmenda": 0,
+      "cls": 0,
+      "trocas": []
+    }
+  ],
+  "falhas": []
+}

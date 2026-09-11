@@ -1,16 +1,16 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { ACCELERATORS, type Accelerator } from '@/data/accelerators';
-import { getIcon } from '@/lib/icons';
 import { vGrid, vCard, vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '@/lib/motion';
 import { useTilt } from '@/lib/useTilt';
+import './accelerators.css';
 
 function AccelCard({ a, index }: { a: Accelerator; index: number }) {
   const rm = useReducedMotion();
   const { hover, mouse, handlers, tiltTransform } = useTilt(!rm);
-  const Icon = getIcon(a.icon);
   const pos = { x: mouse.x * 100, y: mouse.y * 100 };
 
   return (
@@ -24,7 +24,12 @@ function AccelCard({ a, index }: { a: Accelerator; index: number }) {
          navy. Sem `on-dark` o texto do card ficaria navy sobre o navy do próprio
          card, ou seja, invisível. A classe devolve os valores claros (ver a nota
          em `.section-light .on-dark` no globals.css). */
-      className="on-dark group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/12 p-7 backdrop-blur-xl"
+      /* SIS-217 — `accel-card` é o gancho de `accelerators.css`: a reação da
+         logo no hover e no foco de teclado é escrita lá, e não em utilitárias
+         `group-hover:`, porque ela precisa ser desligada pelos dois canais de
+         movimento reduzido (ver o cabeçalho daquele arquivo). O `group` fica:
+         quem ainda o usa são as camadas decorativas logo abaixo. */
+      className="accel-card on-dark group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/12 p-7 backdrop-blur-xl"
       style={{
         // Navy escuro: o card precisa contrastar com o fundo da seção — antes o
         // azul médio da página, agora o azul claro de `.section-light-blue`. Nos
@@ -73,15 +78,64 @@ function AccelCard({ a, index }: { a: Accelerator; index: number }) {
         className="relative flex items-start justify-between gap-3"
         style={{ transform: 'translateZ(34px)' }}
       >
+        {/* SIS-217 — a placa do produto no lugar do glifo Lucide.
+
+            `alt=""` + `aria-hidden` nas duas imagens: o `<h3>` logo abaixo
+            publica o nome do acelerador em texto, e alt preenchido faria o
+            leitor de tela ler a marca duas vezes seguidas (WCAG H67). Isso NÃO
+            mudou quando o título saiu da tela (11/09): `sr-only` esconde do
+            olho e mantém no leitor, então continuam sendo duas leituras se o
+            `alt` for preenchido. O eco é
+            decoração pura pelo mesmo motivo, mais uma vez.
+
+            A caixa não é 1:1: as sete logos são horizontais e vão de 1,8:1 a
+            6,7:1 — a geometria está em `.accel-logo`, no CSS ao lado. O que
+            fica aqui é o que varia por item, o `tone` da marca.
+
+            Tinta MEDIDA contra este navy por
+            `scripts/medir-logos-aceleradores-sis217.mjs`: a pior das sete
+            (Guru de Seguros) dá 4,08:1 e a melhor (Lumina AI) 10,43:1, todas
+            acima dos 3:1 que a WCAG 1.4.11 pede de gráfico essencial. Por isso
+            a placa continua navy e translúcida, sem o chip branco que a
+            SIS-201 precisou dar a quatro parceiros. */}
         <div
-          className="flex h-13 w-13 items-center justify-center rounded-2xl p-3 transition-transform duration-300 group-hover:scale-110"
+          className="accel-logo"
           style={{
             background: `linear-gradient(135deg, ${a.tone}33, ${a.tone}10)`,
             border: `1px solid ${a.tone}66`,
             boxShadow: `0 8px 24px -12px ${a.tone}99`,
           }}
         >
-          <Icon className="h-6 w-6" style={{ color: a.tone }} strokeWidth={1.8} />
+          {/* `sizes` casado com o TETO da caixa: a placa para em 18rem de
+              `max-width` e gasta 1rem de padding de cada lado, então 256px é o
+              maior que a logo chega a medir — subestimar é o lado ruim, que
+              serviria candidato menor que a caixa. (Era 196px enquanto o teto
+              era 14rem; o número acompanha `.accel-logo` e não vive sozinho.)
+
+              RESSALVA DE SEMPRE (SIS-139 / `docs/images-unoptimized.md`): com
+              `images: { unoptimized: true }` no `next.config.mjs` o `next/image`
+              não emite `srcset`, então este `sizes` hoje não produz efeito
+              nenhum. Ele fica correto para o dia em que `unoptimized` sair, e
+              ninguém deve lê-lo como otimização ativa. */}
+          <span className="accel-logo__eco" aria-hidden>
+            <Image
+              src={a.logo}
+              alt=""
+              width={a.logoWidth}
+              height={a.logoHeight}
+              sizes="256px"
+              className="accel-logo__eco-img"
+            />
+          </span>
+          <Image
+            src={a.logo}
+            alt=""
+            aria-hidden
+            width={a.logoWidth}
+            height={a.logoHeight}
+            sizes="256px"
+            className="accel-logo__img"
+          />
         </div>
         <span
           aria-hidden
@@ -103,17 +157,29 @@ function AccelCard({ a, index }: { a: Accelerator; index: number }) {
         </span>
       </div>
 
-      <h3
-        className="relative mt-6 font-display text-xl leading-tight text-white"
-        style={{ transform: 'translateZ(24px)' }}
-      >
-        {a.name}
-      </h3>
+      {/* 11/09 — O TÍTULO SAIU DA TELA, NÃO DO DOCUMENTO. A usuária pediu o card
+          só com a logo; o `<h3>` fica em `sr-only`, e é isso que separa esconder
+          de apagar:
+          · o esqueleto de cabeçalhos não perde um nível — a seção é `<h2>
+            Soluções` e cada card segue sendo um `<h3>` na navegação por títulos,
+            que é como se percorre uma lista de sete produtos sem ler tudo;
+          · a logo continua decorativa (`alt=""` + `aria-hidden`), então o nome é
+            anunciado UMA vez, pelo título, e não duas (WCAG H67);
+          · `scripts/copy-lock.mjs` conta nós de texto do JSX — o nome continua
+            escrito aqui, então a régua de copy não se mexe. Apagar a linha
+            obrigaria a destravar o lock por uma mudança que é só visual.
+          ALTERNATIVA DESCARTADA: remover o `<h3>` e passar `alt={a.name}`. Devolve
+          o nome ao leitor de tela, mas custa o cabeçalho, e card sem título vira
+          bloco anônimo no sumário do documento. */}
+      <h3 className="sr-only">{a.name}</h3>
       {/* Filete no lugar do subtitulo: o site nao escreve tagline nenhuma para
-          os aceleradores, então nao ha texto a exibir aqui. */}
+          os aceleradores, então nao ha texto a exibir aqui.
+          `mt-6` no lugar do `mt-3`: aquele media a distância até o TÍTULO, que
+          agora não ocupa altura nenhuma (`sr-only` sai do fluxo). Sem a troca o
+          filete saltaria de 40px para 12px da placa. */}
       <span
         aria-hidden
-        className="relative mt-3 block h-px w-10 rounded-full"
+        className="relative mt-6 block h-px w-10 rounded-full"
         style={{ background: a.tone, transform: 'translateZ(18px)' }}
       />
       <p

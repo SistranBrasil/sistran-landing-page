@@ -28,6 +28,14 @@
  * aba inativa ser lida com `alfa: 0`, isto é, medindo a transparência que a
  * própria sonda havia escrito.
  *
+ * SIS-186 — ESTA SONDA NÃO PRECISA DO PAR RASTER/CÁLCULO de
+ * `docs/medidas/COMO-MEDIR-CONTRASTE.md` §7. A tinta é apagada antes das capturas,
+ * então todo pixel varrido é FUNDO: não há glifo pintado no recorte e portanto não
+ * há franja de antialiasing para o pior pixel apanhar. O número que sai daqui já é
+ * a perna calculada (tinta declarada e composta × pior fundo amostrado). Quem tem o
+ * par é `medir-contraste-hero-pitch.mjs`, que mede a letra por diferença entre duas
+ * abas. Não suavizar o pior pixel daqui: em fundo de imagem ele é a proteção.
+ *
  * Nada aqui entra no bundle: é ferramenta de bancada.
  *   node scripts/medir-contraste-escritorios.mjs
  */

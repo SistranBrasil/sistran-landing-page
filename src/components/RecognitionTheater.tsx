@@ -31,6 +31,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, useScroll } from 'motion/react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { VP, easeExpo, prefersReducedMotion } from '@/lib/motion';
 import {
@@ -39,6 +41,7 @@ import {
   REC_NAV_TITULO,
   REC_SELO_ATIVO,
   REC_TITULO,
+  REC_CELENT,
 } from '@/data/reconhecimentos';
 import './recognition-theater.css';
 
@@ -104,6 +107,7 @@ function RecognitionConnector({ ativo, pulso }: { ativo: number; pulso: number }
 
 export default function RecognitionTheater() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const aberturaRef = useRef<HTMLDivElement>(null);
   const [ativo, setAtivo] = useState(0);
   /* Contador de trocas: serve de `key` para reexecutar o wipe, o desenho do
      conector e a resposta do pedestal. */
@@ -162,205 +166,366 @@ export default function RecognitionTheater() {
     return scrollYProgress.on('change', avaliar);
   }, [scrollYProgress, selecionar]);
 
+  /* SIS-230 — entrada do bloco Celent, em GSAP.
+     Por que GSAP e não o `entra()` de `motion/react` que o cabeçalho usa: a
+     issue exige que o bloco seja ESTÁTICO em movimento reduzido, "sem exigir
+     scroll para aparecer", e aqui o estado inicial só é escrito no cliente,
+     depois de ler a preferência — nunca no markup. A árvore é a mesma nos dois
+     casos (regra de hidratação do projeto, ver `src/lib/motion.ts`).
+     Padrão da casa e do skill `gsap-react`: sem `@gsap/react` instalado, o
+     caminho sancionado é `gsap.context()` dentro de `useEffect` com
+     `ctx.revert()` na limpeza. `once: true` porque isto é entrada, não scrub.
+     Rede de segurança copiada de `SectionReveal`: se o ScrollTrigger não medir
+     (reflow de fonte, refresh perdido), um IntersectionObserver revela — sem
+     ela um `opacity: 0` que não anima esconderia o reconhecimento para sempre. */
+  useEffect(() => {
+    const el = aberturaRef.current;
+    if (!el) return;
+    /* Duas fontes de preferência, e as duas contam: a do sistema
+       (`prefersReducedMotion`) e a ESCOLHIDA NO SITE, que o script inline de
+       `layout.tsx` grava em `html[data-motion]` antes da primeira pintura.
+       `prefersReducedMotion()` só lê a media query — sem a segunda checagem,
+       quem escolhe "Reduzidas" no diálogo da própria página continuaria vendo o
+       bloco animar. */
+    const reduzido =
+      prefersReducedMotion() || document.documentElement.dataset.motion === 'reduce';
+    if (reduzido) return;
+
+    const alvos = Array.from(el.querySelectorAll<HTMLElement>('[data-rec-entra]'));
+    if (!alvos.length) return;
+
+    let revelado = false;
+    const revelar = () => {
+      if (revelado) return;
+      revelado = true;
+      gsap.set(alvos, { opacity: 1, y: 0, scale: 1, clearProps: 'transform' });
+    };
+
+    gsap.set(alvos, { opacity: 0, y: 22, scale: 0.985 });
+
+    const ctx = gsap.context(() => {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.to(alvos, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.7,
+        ease: 'expo.out',
+        stagger: 0.09,
+        clearProps: 'transform',
+        onComplete: () => {
+          revelado = true;
+        },
+        scrollTrigger: { trigger: el, start: 'top 82%', once: true },
+      });
+    }, el);
+
+    const io = new IntersectionObserver(
+      (entradas) => {
+        if (entradas.some((e) => e.isIntersecting)) window.setTimeout(revelar, 1200);
+      },
+      { rootMargin: '0px 0px -10% 0px' },
+    );
+    io.observe(el);
+
+    return () => {
+      io.disconnect();
+      ctx.revert();
+    };
+  }, []);
+
   const atual = RECONHECIMENTOS[ativo];
   const progresso = ((ativo + 1) / TOTAL) * 100;
 
   return (
-    <div ref={scrollRef} className="rec-scroll">
-      <div className="rec-sticky">
-        <div aria-hidden className="rec-fundo" />
-        <div aria-hidden className="rec-grade" />
-        <div aria-hidden className="rec-diagonais" />
-        <div aria-hidden className="rec-vinheta" />
+    <>
+      {/* SIS-230 — ABERTURA DA SEÇÃO: cabeçalho + destaque Celent + arte LATAM.
+          O cabeçalho MUDOU DE LUGAR, e o motivo é geométrico: acima de 1200px
+          `.rec-sticky` é um palco `position: sticky` de uma janela de altura,
+          com `overflow: clip`, e ele já está cheio (medido: navegação, palco de
+          ~590–680px, miniaturas e linha do tempo). Qualquer bloco somado dentro
+          do `.rec-wrap` do palco passaria da janela e seria APARADO — não é
+          questão de gosto, é o `clip`. Para o troféu ser lido "logo abaixo do
+          título", como a issue pede, o título tem de estar fora do palco fixo.
+          Então eyebrow, `h2#premiacoes`, Celent e arte LATAM formam uma faixa
+          normal no fluxo, e o percurso fixo dos quatro reconhecimentos começa
+          depois dela, intacto. */}
+      <div ref={aberturaRef} className="rec-abertura">
+        {/* SIS-238 — A CAPA É O FUNDO, e ela é CLARA.
+            Antes esta faixa era navy com um troféu recortado e a arte LATAM
+            soltos por cima (SIS-230). Agora a cena inteira — troféu, placa
+            «Technology Standout 2023» e o quadrante XCelent — chega numa única
+            arte, `cele.png`, e o que o HTML acrescenta é só a coluna
+            tipográfica da esquerda, no arranjo de `public/exemplcelent.png`.
+
+            Consequência que NÃO é de gosto: a tinta do texto inverte. A capa
+            mede rgb(222 240 253) na média da faixa que recebe as escritas
+            (`scripts/otimizar-capa-celent-sis238.mjs`), luminância 0.85 —
+            branco ali dá ~1.2:1. Por isso a faixa vira clara e a tinta vira o
+            navy da marca — e `.rec-abertura-fundo` (o degradê navy) e
+            `.rec-grade` saíram daqui: o degradê é o oposto do pedido e a grade
+            ciano a 5% não se vê sobre a capa. O navy só volta no rodapé da
+            faixa, em `.rec-capa-emenda`, onde ela emenda com o palco escuro.
+
+            O WebP vem de script versionado, não do `next/image`: o projeto roda
+            com `images: { unoptimized: true }` (ver `docs/images-unoptimized.md`),
+            então o arquivo do disco é o que chega no visitante — 1460 kB → 79 kB. */}
+        {/* NÃO é decorativa. A regra da issue é: `alt` vazio só se o texto HTML
+            já disser tudo. Aqui não diz — o quadrante XCelent e a frase «Único
+            player com conhecimento local e clientes no Brasil» estão queimados
+            na arte e em nenhum outro lugar da página. Então a capa recebe `alt`
+            descritivo curto, e nada de `aria-hidden` no contêiner. */}
+        <div className="rec-capa">
+          <Image
+            src="/images/quem-somos/celent-capa.webp"
+            alt={REC_CELENT.capaAlt}
+            width={1672}
+            height={941}
+            /* Esta é a arte da faixa inteira e ela abre a seção: sem
+               `priority` o Next a marca `lazy` e a capa pinta depois do texto,
+               num flash de faixa branca. */
+            priority
+            sizes="100vw"
+          />
+        </div>
+        {/* Véu claro à esquerda: garante o substrato do texto onde a arte tem
+            os blocos de vidro escuros (pior pixel medido na faixa: rgb 21 91
+            138). No desktop ele morre antes do troféu; no mobile ele cobre a
+            largura toda, porque lá o `cover` traz a cena para debaixo das
+            letras. Ver `scripts/medir-contraste-celent-sis238.mjs`. */}
+        <div aria-hidden className="rec-capa-veu" />
+        <div aria-hidden className="rec-capa-emenda" />
 
         <div className="rec-wrap">
-          {/* Cabecalho */}
-          <header className="rec-header">
-            <motion.p className="rec-eyebrow" {...entra(ATRASO.eyebrow, 10)}>
-              <span>{REC_EYEBROW}</span>
-            </motion.p>
-            <motion.h2 id="premiacoes" className="rec-titulo" {...entra(ATRASO.titulo)}>
-              {REC_TITULO.linha1}
-              <br />
-              {REC_TITULO.linha2}
-            </motion.h2>
-          </header>
+          <div className="rec-celent">
+            {/* Cabecalho */}
+            <header className="rec-header">
+              <motion.p className="rec-eyebrow" {...entra(ATRASO.eyebrow, 10)}>
+                <span>{REC_EYEBROW}</span>
+              </motion.p>
+              <motion.h2 id="premiacoes" className="rec-titulo" {...entra(ATRASO.titulo)}>
+                {REC_TITULO.linha1}
+                <br />
+                {REC_TITULO.linha2}
+              </motion.h2>
+            </header>
 
-          <div className="rec-layout">
-            {/* Navegacao editorial */}
-            <motion.div className="rec-nav" {...entra(ATRASO.nav, 0, -16)}>
-              <p className="rec-nav-titulo">{REC_NAV_TITULO}</p>
-              <ul className="rec-nav-lista">
-                {RECONHECIMENTOS.map((r, i) => (
-                  <li key={r.index}>
-                    <button
-                      type="button"
-                      className={`rec-nav-item ${
-                        i === ativo ? 'is-ativo' : i < ativo ? 'is-feito' : 'is-futuro'
-                      }`}
-                      aria-current={i === ativo ? 'step' : undefined}
-                      onClick={() => selecionar(i)}
-                    >
-                      <span className="rec-nav-indice">{r.index}</span>
-                      <span className="rec-nav-nome">{r.title}</span>
-                      <span aria-hidden className="rec-nav-seta">
-                        <ArrowRight strokeWidth={1.6} />
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+            {/* Bloco Celent. `figure`/`figcaption` não servem aqui: o texto não
+                é legenda da capa, é a frase do reconhecimento.
+                O chip branco de fundo saiu — ele existia para destacar a tinta
+                escura do logo contra o navy, e agora a faixa já é clara. O que
+                fica da referência é o fio vertical à esquerda da marca. */}
+            <p className="rec-celent-marca" data-rec-entra>
+              <Image
+                src="/logo-Celent.png"
+                alt={REC_CELENT.logoAlt}
+                width={1833}
+                height={638}
+                sizes="(max-width: 767px) 46vw, 250px"
+              />
+            </p>
+            <p className="rec-celent-linha1" data-rec-entra>
+              {REC_CELENT.linha1}
+            </p>
+            <p className="rec-celent-linha2" data-rec-entra>
+              {REC_CELENT.linha2}
+            </p>
+          </div>
+        </div>
+      </div>
 
-              {/* Progresso da navegacao */}
-              <div className="rec-progresso">
-                <span className="rec-progresso-num">{atual.index}</span>
-                <span className="rec-progresso-total">
-                  / {String(TOTAL).padStart(2, '0')}
-                </span>
-                <span aria-hidden className="rec-progresso-trilha">
-                  <span className="rec-progresso-fill" style={{ width: `${progresso}%` }} />
-                </span>
-              </div>
-            </motion.div>
+      <div ref={scrollRef} className="rec-scroll">
+        <div className="rec-sticky">
+          <div aria-hidden className="rec-fundo" />
+          <div aria-hidden className="rec-grade" />
+          <div aria-hidden className="rec-diagonais" />
+          <div aria-hidden className="rec-vinheta" />
 
-            {/* Palco */}
-            <div className="rec-theater-wrap">
-              <motion.div aria-hidden className="rec-frame rec-frame-1" {...entra(ATRASO.molduras, 0)} />
-              <motion.div aria-hidden className="rec-frame rec-frame-2" {...entra(ATRASO.molduras + 0.08, 0)} />
+          <div className="rec-wrap">
+            <div className="rec-layout">
+              {/* Navegacao editorial */}
+              <motion.div className="rec-nav" {...entra(ATRASO.nav, 0, -16)}>
+                <p className="rec-nav-titulo">{REC_NAV_TITULO}</p>
+                <ul className="rec-nav-lista">
+                  {RECONHECIMENTOS.map((r, i) => (
+                    <li key={r.index}>
+                      <button
+                        type="button"
+                        className={`rec-nav-item ${
+                          i === ativo ? 'is-ativo' : i < ativo ? 'is-feito' : 'is-futuro'
+                        }`}
+                        aria-current={i === ativo ? 'step' : undefined}
+                        onClick={() => selecionar(i)}
+                      >
+                        <span className="rec-nav-indice">{r.index}</span>
+                        <span className="rec-nav-nome">{r.title}</span>
+                        <span aria-hidden className="rec-nav-seta">
+                          <ArrowRight strokeWidth={1.6} />
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
 
-              {/* O conector mora AQUI, no wrapper, e nao dentro do palco: ele
+                {/* Progresso da navegacao */}
+                <div className="rec-progresso">
+                  <span className="rec-progresso-num">{atual.index}</span>
+                  <span className="rec-progresso-total">/ {String(TOTAL).padStart(2, '0')}</span>
+                  <span aria-hidden className="rec-progresso-trilha">
+                    <span className="rec-progresso-fill" style={{ width: `${progresso}%` }} />
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* Palco */}
+              <div className="rec-theater-wrap">
+                <motion.div
+                  aria-hidden
+                  className="rec-frame rec-frame-1"
+                  {...entra(ATRASO.molduras, 0)}
+                />
+                <motion.div
+                  aria-hidden
+                  className="rec-frame rec-frame-2"
+                  {...entra(ATRASO.molduras + 0.08, 0)}
+                />
+
+                {/* O conector mora AQUI, no wrapper, e nao dentro do palco: ele
                   atravessa o vao entre as colunas e so encosta na borda
                   esquerda do card. Dentro do palco ele cruzaria o conteudo. */}
-              <RecognitionConnector ativo={ativo} pulso={pulso} />
+                <RecognitionConnector ativo={ativo} pulso={pulso} />
 
-              <motion.div className="rec-theater" {...entra(ATRASO.palco, 24)}>
-                <span key={pulso} aria-hidden className="rec-wipe" />
+                <motion.div className="rec-theater" {...entra(ATRASO.palco, 24)}>
+                  <span key={pulso} aria-hidden className="rec-wipe" />
 
-                {/* Os quatro paineis ficam no DOM; o CSS acende um. */}
-                <div className="rec-palco">
-                  {RECONHECIMENTOS.map((r, i) => (
-                    <article
-                      key={r.index}
-                      className={`rec-cena ${i === ativo ? 'is-ativo' : ''}`}
-                      style={{ ['--rec-h' as string]: `${r.alturaPalco}px` }}
-                    >
-                      {/* Area 1: spotlight, aneis, arte e plataforma. */}
-                      <div className={`rec-peca rec-placa-${r.placa}`}>
-                        <span aria-hidden className="rec-spot" />
-                        <span aria-hidden className="rec-anel rec-anel-1" />
-                        <span aria-hidden className="rec-anel rec-anel-2" />
-                        <span aria-hidden className="rec-anel rec-anel-3" />
-                        <div className="rec-arte">
-                          <Image
-                            src={r.image}
-                            alt={r.alt}
-                            width={r.largura}
-                            height={r.altura}
-                            /* Só a primeira peca é prioritaria; as outras tres
+                  {/* Os quatro paineis ficam no DOM; o CSS acende um. */}
+                  <div className="rec-palco">
+                    {RECONHECIMENTOS.map((r, i) => (
+                      <article
+                        key={r.index}
+                        className={`rec-cena ${i === ativo ? 'is-ativo' : ''}`}
+                        style={{ ['--rec-h' as string]: `${r.alturaPalco}px` }}
+                      >
+                        {/* Area 1: spotlight, aneis, arte e plataforma. */}
+                        <div className={`rec-peca rec-placa-${r.placa}`}>
+                          <span aria-hidden className="rec-spot" />
+                          <span aria-hidden className="rec-anel rec-anel-1" />
+                          <span aria-hidden className="rec-anel rec-anel-2" />
+                          <span aria-hidden className="rec-anel rec-anel-3" />
+                          <div className="rec-arte">
+                            <Image
+                              src={r.image}
+                              alt={r.alt}
+                              width={r.largura}
+                              height={r.altura}
+                              /* Só a primeira peca é prioritaria; as outras tres
                                ficam `lazy` (o padrao quando `priority` é falso) e
                                nao disputam o carregamento inicial. Passar
                                `loading` junto com `priority` anula a prioridade —
                                o `loading` vence —, entao aqui vai so `priority`. */
-                            priority={i === 0}
-                            sizes="(max-width: 767px) 70vw, (max-width: 1199px) 32vw, 380px"
-                          />
-                        </div>
-                        {/* Plataforma: tampo, base intermediaria e halo sao as
+                              priority={i === 0}
+                              sizes="(max-width: 767px) 70vw, (max-width: 1199px) 32vw, 380px"
+                            />
+                          </div>
+                          {/* Plataforma: tampo, base intermediaria e halo sao as
                             tres camadas — as duas de baixo vem de `::before` e
                             `::after`, para nao inflar o DOM. */}
-                        <span aria-hidden className="rec-pedestal" />
-                      </div>
+                          <span aria-hidden className="rec-pedestal" />
+                        </div>
 
-                      {/* Area 2: numero, titulo e estado. */}
-                      <div className="rec-dados">
-                        <span className="rec-contagem">{r.count}</span>
-                        <h3 className="rec-nome">{r.title}</h3>
-                        <p className="rec-selo">{REC_SELO_ATIVO}</p>
-                      </div>
-                    </article>
-                  ))}
-                </div>
+                        {/* Area 2: numero, titulo e estado. */}
+                        <div className="rec-dados">
+                          <span className="rec-contagem">{r.count}</span>
+                          <h3 className="rec-nome">{r.title}</h3>
+                          <p className="rec-selo">{REC_SELO_ATIVO}</p>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
 
-                {/* Area 3: miniaturas. Os quatro botoes ficam no DOM na ordem
+                  {/* Area 3: miniaturas. Os quatro botoes ficam no DOM na ordem
                     01–04 para o leitor de tela; o CSS esconde o da peca acesa.
                     A rail é uma so, compartilhada pelas quatro cenas, entao ela
                     fica posicionada na terceira faixa em vez de ser coluna de
                     grade dentro de cada cena — as cenas se sobrepoem. A cena
                     reserva a faixa por `padding-right`, e o resultado de layout
                     é o mesmo. */}
-                <ul className="rec-rail">
-                  {RECONHECIMENTOS.map((r, i) => (
-                    <li key={r.index} className={i === ativo ? 'is-ativo' : ''}>
-                      <button
-                        type="button"
-                        className={`rec-mini rec-placa-${r.placa}`}
-                        title={`${r.index} — ${r.title}`}
-                        style={{ ['--rec-hm' as string]: `${r.alturaMini}px` }}
-                        onClick={() => selecionar(i)}
-                      >
-                        <Image
-                          src={r.image}
-                          alt=""
-                          width={r.largura}
-                          height={r.altura}
-                          loading="lazy"
-                          sizes="120px"
-                        />
-                        <span className="sr-only">{`${r.count} ${r.title}`}</span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Base: seta anterior, linha do tempo, seta proxima */}
-                <motion.div className="rec-base" {...entra(ATRASO.base, 12)}>
-                  <button
-                    type="button"
-                    className="rec-ctrl"
-                    aria-label="Reconhecimento anterior"
-                    disabled={ativo === 0}
-                    onClick={() => selecionar(ativo - 1)}
-                  >
-                    <ArrowLeft strokeWidth={1.8} aria-hidden />
-                  </button>
-
-                  <ol className="rec-timeline">
+                  <ul className="rec-rail">
                     {RECONHECIMENTOS.map((r, i) => (
-                      <li
-                        key={r.index}
-                        className={
-                          i === ativo ? 'is-ativo' : i < ativo ? 'is-feito' : 'is-futuro'
-                        }
-                      >
+                      <li key={r.index} className={i === ativo ? 'is-ativo' : ''}>
                         <button
                           type="button"
-                          className="rec-node"
-                          aria-current={i === ativo ? 'step' : undefined}
+                          className={`rec-mini rec-placa-${r.placa}`}
+                          title={`${r.index} — ${r.title}`}
+                          style={{
+                            ['--rec-hm' as string]: `${r.alturaMini}px`,
+                          }}
                           onClick={() => selecionar(i)}
                         >
-                          <span aria-hidden className="rec-node-ponto" />
-                          <span className="rec-node-indice">{r.index}</span>
-                          <span className="sr-only">{r.title}</span>
+                          <Image
+                            src={r.image}
+                            alt=""
+                            width={r.largura}
+                            height={r.altura}
+                            loading="lazy"
+                            sizes="120px"
+                          />
+                          <span className="sr-only">{`${r.count} ${r.title}`}</span>
                         </button>
                       </li>
                     ))}
-                  </ol>
+                  </ul>
 
-                  <button
-                    type="button"
-                    className="rec-ctrl"
-                    aria-label="Próximo reconhecimento"
-                    disabled={ativo === TOTAL - 1}
-                    onClick={() => selecionar(ativo + 1)}
-                  >
-                    <ArrowRight strokeWidth={1.8} aria-hidden />
-                  </button>
+                  {/* Base: seta anterior, linha do tempo, seta proxima */}
+                  <motion.div className="rec-base" {...entra(ATRASO.base, 12)}>
+                    <button
+                      type="button"
+                      className="rec-ctrl"
+                      aria-label="Reconhecimento anterior"
+                      disabled={ativo === 0}
+                      onClick={() => selecionar(ativo - 1)}
+                    >
+                      <ArrowLeft strokeWidth={1.8} aria-hidden />
+                    </button>
+
+                    <ol className="rec-timeline">
+                      {RECONHECIMENTOS.map((r, i) => (
+                        <li
+                          key={r.index}
+                          className={
+                            i === ativo ? 'is-ativo' : i < ativo ? 'is-feito' : 'is-futuro'
+                          }
+                        >
+                          <button
+                            type="button"
+                            className="rec-node"
+                            aria-current={i === ativo ? 'step' : undefined}
+                            onClick={() => selecionar(i)}
+                          >
+                            <span aria-hidden className="rec-node-ponto" />
+                            <span className="rec-node-indice">{r.index}</span>
+                            <span className="sr-only">{r.title}</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ol>
+
+                    <button
+                      type="button"
+                      className="rec-ctrl"
+                      aria-label="Próximo reconhecimento"
+                      disabled={ativo === TOTAL - 1}
+                      onClick={() => selecionar(ativo + 1)}
+                    >
+                      <ArrowRight strokeWidth={1.8} aria-hidden />
+                    </button>
+                  </motion.div>
                 </motion.div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

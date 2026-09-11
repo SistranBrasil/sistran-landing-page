@@ -1,5 +1,6 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { hasSeenMotionPrompt } from '@/lib/motionPreference';
 /* SIS-70 — import estático DE PROPÓSITO, ao contrário do
@@ -18,10 +19,17 @@ import { MotionPreferenceDialog } from './MotionPreferenceDialog';
  */
 export function MotionPreferenceIntro() {
   const [open, setOpen] = useState(false);
+  const rota = usePathname();
 
   useEffect(() => {
+    /* SIS-216 — não em `/admin`. O diálogo é `fixed` e modal, e no admin ele cai
+       exatamente sobre a prévia e o botão de publicar imagem (visto em captura de
+       navegador). Não há animação nenhuma no admin para o visitante consentir, e
+       um "não" gravado ali valeria depois para o site inteiro sem que a pergunta
+       tivesse a ver com o que estava na tela. */
+    if (rota?.startsWith('/admin')) return;
     if (!hasSeenMotionPrompt()) setOpen(true);
-  }, []);
+  }, [rota]);
 
   if (!open) return null;
 

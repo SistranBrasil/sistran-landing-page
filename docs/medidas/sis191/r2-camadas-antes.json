@@ -1,0 +1,1225 @@
+{
+  "estado": "antes",
+  "leituras": [
+    {
+      "quadro": "pouso-pr",
+      "largura": 1280,
+      "altura": 760,
+      "modo": "scroll",
+      "ativa": "pr",
+      "recorte": {
+        "largura": 668.8,
+        "altura": 516.8,
+        "padding": [
+          15.2,
+          0
+        ]
+      },
+      "colunaDoMapa": {
+        "largura": 668.8,
+        "altura": 547.2,
+        "folgaHorizontalDoSvg": 0
+      },
+      "camadas": [
+        {
+          "rotulo": "pais",
+          "presente": true,
+          "nos": 1,
+          "topo": -8.9,
+          "direita": 130.2,
+          "base": 54.7,
+          "esquerda": 89.4,
+          "baseEmFracao": 0.9
+        },
+        {
+          "rotulo": "divisas-br",
+          "presente": true,
+          "nos": 1,
+          "topo": 25.4,
+          "direita": 130.6,
+          "base": 111.1,
+          "esquerda": 91.6,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "rota",
+          "presente": true,
+          "nos": 2,
+          "topo": 328.3,
+          "direita": 266.4,
+          "base": 154.4,
+          "esquerda": 333.4,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "pinos",
+          "presente": true,
+          "nos": 8,
+          "topo": 295.2,
+          "direita": 246.9,
+          "base": 134.9,
+          "esquerda": 313.9,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "halos",
+          "presente": true,
+          "nos": 2,
+          "topo": 308.8,
+          "direita": 246.9,
+          "base": 134.9,
+          "esquerda": 313.9,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rotulos",
+          "presente": true,
+          "nos": 2,
+          "topo": 335.7,
+          "direita": 100.7,
+          "base": 112.8,
+          "esquerda": 396.9,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "chamadas",
+          "presente": true,
+          "nos": 2,
+          "topo": 328.3,
+          "direita": 106.2,
+          "base": 135.1,
+          "esquerda": 338,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "latam-aura",
+          "presente": true,
+          "nos": 1,
+          "topo": -100,
+          "direita": 130.2,
+          "base": -295.8,
+          "esquerda": 4.5,
+          "baseEmFracao": 1.6
+        },
+        {
+          "rotulo": "latam-contorno",
+          "presente": true,
+          "nos": 1,
+          "topo": -100,
+          "direita": 130.2,
+          "base": -295.8,
+          "esquerda": 4.5,
+          "baseEmFracao": 1.6
+        },
+        {
+          "rotulo": "latam-divisas",
+          "presente": true,
+          "nos": 19,
+          "topo": -95.5,
+          "direita": 350.2,
+          "base": -192.7,
+          "esquerda": 15.2,
+          "baseEmFracao": 1.4
+        }
+      ]
+    },
+    {
+      "quadro": "pouso-sp",
+      "largura": 1280,
+      "altura": 760,
+      "modo": "scroll",
+      "ativa": "sp",
+      "recorte": {
+        "largura": 668.8,
+        "altura": 516.8,
+        "padding": [
+          15.2,
+          0
+        ]
+      },
+      "colunaDoMapa": {
+        "largura": 668.8,
+        "altura": 547.2,
+        "folgaHorizontalDoSvg": 0
+      },
+      "camadas": [
+        {
+          "rotulo": "pais",
+          "presente": true,
+          "nos": 1,
+          "topo": 179.5,
+          "direita": 447,
+          "base": 110,
+          "esquerda": 5.1,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "divisas-br",
+          "presente": true,
+          "nos": 1,
+          "topo": 196.1,
+          "direita": 447.2,
+          "base": 137.3,
+          "esquerda": 6.2,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rota",
+          "presente": true,
+          "nos": 2,
+          "topo": 342.2,
+          "direita": 512.7,
+          "base": 158.1,
+          "esquerda": 122.8,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "pinos",
+          "presente": true,
+          "nos": 8,
+          "topo": 331,
+          "direita": 506.1,
+          "base": 151.5,
+          "esquerda": 116.2,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "halos",
+          "presente": true,
+          "nos": 2,
+          "topo": 335.6,
+          "direita": 506.1,
+          "base": 151.5,
+          "esquerda": 116.2,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rotulos",
+          "presente": true,
+          "nos": 2,
+          "topo": 346.1,
+          "direita": 435.1,
+          "base": 138,
+          "esquerda": 152.5,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "chamadas",
+          "presente": true,
+          "nos": 2,
+          "topo": 342.2,
+          "direita": 435.4,
+          "base": 148.8,
+          "esquerda": 125,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "latam-aura",
+          "presente": true,
+          "nos": 1,
+          "topo": 133.1,
+          "direita": 447,
+          "base": -56.6,
+          "esquerda": -35.9,
+          "baseEmFracao": 1.1
+        },
+        {
+          "rotulo": "latam-contorno",
+          "presente": true,
+          "nos": 1,
+          "topo": 133.1,
+          "direita": 447,
+          "base": -56.6,
+          "esquerda": -35.9,
+          "baseEmFracao": 1.1
+        },
+        {
+          "rotulo": "latam-divisas",
+          "presente": true,
+          "nos": 19,
+          "topo": 135.2,
+          "direita": 553.1,
+          "base": -6.9,
+          "esquerda": -30.7,
+          "baseEmFracao": 1
+        }
+      ]
+    },
+    {
+      "quadro": "pouso-pr",
+      "largura": 1366,
+      "altura": 768,
+      "modo": "scroll",
+      "ativa": "pr",
+      "recorte": {
+        "largura": 742.8,
+        "altura": 522.2,
+        "padding": [
+          15.4,
+          0
+        ]
+      },
+      "colunaDoMapa": {
+        "largura": 742.8,
+        "altura": 553,
+        "folgaHorizontalDoSvg": 0
+      },
+      "camadas": [
+        {
+          "rotulo": "pais",
+          "presente": true,
+          "nos": 1,
+          "topo": -9,
+          "direita": 165,
+          "base": 55.2,
+          "esquerda": 123.8,
+          "baseEmFracao": 0.9
+        },
+        {
+          "rotulo": "divisas-br",
+          "presente": true,
+          "nos": 1,
+          "topo": 25.6,
+          "direita": 165.5,
+          "base": 112.3,
+          "esquerda": 126.1,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "rota",
+          "presente": true,
+          "nos": 2,
+          "topo": 331.8,
+          "direita": 302.7,
+          "base": 156,
+          "esquerda": 370.3,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "pinos",
+          "presente": true,
+          "nos": 8,
+          "topo": 298.3,
+          "direita": 280,
+          "base": 133.4,
+          "esquerda": 347.7,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "halos",
+          "presente": true,
+          "nos": 2,
+          "topo": 309.1,
+          "direita": 280,
+          "base": 133.4,
+          "esquerda": 347.7,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rotulos",
+          "presente": true,
+          "nos": 2,
+          "topo": 339.4,
+          "direita": 135.2,
+          "base": 114,
+          "esquerda": 434.5,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "chamadas",
+          "presente": true,
+          "nos": 2,
+          "topo": 331.8,
+          "direita": 140.8,
+          "base": 136.5,
+          "esquerda": 375,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "latam-aura",
+          "presente": true,
+          "nos": 1,
+          "topo": -102.8,
+          "direita": 165,
+          "base": -297.1,
+          "esquerda": 38,
+          "baseEmFracao": 1.6
+        },
+        {
+          "rotulo": "latam-contorno",
+          "presente": true,
+          "nos": 1,
+          "topo": -102.8,
+          "direita": 165,
+          "base": -297.1,
+          "esquerda": 38,
+          "baseEmFracao": 1.6
+        },
+        {
+          "rotulo": "latam-divisas",
+          "presente": true,
+          "nos": 19,
+          "topo": -98.3,
+          "direita": 387.3,
+          "base": -193,
+          "esquerda": 48.9,
+          "baseEmFracao": 1.4
+        }
+      ]
+    },
+    {
+      "quadro": "pouso-sp",
+      "largura": 1366,
+      "altura": 768,
+      "modo": "scroll",
+      "ativa": "sp",
+      "recorte": {
+        "largura": 742.8,
+        "altura": 522.2,
+        "padding": [
+          15.4,
+          0
+        ]
+      },
+      "colunaDoMapa": {
+        "largura": 742.8,
+        "altura": 553,
+        "folgaHorizontalDoSvg": 0
+      },
+      "camadas": [
+        {
+          "rotulo": "pais",
+          "presente": true,
+          "nos": 1,
+          "topo": 181.4,
+          "direita": 485.1,
+          "base": 111.2,
+          "esquerda": 38.6,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "divisas-br",
+          "presente": true,
+          "nos": 1,
+          "topo": 198.1,
+          "direita": 485.3,
+          "base": 138.7,
+          "esquerda": 39.7,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rota",
+          "presente": true,
+          "nos": 2,
+          "topo": 345.8,
+          "direita": 551.5,
+          "base": 159.8,
+          "esquerda": 157.6,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "pinos",
+          "presente": true,
+          "nos": 8,
+          "topo": 334.5,
+          "direita": 542.7,
+          "base": 151,
+          "esquerda": 148.8,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "halos",
+          "presente": true,
+          "nos": 2,
+          "topo": 337,
+          "direita": 542.7,
+          "base": 151,
+          "esquerda": 148.8,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rotulos",
+          "presente": true,
+          "nos": 2,
+          "topo": 349.8,
+          "direita": 473.2,
+          "base": 139.5,
+          "esquerda": 187.5,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "chamadas",
+          "presente": true,
+          "nos": 2,
+          "topo": 345.8,
+          "direita": 473.5,
+          "base": 150.4,
+          "esquerda": 159.8,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "latam-aura",
+          "presente": true,
+          "nos": 1,
+          "topo": 134.5,
+          "direita": 485.1,
+          "base": -57.2,
+          "esquerda": -2.8,
+          "baseEmFracao": 1.1
+        },
+        {
+          "rotulo": "latam-contorno",
+          "presente": true,
+          "nos": 1,
+          "topo": 134.5,
+          "direita": 485.1,
+          "base": -57.2,
+          "esquerda": -2.8,
+          "baseEmFracao": 1.1
+        },
+        {
+          "rotulo": "latam-divisas",
+          "presente": true,
+          "nos": 19,
+          "topo": 136.7,
+          "direita": 592.4,
+          "base": -6.9,
+          "esquerda": 2.5,
+          "baseEmFracao": 1
+        }
+      ]
+    },
+    {
+      "quadro": "pouso-pr",
+      "largura": 1440,
+      "altura": 900,
+      "modo": "scroll",
+      "ativa": "pr",
+      "recorte": {
+        "largura": 806.4,
+        "altura": 604,
+        "padding": [
+          18,
+          0
+        ]
+      },
+      "colunaDoMapa": {
+        "largura": 806.4,
+        "altura": 640,
+        "folgaHorizontalDoSvg": 0
+      },
+      "camadas": [
+        {
+          "rotulo": "pais",
+          "presente": true,
+          "nos": 1,
+          "topo": -10.4,
+          "direita": 164.5,
+          "base": 63.9,
+          "esquerda": 116.9,
+          "baseEmFracao": 0.9
+        },
+        {
+          "rotulo": "divisas-br",
+          "presente": true,
+          "nos": 1,
+          "topo": 29.6,
+          "direita": 165,
+          "base": 129.9,
+          "esquerda": 119.5,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "rota",
+          "presente": true,
+          "nos": 2,
+          "topo": 383.7,
+          "direita": 323.7,
+          "base": 180.5,
+          "esquerda": 402,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "pinos",
+          "presente": true,
+          "nos": 8,
+          "topo": 345,
+          "direita": 300.9,
+          "base": 157.7,
+          "esquerda": 379.2,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "halos",
+          "presente": true,
+          "nos": 2,
+          "topo": 360.9,
+          "direita": 300.9,
+          "base": 157.7,
+          "esquerda": 379.2,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rotulos",
+          "presente": true,
+          "nos": 2,
+          "topo": 392.2,
+          "direita": 130.1,
+          "base": 132.2,
+          "esquerda": 476.2,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "chamadas",
+          "presente": true,
+          "nos": 2,
+          "topo": 383.7,
+          "direita": 136.5,
+          "base": 157.9,
+          "esquerda": 407.4,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "latam-aura",
+          "presente": true,
+          "nos": 1,
+          "topo": -117.5,
+          "direita": 164.5,
+          "base": -345,
+          "esquerda": 17.6,
+          "baseEmFracao": 1.6
+        },
+        {
+          "rotulo": "latam-contorno",
+          "presente": true,
+          "nos": 1,
+          "topo": -117.5,
+          "direita": 164.5,
+          "base": -345,
+          "esquerda": 17.6,
+          "baseEmFracao": 1.6
+        },
+        {
+          "rotulo": "latam-divisas",
+          "presente": true,
+          "nos": 19,
+          "topo": -112.3,
+          "direita": 421.7,
+          "base": -224.6,
+          "esquerda": 30.2,
+          "baseEmFracao": 1.4
+        }
+      ]
+    },
+    {
+      "quadro": "pouso-sp",
+      "largura": 1440,
+      "altura": 900,
+      "modo": "scroll",
+      "ativa": "sp",
+      "recorte": {
+        "largura": 806.4,
+        "altura": 604,
+        "padding": [
+          18,
+          0
+        ]
+      },
+      "colunaDoMapa": {
+        "largura": 806.4,
+        "altura": 640,
+        "folgaHorizontalDoSvg": 0
+      },
+      "camadas": [
+        {
+          "rotulo": "pais",
+          "presente": true,
+          "nos": 1,
+          "topo": 209.8,
+          "direita": 534.7,
+          "base": 128.6,
+          "esquerda": 18.4,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "divisas-br",
+          "presente": true,
+          "nos": 1,
+          "topo": 229.1,
+          "direita": 535,
+          "base": 160.4,
+          "esquerda": 19.6,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rota",
+          "presente": true,
+          "nos": 2,
+          "topo": 400,
+          "direita": 611.6,
+          "base": 184.8,
+          "esquerda": 155.9,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "pinos",
+          "presente": true,
+          "nos": 8,
+          "topo": 386.9,
+          "direita": 603.9,
+          "base": 177.2,
+          "esquerda": 148.3,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "halos",
+          "presente": true,
+          "nos": 2,
+          "topo": 392.4,
+          "direita": 603.9,
+          "base": 177.2,
+          "esquerda": 148.3,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rotulos",
+          "presente": true,
+          "nos": 2,
+          "topo": 404.4,
+          "direita": 521.2,
+          "base": 161.5,
+          "esquerda": 190.7,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "chamadas",
+          "presente": true,
+          "nos": 2,
+          "topo": 400,
+          "direita": 521.2,
+          "base": 173.9,
+          "esquerda": 158.5,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "latam-aura",
+          "presente": true,
+          "nos": 1,
+          "topo": 155.5,
+          "direita": 534.7,
+          "base": -66.1,
+          "esquerda": -29.5,
+          "baseEmFracao": 1.1
+        },
+        {
+          "rotulo": "latam-contorno",
+          "presente": true,
+          "nos": 1,
+          "topo": 155.5,
+          "direita": 534.7,
+          "base": -66.1,
+          "esquerda": -29.5,
+          "baseEmFracao": 1.1
+        },
+        {
+          "rotulo": "latam-divisas",
+          "presente": true,
+          "nos": 19,
+          "topo": 158.1,
+          "direita": 658.8,
+          "base": -8,
+          "esquerda": -23.5,
+          "baseEmFracao": 1
+        }
+      ]
+    },
+    {
+      "quadro": "pouso-pr",
+      "largura": 1512,
+      "altura": 860,
+      "modo": "scroll",
+      "ativa": "pr",
+      "recorte": {
+        "largura": 868.3,
+        "altura": 584.8,
+        "padding": [
+          17.2,
+          0
+        ]
+      },
+      "colunaDoMapa": {
+        "largura": 868.3,
+        "altura": 619.2,
+        "folgaHorizontalDoSvg": 0
+      },
+      "camadas": [
+        {
+          "rotulo": "pais",
+          "presente": true,
+          "nos": 1,
+          "topo": -10.1,
+          "direita": 203,
+          "base": 61.9,
+          "esquerda": 156.9,
+          "baseEmFracao": 0.9
+        },
+        {
+          "rotulo": "divisas-br",
+          "presente": true,
+          "nos": 1,
+          "topo": 28.7,
+          "direita": 203.6,
+          "base": 125.8,
+          "esquerda": 159.4,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "rota",
+          "presente": true,
+          "nos": 2,
+          "topo": 371.5,
+          "direita": 357.2,
+          "base": 174.7,
+          "esquerda": 433,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "pinos",
+          "presente": true,
+          "nos": 8,
+          "topo": 334,
+          "direita": 332.5,
+          "base": 150,
+          "esquerda": 408.3,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "halos",
+          "presente": true,
+          "nos": 2,
+          "topo": 346.8,
+          "direita": 332.5,
+          "base": 150,
+          "esquerda": 408.3,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rotulos",
+          "presente": true,
+          "nos": 2,
+          "topo": 379.3,
+          "direita": 169.7,
+          "base": 127.9,
+          "esquerda": 504.9,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "chamadas",
+          "presente": true,
+          "nos": 2,
+          "topo": 371.5,
+          "direita": 176,
+          "base": 152.9,
+          "esquerda": 438.2,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "latam-aura",
+          "presente": true,
+          "nos": 1,
+          "topo": -114.3,
+          "direita": 203,
+          "base": -333.6,
+          "esquerda": 60.8,
+          "baseEmFracao": 1.6
+        },
+        {
+          "rotulo": "latam-contorno",
+          "presente": true,
+          "nos": 1,
+          "topo": -114.3,
+          "direita": 203,
+          "base": -333.6,
+          "esquerda": 60.8,
+          "baseEmFracao": 1.6
+        },
+        {
+          "rotulo": "latam-divisas",
+          "presente": true,
+          "nos": 19,
+          "topo": -109.2,
+          "direita": 452,
+          "base": -217,
+          "esquerda": 73,
+          "baseEmFracao": 1.4
+        }
+      ]
+    },
+    {
+      "quadro": "pouso-sp",
+      "largura": 1512,
+      "altura": 860,
+      "modo": "scroll",
+      "ativa": "sp",
+      "recorte": {
+        "largura": 868.3,
+        "altura": 584.8,
+        "padding": [
+          17.2,
+          0
+        ]
+      },
+      "colunaDoMapa": {
+        "largura": 868.3,
+        "altura": 619.2,
+        "folgaHorizontalDoSvg": 0
+      },
+      "camadas": [
+        {
+          "rotulo": "pais",
+          "presente": true,
+          "nos": 1,
+          "topo": 203.1,
+          "direita": 561.5,
+          "base": 124.5,
+          "esquerda": 61.6,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "divisas-br",
+          "presente": true,
+          "nos": 1,
+          "topo": 221.9,
+          "direita": 561.8,
+          "base": 155.3,
+          "esquerda": 62.8,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rota",
+          "presente": true,
+          "nos": 2,
+          "topo": 387.3,
+          "direita": 635.9,
+          "base": 178.9,
+          "esquerda": 194.7,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "pinos",
+          "presente": true,
+          "nos": 8,
+          "topo": 374.6,
+          "direita": 627.1,
+          "base": 170.1,
+          "esquerda": 185.9,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "halos",
+          "presente": true,
+          "nos": 2,
+          "topo": 378.4,
+          "direita": 627.1,
+          "base": 170.1,
+          "esquerda": 185.9,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rotulos",
+          "presente": true,
+          "nos": 2,
+          "topo": 391.3,
+          "direita": 548.4,
+          "base": 156.3,
+          "esquerda": 228.4,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "chamadas",
+          "presente": true,
+          "nos": 2,
+          "topo": 387.3,
+          "direita": 548.5,
+          "base": 168.4,
+          "esquerda": 197.2,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "latam-aura",
+          "presente": true,
+          "nos": 1,
+          "topo": 150.6,
+          "direita": 561.5,
+          "base": -64,
+          "esquerda": 15.2,
+          "baseEmFracao": 1.1
+        },
+        {
+          "rotulo": "latam-contorno",
+          "presente": true,
+          "nos": 1,
+          "topo": 150.6,
+          "direita": 561.5,
+          "base": -64,
+          "esquerda": 15.2,
+          "baseEmFracao": 1.1
+        },
+        {
+          "rotulo": "latam-divisas",
+          "presente": true,
+          "nos": 19,
+          "topo": 153,
+          "direita": 681.7,
+          "base": -7.8,
+          "esquerda": 21.1,
+          "baseEmFracao": 1
+        }
+      ]
+    },
+    {
+      "quadro": "pouso-pr",
+      "largura": 1920,
+      "altura": 1080,
+      "modo": "scroll",
+      "ativa": "pr",
+      "recorte": {
+        "largura": 1256,
+        "altura": 596.8,
+        "padding": [
+          21.6,
+          0
+        ]
+      },
+      "colunaDoMapa": {
+        "largura": 1256,
+        "altura": 640,
+        "folgaHorizontalDoSvg": 0
+      },
+      "camadas": [
+        {
+          "rotulo": "pais",
+          "presente": true,
+          "nos": 1,
+          "topo": -10.3,
+          "direita": 392.1,
+          "base": 63.1,
+          "esquerda": 345.1,
+          "baseEmFracao": 0.9
+        },
+        {
+          "rotulo": "divisas-br",
+          "presente": true,
+          "nos": 1,
+          "topo": 29.3,
+          "direita": 392.7,
+          "base": 128.4,
+          "esquerda": 347.6,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "rota",
+          "presente": true,
+          "nos": 2,
+          "topo": 379.1,
+          "direita": 549.5,
+          "base": 178.3,
+          "esquerda": 626.8,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "pinos",
+          "presente": true,
+          "nos": 8,
+          "topo": 340.9,
+          "direita": 523.1,
+          "base": 151.9,
+          "esquerda": 600.4,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "halos",
+          "presente": true,
+          "nos": 2,
+          "topo": 352.8,
+          "direita": 523.1,
+          "base": 151.9,
+          "esquerda": 600.4,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rotulos",
+          "presente": true,
+          "nos": 2,
+          "topo": 387.4,
+          "direita": 358.1,
+          "base": 130.6,
+          "esquerda": 700.2,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "chamadas",
+          "presente": true,
+          "nos": 2,
+          "topo": 379.1,
+          "direita": 364.5,
+          "base": 156,
+          "esquerda": 632.1,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "latam-aura",
+          "presente": true,
+          "nos": 1,
+          "topo": -117.7,
+          "direita": 392.1,
+          "base": -339.4,
+          "esquerda": 247,
+          "baseEmFracao": 1.6
+        },
+        {
+          "rotulo": "latam-contorno",
+          "presente": true,
+          "nos": 1,
+          "topo": -117.7,
+          "direita": 392.1,
+          "base": -339.4,
+          "esquerda": 247,
+          "baseEmFracao": 1.6
+        },
+        {
+          "rotulo": "latam-divisas",
+          "presente": true,
+          "nos": 19,
+          "topo": -112.5,
+          "direita": 646.2,
+          "base": -220.4,
+          "esquerda": 259.4,
+          "baseEmFracao": 1.4
+        }
+      ]
+    },
+    {
+      "quadro": "pouso-sp",
+      "largura": 1920,
+      "altura": 1080,
+      "modo": "scroll",
+      "ativa": "sp",
+      "recorte": {
+        "largura": 1256,
+        "altura": 596.8,
+        "padding": [
+          21.6,
+          0
+        ]
+      },
+      "colunaDoMapa": {
+        "largura": 1256,
+        "altura": 640,
+        "folgaHorizontalDoSvg": 0
+      },
+      "camadas": [
+        {
+          "rotulo": "pais",
+          "presente": true,
+          "nos": 1,
+          "topo": 207.3,
+          "direita": 758,
+          "base": 127,
+          "esquerda": 247.7,
+          "baseEmFracao": 0.8
+        },
+        {
+          "rotulo": "divisas-br",
+          "presente": true,
+          "nos": 1,
+          "topo": 226.4,
+          "direita": 758.2,
+          "base": 158.5,
+          "esquerda": 249,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rota",
+          "presente": true,
+          "nos": 2,
+          "topo": 395.2,
+          "direita": 833.9,
+          "base": 182.6,
+          "esquerda": 383.7,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "pinos",
+          "presente": true,
+          "nos": 8,
+          "topo": 382.3,
+          "direita": 824,
+          "base": 172.7,
+          "esquerda": 373.7,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "halos",
+          "presente": true,
+          "nos": 2,
+          "topo": 385.3,
+          "direita": 824,
+          "base": 172.7,
+          "esquerda": 373.7,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "rotulos",
+          "presente": true,
+          "nos": 2,
+          "topo": 399.5,
+          "direita": 744.6,
+          "base": 159.6,
+          "esquerda": 418,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "chamadas",
+          "presente": true,
+          "nos": 2,
+          "topo": 395.2,
+          "direita": 744.6,
+          "base": 171.8,
+          "esquerda": 386.2,
+          "baseEmFracao": 0.7
+        },
+        {
+          "rotulo": "latam-aura",
+          "presente": true,
+          "nos": 1,
+          "topo": 153.7,
+          "direita": 758,
+          "base": -65.3,
+          "esquerda": 200.4,
+          "baseEmFracao": 1.1
+        },
+        {
+          "rotulo": "latam-contorno",
+          "presente": true,
+          "nos": 1,
+          "topo": 153.7,
+          "direita": 758,
+          "base": -65.3,
+          "esquerda": 200.4,
+          "baseEmFracao": 1.1
+        },
+        {
+          "rotulo": "latam-divisas",
+          "presente": true,
+          "nos": 19,
+          "topo": 156.2,
+          "direita": 880.6,
+          "base": -7.9,
+          "esquerda": 206.4,
+          "baseEmFracao": 1
+        }
+      ]
+    }
+  ]
+}

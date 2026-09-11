@@ -1,6 +1,15 @@
 'use client';
 
 /**
+ * ⚠️ SEM CONSUMIDOR DESDE 11/09. O mount deste componente está COMENTADO em
+ * `MetricsBand.tsx` (com o motivo e o roteiro de religar), a pedido da autora do
+ * escopo: a faixa voltou a mostrar os sete indicadores de uma vez, numa grade do
+ * tamanho da seção de números da home. Nada aqui foi tocado — nem neste arquivo
+ * nem em `metrics-band-track.css` —, e é de propósito: apagar os dois tornaria o
+ * retorno uma reconstrução, quando hoje ele é descomentar duas linhas e devolver
+ * `.contato-indicadores-grade` à fileira de largura fixa em `globals.css`.
+ * Quem procurar por que este arquivo não aparece em nenhum import: é isto.
+ *
  * SIS-144 — PERCURSO HORIZONTAL DA FAIXA DE INDICADORES de `/contato`.
  *
  * O palco prende na janela, os sete cartões correm para o lado com o scroll e,
@@ -80,8 +89,73 @@ const TOTAL = METRICS.length;
    30 não é chute: o percurso preso fica em `(7 - 1) × 30 = 180svh`, que a
    1440×900 são 1620px de rolagem para ~1515px de transbordo medido (ver o
    relatório da issue). Perto de 1:1, então o cartão anda aproximadamente o que o
-   dedo anda. */
-const PASSO_SVH = 30;
+   dedo anda.
+
+   ── SIS-211 · 30 → 18, E ESTE É O PARAFUSO DA "SEÇÃO MAIS BAIXA" ────────────
+   A issue pede a faixa mais curta, e a altura dela não está escrita em lugar
+   nenhum: é `(N - 1) × PASSO` de espaçador mais 100svh de palco preso. Com 30 a
+   seção media 280svh — 2520px a 1440×900, dos quais 1600px de rolagem com o palco
+   grudado, MEDIDOS (`scripts/medir-banda-indicadores-sis211.mjs`). É essa a
+   sensação de seção comprida que a issue descreve.
+
+   Com 18 a seção vai a `6 × 18 + 100 = 208svh`. Os números medidos, antes → depois,
+   estão no comentário de entrega.
+
+   O QUE SE PERDE, DITO POR EXTENSO: o 1:1 que o parágrafo acima defende. A 1440 o
+   transbordo é ~1214px e a rolagem presa passa a ser 6 × 18svh = 972px, ou seja o
+   cartão anda ~1,25× o que o dedo anda. Foi o menor preço entre os três caminhos
+   possíveis:
+     • estreitar o cartão encurtaria o transbordo e devolveria o 1:1, mas o piso de
+       17,5rem é o pior rótulo ("Mil horas de Capacidade Produtiva no Brasil") em
+       duas linhas ao lado do número — mexer nele reabre a geometria que a SIS-143
+       mediu, e a issue não pede cartão menor;
+     • encurtar o PALCO (100svh) mexeria na conta de `ESCALA` logo abaixo, que
+       supunha exatamente 100svh de palco: dois números para manter em acordo em vez
+       de um;
+       ⚠️ ESTE CAMINHO FOI TOMADO DEPOIS, e não por altura: o pedido seguinte foi
+       tirar o VAZIO em cima e embaixo dos cartões, que é a tela inteira de palco.
+       `PALCO_SVH` existe acima, `ESCALA` passou a lê-lo, e os "dois números para
+       manter em acordo" viraram um só lugar — a recusa aqui era ao custo de manter,
+       não ao encurtamento em si. A seção encolheu de novo como efeito colateral, e o
+       número está no comentário de entrega;
+     • baixar mais o passo (14, 12) aproxima de 1,6× e 1,9×, aí sim o deslize
+       começa a parecer descolado do gesto.
+   18 é o ponto em que a seção encurta 26% e o deslize continua lendo como resposta
+   ao dedo. Quem quiser reabrir isto mede com o rótulo mais longo, não com
+   "Clientes". */
+const PASSO_SVH = 18;
+
+/* ── ALTURA DO PALCO — 40svh VOLTOU A SER 100svh, E A PROMESSA DE 40 ERA FALSA ─
+   O que estava escrito aqui: `100svh` era o vazio em cima e embaixo dos cartões
+   (uma janela inteira de fundo claro para uma fileira de ~150px, ~750px de azul
+   sobrando a 1440×900), e 40svh transformaria o palco numa FAIXA cujo entorno
+   passaria a ser "a vizinhança rolando em vez de vazio".
+
+   A SEGUNDA METADE NÃO ACONTECE, e é o defeito reportado. A altura extra da seção
+   não é vizinhança: é o `.mb-espaco`, um espaçador VAZIO de `(N-1) × PASSO`. Com o
+   palco preso em `top: 0` medindo 40svh, o que aparece embaixo dele durante o
+   percurso inteiro são ~540px do próprio fundo claro da seção, sem um único
+   elemento — e a leitura que sobra é "os cartões ficaram grudados no alto e a
+   página desce por um vão azul". Trocar o vazio de dentro do palco pelo vazio
+   debaixo dele não é resolver; é mudar de lugar.
+
+   Palco MENOR que a janela sempre mostra seção vazia por baixo, porque quem dá
+   altura ao percurso é espaçador e não conteúdo. Então o palco volta a cobrir a
+   janela — é ele quem fica fixo enquanto a trilha corre — e o vazio DE DENTRO
+   dele, que era a objeção legítima dos 40svh, é resolvido onde nasce: o cartão do
+   percurso passa a ser alto (`metrics-band-track.css`), como manda o precedente
+   desta casa. `partners-track.css`, que é de onde esta cena foi copiada, prende
+   `100svh` de palco com cartão de `min(62svh, 34rem)` — palco cheio e cartão alto
+   são as duas metades do mesmo desenho, e pegar só a primeira é que produzia a
+   fileira fininha num oceano de azul.
+
+   ⚠️ ESTE NÚMERO ENTRA NA CONTA DE `ESCALA`, e é por isso que ele mora aqui e não
+   no CSS. O trecho em que o palco fica preso é o espaçador, `(N-1) × PASSO`; o que a
+   altura do palco muda é a ALTURA DA SEÇÃO, que é o denominador do progresso de
+   `saida`. Deixar `100svh` escrito no CSS e mexer nele lá faria `--mb-t` parar antes
+   ou passar de 1 — o defeito de rolagem morta que a SIS-156 mediu.
+   Valor anterior, para religar a faixa curta: 40. */
+const PALCO_SVH = 100;
 
 /* `useProgressoDeSecao` em modo `saida` devolve 0..1 sobre a SEÇÃO INTEIRA, mas o
    palco solta 100svh antes do fim dela. Esta escala converte um no outro, e é o
@@ -93,10 +167,22 @@ const PASSO_SVH = 30;
    em que o palco ainda está preso a trilha marca −1115,6px de um total de
    −1116,2px, ou seja o percurso fecha 0,6px antes de soltar. `--mb-p` nesse quadro
    é 0,643, que é exatamente 1 ÷ 1,5556 — o inverso desta escala.
+   ⚠️ O PALCO NÃO É MAIS 100svh: a conta acima usa `PALCO_SVH` (40), que é a altura
+   real do palco em `metrics-band-track.css`. A forma da fórmula não muda — ela
+   continua sendo "a seção inteira dividida pelo trecho preso", e o trecho preso
+   continua sendo o espaçador. O que muda é o valor: `ESCALA` foi 1,5556 (passo 30,
+   palco 100), depois 1,9259 (passo 18, palco 100) e agora 1,3704 (passo 18, palco
+   40). Conferido no navegador nas três vezes.
+
+   ⚠️ SIS-211 — os três números deste parágrafo foram medidos com PASSO_SVH = 30, e
+   ficam como estão: a fórmula não depende do passo (ela é a razão entre a seção e o
+   trecho preso, e o passo entra no numerador E no denominador). O que muda é o valor
+   de `ESCALA`, de 1,5556 para 1,9259, e a conferência de que `--mb-t` chega a 1 no
+   quadro em que o palco solta foi REFEITA com 18 — está no comentário de entrega.
    A 1440 e a 1920 a mesma leitura sobra 34,5px e 17,6px, e isso é a AMOSTRAGEM, não
    a cena: com passo de 60px e 70px, um quadro de folga vale 45px e 30px de trilha,
    que é a ordem exata das sobras. Quem repetir a medição use passo menor. */
-const ESCALA = ((TOTAL - 1) * PASSO_SVH + 100) / ((TOTAL - 1) * PASSO_SVH);
+const ESCALA = ((TOTAL - 1) * PASSO_SVH + PALCO_SVH) / ((TOTAL - 1) * PASSO_SVH);
 
 /* ── A CONDIÇÃO DE LARGURA, NO FORMATO DA CASA ───────────────────────────────
  * Tem de ser IDÊNTICA à `@media` de `metrics-band-track.css`: divergir faz o hook
@@ -154,6 +240,7 @@ export default function PercursoIndicadores({ children }: { children: ReactNode 
   const estilo = {
     '--mb-n': TOTAL,
     '--mb-passo': `${PASSO_SVH}svh`,
+    '--mb-palco': `${PALCO_SVH}svh`,
     '--mb-esc': ESCALA.toFixed(4),
   } as React.CSSProperties;
 

@@ -1,0 +1,267 @@
+{
+  "baseURL": "http://localhost:3998",
+  "failures": [],
+  "results": {
+    "hard:/": {
+      "initial": {
+        "path": "/",
+        "busy": "true",
+        "inert": true,
+        "openingReady": "false",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 1,
+        "contactOverlays": 0,
+        "scrollLocked": true
+      },
+      "reveal": {
+        "path": "/",
+        "busy": "false",
+        "inert": false,
+        "openingReady": "true",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 0,
+        "contactOverlays": 0,
+        "scrollLocked": false
+      }
+    },
+    "homeIntroVisibleAfterReveal": 0,
+    "hard:/sistran-labs": {
+      "initial": {
+        "path": "/sistran-labs",
+        "busy": "true",
+        "inert": true,
+        "openingReady": "false",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 1,
+        "contactOverlays": 0,
+        "scrollLocked": true
+      },
+      "reveal": {
+        "path": "/sistran-labs",
+        "busy": "false",
+        "inert": false,
+        "openingReady": "true",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 0,
+        "contactOverlays": 0,
+        "scrollLocked": false
+      }
+    },
+    "hard:/solucoes": {
+      "initial": {
+        "path": "/solucoes",
+        "busy": "true",
+        "inert": true,
+        "openingReady": "false",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 1,
+        "contactOverlays": 0,
+        "scrollLocked": true
+      },
+      "reveal": {
+        "path": "/solucoes",
+        "busy": "false",
+        "inert": false,
+        "openingReady": "true",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 0,
+        "contactOverlays": 0,
+        "scrollLocked": false
+      }
+    },
+    "hard:/blog": {
+      "initial": {
+        "path": "/blog",
+        "busy": "true",
+        "inert": true,
+        "openingReady": "false",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 1,
+        "contactOverlays": 0,
+        "scrollLocked": true
+      },
+      "reveal": {
+        "path": "/blog",
+        "busy": "false",
+        "inert": false,
+        "openingReady": "true",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 0,
+        "contactOverlays": 0,
+        "scrollLocked": false
+      }
+    },
+    "hard:/contato": {
+      "initial": {
+        "path": "/contato",
+        "busy": "true",
+        "inert": true,
+        "openingReady": "false",
+        "mapReady": "false",
+        "timedOut": "false",
+        "overlays": 1,
+        "contactOverlays": 0,
+        "scrollLocked": true
+      },
+      "reveal": {
+        "path": "/contato",
+        "busy": "false",
+        "inert": false,
+        "openingReady": "true",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 0,
+        "contactOverlays": 0,
+        "scrollLocked": false
+      }
+    },
+    "hard:/admin/entrar": {
+      "initial": {
+        "path": "/admin/entrar",
+        "busy": "true",
+        "inert": true,
+        "openingReady": "false",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 1,
+        "contactOverlays": 0,
+        "scrollLocked": true
+      },
+      "reveal": {
+        "path": "/admin/entrar",
+        "busy": "false",
+        "inert": false,
+        "openingReady": "true",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 0,
+        "contactOverlays": 0,
+        "scrollLocked": false
+      }
+    },
+    "delayedMedia": {
+      "path": "/sistran-labs",
+      "busy": "true",
+      "inert": true,
+      "openingReady": "false",
+      "mapReady": "true",
+      "timedOut": "false",
+      "overlays": 1,
+      "contactOverlays": 0,
+      "scrollLocked": true
+    },
+    "delayedMediaReveal": {
+      "path": "/sistran-labs",
+      "busy": "false",
+      "inert": false,
+      "openingReady": "true",
+      "mapReady": "true",
+      "timedOut": "false",
+      "overlays": 0,
+      "contactOverlays": 0,
+      "scrollLocked": false
+    },
+    "soft": {
+      "path": "/solucoes",
+      "busy": "true",
+      "inert": true,
+      "openingReady": "false",
+      "mapReady": "true",
+      "timedOut": "false",
+      "overlays": 1,
+      "contactOverlays": 0,
+      "scrollLocked": true
+    },
+    "dynamicSameSegment": {
+      "path": "/solucoes/fast",
+      "busy": "true",
+      "inert": true,
+      "openingReady": "true",
+      "mapReady": "true",
+      "timedOut": "false",
+      "overlays": 1,
+      "contactOverlays": 0,
+      "scrollLocked": true
+    },
+    "softReturn": {
+      "path": "/solucoes/match-ai",
+      "busy": "true",
+      "inert": true,
+      "openingReady": "true",
+      "mapReady": "true",
+      "timedOut": "false",
+      "overlays": 1,
+      "contactOverlays": 0,
+      "scrollLocked": true
+    },
+    "mobileNonContact": {
+      "initial": {
+        "path": "/sistran-labs",
+        "busy": "true",
+        "inert": true,
+        "openingReady": "false",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 1,
+        "contactOverlays": 0,
+        "scrollLocked": true
+      },
+      "reveal": {
+        "path": "/sistran-labs",
+        "busy": "false",
+        "inert": false,
+        "openingReady": "true",
+        "mapReady": "true",
+        "timedOut": "false",
+        "overlays": 0,
+        "contactOverlays": 0,
+        "scrollLocked": false
+      }
+    },
+    "reduce:sistema": {
+      "path": "/contato",
+      "busy": "true",
+      "inert": true,
+      "openingReady": "false",
+      "mapReady": "false",
+      "timedOut": "false",
+      "overlays": 1,
+      "contactOverlays": 0,
+      "scrollLocked": true,
+      "transitionDuration": "1e-05s",
+      "signalAnimation": "none"
+    },
+    "reduce:manual": {
+      "path": "/contato",
+      "busy": "true",
+      "inert": true,
+      "openingReady": "false",
+      "mapReady": "false",
+      "timedOut": "false",
+      "overlays": 1,
+      "contactOverlays": 0,
+      "scrollLocked": true,
+      "transitionDuration": "1e-05s",
+      "signalAnimation": "none"
+    },
+    "timeoutAccelerated": {
+      "path": "/sistran-labs",
+      "busy": "false",
+      "inert": false,
+      "openingReady": "false",
+      "mapReady": "true",
+      "timedOut": "true",
+      "overlays": 0,
+      "contactOverlays": 0,
+      "scrollLocked": false
+    }
+  }
+}

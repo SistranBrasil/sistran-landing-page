@@ -48,11 +48,18 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { animate } from 'motion/react';
 import { METRICS } from '@/data/metrics';
 import { prefersReducedMotion } from '@/lib/motion';
+/* SIS-200 — o ícone de cada célula sai do catálogo da casa (`src/lib/icons.ts`),
+   nunca de um `import` direto de `lucide-react`. O mapa fica na camada de
+   componente, e não em `src/data/metrics.ts`, porque ali todo literal conta como
+   texto do site para o copy-lock — a nota inteira está no cabeçalho de
+   `ImpactIcones.ts`. A chave é o `visual`, o mesmo do grafismo da lente. */
+import { ICONE_POR_VISUAL } from '@/components/ui/impact/ImpactIcones';
 import ImpactVisual from '@/components/ui/impact/ImpactVisuais';
 import { useJornada } from '@/components/ProofJourney';
 /* SIS-101 — a faixa de logos passa a ser o rodapé desta seção (antes era uma
@@ -800,11 +807,33 @@ export default function Metrics() {
       id="resultados"
       ref={secaoRef}
       className="impact-scroll"
-      aria-labelledby="impact-titulo"
+      /* SIS-177 — era `aria-labelledby="impact-titulo"`, e o `<h2>` que ele
+         apontava saiu (decisão de conteúdo: a seção fica só com os sete
+         números). Uma referência a um `id` que não existe deixa a seção SEM
+         nome acessível, e não é isso que a decisão pede — ela é sobre texto
+         VISÍVEL. O nome passa a vir daqui, com a mesma palavra que o
+         sobretítulo dizia e que `copy-lock.json` já trava em
+         `Metrics.tsx:0`. Religar o título é trocar de volta pelo
+         `aria-labelledby`. */
+      aria-label="Sistran em números"
       /* O CSS do scrollytelling inteiro pende deste atributo. Sem JavaScript ele
          nunca aparece, e a secao é a lista completa. */
       data-dirigindo={dirigindo ? '1' : undefined}
     >
+      {/* SIS-176 — a arte da referência substitui o navy chapado como superfície
+          visível, mas não como fallback: o `#041b3d` continua em
+          `.impact-scroll`, por baixo deste `Image`, para carregamento, falha e
+          forced-colors. `fill` prende a arte à caixa inteira da seção; sem
+          `priority` porque este capítulo está abaixo da dobra e não disputa o LCP
+          do hero. */}
+      <Image
+        aria-hidden
+        alt=""
+        className="impact-fundo"
+        src="/imagens/atrasnumeros.webp"
+        fill
+        sizes="100vw"
+      />
       {/* SIS-101 — o percurso ganhou uma caixa própria, e ela existe por uma
           razão só: dar à faixa de logos um lugar DEPOIS do sticky.
 
@@ -907,8 +936,26 @@ export default function Metrics() {
                 tela. O fio é curto de propósito: ele ENCOSTA os dois, não os
                 separa de ponta a ponta. */}
             <div className="impact-topo-meta">
+              {/* SIS-177 — SOBRETÍTULO E FIO COMENTADOS.
+
+                  A issue de conteúdo fechou com "só os números, texto nenhum":
+                  os quatro blocos da referência (`numeros.png`) foram
+                  dispensados E o texto que já existia saiu com eles. Sobra a
+                  fileira de sete contadores, que é a única coisa desta seção
+                  cujo texto nasce da fonte travada como DADO (valor e rótulo,
+                  `.claude/conteudo-site/00-home.md` §4) e não como escrita.
+
+                  O fio sai junto porque ele não é ornamento: ele ENCOSTA o
+                  sobretítulo no marcador (ver a nota da SIS-74 abaixo). Sem os
+                  dois pontas ele seria um risco de 1px pendurado no vazio.
+
+                  Comentados, e não removidos: as regras `.impact-eyebrow` e
+                  `.impact-meta-fio` do `globals.css` continuam lá, e o
+                  `padding-block` de `.impact-topo` foi zerado com a mesma nota
+                  — descomentar os três devolve a faixa inteira.
               <p className="impact-eyebrow">Sistran em números</p>
               <span aria-hidden className="impact-meta-fio" />
+              */}
 
               {/* Marcador de etapa. O numero em texto é o que cumpre "nao indicar
                   o item ativo so por cor"; os traços sao reforco visual.
@@ -954,6 +1001,13 @@ export default function Metrics() {
                     dizia com precisão. Comentado, e não removido: as regras
                     `.impact-trilho*` do `globals.css` estão comentadas junto,
                     com a mesma nota. Religar é descomentar os dois.
+
+                    SIS-176 — o trecho acima fica como história do modo dirigido,
+                    mas a conclusão não vale para a fileira estática: ali não há
+                    `03 / 07`, atalhos nem curva visível. O trilho vivo foi MOVIDO,
+                    não descomentado aqui: ele é irmão da `<ol>` e recebe
+                    `acesos`, porque permanecer dentro deste marcador o deixaria
+                    preso ao gate `dirigindo`, hoje sempre falso.
                 <div aria-hidden className="impact-trilho">
                   <span className="impact-trilho-aceso" />
                   {METRICS.map((m, i) => (
@@ -980,6 +1034,23 @@ export default function Metrics() {
                 o gradiente do título é `background-clip: text` (ver
                 `.impact-titulo`), que numa glifa de 4px de largura sai como uma
                 mancha e não como cor. */}
+            {/* SIS-177 — TÍTULO COMENTADO, e este é o item que exigia decisão
+                explícita: `copy-lock.json` travava
+                `src/components/Metrics.tsx:1` como "Escala que transforma o
+                mercado de seguros .", ou seja, retirá-lo não é deixar de
+                acrescentar texto novo — é remover texto travado. A entrada
+                continua no `copy-lock.json`, marcada como retirada por esta
+                issue: apagá-la de lá faria a remoção passar em silêncio, que é
+                o oposto do que a trava existe para impedir.
+
+                O `id="impact-titulo"` era o alvo do `aria-labelledby` da
+                seção; o nome acessível mudou de mecanismo lá em cima, ver a
+                nota no `<section>`.
+
+                As regras `.impact-titulo`, `.impact-titulo-destaque` e
+                `.impact-ponto` do `globals.css` ficam, com as medidas de
+                contraste da SIS-165/176 intactas — elas são o que torna barato
+                religar isto.
             <h2 id="impact-titulo" className="impact-titulo">
               Escala que transforma o mercado de{' '}
               <span className="impact-titulo-destaque">
@@ -987,6 +1058,7 @@ export default function Metrics() {
                 <span className="impact-ponto">.</span>
               </span>
             </h2>
+            */}
 
             {/* SIS-165 — LUGAR RESERVADO, e deliberadamente vazio: o parágrafo de
                 apoio e os três microrrótulos da referência NÃO entram nesta
@@ -1014,10 +1086,24 @@ export default function Metrics() {
                 rolar, e se o efeito nunca correr, os sete continuam legíveis
                 (ver a nota de `acesos`). É por isso que ele pode ser
                 `aria-hidden`: para quem ouve, não há nada a revelar. */}
+            {/* SIS-177 — `ROLE PARA REVELAR` COMENTADO.
+
+                A nota da SIS-165 acima defendia a entrada dele por um critério
+                de Regra Zero (descreve o que a seção FAZ, não afirma nada sobre
+                a empresa) — e esse critério continua correto. Ele só deixou de
+                ser o critério que decide: a decisão de conteúdo desta issue não
+                foi "este texto passa na Regra Zero?", foi "esta seção tem
+                texto?", e a resposta foi não. Um convite de gesto sozinho, sem
+                sobretítulo nem título, seria a única escrita da faixa.
+
+                Segue verdade que ele nunca guardava conteúdo: é `aria-hidden`, e
+                os sete contadores estão no DOM e legíveis sem rolagem alguma
+                (ver a nota de `acesos`). Retirá-lo não torna nada inalcançável.
             <p aria-hidden className="impact-role">
               <span className="impact-role-fio" />
               ROLE PARA REVELAR
             </p>
+            */}
           </div>
         </div>
 
@@ -1296,11 +1382,42 @@ export default function Metrics() {
                         vao: o numero lia como solto no palco em vez de pendurado no
                         percurso. Decorativa, e por isso `aria-hidden`. */}
                     <span aria-hidden className="impact-haste" />
-                    {/* Ordinal decorativo: a posicao no percurso ja vem da `<ol>`,
-                        entao repeti-la em texto acessivel seria leitura dobrada. */}
+                    {/* SIS-200 — o ícone da célula.
+
+                        `aria-hidden` no wrapper e não só no `<svg>`: o Lucide já
+                        entrega `aria-hidden` no seu próprio nó, mas a caixa e o
+                        anel de pulso são desenhados aqui fora dele — sem o
+                        atributo no pai, um `<span>` vazio decorativo ficaria na
+                        árvore de acessibilidade. O canal acessível continua sendo
+                        o número mais o rótulo, que são texto real.
+
+                        `strokeWidth` explícito e `width`/`height` deixados ao CSS
+                        (`.impact-icone svg`): o padrão do Lucide é `24` com traço
+                        2, e a 28px o traço 2 lê grosso ao lado de um número
+                        monumental de peso 600. 1.6 é o que iguala a espessura
+                        aparente do glifo à do fio divisório da célula.
+
+                        Fora de `dirigindo`: o ícone é da fileira estática, que é o
+                        único modo que a seção tem hoje. Se o modo dirigido voltar,
+                        a lente continua com o `visual` de 200x200 — os dois não
+                        disputam o mesmo lugar. */}
+                    <span aria-hidden className="impact-icone">
+                      <span className="impact-icone-anel" />
+                      {(() => {
+                        const Icone = ICONE_POR_VISUAL[m.visual];
+                        return <Icone strokeWidth={1.6} />;
+                      })()}
+                    </span>
+                    {/* SIS-176 — ordinal decorativo RETIRADO no modo lista: a
+                        referência mostra apenas o feixe do indicador, e `01`…`07`
+                        criava uma segunda escala acima dos próprios valores. A
+                        posição continua expressa pela ordem nativa da `<ol>`.
+                        Comentado, não apagado, para preservar o caminho de retorno
+                        caso o modo dirigido volte.
                     <p aria-hidden className="impact-indice">
                       {doisDigitos(i + 1)}
                     </p>
+                    */}
 
                     {/* Nada aqui é `sr-only`: o numero e o sufixo SAO o texto
                         acessivel. A versao anterior duplicava o valor num
@@ -1341,6 +1458,21 @@ export default function Metrics() {
                   </li>
                 ))}
               </ol>
+              {/* SIS-176 — fora do `.impact-marcador` e do gate `dirigindo`: este
+                  trilho pertence à fileira estática. O estado vem do mesmo Set
+                  crescente que acende os sete indicadores, então não existe um
+                  segundo relógio. Antes de `data-observando` (sem JS e em
+                  reduced-motion), o CSS entrega os sete nós no estado final. */}
+              <div aria-hidden className="impact-trilho">
+                <span className="impact-trilho-aceso" />
+                {METRICS.map((m, i) => (
+                  <span
+                    key={m.id}
+                    className="impact-trilho-ponto"
+                    data-aceso={acesos.has(i) ? 'sim' : 'nao'}
+                  />
+                ))}
+              </div>
             </div>
 
             {/* Régua do pé do palco COMENTADA (orquestração visual, Prioridade 2).
@@ -1412,6 +1544,12 @@ export default function Metrics() {
         </div>
       </div>
       </div>
+      {/* SIS-176 — a grade clara que antes fazia o rodapé subiu na SIS-179. Esta
+          faixa sem conteúdo dissolve a própria arte em `--paper`; a
+          `.sequence::after` recebe a mesma cor do outro lado e continua cobrindo
+          o quadro do vídeo. A emenda deixa de ser um degrau navy→branco sem
+          inventar texto nem reintroduzir um rodapé de marcas. */}
+      <span aria-hidden className="impact-saida" />
       {/* SIS-101 — a faixa de logos de parceiros, agora como rodapé desta seção
           em vez de seção independente. Ver a nota na abertura do
           `.impact-percurso` acima e o cabeçalho de `SignalMarquee.tsx`.
@@ -1492,6 +1630,11 @@ export default function Metrics() {
           é desta issue: ela é ou devolver uma superfície clara a este fim de seção,
           ou aceitar o degrau como aresta legítima entre duas cenas. Fica escrito
           para que o próximo não descubra o degrau sem saber de onde veio.
+
+          SIS-176 — ACHADO FECHADO: a grade não voltou. A nova `.impact-saida`
+          dissolve a arte em `--paper` dentro desta seção, e o véu de 220px da
+          sequência recebe o mesmo `--paper` sobre o quadro do vídeo. São as duas
+          metades da passagem que a superfície clara única fazia antes.
 
           E O QUE FOI MEDIDO, porque é o que quebrou em silêncio de verdade: a caixa
           do percurso mede 340vh MAIS a altura deste rodapé, e a grade é ~690px

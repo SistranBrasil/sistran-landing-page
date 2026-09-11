@@ -13,6 +13,283 @@
    primeira pintura, para a preferencia valer sem esperar hidratacao.
    =========================================================== */
 
+/* ===========================================================
+   SIS-238 — Abertura: a capa Celent É o fundo, e ela é CLARA.
+
+   O que esta faixa era (SIS-230): navy chapado, um troféu recortado à esquerda,
+   um chip branco com o logo, o texto, e a arte LATAM num retângulo separado
+   embaixo. Três assets, três máscaras, e o azul da seção aparecendo entre eles.
+
+   O que ela é agora: UMA arte — `celent-capa.webp`, derivada de `cele.png` —
+   com o troféu, a placa «Technology Standout 2023» e o quadrante XCelent já
+   compostos, e por cima dela só a coluna tipográfica da esquerda, no arranjo de
+   `public/exemplcelent.png`.
+
+   POR QUE A FAIXA INVERTEU DE TINTA. Não é preferência: é medida. A fatia da
+   capa que recebe as escritas (0–26% da largura) mede rgb(222 240 253) na
+   média, luminância 0.85 (`scripts/otimizar-capa-celent-sis238.mjs`). Texto
+   branco ali dá ~1.2:1 — ilegível. Então a faixa é clara e a tinta é o navy da
+   marca, exatamente como a referência. A issue autoriza: "não forçar navy se a
+   capa for clara".
+
+   ISSO CRIA UMA EMENDA NOVA. Antes a abertura fechava no mesmo azul do palco
+   (medido em `scripts/medir-emenda-abertura-sis230.mjs`); agora ela é clara e o
+   `.rec-sticky` logo abaixo continua navy. `.rec-capa-emenda` é o degradê que
+   desce da capa até `--palco-fundo` no rodapé da faixa — sem ele o encontro é
+   um degrau de claro para escuro.
+
+   A BASE AQUI É O MOBILE, e nela a capa NÃO cobre: ela é `contain`, encostada
+   embaixo, com o texto empilhado acima. O motivo é geométrico — a arte é 16:9 e
+   a janela de 390px é retrato; `cover` reduziria a cena a uma fatia vertical do
+   troféu e jogaria o resto para debaixo das letras. `cover` com a coluna de
+   texto sobreposta entra a partir de 1024px, onde a caixa já é paisagem.
+   =========================================================== */
+
+.rec-abertura {
+  /* Tinta da faixa: a média medida da fatia esquerda da capa, para o
+     preenchimento atrás de um `contain` (mobile) ser a mesma cor da arte. */
+  --rec-capa-tinta: #dceefd;
+  /* Tintas escuras da coluna. Todas medidas contra a capa em
+     `scripts/medir-contraste-celent-sis238.mjs`. */
+  --rec-tinta-forte: var(--palco-marca);
+  --rec-tinta-media: #0a3f7d;
+  --rec-tinta-fraca: #2c4f79;
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: var(--rec-capa-tinta);
+  padding-block: clamp(40px, 6vw, 72px) 0;
+  /* Grade de duas faixas no mobile: texto na primeira, capa na segunda. É ela
+     que garante que os dois NÃO se sobreponham — ver `.rec-capa`. */
+  display: grid;
+  grid-template-rows: auto auto;
+}
+
+/* `.rec-abertura-fundo` e `.rec-grade` (o degradê navy e a grade técnica do
+   arranjo SIS-230) SAÍRAM junto com o nó no TSX: sobre a capa clara o degradê
+   navy é o oposto do pedido, e a grade ciano a 5% não se vê. O piso da faixa
+   agora é o `background` da própria `.rec-abertura`, que já cobre o caso de a
+   capa falhar em carregar. */
+
+/* MOBILE: a capa é uma FAIXA NO FLUXO, na segunda linha da grade, e não um
+   fundo. `position: static` é a decisão inteira.
+
+   A primeira tentativa deixou a capa `absolute; inset: 0` também aqui, com
+   `object-fit: contain; object-position: 50% 100%` — a arte inteira encostada
+   embaixo. Medido a 390px: `.rec-celent-linha2` caiu em 1.99:1, contra o alvo de
+   4.5:1. O motivo é que a arte, ancorada no rodapé de uma caixa cuja altura vem
+   do próprio texto, subia por baixo da última linha. Não é caso de véu — véu ali
+   lavaria a cena toda para salvar uma frase.
+
+   Com a capa no fluxo não existe sobreposição para medir: o texto tem a primeira
+   faixa, a arte tem a segunda, e a arte aparece INTEIRA (a proporção 16:9 numa
+   janela retrato não sobrevive a `cover` — viraria uma fatia vertical do
+   troféu). A partir de 1024px, onde a caixa já é paisagem, ela volta a ser
+   fundo. */
+.rec-capa {
+  position: static;
+  /* A ORDEM É INVERTIDA AQUI, não no markup. No DOM a capa vem antes do texto,
+     porque acima de 1024px ela é fundo e fundo se declara primeiro. No mobile,
+     onde ela é faixa no fluxo, ela tem de vir DEPOIS — e são as linhas
+     explícitas da grade que resolvem isso sem duplicar nó nem trocar árvore.
+     Sem elas a capa caía na linha 1, o texto na linha 2 e a última frase
+     encostava no rodapé da faixa, debaixo de `.rec-capa-emenda`: medido em
+     1.99:1 contra o alvo de 4.5:1. */
+  grid-row: 2;
+  margin-top: clamp(28px, 6vw, 44px);
+}
+
+.rec-abertura > .rec-wrap {
+  grid-row: 1;
+}
+
+.rec-capa img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1672 / 941;
+  object-fit: contain;
+}
+
+/* Véu claro sobre a coluna tipográfica. No mobile ele é inerte (o texto não
+   está sobre a arte); a partir de 1024px, quando a capa passa a `cover`, ele
+   garante o substrato onde a cena tem os blocos de vidro escuros — o pior pixel
+   da fatia esquerda mede rgb(21 91 138), e contra ele tinta escura cairia para
+   ~2.9:1. */
+.rec-capa-veu {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  opacity: 0;
+}
+
+/* Emenda com o palco escuro que vem depois. */
+.rec-capa-emenda {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: -1;
+  height: clamp(88px, 12vw, 160px);
+  background: linear-gradient(to bottom, transparent 0%, var(--palco-fundo) 96%);
+}
+
+/* --- Coluna tipográfica -------------------------------------------------- */
+
+/* Uma coluna só, na ordem da referência: eyebrow, título, marca Celent, frase,
+   remate. No mobile ela ocupa a largura toda; no desktop ela vira a faixa
+   esquerda e a arte continua atrás. */
+.rec-celent {
+  position: relative;
+  max-width: 46ch;
+}
+
+/* O fio vertical à esquerda da marca, como na referência. Era um chip branco
+   atrás do logo — ele existia só para a tinta escura do logo (rgb 68 118 117 na
+   média dos pixels opacos) não desaparecer no navy. Sobre a capa clara o logo
+   já se lê, então o chip saiu e ficou o fio. */
+.rec-celent-marca {
+  display: flex;
+  align-items: center;
+  margin: clamp(22px, 3.4vw, 38px) 0 clamp(16px, 2.4vw, 24px);
+  padding-left: clamp(14px, 1.6vw, 20px);
+  border-left: 3px solid var(--rec-tinta-forte);
+}
+
+.rec-celent-marca img {
+  display: block;
+  width: clamp(150px, 30vw, 250px);
+  height: auto;
+}
+
+.rec-celent-linha1 {
+  margin: 0;
+  font-size: clamp(1.18rem, 2.2vw, 1.62rem);
+  font-weight: 600;
+  line-height: 1.32;
+  letter-spacing: -0.015em;
+  text-wrap: pretty;
+  color: var(--rec-tinta-forte);
+}
+
+.rec-celent-linha2 {
+  margin: clamp(12px, 1.6vw, 18px) 0 0;
+  font-size: clamp(0.98rem, 1.4vw, 1.12rem);
+  line-height: 1.5;
+  /* Segundo nível da hierarquia — mais claro que a frase, e ainda assim medido
+     acima de 4.5:1 contra a capa. */
+  color: var(--rec-tinta-fraca);
+}
+
+/* --- Cabeçalho sobre a capa clara ---------------------------------------- */
+
+/* As regras gerais de `.rec-eyebrow` e `.rec-titulo` mais abaixo nesta folha
+   são escritas para o palco NAVY: ciano e branco. Aqui elas são invertidas.
+   Seletor de dois níveis (0,2,0) — vence a regra geral (0,1,0) e também a que
+   está dentro do `@media (min-width: 1200px)`, porque especificidade não
+   depende de ordem. */
+.rec-abertura .rec-eyebrow {
+  color: var(--rec-tinta-media);
+}
+
+.rec-abertura .rec-eyebrow::after {
+  background: linear-gradient(90deg, rgba(3, 45, 103, 0.55), transparent);
+}
+
+.rec-abertura .rec-titulo {
+  /* Sem os 780px da regra do palco: aqui o título divide a faixa com a arte e
+     tem de caber na COLUNA, não na seção. E a fonte cede junto, pelo mesmo
+     cálculo que está documentado na regra do palco: na Sora, no peso 760,
+     "Premiações, Certificações" gasta ~13.8em. Para o `<br>` do markup entregar
+     as DUAS linhas da referência (e não três, com "Premiações," órfã), a linha
+     tem de caber na coluna: 3.2vw a 1440 dá 46px, ou ~635px, contra os ~662px
+     da coluna. Com os 4.1vw/3.4rem da regra do palco dava 750px e quebrava. */
+  max-width: 100%;
+  font-size: clamp(2.1rem, 3.2vw, 3rem);
+  color: var(--rec-tinta-forte);
+}
+
+.rec-abertura .rec-header {
+  margin-bottom: 0;
+}
+
+/* --- Desktop: a capa cobre e o texto se sobrepõe ------------------------- */
+
+@media (min-width: 1024px) {
+  .rec-abertura {
+    display: grid;
+    align-content: center;
+    /* Altura da faixa acompanhando a proporção da arte (1672x941 = 1.777). Os
+       `56vw` são esse 1/1.777 arredondado para cima: é a altura em que `cover`
+       NÃO corta nada em nenhuma largura dentro da faixa útil. A 1440 dá 806px,
+       contra os 810px que a arte pediria. O teto de 880px existe para telas de
+       1920+, onde a proporção exata viraria uma faixa de 1080px — e lá o corte
+       cai na parte de baixo, ver `object-position`. */
+    min-height: clamp(540px, 56vw, 880px);
+    /* O respiro vertical desce para o `.rec-wrap`. Motivo: um filho `absolute`
+       de um container grid resolve `inset` contra a CAIXA DE PADDING (ou contra
+       a própria área de grade, se declarar linha/coluna). Com o padding aqui, a
+       capa nunca alcançaria as bordas da faixa. */
+    padding-block: 0;
+  }
+
+  .rec-abertura > .rec-wrap {
+    padding-block: clamp(48px, 5vw, 80px);
+  }
+
+  /* A capa deixa de ser faixa no fluxo e volta a ser FUNDO: aqui a caixa é
+     paisagem, `cover` não deforma a cena, e é isso que a referência mostra. */
+  .rec-capa {
+    position: absolute;
+    /* `auto`, e não a linha 2 que o mobile lhe deu, nem `1 / -1`. Um filho
+       `absolute` de um grid resolve `inset` contra a sua ÁREA DE GRADE quando
+       tem linha declarada, e contra a caixa de padding da faixa quando não tem.
+       Com `grid-row: 2` a capa media 208px de altura numa faixa de 806px — uma
+       tira do topo da arte. Com `1 / -1` media 533px, porque `align-content:
+       center` centra as duas trilhas dentro do `min-height` e a soma delas é o
+       conteúdo, não a faixa. Só `auto` devolve os 806px. */
+    grid-row: auto;
+    inset: 0;
+    z-index: -3;
+    margin-top: 0;
+  }
+
+  .rec-capa img {
+    height: 100%;
+    aspect-ratio: auto;
+    object-fit: cover;
+    /* Nenhum dos dois eixos é 50%, e os dois têm motivo medido.
+       x=62%: quando a caixa é mais estreita que 1.777 o corte é lateral, e
+       puxar para a direita preserva troféu e quadrante em vez de preservar o
+       vazio da esquerda — que o véu recompõe de graça.
+       y=22%: quando a caixa é mais LARGA (acima de ~1570px, onde o teto de
+       880px passa a valer) o corte é vertical, e ele tem de comer o CHÃO, não o
+       topo. A placa flutuante «Technology Standout 2023» fica na faixa 10–33%
+       da altura da arte; a primeira rodada, com 50%, cortou a placa pela
+       metade. O terço de baixo é piso reflexivo e não carrega informação. */
+    object-position: 62% 22%;
+  }
+
+  .rec-capa-veu {
+    opacity: 1;
+    /* Morre antes do troféu (que começa em ~28% da arte): a cena não fica
+       lavada, só a fatia das letras. */
+    background: linear-gradient(
+      to right,
+      rgba(232, 244, 254, 0.94) 0%,
+      rgba(232, 244, 254, 0.9) 26%,
+      rgba(232, 244, 254, 0) 48%
+    );
+  }
+
+  .rec-celent {
+    /* 46% da faixa, que é a fatia que a referência dá ao texto — e o mínimo em
+       que o título fecha em duas linhas (ver a conta em `.rec-abertura
+       .rec-titulo`). O teto em `ch` impede que num monitor largo a medida de
+       leitura estique junto. */
+    width: min(52ch, 46%);
+    max-width: none;
+  }
+}
+
 .rec-scroll {
   --rec-ciano: #22d3ee;
   --rec-borda: rgba(102, 187, 237, 0.42);
@@ -37,12 +314,7 @@
     radial-gradient(circle at 12% 38%, rgba(16, 112, 207, 0.14), transparent 36%),
     /* SIS-78: era `#020f22 / #031a38 / #062c5d`. O terceiro ponto já era quase o
        escuro da marca; agora os três são ele. */
-    linear-gradient(
-      125deg,
-      var(--palco-fundo) 0%,
-      var(--palco-marca) 52%,
-      var(--palco-marca) 100%
-    );
+    linear-gradient(125deg, var(--palco-fundo) 0%, var(--palco-marca) 52%, var(--palco-marca) 100%);
 }
 
 .rec-grade {
@@ -66,11 +338,7 @@
   inset: 0;
   z-index: -2;
   background-image:
-    repeating-linear-gradient(
-      118deg,
-      rgba(127, 215, 245, 0.028) 0 1px,
-      transparent 1px 190px
-    ),
+    repeating-linear-gradient(118deg, rgba(127, 215, 245, 0.028) 0 1px, transparent 1px 190px),
     radial-gradient(circle, rgba(127, 215, 245, 0.14) 1px, transparent 1.5px);
   background-size:
     auto auto,
@@ -436,8 +704,7 @@
   height: clamp(18px, 3vw, 30px);
   margin-top: -6px;
   border-radius: 50%;
-  background:
-    linear-gradient(180deg, rgba(24, 62, 108, 0.96), rgba(6, 24, 50, 0.98));
+  background: linear-gradient(180deg, rgba(24, 62, 108, 0.96), rgba(6, 24, 50, 0.98));
   border: 1px solid rgba(198, 160, 74, 0.42);
   box-shadow:
     0 10px 26px rgba(0, 8, 25, 0.5),
@@ -1035,8 +1302,7 @@
     max-height: 390px;
     object-fit: contain;
     object-position: center bottom;
-    filter:
-      drop-shadow(0 24px 24px rgba(0, 5, 18, 0.34))
+    filter: drop-shadow(0 24px 24px rgba(0, 5, 18, 0.34))
       drop-shadow(0 0 22px rgba(46, 195, 239, 0.12));
     animation: none;
   }

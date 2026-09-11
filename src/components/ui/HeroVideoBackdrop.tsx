@@ -94,6 +94,7 @@ export default function HeroVideoBackdrop({
             mosaico em `StackScenes`. */}
         <video
           ref={video}
+          data-route-critical-media=""
           className="hero-backdrop-video"
           src={src}
           poster={poster}

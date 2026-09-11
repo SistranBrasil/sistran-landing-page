@@ -1,0 +1,86 @@
+{
+  "1440x900": {
+    "contato": {
+      "alturaSecao": 292,
+      "larguraConteudo": 1116,
+      "fileiras": 1,
+      "cartoesNaPrimeiraFileira": 7,
+      "larguraCartao": 142,
+      "alturaCartao": 164,
+      "rolagemLateral": false,
+      "corpoNumero": "28px",
+      "piorRotulo": {
+        "texto": "Prêmios e Reconhecimentos",
+        "linhas": 3
+      },
+      "percursoNoDom": false
+    },
+    "home": {
+      "alturaSecao": 674,
+      "larguraPainel": 1116,
+      "fileiras": 1,
+      "larguraColuna": 130,
+      "corpoNumero": "32px",
+      "piorRotulo": {
+        "texto": "Mil horas de Capacidade Produtiva no Brasil",
+        "linhas": 4
+      }
+    }
+  },
+  "1280x900": {
+    "contato": {
+      "alturaSecao": 271,
+      "larguraConteudo": 1116,
+      "fileiras": 1,
+      "cartoesNaPrimeiraFileira": 7,
+      "larguraCartao": 142,
+      "alturaCartao": 156,
+      "rolagemLateral": false,
+      "corpoNumero": "28px",
+      "piorRotulo": {
+        "texto": "Mil horas de Capacidade Produtiva no Brasil",
+        "linhas": 3
+      },
+      "percursoNoDom": false
+    },
+    "home": {
+      "alturaSecao": 667,
+      "larguraPainel": 1116,
+      "fileiras": 1,
+      "larguraColuna": 132,
+      "corpoNumero": "32px",
+      "piorRotulo": {
+        "texto": "Mil horas de Capacidade Produtiva no Brasil",
+        "linhas": 4
+      }
+    }
+  },
+  "1024x900": {
+    "contato": {
+      "alturaSecao": 345,
+      "larguraConteudo": 960,
+      "fileiras": 2,
+      "cartoesNaPrimeiraFileira": 4,
+      "larguraCartao": 228,
+      "alturaCartao": 132,
+      "rolagemLateral": false,
+      "corpoNumero": "43.008px",
+      "piorRotulo": {
+        "texto": "Mil horas de Capacidade Produtiva no Brasil",
+        "linhas": 4
+      },
+      "percursoNoDom": false
+    },
+    "home": {
+      "alturaSecao": 763,
+      "larguraPainel": 963,
+      "fileiras": 2,
+      "larguraColuna": 212,
+      "corpoNumero": "61.44px",
+      "piorRotulo": {
+        "texto": "Prêmios e Reconhecimentos",
+        "linhas": 2
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@ import PageTransition from '@/components/ui/PageTransition';
 import AnchorFocus from '@/components/ui/AnchorFocus';
 import MotionPolicyProvider from '@/components/layout/MotionPolicyProvider';
 import { MotionPreferenceIntro } from '@/components/layout/MotionPreferenceIntro';
+import RouteLoadGate from '@/components/loading/RouteLoadGate';
 import {
   DEFAULT_MOTION_PREFERENCE,
   MOTION_PREFERENCE_STORAGE_KEY,
@@ -325,15 +326,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             (`PageShell` e a home) — sem o tabIndex o navegador move o foco para
             o body e o Tab seguinte volta ao topo. O `<main>` fica na rota, e
             nao aqui, para nao aninhar dois. */}
-        <a href="#conteudo" className="skip-link">
-          Pular para o conteúdo
-        </a>
         <MotionPreferenceIntro />
         <Background />
         <SmoothScroll />
         <AnchorFocus />
         <MotionPolicyProvider>
-          <PageTransition>{children}</PageTransition>
+          <RouteLoadGate>
+            <a href="#conteudo" className="skip-link">
+              Pular para o conteúdo
+            </a>
+            <PageTransition>{children}</PageTransition>
+          </RouteLoadGate>
         </MotionPolicyProvider>
         <script
           type="application/ld+json"

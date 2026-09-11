@@ -4,8 +4,12 @@ import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { prefersReducedMotion } from '@/lib/motion';
+import { useReducedMotion } from '@/lib/motion';
+import { criarConsultaDeMedia } from '@/lib/mediaStore';
 import type { BuildingModel, ExplorerApi } from './BuildingExplorer';
+
+/* SIS-182 — limiar da cena dirigida, no formato da casa. */
+const usePalcoLargo = criarConsultaDeMedia('(min-width: 1024px)');
 
 /**
  * Moldura do explorador 3D: seletor de modelo, cartao de local, rotulo vertical
@@ -46,7 +50,14 @@ const BuildingExplorer = dynamic(
 export default function BuildingShowcase() {
   const [modelo, setModelo] = useState<BuildingModel>('tower');
   const [visivel, setVisivel] = useState(false);
-  const [dirigindo, setDirigindo] = useState(false);
+  /* SIS-182 — as duas metades da decisão vêm de store, e não de efeito: a largura
+     de `usePalcoLargo`, o movimento de `useReducedMotion` (que já era
+     `useSyncExternalStore` em `motion.ts`). Antes, largura E preferência eram
+     lidas juntas dentro do efeito comentado abaixo — e a preferência, por leitura
+     síncrona, não reagia a quem trocasse a escolha na página. */
+  const palcoLargo = usePalcoLargo();
+  const rm = useReducedMotion();
+  const dirigindo = palcoLargo && !rm;
   const trilhaRef = useRef<HTMLDivElement>(null);
   const palcoRef = useRef<HTMLDivElement>(null);
   const explorerRef = useRef<ExplorerApi | null>(null);
@@ -75,6 +86,7 @@ export default function BuildingShowcase() {
      do navegador, e com preferencia por menos movimento nao ha coreografia
      alguma: nos dois casos o predio aparece completo e os botoes seguem sendo o
      caminho para girar. */
+  /* SIS-182 — substituído por `palcoLargo && !rm` acima.
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)');
     const avaliar = () => setDirigindo(mq.matches && !prefersReducedMotion());
@@ -82,6 +94,7 @@ export default function BuildingShowcase() {
     mq.addEventListener('change', avaliar);
     return () => mq.removeEventListener('change', avaliar);
   }, []);
+  */
 
   useEffect(() => {
     if (!dirigindo) return;

@@ -261,15 +261,68 @@ export default function Page() {
         foco="50% 42%"
         className="hero-backdrop--esg"
       >
+        {/* SIS-233 — O RECORTE DA FRASE MUDOU. Era:
+
+              title="A Sistran demonstra seu forte compromisso com o ESG, integrando"
+              highlight="práticas sustentáveis"
+              description={<p>em suas operações e cultura corporativa.</p>}
+
+            Ali a `description` era a SEGUNDA METADE do `h1` (SIS-138): a frase
+            atravessava os dois nós e o CSS a costurava de volta com corpo de
+            manchete, `white-space: nowrap` e alinhamento pelo pé. Lia como uma
+            manchete só, quebrada no meio — não como o par manchete + parágrafo de
+            apoio de `/contato`, que é o padrão que esta issue manda seguir.
+
+            O corte novo cai na fronteira de oração da própria frase institucional:
+            a manchete fica com a oração principal ("A Sistran demonstra seu forte
+            compromisso com o ESG") e a descrição com a oração reduzida que a
+            qualifica ("Integrando práticas sustentáveis..."). O `highlight` sai de
+            "práticas sustentáveis" e vai para "compromisso com o ESG" pelo mesmo
+            motivo que em `/contato` ele está em "fale com a gente!": o ciano marca
+            o fecho da manchete, não uma expressão no meio dela — e, como lá, a
+            pontuação de fecho ("." aqui, "!" em `/contato`) fica DENTRO do ciano,
+            senão sobraria um ponto branco solto depois do destaque.
+
+            AS DUAS ÚNICAS DIFERENÇAS DE LETRA em relação a
+            `.claude/conteudo-site/07-esg.md:11` são consequência obrigatória do
+            corte, e não reescrita de copy (trocar o texto pelo de `/contato` está
+            fora de escopo por escrito na issue): a vírgula que ligava as orações
+            virou o ponto que fecha a manchete, e o "i" de "integrando" virou
+            maiúsculo porque a descrição passou a ser oração própria. A sonda
+            `scripts/medir-abertura-esg-sis233.mjs` desfaz essas duas e compara o
+            resto caractere por caractere (`#fraseCompleta`), justamente para que
+            qualquer outra edição de texto aqui apareça como falha.
+
+            `copy-lock.json` foi regravado de propósito por causa disto. */}
         <PageHero
-          title="A Sistran demonstra seu forte compromisso com o ESG, integrando"
-          highlight="práticas sustentáveis"
-          description={<p>em suas operações e cultura corporativa.</p>}
+          title="A Sistran demonstra seu forte"
+          highlight="compromisso com o ESG."
+          description={<p>Integrando práticas sustentáveis em suas operações e cultura corporativa.</p>}
         />
       </HeroImageBackdrop>
 
       {/* ENVIRONMENT */}
-      <section aria-labelledby="esg-environment" className="section-py">
+      {/* SIS-208 — a seção ganha superfície própria. `esg-faixa-azul` é o azul
+          médio (mais fundo que o `#1273bc` do body, por contraste — a conta está
+          na regra, no globals.css) e a malha continua sendo a `.grade-tecnica` do
+          projeto, aplicada como em `/solucoes` e `/quem-somos`: nenhuma grade nova
+          foi escrita para esta página.
+
+          `relative` dá a caixa da malha; `isolate` é o que a mantém visível — ela
+          é `z-index: -1` e, sem contexto de empilhamento próprio, cairia atrás do
+          fundo da seção. Mesmo arranjo de SOCIAL.
+
+          `overflow-x-clip` é o conserto preventivo da rolagem lateral que a
+          SIS-184 já teve de fazer em SOCIAL: a pluma de cada cartão é uma camada
+          de `inset: -18px`, e nas duas pontas da grade ela projeta além do
+          `container-lp` e empurraria o `scrollWidth` do documento. `clip` e não
+          `hidden` porque `hidden` criaria um scrollport e quebraria `sticky` de
+          dentro; e só no eixo X, para a pluma seguir respirando acima e abaixo. */}
+      <section
+        aria-labelledby="esg-environment"
+        className="esg-faixa-azul section-py relative isolate overflow-x-clip"
+      >
+        <div aria-hidden className="grade-tecnica" />
         <div className="container-lp">
           {/* SIS-139 item 4 — o destaque do título é o `TituloAceso`, que já
               existe e já é o título de seção do projeto (seis instâncias em
@@ -304,98 +357,114 @@ export default function Page() {
             conscientização para que nossos colaboradores desenvolvam o hábito de um comportamento
             consciente.
           </p>
-          {/* SIS-139 — os cards passaram a ter foto, cor no hover e movimento
-              contínuo. O que saiu de cena:
-              | <li className="glass-card-hover p-6 text-sm leading-relaxed text-white/85">
-              |   {item}
-              | </li>
-              A grade não mudou (`md:grid-cols-2 lg:grid-cols-3`, seis itens, fecha
-              exata nas duas). O `p-6` virou `p-0` no cartão com o respiro no bloco
-              de texto, para a foto sangrar até a borda arredondada em vez de nascer
-              dentro de uma margem de 24px — mesmo arranjo já usado nos dois cards
-              de apoio da SOCIAL logo abaixo.
+          {/* SIS-139 pôs foto, cor no hover e movimento contínuo nestes cartões.
+              SIS-208 mudou a FORMA deles, e as duas decisões que ela desfez estão
+              registradas aqui porque desfazer decisão medida sem dizer por quê é o
+              que faz a próxima pessoa reabri-la.
 
-              QUEM SE MOVE É A FOTO, NÃO O CARTÃO (ponto 6 da issue): o texto de
-              cada card é frase inteira, de 39 a 66 caracteres, e mover o cartão
-              moveria o texto com ele. Mover só a camada de imagem dá o movimento
-              perpétuo pedido sem pôr a leitura em cima de um alvo oscilante — e
-              deixa o hover num alvo parado, porque a caixa que recebe o ponteiro
-              não é a que anima.
+              1. A FOTO NÃO SANGRA MAIS até a borda arredondada — ela virou um DISCO
+                 dentro do cartão (`.esg-cartao-retrato`), com o respiro de volta no
+                 cartão (`p-7`, em vez do `p-0` + `p-6` no parágrafo). O recorte
+                 redondo não custa arte nenhuma, e é exatamente a medição da SIS-139
+                 que garante isso: os seis arquivos têm a ilustração CIRCULAR com os
+                 cantos transparentes (`alphaMin=0` nos seis). O que a máscara
+                 descarta são esses cantos vazios.
+              2. QUEM SE MOVE AGORA É O CARTÃO, não a foto. A SIS-139 escolheu o
+                 contrário para não pôr a leitura em cima de um alvo oscilante, e o
+                 argumento continua de pé no tamanho em que ela o escreveu — a
+                 deriva da foto ia a `scale(1.06)`. O percurso daqui é de 7px (era 6px
+                 antes da SIS-237), meio caractere em corpo 16, e o cartão inteiro anda
+                 junto — o que dobrou na SIS-237 foi a VELOCIDADE, não o percurso: a
+                 legenda não
+                 se desloca EM RELAÇÃO à foto, que é o que atrapalhava. E a foto
+                 deixou de derivar por conta própria, então a página trocou uma
+                 camada animada por cartão, não somou uma segunda.
+                 (A regra `.esg-pratica-foto img` fica no globals.css, intacta —
+                 mas desde a SIS-210, que levou este mesmo padrão a GOVERNANCE, ela
+                 não tem mais usuário nenhum no JSX.)
 
-              A CAIXA É QUADRADA, e isso foi medido, não escolhido por gosto: os
-              seis arquivos têm canal alfa (`alphaMin=0` nos seis) porque a arte é
-              CIRCULAR, com os cantos transparentes. Numa caixa 4/3 o `object-cover`
-              cortava o círculo em cima e embaixo — a lixeira de coleta seletiva
-              aparecia com o arco decepado nas duas pontas e o fundo do cartão
-              vazando pelos cantos. Em 1:1 sobre arquivo 1:1 não há recorte nenhum, o
-              círculo fecha, e os cantos transparentes deixam o vidro do cartão
-              aparecer de propósito em vez de por acidente.
+              A GRADE NÃO MUDOU: `md:grid-cols-2 lg:grid-cols-3`, seis itens, fecha
+              exata nas duas — e a escrita dos seis também não, nem uma vírgula.
 
-              As alturas ficam iguais apesar de o texto ser desigual: a proporção da
-              foto é fixa, então o topo dos seis cartões alinha e só o bloco de texto
-              varia — e como a grade estica cada LINHA, os cartões de uma mesma linha
-              terminam na mesma base (medido: 365px nos seis a 1440, 326/349 por
-              linha a 1024). `h-auto` livre na imagem é o que produziria seis alturas
-              diferentes. */}
+              As alturas seguem iguais por linha, e pelo mesmo mecanismo de antes: o
+              disco tem proporção fixa, a grade estica cada LINHA e o `h-full` do
+              cartão ocupa a altura que a linha reservou. Só o bloco de texto
+              varia. */}
           <ul className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {ENVIRONMENT.map((item, i) => (
+              /* O `<li>` deixou de ser o cartão e passou a ser o WRAPPER, e a razão
+                 é de cascata, não de gosto: a pluma é um pseudo-elemento de `inset`
+                 negativo (o `.glass-card` tem `overflow: hidden` e a recortaria em
+                 nada) e a flutuação é uma animação de `transform` (que venceria o
+                 `translateY` do hover no mesmo nó, e o levantamento desapareceria sem
+                 erro nenhum). As duas notas completas estão no bloco SIS-208 do
+                 globals.css; o levantamento em si passou a ser o -12px de
+                 `.esg-superficie:hover` na SIS-237.
+
+                 `--esg-fase-cartao` é a terceira fase da página e tem nome próprio
+                 pela razão que a SIS-209 registrou: `--esg-fase` casa com o ciclo de
+                 7s da pluma de SOCIAL e `--esg-fase-onda` com os 5s da flutuação de
+                 lá. O valor é negativo para cada cartão nascer no meio do ciclo em
+                 vez de esperar parado a sua vez.
+
+                 SIS-237 — O PASSO CAIU DE 0,9s PARA 0,6s, e não é ajuste de gosto: a
+                 travessia da animação passou de 6s para 3s, então o ciclo completo
+                 (ida e volta, `alternate`) continua em 6s e os 0,9s de antes viraram
+                 uma fatia diferente dele. Os seis seguem em pontos distintos do
+                 ciclo (0 a 3,0s de 6s) e nenhum alinha com outro.
+                 O passo tem TETO, e ele é geométrico: em `lg:grid-cols-3` o vizinho
+                 de cima de cada cartão é o de índice i−3, e a diferença de fase
+                 entre os dois é 3 × passo. Quanto maior o passo, mais perto da
+                 oposição os dois ficam e mais o vão de 16px (`gap-4`) se fecha —
+                 com passo de 0,9s no ciclo novo os dois se sobreporiam. Com 0,6s a
+                 folga medida entre vizinhos não desce de ~4,7px
+                 (`docs/medidas/sis237/resultado-depois.json`).
+
+                 O passo é escrito em MILISSEGUNDOS INTEIROS porque `i * 0.6` em
+                 ponto flutuante põe `-1.7999999999999998s` no atributo `style` do
+                 HTML servido (conferido no `next dev`). O CSS aceita, mas o valor
+                 vaza na página; `i * 600` com unidade `ms` é o mesmo tempo exato. */
               <li
                 key={item.text}
-                /* `esg-pratica` carrega a cor de hover e a pausa do movimento;
-                   `glass-card-hover` continua sendo o hover desta página (ponto 7
-                   da issue: acrescentar cor, não trocar de sistema). */
-                className="esg-pratica esg-superficie glass-card-hover overflow-hidden p-0"
-                /* Compasso defasado por posição: seis fotos no mesmo tempo leem
-                   como a página inteira balançando; defasadas leem como seis
-                   objetos. Negativo para já nascer no meio do ciclo, em vez de
-                   esperar parada até a sua vez. */
-                style={{ ['--esg-fase' as string]: `-${i * 1.7}s` }}
+                className="esg-cartao-pluma esg-cartao-flutua"
+                style={{ ['--esg-fase-cartao' as string]: `-${i * 600}ms` }}
               >
-                <div className="esg-pratica-foto relative aspect-square w-full overflow-hidden">
-                  {/* `sizes` casado com a caixa MEDIDA, não com a conta de cabeça.
-                      Uma coluna abaixo de 768, metade entre 768 e 1024, e acima
-                      disso `min(31vw, 359px)`.
+                {/* `esg-superficie` é a superfície corrigida da SIS-139 (é ela que
+                    carrega também a cor do hover, compartilhada com GOVERNANCE) e
+                    `glass-card-hover` continua sendo o hover desta página — nenhum
+                    dos dois sistemas foi trocado. `h-full` para o cartão preencher a
+                    altura que a linha da grade reservou. */}
+                <div className="esg-superficie glass-card-hover flex h-full flex-col items-center gap-6 p-7 text-center">
+                  <div className="esg-cartao-retrato">
+                    {/* `sizes` casado com o TETO da nova caixa: o disco é
+                        `clamp(9rem, 44%, 11rem)`, então 176px é o maior que ele
+                        chega a medir e o valor nunca subestima a caixa (subestimar é
+                        o lado ruim — o navegador serviria candidato menor e a
+                        ilustração sairia borrada). Os 359px de antes eram a medida
+                        da foto sangrada, que não existe mais.
 
-                      Os 359px vêm de medição no navegador, e o caminho até eles
-                      corrige DOIS erros. O valor anterior era 356px, que é o que
-                      sairia de `gap-6`; a grade é `gap-4`, então a trilha mede
-                      (1116 − 2×16) / 3 = 361,33px. Mas a caixa da foto não é a
-                      trilha: o cartão tem 1px de borda de cada lado, e o que a
-                      imagem realmente ocupa são **359,33px** — conferido a 1440 e
-                      a 1920 (`getBoundingClientRect` de `.esg-pratica-foto`).
-                      Ou seja, 356 errava para BAIXO, que é o lado ruim: o navegador
-                      pode servir candidato menor que a caixa e a foto sai borrada.
-
-                      É `min()` e não um px fixo porque entre 1024 e ~1244 o
-                      `container-lp` ainda é fluido e a caixa é menor — medida a
-                      1024 ela dá 307,33px, e 31vw ali vale 317px, que cobre sem
-                      subestimar. Acima do teto do container o `min` trava nos 359.
-
-                      RESSALVA QUE MUDA O PESO DISTO: hoje este `sizes` não faz
-                      efeito nenhum. O `next.config.mjs` tem `images: { unoptimized:
-                      true }` no projeto inteiro, e com isso o `next/image` não emite
-                      `srcset` — conferido no DOM: `getAttribute('srcset')` vazio e
-                      `sizes` sequer presente, `currentSrc` é o arquivo cru. Ou seja
-                      não há candidato para o navegador escolher, e o ganho de bytes
-                      desta issue veio TODO da conversão para WebP, não daqui.
-                      O valor fica correto porque no dia em que `unoptimized` sair
-                      ele passa a valer de imediato, e um 356 errado só apareceria
-                      como foto borrada muito depois de quem o escreveu ter saído.
-                      Mas ninguém deve ler este bloco como otimização ativa. */}
-                  <Image
-                    src={item.src}
-                    alt={item.alt}
-                    width={595}
-                    height={595}
-                    sizes="(max-width: 767px) 92vw, (max-width: 1023px) 46vw, min(31vw, 359px)"
-                    className="h-full w-full object-cover"
-                  />
+                        A RESSALVA DA SIS-139 SEGUE VALENDO E É O QUE PESA AQUI: com
+                        `images: { unoptimized: true }` no `next.config.mjs` o
+                        `next/image` não emite `srcset`, então este `sizes` hoje não
+                        produz efeito nenhum. Ele fica correto para o dia em que
+                        `unoptimized` sair — e ninguém deve ler esta linha como
+                        otimização ativa. */}
+                    <Image
+                      src={item.src}
+                      alt={item.alt}
+                      width={595}
+                      height={595}
+                      sizes="176px"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  {/* A legenda: mesma escala da SIS-141 (`text-base`, 16px, o degrau
+                      que igualou estes cartões ao corpo da página) e mesma tinta
+                      (`text-white/85`). O respiro saiu do parágrafo e foi para o
+                      cartão, porque agora o cartão tem padding; centralizada porque
+                      é legenda de um disco centralizado, não parágrafo corrido. */}
+                  <p className="text-base leading-relaxed text-white/85">{item.text}</p>
                 </div>
-                {/* SIS-141 — `text-sm` (14px) → `text-base` (16px), o mesmo degrau
-                    aplicado à descrição dos cartões de GOVERNANCE. Os 14px eram
-                    menores que o corpo do resto da página; e como as duas seções
-                    são gêmeas, a escala do cartão sobe nas duas ou em nenhuma. */}
-                <p className="p-6 text-base leading-relaxed text-white/85">{item.text}</p>
               </li>
             ))}
           </ul>
@@ -411,7 +480,25 @@ export default function Page() {
            do próprio pai e ABAIXO de todo o conteúdo em fluxo, mas sem contexto de
            empilhamento próprio ele afundaria atrás do fundo da seção e sumiria.
            Mesmo arranjo do `.esg-apoio`. */
-        className="section-py section-light section-light-blue relative isolate"
+        /* SIS-184 — o `overflow-x-clip` é o conserto da rolagem lateral da página.
+           A causa medida: `.esg-apoio::before` (a pluma da SIS-114) é uma camada de
+           `inset: -24px` que ainda ANIMA `scale` até 1,02, e todos os wrappers desta
+           seção a carregam — as três turmas e os dois cartões apoiados. Os cartões
+           terminam rentes à borda do `.container-lp` (a 390: x=373; a 768: x=747),
+           então a pluma projeta ~24px além e empurrava o `scrollWidth` do documento
+           para 398 (390) e 771 (768). Nada de conteúdo saía da janela — só a
+           decoração, e mesmo assim a página inteira ganhava barra lateral.
+           O clip mora AQUI, na seção, e não no `.esg-apoio`: o wrapper é justamente
+           o nó que não recorta (é por isso que ele existe — o `<article>` tem
+           `overflow: hidden` e comeria a pluma), então recortá-lo mataria a arte nos
+           quatro lados. Na seção, a caixa tem a largura da janela: o que se perde é
+           só o pedaço da pluma que já estava fora da tela.
+           `clip`, e não `hidden`: `hidden` criaria um scrollport e quebraria
+           `position: sticky` de dentro (mesma razão escrita no `body`, globals.css).
+           E só no eixo X: `overflow-y` segue `visible`, então a pluma continua
+           respirando 24px acima e abaixo dos cartões. Nada global em html/body/main —
+           o defeito é desta seção. */
+        className="section-py section-light section-light-blue relative isolate overflow-x-clip"
       >
         <FogueteScroll />
         <div className="container-lp">
@@ -519,7 +606,7 @@ export default function Page() {
               deixariam um buraco de um terço da largura. Os dois têm a MESMA
               forma (foto no topo cobrindo a largura, texto e link abaixo), porque
               são pares: dois apoios a fundações externas. */}
-          <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="mt-14 grid grid-cols-1 items-stretch gap-6 md:grid-cols-2">
             {SOCIAL.map((p, i) => (
               /* SIS-114 — o wrapper existe SÓ para carregar a sombra que respira
                  (`.esg-apoio::before`, no globals.css). Ela não pode morar no
@@ -530,23 +617,41 @@ export default function Page() {
                  vir do índice, porque a mesma camada agora serve também as três
                  turmas, onde "o segundo" não quer dizer a mesma coisa. `-3.5s` é
                  metade do ciclo de 7s: o mesmo valor de antes, escrito onde se
-                 sabe quantos cartões existem. */
+                 sabe quantos cartões existem.
+
+                 SIS-209 — `esg-social-flutua` é exclusiva destes dois wrappers:
+                 animar `.esg-apoio` atingiria também o selo e as três turmas. A
+                 flutuação fica no wrapper, nunca no `<article>`, porque a escala
+                 da SIS-140 transforma o filho direto e uma animação no mesmo nó
+                 venceria o hover na cascata. `h-full`, junto do card e do corpo
+                 flexíveis, faz os dois pares ocuparem toda a linha do grid sem
+                 alterar os 208px já reservados para cada foto.
+
+                 DUAS FASES, e não uma repetida: `--esg-fase` é metade do ciclo de
+                 7s da pluma e serve TAMBÉM as três turmas (ciclo de 11s), então
+                 reescrevê-la para a flutuação estragaria a defasagem dos outros
+                 cinco wrappers. A flutuação tem ciclo de 5s e por isso ganha
+                 `--esg-fase-onda`, metade DELE — é o que mantém os dois cartões em
+                 oposição em vez de a 0,7 do ciclo. */
               <div
                 key={p.name}
-                className="esg-apoio"
-                style={{ ['--esg-fase' as string]: `-${i * 3.5}s` }}
+                className="esg-apoio esg-social-flutua h-full"
+                style={{
+                  ['--esg-fase' as string]: `-${i * 3.5}s`,
+                  ['--esg-fase-onda' as string]: `-${i * 2.5}s`,
+                }}
               >
               {/* `p-0` no cartão e o respiro no bloco de texto: é o que deixa a
                  foto sangrar até a borda arredondada em vez de nascer dentro de
                  uma margem branca de 28px. */}
-              <article className="glass-card relative overflow-hidden p-0">
+              <article className="glass-card relative flex h-full flex-col overflow-hidden p-0">
                 <Image
                   src={p.image.src}
                   alt={p.image.alt}
                   width={1247}
                   height={832}
                   sizes="(max-width: 767px) 92vw, (max-width: 1279px) 46vw, 560px"
-                  className="h-52 w-full object-cover"
+                  className="h-52 w-full shrink-0 object-cover"
                 />
                 {/* O `corner-accent` desceu para o bloco de texto, e não segue no
                     canto do cartão: ali ele cairia EM CIMA da foto, e dois traços
@@ -554,7 +659,7 @@ export default function Page() {
                     leem como artefato. Aqui ele volta a ter a superfície de vidro
                     atrás, que é o que ele foi feito para marcar. O `relative` é
                     dele; sem isso ele se ancoraria no `<article>`. */}
-                <div className="relative p-7">
+                <div className="relative flex-1 p-7">
                   <span aria-hidden className="corner-accent" />
                   {/* SIS-140 item 5 — a fonte maior nos dois cartões apoiados.
                       `text-sm` (14px) era menor que o corpo do resto da página e
@@ -595,7 +700,21 @@ export default function Page() {
       </section>
 
       {/* GOVERNANCE */}
-      <section aria-labelledby="esg-governance" className="section-py">
+      {/* SIS-210 — a seção recebe a MESMA faixa da SIS-208, pelas mesmas três
+          razões escritas no par de ENVIRONMENT: `esg-faixa-azul` é a superfície
+          azul média que faz o lead de 20px em `text-white/85` passar do piso de
+          4,5:1 (sobre o azul do body ele dava 4,09); `relative isolate` são o que
+          põem a `.grade-tecnica` (que é `z-index: -1`) acima do fundo da seção em
+          vez de atrás dele; e `overflow-x-clip` é o conserto preventivo da rolagem
+          lateral, porque a pluma de cada cartão é uma camada de `inset: -18px` que
+          nas pontas da grade projeta além do `container-lp`. `clip` e não `hidden`
+          para não criar scrollport, e só no eixo X para a pluma seguir respirando
+          acima e abaixo. Nada disso é escrita nova: são as mesmas classes. */}
+      <section
+        aria-labelledby="esg-governance"
+        className="esg-faixa-azul section-py relative isolate overflow-x-clip"
+      >
+        <div aria-hidden className="grade-tecnica" />
         <div className="container-lp">
           {/* SIS-139 item 10 / SIS-141 item 8 — terceira e última instância do
               destaque na página. As duas seções escuras são gêmeas e recebem o
@@ -628,98 +747,109 @@ export default function Page() {
               link, e-mail ou telefone. Assim que o canal oficial existir, ele
               precisa ser publicado aqui. (Segue aberto: a SIS-141 acrescentou a
               ilustração do item, não o canal.) */}
-          {/* SIS-141 — os cartões passaram a ter foto, e a grade não mudou
-              (`md:grid-cols-2 lg:grid-cols-3`, seis itens, fecha exata nas duas).
-              O que saiu de cena:
-              | <div key={g.term} className="esg-superficie glass-card-hover p-6">
-              |   <dt className="font-display text-base text-white">{g.term}</dt>
-              |   <dd className="mt-2 text-sm leading-relaxed text-white/85">{g.detail}</dd>
-              | </div>
-              O `p-6` virou `p-0` no cartão com o respiro no bloco de texto, para a
-              foto sangrar até a borda arredondada em vez de nascer dentro de uma
-              margem de 24px — mesmo arranjo de ENVIRONMENT e dos cards da SOCIAL.
+          {/* SIS-210 — os seis cartões passam a usar o desenho da SIS-208, e a troca
+              é de CLASSES QUE JÁ EXISTEM, não de CSS novo: `esg-cartao-pluma` +
+              `esg-cartao-flutua` no wrapper, `esg-superficie glass-card-hover` no
+              cartão, `esg-cartao-retrato` no disco. O bloco da SIS-208 no globals.css
+              foi escrito sem "environment" em nenhum nome exatamente para esta hora.
 
-              A MARCAÇÃO É A MESMA (ponto 4 da issue): a `<dl>` fica, e a imagem
-              entra DENTRO do `<dt>`, não solta no wrapper. Duas razões. A primeira
-              é de validade: o modelo de conteúdo de um `<div>` filho de `<dl>` é
-              "um ou mais `dt` seguidos de um ou mais `dd`" — uma `<figure>` ou um
-              `<div>` de foto ali seria marcação inválida, mesmo que o navegador
-              engula. Já o `<dt>` aceita conteúdo de fluxo, e `<img>` é conteúdo de
-              fluxo. A segunda é de sentido: a foto ILUSTRA O TERMO, então ela
-              pertence ao termo. A associação `dt`→`dd` dentro do mesmo grupo
-              continua intacta, que é o que o critério de aceite cobra.
+              O QUE SAIU DE CENA (o desenho da SIS-141):
+              | <div className="esg-pratica esg-superficie glass-card-hover overflow-hidden p-0">
+              |   <dt><div className="esg-pratica-foto aspect-square">…</div>…</dt>
+              A foto quadrada sangrada até a borda vira disco dentro do cartão, e a
+              deriva de `--esg-fase` DENTRO da foto vira a flutuação do cartão
+              inteiro. `.esg-pratica` e `.esg-pratica-foto img` continuam no
+              globals.css e a partir daqui não têm mais nenhum usuário; removê-las é
+              decisão própria, não desta issue — a nota de lá foi corrigida para não
+              seguir afirmando que GOVERNANCE as usa.
 
-              QUEM SE MOVE É A FOTO, NÃO O CARTÃO — `esg-pratica` + `esg-pratica-foto`
-              são as MESMAS classes de ENVIRONMENT (ponto 6 e critério "mesma classe,
-              não uma cópia"): nada de CSS novo entrou por esta issue. Aqui a razão
-              de não mover o cartão é ainda mais forte que lá: cada cartão tem termo
-              E descrição, e mover a caixa moveria os dois blocos de leitura.
+              POR QUE WRAPPER E CARTÃO SÃO DOIS NÓS: é o contrato da SIS-208 e a razão
+              é de cascata. `.glass-card` tem `overflow: hidden` e recortaria em nada
+              a pluma, que é um `::before` de `inset: -18px`; `.glass-card-hover:hover`
+              transforma o cartão, e uma animação no MESMO nó apagaria o levantamento
+              do hover sem erro nenhum; e os dois pseudo-elementos do `.glass-card` já
+              estão ocupados pela borda em gradiente e pelo brilho do hover.
 
-              A CAIXA É QUADRADA pelo mesmo motivo medido em ENVIRONMENT: os seis
-              arquivos têm a arte CIRCULAR com os cantos transparentes. Em 1:1 sobre
-              arquivo 1:1 o círculo fecha sem recorte, e os cantos deixam o vidro do
-              cartão aparecer de propósito.
+              E POR QUE A `<dl>` VIROU SEIS, uma por cartão, dentro de uma `<ul>`: o
+              modelo de conteúdo não deixa outra saída VÁLIDA. Um `<div>` filho de
+              `<dl>` só pode conter `dt` seguido de `dd` — wrapper intermediário
+              nenhum —, e `dt`/`dd` só valem como filhos de `<dl>` ou desse `<div>`.
+              Como o desenho exige dois nós por cartão, um deles teria de ser um
+              `<div>` dentro do outro, e aí `dt`/`dd` cairiam num `<div>` comum:
+              marcação inválida, que é justamente o que o critério proíbe. Com uma
+              `<dl>` por cartão a associação termo↔definição fica mais estreita, não
+              mais frouxa (um par por lista, sem ordem para desambiguar), e a `<ul>`
+              devolve o que a `<dl>` única dava e sozinhas se perderia: o CONJUNTO de
+              seis. É, de quebra, a mesma marcação de ENVIRONMENT.
 
-              O `prefers-reduced-motion: reduce` não precisou de nada novo: a regra
-              que para a deriva já mira `.esg-pratica-foto img` e agora alcança doze
-              cartões em vez de seis (ponto 7). O estado final é a foto parada e
-              inteiramente legível, porque a animação é de `transform`, não de
-              `opacity`. */}
-          <dl className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              A grade não mudou (`md:grid-cols-2 lg:grid-cols-3`, seis itens, fecha
+              exata nas duas) e a escrita dos seis não mudou nem uma vírgula. */}
+          <ul className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {GOVERNANCE.map((g, i) => (
-              /* SIS-139 — `esg-superficie` já tinha entrado aqui antes da imagem,
-                 porque não tem nada a ver com foto: a `<dd>` destes cartões é
-                 `text-white/85` sobre a mesma superfície de vidro que o azul claro
-                 da seção atravessava, e media 3,54:1 contra o piso de 4,5:1. */
-              <div
+              <li
                 key={g.term}
-                className="esg-pratica esg-superficie glass-card-hover overflow-hidden p-0"
-                /* Compasso defasado por posição, como em ENVIRONMENT — seis fotos
-                   no mesmo tempo leem como a seção inteira balançando. O passo é
-                   1,3s e não os 1,7s de lá DE PROPÓSITO: 1,7 × 6 = 10,2s num ciclo
-                   de 9s, então as duas seções cairiam quase em fase entre si; com
-                   1,3s as doze fotos da página nunca alinham. */
-                style={{ ['--esg-fase' as string]: `-${i * 1.3}s` }}
+                className="esg-cartao-pluma esg-cartao-flutua"
+                /* Fase própria por posição, como em ENVIRONMENT. O passo é 0,45s e não
+                   os 0,6s de lá pela razão que a SIS-141 já tinha registrado para a
+                   deriva: passo igual sobre período igual poria o cartão de mesma
+                   posição das duas seções no mesmo quadro. Com 0,45s os seis nascem em
+                   pontos distintos do ciclo de 6s (0 a 2,25s) e nunca alinham — nem
+                   entre si, nem com os de lá. O valor é negativo para cada cartão
+                   nascer no meio do ciclo em vez de esperar parado a sua vez.
+
+                   SIS-237 — era 1,1s enquanto a travessia durava 6s. Com a travessia
+                   em 3s o ciclo completo segue em 6s, e o passo foi reescrito nas duas
+                   seções pelo mesmo teto geométrico: em `lg:grid-cols-3` a diferença
+                   de fase com o vizinho de cima é 3 × passo, e passo grande demais põe
+                   os dois em oposição e fecha o vão de 16px da grade. Escrito em
+                   milissegundos inteiros pela mesma razão de ENVIRONMENT: o produto em
+                   ponto flutuante vaza dízima no atributo `style` do HTML servido. */
+                style={{ ['--esg-fase-cartao' as string]: `-${i * 450}ms` }}
               >
-                {/* A foto vive no `<dt>` (ver o bloco acima), com o termo logo
-                    abaixo dela. `font-normal` no wrapper para o `<dt>` não impor
-                    peso à `<figure>`; o peso volta no `<span>` do termo. */}
-                <dt className="font-normal">
-                  <div className="esg-pratica-foto relative aspect-square w-full overflow-hidden">
-                    {/* `sizes` idêntico ao de ENVIRONMENT porque a caixa é a MESMA
-                        — mesma grade, mesmo `gap-4`, mesmo `container-lp`, mesma
-                        borda de 1px: 359,33px medidos a 1440 e a 1920. Vale aqui a
-                        mesma ressalva registrada lá: com `images: { unoptimized:
-                        true }` no `next.config.mjs` o `next/image` não emite
-                        `srcset`, então este `sizes` hoje não faz efeito nenhum e o
-                        ganho de bytes veio TODO da conversão para WebP. O valor
-                        fica correto para o dia em que `unoptimized` sair. */}
-                    <Image
-                      src={g.src}
-                      alt={g.alt}
-                      width={595}
-                      height={595}
-                      sizes="(max-width: 767px) 92vw, (max-width: 1023px) 46vw, min(31vw, 359px)"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  {/* SIS-141 — o termo sobe de `text-base` (16px) para `text-lg`
-                      (18px) e a descrição de `text-sm` (14px) para `text-base`
-                      (16px). Os 14px eram menores que o corpo do resto da página e
-                      faziam estes cartões lerem como nota de pé. O degrau de 2px
-                      entre termo e descrição é mantido: subir só a descrição
-                      achataria a hierarquia do cartão.
-                      `px-6 pt-6` no termo e `px-6 pb-6` na descrição, em vez de
-                      `p-6` num wrapper: o wrapper teria de ficar entre a `<dl>` e o
-                      par `dt`/`dd`, que é exatamente o que quebraria a associação. */}
-                  <span className="block px-6 pt-6 font-display text-lg text-white">{g.term}</span>
-                </dt>
-                <dd className="mt-2 px-6 pb-6 text-base leading-relaxed text-white/85">
-                  {g.detail}
-                </dd>
-              </div>
+                {/* `esg-superficie` é a superfície corrigida da SIS-139 — é ela que
+                    tira a `<dd>` em `text-white/85` dos 3,54:1 medidos lá — e
+                    `glass-card-hover` continua sendo o hover desta página. `h-full`
+                    para o cartão ocupar a altura que a linha da grade reservou. O
+                    `gap-2` é o degrau curto entre termo e descrição, que era o `mt-2`
+                    de antes; o respiro maior mora dentro do `<dt>`. */}
+                <dl className="esg-superficie glass-card-hover flex h-full flex-col items-center gap-2 p-7 text-center">
+                  {/* `w-full` no `<dt>` não é enfeite: o disco mede
+                      `clamp(9rem, 44%, 11rem)` e a porcentagem resolve contra o pai —
+                      num item de coluna flex com `items-center` o `<dt>` encolheria ao
+                      conteúdo e os 44% ficariam circulares. `gap-6` é o mesmo respiro
+                      entre disco e legenda de ENVIRONMENT. `font-normal` fica pela
+                      razão de sempre: o peso do termo vem do `<span>`. */}
+                  <dt className="flex w-full flex-col items-center gap-6 font-normal">
+                    <div className="esg-cartao-retrato">
+                      {/* `sizes` casado com o TETO da nova caixa: o disco é
+                          `clamp(9rem, 44%, 11rem)`, então 176px é o maior que ele
+                          chega a medir. Os 359px de antes eram a medida da foto
+                          sangrada, que não existe mais. Segue valendo a ressalva das
+                          duas seções: com `images: { unoptimized: true }` no
+                          `next.config.mjs` o `next/image` não emite `srcset`, então
+                          este `sizes` hoje não produz efeito nenhum — ele fica correto
+                          para o dia em que `unoptimized` sair. */}
+                      <Image
+                        src={g.src}
+                        alt={g.alt}
+                        width={595}
+                        height={595}
+                        sizes="176px"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    {/* SIS-141 — termo em `text-lg` (18px) e descrição em `text-base`
+                        (16px), com o degrau de 2px entre os dois: as duas escalas
+                        ficam onde estavam. O que saiu foram os `px-6 pt-6`/`px-6 pb-6`,
+                        que existiam para dar respiro num cartão de `p-0`; agora o
+                        respiro é o `p-7` do cartão, como em ENVIRONMENT. */}
+                    <span className="font-display text-lg text-white">{g.term}</span>
+                  </dt>
+                  <dd className="text-base leading-relaxed text-white/85">{g.detail}</dd>
+                </dl>
+              </li>
             ))}
-          </dl>
+          </ul>
         </div>
       </section>
 

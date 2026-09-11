@@ -1,0 +1,325 @@
+{
+  "baseURL": "http://localhost:3999",
+  "alcanceDaSombra": 72,
+  "capturas": [
+    "docs\\medidas\\sis236\\antes-emenda-1440.png",
+    "docs\\medidas\\sis236\\antes-capa-1440.png",
+    "docs\\medidas\\sis236\\depois-emenda-1440.png",
+    "docs\\medidas\\sis236\\depois-capa-1440.png",
+    "docs\\medidas\\sis236\\antes-emenda-390.png",
+    "docs\\medidas\\sis236\\antes-capa-390.png",
+    "docs\\medidas\\sis236\\depois-emenda-390.png",
+    "docs\\medidas\\sis236\\depois-capa-390.png"
+  ],
+  "falhas": [],
+  "medidas": {
+    "390": {
+      "antes": {
+        "margemParceiros": "56px",
+        "heroBase": 571,
+        "parceirosTopo": 627,
+        "vao": 56,
+        "peDaEscrita": 507,
+        "folgaAteASombra": 48,
+        "tarjaNaJunta": {
+          "inicio": 571,
+          "de": "#1a7cc1",
+          "fim": 626,
+          "ate": "#4e9dd3",
+          "altura": 56
+        },
+        "outrasEmendas": {
+          "implementacoesTopo": {
+            "y": 1585,
+            "tarja": {
+              "inicio": 1585,
+              "de": "#3e84b6",
+              "fim": 1705,
+              "ate": "#0061a1",
+              "altura": 121
+            }
+          },
+          "faixaLogosTopo": {
+            "y": 1772,
+            "tarja": {
+              "inicio": 1652,
+              "de": "#0261a2",
+              "fim": 1754,
+              "ate": "#005d9d",
+              "altura": 103
+            }
+          },
+          "linhaDoTempoTopo": {
+            "y": 1856,
+            "tarja": {
+              "inicio": 1736,
+              "de": "#005f9f",
+              "fim": 1754,
+              "ate": "#005d9d",
+              "altura": 19
+            }
+          }
+        },
+        "contraste": {
+          "eyebrow": {
+            "minimo": 4.5,
+            "pixelsDeMiolo": 531,
+            "miolo": 6.11,
+            "franja": 6.12
+          },
+          "titulo branco": {
+            "minimo": 3,
+            "pixelsDeMiolo": 4180,
+            "miolo": 7.28,
+            "franja": 7.19
+          },
+          "destaque ciano": {
+            "minimo": 3,
+            "pixelsDeMiolo": 2590,
+            "miolo": 5.72,
+            "franja": 5.65
+          },
+          "descricao p1": {
+            "minimo": 4.5,
+            "pixelsDeMiolo": 3270,
+            "miolo": 6.16,
+            "franja": 6.2
+          },
+          "descricao p2": {
+            "minimo": 4.5,
+            "pixelsDeMiolo": 1887,
+            "miolo": 8.81,
+            "franja": 7.83
+          }
+        }
+      },
+      "depois": {
+        "margemParceiros": "0px",
+        "heroBase": 571,
+        "parceirosTopo": 571,
+        "vao": 0,
+        "peDaEscrita": 507,
+        "folgaAteASombra": -8,
+        "tarjaNaJunta": {
+          "altura": 0
+        },
+        "outrasEmendas": {
+          "implementacoesTopo": {
+            "y": 1529,
+            "tarja": {
+              "inicio": 1529,
+              "de": "#3e84b6",
+              "fim": 1649,
+              "ate": "#0061a1",
+              "altura": 121
+            }
+          },
+          "faixaLogosTopo": {
+            "y": 1716,
+            "tarja": {
+              "inicio": 1596,
+              "de": "#0261a2",
+              "fim": 1698,
+              "ate": "#005d9d",
+              "altura": 103
+            }
+          },
+          "linhaDoTempoTopo": {
+            "y": 1800,
+            "tarja": {
+              "inicio": 1680,
+              "de": "#005f9f",
+              "fim": 1698,
+              "ate": "#005d9d",
+              "altura": 19
+            }
+          }
+        },
+        "contraste": {
+          "eyebrow": {
+            "minimo": 4.5,
+            "pixelsDeMiolo": 531,
+            "miolo": 6.11,
+            "franja": 6.12
+          },
+          "titulo branco": {
+            "minimo": 3,
+            "pixelsDeMiolo": 4180,
+            "miolo": 7.28,
+            "franja": 7.19
+          },
+          "destaque ciano": {
+            "minimo": 3,
+            "pixelsDeMiolo": 2590,
+            "miolo": 5.72,
+            "franja": 5.65
+          },
+          "descricao p1": {
+            "minimo": 4.5,
+            "pixelsDeMiolo": 3270,
+            "miolo": 6.16,
+            "franja": 6.2
+          },
+          "descricao p2": {
+            "minimo": 4.5,
+            "pixelsDeMiolo": 1882,
+            "miolo": 8.81,
+            "franja": 7.83
+          }
+        }
+      },
+      "sombraAlcancaACaixaDaEscrita": true,
+      "dividaHerdada": []
+    },
+    "1440": {
+      "antes": {
+        "margemParceiros": "56px",
+        "heroBase": 666,
+        "parceirosTopo": 722,
+        "vao": 56,
+        "peDaEscrita": 570,
+        "folgaAteASombra": 80,
+        "tarjaNaJunta": {
+          "inicio": 666,
+          "de": "#1a7dc2",
+          "fim": 721,
+          "ate": "#4e9dd3",
+          "altura": 56
+        },
+        "outrasEmendas": {
+          "implementacoesTopo": {
+            "y": 16893,
+            "tarja": {
+              "inicio": 16893,
+              "de": "#3e88ba",
+              "fim": 17013,
+              "ate": "#0062a3",
+              "altura": 121
+            }
+          },
+          "faixaLogosTopo": {
+            "y": 17119,
+            "tarja": {
+              "inicio": 16999,
+              "de": "#0062a4",
+              "fim": 17095,
+              "ate": "#4b90be",
+              "altura": 97
+            }
+          },
+          "linhaDoTempoTopo": {
+            "y": 17239,
+            "tarja": {
+              "altura": 0
+            }
+          }
+        },
+        "contraste": {
+          "eyebrow": {
+            "minimo": 4.5,
+            "pixelsDeMiolo": 546,
+            "miolo": 10.73,
+            "franja": 10.72
+          },
+          "titulo branco": {
+            "minimo": 3,
+            "pixelsDeMiolo": 12536,
+            "miolo": 13.11,
+            "franja": 13.11
+          },
+          "destaque ciano": {
+            "minimo": 3,
+            "pixelsDeMiolo": 7837,
+            "miolo": 10.45,
+            "franja": 10.47
+          },
+          "descricao p1": {
+            "minimo": 4.5,
+            "pixelsDeMiolo": 3511,
+            "miolo": 6.8,
+            "franja": 6.46
+          },
+          "descricao p2": {
+            "minimo": 4.5,
+            "pixelsDeMiolo": 1958,
+            "miolo": 6.14,
+            "franja": 5.93
+          }
+        }
+      },
+      "depois": {
+        "margemParceiros": "0px",
+        "heroBase": 666,
+        "parceirosTopo": 666,
+        "vao": 0,
+        "peDaEscrita": 570,
+        "folgaAteASombra": 24,
+        "tarjaNaJunta": {
+          "altura": 0
+        },
+        "outrasEmendas": {
+          "implementacoesTopo": {
+            "y": 16837,
+            "tarja": {
+              "inicio": 16837,
+              "de": "#3e88ba",
+              "fim": 16957,
+              "ate": "#0062a3",
+              "altura": 121
+            }
+          },
+          "faixaLogosTopo": {
+            "y": 17063,
+            "tarja": {
+              "inicio": 16943,
+              "de": "#0062a4",
+              "fim": 17039,
+              "ate": "#4b90be",
+              "altura": 97
+            }
+          },
+          "linhaDoTempoTopo": {
+            "y": 17183,
+            "tarja": {
+              "altura": 0
+            }
+          }
+        },
+        "contraste": {
+          "eyebrow": {
+            "minimo": 4.5,
+            "pixelsDeMiolo": 546,
+            "miolo": 10.73,
+            "franja": 10.72
+          },
+          "titulo branco": {
+            "minimo": 3,
+            "pixelsDeMiolo": 12536,
+            "miolo": 13.11,
+            "franja": 13.11
+          },
+          "destaque ciano": {
+            "minimo": 3,
+            "pixelsDeMiolo": 7837,
+            "miolo": 10.45,
+            "franja": 10.47
+          },
+          "descricao p1": {
+            "minimo": 4.5,
+            "pixelsDeMiolo": 3511,
+            "miolo": 6.8,
+            "franja": 6.46
+          },
+          "descricao p2": {
+            "minimo": 4.5,
+            "pixelsDeMiolo": 1958,
+            "miolo": 6.14,
+            "franja": 5.93
+          }
+        }
+      },
+      "sombraAlcancaACaixaDaEscrita": false,
+      "dividaHerdada": []
+    }
+  }
+}

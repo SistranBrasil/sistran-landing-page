@@ -1,0 +1,523 @@
+{
+  "rotulo": "antes",
+  "quando": "2026-09-11T15:50:54.795Z",
+  "url": "http://localhost:3999/esg",
+  "viewport": "1440x900",
+  "motionGlobal": {
+    "dataMotion": null,
+    "prefereReduzir": false,
+    "animacoesNaPagina": 42
+  },
+  "secoes": [
+    {
+      "secao": "ENVIRONMENT",
+      "cartoes": 6,
+      "animacao": {
+        "nome": "esg-cartao-flutua",
+        "duracao": "6s",
+        "direcao": "alternate",
+        "playState": "running"
+      },
+      "movimento": [
+        {
+          "cartao": 0,
+          "atraso": "0s",
+          "picoAPico": 12,
+          "minimo": -6,
+          "maximo": 6,
+          "velocidadeMediaTravessia": 2,
+          "velocidadePicoMedida": 3.19,
+          "quadros": 539
+        },
+        {
+          "cartao": 1,
+          "atraso": "-0.9s",
+          "picoAPico": 12,
+          "minimo": -6,
+          "maximo": 6,
+          "velocidadeMediaTravessia": 2,
+          "velocidadePicoMedida": 3.21,
+          "quadros": 539
+        },
+        {
+          "cartao": 2,
+          "atraso": "-1.8s",
+          "picoAPico": 12,
+          "minimo": -6,
+          "maximo": 6,
+          "velocidadeMediaTravessia": 2,
+          "velocidadePicoMedida": 3.19,
+          "quadros": 539
+        },
+        {
+          "cartao": 3,
+          "atraso": "-2.7s",
+          "picoAPico": 12,
+          "minimo": -6,
+          "maximo": 6,
+          "velocidadeMediaTravessia": 2,
+          "velocidadePicoMedida": 3.19,
+          "quadros": 539
+        },
+        {
+          "cartao": 4,
+          "atraso": "-3.6s",
+          "picoAPico": 12,
+          "minimo": -6,
+          "maximo": 6,
+          "velocidadeMediaTravessia": 2,
+          "velocidadePicoMedida": 3.19,
+          "quadros": 539
+        },
+        {
+          "cartao": 5,
+          "atraso": "-4.5s",
+          "picoAPico": 12,
+          "minimo": -6,
+          "maximo": 6,
+          "velocidadeMediaTravessia": 2,
+          "velocidadePicoMedida": 3.19,
+          "quadros": 539
+        }
+      ],
+      "defasagem": {
+        "translateYNoMesmoInstante": [
+          3.46,
+          0.84,
+          -1.97,
+          -4.34,
+          -5.74,
+          -5.91
+        ],
+        "espalhamento": 9.38,
+        "todosDistintos": true
+      },
+      "folgaVertical": {
+        "folgaMinima": 8.16,
+        "par": [
+          1,
+          4
+        ]
+      },
+      "folgaVerticalComHover": {
+        "cartaoApontado": 3,
+        "folgaMinima": -2.52,
+        "par": [
+          0,
+          3
+        ]
+      },
+      "separacaoDoFundo": {
+        "superficieCartao": "rgb(15,91,153)",
+        "faixaDaSecao": "rgb(14,100,162)",
+        "razao": 1.13,
+        "distanciaRgb": 12.77
+      },
+      "arte": {
+        "cor": "rgb(106,144,76)",
+        "luminancia": 0.24
+      },
+      "hover": {
+        "wrapperPausado": "paused",
+        "levantamentoPx": -6,
+        "escalaIdle": 1,
+        "escalaHover": 1.005,
+        "bordaIdle": "rgba(255, 255, 255, 0.14)",
+        "bordaHover": "rgba(0, 153, 230, 0.45)",
+        "razaoBorda": 3.13,
+        "sombraIdle": "rgba(13, 88, 149, 0.9) 0px 24px 50px -22px, rgba(13, 88, 151, 0.5) 0px 2px 10px -4px, rgba(255, 255, 255, 0.08) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.25) 0px -1px 0px 0px inset",
+        "sombraHover": "rgba(0, 121, 203, 0.55) 0px 34px 70px -22px, rgba(120, 201, 248, 0.3) 0px 0px 0px 1px inset, rgba(255, 255, 255, 0.14) 0px 1px 0px 0px inset",
+        "transicao": "0.3s",
+        "corSuperficieIdle": "rgb(15,91,153)",
+        "corSuperficieHover": "rgb(14,99,160)",
+        "distanciaRgbMedida": 10.68,
+        "deltaPorCanal": [
+          -1,
+          8,
+          7
+        ]
+      },
+      "contrasteIdle": [
+        {
+          "cartao": 0,
+          "fontSize": 16,
+          "piorFundo": "rgb(20,98,164)",
+          "tintaComposta": "rgb(220,231,241)",
+          "razao": 5.05,
+          "piso": 4.5
+        },
+        {
+          "cartao": 1,
+          "fontSize": 16,
+          "piorFundo": "rgb(19,94,159)",
+          "tintaComposta": "rgb(220,231,241)",
+          "razao": 5.35,
+          "piso": 4.5
+        },
+        {
+          "cartao": 2,
+          "fontSize": 16,
+          "piorFundo": "rgb(20,94,162)",
+          "tintaComposta": "rgb(220,231,241)",
+          "razao": 5.31,
+          "piso": 4.5
+        },
+        {
+          "cartao": 3,
+          "fontSize": 16,
+          "piorFundo": "rgb(20,94,160)",
+          "tintaComposta": "rgb(220,231,241)",
+          "razao": 5.34,
+          "piso": 4.5
+        },
+        {
+          "cartao": 4,
+          "fontSize": 16,
+          "piorFundo": "rgb(18,94,160)",
+          "tintaComposta": "rgb(219,231,241)",
+          "razao": 5.33,
+          "piso": 4.5
+        },
+        {
+          "cartao": 5,
+          "fontSize": 16,
+          "piorFundo": "rgb(18,95,162)",
+          "tintaComposta": "rgb(219,231,241)",
+          "razao": 5.25,
+          "piso": 4.5
+        }
+      ],
+      "contrasteHover": [
+        {
+          "cartao": 0,
+          "fontSize": 16,
+          "piorFundo": "rgb(14,102,162)",
+          "tintaComposta": "rgb(219,232,241)",
+          "razao": 4.89,
+          "piso": 4.5
+        },
+        {
+          "cartao": 1,
+          "fontSize": 16,
+          "piorFundo": "rgb(14,100,162)",
+          "tintaComposta": "rgb(219,232,241)",
+          "razao": 5,
+          "piso": 4.5
+        },
+        {
+          "cartao": 2,
+          "fontSize": 16,
+          "piorFundo": "rgb(14,102,164)",
+          "tintaComposta": "rgb(219,232,241)",
+          "razao": 4.87,
+          "piso": 4.5
+        },
+        {
+          "cartao": 3,
+          "fontSize": 16,
+          "piorFundo": "rgb(14,102,162)",
+          "tintaComposta": "rgb(219,232,241)",
+          "razao": 4.89,
+          "piso": 4.5
+        },
+        {
+          "cartao": 4,
+          "fontSize": 16,
+          "piorFundo": "rgb(13,101,161)",
+          "tintaComposta": "rgb(219,232,241)",
+          "razao": 4.96,
+          "piso": 4.5
+        },
+        {
+          "cartao": 5,
+          "fontSize": 16,
+          "piorFundo": "rgb(14,102,163)",
+          "tintaComposta": "rgb(219,232,241)",
+          "razao": 4.88,
+          "piso": 4.5
+        }
+      ]
+    },
+    {
+      "secao": "GOVERNANCE",
+      "cartoes": 6,
+      "animacao": {
+        "nome": "esg-cartao-flutua",
+        "duracao": "6s",
+        "direcao": "alternate",
+        "playState": "running"
+      },
+      "movimento": [
+        {
+          "cartao": 0,
+          "atraso": "0s",
+          "picoAPico": 12,
+          "minimo": -6,
+          "maximo": 6,
+          "velocidadeMediaTravessia": 2,
+          "velocidadePicoMedida": 3.19,
+          "quadros": 339
+        },
+        {
+          "cartao": 1,
+          "atraso": "-1.1s",
+          "picoAPico": 12,
+          "minimo": -6,
+          "maximo": 6,
+          "velocidadeMediaTravessia": 2,
+          "velocidadePicoMedida": 3.19,
+          "quadros": 339
+        },
+        {
+          "cartao": 2,
+          "atraso": "-2.2s",
+          "picoAPico": 12,
+          "minimo": -6,
+          "maximo": 6,
+          "velocidadeMediaTravessia": 2,
+          "velocidadePicoMedida": 3.18,
+          "quadros": 339
+        },
+        {
+          "cartao": 3,
+          "atraso": "-3.3s",
+          "picoAPico": 12,
+          "minimo": -6,
+          "maximo": 6,
+          "velocidadeMediaTravessia": 2,
+          "velocidadePicoMedida": 3.19,
+          "quadros": 339
+        },
+        {
+          "cartao": 4,
+          "atraso": "-4.4s",
+          "picoAPico": 12,
+          "minimo": -6,
+          "maximo": 6,
+          "velocidadeMediaTravessia": 2,
+          "velocidadePicoMedida": 3.19,
+          "quadros": 339
+        },
+        {
+          "cartao": 5,
+          "atraso": "-5.5s",
+          "picoAPico": 12,
+          "minimo": -6,
+          "maximo": 6,
+          "velocidadeMediaTravessia": 2,
+          "velocidadePicoMedida": 3.19,
+          "quadros": 339
+        }
+      ],
+      "defasagem": {
+        "translateYNoMesmoInstante": [
+          -0.95,
+          -5.16,
+          -6,
+          -4.93,
+          -2.27,
+          1.16
+        ],
+        "espalhamento": 7.15,
+        "todosDistintos": true
+      },
+      "folgaVertical": {
+        "folgaMinima": 5.8,
+        "par": [
+          0,
+          3
+        ]
+      },
+      "folgaVerticalComHover": {
+        "cartaoApontado": 3,
+        "folgaMinima": 1.23,
+        "par": [
+          0,
+          3
+        ]
+      },
+      "separacaoDoFundo": {
+        "superficieCartao": "rgb(15,91,152)",
+        "faixaDaSecao": "rgb(13,99,161)",
+        "razao": 1.12,
+        "distanciaRgb": 12.21
+      },
+      "arte": {
+        "cor": "rgb(238,237,237)",
+        "luminancia": 0.85
+      },
+      "hover": {
+        "wrapperPausado": "paused",
+        "levantamentoPx": -6,
+        "escalaIdle": 1,
+        "escalaHover": 1.005,
+        "bordaIdle": "rgba(255, 255, 255, 0.14)",
+        "bordaHover": "rgba(0, 153, 230, 0.45)",
+        "razaoBorda": 3.13,
+        "sombraIdle": "rgba(13, 88, 149, 0.9) 0px 24px 50px -22px, rgba(13, 88, 151, 0.5) 0px 2px 10px -4px, rgba(255, 255, 255, 0.08) 0px 1px 0px 0px inset, rgba(0, 0, 0, 0.25) 0px -1px 0px 0px inset",
+        "sombraHover": "rgba(0, 121, 203, 0.55) 0px 34px 70px -22px, rgba(120, 201, 248, 0.3) 0px 0px 0px 1px inset, rgba(255, 255, 255, 0.14) 0px 1px 0px 0px inset",
+        "transicao": "0.3s",
+        "corSuperficieIdle": "rgb(15,91,152)",
+        "corSuperficieHover": "rgb(14,99,161)",
+        "distanciaRgbMedida": 12.08,
+        "deltaPorCanal": [
+          -1,
+          8,
+          9
+        ]
+      },
+      "contrasteIdle": [
+        {
+          "cartao": 0,
+          "fontSize": 16,
+          "piorFundo": "rgb(20,95,161)",
+          "tintaComposta": "rgb(220,231,241)",
+          "razao": 5.26,
+          "piso": 4.5
+        },
+        {
+          "cartao": 1,
+          "fontSize": 16,
+          "piorFundo": "rgb(24,92,165)",
+          "tintaComposta": "rgb(220,231,242)",
+          "razao": 5.38,
+          "piso": 4.5
+        },
+        {
+          "cartao": 2,
+          "fontSize": 16,
+          "piorFundo": "rgb(24,93,164)",
+          "tintaComposta": "rgb(220,231,241)",
+          "razao": 5.33,
+          "piso": 4.5
+        },
+        {
+          "cartao": 3,
+          "fontSize": 16,
+          "piorFundo": "rgb(19,93,159)",
+          "tintaComposta": "rgb(220,231,241)",
+          "razao": 5.41,
+          "piso": 4.5
+        },
+        {
+          "cartao": 4,
+          "fontSize": 16,
+          "piorFundo": "rgb(18,92,157)",
+          "tintaComposta": "rgb(219,231,240)",
+          "razao": 5.49,
+          "piso": 4.5
+        },
+        {
+          "cartao": 5,
+          "fontSize": 16,
+          "piorFundo": "rgb(24,91,164)",
+          "tintaComposta": "rgb(220,230,241)",
+          "razao": 5.42,
+          "piso": 4.5
+        }
+      ],
+      "contrasteHover": [
+        {
+          "cartao": 0,
+          "fontSize": 16,
+          "piorFundo": "rgb(14,100,162)",
+          "tintaComposta": "rgb(219,232,241)",
+          "razao": 5,
+          "piso": 4.5
+        },
+        {
+          "cartao": 1,
+          "fontSize": 16,
+          "piorFundo": "rgb(14,100,162)",
+          "tintaComposta": "rgb(219,232,241)",
+          "razao": 5,
+          "piso": 4.5
+        },
+        {
+          "cartao": 2,
+          "fontSize": 16,
+          "piorFundo": "rgb(14,100,162)",
+          "tintaComposta": "rgb(219,232,241)",
+          "razao": 5,
+          "piso": 4.5
+        },
+        {
+          "cartao": 3,
+          "fontSize": 16,
+          "piorFundo": "rgb(14,97,160)",
+          "tintaComposta": "rgb(219,231,241)",
+          "razao": 5.16,
+          "piso": 4.5
+        },
+        {
+          "cartao": 4,
+          "fontSize": 16,
+          "piorFundo": "rgb(14,99,161)",
+          "tintaComposta": "rgb(219,232,241)",
+          "razao": 5.07,
+          "piso": 4.5
+        },
+        {
+          "cartao": 5,
+          "fontSize": 16,
+          "piorFundo": "rgb(14,101,163)",
+          "tintaComposta": "rgb(219,232,241)",
+          "razao": 4.94,
+          "piso": 4.5
+        }
+      ]
+    }
+  ],
+  "reduzido": {
+    "media-query": {
+      "ENVIRONMENT": {
+        "wrapperParado": true,
+        "animationName": "none",
+        "transformWrapper": "none",
+        "saltoHoverPx": -6,
+        "escalaHover": 1.005,
+        "bordaMudouNoHover": true,
+        "sombraMudouNoHover": true
+      },
+      "GOVERNANCE": {
+        "wrapperParado": true,
+        "animationName": "none",
+        "transformWrapper": "none",
+        "saltoHoverPx": -6,
+        "escalaHover": 1.005,
+        "bordaMudouNoHover": true,
+        "sombraMudouNoHover": true
+      }
+    },
+    "data-motion": {
+      "ENVIRONMENT": {
+        "wrapperParado": true,
+        "animationName": "none",
+        "transformWrapper": "none",
+        "saltoHoverPx": -6,
+        "escalaHover": 1.005,
+        "bordaMudouNoHover": true,
+        "sombraMudouNoHover": true
+      },
+      "GOVERNANCE": {
+        "wrapperParado": true,
+        "animationName": "none",
+        "transformWrapper": "none",
+        "saltoHoverPx": -6,
+        "escalaHover": 1.005,
+        "bordaMudouNoHover": true,
+        "sombraMudouNoHover": true
+      }
+    }
+  },
+  "mobile390": {
+    "folgaVertical": {
+      "folgaMinima": 13.17,
+      "par": [
+        0,
+        1
+      ]
+    },
+    "semRolagemLateral": true
+  }
+}

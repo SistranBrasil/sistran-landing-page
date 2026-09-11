@@ -1,0 +1,539 @@
+/* SIS-201 — cards horizontais dos parceiros.
+   SIS-218 — no desktop, o palco usa sticky (nunca GSAP pin) e a altura é
+   `100svh + --partner-travel`. A variável é medida como
+   `offsetLeft(último) - offsetLeft(primeiro)`, já com a fila FILTRADA; portanto
+   o sticky percorre exatamente a distância entre os centros (os cards têm
+   largura uniforme). Isso também evita a diferença entre navegadores sobre
+   incluir ou não o padding final no `scrollWidth`. Em mobile/reduce estas
+   regras não entram e o overflow nativo original continua sendo o fallback
+   completo. */
+.partner-terminal {
+  --partner-card-width: clamp(42rem, 68vw, 64rem);
+  padding-block: 1.5rem 5rem;
+}
+
+.partner-terminal__controls {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.partner-terminal__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.partner-terminal__filter {
+  min-height: 2.75rem;
+  border: 1px solid rgba(8, 49, 86, 0.28);
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  color: rgba(8, 49, 86, 0.78);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.partner-terminal__filter:hover {
+  border-color: rgba(8, 49, 86, 0.65);
+}
+
+.partner-terminal__filter[aria-pressed='true'] {
+  border-color: #083156;
+  background: #083156;
+  color: #fff;
+}
+
+.partner-terminal__filter:focus-visible,
+.partner-terminal__arrow:focus-visible,
+.partner-terminal__track:focus-visible {
+  outline: 2px solid #096bad;
+  outline-offset: 3px;
+}
+
+.partner-terminal__arrows {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.625rem;
+}
+
+.partner-terminal__arrow {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 1px solid rgba(8, 49, 86, 0.3);
+  border-radius: 999px;
+  color: #083156;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.partner-terminal__arrow svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.partner-terminal__arrow:hover:not(:disabled) {
+  border-color: #083156;
+  background: #083156;
+  color: #fff;
+}
+
+.partner-terminal__arrow:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+.partner-terminal__track {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(1rem, 2vw, 1.75rem);
+  margin-top: 1.5rem;
+  padding: 0.25rem max(1rem, calc((100vw - var(--partner-card-width)) / 2)) 1.25rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-padding-inline: max(1rem, calc((100vw - var(--partner-card-width)) / 2));
+  scroll-snap-type: inline mandatory;
+  scrollbar-color: rgba(8, 49, 86, 0.42) rgba(8, 49, 86, 0.08);
+  scrollbar-width: thin;
+}
+
+.partner-terminal__card {
+  position: relative;
+  isolation: isolate;
+  flex: 0 0 var(--partner-card-width);
+  min-height: clamp(32rem, 55vw, 40rem);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: clamp(1.25rem, 2.4vw, 2rem);
+  box-shadow: 0 2rem 5rem -2.5rem rgba(4, 29, 55, 0.72);
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+.partner-terminal__card[aria-current='true'] {
+  box-shadow:
+    0 2rem 5rem -2.25rem rgba(4, 29, 55, 0.88),
+    0 0 0 2px rgba(14, 216, 246, 0.65);
+}
+
+.partner-terminal__image {
+  z-index: -3;
+  object-fit: cover;
+}
+
+.partner-terminal__overlay {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(3, 25, 48, 0.96) 0%, rgba(3, 25, 48, 0.9) 48%, rgba(3, 25, 48, 0.55) 100%),
+    linear-gradient(0deg, rgba(3, 25, 48, 0.96) 0%, rgba(3, 25, 48, 0.18) 72%);
+}
+
+.partner-terminal__content {
+  display: flex;
+  min-height: inherit;
+  max-width: 48rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+/* SIS-201 (reparo) — a placa da marca.
+
+   `margin-bottom: auto` é o que a prende ao TOPO do card: o `.content` é uma
+   coluna com `justify-content: flex-end`, então sem isso a placa desceria e se
+   empilharia junto do texto, apertando o rodapé do card. Com a margem
+   automática, ela fica em cima e o bloco de texto continua embaixo — sem
+   `position: absolute`, que exigiria tirar a placa do fluxo e recalcular o
+   espaço do texto à mão.
+
+   A GEOMETRIA É A MESMA nas duas variantes; só o preenchimento inverte. É o que
+   mantém a placa como um elemento de design único nos dezesseis cards em vez de
+   dois tratamentos diferentes: quem tem tinta escura recebe fundo branco, quem
+   tem tinta clara recebe fundo navy. Os números estão em
+   `PartnerTerminalCards.tsx` (`LOGOS_DE_TINTA_CLARA`) e vêm de
+   `scripts/medir-logos-parceiros-sis201.mjs`.
+
+   SIS-219 — a placa passou a ser a âncora visual do card, não um chip acima do
+   título. Os números subiram ~1,75×: `min-height` 4,25rem → 7,5rem, `min-width`
+   7,5rem → 12rem, e a img de 3,25×13rem para 6×20rem.
+
+   POR QUE ISSO NÃO EMPURRA O TEXTO. O `.content` é coluna com
+   `justify-content: flex-end` e a placa tem `margin-bottom: auto`: o bloco de
+   texto está ancorado no PÉ do card, e o card tem altura própria
+   (`min-height: clamp(32rem, 55vw, 40rem)`). Crescer a placa consome a folga
+   entre ela e o texto, sem mover uma linha de copy. A folga medida antes da
+   mudança era 184px no card mais apertado a 1440 (`medir-layout-placas`), então
+   os +52px de altura de placa deixam ~132px de sobra — é isso que mantém o
+   critério `placa.bottom <= eyebrow.top` de pé.
+
+   OS DOIS `max-*` SUBIRAM JUNTOS de propósito. A img é `width: auto` com os dois
+   tetos, então para logo largo (razão > max-width/max-height) o que manda é a
+   LARGURA. Subir só `max-height` não aumentaria nada em earnix, Microsoft Azure
+   ou núclea — os deitados, que são a maioria. O par 20rem × 6rem guarda razão
+   3,33:1, próxima da anterior (4:1), para o teto não trocar de eixo entre as
+   marcas. */
+.partner-terminal__placa {
+  display: flex;
+  width: fit-content;
+  min-width: 12rem;
+  min-height: 7.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: auto;
+  padding: 1.125rem 1.75rem;
+  border-radius: 1.125rem;
+  box-shadow: 0 1rem 2.5rem -1rem rgba(3, 25, 48, 0.55);
+}
+
+.partner-terminal__placa[data-tinta='escura'] {
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: #fff;
+}
+
+/* Tinta clara: fundo navy. A borda clara existe para a placa não se dissolver
+   na parte escura da imagem de fundo — sem ela, logo claro sobre overlay escuro
+   perde a moldura e deixa de parecer uma placa. */
+.partner-terminal__placa[data-tinta='clara'] {
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  background: rgba(4, 29, 51, 0.82);
+}
+
+.partner-terminal__placa-img {
+  width: auto;
+  max-width: 20rem;
+  height: auto;
+  max-height: 6rem;
+  object-fit: contain;
+}
+
+/* SIS-201 — eco da logo no hover.
+
+   Alinhado ao mesmo `padding` do `.content`, então nasce exatamente atrás da
+   placa e cresce dali. `z-index: -1` o põe acima do overlay (-2) e da imagem
+   (-3), mas abaixo do texto, que não tem z-index e portanto fica no topo da
+   pilha do card — é isso que garante a copy legível com o eco aceso.
+
+   A ESCALA É TETO MEDIDO, não gosto. Com origem no canto superior esquerdo, um
+   eco de 6rem de altura em `scale(1.45)` termina a ~195px do topo do card,
+   enquanto o eyebrow do card mais apertado começa em 318px. Aumentar a escala
+   invade o texto — o limite está medido em
+   `scripts/medir-eco-hover-sis201.mjs`, que reprova qualquer sobreposição.
+
+   SIS-219 — o eco foi RECALIBRADO porque a placa cresceu, e não por gosto: o
+   critério da sonda é que o eco seja MAIOR que a placa renderizada. Com a img da
+   placa a 6rem, um eco também de 6rem sairia do mesmo tamanho e reprovaria. Ele
+   sobe para 9rem, e a escala de hover CAI de 1,45 para 1,34 — o crescimento
+   agora vem do tamanho de repouso, não do zoom, e é assim que a caixa final
+   continua acima da copy: 9rem × 1,34 termina a ~249px do topo, contra o eyebrow
+   em 308px no card mais apertado a 1440.
+
+   `45%` VIROU `62%`. A largura de repouso é o que decide a altura dos logos
+   deitados (`width: 100%` com `max-height` de teto). A 1024 o card tem 688px, e
+   45% dele dariam 310px — MENOS que os 320px de teto da placa, invertendo a
+   relação justamente na largura mais estreita do desktop. 62% mantém o eco
+   maior em toda a faixa.
+
+   Só `opacity`, `transform` e `filter` animam: nada aqui provoca layout. */
+.partner-terminal__eco {
+  position: absolute;
+  z-index: -1;
+  top: clamp(1.5rem, 4vw, 3.5rem);
+  left: clamp(1.5rem, 4vw, 3.5rem);
+  width: min(28rem, 62%);
+  opacity: 0;
+  transform: scale(0.92);
+  transform-origin: top left;
+  transition:
+    opacity 260ms ease,
+    transform 340ms ease;
+  pointer-events: none;
+}
+
+.partner-terminal__card:hover .partner-terminal__eco,
+.partner-terminal__card:focus-within .partner-terminal__eco {
+  opacity: 0.34;
+  transform: scale(1.34);
+}
+
+.partner-terminal__eco-img {
+  width: 100%;
+  max-height: 9rem;
+  object-fit: contain;
+  /* Sombra ciano da marca (#0ed8f6) mais um halo azul mais aberto. Duas camadas
+     porque uma só ou fica dura na borda ou não alcança o fundo claro de algumas
+     imagens editoriais. Verde do Terminal não entra. */
+  filter:
+    drop-shadow(0 0 1.25rem rgba(14, 216, 246, 0.78))
+    drop-shadow(0 0 3rem rgba(9, 107, 173, 0.62));
+}
+
+.partner-terminal__eyebrow,
+.partner-terminal__focus,
+.partner-terminal__status {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.partner-terminal__eyebrow {
+  color: #a5f0ff;
+}
+
+.partner-terminal__content h3 {
+  margin-top: 0.75rem;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 0.96;
+}
+
+.partner-terminal__focus {
+  margin-top: 0.875rem;
+  color: #a5f0ff;
+}
+
+.partner-terminal__description {
+  max-width: 46rem;
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(0.875rem, 1.25vw, 1rem);
+  line-height: 1.6;
+}
+
+.partner-terminal__status {
+  margin-top: 0.5rem;
+  color: rgba(8, 49, 86, 0.58);
+  text-align: center;
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .partner-terminal {
+    --partner-t: clamp(
+      0,
+      calc(var(--partner-progress, 0) * var(--partner-progress-scale, 1)),
+      1
+    );
+    position: relative;
+    height: calc(100svh + var(--partner-travel, 0px));
+    padding-block: 0;
+    overflow: clip;
+  }
+
+  .partner-terminal__stage {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    display: flex;
+    height: 100svh;
+    min-height: 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: calc(var(--header-h, 88px) + 1rem);
+    overflow: clip;
+  }
+
+  .partner-terminal__controls {
+    align-items: center;
+  }
+
+  .partner-terminal__filters {
+    min-width: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+  }
+
+  .partner-terminal__track {
+    flex: 0 0 auto;
+    margin-top: 0.5rem;
+    padding-bottom: 0.25rem;
+    overflow: visible;
+    scrollbar-width: none;
+    transform: translate3d(
+      calc(var(--partner-travel, 0px) * var(--partner-t) * -1),
+      0,
+      0
+    );
+    will-change: transform;
+    backface-visibility: hidden;
+  }
+
+  .partner-terminal__track::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .partner-terminal {
+    --partner-card-width: min(78vw, 43rem);
+  }
+
+  .partner-terminal__controls {
+    align-items: center;
+  }
+
+  .partner-terminal__filters {
+    flex-wrap: nowrap;
+    padding-block: 0.25rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+  }
+
+  .partner-terminal__filter {
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 639px) {
+  .partner-terminal {
+    --partner-card-width: 88vw;
+    padding-bottom: 4rem;
+  }
+
+  .partner-terminal__controls {
+    flex-wrap: wrap;
+  }
+
+  .partner-terminal__filters {
+    width: 100%;
+    order: 2;
+  }
+
+  .partner-terminal__arrows {
+    margin-left: auto;
+    order: 1;
+  }
+
+  .partner-terminal__track {
+    margin-top: 1rem;
+  }
+
+  .partner-terminal__card {
+    min-height: 34rem;
+  }
+
+  .partner-terminal__content h3 {
+    font-size: clamp(2.25rem, 13vw, 3.5rem);
+  }
+
+  /* A placa encolhe junto: em 88vw o card tem largura de sobra, mas altura é o
+     recurso escasso (34rem para placa + eyebrow + título + foco + descrição).
+
+     SIS-219 — item 4: maior que hoje, mas SEM estourar as 34rem. Aqui o aumento
+     é menor que no desktop de propósito, porque o orçamento também é: a folga
+     medida entre placa e texto a 390 era 96px, contra 184px a 1440. Placa
+     3,5rem → 5,25rem (+28px) e img 2,25 → 3,5rem deixam ~68px de sobra. Aplicar
+     as 7,5rem do desktop consumiria 68 dos 96px só na placa e encostaria no
+     eyebrow do card mais apertado. A altura do card NÃO muda. */
+  .partner-terminal__placa {
+    min-width: 8.5rem;
+    min-height: 5.25rem;
+    padding: 0.75rem 1.125rem;
+  }
+
+  .partner-terminal__placa-img {
+    max-width: 12rem;
+    max-height: 3.5rem;
+  }
+
+  /* Em 88vw o eco cresceria por cima da copy: o card tem 34rem de altura e a
+     folga entre placa e texto cai para 96px. Menor base, menor escala.
+     SIS-219 — sobe junto com a placa, e pelo mesmo motivo do desktop: o eco tem
+     de continuar MAIOR que a placa renderizada, senão a sonda reprova. */
+  .partner-terminal__eco {
+    width: min(16rem, 62%);
+  }
+
+  .partner-terminal__eco-img {
+    max-height: 5.25rem;
+  }
+
+  .partner-terminal__card:hover .partner-terminal__eco,
+  .partner-terminal__card:focus-within .partner-terminal__eco {
+    transform: scale(1.28);
+  }
+
+  .partner-terminal__description {
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partner-terminal__filter,
+  .partner-terminal__arrow {
+    transition: none;
+  }
+
+  .partner-terminal__track {
+    scroll-behavior: auto;
+  }
+
+  /* O eco é decoração: em movimento reduzido o card fica no estado idle, sem
+     eco nenhum. `display: none` em vez de só matar a transição — com a
+     transição desligada o eco APARECERIA de uma vez no hover, que é o oposto
+     do pedido. Nada de conteúdo se perde: a placa continua, e a marca também
+     está em texto no `<h3>`. */
+  .partner-terminal__eco {
+    display: none;
+  }
+}
+
+html[data-motion='reduce'] .partner-terminal__filter,
+html[data-motion='reduce'] .partner-terminal__arrow {
+  transition: none;
+}
+
+html[data-motion='reduce'] .partner-terminal__eco {
+  display: none;
+}
+
+/* Espelho do toggle manual: a media query do sistema acima pode continuar
+   casando quando `useReducedMotion()` já desligou o relógio. Restaurar altura,
+   sticky, transform e overflow em conjunto evita uma trilha congelada. */
+html[data-motion='reduce'] .partner-terminal {
+  height: auto;
+  padding-block: 1.5rem 5rem;
+  overflow: visible;
+}
+
+html[data-motion='reduce'] .partner-terminal__stage {
+  position: static;
+  display: block;
+  height: auto;
+  padding-block: 0;
+  overflow: visible;
+}
+
+html[data-motion='reduce'] .partner-terminal__track {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  transform: none;
+  will-change: auto;
+}
+
+html[data-motion='reduce'] .partner-terminal__track::-webkit-scrollbar {
+  display: initial;
+}

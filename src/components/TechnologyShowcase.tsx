@@ -33,7 +33,14 @@ import {
   TECNOLOGIA_INICIAL,
   type Tecnologia,
 } from '@/data/tecnologias';
+import { criarConsultaDeMedia } from '@/lib/mediaStore';
 import './technology-showcase.css';
+
+/* SIS-182 — o limiar do modo faixa. Achado pela varredura obrigatória: não estava
+   na lista de oito da issue, e é o único do conjunto que é `max-width` — motivo
+   pelo qual um hook genérico com nomes de breakpoint teria de inverter a conta
+   aqui, e é onde ele erraria. A string fica literal. */
+const useModoCompacto = criarConsultaDeMedia('(max-width: 767px)');
 
 /** Intervalo do autoplay. Dentro da faixa 3,6–4,2s pedida. */
 const AUTOPLAY_MS = 3600;
@@ -146,7 +153,8 @@ export default function TechnologyShowcase() {
   const [arrastando, setArrastando] = useState(false);
   const [abaOculta, setAbaOculta] = useState(false);
   const [esperandoRetomada, setEsperandoRetomada] = useState(false);
-  const [compacto, setCompacto] = useState(false);
+  /* SIS-182 — era `useState(false)` alimentado por efeito de `matchMedia`. */
+  const compacto = useModoCompacto();
 
   const semMovimento = useReducedMotion();
   /** Modo lista: nada se move, tudo aparece de uma vez. */
@@ -181,7 +189,9 @@ export default function TechnologyShowcase() {
     return () => document.removeEventListener('visibilitychange', ler);
   }, []);
 
-  /* ── Largura: abaixo de 768px quem navega é o gesto nativo ──────────────── */
+  /* ── Largura: abaixo de 768px quem navega é o gesto nativo ────────────────
+     SIS-182 — a leitura subiu para `useModoCompacto()`, junto das outras
+     declarações de estado deste componente. O corpo antigo:
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
     const ler = () => setCompacto(mq.matches);
@@ -189,6 +199,7 @@ export default function TechnologyShowcase() {
     mq.addEventListener('change', ler);
     return () => mq.removeEventListener('change', ler);
   }, []);
+  */
 
   /**
    * Modo faixa (abaixo de 768px): centraliza o card ativo.

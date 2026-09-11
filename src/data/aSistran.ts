@@ -78,8 +78,12 @@ export const PREMIACOES = [
 
 export const PREMIACOES_NOTAS = [
   'Seguradora americana Top 5 no mundo nos elege como Melhor Projeto nas Américas.',
-  /* Espacos duplos do original ("Celent  com o  Technology") normalizados. */
-  'A Sistran foi reconhecida pela Celent com o Technology Standout 2023. A mais alta categoria no quesito tecnologia.',
+  /* SIS-230 — a nota da Celent SAIU desta lista e virou `REC_CELENT`, em
+     `src/data/reconhecimentos.ts`: a issue pede a frase ao lado do troféu, na
+     abertura da seção, e mantê-la também aqui deixaria a mesma frase duas vezes
+     na mesma seção. O texto é o mesmo, só partido nas duas linhas do original.
+     Espacos duplos do original ("Celent  com o  Technology") normalizados.
+  'A Sistran foi reconhecida pela Celent com o Technology Standout 2023. A mais alta categoria no quesito tecnologia.', */
 ] as const;
 
 /** Secao 12 — ISG Provider Lens. A pagina promete "(texto original abaixo)" e

@@ -1,5 +1,16 @@
 'use client';
 
+/**
+ * SIS-188 — GUARDADO.
+ *
+ * Consumido só pelo `Hero.tsx` órfão. Nenhuma `page.tsx` importa este arquivo.
+ *
+ * Substituto atual: a home usa `HeroCinematic` (sem este ticker).
+ * Rota/issue que retirou: saída do `Hero` da home (`REDESIGN.md`).
+ * Volta se o `Hero.tsx` voltar a ser montado, ou se uma rota/hero nova montar
+ * este ticker de propósito.
+ */
+
 import { motion } from 'motion/react';
 import { Award, Users, Clock, Building2, ShieldCheck } from 'lucide-react';
 
