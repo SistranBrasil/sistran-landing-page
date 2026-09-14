@@ -1,0 +1,350 @@
+/**
+ * Folha do CARIMBO SISTRAN vetorial. Ver o cabeçalho de `CarimboSistran.tsx`.
+ *
+ * ── POR QUE MÓDULO E NÃO FOLHA GLOBAL COMO O RESTO DA PASTA ──
+ *
+ * A convenção da pasta é `nome-do-componente.css` global, e este arquivo foge dela de
+ * propósito: as classes deste componente são NOMES GENÉRICOS de vocabulário visual —
+ * `.stamp`, `.solid`, `.glass`, `.split`, `.ticket`, `.brand`, `.copy`. Em folha global
+ * isso é colisão garantida com `globals.css` e com as outras folhas da pasta, e o
+ * sintoma seria um estilo daqui vazando para um `.brand` alheio — bug caro de achar.
+ * CSS Modules já é usado no projeto (`loading/RouteLoadGate.module.css`), então não é
+ * mecanismo novo.
+ *
+ * ── TUDO ESCALA POR `font-size` ──
+ *
+ * Não há um `px` de medida interna: espaçamentos, bordas, símbolo e textura estão em
+ * `em`. Quem manda no tamanho é a classe de tamanho (ou um `font-size` no
+ * `className` de fora), e o carimbo inteiro acompanha em proporção. É o que permite o
+ * mesmo componente servir de selo miúdo num rodapé e de chancela grande num hero.
+ */
+
+.stamp {
+  --stamp-color: #0757c7;
+  --stamp-rotation: -3deg;
+  --stamp-bg: transparent;
+
+  position: relative;
+  /* `isolation` cria o contexto de empilhamento local: sem ele, o `z-index: -1` do
+     ::before e o `-2` do anel de impacto escapam para trás do FUNDO DA SEÇÃO e o
+     carimbo perde a textura. */
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75em;
+  width: max-content;
+  max-width: 100%;
+
+  /* ⚠️ BLINDAGEM CONTRA O PAI, E ELA FOI MEDIDA — não é precaução teórica.
+     Num pai `display: flex` (o caso comum: uma fileira de selos), o
+     `align-items: stretch` padrão esticava o carimbo até a altura da linha, e o
+     estrago era grande porque as formas dependem de proporção: a `capsule` de 60px
+     virou um oval de 160px, o `seal` (`aspect-ratio: 1`) virou elipse e a
+     `signature` virou um sublinhado atravessando a fileira. Sondado em 1440 com
+     `main { display: flex }`: 208,1x160,7 onde o próprio é ~208x60.
+     `align-self`/`justify-self` recusam o esticamento em flex E em grid; `flex`
+     recusa que uma fileira apertada encolha o carimbo abaixo do conteúdo. */
+  align-self: center;
+  justify-self: center;
+  flex: 0 0 auto;
+  color: var(--stamp-color);
+  background: var(--stamp-bg);
+  border: 0.11em solid currentColor;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  line-height: 1;
+  transform: rotate(var(--stamp-rotation));
+  box-shadow: inset 0 0 0 0.05em color-mix(in srgb, currentColor 35%, transparent);
+  user-select: none;
+}
+
+/* Fio interno tracejado — a moldura dupla que faz ler como carimbo, e não como chip. */
+.stamp::before {
+  content: "";
+  position: absolute;
+  inset: 0.18em;
+  z-index: -1;
+  border: 0.035em dashed color-mix(in srgb, currentColor 50%, transparent);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* Textura de tinta falhada: dois pontos e um rastro de linhas em diagonal. Fica em
+   opacidade baixa com `multiply` para sujar sem escurecer o texto. */
+.stamp::after {
+  content: "";
+  position: absolute;
+  inset: -0.12em;
+  z-index: 2;
+  border-radius: inherit;
+  opacity: 0.16;
+  background:
+    radial-gradient(circle at 13% 30%, transparent 0 0.06em, currentColor 0.07em 0.1em, transparent 0.11em),
+    radial-gradient(circle at 77% 72%, transparent 0 0.07em, currentColor 0.08em 0.11em, transparent 0.12em),
+    repeating-linear-gradient(101deg, transparent 0 0.75em, currentColor 0.77em 0.79em, transparent 0.81em 1.3em);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* ── TAMANHOS ── */
+
+.sm {
+  font-size: 12px;
+  padding: 0.55em 0.9em;
+}
+
+.md {
+  font-size: 16px;
+  padding: 0.65em 1.05em;
+}
+
+/* Fluido: o único tamanho que acompanha a viewport, para hero e faixas grandes. */
+.lg {
+  font-size: clamp(17px, 2.2vw, 23px);
+  padding: 0.72em 1.15em;
+}
+
+/* ── FORMAS ── */
+
+.capsule {
+  border-radius: 999px;
+}
+
+.seal {
+  aspect-ratio: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4em;
+  min-width: 9.4em;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.seal .logoWrap {
+  border-right: 0;
+  padding-right: 0;
+}
+
+.seal .serial {
+  display: block;
+}
+
+.split {
+  border-radius: 0.7em;
+  padding-inline: 0.8em 1.2em;
+}
+
+/* A margem negativa estica o divisor até as bordas do carimbo, criando o "talão". */
+.split .logoWrap {
+  margin: -0.65em 0;
+  padding: 0.8em 0.95em 0.8em 0.15em;
+  border-right-width: 0.12em;
+}
+
+.ticket {
+  border-radius: 0.35em 1.4em 0.35em 1.4em;
+  clip-path: polygon(0 0, 100% 0, 100% 74%, 94% 100%, 0 100%);
+}
+
+.signature {
+  border-width: 0 0 0.12em;
+  border-radius: 0;
+  box-shadow: none;
+  padding-inline: 0.25em;
+}
+
+.signature::before {
+  display: none;
+}
+
+.signature::after {
+  opacity: 0.08;
+}
+
+.orbit {
+  padding: 1.08em 1.4em;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: none;
+}
+
+/* O anel do `orbit` é o ::before, não a borda: girado e esticado, ele fica levemente
+   fora de eixo — é o que dá o traço de anel feito à mão. */
+.orbit::before {
+  inset: 0;
+  border: 0.08em solid currentColor;
+  border-radius: 50%;
+  transform: rotate(-5deg) scaleX(1.05);
+}
+
+.orbit .logoWrap {
+  border-right-style: dashed;
+}
+
+.monogram {
+  min-width: 8.4em;
+  flex-direction: column;
+  gap: 0.5em;
+  border-radius: 1.1em 0.25em 1.1em 0.25em;
+  text-align: center;
+}
+
+.monogram .logoWrap {
+  padding: 0 0 0.45em;
+  border: 0;
+  border-bottom: 0.065em solid currentColor;
+}
+
+.monogram .copy {
+  text-align: center;
+}
+
+.monogram .serial {
+  display: block;
+}
+
+.certificate {
+  border-radius: 0;
+  padding: 0.9em 1.35em;
+  outline: 0.055em solid color-mix(in srgb, currentColor 45%, transparent);
+  outline-offset: -0.38em;
+}
+
+.certificate::before {
+  inset: -0.12em;
+  border-style: solid;
+  border-width: 0 0.15em;
+  border-radius: 0;
+  transform: skewX(-3deg);
+}
+
+.certificate .serial {
+  display: block;
+}
+
+/* ── ACABAMENTOS ── */
+
+.solid {
+  --stamp-bg: var(--stamp-color);
+  color: white;
+  border-color: var(--stamp-color);
+  box-shadow: 0 0.55em 1.6em color-mix(in srgb, var(--stamp-color) 22%, transparent);
+}
+
+/* `backdrop-filter` NÃO funciona se um ancestral tiver `transform` ou `filter` — se o
+   vidro sair chapado, é aí que está a causa, não aqui. */
+.glass {
+  --stamp-bg: color-mix(in srgb, var(--stamp-color) 9%, rgba(255, 255, 255, 0.6));
+  backdrop-filter: blur(12px) saturate(145%);
+  -webkit-backdrop-filter: blur(12px) saturate(145%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.55),
+    0 0.65em 2em color-mix(in srgb, var(--stamp-color) 15%, transparent);
+}
+
+/* ── PEÇAS ── */
+
+.logoWrap {
+  display: grid;
+  place-items: center;
+  padding-right: 0.7em;
+  border-right: 0.065em solid currentColor;
+}
+
+/* `overflow: visible` porque o traço de 7 unidades do símbolo passa da viewBox nos
+   terminais arredondados. */
+.mark {
+  width: 2.45em;
+  height: 2.45em;
+  overflow: visible;
+}
+
+.copy {
+  display: grid;
+  gap: 0.14em;
+  text-align: left;
+}
+
+.eyebrow {
+  font-size: 0.6em;
+  font-weight: 750;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.brand {
+  font-size: 1.18em;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+
+.serial {
+  display: none;
+  font-size: 0.44em;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+}
+
+/* ── ENTRADA ── */
+
+.impact {
+  position: absolute;
+  inset: -0.6em;
+  z-index: -2;
+  border: 0.08em solid currentColor;
+  border-radius: inherit;
+  opacity: 0;
+}
+
+.animated {
+  animation: stamp-in 720ms cubic-bezier(0.18, 0.89, 0.32, 1.28) both;
+}
+
+.animated .impact {
+  animation: impact-ring 820ms 240ms ease-out both;
+}
+
+/* Chega grande, torto e borrado; passa do ponto para 0.94 e assenta no tombo de
+   repouso. O overshoot é o que lê como borracha batendo no papel. */
+@keyframes stamp-in {
+  0% {
+    opacity: 0;
+    transform: rotate(calc(var(--stamp-rotation) - 7deg)) scale(1.42);
+    filter: blur(5px);
+  }
+
+  62% {
+    opacity: 1;
+    transform: rotate(calc(var(--stamp-rotation) + 1deg)) scale(0.94);
+    filter: blur(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: rotate(var(--stamp-rotation)) scale(1);
+  }
+}
+
+@keyframes impact-ring {
+  0% {
+    opacity: 0.42;
+    transform: scale(0.82);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.18);
+  }
+}
+
+/**
+ * Movimento reduzido: a batida é DECORATIVA — o carimbo já diz tudo parado —, então
+ * ela morre. O estado de repouso é o `.stamp` acima (opacidade 1, tombo aplicado por
+ * `transform`), nunca `opacity: 0`, que é como animação morta esconde conteúdo para
+ * sempre. `animation: none` aqui é seguro justamente por isso.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .animated,
+  .animated .impact {
+    animation: none;
+  }
+}
