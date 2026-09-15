@@ -202,6 +202,12 @@ export default function MetricsBand() {
             — a entrada rodava no escuro e, quando a cortina levantava, os sete
             cartões já estavam parados no estado final. Com a espera, o primeiro
             gesto visível da rota é a cascata surgindo.
+            SIS-269 — e agora `esperarRota` está AQUI E SÓ AQUI. O argumento acima
+            («a cortina esconderia a entrada») é um argumento sobre a DOBRA: nos
+            quatro escopos abaixo dela a espera não protegia nada e criava os cinco
+            observadores no mesmo instante em que a cortina subia, que é a cascata
+            global que a SIS-269 corrige. Se esta faixa algum dia sair da dobra, a
+            espera sai com ela.
             O calibre (margem, limiar, duração, curva, passo) mora em
             `app/contato/reveal-calibre.ts`, com o motivo de cada número. */}
         <RevealScope

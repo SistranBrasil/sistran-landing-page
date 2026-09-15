@@ -37,6 +37,15 @@ export const easeExpo = [0.22, 1, 0.36, 1] as const;
 export const VP = { once: true, margin: '-80px' } as const;
 export const VP0 = { once: true } as const;
 
+/* SIS-270 — aqui existiu um `VP_SCROLL = { once: true, amount: 0.35 }`, criado
+   sob a hipótese de que `VP` fazia o fecho de `/trabalhe-conosco` acender no
+   carregamento. A hipótese era FALSA e foi derrubada pela medição: com `VP`, o
+   `<h2>` de `#social` está em `opacity: 0` no topo da rota e só passa de 0,9 em
+   `scrollY: 400` — exatamente o mesmo número que o calibre novo produzia. A
+   medição anterior lia o `.palco-copy`, que é `vHeader` (variant de orquestração,
+   `hidden: {}`) e devolve `1` sempre. Não se acrescenta um segundo calibre para
+   reproduzir o comportamento do primeiro. */
+
 /* SIS-71 — o que a auditoria dos cinco efeitos encontrou, para não ser refeita:
    • Fade-up expo, stagger de grade, contador e Lenis: já existiam e estão em uso
      (`vFadeUp`/`vTitle`/`vSubtitle`/`vEyebrow`, `vGrid`+`vCard`, `CountUp`,

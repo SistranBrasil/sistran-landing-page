@@ -1,0 +1,171 @@
+{
+  "issue": "SIS-274",
+  "premissaDaIssue": {
+    "afirmado": "o PNG HD tem fundo preto; usar mask/mix-blend/recorte para não mostrar caixa preta no azul",
+    "medido": "alfa real (hasAlpha: true, 80,6% em alpha=0, cantos e centro em [0,0,0,0], zero pixel opaco escuro); símbolo BRANCO (lum. média dos opacos 252,9/255). O preto está apenas sob alfa zero.",
+    "consequencia": "Nenhum mask, mix-blend-mode ou threshold. Só reamostragem premultiplicada + WebP."
+  },
+  "motivoDaDerivada": {
+    "peso": "images.unoptimized=true serviria o PNG cru de 324.169 bytes no overlay que cobre TODA troca de rota",
+    "resolucao": "logo chega a 128px (clamp 8rem) => 320 cobre DPR 2"
+  },
+  "fonte": {
+    "arquivo": "public/logosistranaltadefinicao.png",
+    "bytes": 324169,
+    "formato": "png",
+    "lado": "1254×1254",
+    "temAlfa": true,
+    "cantosECentro": {
+      "supEsq": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "supDir": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "infEsq": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "infDir": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "centro": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "alfa": {
+      "pctTransparente": 80.606,
+      "pctOpaco": 0.28
+    },
+    "tinta": {
+      "pctOpacoEscuro": 0,
+      "lumMediaDosOpacos": 254.8
+    },
+    "antisserrilha": {
+      "pixels": 300582,
+      "lumMedia": 252,
+      "pixelsEscuros": 717,
+      "alfaMaximoDosEscuros": 4
+    },
+    "conteudoVisivel": {
+      "caixa": {
+        "minX": 98,
+        "minY": 99,
+        "maxX": 1150,
+        "maxY": 1147
+      },
+      "largura": 1053,
+      "altura": 1049
+    }
+  },
+  "saida": {
+    "arquivo": "public/images/loading/logo-sistran-portao.webp",
+    "bytes": 11154,
+    "formato": "webp",
+    "lado": "320×320",
+    "temAlfa": true,
+    "cantosECentro": {
+      "supEsq": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "supDir": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "infEsq": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "infDir": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "centro": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "alfa": {
+      "pctTransparente": 79.624,
+      "pctOpaco": 1.419
+    },
+    "tinta": {
+      "pctOpacoEscuro": 0,
+      "lumMediaDosOpacos": 253.6
+    },
+    "antisserrilha": {
+      "pixels": 19412,
+      "lumMedia": 251.4,
+      "pixelsEscuros": 34,
+      "alfaMaximoDosEscuros": 1
+    },
+    "conteudoVisivel": {
+      "caixa": {
+        "minX": 25,
+        "minY": 25,
+        "maxX": 293,
+        "maxY": 292
+      },
+      "largura": 269,
+      "altura": 268
+    }
+  },
+  "reducaoDePeso": "96.6%",
+  "semCaixaPretaNoAzul": {
+    "fundoTestado": "#1273bc",
+    "cantos": {
+      "supEsq": [
+        18,
+        115,
+        188
+      ],
+      "supDir": [
+        18,
+        115,
+        188
+      ],
+      "infEsq": [
+        18,
+        115,
+        188
+      ],
+      "infDir": [
+        18,
+        115,
+        188
+      ]
+    },
+    "cantosTodosIguaisAoFundo": true,
+    "perimetroForaDoFundo": 0
+  },
+  "contrasteNoAzulNovo": {
+    "brancoSobreAzul": 5,
+    "cianoAntigo2ac4ffSobreAzul": 2.48,
+    "cianoClaro0ed8f6SobreAzul": 2.9
+  }
+}

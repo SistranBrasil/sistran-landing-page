@@ -1,0 +1,100 @@
+{
+  "issue": "SIS-275",
+  "viewport": "1440x900",
+  "passoDaSonda": 80,
+  "linhaDoTempo": [
+    {
+      "scrollY": 2480,
+      "nome": "home-solucoes-cabecalho",
+      "topo": 706,
+      "altura": 120
+    },
+    {
+      "scrollY": 6400,
+      "nome": "home-impacto-legenda",
+      "topo": 542,
+      "altura": 900
+    }
+  ],
+  "primeiroAceso": {
+    "home-solucoes-cabecalho": {
+      "scrollY": 2480,
+      "topo": 706,
+      "altura": 120
+    },
+    "home-impacto-legenda": {
+      "scrollY": 6400,
+      "topo": 542,
+      "altura": 900
+    }
+  },
+  "ausencias": {
+    "hero": 0,
+    "brandGridTitulo": 0,
+    "metrics": 0,
+    "contact": 0,
+    "social": 0
+  },
+  "sticky": {
+    "sequenceStickyTemAncestralTransform": false,
+    "midiaTemAncestralTransform": false,
+    "pjStageTemAncestralTransform": false,
+    "sequenceStickyPosition": "sticky"
+  },
+  "reduce": {
+    "nosHome": [
+      {
+        "preset": "fade-up",
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "preset": "fade-up",
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "preset": "fade",
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "preset": "line-up",
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "preset": "fade-up",
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "preset": "fade-up",
+        "opacity": "1",
+        "transform": "none"
+      },
+      {
+        "preset": "fade-up",
+        "opacity": "1",
+        "transform": "none"
+      }
+    ],
+    "total": 7
+  },
+  "erros": [],
+  "alturaDoc": 11036,
+  "noLoad": [
+    {
+      "nome": "home-solucoes-cabecalho",
+      "dataIn": "false",
+      "topo": 3020,
+      "altura": 120
+    },
+    {
+      "nome": "home-impacto-legenda",
+      "dataIn": "false",
+      "topo": 6776,
+      "altura": 900
+    }
+  ]
+}

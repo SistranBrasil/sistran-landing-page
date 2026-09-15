@@ -34,7 +34,8 @@ import Image from 'next/image';
 import { SOLUTIONS } from '@/data/solutions';
 import { useReducedMotion } from '@/lib/motion';
 import { criarConsultaDeMedia } from '@/lib/mediaStore';
-import { useRevealTrigger } from '@/components/motion/useRevealTrigger';
+import RevealScope from '@/components/motion/RevealScope';
+import { LIMIAR_REVEAL, MARGEM_REVEAL } from '@/lib/reveal-calibre';
 
 /* O mesmo limiar governa a estrutura CSS e o modo dirigido. */
 const useHistoriaLarga = criarConsultaDeMedia('(min-width: 1024px)');
@@ -109,19 +110,17 @@ export default function SolutionsStory() {
      hidratada (sem `if (rm) return outra coisa`). */
   const dirigindo = isDesktop && !rm;
 
-  /* SIS-197 — o CABEÇALHO da seção era o único bloco estático dela: eyebrow,
-     título e rótulo apareciam prontos enquanto tudo abaixo é conduzido pela
-     rolagem (frase por caractere, crossfade da mídia, contador). Agora ele entra
-     pelos presets do Efeito 4.
-     O escopo é o próprio `<header>`, e não um envelope novo: este componente já
-     é cliente, então o gatilho entra por `useRevealTrigger` direto no nó — um
-     `<div>` a mais aqui viraria ancestral com `transform` DENTRO da coluna que
-     hospeda o contador `sticky`, que é exatamente o que a issue proíbe. Como o
-     header não contém nada `sticky` nem `fixed`, marcar transform nos FILHOS
-     dele é inócuo: só ancestrais do elemento preso contam.
-     `umaVez` fica no default (entra uma vez e fica): o report não pede reverse
-     para blocos de apoio. */
-  const { ref: cabecalhoRef } = useRevealTrigger<HTMLElement>();
+  /* SIS-197 / SIS-275 — o CABEÇALHO da seção era o único bloco estático dela:
+     eyebrow, título e rótulo apareciam prontos enquanto tudo abaixo é
+     conduzido pela rolagem (frase por caractere, crossfade da mídia,
+     contador). Entra pelos presets do Efeito 4.
+     SIS-275 — o `RevealScope` mora DENTRO do `<header>`, e não em volta dele:
+     o contador sticky é IRMÃO do header (grid-row 2), então um envelope
+     envolvendo o header seria ancestral do sticky na coluna e quebraria a
+     referência da viewport. Dentro do header o escopo não toca sticky nenhum;
+     calibre canônico pós-SIS-269 (`src/lib/reveal-calibre.ts`), sem
+     `esperarRota` (o bloco da dobra é o hero, fora deste escopo).
+     `umaVez` fica no default (entra uma vez e fica). */
 
   /* ── Frase por caractere ───────────────────────────────────────────────────
      Um laço de quadro só, e apenas enquanto a seção está na tela. Escreve por
@@ -209,11 +208,17 @@ export default function SolutionsStory() {
 
       <div className="story-solucoes__layout">
         <div className="story-solucoes__copy">
-          <header className="story-solucoes__cabecalho" ref={cabecalhoRef}>
+          <header className="story-solucoes__cabecalho">
             {/* Verbatim do bloco "Soluções de Negócios" da home.
                 Fonte: .claude/conteudo-site/00-home.md (seção 5). */}
             {/* SIS-197 — `--reveal-i` é a ordem de leitura, e o atraso entre um
-                irmão e o seguinte é o token `--motion-stagger-reveal` (80ms). */}
+                irmão e o seguinte é o token `--motion-stagger-reveal` (80ms).
+                SIS-275 — `RevealScope` + calibre canônico (`-12%` / `0.15`). */}
+            <RevealScope
+              limiar={LIMIAR_REVEAL}
+              margem={MARGEM_REVEAL}
+              data-reveal-nome="home-solucoes-cabecalho"
+            >
             <span
               className="story-solucoes__eyebrow"
               data-reveal="fade-up"
@@ -255,6 +260,7 @@ export default function SolutionsStory() {
               />
               Diferenciais
             </p>
+            </RevealScope>
           </header>
 
           {/* Contador corrente próximo às frases. `aria-hidden` porque a ordem e

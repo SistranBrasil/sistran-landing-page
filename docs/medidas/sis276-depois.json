@@ -1,0 +1,204 @@
+{
+ "issue": "SIS-276",
+ "momento": "depois",
+ "rota": "/esg",
+ "erros": [],
+ "porLargura": {
+  "1024": {
+   "secao": {
+    "caixa": {
+     "topo": 5195,
+     "fundo": 5761,
+     "esq": 0,
+     "dir": 1024,
+     "w": 1024,
+     "h": 565
+    },
+    "overflow": "hidden / hidden",
+    "padBaixo": "128px",
+    "padTopo": "128px"
+   },
+   "palco": {
+    "topo": 5323,
+    "fundo": 5633,
+    "esq": 32,
+    "dir": 992,
+    "w": 960,
+    "h": 309
+   },
+   "arte": {
+    "caixa": {
+     "topo": 5323,
+     "fundo": 5633,
+     "esq": 534,
+     "dir": 914,
+     "w": 380,
+     "h": 310
+    },
+    "overflow": "visible",
+    "top": "154.625px",
+    "transform": "none"
+   },
+   "blob": {
+    "topo": 5323,
+    "fundo": 5633,
+    "esq": 534,
+    "dir": 914,
+    "w": 380,
+    "h": 310
+   },
+   "blobRegiaoDeFiltro": {
+    "topo": 5230,
+    "fundo": 5726,
+    "esq": 420,
+    "dir": 1028
+   },
+   "selo": {
+    "topo": 5405,
+    "fundo": 5550,
+    "esq": 678,
+    "dir": 823,
+    "w": 144,
+    "h": 144
+   },
+   "botao": {
+    "topo": 5450,
+    "fundo": 5496,
+    "esq": 563,
+    "dir": 803,
+    "w": 240,
+    "h": 46
+   },
+   "rodape": {
+    "topo": 5761,
+    "fundo": 6221,
+    "esq": 0,
+    "dir": 1024,
+    "w": 1024,
+    "h": 460
+   },
+   "folgas": {
+    "arteAlemDoFundoDaSecao": -128,
+    "filtroAlemDoFundoDaSecao": -35,
+    "arteAlemDoTopoDoRodape": -128,
+    "respiroDaArteAoFundoDaSecao": 128,
+    "arteMenosPalco": 1
+   },
+   "rolagemHorizontal": {
+    "scrollWidth": 1024,
+    "clientWidth": 1024,
+    "vaza": false
+   },
+   "motionSis253": {
+    "pontoCx": "1000",
+    "pontoCy": "105",
+    "seloAnimacao": "cta-ref-flutua",
+    "orbitaAnimacao": "cta-ref-orbita-pulsa"
+   },
+   "pousoDoPonto": {
+    "dx": -3.4,
+    "dy": 0.6
+   },
+   "seloSrc": "/images/esg/logo-sistran-cta.webp",
+   "seloNaturalWidth": 640
+  },
+  "1440": {
+   "secao": {
+    "caixa": {
+     "topo": 5174,
+     "fundo": 5716,
+     "esq": 0,
+     "dir": 1440,
+     "w": 1440,
+     "h": 542
+    },
+    "overflow": "hidden / hidden",
+    "padBaixo": "128px",
+    "padTopo": "128px"
+   },
+   "palco": {
+    "topo": 5302,
+    "fundo": 5588,
+    "esq": 162,
+    "dir": 1278,
+    "w": 1116,
+    "h": 286
+   },
+   "arte": {
+    "caixa": {
+     "topo": 5275,
+     "fundo": 5616,
+     "esq": 868,
+     "dir": 1285,
+     "w": 418,
+     "h": 341
+    },
+    "overflow": "visible",
+    "top": "143.047px",
+    "transform": "none"
+   },
+   "blob": {
+    "topo": 5275,
+    "fundo": 5616,
+    "esq": 868,
+    "dir": 1285,
+    "w": 418,
+    "h": 341
+   },
+   "blobRegiaoDeFiltro": {
+    "topo": 5173,
+    "fundo": 5718,
+    "esq": 743,
+    "dir": 1410
+   },
+   "selo": {
+    "topo": 5363,
+    "fundo": 5522,
+    "esq": 1026,
+    "dir": 1185,
+    "w": 159,
+    "h": 159
+   },
+   "botao": {
+    "topo": 5437,
+    "fundo": 5485,
+    "esq": 792,
+    "dir": 1032,
+    "w": 240,
+    "h": 48
+   },
+   "rodape": {
+    "topo": 5716,
+    "fundo": 6158,
+    "esq": 0,
+    "dir": 1440,
+    "w": 1440,
+    "h": 442
+   },
+   "folgas": {
+    "arteAlemDoFundoDaSecao": -100,
+    "filtroAlemDoFundoDaSecao": 2,
+    "arteAlemDoTopoDoRodape": -100,
+    "respiroDaArteAoFundoDaSecao": 100,
+    "arteMenosPalco": 55
+   },
+   "rolagemHorizontal": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "vaza": false
+   },
+   "motionSis253": {
+    "pontoCx": "1000",
+    "pontoCy": "105",
+    "seloAnimacao": "cta-ref-flutua",
+    "orbitaAnimacao": "cta-ref-orbita-pulsa"
+   },
+   "pousoDoPonto": {
+    "dx": -7.6,
+    "dy": -3.5
+   },
+   "seloSrc": "/images/esg/logo-sistran-cta.webp",
+   "seloNaturalWidth": 640
+  }
+ }
+}

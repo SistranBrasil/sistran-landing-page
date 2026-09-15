@@ -7,9 +7,25 @@
   overflow: hidden;
   overscroll-behavior: none;
   touch-action: none;
-  background:
-    radial-gradient(circle at 50% 44%, rgb(14 216 246 / 14%), transparent 28rem),
-    linear-gradient(145deg, #041b3d 0%, #071d36 54%, #0a3156 100%);
+  /* SIS-274 — azul chapado da marca. O que havia aqui era:
+
+       background:
+         radial-gradient(circle at 50% 44%, rgb(14 216 246 / 14%), transparent 28rem),
+         linear-gradient(145deg, #041b3d 0%, #071d36 54%, #0a3156 100%);
+
+     duas camadas: um navy em degradê diagonal (#041b3d → #071d36 → #0a3156) e um
+     brilho ciano centrado. As DUAS saíram, e a segunda tem de sair junto com a
+     primeira: o `radial-gradient` de ciano a 14% existia para levantar o centro de
+     um navy quase preto. Sobre `#1273bc` ele não levanta nada — o azul já é claro
+     — e só lavaria o centro exatamente onde a logo branca precisa de contraste.
+     Manter o brilho e trocar só o degrau de baixo seria cumprir a issue pela metade
+     e piorar o número que ela pede («nitidez OK»).
+
+     `#1273bc` é o mesmo azul que já é a última parada do gradiente da marca no
+     `Social` (ver o comentário de contraste em `Social.tsx`), onde branco cheio
+     sobre ele foi medido em 5,00:1. É por isso que a logo branca passa aqui sem
+     nenhum véu ajudando. */
+  background: #1273bc;
   opacity: 1;
   transition: opacity 240ms ease-out;
 }
@@ -26,13 +42,19 @@
   overflow: hidden !important;
 }
 
+/* SIS-274 — a grade de 48px FICA, e a cor dela muda de ciano para branco.
+   O ciano a 6% funcionava sobre navy porque ali ele CLAREAVA; sobre `#1273bc` ele
+   cai praticamente no mesmo tom do fundo e a grade desaparece — não haveria mais
+   textura, só uma regra morta no arquivo. Branco a 8% mantém o desenho visível sem
+   virar concorrente da logo, que é branco cheio no centro. A `mask` radial não
+   muda: ela é o que impede a grade de encostar na borda da tela. */
 .overlay::before {
   position: absolute;
   inset: 0;
   content: '';
   background-image:
-    linear-gradient(rgb(42 196 255 / 6%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(42 196 255 / 6%) 1px, transparent 1px);
+    linear-gradient(rgb(255 255 255 / 8%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 8%) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: radial-gradient(circle at center, #000, transparent 72%);
 }
@@ -48,21 +70,55 @@
   gap: 1rem;
 }
 
-.wordmark {
-  color: #fff;
-  font-family: var(--font-geist-sans), Arial, sans-serif;
-  font-size: clamp(2rem, 7vw, 4.75rem);
-  font-weight: 760;
-  letter-spacing: 0.16em;
-  line-height: 1;
+/* SIS-274 — no lugar do `.wordmark`, que era:
+
+     .wordmark {
+       color: #fff;
+       font-family: var(--font-geist-sans), Arial, sans-serif;
+       font-size: clamp(2rem, 7vw, 4.75rem);
+       font-weight: 760;
+       letter-spacing: 0.16em;
+       line-height: 1;
+     }
+
+   A regra saiu inteira, e não só a cor: ela desenhava a palavra «SISTRAN» em
+   tipografia, e a issue pede o símbolo NO LUGAR do texto. Um `.wordmark` sem
+   consumidor no JSX seria CSS morto.
+
+   O `clamp` novo é em `width`, não em `font-size`, e o teto (`8rem` = 128px) é o
+   número que decidiu o lado do asset derivado: 128px × DPR 2 = 256px, e o arquivo
+   tem 320px de lado. Mudar este teto para cima sem regerar
+   `public/images/loading/logo-sistran-portao.webp` (ver
+   `scripts/gerar-logo-portao-sis274.mjs`) começa a ampliar bitmap.
+
+   `height: auto` com o `width`/`height` intrínsecos no `<img>`: a arte é quadrada,
+   então a proporção se mantém sozinha e a caixa continua reservada antes do byte. */
+.logo {
+  width: clamp(4.5rem, 16vw, 8rem);
+  height: auto;
 }
 
+/* SIS-274 — o sinal CONTINUA (a issue manda mantê-lo «se continuar legível no azul
+   novo; senão ajustar contraste»), e a medição diz que não continua: o ciano
+   `#2ac4ff` sobre `#1273bc` dá 2,48:1, abaixo do mínimo de 3:1 para elemento
+   gráfico (WCAG 1.4.11). E não é questão de escolher outro ciano — `#0ed8f6`, o
+   mais claro da paleta, dá 2,90:1 e também reprova. Nenhum azul-ciano da marca
+   alcança 3:1 contra este azul, porque os dois estão na mesma faixa de
+   luminância. Os três números estão em `docs/medidas/logo-portao-sis274.json`.
+
+   Por isso o sinal vira BRANCO — 5,00:1, o mesmo contraste da logo, e a barra passa
+   a ser da mesma família visual do símbolo em vez de um segundo acento disputando
+   atenção. A trilha (o fundo do sulco) acompanha em branco translúcido, senão ela
+   sumiria contra o azul e a barra pareceria correr no vazio.
+
+   O `box-shadow` também troca de cor: era um halo ciano de 18px, e halo ciano
+   debaixo de uma barra branca faria uma franja esverdeada na borda. */
 .signal {
   display: block;
   width: min(15rem, 54vw);
   height: 2px;
   overflow: hidden;
-  background: rgb(42 196 255 / 22%);
+  background: rgb(255 255 255 / 28%);
 }
 
 .signal::after {
@@ -70,8 +126,8 @@
   width: 42%;
   height: 100%;
   content: '';
-  background: #2ac4ff;
-  box-shadow: 0 0 18px rgb(42 196 255 / 85%);
+  background: #fff;
+  box-shadow: 0 0 18px rgb(255 255 255 / 70%);
   animation: route-gate-signal 900ms ease-in-out infinite alternate;
 }
 

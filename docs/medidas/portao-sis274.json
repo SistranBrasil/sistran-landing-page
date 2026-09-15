@@ -1,0 +1,149 @@
+{
+ "janela": {
+  "width": 1440,
+  "height": 900
+ },
+ "azulEsperado": "rgb(18, 115, 188) (#1273bc)",
+ "erros": [],
+ "noCarregamento": {
+  "fundo": "rgb(18, 115, 188)",
+  "fundoImagem": "none",
+  "textoVisivelDoOverlay": "Carregando…",
+  "logo": {
+   "src": "/images/loading/logo-sistran-portao.webp",
+   "altVazio": true,
+   "larguraNatural": 320,
+   "alturaNatural": 320,
+   "larguraCss": 128,
+   "caixa": {
+    "x": 656,
+    "y": 377,
+    "w": 128,
+    "h": 128
+   },
+   "cor": "rgb(248, 250, 252)",
+   "fundoDaImagem": "rgba(0, 0, 0, 0)",
+   "mixBlend": "normal"
+  },
+  "sinal": {
+   "fundoDaTrilha": "rgba(255, 255, 255, 0.28)",
+   "corDaBarra": "rgb(255, 255, 255)",
+   "larguraDaBarra": "100.797px",
+   "animacao": "RouteLoadGate-module__yyizvq__route-gate-signal"
+  },
+  "transicaoDoOverlay": "0.24s",
+  "status": {
+   "texto": "Carregando…",
+   "ariaLive": "polite"
+  },
+  "marcaAriaHidden": true
+ },
+ "naTrocaDeRota": {
+  "alvo": "/trabalhe-conosco",
+  "lido": {
+   "fundo": "rgb(18, 115, 188)",
+   "fundoImagem": "none",
+   "textoVisivelDoOverlay": "Carregando…",
+   "logoSrc": "/images/loading/logo-sistran-portao.webp",
+   "logoAltVazio": true,
+   "temStatusCarregando": true
+  },
+  "urlDepois": "/trabalhe-conosco"
+ },
+ "semCaixaPreta": {
+  "moldura": "12px ao redor de 128×128",
+  "toleranciaPorCanal": 6,
+  "pixelsForaDoAzul": 144,
+  "piorDesvioPorCanal": 16,
+  "pixelMaisEscuroDaMoldura": {
+   "lum": 107,
+   "px": [
+    18,
+    115,
+    188
+   ]
+  }
+ },
+ "nitidez": {
+  "dpr1": {
+   "arquivo": 320,
+   "css": 128,
+   "pixelsDeDispositivo": 128,
+   "razaoArquivoSobreDispositivo": 2.5
+  },
+  "dpr2": {
+   "arquivo": 320,
+   "css": 128,
+   "pixelsDeDispositivo": 256,
+   "razaoArquivoSobreDispositivo": 1.25
+  }
+ },
+ "reduce": {
+  "mediaQuery": {
+   "fundo": "rgb(18, 115, 188)",
+   "fundoImagem": "none",
+   "textoVisivelDoOverlay": "Carregando…",
+   "logo": {
+    "src": "/images/loading/logo-sistran-portao.webp",
+    "altVazio": true,
+    "larguraNatural": 320,
+    "alturaNatural": 320,
+    "larguraCss": 128,
+    "caixa": {
+     "x": 656,
+     "y": 377,
+     "w": 128,
+     "h": 128
+    },
+    "cor": "rgb(248, 250, 252)",
+    "fundoDaImagem": "rgba(0, 0, 0, 0)",
+    "mixBlend": "normal"
+   },
+   "sinal": {
+    "fundoDaTrilha": "rgba(255, 255, 255, 0.28)",
+    "corDaBarra": "rgb(255, 255, 255)",
+    "larguraDaBarra": "240px",
+    "animacao": "none"
+   },
+   "transicaoDoOverlay": "1e-05s",
+   "status": {
+    "texto": "Carregando…",
+    "ariaLive": "polite"
+   },
+   "marcaAriaHidden": true
+  },
+  "atributoDataMotion": {
+   "fundo": "rgb(18, 115, 188)",
+   "fundoImagem": "none",
+   "textoVisivelDoOverlay": "Carregando…",
+   "logo": {
+    "src": "/images/loading/logo-sistran-portao.webp",
+    "altVazio": true,
+    "larguraNatural": 320,
+    "alturaNatural": 320,
+    "larguraCss": 128,
+    "caixa": {
+     "x": 656,
+     "y": 377,
+     "w": 128,
+     "h": 128
+    },
+    "cor": "rgb(248, 250, 252)",
+    "fundoDaImagem": "rgba(0, 0, 0, 0)",
+    "mixBlend": "normal"
+   },
+   "sinal": {
+    "fundoDaTrilha": "rgba(255, 255, 255, 0.28)",
+    "corDaBarra": "rgb(255, 255, 255)",
+    "larguraDaBarra": "240px",
+    "animacao": "none"
+   },
+   "transicaoDoOverlay": "1e-05s",
+   "status": {
+    "texto": "Carregando…",
+    "ariaLive": "polite"
+   },
+   "marcaAriaHidden": true
+  }
+ }
+}

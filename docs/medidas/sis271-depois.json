@@ -1,0 +1,289 @@
+{
+  "viewport": "1440x900",
+  "escopos": [
+    {
+      "classe": "container-lp grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-12",
+      "scrollY": 79,
+      "topoDoc": 800,
+      "altura": 332
+    },
+    {
+      "classe": "(sem classe)",
+      "scrollY": 787,
+      "topoDoc": 1550,
+      "altura": 130
+    },
+    {
+      "classe": "(sem classe)",
+      "scrollY": 1144,
+      "topoDoc": 1720,
+      "altura": 598
+    },
+    {
+      "classe": "mt-10 grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-12",
+      "scrollY": 2229,
+      "topoDoc": 2820,
+      "altura": 552
+    },
+    {
+      "classe": "mt-14 grid grid-cols-1 items-stretch gap-6 md:grid-cols-2",
+      "scrollY": 2719,
+      "topoDoc": 3428,
+      "altura": 512
+    },
+    {
+      "classe": "(sem classe)",
+      "scrollY": 3514,
+      "topoDoc": 4295,
+      "altura": 65
+    },
+    {
+      "classe": "(sem classe)",
+      "scrollY": 3848,
+      "topoDoc": 4400,
+      "altura": 646
+    },
+    {
+      "classe": "cta-ref-palco",
+      "scrollY": 4585,
+      "topoDoc": 5302,
+      "altura": 286
+    }
+  ],
+  "nos": [
+    {
+      "no": "P.eyebrow eyebrow--traco",
+      "preset": "fade",
+      "topoDoc": 808,
+      "yAcende": 79,
+      "abaixoDaDobra": -171
+    },
+    {
+      "no": "P.mt-5 max-w-[24ch] font-display text-3xl leading-tight te",
+      "preset": "fade-up",
+      "topoDoc": 844,
+      "yAcende": 79,
+      "abaixoDaDobra": -135
+    },
+    {
+      "no": "IMG.h-auto w-full",
+      "preset": "fade-up",
+      "topoDoc": 805,
+      "yAcende": 79,
+      "abaixoDaDobra": -174
+    },
+    {
+      "no": "P.mt-5 max-w-3xl text-xl leading-relaxed text-white/85",
+      "preset": "fade-up",
+      "topoDoc": 1550,
+      "yAcende": 787,
+      "abaixoDaDobra": -137
+    },
+    {
+      "no": "LI.esg-cartao-pluma esg-cartao-flutua",
+      "preset": "fade",
+      "topoDoc": 1721,
+      "yAcende": 1144,
+      "abaixoDaDobra": -323
+    },
+    {
+      "no": "LI.esg-cartao-pluma esg-cartao-flutua",
+      "preset": "fade",
+      "topoDoc": 1725,
+      "yAcende": 1144,
+      "abaixoDaDobra": -319
+    },
+    {
+      "no": "LI.esg-cartao-pluma esg-cartao-flutua",
+      "preset": "fade",
+      "topoDoc": 1727,
+      "yAcende": 1144,
+      "abaixoDaDobra": -317
+    },
+    {
+      "no": "LI.esg-cartao-pluma esg-cartao-flutua",
+      "preset": "fade",
+      "topoDoc": 2021,
+      "yAcende": 1144,
+      "abaixoDaDobra": -23
+    },
+    {
+      "no": "LI.esg-cartao-pluma esg-cartao-flutua",
+      "preset": "fade",
+      "topoDoc": 2018,
+      "yAcende": 1144,
+      "abaixoDaDobra": -26
+    },
+    {
+      "no": "LI.esg-cartao-pluma esg-cartao-flutua",
+      "preset": "fade",
+      "topoDoc": 2014,
+      "yAcende": 1144,
+      "abaixoDaDobra": -30
+    },
+    {
+      "no": "DIV.esg-apoio w-fit",
+      "preset": "fade",
+      "topoDoc": 2820,
+      "yAcende": 2229,
+      "abaixoDaDobra": -309
+    },
+    {
+      "no": "H3.mt-7 font-display text-3xl leading-tight text-ink md:te",
+      "preset": "fade-up",
+      "topoDoc": 3058,
+      "yAcende": 2229,
+      "abaixoDaDobra": -71
+    },
+    {
+      "no": "P.mt-5 max-w-xl text-base leading-relaxed text-ink-muted",
+      "preset": "fade-up",
+      "topoDoc": 3118,
+      "yAcende": 2229,
+      "abaixoDaDobra": -11
+    },
+    {
+      "no": "P.mt-5 max-w-xl text-base leading-relaxed text-ink-muted",
+      "preset": "fade-up",
+      "topoDoc": 3294,
+      "yAcende": 2229,
+      "abaixoDaDobra": 165
+    },
+    {
+      "no": "DIV.esg-apoio esg-social-flutua h-full",
+      "preset": "fade",
+      "topoDoc": 3421,
+      "yAcende": 2719,
+      "abaixoDaDobra": -198
+    },
+    {
+      "no": "DIV.esg-apoio esg-social-flutua h-full",
+      "preset": "fade",
+      "topoDoc": 3438,
+      "yAcende": 2719,
+      "abaixoDaDobra": -181
+    },
+    {
+      "no": "P.mt-5 max-w-3xl text-xl leading-relaxed text-white/85",
+      "preset": "fade-up",
+      "topoDoc": 4295,
+      "yAcende": 3514,
+      "abaixoDaDobra": -119
+    },
+    {
+      "no": "LI.esg-cartao-pluma esg-cartao-flutua",
+      "preset": "fade",
+      "topoDoc": 4401,
+      "yAcende": 3848,
+      "abaixoDaDobra": -347
+    },
+    {
+      "no": "LI.esg-cartao-pluma esg-cartao-flutua",
+      "preset": "fade",
+      "topoDoc": 4404,
+      "yAcende": 3848,
+      "abaixoDaDobra": -344
+    },
+    {
+      "no": "LI.esg-cartao-pluma esg-cartao-flutua",
+      "preset": "fade",
+      "topoDoc": 4406,
+      "yAcende": 3848,
+      "abaixoDaDobra": -342
+    },
+    {
+      "no": "LI.esg-cartao-pluma esg-cartao-flutua",
+      "preset": "fade",
+      "topoDoc": 4737,
+      "yAcende": 3848,
+      "abaixoDaDobra": -11
+    },
+    {
+      "no": "LI.esg-cartao-pluma esg-cartao-flutua",
+      "preset": "fade",
+      "topoDoc": 4737,
+      "yAcende": 3848,
+      "abaixoDaDobra": -11
+    },
+    {
+      "no": "LI.esg-cartao-pluma esg-cartao-flutua",
+      "preset": "fade",
+      "topoDoc": 4735,
+      "yAcende": 3848,
+      "abaixoDaDobra": -13
+    },
+    {
+      "no": "DIV.cta-ref-cartao",
+      "preset": "fade",
+      "topoDoc": 5302,
+      "yAcende": 4585,
+      "abaixoDaDobra": -183
+    },
+    {
+      "no": "BUTTON.cta-ref-botao",
+      "preset": "fade",
+      "topoDoc": 5461,
+      "yAcende": 4585,
+      "abaixoDaDobra": -24
+    },
+    {
+      "no": "DIV.cta-ref-arte",
+      "preset": "fade",
+      "topoDoc": 5445,
+      "yAcende": 4585,
+      "abaixoDaDobra": -40
+    }
+  ],
+  "resumo": {
+    "nosMarcados": 26,
+    "animaramForaDaTela": 1,
+    "piorDistancia": 165,
+    "semAcender": 0
+  },
+  "cartao": {
+    "amostras": [
+      {
+        "dataIn": "true",
+        "opacidade": "1",
+        "transform": "matrix(1, 0, 0, 1, 0, 6.87378)"
+      },
+      {
+        "dataIn": "true",
+        "opacidade": "1",
+        "transform": "matrix(1, 0, 0, 1, 0, 5.95333)"
+      },
+      {
+        "dataIn": "true",
+        "opacidade": "1",
+        "transform": "matrix(1, 0, 0, 1, 0, 4.52777)"
+      },
+      {
+        "dataIn": "true",
+        "opacidade": "1",
+        "transform": "matrix(1, 0, 0, 1, 0, 2.76122)"
+      },
+      {
+        "dataIn": "true",
+        "opacidade": "1",
+        "transform": "matrix(1, 0, 0, 1, 0, 0.740978)"
+      },
+      {
+        "dataIn": "true",
+        "opacidade": "1",
+        "transform": "matrix(1, 0, 0, 1, 0, -1.58819)"
+      }
+    ],
+    "hover": {
+      "antes": "none",
+      "durante": "matrix(1.02, 0, 0, 1.02, 0, -12)"
+    }
+  },
+  "reduce": {
+    "marcados": 26,
+    "invisiveis": []
+  },
+  "semJs": {
+    "marcados": 26,
+    "invisiveis": []
+  }
+}

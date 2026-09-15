@@ -22120,12 +22120,34 @@ html[data-motion='reduce'] .cta-reativo:has(:focus-visible) {
      funcionando: o valor USADO de `transform` muda quando a variável muda. */
   --cta-ref-botao-x: 0px;
   --cta-ref-botao-y: 0px;
-  transform: translate3d(var(--cta-ref-botao-x), var(--cta-ref-botao-y), 0);
-  /* Só `transform` e `box-shadow` entram na transição, e a sombra é a única
+  /* SIS-276 — MESMA TROCA DA ARTE, pelo mesmo motivo e no mesmo nó de reveal. Era:
+
+       transform: translate3d(var(--cta-ref-botao-x), var(--cta-ref-botao-y), 0);
+       transition: transform 420ms …, box-shadow 420ms …;
+
+     A SIS-271 pôs `data-reveal="fade"` também neste botão, e
+     `[data-in='true'] [data-reveal] { transform: none }` tem especificidade (0,2,0)
+     contra os (0,1,0) desta classe: o `transform` daqui PERDE a cascata depois da
+     entrada. Medido a 1440 antes da correção: o botão descia para `transform: none`
+     e parava 24px abaixo da linha do desenho (topo 5437 no valor servido, 5461 no
+     estado final) — é o «botão afundado» do aceite desta issue — e o avanço de 6px
+     do hover não acontecia mais, ainda que `--cta-ref-botao-x` mudasse para `6px`
+     (era o valor de `transform` que já não era lido). Ou seja: a regressão de
+     movimento da SIS-253 que o aceite proíbe já estava acontecendo.
+
+     O parágrafo acima desta linha segue valendo INTEGRALMENTE — as duas parcelas
+     continuam em variáveis, e por exatamente a mesma razão: `translate` também é
+     uma propriedade só, e uma regra de hover que escrevesse a translação inteira
+     apagaria a centralização. O que muda é só QUAL propriedade as compõe. Os dois
+     blocos de movimento reduzido no fim do arquivo continuam corretos sem edição:
+     eles zeram a VARIÁVEL e desligam a transição, e nunca declararam `transform`
+     aqui. */
+  translate: var(--cta-ref-botao-x) var(--cta-ref-botao-y);
+  /* Só a translação e `box-shadow` entram na transição, e a sombra é a única
      propriedade cara que fica — nada de `filter: blur()` nem de `will-change`,
      pela mesma razão registrada em `.cta-reativo`. */
   transition:
-    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    translate 420ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 /* Item 2 do movimento: o botão AVANÇA alguns pixels. 6px, para a direita, que é o
@@ -22830,7 +22852,34 @@ html[data-motion='reduce'] .cta-reativo:has(:focus-visible) {
     top: 50%;
     width: var(--cta-ref-arte-w);
     margin: 0;
-    transform: translateY(-50%);
+    /* SIS-276 — A CENTRAGEM SAIU DE `transform` PARA `translate`, e a linha antiga
+       era exatamente esta:
+
+         transform: translateY(-50%);
+
+       Ela deixou de funcionar quando a SIS-271 pôs `data-reveal="fade"` neste nó.
+       O preset do Efeito 4 termina em `[data-in='true'] [data-reveal] { opacity: 1;
+       transform: none }` (mais acima neste arquivo), e `transform: none` não é
+       neutro: ele APAGA o `translateY(-50%)` que subia a arte meia altura. O `fade`
+       foi escolhido justamente para não mexer em `transform` na ENTRADA — e mexe no
+       ESTADO FINAL, que é o que ninguém tinha medido. Os espelhos de movimento
+       reduzido (`@media` na linha 1552 e `html[data-motion='reduce']`) declaram o
+       mesmo `transform: none !important`, então em reduce o defeito era o mesmo.
+
+       O NÚMERO, a 1440 (`docs/medidas/sis276-antes.json`): sem a subida de 170px a
+       caixa da arte ia de 5445 a 5786, e a seção termina em 5716 — 70px de arte
+       DEPOIS do fim da seção, cortados pelo `overflow: hidden` dela, com o rodapé
+       começando no mesmo 5716. Não era `padding-bottom` insuficiente nem posição de
+       desenho: era a centragem cancelada. A 1024 o excedente era de 27px.
+
+       `translate` é propriedade INDEPENDENTE de `transform` (a UA compõe as duas, e
+       a ordem é `translate` antes de `transform`), então o `transform: none` do
+       preset continua valendo — e continua livre para o dia em que alguém trocar o
+       preset por `fade-up` — sem desfazer a centragem. Centrar por
+       `margin-top: calc(var(--cta-ref-arte-w) * -0.408)` também resolveria, mas
+       repetiria a razão 620/760 do `aspect-ratio` num segundo lugar, onde ela sairia
+       de sincronia sozinha. */
+    translate: 0 -50%;
   }
   /* O TÍTULO É MAIOR QUE O `md:text-4xl` (36px) que o componente pede pelas
      utilitárias — era a quarta diferença medida contra o PNG, onde ele passa dos

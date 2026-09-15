@@ -67,16 +67,31 @@ export const metadata = {
    · duração 820ms e curva expo-out (§4.2 e §4.4), em variáveis DE ESCOPO, não em
      token do `:root` — a home e as outras rotas estão fora de escopo;
    · os cinco escopos passaram a ESPERAR A CORTINA do `RouteLoadGate` (`esperarRota`).
-   Cada número, com a razão medida, em `./reveal-calibre.ts`; o defeito que a
-   espera corrige está no docblock de `motion/useRevealTrigger.ts`.
+
+   ── 3ª VOLTA (SIS-269): «o reveal deve acompanhar o scroll» ─────────────────
+   ⚠️ OS DOIS PRIMEIROS ITENS DA 2ª VOLTA CADUCARAM — e caducaram por medida, não
+   por gosto. `docs/medidas/sis269-antes.json` (1440×900, `data-in` por nó contra
+   `scrollY`) mostra o que a margem positiva mais o limiar 0.08 produziam:
+   · dos 15 nós `[data-reveal]`, **8 animavam abaixo da dobra**, o pior a 450px
+     dela. Animação que termina antes de entrar na tela não é reveal — quando a
+     pessoa chega, o bloco já está parado. É esse o «disparou tudo após o load»
+     do feedback, e não uma cascata literal: no load só a faixa de indicadores
+     acendia (ela está 61% na tela), e mapa e palco já esperavam a rolagem.
+   O calibre novo é `-12%` / `0.15` (razão de cada número em `./reveal-calibre.ts`),
+   e `esperarRota` ficou SÓ no bloco da dobra — nos outros quatro ele só servia
+   para criar os cinco observadores no mesmo instante em que a cortina subia.
+   O medido depois está em `docs/medidas/sis269-depois.json`.
+   Duração, curva e cascata dos indicadores continuam como a 2ª volta os deixou.
 
    ⚠️ E ISTO CORRIGE UMA AFIRMAÇÃO ERRADA QUE EU ESCREVI NA 1ª VOLTA. Estava
    registrado que nada marcado ficava na primeira dobra. Fica: medido a 1440×900,
-   a faixa de indicadores começa em y=742 e o escopo dela vai até y=1000 — 61% já
-   na tela quando a página abre. Com o calibre antigo, a margem de −12% encolhia a
-   raiz para 792 e deixavam-se 19% visíveis, um fio abaixo do limiar de 20%: o
-   bloco ficava PRESO em `data-in="false"` na abertura, invisível na tela, até a
-   primeira rolagem. Era o item 3 do §8 do guia acontecendo na dobra. */
+   a faixa de indicadores começa em y=742 e o escopo dela mede 221px — 61% já na
+   tela quando a página abre. É o que fazia o calibre da 1ª volta (`-12%` COM
+   limiar 0.2) prender o bloco em `data-in="false"` na abertura: a raiz encolhia
+   para 792 e sobravam 19% visíveis, um fio abaixo dos 20%. Era o item 3 do §8 do
+   guia acontecendo na dobra — e é por isso que a 3ª volta, que traz a margem
+   negativa de volta, NÃO traz o limiar de 0.2: com 0.15 a mesma faixa entra com
+   22,6% e acende no load, conferido na medida de depois. */
 export default function Page() {
   return (
     <PageShell>
@@ -207,8 +222,12 @@ export default function Page() {
              chega a haver colisão porque o laço vive na trilha lá dentro e o
              reveal fica no invólucro — mas somar subida ao movimento lateral seria
              ler como falha de carregamento, não como entrada. */}
+      {/* SIS-269 — `esperarRota` saiu daqui e dos outros três escopos desta rota;
+          ficou só no bloco da dobra (a faixa de indicadores, em `MetricsBand`).
+          Com ele, os cinco observadores nasciam no mesmo instante em que a
+          cortina subia e avaliavam a rota inteira de uma vez. A razão completa e
+          a medida estão em `./reveal-calibre.ts`. */}
       <RevealScope
-        esperarRota
         limiar={LIMIAR_REVEAL}
         margem={MARGEM_REVEAL}
         style={AFINACAO_REVEAL}
@@ -312,7 +331,7 @@ export default function Page() {
             malha. */}
         <RevealScope
           className="contact-inline"
-          esperarRota
+          /* sem `esperarRota` — ver a nota da faixa de parceiros, acima */
           limiar={LIMIAR_REVEAL}
           margem={MARGEM_REVEAL}
           style={AFINACAO_REVEAL}
@@ -381,7 +400,7 @@ export default function Page() {
           do §6 de `docs/scroll.md` — e pior, com dois donos do `transform`. */}
       <section aria-labelledby="onde-estamos">
         <RevealScope
-          esperarRota
+          /* sem `esperarRota` — ver a nota da faixa de parceiros, acima */
           limiar={LIMIAR_REVEAL}
           margem={MARGEM_REVEAL}
           style={AFINACAO_REVEAL}
@@ -561,7 +580,7 @@ export default function Page() {
             marcação. O cartão continua entrando; só não entra por aqui. */}
         <RevealScope
           className="container-lp relative lg:grid lg:grid-cols-[1fr_auto] lg:items-center lg:gap-16"
-          esperarRota
+          /* sem `esperarRota` — ver a nota da faixa de parceiros, acima */
           limiar={LIMIAR_REVEAL}
           margem={MARGEM_REVEAL}
           style={AFINACAO_REVEAL}

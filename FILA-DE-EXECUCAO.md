@@ -130,13 +130,21 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-215** | Todo | eventos | Retirar/clarear bandas azuis escuras no início e fim do scroll |
 | **SIS-216** | Backlog | eventos | Esboço: admin com senha (sem sessão/seção pública) — não implementar ainda |
 | **SIS-244** | Backlog | home | Soluções: trocar imagens — **artes da usuária** (não despachar ao robô) |
+| **SIS-267** | Backlog | arte | Logo Picsel HD (PNG + transparente) — **sua**; não despachar até o arquivo |
 | **SIS-217** | Todo | solucoes | Cards aceleradores: logos `public/images/logos` + reação no hover |
 | **SIS-221** | Todo | quem-somos | Escritórios BRASIL: baixar marcador do 2º andar SP na torre |
 | **SIS-222** | Todo | contato | Loading a cada entrada até página + mapa prontos |
 | **SIS-245** | Done | contato | Onde Estamos: endereço Pato Branco, sem link RJ, mapa azul mais claro |
 | **SIS-255** | Todo | contato | Onde Estamos: sombra atrás do mapa menos escura e menos quadrada |
 | **SIS-259** | Todo | contato | Retirar sombra branca entre logos e «SAIBA MAIS…» |
-| **SIS-263** | Todo | contato | Reveal on scroll em toda a página (`docs/scroll.md` + RevealScope) |
+| **SIS-263** | In Review | contato | Reveal on scroll em toda a página (`docs/scroll.md` + RevealScope) |
+| **SIS-269** | Todo | contato | Reveal deve acompanhar o scroll (não tudo após o load) — **antes das irmãs** |
+| **SIS-270** | Todo | trabalhe-conosco | Reveal on scroll (`docs/scroll.md`) — após SIS-269 |
+| **SIS-271** | Todo | esg | Reveal on scroll (`docs/scroll.md`) — após SIS-269 |
+| **SIS-272** | Todo | eventos | Reveal on scroll (`docs/scroll.md`) — após SIS-269 |
+| **SIS-273** | Todo | solucoes | Reveal on scroll (`docs/scroll.md`) — após SIS-269 |
+| **SIS-275** | In Review | home | Reveal on scroll (`docs/scroll.md`) — entregue; conferência dispensada |
+| **SIS-274** | Todo | loading | RouteLoadGate: fundo `#1273bc` + logo HD no lugar de SISTRAN |
 | **SIS-266** | Todo | footer | Item ativo na coluna Navegação conforme a página |
 | **SIS-247** | In Review | esg | Capa de abertura = esgcapa.png |
 | **SIS-257** | In Review | esg | Capa «ESG - Environment, Social & Governance» + seção intro com esg1.png |
@@ -156,16 +164,19 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-229** | Todo | sistran-labs | Principais Soluções: arte `principaissolucoes` bem integrada |
 | **SIS-230** | In Review | quem-somos | Premiações Celent (montagem 230) — supersedida visualmente por SIS-238 |
 | **SIS-231** | Todo | solucoes | Remover seção Transformação de Legado (método / quatro movimentos) |
-| **SIS-232** | Todo | eventos | Miniaturas laterais maiores e mais perto do card em destaque |
+| **SIS-232** | In Review | eventos | Miniaturas laterais maiores e mais perto do card em destaque |
+| **SIS-268** | Done | eventos | Aproximar **ainda mais** as previews do card central (pós-232) — fechada em 15/09 **sem conferência**, a seu pedido |
 | **SIS-233** | Todo | esg | Título e descrição da abertura iguais ao padrão de /contato |
 | **SIS-234** | In Review | esg | SOCIAL: foguete do scroll colorido e 3D (logo Gerando Talentos) |
 | **SIS-254** | Todo | esg | SOCIAL: foguete do scroll = foguete.png (substitui SVG) |
 | **SIS-235** | Todo | eventos | Tag «Realizado pela Sistran» vira componente carimbo |
 | **SIS-236** | Todo | parceiros | Tirar tarja azul clara da capa / emenda |
+| **SIS-277** | Todo | parceiros | Tag da abertura = `carimbo-parcerias.png` com efeito ao entrar |
 | **SIS-237** | In Review | esg | ENVIRONMENT + GOVERNANCE: flutuação e hover bem perceptíveis |
 | **SIS-252** | Todo | esg | ENVIRONMENT + GOVERNANCE: azul bem clarinho no repouso + troca de cor no hover |
 | **SIS-253** | Todo | esg | Fale com a Gente! = falecomagente.png (+ ponto na linha, hover botão) |
 | **SIS-265** | Todo | esg | Fale com a Gente!: logo HD `logosistranaltadefinicao.png` |
+| **SIS-276** | Todo | esg | Fale com a Gente!: grafismo cortado/baixo demais no rodapé |
 | **SIS-238** | Todo | quem-somos | Premiações: fundo cele.png + layout escritas/logo (exemplcelent) |
 | **SIS-239** | In Review | eventos | Mobile: carrossel horizontal automático dos eventos |
 | **SIS-251** | Todo | eventos | Mobile: carrossel mais intuitivo (swipe + auto) — pós SIS-239 |

@@ -307,7 +307,11 @@ export default function Page() {
             serifa no layout raiz (TIPOGRAFIA.md) ele não carrega mais nada, e
             ficou só como o `<div>` que já delimitava a seção. Conteúdo em
             `src/data/legacy.ts` (`impactSequence`). Fora do `SectionReveal`: a
-            seção já tem o próprio percurso de scroll. */}
+            seção já tem o próprio percurso de scroll.
+            SIS-275 — a legenda (`h2` / lead / kicker) já entra por
+            `[data-reveal]` + `useRevealTrigger` no sticky (SIS-197), agora com
+            calibre canônico `-12%` / `0.15`. Sem wrapper `RevealScope` aqui:
+            o sticky precisa continuar sem ancestral com `transform`. */}
         <div>
           <ImpactSequence />
         </div>

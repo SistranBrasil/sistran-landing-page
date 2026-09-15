@@ -1,0 +1,388 @@
+{
+ "rota": "http://localhost:3000/eventos-inovacao",
+ "desktop": {
+  "janela": {
+   "width": 1440,
+   "height": 900
+  },
+  "ordemCortina": {
+   "msCortinaLevantou": 1611,
+   "msPrimeiroEscopoAcendeu": 1661,
+   "primeiroEscopo": "eventos-fio",
+   "acendeuDepoisDaCortina": true
+  },
+  "noTopo": [
+   {
+    "nome": "eventos-fio",
+    "dataIn": "true",
+    "preset": "line-up",
+    "opacidadeDoAlvo": "1",
+    "temCaixa": true,
+    "dentroDaPrimeiraDobra": true
+   },
+   {
+    "nome": "eventos-contador",
+    "dataIn": "false",
+    "preset": "fade-up",
+    "opacidadeDoAlvo": "0",
+    "temCaixa": true,
+    "dentroDaPrimeiraDobra": false
+   },
+   {
+    "nome": "eventos-lista-cabecalho",
+    "dataIn": "false",
+    "preset": "fade-up",
+    "opacidadeDoAlvo": "0",
+    "temCaixa": false,
+    "dentroDaPrimeiraDobra": false
+   }
+  ],
+  "geometria": {
+   "hero": {
+    "topoAbsoluto": 144,
+    "altura": 414,
+    "largura": 1440
+   },
+   "secao": {
+    "topoAbsoluto": 558,
+    "altura": 8100,
+    "largura": 1440
+   },
+   "escopoDaRegua": {
+    "topoAbsoluto": 558,
+    "altura": 3,
+    "largura": 1440
+   },
+   "regua": {
+    "topoAbsoluto": 558,
+    "altura": 3,
+    "largura": 1440
+   },
+   "palco": {
+    "topoAbsoluto": 558,
+    "altura": 900,
+    "largura": 1440
+   },
+   "contador": {
+    "topoAbsoluto": 1385,
+    "altura": 77.27,
+    "largura": 1440
+   },
+   "social": {
+    "topoAbsoluto": 8658,
+    "altura": 816,
+    "largura": 1440
+   },
+   "alturaDaJanela": 900,
+   "alturaDaPagina": 9916
+  },
+  "stickyIntacto": {
+   "palcoMarcadoEleMesmo": 0,
+   "ancestraisComTransform": [],
+   "positionComputado": "sticky",
+   "marcadosDentroDoPalco": 1
+  },
+  "linhaDoTempo": [
+   {
+    "nome": "eventos-fio",
+    "scrollY": 0
+   },
+   {
+    "nome": "eventos-contador",
+    "scrollY": 500
+   }
+  ],
+  "sticky": {
+   "passosComPalcoEmQuadro": 87,
+   "passosGrudadoNoTopo": 72,
+   "pxDeRolagemComOPalcoPreso": 7200
+  },
+  "contadorDistintos": [
+   "01 / de15",
+   "02 / de15",
+   "03 / de15",
+   "04 / de15",
+   "05 / de15",
+   "06 / de15",
+   "07 / de15",
+   "08 / de15",
+   "09 / de15",
+   "10 / de15",
+   "11 / de15",
+   "12 / de15",
+   "13 / de15",
+   "14 / de15",
+   "15 / de15"
+  ],
+  "passosContadorEmQuadroApagado": 1,
+  "semSegundoReveal": {
+   "hero": 0,
+   "cartaoCentral": 0,
+   "previews": 0,
+   "faixaDoCarrossel": 0,
+   "controlesDoCarrossel": 0,
+   "social": 0
+  },
+  "fechoPorScroll": {
+   "opacidadeNoTopo": 0,
+   "scrollYQuandoAcendeu": 8600
+  },
+  "reduceMidia": [
+   {
+    "preset": "line-up",
+    "opacidade": "1",
+    "transform": "none",
+    "transitionDuration": "1e-05s",
+    "transitionDelay": "0s"
+   },
+   {
+    "preset": "fade-up",
+    "opacidade": "1",
+    "transform": "none",
+    "transitionDuration": "1e-05s",
+    "transitionDelay": "0s"
+   },
+   {
+    "preset": "fade-up",
+    "opacidade": "1",
+    "transform": "none",
+    "transitionDuration": "1e-05s",
+    "transitionDelay": "0s"
+   },
+   {
+    "preset": "fade-up",
+    "opacidade": "1",
+    "transform": "none",
+    "transitionDuration": "1e-05s",
+    "transitionDelay": "0.08s"
+   }
+  ],
+  "reduceMidiaNoFim": [
+   {
+    "preset": "line-up",
+    "opacidade": "1",
+    "transform": "none",
+    "transitionDuration": "1e-05s",
+    "transitionDelay": "0s"
+   },
+   {
+    "preset": "fade-up",
+    "opacidade": "1",
+    "transform": "none",
+    "transitionDuration": "1e-05s",
+    "transitionDelay": "0s"
+   },
+   {
+    "preset": "fade-up",
+    "opacidade": "1",
+    "transform": "none",
+    "transitionDuration": "1e-05s",
+    "transitionDelay": "0s"
+   },
+   {
+    "preset": "fade-up",
+    "opacidade": "1",
+    "transform": "none",
+    "transitionDuration": "1e-05s",
+    "transitionDelay": "0.08s"
+   }
+  ],
+  "reduceAtributo": {
+   "atributoNoHtml": "reduce",
+   "nos": [
+    {
+     "preset": "line-up",
+     "opacidade": "1",
+     "transform": "none",
+     "transitionDuration": "1e-05s",
+     "transitionDelay": "0s"
+    },
+    {
+     "preset": "fade-up",
+     "opacidade": "1",
+     "transform": "none",
+     "transitionDuration": "1e-05s",
+     "transitionDelay": "0s"
+    },
+    {
+     "preset": "fade-up",
+     "opacidade": "1",
+     "transform": "none",
+     "transitionDuration": "1e-05s",
+     "transitionDelay": "0s"
+    },
+    {
+     "preset": "fade-up",
+     "opacidade": "1",
+     "transform": "none",
+     "transitionDuration": "1e-05s",
+     "transitionDelay": "0.08s"
+    }
+   ]
+  }
+ },
+ "mobile": {
+  "janela": {
+   "width": 390,
+   "height": 844
+  },
+  "ordemCortina": {
+   "msCortinaLevantou": 1281,
+   "msPrimeiroEscopoAcendeu": 1310,
+   "primeiroEscopo": "eventos-lista-cabecalho",
+   "acendeuDepoisDaCortina": true
+  },
+  "geometria": {
+   "hero": {
+    "topoAbsoluto": 112,
+    "altura": 388.23,
+    "largura": 390
+   },
+   "cenaDesktop": "sem caixa",
+   "lista": {
+    "topoAbsoluto": 500,
+    "altura": 896.5,
+    "largura": 390
+   },
+   "cabecalho": {
+    "topoAbsoluto": 540,
+    "altura": 52.94,
+    "largura": 390
+   },
+   "faixa": {
+    "topoAbsoluto": 617,
+    "altura": 649.88,
+    "largura": 390
+   },
+   "controles": {
+    "topoAbsoluto": 1279,
+    "altura": 44,
+    "largura": 390
+   },
+   "social": {
+    "topoAbsoluto": 1397,
+    "altura": 1168.5,
+    "largura": 390
+   },
+   "alturaDaJanela": 844,
+   "alturaDaPagina": 3659
+  },
+  "noTopo": [
+   {
+    "nome": "eventos-fio",
+    "dataIn": "false",
+    "opacidadeDoAlvo": "0",
+    "temCaixa": false,
+    "dentroDaPrimeiraDobra": false
+   },
+   {
+    "nome": "eventos-contador",
+    "dataIn": "false",
+    "opacidadeDoAlvo": "0",
+    "temCaixa": false,
+    "dentroDaPrimeiraDobra": false
+   },
+   {
+    "nome": "eventos-lista-cabecalho",
+    "dataIn": "true",
+    "opacidadeDoAlvo": "1",
+    "temCaixa": true,
+    "dentroDaPrimeiraDobra": true
+   }
+  ],
+  "linhaDoTempo": [
+   {
+    "nome": "eventos-lista-cabecalho",
+    "scrollY": 0
+   }
+  ],
+  "semSegundoReveal": {
+   "hero": 0,
+   "cartaoCentral": 0,
+   "previews": 0,
+   "faixaDoCarrossel": 0,
+   "controlesDoCarrossel": 0,
+   "social": 0
+  },
+  "fechoPorScroll": {
+   "opacidadeNoTopo": 0,
+   "scrollYQuandoAcendeu": 1120
+  },
+  "carrossel": {
+   "antes": {
+    "scrollLeft": 0,
+    "marcaAtiva": 0
+   },
+   "depoisDe8s": {
+    "scrollLeft": 331,
+    "marcaAtiva": 1
+   },
+   "autoplayAndou": true,
+   "marcaAcompanhou": true
+  },
+  "reduceMidia": [
+   {
+    "preset": "line-up",
+    "opacidade": "1",
+    "transform": "none",
+    "transitionDuration": "1e-05s",
+    "transitionDelay": "0s"
+   },
+   {
+    "preset": "fade-up",
+    "opacidade": "1",
+    "transform": "none",
+    "transitionDuration": "1e-05s",
+    "transitionDelay": "0s"
+   },
+   {
+    "preset": "fade-up",
+    "opacidade": "1",
+    "transform": "none",
+    "transitionDuration": "1e-05s",
+    "transitionDelay": "0s"
+   },
+   {
+    "preset": "fade-up",
+    "opacidade": "1",
+    "transform": "none",
+    "transitionDuration": "1e-05s",
+    "transitionDelay": "0.08s"
+   }
+  ]
+ },
+ "erros": [],
+ "semJs": {
+  "nosMarcadosNoHtmlDoServidor": 4,
+  "escoposNoHtmlDoServidor": 3,
+  "dataInNoHtmlDoServidor": 0,
+  "opacidades": [
+   "1",
+   "1",
+   "1",
+   "1"
+  ]
+ },
+ "veredito": {
+  "contadorAcendeuAoRolar": true,
+  "reguaEContadorEmGestosDiferentes": true,
+  "distanciaEntreOsDoisEscoposDesktop": 500,
+  "escoposDaDobraEsperaramACortina": true,
+  "cabecalhoEstreitoAcendeu": true,
+  "palcoNaoFoiMarcado": true,
+  "nenhumAncestralDoPalcoComTransform": true,
+  "palcoContinuaSticky": true,
+  "palcoGrudouNoTopo": true,
+  "contadorPercorreuOsQuinze": true,
+  "contadorNaoFicouApagadoEmQuadro": true,
+  "carrosselAndouSozinho": true,
+  "marcasAcompanharam": true,
+  "semRevealNosProibidos": true,
+  "reguaNoTopoDaSecao": true,
+  "escopoDaReguaTemArea": true,
+  "reduceMostraTudoSemMovimento": true,
+  "reduceSemEspera": true,
+  "semJsMostraConteudo": true,
+  "semErrosDeConsole": true
+ }
+}

@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from '@/lib/motion';
 import { SOLUTIONS } from '@/data/solutions';
+import RevealScope from '@/components/motion/RevealScope';
+import { LIMIAR_REVEAL_TRILHO, MARGEM_REVEAL_TRILHO } from '@/app/solucoes/reveal-calibre';
 import './services-journey-stage.css';
 
 /**
@@ -261,17 +263,54 @@ export default function ServicesJourneyStage({
             e o último card acabaria passando por cima do título. O trilho termina
             `--svc-tail` antes do fim da coluna, então a abertura solta primeiro e
             a ordem de saída se inverte. */}
-        <div className="svc-journey-head">
+        {/* SIS-273 — escopo 2 de 3 do reveal por scroll de `/solucoes`: a
+            abertura desta seção era o único bloco de texto da rota que entrava
+            sem orquestração nenhuma.
+            O `RevealScope` ASSUME o trilho (`.svc-journey-head`), e não o
+            embrulha, por duas razões que se somam:
+              · embrulhando por FORA, o invólucro herdaria o fluxo — o trilho é
+                `position: absolute`, logo o invólucro teria altura ZERO, e um
+                `IntersectionObserver` com limiar > 0 sobre alvo de área zero
+                nunca dispara (razão sempre 0);
+              · embrulhando por DENTRO, o invólucro passaria a ser o pai do
+                `<header>` `sticky`, e o curso de um `sticky` é a altura do pai:
+                o título deixaria de acompanhar a pilha, que é o efeito inteiro
+                desta seção.
+            Assumindo o trilho, a árvore fica IDÊNTICA à de antes — só o `<div>`
+            virou o escopo. Nenhum `transform` entra em volta de `sticky` algum:
+            o escopo não escreve `transform` (só `data-in`), e quem recebe preset
+            são os quatro nós de texto lá dentro, que são estáticos. O `sticky`
+            (`.svc-journey-intro`) fica sem marca.
+            `--svc-intro-h` continua correto durante a animação: `transform` não
+            muda altura de layout, então o `getBoundingClientRect` do `<header>`
+            lê o mesmo número com os filhos deslocados ou parados.
+            O calibre é o par do TRILHO, não o da rota — a razão está no docblock
+            de `reveal-calibre.ts`: esta caixa tem a altura da coluna toda. */}
+        <RevealScope
+          className="svc-journey-head"
+          limiar={LIMIAR_REVEAL_TRILHO}
+          margem={MARGEM_REVEAL_TRILHO}
+          data-reveal-nome="servicos-abertura"
+        >
           <header ref={intro} className="svc-journey-intro">
-            <span className="tag-section">{eyebrow}</span>
-            <h2>{title}</h2>
-            {paragraphs.map((texto) => (
-              <p key={texto} className="svc-journey-lead">
+            <span className="tag-section" data-reveal="fade-up">
+              {eyebrow}
+            </span>
+            <h2 data-reveal="fade-up" style={{ '--reveal-i': 1 } as React.CSSProperties}>
+              {title}
+            </h2>
+            {paragraphs.map((texto, i) => (
+              <p
+                key={texto}
+                className="svc-journey-lead"
+                data-reveal="fade-up"
+                style={{ '--reveal-i': i + 2 } as React.CSSProperties}
+              >
                 {texto}
               </p>
             ))}
           </header>
-        </div>
+        </RevealScope>
 
         <div className="svc-journey-deck">
           {SOLUTIONS.map((s, index) => (

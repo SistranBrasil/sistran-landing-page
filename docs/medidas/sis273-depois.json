@@ -1,0 +1,260 @@
+{
+  "rota": "/solucoes",
+  "viewport": "1440x900",
+  "nosMarcados": 6,
+  "escopos": [
+    {
+      "nome": "nav-ancoras",
+      "altura": 0,
+      "topoDoc": 0,
+      "visivel": false
+    },
+    {
+      "nome": "servicos-abertura",
+      "altura": 2206,
+      "topoDoc": 2363,
+      "visivel": true
+    },
+    {
+      "nome": "servicos-cta",
+      "altura": 44,
+      "topoDoc": 5110,
+      "visivel": true
+    }
+  ],
+  "linhaDoTempo": [
+    {
+      "nome": "servicos-abertura",
+      "y": 1797,
+      "topo": 566,
+      "altura": 2206,
+      "pctDaJanela": 63,
+      "filhos": [
+        {
+          "tag": "SPAN",
+          "texto": "Diferenciais",
+          "abaixoDaDobra": -280
+        },
+        {
+          "tag": "H2",
+          "texto": "Serviços",
+          "abaixoDaDobra": -219
+        },
+        {
+          "tag": "P",
+          "texto": "Dedicada ao mercado segurador, com",
+          "abaixoDaDobra": -134
+        },
+        {
+          "tag": "P",
+          "texto": "Somos uma empresa de TI 100% focad",
+          "abaixoDaDobra": -25
+        }
+      ]
+    },
+    {
+      "nome": "servicos-cta",
+      "y": 4353,
+      "topo": 757,
+      "altura": 44,
+      "pctDaJanela": 84,
+      "filhos": [
+        {
+          "tag": "SPAN",
+          "texto": "Quero um serviço exclusivo",
+          "abaixoDaDobra": -75
+        }
+      ]
+    }
+  ],
+  "animaramForaDaTela": 0,
+  "piorDistancia": 0,
+  "detalheForaDaTela": [],
+  "semAcender": 0,
+  "sticky": [
+    {
+      "y": 2502,
+      "video": 108,
+      "posVideo": "sticky",
+      "ativo": 0,
+      "topoAtivo": 415,
+      "intro": 108,
+      "posIntro": "sticky"
+    },
+    {
+      "y": 2975,
+      "video": 108,
+      "posVideo": "sticky",
+      "ativo": 1,
+      "topoAtivo": 415,
+      "intro": 108,
+      "posIntro": "sticky"
+    },
+    {
+      "y": 3434,
+      "video": 108,
+      "posVideo": "sticky",
+      "ativo": 2,
+      "topoAtivo": 415,
+      "intro": 108,
+      "posIntro": "sticky"
+    },
+    {
+      "y": 3922,
+      "video": 108,
+      "posVideo": "sticky",
+      "ativo": 3,
+      "topoAtivo": 415,
+      "intro": 108,
+      "posIntro": "sticky"
+    },
+    {
+      "y": 4453,
+      "video": -49,
+      "posVideo": "sticky",
+      "ativo": 3,
+      "topoAtivo": 137,
+      "intro": -170,
+      "posIntro": "sticky"
+    },
+    {
+      "y": 4897,
+      "video": -493,
+      "posVideo": "sticky",
+      "ativo": 3,
+      "topoAtivo": -307,
+      "intro": -614,
+      "posIntro": "sticky"
+    },
+    {
+      "y": 5327,
+      "video": -923,
+      "posVideo": "sticky",
+      "ativo": 3,
+      "topoAtivo": -737,
+      "intro": -1044,
+      "posIntro": "sticky"
+    },
+    {
+      "y": 5797,
+      "video": -1393,
+      "posVideo": "sticky",
+      "ativo": 3,
+      "topoAtivo": -1207,
+      "intro": -1514,
+      "posIntro": "sticky"
+    },
+    {
+      "y": 6239,
+      "video": -1835,
+      "posVideo": "sticky",
+      "ativo": 3,
+      "topoAtivo": -1649,
+      "intro": -1956,
+      "posIntro": "sticky"
+    },
+    {
+      "y": 6539,
+      "video": -2135,
+      "posVideo": "sticky",
+      "ativo": 3,
+      "topoAtivo": -1949,
+      "intro": -2256,
+      "posIntro": "sticky"
+    },
+    {
+      "y": 6539,
+      "video": -2135,
+      "posVideo": "sticky",
+      "ativo": 3,
+      "topoAtivo": -1949,
+      "intro": -2256,
+      "posIntro": "sticky"
+    },
+    {
+      "y": 6539,
+      "video": -2135,
+      "posVideo": "sticky",
+      "ativo": 3,
+      "topoAtivo": -1949,
+      "intro": -2256,
+      "posIntro": "sticky"
+    }
+  ],
+  "estreito": {
+    "largura": 390,
+    "navAntes": {
+      "dataIn": "true",
+      "display": "block",
+      "opacidade": 1,
+      "topoDoc": 582
+    },
+    "timeline": [
+      {
+        "nome": "nav-ancoras",
+        "y": 0,
+        "topo": 582,
+        "pctDaJanela": 69,
+        "filhos": [
+          {
+            "tag": "NAV",
+            "texto": "Nesta páginaTecnologia DisruptivaS",
+            "abaixoDaDobra": -88
+          }
+        ]
+      },
+      {
+        "nome": "servicos-abertura",
+        "y": 3638,
+        "topo": 499,
+        "pctDaJanela": 59,
+        "filhos": [
+          {
+            "tag": "SPAN",
+            "texto": "Diferenciais",
+            "abaixoDaDobra": -290
+          },
+          {
+            "tag": "H2",
+            "texto": "Serviços",
+            "abaixoDaDobra": -246
+          },
+          {
+            "tag": "P",
+            "texto": "Dedicada ao mercado segurador, com",
+            "abaixoDaDobra": -137
+          },
+          {
+            "tag": "P",
+            "texto": "Somos uma empresa de TI 100% focad",
+            "abaixoDaDobra": -28
+          }
+        ]
+      },
+      {
+        "nome": "servicos-cta",
+        "y": 4477,
+        "topo": 693,
+        "pctDaJanela": 82,
+        "filhos": [
+          {
+            "tag": "SPAN",
+            "texto": "Quero um serviço exclusivo",
+            "abaixoDaDobra": -83
+          }
+        ]
+      }
+    ],
+    "invisiveis": 0
+  },
+  "reduzido": {
+    "marcados": 6,
+    "invisiveis": 0,
+    "piorOpacidade": 1
+  },
+  "semJs": {
+    "marcados": 6,
+    "invisiveis": 0,
+    "piorOpacidade": 1
+  }
+}

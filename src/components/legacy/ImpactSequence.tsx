@@ -4,6 +4,7 @@ import "./legacy.css"
 import { motion, useScroll, useSpring, useTransform } from "motion/react"
 import { useEffect, useRef, useState, type CSSProperties } from "react"
 import { useRevealTrigger } from "@/components/motion/useRevealTrigger"
+import { LIMIAR_REVEAL, MARGEM_REVEAL } from "@/lib/reveal-calibre"
 import { ScrollVideo } from "@/components/primitives/ScrollVideo"
 import { useReducedMotion } from "@/lib/motion"
 import { useVisibilityGate } from "@/lib/useVisibilityGate"
@@ -130,20 +131,26 @@ export function ImpactSequence() {
   // `opacity: 0` ainda recebe seleção e foco: some de verdade ao chegar no fim.
   const copy = useVisibilityGate<HTMLDivElement>(copyFade, !reduced)
 
-  /* SIS-197 — a legenda desta seção só sabia SAIR: `copyFade` a apaga quando o
-     recuo começa (`SHRINK`), e nada nunca a trouxe. Ela aparecia pronta, no
-     mesmo quadro em que a seção encosta na tela, e essa era a entrada ad-hoc
-     inconsistente que o Efeito 4 vem uniformizar.
+  /* SIS-197 / SIS-275 — a legenda desta seção só sabia SAIR: `copyFade` a
+     apaga quando o recuo começa (`SHRINK`), e nada nunca a trouxe. Ela
+     aparecia pronta, no mesmo quadro em que a seção encosta na tela.
      O escopo é o `.sequence-sticky`, e não o `.sequence-copy`: este último já
      carrega `ref={copy}` do `useVisibilityGate`, e fundir dois refs num nó que
      também recebe `style` de `motion` é risco sem ganho — o pai serve igual.
      Marcar `transform` nos FILHOS do sticky é inócuo: só ancestrais do elemento
      preso viram contexto de contenção, e o `.sequence-sticky` continua sem
-     nenhum ancestral transformado. */
+     nenhum ancestral transformado.
+     SIS-275 — NÃO vira `RevealScope`: o envelope seria ancestral (ou substituto)
+     do sticky e quebraria a referência da viewport. O gatilho continua
+     `useRevealTrigger` no próprio sticky, com o calibre canônico pós-SIS-269.
+     Sem `esperarRota`: o bloco da dobra é o hero. */
   /* Desestruturado, e não `legenda.ref`: o `react-hooks/refs` lê o acesso à
      propriedade dentro do JSX como leitura de ref durante o render e acusa erro
      (o portão de lint da casa é 0 erros). O nome sai do hook já como ref. */
-  const { ref: legendaRef } = useRevealTrigger<HTMLDivElement>()
+  const { ref: legendaRef } = useRevealTrigger<HTMLDivElement>({
+    limiar: LIMIAR_REVEAL,
+    margem: MARGEM_REVEAL,
+  })
 
   /* SIS-214, alvo 4 (spy/rótulos) — NÃO HÁ NADA A MUDAR em
      `src/data/pageSections.ts`, e fica escrito para a próxima pessoa não ir
@@ -163,7 +170,11 @@ export function ImpactSequence() {
       data-dirigindo={dirigindo ? "true" : undefined}
       aria-labelledby="impacto-title"
     >
-      <div className="sequence-sticky" ref={legendaRef}>
+      <div
+        className="sequence-sticky"
+        ref={legendaRef}
+        data-reveal-nome="home-impacto-legenda"
+      >
         <motion.div
           className="sequence-visual"
           style={reduced ? undefined : { scale, borderRadius: radius }}

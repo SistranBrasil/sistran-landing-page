@@ -77,6 +77,15 @@ type Props = {
    * renderizado, então as outras sete continuam byte por byte.
    */
   layoutReferencia?: boolean;
+  /**
+   * SIS-271 — liga o reveal on scroll do desenho de referência e traz o CALIBRE da
+   * rota junto, em vez de reescrevê-lo aqui: são dez telas montando este bloco e o
+   * pedido é de UMA (`/esg`), cujo calibre mora em `src/app/esg/reveal-calibre.ts`.
+   * Indefinida (o padrão), nada muda — o `ContactCTAReferencia` renderiza a mesma
+   * árvore de hoje, sem `RevealScope` e sem `data-reveal`. Só tem efeito no caminho
+   * de `layoutReferencia`, que é o único que o consome.
+   */
+  revelar?: { limiar: number; margem: string };
 };
 
 /** Encadeamento pedido depois que o titulo termina de ser digitado. */
@@ -95,6 +104,7 @@ export default function ContactCTA({
   reativo = false,
   contatoNoModal = false,
   layoutReferencia = false,
+  revelar,
 }: Props) {
   const rm = useReducedMotion();
   /* SIS-142 · item 4 — o estado do modal vive AQUI, e não na rota. O ponto de
@@ -163,6 +173,7 @@ export default function ContactCTA({
           title={title}
           description={description}
           contatoNoModal={contatoNoModal}
+          revelar={revelar}
           onContato={() => setModalAberto(true)}
         />
         {contatoNoModal && (

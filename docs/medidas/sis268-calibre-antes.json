@@ -1,0 +1,251 @@
+{
+  "modo": "antes",
+  "quando": "2026-09-15T17:41:36.291Z",
+  "janelas": [
+    {
+      "largura": 1024,
+      "altura": 768,
+      "vars": {
+        "folga": "1.15rem",
+        "faixaW": "clamp(9.85rem, 12vw, 14.4rem)",
+        "vagaW": "clamp(5.9rem, 7.2vw, 8.6rem)"
+      },
+      "colunas": [
+        {
+          "lado": "esq",
+          "pertoRep": 20,
+          "longeRep": 32.6,
+          "ampRep": 12.6,
+          "pertoPior": 10.1,
+          "longePior": 25.9,
+          "ampPior": 15.8,
+          "sobreposicoes": 0,
+          "rotulosCortados": 0,
+          "folgaScrollSpy": null,
+          "folgaBordaExterna": 167,
+          "maiorRecuo": 0.09,
+          "limiteRecuo": 0.365,
+          "transbordoFaixa": false
+        },
+        {
+          "lado": "dir",
+          "pertoRep": 20,
+          "longeRep": 32.6,
+          "ampRep": 12.6,
+          "pertoPior": 12.3,
+          "longePior": 26.7,
+          "ampPior": 14.3,
+          "sobreposicoes": 0,
+          "rotulosCortados": 0,
+          "folgaScrollSpy": null,
+          "folgaBordaExterna": 164.1,
+          "maiorRecuo": 0.09,
+          "limiteRecuo": 0.365,
+          "transbordoFaixa": false
+        }
+      ],
+      "fio": {
+        "lado": "esq",
+        "comprimento": 31,
+        "invasao": -1,
+        "folgaAteCartao": 1
+      }
+    },
+    {
+      "largura": 1366,
+      "altura": 768,
+      "vars": {
+        "folga": "1.15rem",
+        "faixaW": "clamp(14.2rem, 17.7vw, 19.9rem)",
+        "vagaW": "clamp(9.8rem, 12.3vw, 12.4rem)"
+      },
+      "colunas": [
+        {
+          "lado": "esq",
+          "pertoRep": 20.8,
+          "longeRep": 40.1,
+          "ampRep": 19.3,
+          "pertoPior": 10.9,
+          "longePior": 33.4,
+          "ampPior": 22.5,
+          "sobreposicoes": 0,
+          "rotulosCortados": 0,
+          "folgaScrollSpy": 149.2,
+          "folgaBordaExterna": 185.2,
+          "maiorRecuo": 0.09,
+          "limiteRecuo": 0.263,
+          "transbordoFaixa": false
+        },
+        {
+          "lado": "dir",
+          "pertoRep": 20.8,
+          "longeRep": 40.1,
+          "ampRep": 19.3,
+          "pertoPior": 13.4,
+          "longePior": 34.8,
+          "ampPior": 21.4,
+          "sobreposicoes": 0,
+          "rotulosCortados": 0,
+          "folgaScrollSpy": null,
+          "folgaBordaExterna": 182.5,
+          "maiorRecuo": 0.09,
+          "limiteRecuo": 0.263,
+          "transbordoFaixa": false
+        }
+      ],
+      "fio": {
+        "lado": "dir",
+        "comprimento": 20.8,
+        "invasao": -1,
+        "folgaAteCartao": 1
+      }
+    },
+    {
+      "largura": 1440,
+      "altura": 900,
+      "vars": {
+        "folga": "1.15rem",
+        "faixaW": "clamp(16.4rem, min(18.8vw, 30.5svh), 20rem)",
+        "vagaW": "clamp(10.2rem, min(13.1vw, 20.5svh), 12.4rem)"
+      },
+      "colunas": [
+        {
+          "lado": "esq",
+          "pertoRep": 21.1,
+          "longeRep": 42.8,
+          "ampRep": 21.7,
+          "pertoPior": 11,
+          "longePior": 35.8,
+          "ampPior": 24.8,
+          "sobreposicoes": 0,
+          "rotulosCortados": 0,
+          "folgaScrollSpy": 95.1,
+          "folgaBordaExterna": 188.1,
+          "maiorRecuo": 0.09,
+          "limiteRecuo": 0.278,
+          "transbordoFaixa": false
+        },
+        {
+          "lado": "dir",
+          "pertoRep": 21.1,
+          "longeRep": 42.8,
+          "ampRep": 21.7,
+          "pertoPior": 13.4,
+          "longePior": 37.2,
+          "ampPior": 23.8,
+          "sobreposicoes": 0,
+          "rotulosCortados": 0,
+          "folgaScrollSpy": null,
+          "folgaBordaExterna": 185.4,
+          "maiorRecuo": 0.09,
+          "limiteRecuo": 0.278,
+          "transbordoFaixa": false
+        }
+      ],
+      "fio": {
+        "lado": "dir",
+        "comprimento": 21.1,
+        "invasao": -1,
+        "folgaAteCartao": 1
+      }
+    },
+    {
+      "largura": 1600,
+      "altura": 900,
+      "vars": {
+        "folga": "1.15rem",
+        "faixaW": "clamp(16.4rem, min(18.8vw, 30.5svh), 20rem)",
+        "vagaW": "clamp(10.2rem, min(13.1vw, 20.5svh), 12.4rem)"
+      },
+      "colunas": [
+        {
+          "lado": "esq",
+          "pertoRep": 21.1,
+          "longeRep": 43.1,
+          "ampRep": 22,
+          "pertoPior": 11,
+          "longePior": 36.2,
+          "ampPior": 25.1,
+          "sobreposicoes": 0,
+          "rotulosCortados": 0,
+          "folgaScrollSpy": 165.4,
+          "folgaBordaExterna": 266.4,
+          "maiorRecuo": 0.09,
+          "limiteRecuo": 0.288,
+          "transbordoFaixa": false
+        },
+        {
+          "lado": "dir",
+          "pertoRep": 21.1,
+          "longeRep": 43.1,
+          "ampRep": 22,
+          "pertoPior": 13.3,
+          "longePior": 37.1,
+          "ampPior": 23.8,
+          "sobreposicoes": 0,
+          "rotulosCortados": 0,
+          "folgaScrollSpy": null,
+          "folgaBordaExterna": 263.7,
+          "maiorRecuo": 0.09,
+          "limiteRecuo": 0.288,
+          "transbordoFaixa": false
+        }
+      ],
+      "fio": {
+        "lado": "dir",
+        "comprimento": 21.1,
+        "invasao": -1,
+        "folgaAteCartao": 1
+      }
+    },
+    {
+      "largura": 1670,
+      "altura": 940,
+      "vars": {
+        "folga": "1.15rem",
+        "faixaW": "clamp(16.4rem, min(18.8vw, 30.5svh), 20rem)",
+        "vagaW": "clamp(10.2rem, min(13.1vw, 20.5svh), 12.4rem)"
+      },
+      "colunas": [
+        {
+          "lado": "esq",
+          "pertoRep": 21.3,
+          "longeRep": 44.2,
+          "ampRep": 22.9,
+          "pertoPior": 11.1,
+          "longePior": 37.2,
+          "ampPior": 26.1,
+          "sobreposicoes": 0,
+          "rotulosCortados": 0,
+          "folgaScrollSpy": 191.3,
+          "folgaBordaExterna": 292.3,
+          "maiorRecuo": 0.09,
+          "limiteRecuo": 0.288,
+          "transbordoFaixa": false
+        },
+        {
+          "lado": "dir",
+          "pertoRep": 21.3,
+          "longeRep": 44.2,
+          "ampRep": 22.9,
+          "pertoPior": 13.4,
+          "longePior": 38.4,
+          "ampPior": 25,
+          "sobreposicoes": 0,
+          "rotulosCortados": 0,
+          "folgaScrollSpy": null,
+          "folgaBordaExterna": 289.6,
+          "maiorRecuo": 0.09,
+          "limiteRecuo": 0.288,
+          "transbordoFaixa": false
+        }
+      ],
+      "fio": {
+        "lado": "dir",
+        "comprimento": 21.3,
+        "invasao": -1,
+        "folgaAteCartao": 1
+      }
+    }
+  ]
+}

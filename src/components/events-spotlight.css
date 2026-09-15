@@ -130,6 +130,53 @@
        o CSS não tem um "15" para divergir dela. */
     --evt-passo: 56svh;
 
+    /* ⚠️ SIS-268 (reparo) — A LARGURA DO CARTÃO VIROU VARIÁVEL, e não é organização:
+       é o que permite ancorar as faixas NELE. A expressão é a mesma de sempre
+       (`min(42vw, 38rem)`, apurada na SIS-167) e continua com um consumidor só de
+       verdade — `.eventos-destaque-cartao` passa a ler daqui. Quem lê junto são as
+       duas regras de inset das faixas, e é por isso que o número não pode viver
+       dentro da regra do cartão: ali ele seria invisível para quem precisa dele. */
+    --evt-cartao-w: min(42vw, 38rem);
+    /* ⚠️ SIS-268 (reparo) — A FOLGA FAIXA→CARTÃO DEIXOU DE DEPENDER DA JANELA.
+       Até aqui as faixas eram presas à BORDA DA TELA (`clamp(7.5rem, 8.9vw,
+       10.5rem)`) enquanto o cartão para de crescer em `38rem`. As duas pontas se
+       soltam a partir de ~1447px: a sonda mediu 18,7px de folga em 1440, 79,1px em
+       1600 e 95,7px em 1670 — o mesmo CSS entregando cinco distâncias diferentes, e
+       a janela da captura que a usuária anexou é justamente uma das largas. Presa ao
+       cartão, a folga é a MESMA nas seis janelas por construção.
+       ⚠️ SIS-268 (calibre final) — `1,15rem -> 1,45rem`: +4,8px na base afasta
+       TODAS as previews sem dobrar o vazio. A variação entre elas também sobe um
+       degrau pela banda 2–12% documentada nos `nth-child`: em 1440, a sonda mede
+       28,6–55,7px em repouso (amplitude 27,1px), contra 21,1–42,8px (21,7px)
+       antes. No pior quadro, a menor folga continua positiva.
+       DO LADO DE FORA quem manda é o `ScrollSpy`: ao crescer esta folga, a faixa
+       anda para fora; por isso a sonda mede a pior vaga já com flutuação e rotação,
+       em vez de presumir sobra pela posição da faixa. */
+    --evt-folga-cartao: 1.45rem;
+    /* ⚠️ SIS-268 (reparo) — O ESTIRÃO VERTICAL DA FAIXA, e ele é a única fonte de
+       espaço que o eixo vertical tinha sobrando.
+       A usuária pediu as previews "mais espalhadas entre elas". Espalhamento aqui é
+       sobra: as vagas estão em `space-between` e o vão é `caixa da faixa - soma das
+       vagas`. A sonda mediu 89,5% de ocupação em 1366 (vão médio de 7,6px, o pior em
+       6,4px) e 91% em 1600 — não há vão para distribuir, e encolher a vaga para abrir
+       vão desfaz a arte que a SIS-232 cresceu e/ou corta rótulo, que esta issue
+       proíbe.
+       O que sobra é a CAIXA: a faixa é `top: 0; bottom: 0` de
+       `.eventos-destaque-corpo`, que é a linha do meio do palco — acima dela está o
+       cabeçalho e abaixo o contador, e os DOIS são conteúdo CENTRADO na horizontal,
+       enquanto as faixas vivem nas laterais. A sonda mediu as duas faixas verticais
+       de vazio lateral: do rodapé do header do site (104px) ao topo do corpo são
+       55,5px em 1024x768, 68,3px em 1366 e 76,8px em 1600; do fim do corpo ao fim do
+       palco são 68,4px em 1024 e 73,4px em 1366.
+       4,5svh = 34,6px em 768 e 40,5px em 900, que é metade do menor dos vazios — e
+       ainda sobram os 16px de `padding-block` da faixa antes da primeira vaga, o que
+       põe o topo da vaga mais alta a ~37px do header do site na pior janela (1024).
+       Em px na faixa: +69px em 768 e +81px em 900 para o `space-between` distribuir,
+       ou seja o vão médio de 1366 sobe de 7,6px para ~15,8px e o de 1440 de 10,1 para
+       ~21,2px. A soma das vagas não mudou um pixel: nenhuma arte encolheu, nenhum
+       rótulo perdeu linha. */
+    --evt-faixa-estiro: 4.5svh;
+
     /* SIS-167 — AMPLITUDE DA FLUTUAÇÃO, e ela é PRÓPRIA desta cena, menor que a
        de `/transformacao-legado`. Não é gosto: é a conta da colisão do item 3 da
        issue, feita antes de escrever o CSS.
@@ -459,6 +506,29 @@
     }
   }
 
+  /* SIS-272 — A CAIXA DA RÉGUA MUDOU DE DONO, e a régua não mudou de lugar.
+     `RevealScope` monta uma `div` EM FLUXO em volta do que ele observa. Com a
+     régua `absolute` lá dentro, essa `div` mediria 1440×0 — e alvo de área zero
+     é o caso em que a especificação do `IntersectionObserver` abandona a fração
+     e devolve `intersectionRatio` 1 ou 0 por regra de borda. O limiar de 0.2 do
+     `RevealScope` deixaria de significar "um quinto da régua" para significar
+     "encostou", que é outro calibre com o mesmo nome.
+     Então o escopo recebe exatamente o que a régua tinha — `inset: 0 0 auto 0`,
+     `height: 3px`, `pointer-events: none`, `z-index: 3` — e a régua passa a se
+     posicionar contra ELE, com o mesmo `inset` de sempre. Geometria idêntica à de
+     antes (conferido por `scripts/medir-reveal-eventos-sis272.mjs`: topo 0, altura
+     3px, largura total da seção), e agora o alvo do observador é uma caixa de 3px
+     em vez de uma de 0.
+     `z-index` no escopo, e não só na régua: com o escopo posicionado, a régua
+     empilha DENTRO dele, e é o escopo que precisa ficar acima do palco (z-index 2). */
+  .eventos-destaque-fio-escopo {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    pointer-events: none;
+    z-index: 3;
+  }
+
   .eventos-destaque-fio {
     position: absolute;
     inset: 0 0 auto 0;
@@ -541,8 +611,17 @@
   }
 
   /* AS COLUNAS.
-     A folga contra a borda é `clamp(7.5rem, 8.5vw, 10rem)`, escrita nas duas
-     regras de posição logo abaixo, e o número é MEDIDO: a caixa do `ScrollSpy`
+     ⚠️ SIS-268 (reparo) — A FOLGA CONTRA A BORDA DEIXOU DE EXISTIR COMO NÚMERO. Tudo o
+     que este parágrafo apura vale para a época em que a faixa era presa à borda da
+     janela; ela agora é presa ao CARTÃO (`right: calc(50% + --evt-cartao-w / 2 +
+     --evt-folga-cartao)`, a conta está na regra de `--esq`). A folga contra o
+     `ScrollSpy` virou CONSEQUÊNCIA, e sobrou: a borda externa fica em 121px em 1024,
+     135,9px em 1366 e 203,1px em 1600, contra a pílula que termina em 92/100. O que
+     o parágrafo continua ensinando, e por isso fica, é ONDE está a parede externa e
+     como ela foi medida — quem mexer no inset tem de refazer esta conta.
+     A folga contra a borda era `clamp(7.5rem, 8.9vw, 10.5rem)` (e `8.5vw/10rem` até a
+     primeira volta da SIS-268), escrita nas duas regras de posição logo abaixo, e o
+     número era MEDIDO: a caixa do `ScrollSpy`
      chega a x=103 em 1440×900 (o rótulo dele fica no fluxo mesmo com
      `opacity: 0`, então a largura já está na conta — não é o hover que muda a
      geometria, é a leitura). 7,5rem = 120px deixa ~17px de folga em 1366 e em
@@ -578,8 +657,15 @@
      ninguém). A apuração do vazio disponível está na SIS-167. */
   .eventos-destaque-coluna {
     position: absolute;
-    top: 0;
-    bottom: 0;
+    /* ⚠️ SIS-268 (reparo) — ERA `top: 0; bottom: 0`. A faixa passa a TRANSBORDAR o
+       corpo, para cima e para baixo, pelo `--evt-faixa-estiro` (a apuração do valor
+       está na nota dele). O que ela invade é vazio lateral: cabeçalho e contador são
+       centrados, e a sonda confere que a vaga mais alta para ~37px abaixo do header
+       do site e a mais baixa dentro do palco. O `padding-block` de 1rem continua
+       sendo o que separa as vagas das pontas da faixa — o estirão dá caixa, não
+       encosta ninguém na borda. */
+    top: calc(-1 * var(--evt-faixa-estiro));
+    bottom: calc(-1 * var(--evt-faixa-estiro));
     width: var(--evt-faixa-w);
     z-index: 1;
     /* ⚠️ O FLUXO FLEX VOLTOU, e a razão é um defeito medido, não recuo de opinião.
@@ -647,34 +733,85 @@
   /* A medida e o motivo estão no bloco de `.eventos-destaque-coluna`, acima. À
      direita o mesmo valor por simetria: lá não há `ScrollSpy`, mas coluna
      assimétrica leria como desalinho. */
+  /* ⛔ NOTA SUPERADA PELO REPARO DA PRÓPRIA SIS-268 (a nota nova vem logo abaixo, e a
+     regra não tem mais `clamp` nenhum). Fica porque é ela que mede a parede externa e
+     o `ScrollSpy`, e essa apuração continua sendo a que se refaz se alguém quiser
+     devolver a faixa para a borda da tela. Leia no passado.
+     ⚠️ SIS-268 — `8.5vw -> 8.9vw` e teto `10rem -> 10.5rem`. O inset é a PAREDE
+     EXTERNA da faixa, e cresce na direção do cartão: tudo o que ele ganha, a faixa
+     inteira anda para dentro sem mudar de largura. A nota da SIS-232 dizia que não
+     havia "um pixel a tomar de nenhum dos lados", e continua verdadeira para o que
+     ela media — ALARGAR a faixa. Transladá-la é outra conta, e quem a limita é o
+     `ScrollSpy`, que fica do lado de onde a faixa está SAINDO: a sonda mede a caixa
+     dele terminando em x=92 (1280..1440) contra o inset de 122,4px, e depois desta
+     mudança o inset vai a 128,2px em 1440 — a folga contra o espião SOBE de 30 para
+     36px. Do lado de dentro são 5,8px a menos de vazio em 1440 e 5,5px em 1366.
+     Em 1024 e 1280 nada se move: lá quem governa é a perna mínima de 7,5rem
+     (8,9vw só passa dos 120px a partir de ~1348), e é justamente onde a folga
+     faixa→cartão é a menor das seis janelas (19,4px em 1024). O degrau não desce
+     para a janela que não tem de onde tirar. */
+  /* ⚠️ SIS-268 (reparo) — A FAIXA DEIXOU DE SER PRESA À BORDA DA TELA e passou a ser
+     presa ao CARTÃO. `clamp(7.5rem, 8.9vw, 10.5rem)` (o valor que a primeira volta
+     desta issue calibrou) media a partir da borda da janela, e o cartão mede a partir
+     do centro com teto em `38rem`: de ~1447px para cima o cartão para de crescer e a
+     borda não, então a folga entre os dois ABRE sozinha — 18,7px em 1440, 79,1px em
+     1600, 95,7px em 1670, medidos pela sonda. A usuária pediu a preview mais perto do
+     principal e anexou uma captura de janela larga: era essa abertura.
+     O inset novo é o próprio caminho da geometria: metade da janela (`50%`), mais
+     meia largura do cartão, mais a folga. A faixa continua com `--evt-faixa-w` de
+     largura — o que muda é de ONDE ela é medida, e nada aqui a alarga (a proibição
+     que as notas da SIS-232 e da SIS-167 repetem continua de pé).
+     O lado de fora só melhora: a faixa anda para dentro, então a borda externa se
+     afasta do `ScrollSpy` em vez de se aproximar (135,9px contra o espião que termina
+     em 92 a 1366; 203,1 contra 100 a 1600). Em 1024 o inset fica em ~121px, contra os
+     120px de antes — a janela mais apertada não se mexe.
+     À direita o espelho, pelo mesmo motivo de simetria de sempre. */
   .eventos-destaque-coluna--esq {
-    left: clamp(7.5rem, 8.5vw, 10rem);
+    right: calc(50% + var(--evt-cartao-w) / 2 + var(--evt-folga-cartao));
   }
 
   .eventos-destaque-coluna--dir {
-    right: clamp(7.5rem, 8.5vw, 10rem);
+    left: calc(50% + var(--evt-cartao-w) / 2 + var(--evt-folga-cartao));
   }
 
-  /* SIS-204 — A VAGA DA DIREITA ENCOSTA NA BORDA DIREITA DA FAIXA, e isto é o que
-     impede a coluna de pintar sobre o cartão.
-     As vagas estão em fluxo (`position: relative`), então o recuo do `nth-child`
-     (`right: 4%..32%` da largura da faixa) desloca a miniatura a partir da posição
-     natural dela. Sem esta linha a posição natural é FLUSH-LEFT — a borda da faixa
-     que fica virada para o cartão — e o recuo empurra a vaga PARA FORA da faixa, na
-     direção do centro. Com o alargamento das vagas desta issue sobraram 19px entre
-     faixa e cartão em 1024, contra 47px do recuo máximo: a arte da vaga "Pega World"
-     entrou 28px dentro da caixa da descrição (medido: vaga em 699..799, cartão
-     termina em 727) e a guarda da SIS-167 reprovou o contraste da descrição em
-     1,02:1 — o pior pixel era a fotografia da miniatura, não o fundo do cartão.
-     Ancorada à direita, o mesmo recuo passa a correr PARA DENTRO da faixa: a vaga
-     mais recuada fica em 757, com 30px de folga contra o cartão, e a menos recuada
-     não passa da borda direita da faixa (que a asserção 6 da guarda afere).
-     A coluna da esquerda não precisa do espelho: lá o flush-left já é a borda
-     EXTERNA, e o recuo de `left: %` corre para dentro da faixa — o que a mantém
-     longe do cartão é a relação `--evt-faixa-w >= --evt-vaga-w × 1,606` escrita na
-     nota daquelas variáveis. */
-  .eventos-destaque-coluna--dir .eventos-vaga {
+  /* A VAGA ENCOSTA NA BORDA DA FAIXA VIRADA PARA O CARTÃO, e o recuo do
+     `nth-child` só sabe AFASTÁ-LA dali.
+     ⚠️ SIS-268 INVERTEU A ÂNCORA, e o `margin-left: auto` mudou de coluna. Fica
+     registrado o que havia antes e por quê, porque a razão de existir daquela linha
+     não foi revogada — foi absorvida.
+     ERA: `.eventos-destaque-coluna--dir .eventos-vaga { margin-left: auto }`, isto é,
+     a vaga da direita encostada na borda EXTERNA, com `right: 4%..32%` correndo para
+     dentro da faixa na direção do cartão. A linha nasceu na SIS-204 contra um defeito
+     medido: sem ela a posição natural era flush-left — a borda virada para o cartão —
+     e o recuo empurrava a miniatura PARA FORA da faixa, para cima do cartão. Em 1024
+     sobravam 19px entre faixa e cartão contra 47px de recuo máximo, e a arte da vaga
+     "Pega World" entrou 28px dentro da caixa da descrição (vaga em 699..799, cartão
+     terminando em 727); a guarda da SIS-167 reprovou pelo contraste da descrição em
+     1,02:1, com o pior pixel sendo a fotografia da miniatura.
+     AGORA a âncora é a borda INTERNA nas duas colunas (esquerda por `margin-left:
+     auto`, direita pelo flush-left que ela já tinha de graça) e o recuo do `nth-child`
+     é sempre PARA FORA: `right: %` à esquerda, `left: %` à direita. Isso resolve o
+     defeito da SIS-204 por construção e não por aritmética — nenhuma porcentagem de
+     recuo, por maior que seja, move a miniatura na direção do cartão; a borda interna
+     da faixa virou parede.
+     E É O QUE ESTA ISSUE PEDE. Com a âncora externa, a distância de cada vaga até o
+     cartão somava o recuo DELA com a largura que falta nela: a vaga ímpar é desenhada
+     a `--evt-prof: 0.86` contra 1,06 da par, ou seja ~37px mais estreita em 1440, e
+     ainda recebia o recuo maior. Os dois castigos no mesmo lado punham as ímpares a
+     101px do cartão enquanto as pares estavam a 26px — é essa borda serrilhada que se
+     lê como "preview longe do cartão". Ancoradas por dentro, a largura sai da conta:
+     a distância passa a ser só o recuo. */
+  /* ⚠️ SIS-268 (reparo) — O RECUO MUDOU DE FORMA, não de valor: era `right: 8%` escrito
+     em cada `nth-child`, e passou a ser esta regra única lendo `--evt-recuo-fr`. A
+     apuração de por que o recuo precisou virar NÚMERO está na nota da lista de
+     `nth-child`, adiante (quem precisa lê-lo é o fio da vaga em destaque). */
+  .eventos-destaque-coluna--esq .eventos-vaga {
     margin-left: auto;
+    right: calc(var(--evt-recuo-fr) * 100%);
+  }
+
+  .eventos-destaque-coluna--dir .eventos-vaga {
+    left: calc(var(--evt-recuo-fr) * 100%);
   }
 
   /* SIS-167 — a vaga saiu do fluxo e passou a ser posicionada dentro da faixa.
@@ -838,6 +975,12 @@
      medidas e por que nada além da banda podia ceder — está no bloco das regras de
      `nth-child`, logo abaixo. Estes dois parágrafos ficam porque descrevem o
      raciocínio que produziu 4/34 e é ele que se refaz se a banda voltar a abrir.
+     ⚠️ SIS-268 — E AGORA VALEM 1% E 9%, MEDIDOS DA OUTRA BORDA. A âncora da vaga
+     passou a ser a borda da faixa virada para o cartão, então recuo grande é vaga
+     LONGE do cartão, o inverso do que os dois parágrafos acima descrevem. O mínimo
+     continua sendo a flutuação (ela agora empurra contra o cartão, não contra o
+     `ScrollSpy`) e o máximo continua sendo transbordo — só que para fora. A apuração
+     está no bloco das regras de `nth-child`, logo abaixo.
 
      ⚠️ O `top` DE CADA PAR FOI REMOVIDO, e ficou comentado ao lado de cada regra em
      vez de apagado, porque são esses quinze números que documentam a tentativa que
@@ -878,6 +1021,11 @@
      elas — 270,7px contra os 270,6px que a razão de 1,606 exige. NÃO HÁ UM PIXEL a
      tomar de nenhum dos lados, e é por isso que nem `--evt-faixa-w` nem os insets se
      mexem nesta issue: qualquer aumento ali é sobreposição, não presença.
+     ⚠️ SIS-268 MEXEU NO INSET, e este parágrafo continua correto — ele mede
+     ALARGAMENTO, que segue proibido. Transladar a faixa é outra operação: a largura
+     não muda, as duas paredes andam JUNTAS para dentro, e quem cede é o vazio do lado
+     do `ScrollSpy`, que a sonda mede com 30px em 1440. A nota do inset, em
+     `.eventos-destaque-coluna--esq`, tem a conta.
 
      O QUE A BANDA DESTRAVA. O recuo máximo é o divisor da razão: `--evt-faixa-w >=
      --evt-vaga-w × 1,06 / (1 - recuoMax)`. Com 34% o divisor é 0,66 e o fator 1,606;
@@ -903,22 +1051,71 @@
      `--evt-prof: 0.86` desenha MENOR, isto é, a que lê como "de longe", e quem está
      longe fica mais atrás do cartão. Inverter faria a vaga pequena avançar mais que a
      grande, que é o contrário do que a perspectiva promete. */
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(1) { left: 16%; /* SIS-232: 6% · top: 3%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(2) { left: 25%; /* SIS-232: 30% · top: 15%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(3) { left: 14%; /* SIS-232: 4% · top: 27%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(4) { left: 26%; /* SIS-232: 34% · top: 39%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(5) { left: 17%; /* SIS-232: 8% · top: 51%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(6) { left: 24%; /* SIS-232: 28% · top: 63%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(7) { left: 14%; /* SIS-232: 4% · top: 75%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(8) { left: 26%; /* SIS-232: 32% · top: 87%; */ }
+  /* ⚠️ SIS-268 — O RECUO TROCOU DE SINAL, E A BANDA PASSOU A SER MEDIDA DA BORDA
+     INTERNA. Os números da SIS-232 (14–26% da borda EXTERNA) ficam comentados ao lado
+     de cada regra, e a conta deles continua sendo a conta certa para eles.
+     O QUE MUDOU DE FATO está na nota de `.eventos-destaque-coluna--esq .eventos-vaga`,
+     acima: a âncora das duas colunas virou a borda virada para o cartão, então o
+     `nth-child` só afasta. Aqui ficam os números e as duas contas que eles têm de
+     satisfazer.
 
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(1) { right: 17%; /* SIS-232: 8% · top: 9%; */ }
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(2) { right: 25%; /* SIS-232: 30% · top: 21%; */ }
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(3) { right: 14%; /* SIS-232: 4% · top: 33%; */ }
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(4) { right: 26%; /* SIS-232: 32% · top: 45%; */ }
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(5) { right: 16%; /* SIS-232: 6% · top: 58%; */ }
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(6) { right: 24%; /* SIS-232: 28% · top: 70%; */ }
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(7) { right: 15%; /* SIS-232: 5% · top: 83%; */ }
+     A BANDA ERA 1–9% e passa a 2–12%, com os dois extremos ainda tendo dono diferente:
+       · PISO 2% (as pares, `--evt-prof: 1.06`, as que leem "de perto"). Quem garante
+         que a vaga não toca o cartão NÃO é este número: é a borda interna da faixa,
+         agora a 23,2px do cartão por construção. O 2% é só a margem contra o pior
+         instante do ciclo — a
+         flutuação anda ~9px para o cartão (`--evt-float-x`) e a inclinação projeta
+         mais ~1px por ponta. Medido em repouso: 28,6px em 1440 e 26,3px em 1024;
+         no quadro mais avançado ficam 18,5px e 16,5px, sem tocar o cartão.
+       · TETO 12% (as ímpares, `0.86`, as que leem "de longe"). Quem o limita é o
+         TRANSBORDO PARA FORA da faixa, na direção do `ScrollSpy`: a vaga cabe se
+         `recuo < 1 - (--evt-vaga-w × --evt-prof) / --evt-faixa-w`. A pior janela é
+         1366, onde a par ocupa 73,7% da faixa e sobram 26,3% — as pares recuam no
+         máximo 4% e as ímpares, mais estreitas, têm 40% de espaço. Folga de sobra nas
+         seis janelas, e é a primeira vez desde a SIS-204 que esta relação não está no
+         fio.
+     A RELAÇÃO `--evt-faixa-w >= --evt-vaga-w × 1,432` DA SIS-232 FICA VALENDO COMO
+     PISO FOLGADO, e não como limite: com a âncora nova ela cai para `× 1,06 / (1 -
+     0,04)` = `× 1,104`, satisfeita com margem em todas as pernas dos três degraus
+     (12,3 × 1,104 = 13,58 <= 17,7 · 13,1 × 1,104 = 14,46 <= 18,8 · 20,5 × 1,104 =
+     22,64 <= 30,5). Não mexo nas larguras nesta issue — a issue é o vão, não o
+     tamanho —, mas quem for mexer tem aqui o limite verdadeiro.
+
+     O RITMO IRREGULAR FOI PRESERVADO, e não redesenhado: cada recuo novo é o espelho
+     do antigo dentro da própria paridade (8/9/7/9 -> 11/12/10/12 e 2/1/3/1 ->
+     3/2/4/2), então a vaga que era a mais avançada do grupo continua sendo. O que
+     encolhe é a AMPLITUDE do zigue-zague medida em px: a borda interna das ímpares e
+     a das pares distavam ~22px em 1440 e passam a ~27px. A constelação não vive só
+     disso — as duas profundidades, o passo vertical diferente das duas faixas e os
+     tempos da flutuação continuam intactos —, e a partir desta issue ela ganha uma
+     fonte que não tinha: com a âncora por dentro, a diferença de largura entre ímpar
+     e par (~37px em 1440) aparece toda na borda EXTERNA, que antes era a alinhada. */
+  /* ⚠️ SIS-268 (reparo) — O RECUO VIROU NÚMERO, e o `right`/`left` passou a ser uma
+     regra só. O calibre final soma um degrau sem mudar a ordem: ímpares, as vagas
+     "de longe", recebem +3 pontos; pares, as "de perto", +1 ponto.
+     Quem precisava dele é o fio da vaga em destaque: a distância daquela vaga até o
+     cartão é `--evt-folga-cartao + recuo × --evt-faixa-w`, e sem o recuo como número
+     o fio não tinha como saber onde parar. A alternativa era repetir a distância à
+     mão em quinze lugares, que é a definição de segunda fonte de verdade.
+     As duas regras que CONSOMEM o número (`right` à esquerda, `left` à direita) ficam
+     junto do `margin-left: auto` que ancora a vaga na borda interna, lá em cima — é o
+     mesmo assunto, e separá-las deixaria a âncora contada pela metade. */
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(1) { --evt-recuo-fr: 0.11; /* SIS-268: left 16% · SIS-232: 6% · top: 3%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(2) { --evt-recuo-fr: 0.03; /* SIS-268: left 25% · SIS-232: 30% · top: 15%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(3) { --evt-recuo-fr: 0.12; /* SIS-268: left 14% · SIS-232: 4% · top: 27%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(4) { --evt-recuo-fr: 0.02; /* SIS-268: left 26% · SIS-232: 34% · top: 39%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(5) { --evt-recuo-fr: 0.10; /* SIS-268: left 17% · SIS-232: 8% · top: 51%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(6) { --evt-recuo-fr: 0.04; /* SIS-268: left 24% · SIS-232: 28% · top: 63%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(7) { --evt-recuo-fr: 0.12; /* SIS-268: left 14% · SIS-232: 4% · top: 75%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(8) { --evt-recuo-fr: 0.02; /* SIS-268: left 26% · SIS-232: 32% · top: 87%; */ }
+
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(1) { --evt-recuo-fr: 0.10; /* SIS-268: right 17% · SIS-232: 8% · top: 9%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(2) { --evt-recuo-fr: 0.03; /* SIS-268: right 25% · SIS-232: 30% · top: 21%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(3) { --evt-recuo-fr: 0.12; /* SIS-268: right 14% · SIS-232: 4% · top: 33%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(4) { --evt-recuo-fr: 0.02; /* SIS-268: right 26% · SIS-232: 32% · top: 45%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(5) { --evt-recuo-fr: 0.11; /* SIS-268: right 16% · SIS-232: 6% · top: 58%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(6) { --evt-recuo-fr: 0.04; /* SIS-268: right 24% · SIS-232: 28% · top: 70%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(7) { --evt-recuo-fr: 0.11; /* SIS-268: right 15% · SIS-232: 5% · top: 83%; */ }
 
   /* ── AS DUAS PROFUNDIDADES ─────────────────────────────────────────────────
      `/transformacao-legado` faz profundidade com parallax de ROLAGEM
@@ -1198,11 +1395,30 @@
      vale registrar: se o fio fosse régua até o cartão, esta issue o teria
      quebrado nas quinze vagas de uma vez. Nada a mudar, por decisão e não por
      omissão. */
+  /* ⚠️ SIS-268 (reparo) — O FIO PASSOU A PARAR NA BORDA DO CARTÃO, e isto é reparo de
+     FATO, não mudança de intenção: a nota acima diz "some antes do cartão" e a sonda
+     media o contrário — 15,2px de invasão em 1366, 32,1px em 1024 e 49,6px em 1440,
+     com o traço e o nó pintando por cima da arte da placa (o recorte
+     `.tmp-sis268/capturas/fio-1440x900-antes.png` mostra o fio sobre o carimbo). Não
+     aparecia como defeito porque dependia da janela: em 1600 e 1670 o vazio era tão
+     grande que o fio morria no ar.
+     Com a faixa ancorada no cartão, a distância vaga→cartão virou um número que o CSS
+     sabe escrever: `--evt-folga-cartao` mais o recuo daquela vaga em px
+     (`--evt-recuo-fr × --evt-faixa-w`). O `min()` mantém o comprimento antigo como
+     TETO — em janela nenhuma o fio fica mais longo do que já era — e a distância como
+     limite. Resultado: ~29px na vaga de recuo 2% e ~56px na de 12% em 1440, o mesmo
+     desenho nas seis janelas, e o nó continua onde sempre esteve (na borda da vaga,
+     pelo `::after` com `left: 0`).
+     O fallback `0` no `var()` é para o dia em que alguém puser um fio numa vaga sem
+     recuo: o comprimento cai para a folga, que é curto, nunca para dentro do cartão. */
   .eventos-vaga-fio {
     position: absolute;
     top: 50%;
     height: 2px;
-    width: clamp(2rem, 5vw, 5.5rem);
+    width: min(
+      clamp(2rem, 5vw, 5.5rem),
+      calc(var(--evt-folga-cartao) + var(--evt-recuo-fr, 0) * var(--evt-faixa-w))
+    );
     background: linear-gradient(
       90deg,
       #0ed8f6 0%,
@@ -1260,8 +1476,13 @@
      e do alargamento da faixa: faixa 122->266, cartão 417->1022, 151px de folga
      entre os dois em 1440; 65px em 1024. O palco continua em `100svh` e o contador
      continua em quadro — conferido pela sonda, não presumido. */
+  /* ⚠️ SIS-268 (reparo) — `min(42vw, 38rem)` MUDOU DE LUGAR, não de valor: virou
+     `--evt-cartao-w` no bloco de `.eventos-destaque` porque as faixas passaram a ser
+     posicionadas a partir da borda deste cartão. Escrever a expressão duas vezes
+     criaria dois números para a mesma largura, e o dia em que um deles mudasse as
+     faixas iriam parar dentro ou longe do cartão sem ninguém ver. */
   .eventos-destaque-cartao {
-    width: min(42vw, 38rem);
+    width: var(--evt-cartao-w);
     max-height: 100%;
     display: flex;
     flex-direction: column;

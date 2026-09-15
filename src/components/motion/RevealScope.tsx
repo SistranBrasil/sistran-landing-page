@@ -39,6 +39,16 @@ type Props = {
   /** Fração visível para acender. */
   limiar?: number;
   margem?: string;
+  /**
+   * SIS-270 — rótulo do escopo para MEDIÇÃO, e nada mais: nenhuma regra de
+   * `globals.css` casa com ele. Existe porque o portão da SIS-270
+   * (`scripts/medir-reveal-carreira-sis270.mjs`) precisa dizer QUAL escopo
+   * acendeu em qual `scrollY` — sem um nome no DOM, uma linha do tempo com dois
+   * escopos é uma lista de booleanos anônimos, e o critério da issue é
+   * exatamente "não acenderam todos juntos".
+   * Opcional, então nenhum uso existente de `RevealScope` muda.
+   */
+  'data-reveal-nome'?: string;
 };
 
 export default function RevealScope({
@@ -50,6 +60,7 @@ export default function RevealScope({
   reverterSomenteAcima = false,
   limiar = 0.2,
   margem = '0px 0px -12% 0px',
+  'data-reveal-nome': nome,
 }: Props) {
   /* O portão devolve `null` fora do `RouteLoadGate` (testes, storybook, rota sem
      cortina). Nesse caso não há o que esperar, e `pronto` tem de ser `true` — do
@@ -69,7 +80,7 @@ export default function RevealScope({
   });
 
   return (
-    <div ref={ref} className={className} style={style}>
+    <div ref={ref} className={className} style={style} data-reveal-nome={nome}>
       {children}
     </div>
   );

@@ -1,9 +1,11 @@
+import type { CSSProperties } from 'react';
 import { ChartNoAxesCombined, Linkedin, Sparkles, UsersRound } from 'lucide-react';
 import PageShell from '@/components/PageShell';
 import PageHero from '@/components/PageHero';
 import Social from '@/components/Social';
 import CurriculoCard from '@/components/CurriculoCard';
 import HeroVideoBackdrop from '@/components/ui/HeroVideoBackdrop';
+import RevealScope from '@/components/motion/RevealScope';
 import { LINKEDIN_URL } from '@/data/contact';
 
 export const metadata = {
@@ -143,24 +145,84 @@ export default function Page() {
               highlight="#SomosSistraners"
               description={<p>Venha fazer parte de uma empresa que apoia seu desenvolvimento.</p>}
             />
-            <ul className="carreira-beneficios" aria-label="Benefícios de trabalhar na Sistran">
-              <li>
-                <UsersRound aria-hidden />
-                <span>Pessoas que evoluem juntas</span>
-              </li>
-              <li>
-                <ChartNoAxesCombined aria-hidden />
-                <span>Desafios que geram impacto</span>
-              </li>
-              <li>
-                <Sparkles aria-hidden />
-                <span>Um futuro com mais possibilidades</span>
-              </li>
-            </ul>
-            <p className="carreira-slogan">
-              <span aria-hidden />
-              TECNOLOGIA QUE MOVE O AMANHÃ
-            </p>
+            {/* ── SIS-270 · O REVEAL DESTA ROTA ────────────────────────────────
+                A issue pede o sistema de `docs/scroll.md` («em toda a página»).
+                O que ela recebe é UM escopo, e o motivo é medido, não preferência:
+                dos quatro blocos da rota, TRÊS já têm entrada própria, e o §6 do
+                guia proíbe somar reveal por CSS a quem já é timeline («não misture
+                os dois no mesmo elemento»).
+
+                • `PageHero` (`#topo`) entra por variants de montagem em
+                  `motion/react` — e o `<h1>` dele é candidato a LCP. Marcá-lo
+                  somaria um segundo dono ao mesmo `transform` (a colisão do
+                  SIS-42) e atrasaria a maior pintura.
+                • `CurriculoCard` (`.cv-secao`) tem a cortina GSAP por `clip-path`
+                  descrita no docblock dele, com `ScrollTrigger` em `top 82%`.
+                • `Social` (`#social`) entra por `whileInView`, que já é reveal por
+                  rolagem — ele começa em 792px numa janela de 900, logo é o único
+                  bloco desta rota que a pessoa alcança ROLANDO.
+
+                Sobram estes dois — a fileira de benefícios e o slogan —, e é neles
+                que o sistema entra. Marcam-se BLOCOS: a fileira e o parágrafo,
+                nunca palavras.
+
+                ── O calibre, que é o ponto onde esta issue podia repetir a SIS-269
+                Nenhum número é passado, e isso é a resposta e não uma omissão. O
+                calibre quebrado da 2ª volta de `/contato` era o OVERRIDE
+                (`margem: +12%` com `limiar: 0.08`, antecipando o disparo e
+                afrouxando a fração exigida em todo bloco alto). O padrão da casa
+                — `margem: '0px 0px -12% 0px'`, `limiar: 0.2` — é justamente a
+                direção que a SIS-269 prescreve: negativo, dispara depois de
+                entrar. Então o certo aqui é NÃO declarar nada, e não escolher um
+                terceiro calibre que a SIS-269 teria de reescrever depois.
+
+                `esperarRota` fica, e só porque este bloco está NA PRIMEIRA DOBRA
+                (topo medido em 577px numa janela de 900). Sem ele o observador
+                acende atrás da cortina do `RouteLoadGate`, a transição termina no
+                escuro e quando a cortina levanta o bloco já está parado — a
+                entrada existe e ninguém vê. É exatamente o único uso que a
+                SIS-269 preserva («manter `esperarRota` só no bloco da primeira
+                dobra»). Não há nesta rota um bloco abaixo da dobra esperando a
+                rota, que é o que fazia `/contato` acender tudo de uma vez.
+
+                `data-reveal-nome` não é usado por CSS nenhum: é o rótulo que o
+                portão (`scripts/medir-reveal-carreira-sis270.mjs`) lê para montar
+                a linha do tempo `data-in` × `scrollY`. */}
+            <RevealScope esperarRota data-reveal-nome="abertura">
+              <ul className="carreira-beneficios" aria-label="Benefícios de trabalhar na Sistran">
+                {/* `--reveal-i` é o índice da cascata; a cadência é o token
+                    `--motion-stagger-reveal` (80ms), dentro da faixa de 70–120ms
+                    do §4.3. Quatro passos = 320ms, longe do 1s que o guia aponta
+                    como o ponto em que quem rola rápido vê a página se montando
+                    atrasada. */}
+                <li data-reveal="fade-up" style={{ '--reveal-i': 0 } as CSSProperties}>
+                  <UsersRound aria-hidden />
+                  <span>Pessoas que evoluem juntas</span>
+                </li>
+                <li data-reveal="fade-up" style={{ '--reveal-i': 1 } as CSSProperties}>
+                  <ChartNoAxesCombined aria-hidden />
+                  <span>Desafios que geram impacto</span>
+                </li>
+                <li data-reveal="fade-up" style={{ '--reveal-i': 2 } as CSSProperties}>
+                  <Sparkles aria-hidden />
+                  <span>Um futuro com mais possibilidades</span>
+                </li>
+              </ul>
+              {/* O slogan é `fade-up` no parágrafo, e o fio ciano de 1px dentro
+                  dele é `line-up` — que DESENHA da esquerda em vez de subir,
+                  porque numa régua de 1px de altura um deslocamento vertical é
+                  maior que o próprio traço e lê como salto (é o que a regra
+                  `[data-reveal='line-up']` do `globals.css` registra). Os dois
+                  compartilham o mesmo `data-in`, então entram no mesmo gesto. */}
+              <p
+                className="carreira-slogan"
+                data-reveal="fade-up"
+                style={{ '--reveal-i': 3 } as CSSProperties}
+              >
+                <span aria-hidden data-reveal="line-up" />
+                TECNOLOGIA QUE MOVE O AMANHÃ
+              </p>
+            </RevealScope>
           </div>
 
           {/* SIS-100 — `id` para o item "Currículo" do navegador lateral. A seção já
@@ -282,6 +344,16 @@ export default function Page() {
           fundo próprio (só um halo com `filter: blur`), então o que encosta na
           Social continua sendo o fundo da página, e continua sendo um azul perto do
           `#0b4e86` em que o degradê da Social abre. */}
+      {/* SIS-270 — esta seção fica como está, e isso é medido, não omissão. Ela já
+          entra por `whileInView` de `motion/react`, e com o `VP` da casa o `<h2>`
+          está em `opacity: 0` no topo da rota, passando de 0,9 só em `scrollY: 400`
+          — ou seja, o fecho JÁ é entrada por rolagem. Houve aqui um
+          `<Social entradaPorScroll />` com calibre próprio (`amount: 0.35`), escrito
+          sob a leitura errada do `.palco-copy` (`vHeader` é variant de orquestração,
+          `hidden: {}`, e devolve opacidade `1` sempre); medido no `<h2>` certo, o
+          calibre novo dava o MESMO 400. Foi removido: segundo calibre que reproduz o
+          primeiro é só superfície a manter. Ver o comentário em `src/lib/motion.ts`,
+          onde o `VP_SCROLL` viveu. */}
       <Social />
     </PageShell>
   );

@@ -118,8 +118,22 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 /* SIS-251 — só para a asserção da variável CSS `--evt-autoplay` no `style`: o
    tipo de `style` não aceita chave arbitrária, e o `React` global não está
-   importado como namespace neste arquivo. */
+   importado como namespace neste arquivo.
+   SIS-272 — o mesmo cast serve ao `--reveal-i` da cascata do cabeçalho estreito;
+   é o molde que `/trabalhe-conosco` já usa. */
 import type { CSSProperties } from "react";
+/* SIS-272 — a primitiva de reveal da casa, a mesma de `/contato` (SIS-269) e
+   `/trabalhe-conosco` (SIS-270). Ela escreve `data-in` num envelope e sai da
+   frente; quem anima são os presets `[data-reveal]` do `globals.css`. */
+import RevealScope from "./motion/RevealScope";
+/* SIS-272 — o calibre mora na pasta da ROTA, e não aqui, porque esta cena é
+   montada só por ela (o mesmo arranjo de `MetricsBand` com
+   `src/app/contato/reveal-calibre.ts`). O porquê de cada número está lá. */
+import {
+  LIMIAR_REVEAL,
+  MARGEM_REVEAL,
+  MARGEM_REVEAL_NO_PALCO,
+} from "@/app/eventos-inovacao/reveal-calibre";
 import { ChevronLeft, ChevronRight, ImageIcon, PlayCircle } from "lucide-react";
 /* SIS-235 — o carimbo dos eventos `proprio`. Componente próprio, e não markup
    inline, porque ele nasce em DOIS lugares desta mesma cena (palco e lista estreita)
@@ -654,8 +668,61 @@ export default function EventsSpotlight() {
       >
         {/* A linha ciano que o fio do hero encontra aceso na entrada: é o elo
             `hero -> eventos` da rota, que é por LINHA. Mesmos valores do
-            `.pagehero-fio` — a nota está no CSS. */}
-        <span className="eventos-destaque-fio" aria-hidden="true" />
+            `.pagehero-fio` — a nota está no CSS.
+
+            SIS-272 — PRIMEIRO MOMENTO DO REVEAL DESTA ROTA. É o nó marcado que
+            está MAIS ALTO na seção (`inset: 0 0 auto 0`), então é o primeiro a
+            cruzar a raiz do observador quando a cena entra — e é o que separa
+            esta entrada da do contador, ~100svh abaixo dele dentro do palco
+            `sticky`. Os dois `scrollY` medidos estão em
+            `docs/medidas/reveal-eventos-sis272.json`.
+
+            `line-up`, e não `fade-up`: a régua tem 3px de altura, e o §4.2 de
+            `docs/scroll.md` (e a própria regra do preset no `globals.css`) diz
+            que num traço dessa espessura um deslocamento vertical de 24px é
+            maior que a própria linha — lê como salto. `line-up` DESENHA da
+            esquerda, que é a direção em que o degradê da régua já vai do ciano
+            cheio para o transparente.
+
+            O ELO NÃO MUDOU DE NATUREZA: a passagem `hero -> eventos` continua
+            sendo por LINHA, e continua sendo esta linha. O que a issue
+            acrescenta é QUANDO ela acende — antes ela já estava acesa quando a
+            cena chegava, agora ela se desenha no gesto em que a cena chega.
+
+            O ESCOPO É QUE CARREGA A CAIXA (`.eventos-destaque-fio-escopo`), e
+            isso não é organização: `RevealScope` monta uma `div` em fluxo, e com
+            a régua `absolute` lá dentro essa `div` teria altura ZERO. Alvo de
+            `IntersectionObserver` com área zero é o caso em que
+            `intersectionRatio` deixa de ser fração e vira 1/0 por regra de
+            borda da especificação — um limiar de 0.2 passaria a significar outra
+            coisa. Com a caixa no escopo o alvo mede 3px de altura e o limiar
+            volta a ser o que diz ser. A régua dentro dele fica com a MESMA
+            geometria, porque o escopo herda o `inset` que ela tinha.
+
+            `esperarRota` PORQUE ESTA RÉGUA ESTÁ NA PRIMEIRA DOBRA, e isso é
+            medida desta rota, não suposição: a abertura daqui é curta — o `#topo`
+            mede 414px numa janela de 900 e 353px numa de 768 —, então a seção
+            começa em `scrollY` 558 (1440×900) e 497 (1366 e 1024×768), sempre
+            acima da borda da janela. É exatamente a condição do contrato que a
+            SIS-269 fixou: «espera = estou na dobra e a cortina do `RouteLoadGate`
+            me esconderia». Sem a espera, a régua se desenha ATRÁS da cortina e já
+            está parada quando ela levanta — a entrada existe e ninguém vê.
+            E a espera não reproduz a «cascata global no `liberado`» que a SIS-269
+            nomeia, porque ela é de UM escopo só: o contador, logo abaixo, é
+            observado desde a montagem. */}
+        <RevealScope
+          className="eventos-destaque-fio-escopo"
+          data-reveal-nome="eventos-fio"
+          esperarRota
+          margem={MARGEM_REVEAL}
+          limiar={LIMIAR_REVEAL}
+        >
+          <span
+            className="eventos-destaque-fio"
+            data-reveal="line-up"
+            aria-hidden="true"
+          />
+        </RevealScope>
 
         <div className="eventos-destaque-palco">
           <header className="eventos-destaque-cabecalho">
@@ -763,23 +830,64 @@ export default function EventsSpotlight() {
             </div>
           </div>
 
-          <footer className="eventos-destaque-contador">
-            <span
-              className="eventos-destaque-contador-fio"
-              aria-hidden="true"
-            />
-            <p className="eventos-destaque-contador-numero">
-              {String(ativo + 1).padStart(2, "0")}
-              <span aria-hidden="true"> / </span>
-              <span className="sr-only">de</span>
-              <span className="eventos-destaque-contador-total">
-                {String(TOTAL).padStart(2, "0")}
-              </span>
-            </p>
-            <p className="eventos-destaque-contador-rotulo">
-              ROLE PARA EXPLORAR
-            </p>
-          </footer>
+          {/* SIS-272 — O MOMENTO ACIONADO PELO SCROLL desta rota, e o único que
+              ela tem: o contador é o último nó do palco `sticky` (terceira linha
+              do `grid-template-rows: auto 1fr auto`), quase uma tela abaixo da
+              régua marcada lá em cima, e é o único bloco estático da cena que
+              nasce FORA da primeira dobra — topo absoluto medido em 1385
+              (1440×900) e 1196/1201 (1366 e 1024×768), contra janelas de 900 e
+              768. Ele acende em `scrollY` ~497; a régua acende em 0.
+
+              `MARGEM_REVEAL_NO_PALCO`, E NÃO O CALIBRE DOS OUTROS DOIS. Não é
+              preferência: com a margem de `-12%` este bloco acendeu, MEDIDO, em
+              `scrollY` 7800 — no fim da cena, com a rota inteira já rolada. A
+              causa é o `sticky`: preso ao palco, o contador congela a 827px do
+              topo da janela, e a raiz encolhida para 792px nunca o alcança. A
+              apuração inteira, com a conta da janela entre acender e grudar, está
+              em `../app/eventos-inovacao/reveal-calibre.ts`.
+
+              UM `data-reveal` NO BLOCO INTEIRO, e não um por filho: o §3 de
+              `docs/scroll.md` manda marcar blocos, e régua, número e rótulo são
+              uma leitura só («01 / 15 · ROLE PARA EXPLORAR»). Escalonar três nós
+              que ocupam 56px de altura seria a cascata que o §4.3 chama de
+              página se montando atrasada.
+
+              O ESCOPO ENVOLVE o `<footer>` em vez de substituí-lo: a `div` do
+              `RevealScope` vira a terceira linha do grid, que é `auto` — mesma
+              altura, mesma largura esticada, e o `<footer>` continua sendo
+              `footer` da seção. Trocar um pelo outro custaria a semântica para
+              economizar um nó.
+
+              O CONTEÚDO DO CONTADOR CONTINUA VIVO DURANTE A ENTRADA: `ativo` é
+              estado do `IntersectionObserver` das sentinelas e não passa por
+              aqui — o reveal mexe em `opacity`/`transform`, nunca em `display`,
+              então o número já está trocando enquanto o bloco entra. */}
+          <RevealScope
+            data-reveal-nome="eventos-contador"
+            margem={MARGEM_REVEAL_NO_PALCO}
+            limiar={LIMIAR_REVEAL}
+          >
+            <footer
+              className="eventos-destaque-contador"
+              data-reveal="fade-up"
+            >
+              <span
+                className="eventos-destaque-contador-fio"
+                aria-hidden="true"
+              />
+              <p className="eventos-destaque-contador-numero">
+                {String(ativo + 1).padStart(2, "0")}
+                <span aria-hidden="true"> / </span>
+                <span className="sr-only">de</span>
+                <span className="eventos-destaque-contador-total">
+                  {String(TOTAL).padStart(2, "0")}
+                </span>
+              </p>
+              <p className="eventos-destaque-contador-rotulo">
+                ROLE PARA EXPLORAR
+              </p>
+            </footer>
+          </RevealScope>
         </div>
 
         {/* A TRILHA. Quinze sentinelas em fluxo, uma por evento: são elas que dão
@@ -862,16 +970,59 @@ export default function EventsSpotlight() {
         className="eventos-lista"
         aria-labelledby="eventos-lista-titulo"
       >
-        <header className="eventos-lista-cabecalho">
-          <p className="eventos-destaque-sobretitulo">
-            <span className="eventos-destaque-traco" aria-hidden="true" />
-            EVENTOS
-            <span className="eventos-destaque-traco" aria-hidden="true" />
-          </p>
-          <h2 id="eventos-lista-titulo" className="eventos-destaque-titulo">
-            Eventos &amp; Inovação
-          </h2>
-        </header>
+        {/* SIS-272 — O REVEAL DA VERSÃO ESTREITA, e ele é UM só.
+            Abaixo de 1024px a rota tem três blocos: este cabeçalho, a faixa dos
+            quinze e a barra de controles. Os dois últimos estão fora por
+            construção, não por esquecimento — a faixa É o carrossel (`scrollLeft`
+            é o dono do estado dela, e um `transform` de entrada no contêiner de
+            rolagem mexeria na caixa que o `offsetLeft` do passo mede), e a barra
+            de controles carrega o relógio do laço (`eventos-lista-relogio`, no
+            `::after` da marca ativa), que é animação própria: somar reveal ali é
+            o «não misture os dois no mesmo elemento» do §6 de `docs/scroll.md`.
+            Sobra o cabeçalho, que é escrita estática e nada mais.
+
+            DOIS NÓS MARCADOS, com a cascata do token (`--reveal-i` × 80ms): o
+            sobretítulo e o `h2`. É a relação pontual que o §4.3 descreve —
+            rótulo e título no mesmo gesto, o segundo um passo atrás.
+
+            NADA AQUI DUPLICA ENTRADA: `.eventos-lista-cabecalho` só tem
+            alinhamento e respiro no CSS, e a cessão de título da SIS-204 é
+            `.eventos-destaque[data-titulo="cedido"] .eventos-destaque-cabecalho`
+            — outro seletor, outra seção, e ela nunca convive com esta (as duas
+            versões se excluem por `display: none`).
+
+            `esperarRota` PELA MESMA MEDIDA DA RÉGUA, do outro lado da fronteira:
+            a abertura estreita mede 388px numa janela de 844 e 471px numa de
+            1024, então este cabeçalho nasce em 540 e 676 — dentro da dobra nas
+            duas. É o contrato da SIS-269, e é o único escopo com caixa abaixo de
+            1024px (os dois de cima estão sob o `display: none` da cena), de modo
+            que não há cascata a criar no `liberado`. */}
+        <RevealScope
+          data-reveal-nome="eventos-lista-cabecalho"
+          esperarRota
+          margem={MARGEM_REVEAL}
+          limiar={LIMIAR_REVEAL}
+        >
+          <header className="eventos-lista-cabecalho">
+            <p
+              className="eventos-destaque-sobretitulo"
+              data-reveal="fade-up"
+              style={{ "--reveal-i": 0 } as CSSProperties}
+            >
+              <span className="eventos-destaque-traco" aria-hidden="true" />
+              EVENTOS
+              <span className="eventos-destaque-traco" aria-hidden="true" />
+            </p>
+            <h2
+              id="eventos-lista-titulo"
+              className="eventos-destaque-titulo"
+              data-reveal="fade-up"
+              style={{ "--reveal-i": 1 } as CSSProperties}
+            >
+              Eventos &amp; Inovação
+            </h2>
+          </header>
+        </RevealScope>
         {/* `<ul>`/`<li>` PRESERVADOS, sem `role="group"` nem
             `aria-roledescription`: a semântica de lista é o que anuncia "quinze
             itens" e dá a navegação por item do leitor de tela, e trocá-la por

@@ -229,7 +229,43 @@ function RouteLoadCycle({ pathname, children }: { pathname: string; children: Re
           className={styles.overlay}
         >
           <div aria-hidden="true" className={styles.brand}>
-            <span className={styles.wordmark}>SISTRAN</span>
+            {/* SIS-274 — aqui havia `<span className={styles.wordmark}>SISTRAN</span>`,
+                a marca escrita por tipografia. Trocada pelo símbolo.
+
+                É `<img>` cru, e não `next/image`, por três razões que valem NESTE
+                nó: (1) `images: { unoptimized: true }` no `next.config.mjs`
+                (SIS-154) faz o `next/image` servir o mesmo arquivo sem `srcset`,
+                então ele não traria derivação nenhuma — só o wrapper; (2) este
+                overlay vem no HTML do servidor e é o primeiro pixel de toda troca
+                de rota, então quanto menos camada entre o HTML e o byte, melhor;
+                (3) o projeto já usa `<img>` cru em overlays por isso mesmo (ver
+                `OptionalMorphIntro`). A regra `no-img-element` está ligada e é
+                silenciada logo abaixo, como nas outras nove ocorrências de `<img>`
+                cru do projeto — o `eslint-disable` com motivo é o padrão da casa
+                para isto, e não um descuido.
+
+                `width`/`height` são os do arquivo (320×320) e existem para reservar
+                a caixa antes do byte chegar: sem eles o `.brand` mudaria de altura
+                no meio do carregamento, e o portão é justamente a tela onde nada
+                pode pular.
+
+                O `alt=""` fica vazio de propósito — o estado de carregamento é
+                anunciado pelo `role="status"` logo abaixo, e o `.brand` inteiro é
+                `aria-hidden`. Descrever a logo aqui leria a marca duas vezes e
+                nenhuma vez o «Carregando…». */}
+            {/* eslint-disable-next-line @next/next/no-img-element -- com
+                `images.unoptimized` o `next/image` serviria o MESMO arquivo sem
+                `srcset`; o asset já é derivado à mão (320px, 11 KB) em
+                `scripts/gerar-logo-portao-sis274.mjs`. */}
+            <img
+              src="/images/loading/logo-sistran-portao.webp"
+              alt=""
+              width={320}
+              height={320}
+              decoding="sync"
+              fetchPriority="high"
+              className={styles.logo}
+            />
             <span className={styles.signal} />
           </div>
           <p className="sr-only" role="status" aria-live="polite">

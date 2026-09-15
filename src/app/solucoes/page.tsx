@@ -6,6 +6,8 @@ import Accelerators from '@/components/Accelerators';
 import Consulting from '@/components/Consulting';
 import ContactCTA from '@/components/ContactCTA';
 import ServicesJourneyStage from '@/components/ui/ServicesJourneyStage';
+import RevealScope from '@/components/motion/RevealScope';
+import { LIMIAR_REVEAL, MARGEM_REVEAL } from './reveal-calibre';
 
 export const metadata = {
   title: 'Soluções, Serviços e Consultoria · Sistran',
@@ -53,8 +55,34 @@ export default function Page() {
           conteúdo), e sem a barra a página perderia a navegação interna
           justamente onde a rolagem é mais longa. Uma navegação por largura, nunca
           duas ao mesmo tempo — nem zero. */}
-      <div className="container-lp -mt-6 mb-6 xl:hidden">
+      {/* SIS-273 — escopo 1 de 3 do reveal por scroll: a barra de âncoras.
+          O `RevealScope` ASSUME o `<div>` que já existia (mesmas classes), em vez
+          de embrulhá-lo: um nó a mais aqui entraria entre o `container-lp` e a
+          `<nav>` sem precisar.
+          Quem recebe o preset é a `<nav>`, não as pílulas: elas têm
+          `hover:-translate-y-0.5`, e `[data-in='true'] [data-reveal]` declara
+          `transform: none` FORA de `@layer` — venceria a utilitária de hover e
+          desligaria o levantar da pílula. Marcar o pai não toca nelas, porque a
+          regra de estado casa só com quem tem o atributo.
+          Nota de largura: acima de 1280 este escopo é `display: none`
+          (`xl:hidden`, SIS-100), então o observador nunca acende ali — e não
+          precisa: o que está oculto não tem entrada para orquestrar. Ao
+          redimensionar para baixo de 1280 ele volta a interseccionar e acende.
+          `esperarRota` porque este é o ÚNICO escopo da rota que nasce DENTRO da
+          dobra: medido a 390×844, o topo da barra fica em 582px do documento, ou
+          seja inteiramente visível sem rolar. É exatamente o caso que a SIS-269
+          reserva para a espera — sem ela a barra animaria por trás da cortina do
+          `RouteLoadGate` e a pessoa encontraria o gesto já terminado. Os outros
+          dois escopos nascem abaixo da dobra e não esperam nada. */}
+      <RevealScope
+        className="container-lp -mt-6 mb-6 xl:hidden"
+        esperarRota
+        limiar={LIMIAR_REVEAL}
+        margem={MARGEM_REVEAL}
+        data-reveal-nome="nav-ancoras"
+      >
         <nav
+          data-reveal="fade-up"
           /* Nome próprio, diferente do "Seções desta página" do navegador
              lateral: as duas navs coexistem na árvore (a de cá só está oculta por
              CSS acima de 1280), e dois landmarks de navegação com o MESMO nome
@@ -82,7 +110,7 @@ export default function Page() {
             <AnchorPill href="#consultoria" label="Consultoria" />
           </div>
         </nav>
-      </div>
+      </RevealScope>
       </HeroVideoBackdrop>
 
       {/* 1. Tecnologia Disruptiva — SIS-93: passou a usar o mesmo fundo azul
@@ -134,9 +162,28 @@ export default function Page() {
           {/* No site cada card leva a uma pagina de servico com Lorem Ipsum em
               ingles; nenhuma delas foi recriada. O botao aponta para o contato,
               que é o destino real da intencao. */}
-          <Link href="/contato" className="btn-primary mt-10 inline-flex">
-            Quero um serviço exclusivo
-          </Link>
+          {/* SIS-273 — escopo 3 de 3: o CTA que fecha a seção de Serviços.
+              O preset NÃO vai no `.btn-primary`, e isto é a lição da SIS-271: o
+              botão tem `:hover { transform: translateY(-2px) }` escrito em
+              `@layer components`, e `[data-in='true'] [data-reveal] { transform:
+              none }` está FORA de qualquer layer — regra sem camada vence regra
+              em camada seja qual for a especificidade, então o botão marcado
+              perderia o levantar do hover para sempre. O invólucro leva a marca,
+              o botão fica intacto.
+              O `mt-10` mudou de nó junto com o invólucro (era do `Link`): a
+              margem tem de sair do MESMO nó que define o bloco, senão ela
+              passaria a medir de dentro de uma caixa que já começa colada. */}
+          <RevealScope
+            limiar={LIMIAR_REVEAL}
+            margem={MARGEM_REVEAL}
+            data-reveal-nome="servicos-cta"
+          >
+            <span data-reveal="fade-up" className="mt-10 block">
+              <Link href="/contato" className="btn-primary inline-flex">
+                Quero um serviço exclusivo
+              </Link>
+            </span>
+          </RevealScope>
         </div>
       </section>
 

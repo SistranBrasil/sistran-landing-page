@@ -1,0 +1,97 @@
+{
+ "janela": {
+  "width": 1440,
+  "height": 900
+ },
+ "geometria": {
+  "beneficios": {
+   "topoAbsoluto": 577,
+   "altura": 55
+  },
+  "slogan": {
+   "topoAbsoluto": 671,
+   "altura": 18
+  },
+  "curriculo": {
+   "topoAbsoluto": 240,
+   "altura": 456
+  },
+  "social": {
+   "topoAbsoluto": 792,
+   "altura": 736
+  },
+  "alturaDaPagina": 1970
+ },
+ "linhaDoTempo": [
+  {
+   "nome": "abertura",
+   "scrollY": 0
+  }
+ ],
+ "semSegundoReveal": {
+  "curriculo": 0,
+  "social": 0,
+  "tituloDoHero": 0
+ },
+ "reduce": [
+  {
+   "preset": "fade-up",
+   "opacidade": "1",
+   "transform": "none"
+  },
+  {
+   "preset": "fade-up",
+   "opacidade": "1",
+   "transform": "none"
+  },
+  {
+   "preset": "fade-up",
+   "opacidade": "1",
+   "transform": "none"
+  },
+  {
+   "preset": "fade-up",
+   "opacidade": "1",
+   "transform": "none"
+  },
+  {
+   "preset": "line-up",
+   "opacidade": "1",
+   "transform": "none"
+  }
+ ],
+ "semJs": [
+  {
+   "preset": "fade-up",
+   "opacidade": "1"
+  },
+  {
+   "preset": "fade-up",
+   "opacidade": "1"
+  },
+  {
+   "preset": "fade-up",
+   "opacidade": "1"
+  },
+  {
+   "preset": "fade-up",
+   "opacidade": "1"
+  },
+  {
+   "preset": "line-up",
+   "opacidade": "1"
+  }
+ ],
+ "erros": [],
+ "ordemCortina": {
+  "msCortinaLevantou": 2671,
+  "msEscopoAcendeu": 2796,
+  "acendeuDepoisDaCortina": true
+ },
+ "fechoPorScroll": {
+  "opacidadeNoTopo": "0",
+  "scrollYQuandoAcendeu": 500
+ },
+ "reduceFecho": "0",
+ "semJsMarcados": 5
+}

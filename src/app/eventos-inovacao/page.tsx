@@ -165,6 +165,61 @@ export default function Page() {
           navy saíram (a superfície é clara de ponta a ponta) e a Social desta rota
           trocou de classe. O que valia é o que está escrito ao lado de cada um dos
           dois blocos, logo abaixo e no cabeçalho deste arquivo. */}
+      {/* ── SIS-272 · O REVEAL DESTA ROTA, E POR QUE ELE MORA TODO AQUI DENTRO ──
+          A issue pede o sistema de `docs/scroll.md` aplicado aos BLOCOS ESTÁTICOS
+          da rota. O inventário da rota é curto e dois dos três blocos já têm dono:
+
+          • `HeroVideoBackdrop` + `PageHero` — o `h1` daqui é candidato a LCP e já
+            entra por variants de montagem. O §9 de `docs/scroll.md` põe «atraso
+            longo no hero» na tabela de erros que custam caro, e o §3 proíbe
+            explicitamente marcar o conteúdo acima da dobra com atraso. Fica
+            intocado, e a AUSÊNCIA de `[data-reveal]` dentro de `#topo` é um dos
+            portões de `scripts/medir-reveal-eventos-sis272.mjs`.
+          • `<Social>` — auditado nó a nó antes de decidir, que é o que a issue
+            pede. O invólucro é `PalcoReativo`, e tudo que ele põe em cena por
+            conta própria (as duas luzes de ponteiro, a marca d'água, os dois
+            orbs) é `aria-hidden` e já tem movimento próprio — `--sx`/`--sy` por
+            `pointermove` e `--sp` por rolagem, escritos por `ref` a cada quadro.
+            O que sobra é `{children}`, e ali `.palco-copy` é `motion.div` com
+            `whileInView` + `viewport={VP}`, com o chip, o `h2`, o parágrafo e o
+            botão em variants (`vSubtitle`/`vTitle`); ao lado, `CartaoDuasFaces` é
+            `motion.a`/`motion.create(Link)`, também com `whileInView`. Não sobrou
+            filho estático sem mecanismo de entrada próprio — então não há alvo, e
+            somar `data-reveal` a qualquer um deles seria o segundo dono do mesmo
+            `transform` que o §6 do guia proíbe. A ausência de `[data-reveal]`
+            dentro de `#social` é o outro portão.
+
+          Sobra `<EventsSpotlight />`, e é lá que a marcação está — três escopos,
+          cada um com a sua justificativa ao lado do JSX: a régua ciano do topo da
+          cena, o contador do pé do palco `sticky`, e o cabeçalho da versão
+          estreita. O palco `sticky`, as previews, o cartão central e a faixa do
+          carrossel ficaram de fora por construção, e cada uma dessas ausências
+          também é asserção da sonda.
+
+          ── O QUE A MEDIÇÃO MUDOU NESTA ROTA, E QUE VALE SABER ANTES DE MEXER ──
+          Esta rota tem a ABERTURA MAIS CURTA do site (`#topo` mede 414px numa
+          janela de 900 e 353px numa de 768 — é um `PageHero` sem parágrafo de
+          apoio e sem faixa de números, por decisão de conteúdo registrada acima).
+          A consequência é que a cena começa DENTRO da primeira dobra: `scrollY`
+          558 a 1440×900, 497 a 1366 e 1024×768, 500 a 390×844. Dois dos três
+          escopos nascem aí, e por isso levam `esperarRota` — é o contrato da
+          SIS-269 («espera = estou na dobra e a cortina me esconderia»), não uma
+          escolha de cadência. O terceiro, o contador, é o único bloco estático
+          que nasce abaixo da dobra, e é ele que carrega a entrada ACIONADA PELO
+          SCROLL da rota. A «cascata global no `liberado`» que a SIS-269 nomeia
+          não se reproduz aqui porque, em cada largura, só UM escopo espera: em
+          desktop o contador é observado desde a montagem, e abaixo de 1024px os
+          dois escopos da cena estão sob `display: none`.
+
+          NÃO HÁ UM QUARTO BLOCO ESTÁTICO A MARCAR, e isso foi apurado antes de
+          escrever JSX. Em desktop, tudo que se lê mora dentro do palco `sticky` de
+          8.100px, e nó preso em `sticky` não rola — o palco rola. Abaixo de
+          1024px, o que fica abaixo da dobra é a faixa do carrossel (dono do
+          próprio estado por `scrollLeft`), a barra de controles (que carrega o
+          relógio do laço) e a Social (que já entra por `whileInView`). A cadência
+          por rolagem que a rota tem abaixo de 1024px é a da Social, e ela é
+          medida junto com o resto em `scripts/medir-reveal-eventos-sis272.mjs`
+          justamente para que ninguém a redescubra como ausência. */}
       <EventsSpotlight />
 
       {/* SIS-215 — A CLASSE MUDOU: `palco-de-cena-escura` -> `palco-emenda-de-claro-curta`.

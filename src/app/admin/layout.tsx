@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 import { VARIAVEL_SENHA } from '@/lib/adminGate';
 import { COOKIE_SESSAO, tokenConfere } from '@/lib/adminSessao';
 import { sair } from './entrar/acoes';
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
      `robots.ts` e o cabeçalho `X-Robots-Tag` do proxy. A meta só é lida por quem
      recebe o HTML — e quem recebe o HTML já passou pela senha. */
   robots: { index: false, follow: false, nocache: true },
-  title: 'Admin · eventos',
+  title: 'Admin',
 };
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -52,8 +53,28 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               logotipo aqui convidaria a tratar esta casca como página pública. */}
           <span aria-hidden className="h-2 w-2 rounded-full bg-[#0079cb]" />
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#475467]">
-            Sistran · admin de eventos
+            Sistran · admin
           </span>
+          {/* Links ENTRE ferramentas internas, não para o site: a proibição de
+              "zero link público" é sobre não devolver ninguém à navegação
+              institucional, e um admin com duas ferramentas sem como trocar
+              entre elas obriga a digitar a URL de cabeça. */}
+          {autenticado && (
+            <nav className="flex items-center gap-1">
+              <Link
+                href="/admin/eventos"
+                className="rounded-full px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-[#667085] no-underline transition-colors hover:bg-black/[0.04] hover:text-[#0f172a]"
+              >
+                Eventos
+              </Link>
+              <Link
+                href="/admin/carimbo"
+                className="rounded-full px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-[#667085] no-underline transition-colors hover:bg-black/[0.04] hover:text-[#0f172a]"
+              >
+                Carimbo
+              </Link>
+            </nav>
+          )}
           {autenticado && (
             <form action={sair} className="ml-auto">
               <button

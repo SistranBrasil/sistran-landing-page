@@ -74,6 +74,7 @@ comentado no lugar exato para quando a informação chegar. Nada disso bloqueia 
 | O **relatório de transparência salarial** em si: PDF e período de referência, que só o MTE gera por CNPJ | `relatorio-de-transparencia-salarial/page.tsx` | SIS-124 (em Backlog só por isso) |
 | **Destino do currículo** em `/trabalhe-conosco` (e-mail RH, storage ou ATS) + base LGPD e prazo de guarda. Sem isso o envio fica no modo demonstração do Contato | `trabalhe-conosco/page.tsx`, action de formulário | SIS-223 (UI); SIS-117 (histórico) |
 | Confirmar se o campo legado **«Layout»** do WPForms deve existir (hoje omitido — rótulo vazado) | formulário carreira | SIS-223 |
+| **Logo Picsel em alta qualidade** (PNG + variante transparente) — arquivos atuais pixelados | `public/images/Picsel-logo.png`, `Picsel-logo-transparente.png` → `partners.ts` / `clients.ts` | SIS-267 (Backlog — arte sua; não despachar ao robô até o HD chegar) |
 
 ### 2b. Um rótulo trocado que vale confirmar — SIS-121
 

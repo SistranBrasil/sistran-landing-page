@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type CSSProperties, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -8,6 +8,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import { prefersReducedMotion } from '@/lib/motion';
+import RevealScope from '@/components/motion/RevealScope';
 
 /**
  * SIS-253 — o «Fale com a Gente!» de `/esg` no desenho de
@@ -86,6 +87,12 @@ type Props = {
   contatoNoModal: boolean;
   /** Quem abre o modal continua sendo o `ContactCTA`, que é dono do estado. */
   onContato: () => void;
+  /**
+   * SIS-271 — o calibre do reveal on scroll, vindo da ROTA (hoje só `/esg`, em
+   * `src/app/esg/reveal-calibre.ts`). Indefinido, o `RevealScope` não é montado e a
+   * árvore é a de sempre: é a mesma porta opt-in de `layoutReferencia`.
+   */
+  revelar?: { limiar: number; margem: string };
 };
 
 export default function ContactCTAReferencia({
@@ -93,6 +100,7 @@ export default function ContactCTAReferencia({
   description,
   contatoNoModal,
   onContato,
+  revelar,
 }: Props) {
   const cartaoRef = useRef<HTMLDivElement>(null);
   const caminhoRef = useRef<SVGPathElement>(null);
@@ -227,8 +235,19 @@ export default function ContactCTAReferencia({
           círculo — medido em `docs/medidas/cta-referencia-sis253.json`, `dx: -16`.
           Um invólucro sem padding próprio faz as duas contas caírem na mesma base. */}
       <div className="container-lp">
-        <div className="cta-ref-palco">
-          <div ref={cartaoRef} className="cta-ref-cartao">
+        {/* SIS-271 — o palco é o ESCOPO do reveal quando a rota pede (`revelar`), e
+            segue sendo uma `<div>` crua quando não pede: é o `Palco` no fim deste
+            arquivo, e ele existe para os filhos serem escritos UMA vez em vez de
+            duplicados nos dois ramos de um ternário.
+            OS TRÊS NÓS MARCADOS RECEBEM `fade`, nunca `fade-up`, e o motivo é medido no
+            próprio arquivo: o `ScrollTrigger` do fio tem o CARTÃO como gatilho
+            (`start: 'top 90%'`), e um `translate3d` no nó de gatilho desloca a posição
+            que o GSAP mede no `refresh` — o pulso do fio começaria fora de hora. O
+            preset `fade` só toca `opacity`. O hover do botão (que é `transform`) fica
+            intacto de qualquer modo: o bloco `.cta-ref-*` do `globals.css` vem DEPOIS
+            dos presets, então `.cta-ref-botao:hover` tem a última palavra. */}
+        <Palco revelar={revelar}>
+          <div ref={cartaoRef} className="cta-ref-cartao" data-reveal={revelar ? 'fade' : undefined}>
             {/* O fio é grafismo: não há informação nele que o texto já não dê. */}
             <div className="cta-ref-fio" aria-hidden>
               <svg
@@ -257,11 +276,22 @@ export default function ContactCTAReferencia({
               empilhamento do cartão e ficaria enterrado sob o blob. O cartão também
               tem `clip-path` no desktop, que recorta filhos. */}
           {contatoNoModal ? (
-            <button type="button" onClick={onContato} className="cta-ref-botao">
+            <button
+              type="button"
+              onClick={onContato}
+              className="cta-ref-botao"
+              data-reveal={revelar ? 'fade' : undefined}
+              style={revelar ? ({ '--reveal-i': 1 } as CSSProperties) : undefined}
+            >
               {dentroDoBotao}
             </button>
           ) : (
-            <Link href="/#contato" className="cta-ref-botao">
+            <Link
+              href="/#contato"
+              className="cta-ref-botao"
+              data-reveal={revelar ? 'fade' : undefined}
+              style={revelar ? ({ '--reveal-i': 1 } as CSSProperties) : undefined}
+            >
               {dentroDoBotao}
             </Link>
           )}
@@ -275,7 +305,12 @@ export default function ContactCTAReferencia({
               porque o `.cta-ref-orbita-b` precisa passar POR CIMA do selo em parte da
               volta na referência, e só o `z-index` não bastaria porque o `::after` da
               aresta do blob herda contexto do irmão anterior. */}
-          <div className="cta-ref-arte" aria-hidden>
+          <div
+            className="cta-ref-arte"
+            aria-hidden
+            data-reveal={revelar ? 'fade' : undefined}
+            style={revelar ? ({ '--reveal-i': 2 } as CSSProperties) : undefined}
+          >
             {/* A FORMA AZUL É UM `<path>`, não mais um `border-radius` de oito valores.
                 É o §3 do doc («não usar imagem rasterizada… criar a forma com um SVG
                 incorporado») somado ao §8 («não utilizar `border-radius` aleatório para
@@ -398,8 +433,36 @@ export default function ContactCTAReferencia({
               <i />
             </span>
           </div>
-        </div>
+        </Palco>
       </div>
     </section>
+  );
+}
+
+/**
+ * SIS-271 — o palco, com ou sem escopo de reveal. Existe como componente para os
+ * filhos serem escritos UMA vez: num ternário em linha eles apareceriam duplicados,
+ * e é aí que os dois ramos passam a divergir sem ninguém notar.
+ *
+ * Sem `revelar` a saída é exatamente a `<div className="cta-ref-palco">` de antes —
+ * o `RevealScope` nem é montado, portanto nenhum `data-in` e nenhum
+ * `IntersectionObserver` novo nas outras telas que venham a usar este desenho.
+ * Com `revelar`, o `RevealScope` OCUPA O LUGAR dessa `<div>` (mesmo `className`,
+ * nenhum nó novo), então o `.cta-ref-palco` continua sendo o pai direto do cartão,
+ * do botão e da arte — o que importa porque o posicionamento dos três é relativo a
+ * ele.
+ */
+function Palco({
+  revelar,
+  children,
+}: {
+  revelar?: { limiar: number; margem: string };
+  children: ReactNode;
+}) {
+  if (!revelar) return <div className="cta-ref-palco">{children}</div>;
+  return (
+    <RevealScope className="cta-ref-palco" limiar={revelar.limiar} margem={revelar.margem}>
+      {children}
+    </RevealScope>
   );
 }

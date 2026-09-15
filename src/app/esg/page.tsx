@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import PageShell from '@/components/PageShell';
 import PageHero from '@/components/PageHero';
@@ -6,6 +7,8 @@ import TituloAceso from '@/components/ui/TituloAceso';
 import FogueteScroll from '@/components/ui/FogueteScroll';
 import GaleriaTurmas from '@/components/ui/GaleriaTurmas';
 import ContactCTA from '@/components/ContactCTA';
+import RevealScope from '@/components/motion/RevealScope';
+import { LIMIAR_REVEAL, LIMIAR_REVEAL_BLOCO, MARGEM_REVEAL } from './reveal-calibre';
 
 export const metadata = {
   title: 'ESG · Sistran',
@@ -236,6 +239,70 @@ const SOCIAL = [
 /* Toda a escrita vem de /esg/. As galerias de imagens do site nao foram
    recriadas (nao tem texto).
    Fonte: .claude/conteudo-site/07-esg.md */
+/* ─────────────────────────────────────────────────────────────────────────────
+   SIS-271 — REVEAL ON SCROLL EM `/esg`, pelo padrão da SIS-263 e com o calibre
+   por scroll da SIS-269.
+
+   O MECANISMO É O QUE A ISSUE PRESCREVE, e nenhum outro: `motion/RevealScope`
+   escrevendo `data-in` + os presets `[data-reveal]` do `globals.css`
+   (`docs/scroll.md` §6). Framer Motion não entra nesta marcação — a página já
+   paga três instâncias de `motion/react` (`TituloAceso`) mais o `FogueteScroll`,
+   e somar um quarto mecanismo é exatamente o que o §6 chama de dois mecanismos
+   sobre o mesmo conteúdo. Movimento reduzido e a rota sem JS continuam resolvidos
+   em CSS, nas duas chaves (`@media (prefers-reduced-motion: reduce)` e
+   `html[data-motion='reduce']`), sem uma linha nova: o preset já é o que apaga o
+   estado inicial ali.
+
+   SÃO SEIS ESCOPOS, E NÃO UM POR SEÇÃO — é a lição medida da SIS-269. Um escopo
+   por seção acende o bloco inteiro no primeiro nó que cruza a raiz, e em SOCIAL
+   (que tem título, o bloco do Gerando Talentos e os dois cartões apoiados, ~2600px
+   de altura) isso significaria animar quase tudo fora da tela. Cada escopo é uma
+   caixa que cabe na dobra:
+
+     1. `#esg-introducao` — a grade de duas colunas.
+     2. ENVIRONMENT · o parágrafo de abertura.
+     3. ENVIRONMENT · a grade dos seis cartões.
+     4. SOCIAL · o bloco do Gerando Talentos.
+     5. SOCIAL · os dois cartões apoiados.
+     6. GOVERNANCE · abertura e grade, um escopo cada (7).
+
+   O QUE NÃO RECEBE REVEAL, e por quê — as três exclusões são a metade do
+   trabalho desta issue:
+
+   · A CAPA. A issue pede: «LCP: sem reveal longo no título». O `PageHero` dentro
+     do `HeroImageBackdrop` fica intocado — pôr o `h1` em `opacity: 0` até um
+     observador disparar é atrasar o próprio LCP, e a capa está na dobra, onde não
+     há scroll nenhum para acompanhar.
+   · OS TRÊS `TituloAceso`. Eles JÁ têm reveal por scroll próprio (acendem palavra
+     por palavra, `motion/react`, medindo rolagem). Marcá-los seria o «não misture
+     os dois no mesmo elemento» do §6, e os três títulos são justamente a cadência
+     que a página já tinha antes desta issue.
+   · A `GaleriaTurmas` e o `FogueteScroll`. A galeria é componente de cliente com
+     estado próprio (o clique que amplia) e não expõe nó para marcar; o foguete é
+     decoração `aria-hidden` em `-z-10` cuja âncora é `position: sticky` e cujo
+     curso é medido por `useScroll` sobre o próprio wrapper. É por ele que os
+     escopos de SOCIAL moram DENTRO do `.container-lp` e nunca em volta da seção:
+     um `[data-reveal]` acima dele poria `transform` na linhagem do sticky e da
+     caixa que o `useScroll` mede — o que a issue proíbe em uma linha («não
+     envolver sticky/`fixed` com `transform` se houver»). Aqui há.
+
+   E POR QUE OS CARTÕES ESG SÃO `fade`, NUNCA `fade-up`: é cascata, e é o critério
+   «sem regressão nos cards ESG». O `<li>` de ENVIRONMENT/GOVERNANCE e os wrappers
+   de SOCIAL carregam uma ANIMAÇÃO de `transform` (`.esg-cartao-flutua`,
+   `.esg-social-flutua`), e declaração de animação vence declaração normal na
+   cascata: o `translate3d` do preset `fade-up` seria silenciosamente ignorado — e
+   o `transform: none` de `[data-in='true'] [data-reveal]` também, o que é o que
+   salva a flutuação. Escrever `fade-up` ali daria um reveal que só faz opacidade
+   fingindo fazer deslocamento. `fade` diz a verdade. O hover (`-12px` em
+   `.esg-superficie:hover`, SIS-237) vive no filho e nunca é tocado: o `data-reveal`
+   fica no WRAPPER, jamais na superfície — no filho, o `transform: none` de
+   `[data-in='true']` tem a MESMA especificidade (0,2,0) do hover e vem MUITO
+   depois no arquivo, e o levantamento morreria sem erro nenhum.
+
+   O `--reveal-i` é o índice da cascata; o passo é o token
+   `--motion-stagger-reveal` (80ms), sem override. Ver `./reveal-calibre.ts` para
+   os dois números do calibre e para a razão de `esperarRota` não aparecer aqui.
+   ────────────────────────────────────────────────────────────────────────── */
 export default function Page() {
   return (
     <PageShell>
@@ -299,7 +366,24 @@ export default function Page() {
              MESMA que SOCIAL já usa nesta página (linha 499). Um branco puro seria
              uma terceira família de fundo em /esg. */}
       <section id="esg-introducao" className="esg-intro section-py section-light section-light-blue">
-        <div className="container-lp grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-12">
+        {/* SIS-271 — escopo 1. O `RevealScope` ocupa o LUGAR da `<div>` que estava
+            aqui, com o mesmo `className`: nenhum nó novo entra na árvore, então a
+            grade de duas colunas é a mesma que a SIS-261 mediu.
+
+            RESSALVA PARA QUEM FOR MEDIR ESTA SEÇÃO DE NOVO:
+            `scripts/medir-intro-esg-sis261.mjs` mira `[data-esg-intro-eyebrow]` e
+            `[data-esg-intro-copy]`, e os dois passaram a nascer em `opacity: 0`. O
+            script já rola até o alvo, mas espera 400ms fixos, e o reveal leva 500ms
+            (`--motion-reveal-base`) mais o atraso do `--reveal-i`: ele pode
+            fotografar o meio da dissolvência e devolver contraste falso. A correção
+            é esperar o estado DISCRETO — `[data-in="true"]` no ancestral do alvo — e
+            não um tempo. Não é feita aqui: mexer no script é fora do escopo desta
+            issue, e a nota existe para o número medido não ser lido como defeito. */}
+        <RevealScope
+          className="container-lp grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-12"
+          limiar={LIMIAR_REVEAL}
+          margem={MARGEM_REVEAL}
+        >
           {/* Mobile empilha texto → imagem sem nenhuma regra de ordem: é a ordem
               do DOM, e a grade só vira duas colunas em `lg`. */}
           <div>
@@ -323,13 +407,19 @@ export default function Page() {
                 que reportava a cor do alvo divergindo da cor do `.eyebrow`. O
                 mecanismo de escape é o que a própria regra oferece: um nome que
                 contenha «eyebrow». */}
-            <p className="eyebrow eyebrow--traco">
+            {/* `fade` e não `fade-up` no rótulo: o `.eyebrow` é `inline-flex` com o
+                traço no `::before`, e 24px de deslocamento num rótulo de uma palavra
+                lê como salto, não como entrada. É a mesma escolha da tag de seção de
+                `/contato`. */}
+            <p className="eyebrow eyebrow--traco" data-reveal="fade" style={{ '--reveal-i': 0 } as CSSProperties}>
               <span className="eyebrow-texto" data-esg-intro-eyebrow>
                 ESG
               </span>
             </p>
             <p
               data-esg-intro-copy
+              data-reveal="fade-up"
+              style={{ '--reveal-i': 1 } as CSSProperties}
               className="mt-5 max-w-[24ch] font-display text-3xl leading-tight text-ink md:text-4xl lg:text-5xl"
             >
               A Sistran demonstra seu forte compromisso com o ESG, integrando práticas sustentáveis
@@ -346,8 +436,10 @@ export default function Page() {
             height={975}
             sizes="(max-width: 1023px) calc(100vw - 40px), (max-width: 1279px) 46vw, 558px"
             className="h-auto w-full"
+            data-reveal="fade-up"
+            style={{ '--reveal-i': 2 } as CSSProperties}
           />
-        </div>
+        </RevealScope>
       </section>
 
       {/* ENVIRONMENT */}
@@ -401,12 +493,20 @@ export default function Page() {
               parágrafo de abertura na mesma escala; subir só a de lá deixaria a
               página remendada. O raciocínio completo está no par desta linha, na
               seção GOVERNANCE. */}
-          <p className="mt-5 max-w-3xl text-xl leading-relaxed text-white/85">
+          {/* SIS-271 — escopo 2. Um escopo só para o parágrafo de abertura, e não um
+              em volta da seção: o `TituloAceso` logo acima tem acendimento próprio e
+              fica fora, e a grade dos seis cartões (~600px mais abaixo) é o escopo 3.
+              O `RevealScope` é um `<div>` sem classe, então ele não muda o layout — o
+              `mt-5` do `<p>` continua colapsando contra o topo dele, como colapsava
+              contra o `.container-lp`. */}
+          <RevealScope limiar={LIMIAR_REVEAL} margem={MARGEM_REVEAL}>
+          <p className="mt-5 max-w-3xl text-xl leading-relaxed text-white/85" data-reveal="fade-up">
             A Sistran tem um compromisso com a sustentabilidade ambiental e adota práticas para
             minimizar o impacto negativo no meio ambiente. Realizamos ações internas e campanhas de
             conscientização para que nossos colaboradores desenvolvam o hábito de um comportamento
             consciente.
           </p>
+          </RevealScope>
           {/* SIS-139 pôs foto, cor no hover e movimento contínuo nestes cartões.
               SIS-208 mudou a FORMA deles, e as duas decisões que ela desfez estão
               registradas aqui porque desfazer decisão medida sem dizer por quê é o
@@ -440,6 +540,18 @@ export default function Page() {
               disco tem proporção fixa, a grade estica cada LINHA e o `h-full` do
               cartão ocupa a altura que a linha reservou. Só o bloco de texto
               varia. */}
+          {/* SIS-271 — escopo 3. O escopo embala a `<ul>` inteira porque a cascata é
+              DELA: são seis cartões que entram em fileira, e um observador por cartão
+              seria seis observadores para desenhar o mesmo stagger que uma custom
+              property resolve. `--reveal-i` = índice, passo de 80ms (o token): a
+              fileira fecha em 400ms, dentro da faixa de 70–120ms do §4.3.
+              O escopo é um `<div>` sem classe entre o `.container-lp` e a `<ul>`; o
+              `mt-10` fica na `<ul>` e colapsa contra o topo dele como antes.
+              O limiar é o `LIMIAR_REVEAL_BLOCO`, e não o da rota: embalar uma grade
+              alta num escopo só é o que cobra o preço de a fileira DE BAIXO nascer
+              fora da tela — medido em 89px na 1ª volta. A conta está no
+              `reveal-calibre.ts`. */}
+          <RevealScope limiar={LIMIAR_REVEAL_BLOCO} margem={MARGEM_REVEAL}>
           <ul className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {ENVIRONMENT.map((item, i) => (
               /* O `<li>` deixou de ser o cartão e passou a ser o WRAPPER, e a razão
@@ -474,10 +586,19 @@ export default function Page() {
                  ponto flutuante põe `-1.7999999999999998s` no atributo `style` do
                  HTML servido (conferido no `next dev`). O CSS aceita, mas o valor
                  vaza na página; `i * 600` com unidade `ms` é o mesmo tempo exato. */
+              /* SIS-271 — `fade`, e é o WRAPPER que recebe a marca. Os dois motivos
+                 estão no cabeçalho do arquivo e são de cascata: aqui a flutuação é uma
+                 ANIMAÇÃO de `transform`, que vence declaração normal — `fade-up` daria
+                 um deslocamento que o navegador descarta, e é a mesma vitória que faz
+                 o `transform: none` de `[data-in='true']` não conseguir parar a
+                 flutuação. No filho (`.esg-superficie`) esse `transform: none` teria a
+                 especificidade do hover e a última palavra no arquivo, e o -12px do
+                 levantamento da SIS-237 morreria calado. */
               <li
                 key={item.text}
                 className="esg-cartao-pluma esg-cartao-flutua"
-                style={{ ['--esg-fase-cartao' as string]: `-${i * 600}ms` }}
+                data-reveal="fade"
+                style={{ ['--esg-fase-cartao' as string]: `-${i * 600}ms`, ['--reveal-i' as string]: i }}
               >
                 {/* `esg-superficie` é a superfície corrigida da SIS-139 (é ela que
                     carrega também a cor do hover, compartilhada com GOVERNANCE) e
@@ -525,6 +646,7 @@ export default function Page() {
               </li>
             ))}
           </ul>
+          </RevealScope>
         </div>
       </section>
 
@@ -590,7 +712,25 @@ export default function Page() {
               a issue levanta — nada depende de autoplay (portanto nada se perde
               com `prefers-reduced-motion: reduce`) e não há controle de navegação
               para alcançar por teclado, porque não há o que navegar. */}
-          <div className="mt-10 grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-12">
+          {/* SIS-271 — escopo 4. O `RevealScope` toma o lugar da `<div>` da grade, com
+              o mesmo `className`. Ele mora AQUI DENTRO, e não em volta da `<section>`,
+              por causa do `FogueteScroll`: a peça é `sticky` dentro de um wrapper
+              `-z-10` e o curso dela é medido por `useScroll` sobre esse wrapper —
+              qualquer `[data-reveal]` acima dele poria `transform` na linhagem, que é
+              o que a issue proíbe. Dentro do `.container-lp` o foguete fica de fora,
+              como irmão anterior.
+              A `GaleriaTurmas` (a coluna da direita) não é marcada: é componente de
+              cliente com estado próprio e não expõe nó para receber `data-reveal`. Ela
+              entra junto com a coluna de texto porque o escopo é a grade inteira — só
+              não tem passo próprio na cascata.
+              Limiar de escopo alto pela mesma razão do escopo 3 — aqui é a COLUNA DE
+              TEXTO que é alta, e é dela o único resíduo que esta issue entrega
+              declarado (165px no último parágrafo). Ver `reveal-calibre.ts`. */}
+          <RevealScope
+            className="mt-10 grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-12"
+            limiar={LIMIAR_REVEAL_BLOCO}
+            margem={MARGEM_REVEAL}
+          >
             <div>
               {/* A logo é conteúdo — nomeia o projeto e mostra a parceria com a
                   Unidep, que o texto cita. Daí o `alt` descritivo, e não `alt=""`.
@@ -606,9 +746,16 @@ export default function Page() {
                   (wrapper x imagem) de propósito: a pluma tem animação de `scale`
                   própria, e empilhar as duas no mesmo nó faria uma multiplicar a
                   outra. `w-fit` para a pluma abraçar o selo, e não a coluna toda. */}
+              {/* SIS-271 — `fade` no wrapper da pluma, pela regra do cabeçalho: a
+                  `.esg-apoio` não anima `transform` ela mesma (a deriva do hover mora
+                  no `> :first-child`, e a pluma no `::before`), mas o alvo do hover é
+                  justamente esse primeiro filho — pôr o `data-reveal` nele daria ao
+                  `transform: none` de `[data-in='true']` a última palavra sobre o
+                  `scale` do hover. No wrapper não há nada para atropelar. */}
               <div
                 className="esg-apoio w-fit"
-                style={{ ['--esg-fase' as string]: '-1.75s' }}
+                data-reveal="fade"
+                style={{ ['--esg-fase' as string]: '-1.75s', ['--reveal-i' as string]: 0 }}
               >
                 <Image
                   src={GERANDO_TALENTOS.logo}
@@ -619,11 +766,22 @@ export default function Page() {
                   className="esg-selo h-auto w-[200px] rounded-2xl md:w-[240px]"
                 />
               </div>
-              <h3 className="mt-7 font-display text-3xl leading-tight text-ink md:text-4xl">
+              <h3
+                className="mt-7 font-display text-3xl leading-tight text-ink md:text-4xl"
+                data-reveal="fade-up"
+                style={{ '--reveal-i': 1 } as CSSProperties}
+              >
                 {GERANDO_TALENTOS.name}
               </h3>
-              {GERANDO_TALENTOS.paragraphs.map((t) => (
-                <p key={t.slice(0, 24)} className="mt-5 max-w-xl text-base leading-relaxed text-ink-muted">
+              {/* A cascata continua da onde o `<h3>` parou: 2, 3, … Índice do parágrafo
+                  + 2, e não índice + 1, para o primeiro deles não empatar com o título. */}
+              {GERANDO_TALENTOS.paragraphs.map((t, i) => (
+                <p
+                  key={t.slice(0, 24)}
+                  className="mt-5 max-w-xl text-base leading-relaxed text-ink-muted"
+                  data-reveal="fade-up"
+                  style={{ '--reveal-i': i + 2 } as CSSProperties}
+                >
                   {t}
                 </p>
               ))}
@@ -657,7 +815,7 @@ export default function Page() {
                 Os dois comentários acima seguem valendo e por isso ficaram: a
                 decisão do `col-span-2` e a do `--esg-fase` moram lá dentro. */}
             <GaleriaTurmas turmas={GERANDO_TALENTOS.turmas} />
-          </div>
+          </RevealScope>
 
           {/* --- Os dois projetos apoiados ------------------------------------
               SIS-110 — dois cards, e por isso `md:grid-cols-2` e não
@@ -665,7 +823,15 @@ export default function Page() {
               deixariam um buraco de um terço da largura. Os dois têm a MESMA
               forma (foto no topo cobrindo a largura, texto e link abaixo), porque
               são pares: dois apoios a fundações externas. */}
-          <div className="mt-14 grid grid-cols-1 items-stretch gap-6 md:grid-cols-2">
+          {/* SIS-271 — escopo 5. Escopo próprio, e não o mesmo do Gerando Talentos: os
+              dois blocos somam ~1800px e um escopo só acenderia estes dois cartões
+              enquanto ainda estão fora da tela. Mesmo arranjo — o `RevealScope` no
+              lugar da `<div>`, `className` idêntico. */}
+          <RevealScope
+            className="mt-14 grid grid-cols-1 items-stretch gap-6 md:grid-cols-2"
+            limiar={LIMIAR_REVEAL}
+            margem={MARGEM_REVEAL}
+          >
             {SOCIAL.map((p, i) => (
               /* SIS-114 — o wrapper existe SÓ para carregar a sombra que respira
                  (`.esg-apoio::before`, no globals.css). Ela não pode morar no
@@ -692,12 +858,20 @@ export default function Page() {
                  cinco wrappers. A flutuação tem ciclo de 5s e por isso ganha
                  `--esg-fase-onda`, metade DELE — é o que mantém os dois cartões em
                  oposição em vez de a 0,7 do ciclo. */
+              /* SIS-271 — `fade` no wrapper: `.esg-social-flutua` é animação de
+                 `transform` neste mesmo nó, então valem as duas metades da regra do
+                 cabeçalho — `fade-up` seria descartado, e é essa mesma vitória da
+                 animação que impede o `transform: none` de `[data-in='true']` de
+                 congelar a flutuação. O `scale` do hover mora no `> :first-child`
+                 (o `<article>`) e não é tocado. */
               <div
                 key={p.name}
                 className="esg-apoio esg-social-flutua h-full"
+                data-reveal="fade"
                 style={{
                   ['--esg-fase' as string]: `-${i * 3.5}s`,
                   ['--esg-fase-onda' as string]: `-${i * 2.5}s`,
+                  ['--reveal-i' as string]: i,
                 }}
               >
               {/* `p-0` no cartão e o respiro no bloco de texto: é o que deixa a
@@ -754,7 +928,7 @@ export default function Page() {
               </article>
               </div>
             ))}
-          </div>
+          </RevealScope>
         </div>
       </section>
 
@@ -799,10 +973,15 @@ export default function Page() {
               acompanha sozinha — 29,25px em vez de 32,5px se fosse `leading-[29px]`.
               O `max-w-3xl` fica: a medida de linha já estava boa a 18px e a 20px ela
               encurta de ~90 para ~81 caracteres, que é o meio da faixa confortável. */}
-          <p className="mt-5 max-w-3xl text-xl leading-relaxed text-white/85">
+          {/* SIS-271 — escopo 6. Gêmeo do escopo 2 de ENVIRONMENT, pela mesma razão que
+              esta seção é gêmea daquela: divergir sem motivo é o que faz a página
+              parecer remendada. */}
+          <RevealScope limiar={LIMIAR_REVEAL} margem={MARGEM_REVEAL}>
+          <p className="mt-5 max-w-3xl text-xl leading-relaxed text-white/85" data-reveal="fade-up">
             A Sistran faz questão de seguir práticas éticas na gestão empresarial em busca de uma
             governança pautada em compliance.
           </p>
+          </RevealScope>
           {/* TODO: o item "Canal de Denúncia" nao tem canal nenhum no site — sem
               link, e-mail ou telefone. Assim que o canal oficial existir, ele
               precisa ser publicado aqui. (Segue aberto: a SIS-141 acrescentou a
@@ -844,6 +1023,12 @@ export default function Page() {
 
               A grade não mudou (`md:grid-cols-2 lg:grid-cols-3`, seis itens, fecha
               exata nas duas) e a escrita dos seis não mudou nem uma vírgula. */}
+          {/* SIS-271 — escopo 7, gêmeo do escopo 3. Mesma cascata de índice, mesmo
+              passo de 80ms, mesmo `fade` no wrapper pelo mesmo motivo de cascata: estes
+              seis `<li>` também carregam `.esg-cartao-flutua`. Limiar de escopo alto
+              como na ENVIRONMENT: aqui a grade tem 646px e a fileira de baixo nascia
+              125px fora da tela. */}
+          <RevealScope limiar={LIMIAR_REVEAL_BLOCO} margem={MARGEM_REVEAL}>
           <ul className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {GOVERNANCE.map((g, i) => (
               <li
@@ -864,7 +1049,10 @@ export default function Page() {
                    os dois em oposição e fecha o vão de 16px da grade. Escrito em
                    milissegundos inteiros pela mesma razão de ENVIRONMENT: o produto em
                    ponto flutuante vaza dízima no atributo `style` do HTML servido. */
-                style={{ ['--esg-fase-cartao' as string]: `-${i * 450}ms` }}
+                /* SIS-271 — `fade` no wrapper; a nota completa está no `<li>` de
+                   ENVIRONMENT e no cabeçalho do arquivo. */
+                data-reveal="fade"
+                style={{ ['--esg-fase-cartao' as string]: `-${i * 450}ms`, ['--reveal-i' as string]: i }}
               >
                 {/* `esg-superficie` é a superfície corrigida da SIS-139 — é ela que
                     tira a `<dd>` em `text-white/85` dos 3,54:1 medidos lá — e
@@ -913,6 +1101,7 @@ export default function Page() {
               </li>
             ))}
           </ul>
+          </RevealScope>
         </div>
       </section>
 
@@ -938,7 +1127,23 @@ export default function Page() {
           O que a SIS-142 entregou e CONTINUA de pé nesta rota é o item 4, o
           `contatoNoModal`. Se a revisão preferir manter os dois, é só reativar as
           props — o caminho antigo do componente está intacto. */}
-      <ContactCTA layoutReferencia contatoNoModal /* haloClaro reativo */ />
+      {/* SIS-271 — o oitavo e último escopo é o «Fale com a Gente!», e ele entra por
+          PROP porque este bloco é o mesmo em dez telas: `revelar` nasce indefinida e,
+          sem ela, `ContactCTA`/`ContactCTAReferencia` continuam byte por byte para as
+          outras nove — o mesmo contrato opt-in de `layoutReferencia`, `haloClaro` e
+          `reativo`. O calibre vai daqui para lá em vez de ser reescrito no componente:
+          dois literais numa peça compartilhada é a duplicação que `./reveal-calibre.ts`
+          existe para evitar.
+          O que é marcado LÁ DENTRO é o cartão e a arte, com `fade` nos dois — nunca
+          `fade-up`. O motivo é o `ScrollTrigger` do fio: o gatilho dele é o próprio
+          cartão (`start: 'top 90%'`), e um `translate3d` no nó de gatilho desloca a
+          posição que o GSAP mede no `refresh`. `fade` não toca `transform`. */}
+      <ContactCTA
+        layoutReferencia
+        contatoNoModal
+        revelar={{ limiar: LIMIAR_REVEAL, margem: MARGEM_REVEAL }}
+        /* haloClaro reativo */
+      />
     </PageShell>
   );
 }

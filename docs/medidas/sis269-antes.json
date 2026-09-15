@@ -1,0 +1,157 @@
+{
+  "issue": "SIS-269",
+  "medidoEm": "2026-09-15T15:32:48.890Z",
+  "viewport": "1440x900",
+  "passoDaSonda": 60,
+  "alturaDoc": 4280,
+  "escoposComDataIn": 5,
+  "acenderamAntesDeRolar": 1,
+  "acenderamAoRolar": 4,
+  "eventos": [
+    {
+      "scrollY": 0,
+      "topoDoc": 742,
+      "altura": 221,
+      "liberado": "true",
+      "texto": "850+ 52+ Membros do Grupo Sistran 23+ 1+ Prêmi"
+    },
+    {
+      "scrollY": 35,
+      "topoDoc": 1028,
+      "altura": 121,
+      "liberado": "true",
+      "texto": ""
+    },
+    {
+      "scrollY": 303,
+      "topoDoc": 1228,
+      "altura": 963,
+      "liberado": "true",
+      "texto": "SEDE · SÃO PAULO R. Dr. Geraldo Campos Moreira"
+    },
+    {
+      "scrollY": 1377,
+      "topoDoc": 2318,
+      "altura": 784,
+      "liberado": "true",
+      "texto": "Use Ctrl + rolagem para dar zoom no mapa OpenF"
+    },
+    {
+      "scrollY": 2270,
+      "topoDoc": 3230,
+      "altura": 480,
+      "liberado": "true",
+      "texto": "#SISTRAN Venha Fazer Parte do #timeSISTRAN! Se"
+    }
+  ],
+  "filhosDataReveal": 15,
+  "animaramForaDaTela": 8,
+  "piorAbaixoDaDobra": 450,
+  "filhos": [
+    {
+      "topoDoc": 3620,
+      "escopoTopo": 3230,
+      "preset": "fade-up",
+      "scrollYQuandoAnimou": 2270,
+      "abaixoDaDobra": 450
+    },
+    {
+      "topoDoc": 3492,
+      "escopoTopo": 3230,
+      "preset": "fade-up",
+      "scrollYQuandoAnimou": 2270,
+      "abaixoDaDobra": 322
+    },
+    {
+      "topoDoc": 2491,
+      "escopoTopo": 2318,
+      "preset": "fade-up",
+      "scrollYQuandoAnimou": 1377,
+      "abaixoDaDobra": 214
+    },
+    {
+      "topoDoc": 3342,
+      "escopoTopo": 3230,
+      "preset": "fade-up",
+      "scrollYQuandoAnimou": 2270,
+      "abaixoDaDobra": 172
+    },
+    {
+      "topoDoc": 2420,
+      "escopoTopo": 2318,
+      "preset": "fade",
+      "scrollYQuandoAnimou": 1377,
+      "abaixoDaDobra": 143
+    },
+    {
+      "topoDoc": 3267,
+      "escopoTopo": 3230,
+      "preset": "fade",
+      "scrollYQuandoAnimou": 2270,
+      "abaixoDaDobra": 97
+    },
+    {
+      "topoDoc": 1028,
+      "escopoTopo": 1028,
+      "preset": "fade",
+      "scrollYQuandoAnimou": 35,
+      "abaixoDaDobra": 93
+    },
+    {
+      "topoDoc": 1252,
+      "escopoTopo": 1228,
+      "preset": "fade-up",
+      "scrollYQuandoAnimou": 303,
+      "abaixoDaDobra": 49
+    },
+    {
+      "topoDoc": 865,
+      "escopoTopo": 742,
+      "preset": "fade",
+      "scrollYQuandoAnimou": 0,
+      "abaixoDaDobra": -35
+    },
+    {
+      "topoDoc": 862,
+      "escopoTopo": 742,
+      "preset": "fade",
+      "scrollYQuandoAnimou": 0,
+      "abaixoDaDobra": -38
+    },
+    {
+      "topoDoc": 859,
+      "escopoTopo": 742,
+      "preset": "fade",
+      "scrollYQuandoAnimou": 0,
+      "abaixoDaDobra": -41
+    },
+    {
+      "topoDoc": 739,
+      "escopoTopo": 742,
+      "preset": "fade",
+      "scrollYQuandoAnimou": 0,
+      "abaixoDaDobra": -161
+    },
+    {
+      "topoDoc": 736,
+      "escopoTopo": 742,
+      "preset": "fade",
+      "scrollYQuandoAnimou": 0,
+      "abaixoDaDobra": -164
+    },
+    {
+      "topoDoc": 736,
+      "escopoTopo": 742,
+      "preset": "fade",
+      "scrollYQuandoAnimou": 0,
+      "abaixoDaDobra": -164
+    },
+    {
+      "topoDoc": 735,
+      "escopoTopo": 742,
+      "preset": "fade",
+      "scrollYQuandoAnimou": 0,
+      "abaixoDaDobra": -165
+    }
+  ]
+}
