@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { gsap } from 'gsap';
 import { ExternalLink, MapPin, Phone } from 'lucide-react';
 import { UNITS, mapsHref } from '@/data/contact';
 import type { Unit } from '@/data/types';
@@ -135,20 +136,31 @@ function carregarMaps(chave: string): Promise<GoogleMaps> {
    versionamento e invisível em code review. Aqui a paleta é revisável no diff.
    Os POIs comerciais e o transporte saem — a seção mostra três endereços, não
    um guia da cidade. */
+/* SIS-245 — os tons CLAREARAM, um degrau em cada, e os rótulos ganharam o toque
+   de branco. O raciocínio inteiro (por que o fundo não clareia até o branco, por
+   que o contorno do rótulo quase não muda) está escrito UMA vez, em
+   `src/data/mapaEstiloEscuro.ts` — que é o estilo que de fato renderiza hoje,
+   porque não há `NEXT_PUBLIC_GOOGLE_MAPS_KEY` no repositório e este degrau nunca
+   chega a ser tentado. Este bloco acompanha para que, no dia em que houver
+   chave, o mapa do Google não volte com a paleta antiga. Cores anteriores:
+   | geometry #0e1b2e · labels.fill #8ab4d8 · labels.stroke #0a1526
+   | administrative #1f3a5c · poi.park #102a24 · road #17293f
+   | road.arterial #1d3350 · road.highway #25456b · road labels #7fa6c8
+   | water #062036 · water labels #3d7ba8 */
 const ESTILO_ESCURO = [
-  { elementType: 'geometry', stylers: [{ color: '#0e1b2e' }] },
-  { elementType: 'labels.text.fill', stylers: [{ color: '#8ab4d8' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#0a1526' }] },
-  { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#1f3a5c' }] },
+  { elementType: 'geometry', stylers: [{ color: '#16304d' }] },
+  { elementType: 'labels.text.fill', stylers: [{ color: '#c9def0' }] },
+  { elementType: 'labels.text.stroke', stylers: [{ color: '#0b1b2c' }] },
+  { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#325a85' }] },
   { featureType: 'poi', stylers: [{ visibility: 'off' }] },
-  { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#102a24' }] },
-  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#17293f' }] },
-  { featureType: 'road.arterial', elementType: 'geometry', stylers: [{ color: '#1d3350' }] },
-  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#25456b' }] },
-  { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#7fa6c8' }] },
+  { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#173d33' }] },
+  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#24425f' }] },
+  { featureType: 'road.arterial', elementType: 'geometry', stylers: [{ color: '#2e5175' }] },
+  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#3d6b96' }] },
+  { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#aecbe2' }] },
   { featureType: 'transit', stylers: [{ visibility: 'off' }] },
-  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#062036' }] },
-  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#3d7ba8' }] },
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0e3a5c' }] },
+  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#79aed6' }] },
 ];
 
 /** Pino desenhado, e não o vermelho padrão: é o mesmo `MapPin` de lucide que a
@@ -593,10 +605,21 @@ function Mosaico({
         transform: `translate(${-(x - x0) * TAMANHO_TILE}px, ${-(y - y0) * TAMANHO_TILE}px)`,
         /* Tema escuro da marca por filtro, porque o tile de origem é claro.
            `invert` sozinho deixa a água laranja; o `hue-rotate(180deg)` devolve
-           o azul. O resto tira o excesso de contraste do mapa invertido. */
+           o azul. O resto tira o excesso de contraste do mapa invertido.
+
+           SIS-245 — o `brightness` subiu de 0.85 para 1, e é a tradução do
+           "azul mais claro" para o único vocabulário que este degrau tem: aqui
+           não há paleta para trocar (o tile é uma imagem pronta), só filtro. 1 é
+           o neutro: o mosaico deixa de ser escurecido depois de invertido e passa
+           a acompanhar a claridade nova dos outros dois degraus, sem virar mapa
+           claro — o `invert` continua sendo o que faz o tema.
+           Este degrau é o último recurso (só aparece se o MapLibre falhar), então
+           o ajuste é conservador de propósito: um valor por cima de 1 clarearia o
+           mapa acima do que o estilo vetorial mostra.
+           | brightness(0.85) */
         filter: TILES_JA_ESCUROS
           ? undefined
-          : 'invert(1) hue-rotate(180deg) saturate(0.7) brightness(0.85) contrast(1.05)',
+          : 'invert(1) hue-rotate(180deg) saturate(0.7) brightness(1) contrast(1.05)',
       }}
     >
       {tiles.map((t) => (
@@ -738,6 +761,52 @@ export default function MapaUnidades({ cabecalho }: { cabecalho?: ReactNode }) {
   }
 
   const unidade = UNITS.find((u) => u.id === ativa) ?? UNITS[0];
+
+  /* SIS-245 — a TROCA DE UNIDADE passou a ser um gesto, e ela nasceu desta issue
+     por necessidade, não por enfeite: as três unidades deixaram de ter o mesmo
+     conjunto de informações. São Paulo mostra endereço + telefone + rota, Pato
+     Branco mostra endereço + rota, e o Rio mostra a frase de endereço não
+     divulgado e nada mais. Clicando entre elas, linhas APARECEM E DESAPARECEM sob
+     o cursor — sem transição alguma isso é um salto seco, e o link de rota que
+     acabou de sumir parece defeito e não ausência deliberada.
+     Enquanto a câmera do mapa desliza (`flyTo`, nos dois degraus de mapa), o
+     painel entra em cascata curta com o mesmo sentido de movimento.
+
+     GSAP e não `transition` em CSS por três motivos concretos:
+     • a cascata é por LINHA, e o número de linhas muda por unidade — em CSS seria
+       `transition-delay` escrito à mão para uma contagem que varia;
+     • o alvo é montado/desmontado pelo React a cada troca, e `transition` não
+       anima nó que acaba de nascer;
+     • o `stagger` do GSAP é a mesma ferramenta que a casa já usa para cascata
+       (`SectionReveal`, `CurriculoCard`).
+
+     Sem `ScrollTrigger`: o disparo é o clique, não a rolagem.
+
+     Movimento reduzido é a PORTA e não um desvio: com a preferência ligada a
+     animação não é criada, e como quem escreve o estado escondido é o próprio
+     `gsap.from` (nunca o CSS nem o render), o painel simplesmente aparece pronto
+     — inclusive sem JavaScript. `reduzirMovimento()` é a mesma leitura resolvida
+     que os dois mapas já usam neste arquivo.
+
+     `clearProps` no fim para não deixar `transform` inline no bloco: um ancestral
+     transformado é o que quebraria `position: fixed` de qualquer coisa que caia
+     aqui dentro depois. */
+  const painelRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = painelRef.current;
+    if (!el || reduzirMovimento()) return;
+    const ctx = gsap.context(() => {
+      gsap.from(Array.from(el.children), {
+        y: 10,
+        opacity: 0,
+        duration: 0.42,
+        ease: 'power2.out',
+        stagger: 0.06,
+        clearProps: 'opacity,transform',
+      });
+    }, el);
+    return () => ctx.revert();
+  }, [ativa]);
 
   return (
     /* SIS-129 — a seção deixa de ser "lista clara ao lado de um mapa" e passa a
@@ -914,13 +983,16 @@ export default function MapaUnidades({ cabecalho }: { cabecalho?: ReactNode }) {
 
         {/* Sem fundo próprio nem borda: o véu já é a superfície deste bloco.
             Um segundo painel opaco aqui viraria cartão dentro de cartão. */}
-        <div className="mt-6">
+        {/* `key={unidade.id}` — o bloco é REMONTADO a cada troca de propósito: é
+            o que garante que a cascata da SIS-245 anime nós novos, e não nós
+            antigos com texto trocado por baixo. */}
+        <div className="mt-6" ref={painelRef} key={unidade.id}>
           <h3 className="font-display text-lg text-white">
             {unidade.city} – {unidade.state}
           </h3>
           {unidade.address ? (
             <p className="mt-3 text-sm leading-relaxed text-white/80">{unidade.address}</p>
-          ) : (
+          ) : unidade.id === 'rj' ? null : (
             <p className="mt-3 text-sm leading-relaxed text-white/60">
               Endereço não divulgado. O mapa mostra a cidade, não o escritório.
             </p>
@@ -945,16 +1017,35 @@ export default function MapaUnidades({ cabecalho }: { cabecalho?: ReactNode }) {
               {unidade.phone}
             </a>
           )}
-          <a
-            href={mapsHref(unidade)}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: '#7fdcff' }}
-            className="mt-4 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
-          >
-            <ExternalLink aria-hidden className="h-3.5 w-3.5 shrink-0" strokeWidth={2} />
-            Ver no Google Maps e traçar rota
-          </a>
+          {/* SIS-245 — o link de rota passou a depender do ENDEREÇO, e não é
+              detalhe de layout: ele era incondicional, e para uma unidade sem
+              endereço `mapsHref` cai para «Cidade - UF, Brasil» (ver
+              `src/data/contact.ts`). No Rio isso significava um botão escrito
+              "traçar rota" que abre o mapa de uma cidade de seis milhões de
+              habitantes e traça rota para um ponto que não é o escritório — a
+              linha acima diz "o mapa mostra a cidade, não o escritório" e o botão
+              logo abaixo desmentia a própria frase.
+              São Paulo e Pato Branco seguem com o link, porque nos dois o alvo da
+              busca é o endereço publicado.
+              O bloco anterior, incondicional:
+              | <a
+              |   href={mapsHref(unidade)}
+              |   target="_blank"
+              |   … >
+              |   Ver no Google Maps e traçar rota
+              | </a> */}
+          {unidade.address ? (
+            <a
+              href={mapsHref(unidade)}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: '#7fdcff' }}
+              className="mt-4 inline-flex items-center gap-2 text-sm font-semibold underline underline-offset-4"
+            >
+              <ExternalLink aria-hidden className="h-3.5 w-3.5 shrink-0" strokeWidth={2} />
+              Ver no Google Maps e traçar rota
+            </a>
+          ) : null}
         </div>
       </div>
     </div>

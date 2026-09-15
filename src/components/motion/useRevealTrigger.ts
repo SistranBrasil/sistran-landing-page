@@ -44,6 +44,20 @@ type Opcoes = {
   reverterSomenteAcima?: boolean;
   /** Margem do observador, no formato de `rootMargin`. */
   margem?: string;
+  /**
+   * SIS-263 (2ª volta) — só começa a observar quando isto é `true`.
+   *
+   * Existe por um defeito MEDIDO em `/contato`: um bloco que já está na primeira
+   * dobra intersecta a janela ENQUANTO a cortina do `RouteLoadGate` ainda está de
+   * pé. O observador então acende atrás da cortina, a transição termina no escuro,
+   * e quando a cortina levanta o bloco já está parado no estado final — a entrada
+   * existiu e ninguém viu. Com o gatilho esperando a liberação da rota, o que a
+   * pessoa vê depois do carregamento é o conteúdo SURGINDO.
+   *
+   * Padrão `true` para não mudar nenhuma outra rota: quem não passa nada continua
+   * observando desde a montagem, que é o comportamento das SIS-193/195.
+   */
+  pronto?: boolean;
 };
 
 export function useRevealTrigger<T extends HTMLElement = HTMLDivElement>({
@@ -51,6 +65,7 @@ export function useRevealTrigger<T extends HTMLElement = HTMLDivElement>({
   umaVez = true,
   reverterSomenteAcima = false,
   margem = '0px 0px -12% 0px',
+  pronto = true,
 }: Opcoes = {}) {
   const ref = useRef<T>(null);
   const [dentro, setDentro] = useState(false);
@@ -81,6 +96,13 @@ export function useRevealTrigger<T extends HTMLElement = HTMLDivElement>({
     }
 
     el.dataset.in = 'false';
+
+    /* Esperando a rota liberar: o bloco fica no estado ESCONDIDO e sem
+       observador. Escrever `false` antes de sair é o que garante que, quando
+       `pronto` virar `true`, exista transição para assistir — se ficasse sem
+       atributo, a folha não casaria e o bloco apareceria pronto, sem entrada.
+       A cortina cobre a tela nesse intervalo, então nada disto é visível. */
+    if (!pronto) return;
 
     const obs = new IntersectionObserver(
       ([entrada]) => {
@@ -141,7 +163,7 @@ export function useRevealTrigger<T extends HTMLElement = HTMLDivElement>({
       cancelAnimationFrame(frameSalto);
       window.removeEventListener('scroll', conferirSaltoAcima);
     };
-  }, [limiar, umaVez, reverterSomenteAcima, margem]);
+  }, [limiar, umaVez, reverterSomenteAcima, margem, pronto]);
 
   return { ref, dentro } as const;
 }

@@ -26,8 +26,15 @@ import { useReducedMotion } from '@/lib/motion';
 type Props = {
   id?: string;
   texto: string;
+  /**
+   * Continuação no mesmo ritmo de acendimento, sem `text-gradient-brand`.
+   * Serve ao título SOCIAL, cuja lista de projetos não pode ir em `destaque`.
+   */
+  resto?: string;
   /** Parte final destacada, como o site destaca. */
   destaque?: string;
+  /** SIS-262 — `font-bold` só nos spans de `texto`. Default false: demais rotas intactas. */
+  negritoTexto?: boolean;
   className?: string;
 };
 
@@ -63,15 +70,29 @@ function agruparPontuacao(texto: string): string[] {
   }, []);
 }
 
-export default function TituloAceso({ id, texto, destaque, className }: Props) {
+function rotuloLeitura(texto: string, resto?: string, destaque?: string): string {
+  return [texto, resto, destaque].filter(Boolean).join(' ');
+}
+
+export default function TituloAceso({
+  id,
+  texto,
+  resto,
+  destaque,
+  negritoTexto = false,
+  className,
+}: Props) {
   const ref = useRef<HTMLHeadingElement>(null);
   const reduzido = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 92%', 'end 55%'] });
 
   const palavras = agruparPontuacao(texto);
+  const restos = resto ? agruparPontuacao(resto) : [];
   const destacadas = destaque ? agruparPontuacao(destaque) : [];
-  const total = palavras.length + destacadas.length;
+  const total = palavras.length + restos.length + destacadas.length;
   const risco = useTransform(scrollYProgress, [0, 0.9], reduzido ? [1, 1] : [0, 1]);
+  const indiceResto = palavras.length;
+  const indiceDestaque = palavras.length + restos.length;
 
   return (
     <div className="titulo-aceso">
@@ -79,10 +100,10 @@ export default function TituloAceso({ id, texto, destaque, className }: Props) {
         id={id}
         ref={ref}
         className={className}
-        aria-label={destaque ? `${texto} ${destaque}` : texto}
+        aria-label={rotuloLeitura(texto, resto, destaque)}
       >
         {palavras.map((palavra, i) => (
-          <span key={`${palavra}-${i}`}>
+          <span key={`${palavra}-${i}`} className={negritoTexto ? 'font-bold' : undefined}>
             <Palavra
               palavra={palavra}
               indice={i}
@@ -93,16 +114,28 @@ export default function TituloAceso({ id, texto, destaque, className }: Props) {
             {i < total - 1 ? ' ' : null}
           </span>
         ))}
-        {destacadas.map((palavra, i) => (
-          <span className="text-gradient-brand" key={`d-${palavra}-${i}`}>
+        {restos.map((palavra, i) => (
+          <span key={`r-${palavra}-${i}`}>
             <Palavra
               palavra={palavra}
-              indice={palavras.length + i}
+              indice={indiceResto + i}
               total={total}
               progresso={scrollYProgress}
               reduzido={reduzido}
             />
-            {palavras.length + i < total - 1 ? ' ' : null}
+            {indiceResto + i < total - 1 ? ' ' : null}
+          </span>
+        ))}
+        {destacadas.map((palavra, i) => (
+          <span className="text-gradient-brand" key={`d-${palavra}-${i}`}>
+            <Palavra
+              palavra={palavra}
+              indice={indiceDestaque + i}
+              total={total}
+              progresso={scrollYProgress}
+              reduzido={reduzido}
+            />
+            {indiceDestaque + i < total - 1 ? ' ' : null}
           </span>
         ))}
       </h2>

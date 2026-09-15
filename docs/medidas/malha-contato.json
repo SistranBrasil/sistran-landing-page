@@ -1,0 +1,69 @@
+{
+ "w1440": {
+  "erros": [],
+  "estilo": {
+   "zIndex": "0",
+   "modulo": "96px 96px",
+   "mascara": "linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0) 18%, rgb(0, 0, 0) 82%, rgba(0, 0, 0, 0))",
+   "cartaoPosition": "relative",
+   "cartao": {
+    "esq": 100,
+    "dir": 1340,
+    "topo": 200
+   },
+   "scrollWidth": 1440
+  },
+  "foraDoCartao": {
+   "x": 96,
+   "linha": "rgb(0,90,137)",
+   "vizinhos": [
+    "rgb(0,78,129)",
+    "rgb(0,76,127)"
+   ],
+   "amplitude": 22
+  },
+  "dentroDoCartao": {
+   "x": 192,
+   "linha": "rgb(132,169,216)",
+   "vizinhos": [
+    "rgb(132,168,215)",
+    "rgb(132,169,215)"
+   ],
+   "amplitude": 1.5
+  },
+  "referenciaEsg": {
+   "x": 96,
+   "linha": "rgb(13,113,168)",
+   "vizinhos": [
+    "rgb(14,97,157)",
+    "rgb(14,97,157)"
+   ],
+   "amplitude": 28
+  }
+ },
+ "w390": {
+  "erros": [],
+  "estilo": {
+   "zIndex": "0",
+   "modulo": "96px 96px",
+   "mascara": "linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0) 18%, rgb(0, 0, 0) 82%, rgba(0, 0, 0, 0))",
+   "cartaoPosition": "relative",
+   "cartao": {
+    "esq": 20,
+    "dir": 371,
+    "topo": 192
+   },
+   "scrollWidth": 390
+  },
+  "foraDoCartao": "sem coluna fora do cartão nesta largura (cartão em 20..371, módulo 96px): a malha só aparece acima e abaixo do painel",
+  "dentroDoCartao": {
+   "x": 96,
+   "linha": "rgb(1,34,73)",
+   "vizinhos": [
+    "rgb(1,34,72)",
+    "rgb(1,34,74)"
+   ],
+   "amplitude": 0
+  }
+ }
+}

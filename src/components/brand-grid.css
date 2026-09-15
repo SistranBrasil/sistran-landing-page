@@ -557,9 +557,59 @@
   object-fit: contain;
   /* Repouso dessaturado e recuado, como na faixa e como na referência: são 15
      paletas conflitantes na mesma tela, e todas em cor cheia disputam com o
-     conteúdo da página em vez de servirem de rodapé de credibilidade. */
-  filter: grayscale(1);
-  opacity: 0.62;
+     conteúdo da página em vez de servirem de rodapé de credibilidade.
+
+     ── SIS-240: O RECUO ESTAVA APAGANDO SETE MARCAS, E QUEM SEGURA O RECUO AGORA É
+        O CINZA, NÃO A TRANSPARÊNCIA
+     Era `grayscale(1)` + `opacity: 0.62`. Medido (p5 tinta × p95 fundo,
+     `deviceScaleFactor: 2`, sonda `medir-brandgrid-sis240.mjs`), sete das quinze
+     ficavam abaixo de 3:1 em repouso — addactis 1,81 · dacadoo 2,10 · sys4b 2,33 ·
+     microsoft-azure 2,38 · earnix 2,45 · itg 2,92 · sap 2,97. Logo de tinta clara
+     sobre campo quase branco, a 62% de opacidade, é fantasma.
+
+     ⚠️ O CAMINHO ÓBVIO NÃO FECHA PARA DUAS MARCAS, E O TETO MEDIDO É QUE PROVA. A
+     sonda mede também o teto de cada logo — `filter: none; opacity: 1`, o máximo
+     que o arquivo dá contra `#f5faff`. DOIS tetos são menores que 3:1:
+     addactis 2,62 · dacadoo 2,83. Por mais que se suba a opacidade e se afrouxe o
+     `grayscale`, essas duas não chegam a 3:1 — o limite delas não é o véu, é a
+     tinta do arquivo. Trocar arquivo está fora de escopo.
+
+     ⚠️ ESTA NOTA JÁ ESTEVE ERRADA, E O ERRO ERA DE INSTRUMENTO, NÃO DE LEITURA.
+     Estava escrito aqui que eram QUATRO tetos abaixo de 3:1 (dacadoo 2,28 ·
+     addactis 2,64 · sys4b 2,90 · microsoft-azure 2,93) e earnix na linha (3,01).
+     Falso: a sonda fotografava o teto no quadro seguinte à escrita do estilo
+     inline, ou seja no meio da `transition` de 400ms — media um ponto do caminho,
+     não o destino. Com a espera corrigida os tetos reais são sys4b 4,34 ·
+     microsoft-azure 4,33 · earnix 3,45, todos ACIMA de 3:1. Ver o aviso no cabeçalho
+     do bloco do teto em `medir-brandgrid-sis240.mjs`.
+     A consequência é honesta e vale registrar: para treze das quinze o caminho que
+     a issue sugere primeiro FUNCIONARIA — `opacity: 1` sem escurecer nenhum já
+     passaria (earnix, a mais apertada delas, em 3,45). O que ele não resolve é
+     addactis e dacadoo, e o motivo de o escurecimento ser GLOBAL e não só nessas
+     duas está no fim desta nota: é o recuo pedido, não a legibilidade.
+
+     Então entra uma alavanca que a issue não listou: `brightness(<1)`. Ela
+     multiplica os canais de cor e NÃO toca o alfa, então o vazio da logo continua
+     vazio e só a tinta desce. É a única forma de ganhar contraste sem mexer no
+     arquivo nem repintar o campo. (`contrast(>1)` faria o contrário no caso que
+     importa: cinza claro está ACIMA do ponto médio, e mais contraste o empurra para
+     o branco — pioraria justamente a addactis.)
+
+     Os dois números saem da varredura `calibrar-brandgrid-sis240.mjs`, que mede as
+     28 casas de `opacity × brightness` nas quinze. `0.85 / 0.8` é a casa mais
+     branda em que as quinze passam:
+       addactis 3,17 · dacadoo 3,82 · sys4b 4,09 · microsoft-azure 4,58 ·
+       earnix 4,72 · itg 5,96 · sap 5,81 · virtusa 6,45 · picsel 7,69 ·
+       samplemed 8,10 · sensedia 8,79 · friss 8,72 · aws 9,14 · st-it 9,85 ·
+       pega 9,73
+     A opacidade sobe só até 0,85 e não até 1: o "recuado" continua sendo pedido
+     pelo parágrafo acima, e a 1 a grade viraria quinze placas em peso cheio. Quem
+     passa a fazer o recuo é o cinza somado ao escurecimento — que empurra as logos
+     para a MESMA faixa de grafite, o que é mais próximo da referência do que o véu
+     de transparência, e é o efeito colateral bem-vindo: quinze pesos ópticos
+     diferentes ficam parecidos entre si sem que nenhum desapareça. */
+  filter: grayscale(1) brightness(0.8);
+  opacity: 0.85;
   transition:
     filter var(--base) var(--ease),
     opacity var(--base) var(--ease);
@@ -586,6 +636,32 @@
    Vale para as duas malhas (3 e 5 colunas): o teto é % da própria célula. */
 .marcas-grade-celula[data-marca='samplemed'] img {
   max-height: 88%;
+}
+
+/* ── EXCEÇÃO DE TINTA: AS DUAS LOGOS MAIS CLARAS DO CONJUNTO (SIS-240)
+   Mesma natureza da exceção acima — regra por MARCA e não por posição, pelo gancho
+   `data-marca` — e pelo mesmo tipo de motivo: o valor geral iguala o VÉU, não a
+   tinta que existe debaixo dele. Duas marcas chegam ao véu geral já quase brancas
+   (tinta lida em repouso: addactis `rgb(190,192,193)`, dacadoo `rgb(172,174,176)`)
+   e, com `0.85 / 0.8`, param em 3,17:1 e 3,82:1 — passam o portão de 3:1 raspando,
+   e "raspando" num número medido a 2x é o mesmo que não passar quando o critério de
+   aceite diz «Addactis claramente legível sem hover».
+   Escurecimento medido na mesma varredura, o menor que leva as duas acima de 4,3:1
+   (a folga em que as outras treze já estão):
+     addactis  brightness 0,8 → 3,17:1  ·  0,7 → 3,66:1  ·  0,6 → 4,32:1
+     dacadoo   brightness 0,8 → 3,82:1  ·  0,7 → 4,47:1
+   Não é `opacity` que sobe aqui, é `brightness` que desce: subir a opacidade destas
+   duas as deixaria mais PRESENTES que as vizinhas sem ficarem mais legíveis (o teto
+   delas é 2,62 e 2,83 — abaixo do portão mesmo em cor cheia e opacidade cheia), e o
+   desnível de peso apareceria na fileira.
+   ⚠️ Estes dois blocos têm de ficar ANTES da regra de hover: a especificidade é a
+   mesma dela (uma classe + um qualificador + um tipo), então quem decide é a ordem
+   de fonte, e o hover precisa ganhar para devolver a cor cheia. */
+.marcas-grade-celula[data-marca='addactis'] img {
+  filter: grayscale(1) brightness(0.6);
+}
+.marcas-grade-celula[data-marca='dacadoo'] img {
+  filter: grayscale(1) brightness(0.7);
 }
 
 /* A cor volta no ponteiro, e só onde há ponteiro fino: em toque o estado de hover
@@ -632,6 +708,27 @@
     filter: grayscale(0);
     opacity: 1;
   }
+
+  /* ── SIS-240: AS DUAS MAIS CLARAS TAMBÉM PRECISAM DO ESCURECIMENTO NO HOVER
+     Isto apareceu MEDINDO o depois, e é o contrário do que a issue supõe: com o
+     repouso corrigido, apontar a addactis passou a PIORAR a leitura dela. A regra
+     acima devolve a cor cheia e, na cor cheia, a tinta do arquivo é quase branca —
+     addactis 2,41:1 e dacadoo 2,54:1 no estado apontado, contra 4,44 e 4,53 em
+     repouso. Um hover que apaga a marca que o repouso acabou de resgatar não serve,
+     mesmo que o critério de aceite só cobre o repouso.
+     A cor CONTINUA voltando: o que sai é o `grayscale`, que é o que faz a linguagem
+     cinza→cor da seção. O que fica é um escurecimento menor que o de repouso, então
+     o hover também clareia em relação ao parado (addactis 0,6 → 0,7; dacadoo
+     0,7 → 0,75) e a direção da reação continua sendo "a marca acende".
+     Medido na mesma varredura, por marca. Só estas duas: as outras treze passam de
+     3:1 no hover com a cor crua, e filtrar quem não precisa custaria cor de marca
+     sem ganho de leitura. */
+  .marcas-grade-celula[data-marca='addactis']:hover img {
+    filter: grayscale(0) brightness(0.7);
+  }
+  .marcas-grade-celula[data-marca='dacadoo']:hover img {
+    filter: grayscale(0) brightness(0.75);
+  }
 }
 
 /* `prefers-reduced-motion`: não há regra de movimento a desligar aqui — a grade é
@@ -641,7 +738,17 @@
    visível. Nada aqui nasce em `opacity: 0`, então não há o defeito de "animação
    morta deixa conteúdo invisível para sempre".
    Fica registrado para que ninguém procure o par `html[data-motion="reduce"]` que
-   as outras cenas têm: aqui ele não existe porque não há o que congelar. */
+   as outras cenas têm: aqui ele não existe porque não há o que congelar.
+
+   SIS-240 — CONFERIDO DE NOVO DEPOIS DE O REPOUSO PASSAR A TER `filter`. A dúvida é
+   legítima: as duas chaves de movimento reduzido escrevem `filter: none !important`
+   (`globals.css:3227` e o espelho em `@media`, `globals.css:20428`), e isso apagaria
+   o `brightness` que agora sustenta a legibilidade. Não apaga: as duas regras miram
+   `[data-logo]`, que é o SPAN da cascata de entrada (`marcas-grade-logo-reveal`), não
+   a `img`. O que elas zeram é a transformação de entrada; o véu de repouso da imagem
+   é outro nó e continua intacto nas duas chaves. Se algum dia esses seletores
+   passarem a incluir `[data-logo] img`, as quinze marcas voltam a ficar ilegíveis com
+   movimento reduzido ligado — é o único jeito de esta seção regredir por ali. */
 
 /* `forced-colors`: `grayscale` só atrapalha num modo que já substitui as cores, e
    a malha desenhada com `background` desapareceria — nem `--line` nem

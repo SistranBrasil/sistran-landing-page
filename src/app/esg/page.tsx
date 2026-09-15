@@ -239,67 +239,116 @@ const SOCIAL = [
 export default function Page() {
   return (
     <PageShell>
-      {/* SIS-113 — a abertura ganha a foto de fundo. O arquivo servido é o
-          `.webp` convertido do `esg.jpg` que já estava na pasta: 1031×690 em JPEG
-          de 348 KB virou 48 KB nas mesmas medidas, sem redimensionar nada (o
-          original ficou em `docs/fontes/esg/`, fora de `public/`). A foto é
-          pequena para uma faixa de 1920 e o navegador vai ampliá-la — o que
-          passa nesta caixa é aceitável porque ela vive sob o véu, que já é o
-          escurecimento pesado da SIS-94; o que não seria aceitável é os 348 KB.
+      {/* SIS-247 — `esgcapa.png` (1672×941) é a fonte da nova arte, mas não é
+          servido: com `images.unoptimized=true`, o navegador receberia os ~2,2 MB
+          sem derivação do Next. O LCP usa `esgcapa.webp`, gerado da fonte em q82,
+          nas dimensões nativas.
 
-          O `alt` é vazio de propósito: a foto é ilustrativa e nada nela é
-          informação — o título e a descrição ao lado dizem o que a página é, e os
-          três eixos que a imagem rotula (environment / social / governance) são
-          exatamente os três títulos de seção logo abaixo. Descrevê-la seria ler o
-          mesmo conteúdo duas vezes. O `aria-hidden` do wrapper reforça isso. */}
+          O `alt` é vazio de propósito: ambiente, esfera ESG+S e pessoas compõem
+          o fundo da abertura; o `h1` já comunica ESG. O wrapper também é
+          `aria-hidden`, portanto a arte decorativa não duplica a manchete. */}
       <HeroImageBackdrop
-        src="/images/esg/esg-hero.webp"
+        src="/images/esg/esgcapa.webp"
         alt=""
-        /* O recorte é vertical (a caixa é muito mais larga que alta): 42% sobe o
-           enquadramento o suficiente para os rótulos e o globo sobreviverem, em
-           vez de sobrar a mesa desfocada de baixo. */
-        foco="50% 42%"
+        /* Em desktop a proporção já preserva a composição inteira. No recorte
+           estreito, 74% mantém a esfera e reparte as bordas entre o ambiente à
+           esquerda e a dimensão social à direita; 50% perderia quase toda a
+           espiral de pessoas. */
+        foco="74% 50%"
         className="hero-backdrop--esg"
       >
-        {/* SIS-233 — O RECORTE DA FRASE MUDOU. Era:
-
-              title="A Sistran demonstra seu forte compromisso com o ESG, integrando"
-              highlight="práticas sustentáveis"
-              description={<p>em suas operações e cultura corporativa.</p>}
-
-            Ali a `description` era a SEGUNDA METADE do `h1` (SIS-138): a frase
-            atravessava os dois nós e o CSS a costurava de volta com corpo de
-            manchete, `white-space: nowrap` e alinhamento pelo pé. Lia como uma
-            manchete só, quebrada no meio — não como o par manchete + parágrafo de
-            apoio de `/contato`, que é o padrão que esta issue manda seguir.
-
-            O corte novo cai na fronteira de oração da própria frase institucional:
-            a manchete fica com a oração principal ("A Sistran demonstra seu forte
-            compromisso com o ESG") e a descrição com a oração reduzida que a
-            qualifica ("Integrando práticas sustentáveis..."). O `highlight` sai de
-            "práticas sustentáveis" e vai para "compromisso com o ESG" pelo mesmo
-            motivo que em `/contato` ele está em "fale com a gente!": o ciano marca
-            o fecho da manchete, não uma expressão no meio dela — e, como lá, a
-            pontuação de fecho ("." aqui, "!" em `/contato`) fica DENTRO do ciano,
-            senão sobraria um ponto branco solto depois do destaque.
-
-            AS DUAS ÚNICAS DIFERENÇAS DE LETRA em relação a
-            `.claude/conteudo-site/07-esg.md:11` são consequência obrigatória do
-            corte, e não reescrita de copy (trocar o texto pelo de `/contato` está
-            fora de escopo por escrito na issue): a vírgula que ligava as orações
-            virou o ponto que fecha a manchete, e o "i" de "integrando" virou
-            maiúsculo porque a descrição passou a ser oração própria. A sonda
-            `scripts/medir-abertura-esg-sis233.mjs` desfaz essas duas e compara o
-            resto caractere por caractere (`#fraseCompleta`), justamente para que
-            qualquer outra edição de texto aqui apareça como falha.
-
-            `copy-lock.json` foi regravado de propósito por causa disto. */}
+        {/* SIS-257 — o corte preserva o degrau médio do PageHero: `title` +
+            `highlight` formam a manchete exata e somam mais de 28 e menos de 65
+            caracteres. A frase institucional saiu inteira da capa, por isso não há
+            `description` nem parágrafo vazio. */}
         <PageHero
-          title="A Sistran demonstra seu forte"
-          highlight="compromisso com o ESG."
-          description={<p>Integrando práticas sustentáveis em suas operações e cultura corporativa.</p>}
+          title="ESG -"
+          highlight="Environment, Social & Governance"
         />
       </HeroImageBackdrop>
+
+      {/* SIS-257 — o WebP é servido diretamente porque `images.unoptimized=true`
+          impede o Next de derivar formatos. A fonte PNG permanece no repositório,
+          mas não aparece no `src`.
+
+          SIS-261 — DUAS COISAS MUDARAM AQUI, e a nota da SIS-257 sobre o fundo
+          ficou obsoleta por causa da segunda:
+
+          1. A ARTE É `esg2`, não `esg1`. E o `src` aponta para `esg2.webp`, um
+             DERIVADO gerado por `scripts/gerar-esg2-alfa.mjs` — não para o
+             `esg2.png` que a issue nomeia. O motivo é medido e está inteiro no
+             cabeçalho daquele script: `esg2.png` NÃO tem canal alfa
+             (`channels: 3`, `hasAlpha: false`); o que está no lugar do fundo é o
+             xadrez de transparência do editor achatado como pixels OPACOS. Servir
+             o PNG cru poria um tabuleiro cinza atrás da composição, que é o
+             oposto do critério de aceite. O derivado tem alfa de verdade
+             (`channels: 4`, 54,1% da área vaga) e 124 KB contra 2,1 MB.
+             `esg1.png`/`esg1.webp` continuam no repositório e SEM consumidor —
+             ficam como fonte histórica da SIS-257, não são apagados.
+
+          2. A SEÇÃO GANHOU SUPERFÍCIE CLARA. Era `section-py` puro, e a nota da
+             SIS-257 registrava como mérito que «sem fundo próprio, a seção
+             continua no azul do body e a dissolvência inicial de ENVIRONMENT
+             encontra a mesma cor, sem tarja». Essa premissa CADUCOU: a SIS-261
+             pede fundo claro com grade discreta, e uma PNG sem fundo sobre o azul
+             do body leria como recorte solto. A emenda com ENVIRONMENT volta a
+             ser resolvida pelo mesmo mecanismo que a SIS-93 escreveu para isto —
+             o `box-shadow` de sangria de `.section-light-blue`, que espalha a cor
+             clara ~54px para fora e desfaz o corte reto.
+             A superfície é `section-light section-light-blue` de propósito: é a
+             MESMA que SOCIAL já usa nesta página (linha 499). Um branco puro seria
+             uma terceira família de fundo em /esg. */}
+      <section id="esg-introducao" className="esg-intro section-py section-light section-light-blue">
+        <div className="container-lp grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-12">
+          {/* Mobile empilha texto → imagem sem nenhuma regra de ordem: é a ordem
+              do DOM, e a grade só vira duas colunas em `lg`. */}
+          <div>
+            {/* `eyebrow--traco` é MODIFICADOR do `.eyebrow` que já existe, não um
+                rótulo novo: herda a tipografia (caps, `tracking-[0.22em]`) e o
+                override de cor para fundo claro, e só troca o ponto pulsante pelo
+                traço que a issue pede. A regra está no globals.css. */}
+            {/* O `<span>` existe para poder MEDIR. O `.eyebrow` é `inline-flex` e o
+                traço é o seu `::before`, então a caixa do `<p>` engloba o traço; a
+                sonda de contraste, que varre o pior pixel de fundo dentro da caixa
+                do alvo, elegia o próprio ciano do traço como "fundo do texto" e
+                devolvia 1,89:1 — artefato, não defeito: o traço fica AO LADO da
+                palavra, com `gap`, nunca atrás dela. Com o `<span>`, a caixa medida
+                é a da palavra. Ver `scripts/medir-intro-esg-sis261.mjs`.
+
+                A CLASSE `eyebrow-texto` NÃO É DECORATIVA, é o que impede o span de
+                perder a cor. A faixa clara tem uma regra genérica
+                `.section-light span:not([class*="badge"]):not([class*="pill"]):not([class*="eyebrow"]):not([class*="tag-section"])`
+                que pinta span de navy; um span SEM classe casa com ela e a palavra
+                saiu em `#0a1f44` em vez do `#024e86` do eyebrow — medido na sonda,
+                que reportava a cor do alvo divergindo da cor do `.eyebrow`. O
+                mecanismo de escape é o que a própria regra oferece: um nome que
+                contenha «eyebrow». */}
+            <p className="eyebrow eyebrow--traco">
+              <span className="eyebrow-texto" data-esg-intro-eyebrow>
+                ESG
+              </span>
+            </p>
+            <p
+              data-esg-intro-copy
+              className="mt-5 max-w-[24ch] font-display text-3xl leading-tight text-ink md:text-4xl lg:text-5xl"
+            >
+              A Sistran demonstra seu forte compromisso com o ESG, integrando práticas sustentáveis
+              em suas operações e cultura corporativa.
+            </p>
+          </div>
+          <Image
+            src="/images/esg/esg2.webp"
+            /* Descreve a COMPOSIÇÃO, que é o item 3 — o parágrafo ao lado já diz o
+               que a Sistran faz, e repeti-lo aqui faria o leitor de tela ouvir a
+               mesma frase duas vezes. */
+            alt="Mosaico de cartões ligados por linhas: no centro, mãos segurando um globo com a sigla ESG; ao redor, folhagem, prédio envidraçado, turbina eólica e uma reunião de trabalho"
+            width={1613}
+            height={975}
+            sizes="(max-width: 1023px) calc(100vw - 40px), (max-width: 1279px) 46vw, 558px"
+            className="h-auto w-full"
+          />
+        </div>
+      </section>
 
       {/* ENVIRONMENT */}
       {/* SIS-208 — a seção ganha superfície própria. `esg-faixa-azul` é o azul
@@ -344,6 +393,7 @@ export default function Page() {
             id="esg-environment"
             texto="ENVIRONMENT:"
             destaque="Sustentabilidade Ambiental"
+            negritoTexto
             className="font-display text-section text-white"
           />
           {/* SIS-141 item 9 — `text-lg` → `text-xl` aqui TAMBÉM. A issue é de
@@ -459,11 +509,18 @@ export default function Page() {
                     />
                   </div>
                   {/* A legenda: mesma escala da SIS-141 (`text-base`, 16px, o degrau
-                      que igualou estes cartões ao corpo da página) e mesma tinta
-                      (`text-white/85`). O respiro saiu do parágrafo e foi para o
-                      cartão, porque agora o cartão tem padding; centralizada porque
-                      é legenda de um disco centralizado, não parágrafo corrido. */}
-                  <p className="text-base leading-relaxed text-white/85">{item.text}</p>
+                      que igualou estes cartões ao corpo da página). O respiro saiu do
+                      parágrafo e foi para o cartão, porque agora o cartão tem padding;
+                      centralizada porque é legenda de um disco centralizado, não
+                      parágrafo corrido.
+
+                      SIS-252 — a tinta era `text-white/85` e virou `esg-tinta-suave`
+                      (`#3d5a80`), porque a superfície do cartão ficou azul bem
+                      clarinho. Não é `text-ink-muted`, que é o que a issue escreve:
+                      esse token resolve para `#e2effa` fora de `.section-light` e
+                      esta seção é `esg-faixa-azul` — a apuração inteira está na
+                      classe, em `globals.css`. */}
+                  <p className="esg-tinta-suave text-base leading-relaxed">{item.text}</p>
                 </div>
               </li>
             ))}
@@ -502,15 +559,17 @@ export default function Page() {
       >
         <FogueteScroll />
         <div className="container-lp">
-          {/* SIS-139 item 10 — o mesmo destaque das outras duas seções. Aqui sem
-              `destaque`: este título nunca teve segunda metade em
-              `text-gradient-brand`, é o nome dos três projetos, e inventar um
-              recorte colorido no meio deles seria escrita nova. O `titulo-risco`
-              tem variante clara própria (`.section-light .titulo-risco`), então o
-              risco continua legível sobre o fundo azul-claro desta seção. */}
+          {/* SIS-139 item 10 — sem `destaque`: este título nunca teve segunda
+              metade em `text-gradient-brand`. SIS-262 separa o prefixo em `texto`
+              (negrito) e a lista em `resto` (mesmo acendimento, sem gradiente).
+              O `titulo-risco` tem variante clara própria (`.section-light
+              .titulo-risco`), então o risco continua legível sobre o fundo
+              azul-claro desta seção. */}
           <TituloAceso
             id="esg-social"
-            texto="SOCIAL: Projeto Gerando Talentos / Fundación Huerta Niño / Fundación Aguas"
+            texto="SOCIAL:"
+            resto="Projeto Gerando Talentos / Fundación Huerta Niño / Fundación Aguas"
+            negritoTexto
             className="font-display text-section text-ink"
           />
           {/* --- Bloco de destaque: Projeto Gerando Talentos ------------------
@@ -730,6 +789,7 @@ export default function Page() {
             id="esg-governance"
             texto="GOVERNANCE:"
             destaque="Ética e Transparência"
+            negritoTexto
             className="font-display text-section text-white"
           />
           {/* SIS-141 item 9 — o parágrafo de abertura sobe de `text-lg` (18px) para
@@ -843,9 +903,12 @@ export default function Page() {
                         ficam onde estavam. O que saiu foram os `px-6 pt-6`/`px-6 pb-6`,
                         que existiam para dar respiro num cartão de `p-0`; agora o
                         respiro é o `p-7` do cartão, como em ENVIRONMENT. */}
-                    <span className="font-display text-lg text-white">{g.term}</span>
+                    {/* SIS-252 — `text-white` → `esg-tinta` (`#0a1f44`), a tinta cheia
+                        do cartão claro; o `<dd>` fica na tinta suave, mantendo a
+                        hierarquia de peso que existia entre branco e branco a 85%. */}
+                    <span className="esg-tinta font-display text-lg">{g.term}</span>
                   </dt>
-                  <dd className="text-base leading-relaxed text-white/85">{g.detail}</dd>
+                  <dd className="esg-tinta-suave text-base leading-relaxed">{g.detail}</dd>
                 </dl>
               </li>
             ))}
@@ -861,7 +924,21 @@ export default function Page() {
           mouse, com o mesmo realce em `:focus-visible`.
           `contatoNoModal`: "Fale com a SISTRAN" vira `<button>` e abre o
           `ContactModal` já existente, em vez de sair da página para `/#contato`. */}
-      <ContactCTA haloClaro reativo contatoNoModal />
+      {/* SIS-253 — `layoutReferencia` troca o cartão navy pelo desenho de
+          `public/imagensexemplo/falecomagente.png` (fundo azul claro, vidro com
+          texto escuro, fio ciano com nó, blob com o selo, botão branco com o
+          círculo ciano). Só esta rota recebe a prop.
+
+          `haloClaro` e `reativo` SAEM DE CENA aqui, e ficam comentados com o
+          motivo em vez de apagados: os dois decoram a superfície que a SIS-253
+          substitui. `haloClaro` acende azul claro ATRÁS do cartão navy — sobre o
+          fundo azul claro da referência ele não tem o que fazer; `reativo` levanta
+          aquele cartão no hover e pinta o grafismo técnico DENTRO dele, e a
+          referência não tem nem um nem outro (o hover que ela pede é o do botão).
+          O que a SIS-142 entregou e CONTINUA de pé nesta rota é o item 4, o
+          `contatoNoModal`. Se a revisão preferir manter os dois, é só reativar as
+          props — o caminho antigo do componente está intacto. */}
+      <ContactCTA layoutReferencia contatoNoModal /* haloClaro reativo */ />
     </PageShell>
   );
 }

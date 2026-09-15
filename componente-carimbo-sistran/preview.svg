@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8fbff"/><stop offset="1" stop-color="#e8f1fb"/></linearGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#b9cce1" stroke-opacity=".35"/></pattern>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#082d59" flood-opacity=".14"/></filter>
+    <g id="logo"><circle cx="0" cy="0" r="42" fill="none" stroke="currentColor" stroke-width="6.5"/><path d="M1-12h25L38-2" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M-38 2l15 12H0" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></g>
+  </defs>
+  <rect width="1600" height="980" fill="#f5f8fc"/>
+  <text x="120" y="108" fill="#0757c7" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="800" letter-spacing="3">COMPONENTE DE ASSINATURA</text>
+  <text x="120" y="190" fill="#09213f" font-family="Inter,Arial,sans-serif" font-size="64" font-weight="800" letter-spacing="-3">Carimbo dinâmico Sistran</text>
+  <text x="120" y="236" fill="#52677f" font-family="Inter,Arial,sans-serif" font-size="24">Oito formatos, três acabamentos e símbolo vetorial mais fiel à marca.</text>
+  <g filter="url(#shadow)"><rect x="120" y="300" width="1360" height="560" rx="32" fill="url(#bg)"/><rect x="120" y="300" width="1360" height="560" rx="32" fill="url(#grid)"/></g>
+  <g transform="translate(445 475) rotate(-3)" color="#0757c7">
+    <rect x="-235" y="-72" width="470" height="144" rx="72" fill="#fff" stroke="currentColor" stroke-width="5"/><rect x="-222" y="-59" width="444" height="118" rx="59" fill="none" stroke="currentColor" stroke-opacity=".45" stroke-width="2" stroke-dasharray="5 6"/>
+    <g transform="translate(-157 0) scale(.75)"><use href="#logo"/></g><path d="M-93-43V43" stroke="currentColor" stroke-width="2"/><text x="-64" y="-12" fill="currentColor" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="700" letter-spacing="3">REALIZADO PELA</text><text x="-64" y="31" fill="currentColor" font-family="Inter,Arial,sans-serif" font-size="41" font-weight="900">Sistran</text>
+  </g>
+  <g transform="translate(1110 480) rotate(3)" color="#7139e8">
+    <circle r="132" fill="#fff" stroke="currentColor" stroke-width="5"/><circle r="119" fill="none" stroke="currentColor" stroke-opacity=".45" stroke-width="2" stroke-dasharray="5 6"/><g transform="translate(0 -45) scale(.65)"><use href="#logo"/></g><text x="0" y="30" fill="currentColor" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="2.5">REALIZADO PELA</text><text x="0" y="70" fill="currentColor" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="35" font-weight="900">Sistran</text><text x="0" y="101" fill="currentColor" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="800" letter-spacing="3">SIS • 2026</text>
+  </g>
+  <g transform="translate(440 720) rotate(2)" color="#fff">
+    <path d="M-230-63H230V35L204 63H-230Z" fill="#0b8dae" stroke="#0b8dae" stroke-width="5"/><g transform="translate(-158 0) scale(.62)"><use href="#logo"/></g><path d="M-99-38V38" stroke="currentColor" stroke-width="2"/><text x="-69" y="-10" fill="currentColor" font-family="Inter,Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">REALIZADO PELA</text><text x="-69" y="29" fill="currentColor" font-family="Inter,Arial,sans-serif" font-size="37" font-weight="900">Sistran</text>
+  </g>
+  <g transform="translate(1100 725) rotate(-2)" color="#ed5b2a">
+    <g transform="translate(-170 0) scale(.58)"><use href="#logo"/></g><text x="-103" y="-9" fill="currentColor" font-family="Inter,Arial,sans-serif" font-size="17" font-weight="700" letter-spacing="3">REALIZADO PELA</text><text x="-103" y="31" fill="currentColor" font-family="Inter,Arial,sans-serif" font-size="38" font-weight="900">Sistran</text><path d="M-220 59H220" stroke="currentColor" stroke-width="5"/>
+  </g>
+</svg>

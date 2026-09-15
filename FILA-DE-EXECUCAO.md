@@ -121,17 +121,34 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-208** | Todo | esg | ENVIRONMENT: cards da captura (círculo, sombra, flutuação) |
 | **SIS-209** | Todo | esg | SOCIAL: Huerta Niño + Aguas mesmo tamanho + flutuação leve |
 | **SIS-210** | Todo | esg | GOVERNANCE: mesmos cards da captura (sombra + flutuação) |
-| **SIS-211** | Todo | contato | Números: fundo azul claro + cards tipo Implementações + seção mais baixa |
+| **SIS-211** | In Review | contato | Números: fundo azul claro + cards tipo Implementações + seção mais baixa |
+| **SIS-256** | Todo | contato | Números: cards mais estreitos e sem contador 01 / 07 |
+| **SIS-260** | Todo | contato | Números: grade de quadradinhos discretos igual à home |
 | **SIS-212** | Todo | contato | Negrito em «Preencha o formulário e fale com a gente!» |
 | **SIS-213** | Todo | home | Números: retirar sombra/faixa branca do fundo |
 | **SIS-214** | Todo | home | Sobre o Luminna AI entre Números e Desafios |
 | **SIS-215** | Todo | eventos | Retirar/clarear bandas azuis escuras no início e fim do scroll |
 | **SIS-216** | Backlog | eventos | Esboço: admin com senha (sem sessão/seção pública) — não implementar ainda |
+| **SIS-244** | Backlog | home | Soluções: trocar imagens — **artes da usuária** (não despachar ao robô) |
 | **SIS-217** | Todo | solucoes | Cards aceleradores: logos `public/images/logos` + reação no hover |
 | **SIS-221** | Todo | quem-somos | Escritórios BRASIL: baixar marcador do 2º andar SP na torre |
 | **SIS-222** | Todo | contato | Loading a cada entrada até página + mapa prontos |
-| **SIS-223** | Todo | trabalhe-conosco | Formulário em card no scroll (envio tipo Contato) |
-| **SIS-224** | Todo | trabalhe-conosco | Suavizar véu/sombra feia da abertura |
+| **SIS-245** | Done | contato | Onde Estamos: endereço Pato Branco, sem link RJ, mapa azul mais claro |
+| **SIS-255** | Todo | contato | Onde Estamos: sombra atrás do mapa menos escura e menos quadrada |
+| **SIS-259** | Todo | contato | Retirar sombra branca entre logos e «SAIBA MAIS…» |
+| **SIS-263** | Todo | contato | Reveal on scroll em toda a página (`docs/scroll.md` + RevealScope) |
+| **SIS-266** | Todo | footer | Item ativo na coluna Navegação conforme a página |
+| **SIS-247** | In Review | esg | Capa de abertura = esgcapa.png |
+| **SIS-257** | In Review | esg | Capa «ESG - Environment, Social & Governance» + seção intro com esg1.png |
+| **SIS-261** | Todo | esg | Seção intro: layout da captura + arte esg2.png (sem fundo) |
+| **SIS-262** | Todo | esg | Negrito em ENVIRONMENT: / SOCIAL: / GOVERNANCE: nos títulos |
+| **SIS-248** | Todo | sistran-university | Capa universitycapa.png (padrão HeroImageBackdrop) |
+| **SIS-249** | Todo | sistran-university | Seção Formar especialistas: arte + texto sombreado |
+| **SIS-250** | Todo | sistran-university | Logo University no navbar (só nesta página) |
+| **SIS-223** | In Review | trabalhe-conosco | Formulário em card no scroll (envio tipo Contato) |
+| **SIS-224** | In Review | trabalhe-conosco | Suavizar véu/sombra feia da abertura |
+| **SIS-258** | Todo | trabalhe-conosco | Abertura igual a exemplotrabalheconosco.png |
+| **SIS-264** | Todo | trabalhe-conosco | Tipografia maior na abertura + limpar form/faixas |
 | **SIS-225** | Todo | parceiros | Capa `fundocapaparceiros` no fundo do título + descrição |
 | **SIS-226** | Todo | home | Hero: escritas alternando no vídeo (3 slides + pitch final) |
 | **SIS-227** | Todo | sistran-labs | Capa `SISTRAN-LABS.png` no fundo do título |
@@ -141,8 +158,17 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-231** | Todo | solucoes | Remover seção Transformação de Legado (método / quatro movimentos) |
 | **SIS-232** | Todo | eventos | Miniaturas laterais maiores e mais perto do card em destaque |
 | **SIS-233** | Todo | esg | Título e descrição da abertura iguais ao padrão de /contato |
-| **SIS-234** | Todo | esg | SOCIAL: foguete do scroll colorido e 3D (logo Gerando Talentos) |
+| **SIS-234** | In Review | esg | SOCIAL: foguete do scroll colorido e 3D (logo Gerando Talentos) |
+| **SIS-254** | Todo | esg | SOCIAL: foguete do scroll = foguete.png (substitui SVG) |
 | **SIS-235** | Todo | eventos | Tag «Realizado pela Sistran» vira componente carimbo |
 | **SIS-236** | Todo | parceiros | Tirar tarja azul clara da capa / emenda |
-| **SIS-237** | Todo | esg | ENVIRONMENT + GOVERNANCE: flutuação e hover bem perceptíveis |
+| **SIS-237** | In Review | esg | ENVIRONMENT + GOVERNANCE: flutuação e hover bem perceptíveis |
+| **SIS-252** | Todo | esg | ENVIRONMENT + GOVERNANCE: azul bem clarinho no repouso + troca de cor no hover |
+| **SIS-253** | Todo | esg | Fale com a Gente! = falecomagente.png (+ ponto na linha, hover botão) |
+| **SIS-265** | Todo | esg | Fale com a Gente!: logo HD `logosistranaltadefinicao.png` |
 | **SIS-238** | Todo | quem-somos | Premiações: fundo cele.png + layout escritas/logo (exemplcelent) |
+| **SIS-239** | In Review | eventos | Mobile: carrossel horizontal automático dos eventos |
+| **SIS-251** | Todo | eventos | Mobile: carrossel mais intuitivo (swipe + auto) — pós SIS-239 |
+| **SIS-240** | Todo | home | BrandGrid: logos ilegíveis em repouso (7/15 &lt; 3:1) |
+| **SIS-241** | Todo | home | Peso: 24 MB entregues + ~163 MB bruto em public/ |
+| **SIS-243** | Todo | home | Hero: vídeo só inicia depois do carregamento da página |

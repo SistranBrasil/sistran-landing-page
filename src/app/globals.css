@@ -747,6 +747,35 @@ body::after {
     }
   }
 
+  /* SIS-261 — MODIFICADOR: traço em vez do ponto pulsante.
+     A issue pede «traço ciano + ESG», e o `.eyebrow` da casa nasce com um ponto
+     de 6px. Isto é modificador e não rótulo novo de propósito: herda a tipografia
+     inteira do `.eyebrow` (caps, `tracking-[0.22em]`, peso 600) e também o
+     override de cor para fundo claro (`.section-light [class*='eyebrow']`, mais
+     abaixo), que casa por substring e portanto já alcança este nome.
+
+     A GEOMETRIA DO TRAÇO NÃO É INVENTADA: é a da `.titulo-risco`, o traço que a
+     casa já usa sob os títulos — 2px de altura e o mesmo gradiente
+     `#0079cb → #0ed8f6`, reduzido a 22px de largura porque aqui ele acompanha um
+     rótulo de 12px, não um título.
+
+     CIANO NO TRAÇO, NÃO NO TEXTO. Sobre fundo claro, `#0ed8f6` como cor de texto
+     não passa AA (contra o claro da seção fica na casa de 1,5:1). O traço é
+     GRAFISMO — não tem piso de contraste — então o ciano vive nele, e a palavra
+     «ESG» fica no `#024e86` que o override de fundo claro já aplica. É a leitura
+     do «traço ciano + ESG (caps, ciano)» da issue que não quebra acessibilidade.
+
+     Sem `animation`: o ponto pulsa, o traço não. Um traço que pulsa vira
+     chamariz, e movimento infinito sem pausa é o que a casa evita. */
+  .eyebrow--traco::before {
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #0079cb, #0ed8f6 55%, #a5f0ff);
+    box-shadow: none;
+    animation: none;
+  }
+
   /* Tag de seção — versão "chip" do eyebrow, com moldura e fundo.
      Usar quando o rótulo precisa de mais presença acima do título. */
   .tag-section {
@@ -1107,6 +1136,24 @@ body::after {
     0 0 10px rgba(0, 121, 203, 0.45);
   animation: none;
 }
+/* SIS-261 — o traço tem de sobreviver à regra de cima, e por especificidade MEDIDA:
+   `.section-light .eyebrow::before` soma (0,2,1) e `.eyebrow--traco::before` só
+   (0,1,1), então a de cima ganhava e o `background: #0079cb` dela — cor sólida em
+   shorthand — zerava o `background-image` do modificador. Confirmado na sonda: o
+   `::before` computava `background-image: none`, isto é, o traço saía como barra
+   sólida e o gradiente não existia. Esta regra empata em (0,2,1) e vem depois.
+
+   E ELA CONCORDA COM A NOTA DE CIMA, não a contraria. «Ciano puro quase invisível
+   sobre fundo claro» está certo, e é por isso que o gradiente COMEÇA em `#0079cb`
+   (o valor que a casa escolheu para o ponto em faixa clara) e só termina em ciano:
+   a leitura é ciano, o piso de visibilidade é o da casa. Um `#0ed8f6` chapado aqui
+   desapareceria — pelo mesmo motivo que desapareceria no ponto. */
+.section-light .eyebrow--traco::before {
+  background: linear-gradient(90deg, #0079cb, #0ed8f6 55%, #7fe6ff);
+  box-shadow: none;
+  animation: none;
+}
+
 .section-light .text-ink-muted,
 .section-light [class*='text-ink-muted'] {
   color: #3d5a80 !important;
@@ -6444,11 +6491,23 @@ html[data-motion='reduce'] .bm-halo {
 /* O BALAO DO ANDAR. Fica sobre a imagem, ancorado em porcentagem da caixa dela —
    nao em pixels — porque a caixa vai de 22rem em tela larga a ~60vw em celular e
    o ponto aceso tem de continuar pousado na MESMA janela da fachada nas duas.
-   As porcentagens foram medidas contra o recorte de 1200x1209 do render. */
+   As porcentagens foram medidas contra o recorte de 1200x1209 do render.
+
+   SIS-221 — O ANDAR DO PONTO É MEDIDO NA ARTE, e é por isto que este `top` nao é
+   mais 30%. Régua de 5% sobre o render (`scripts/regua-torre-sis221.mjs`): o piso
+   da praca esta em ~85%, o vidro do TERREO vai de ~79% a ~85%, e a laje branca que
+   separa o terreo do resto atravessa a fachada em ~78%. O 2º andar é a faixa logo
+   acima dela: ~73% a ~78%, centro em 76%.
+   Com `top: 30%` o ponto pousava a 44,8% da altura da arte (medido nas duas
+   larguras) — meio do fuste, que é exatamente o que a issue relata. O alvo é 76%.
+   A conta que liga os dois: o ponto sai do canto inferior direito do balao, e o
+   balao tem 27,6px de altura resolvida; com o fio de 3,1rem a 70° o ponto desce
+   49,6 x sen70 = 46,6px. Para pousar em 76% de uma caixa de 354px (269px), o
+   canto tem de estar em 222px e o topo em 195px = 55% da caixa. */
 .os-torre .os-torre-balao {
   position: absolute;
   left: 0;
-  top: 30%;
+  top: 55%;
   z-index: 1;
   margin: 0;
   padding: 0.3rem 0.6rem;
@@ -6475,7 +6534,16 @@ html[data-motion='reduce'] .bm-halo {
 }
 /* O FIO, do canto inferior direito do balao ate a fachada. Comprimento e angulo
    fixos: os dois pousam no mesmo lugar do desenho porque o desenho e a caixa
-   escalam juntos, e o fio sai de um ponto que é porcentagem da caixa. */
+   escalam juntos, e o fio sai de um ponto que é porcentagem da caixa.
+
+   SIS-221 — O ANGULO SUBIU DE 30° PARA 70°, e nao foi por gosto: o fio tambem
+   empurra o ponto para a DIREITA, e a 30° ele pousava a 67% da largura da arte —
+   ja na franja das arvores. Na altura do 2º andar (76%) a fachada ocupa de ~29% a
+   ~68% da largura, e a franja das arvores comeca em ~62%: 67% cairia na copa. A
+   70° o mesmo comprimento desloca 49,6 x cos70 = 17px, o ponto pousa a ~60% da
+   largura — sobre o vidro, com folga dos dois lados — e desce os 46,6px que a
+   descida ate o andar precisa. Mais inclinado tambem lê melhor: o fio agora
+   aponta PARA BAIXO, na direcao do andar, em vez de correr quase na horizontal. */
 .os-torre .os-torre-balao::before {
   content: '';
   position: absolute;
@@ -6484,7 +6552,7 @@ html[data-motion='reduce'] .bm-halo {
   width: 3.1rem;
   height: 1px;
   transform-origin: 0 50%;
-  transform: rotate(30deg);
+  transform: rotate(70deg);
   background: linear-gradient(90deg, rgba(14, 216, 246, 0.95), rgba(14, 216, 246, 0.35));
 }
 /* O PONTO ACESO na ponta do fio. Ele é centrado no mesmo ponto de ancoragem do
@@ -6516,7 +6584,10 @@ html[data-motion='reduce'] .bm-halo {
   border-radius: 50%;
   background: #0ed8f6;
   box-shadow: 0 0 0 3px rgba(14, 216, 246, 0.2);
-  transform: rotate(30deg) translateX(3.1rem);
+  /* SIS-221 — gemeo do angulo do fio (o `::before` acima explica o 70°). Estes
+     dois numeros sao os que a nota do bloco avisa que aparecem duas vezes: se um
+     mudar, o outro muda no mesmo commit, senao o ponto sai do fio. */
+  transform: rotate(70deg) translateX(3.1rem);
 }
 
 /* --- modo lista: o mapa tambem surge com a rolagem ----------------------- */
@@ -7845,23 +7916,58 @@ html[data-motion='reduce'] .bm-pais-cabeca {
     radial-gradient(34% 30% at 62% 88%, rgb(124 58 237 / 16%) 0%, transparent 70%);
 }
 
-/* O reforço da malha pedido na issue: mais luminosa e mais densa nesta seção,
-   sem tocar em `.grade-tecnica`, que serve o site inteiro. Módulo pela metade
-   (`--grade-modulo` continua sendo a fonte única — aqui ele é DIVIDIDO, não
-   redeclarado com outro número), e a máscara vira radial para a malha adensar
-   perto do cartão e sumir nas pontas, acompanhando a vinheta. */
+/* ⚠️ O REFORÇO DA MALHA DESTA SEÇÃO NUNCA CHEGOU À TELA — e é por isso que ele
+   sai daqui inteiro. Medido antes de mexer, numa coluna à esquerda do cartão em
+   `/contato` a 1440: os pixels em `x = 48` (onde uma linha vertical de módulo 48px
+   cai, porque `background-attachment: fixed` alinha o tile à JANELA) leem
+   `rgb(0,90,150)`, exatamente como os vizinhos em 47 e 49. Zero amplitude: não há
+   linha nenhuma, densa ou não.
+
+   A causa é a MESMA do `::after` da rampa da SIS-259, e está diagnosticada no
+   bloco de `.fundo-contato-cena`: `.grade-tecnica` é `z-index: -1` e a seção,
+   apesar de `relative`, tem `z-index: auto` e `isolation: auto` — não é contexto
+   de empilhamento. A subárvore de z negativo sobe até o contexto do ancestral e
+   pinta ABAIXO do fundo opaco de lá. `/esg` não sofre disso porque a seção do
+   ENVIRONMENT traz `isolate` no JSX (`esg/page.tsx:313`), e o comentário de lá diz
+   exatamente isso: «é `z-index: -1` e, sem contexto de empilhamento próprio,
+   cairia atrás do fundo da seção».
+
+   Conserto: `z-index: 0` na própria malha, o mesmo recurso que a rampa da SIS-259
+   usou como irmã no JSX. Medido depois: `x = 48` passa a ler `rgb(4,101,146)`
+   contra `rgb(4,88,136)` nos vizinhos.
+
+   Por que `z-index: 0` na malha e NÃO `isolate` na seção, que consertaria as duas
+   camadas de uma vez: `.fundo-contato` também é `z-index: -1` e também está
+   dormindo pelo mesmo motivo. `isolate` acenderia junto os cinco radiais da
+   vinheta e as duas lajes de paralaxe da SIS-128 — a cena inteira, que hoje
+   ninguém vê. É conserto legítimo, mas é OUTRA mudança de aparência e não foi o
+   que se pediu; fica registrado aqui como achado, não feito às escondidas.
+   O pedido é «os quadradinhos iguais ao ENVIRONMENT», então a malha volta à regra
+   global, sem override de desenho: mesmo módulo (`--grade-modulo` cheio, 96px),
+   mesma tinta (14%) e mesma máscara linear de entrada/saída.
+
+   `z-index: 0` não passa por cima do conteúdo porque o cartão é `position:
+   relative` (`.contact-dialog-inner`): elemento posicionado pinta DEPOIS de uma
+   camada posicionada de mesmo nível que veio antes no DOM. Se algum dia entrar
+   conteúdo ESTÁTICO direto nesta seção, ele ficaria sob a malha — o antídoto é
+   `relative` nele, não baixar a malha de volta para −1, que é o que a apagava.
+
+   Valores anteriores (densificação que nunca apareceu; se um dia a cena da
+   SIS-128 for acesa e a malha global ficar fraca contra ela, é daqui que se
+   parte):
+
+   | .fundo-contato-cena .grade-tecnica {
+   |   background-image:
+   |     linear-gradient(rgb(14 216 246 / 20%) 1px, transparent 1px),
+   |     linear-gradient(90deg, rgb(14 216 246 / 20%) 1px, transparent 1px);
+   |   background-size: calc(var(--grade-modulo) / 2) calc(var(--grade-modulo) / 2);
+   |   -webkit-mask-image: radial-gradient(
+   |     92% 74% at 50% 46%, #000 0%, rgb(0 0 0 / 55%) 58%, transparent 92%);
+   |   mask-image: radial-gradient(
+   |     92% 74% at 50% 46%, #000 0%, rgb(0 0 0 / 55%) 58%, transparent 92%);
+   | } */
 .fundo-contato-cena .grade-tecnica {
-  background-image:
-    linear-gradient(rgb(14 216 246 / 20%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(14 216 246 / 20%) 1px, transparent 1px);
-  background-size: calc(var(--grade-modulo) / 2) calc(var(--grade-modulo) / 2);
-  -webkit-mask-image: radial-gradient(
-    92% 74% at 50% 46%,
-    #000 0%,
-    rgb(0 0 0 / 55%) 58%,
-    transparent 92%
-  );
-  mask-image: radial-gradient(92% 74% at 50% 46%, #000 0%, rgb(0 0 0 / 55%) 58%, transparent 92%);
+  z-index: 0;
 }
 
 /* O movimento. Fora do `@supports` as lajes ficam onde o CSS as pôs — e o
@@ -7944,6 +8050,14 @@ html[data-motion='reduce'] .bm-pais-cabeca {
  * degradê passaria por cima das logos, que é exatamente o defeito que a SIS-101
  * removeu daqui (a linha-base ciano cortando a área das marcas).
  *
+ * ⚠️ SIS-259 — A ASSIMETRIA DESCRITA ABAIXO ACABOU: as duas bordas passaram a ser
+ * tratadas do MESMO jeito, sem degradê nenhum, porque a rampa da borda de baixo era
+ * a «sombra branca» que a usuária pediu para retirar. O parágrafo «BORDA DE BAIXO»
+ * fica como registro do que existia e do porquê — e o argumento dele contra um
+ * degradê que SAI da faixa em direção a um azul único (o topo do painel são radiais
+ * que variam coluna a coluna) continua valendo: se a emenda direta algum dia
+ * incomodar, a saída não é degradê saindo da faixa.
+ *
  * BORDA DE BAIXO (off-white -> `#0b4e86` do painel): emenda de claro, o recurso
  * que a home já usa em `.palco-emenda-de-claro`. O claro ENTRA no topo da seção
  * escura seguinte e se dissolve. Esta direção não é escolha estética: o topo do
@@ -7968,6 +8082,22 @@ html[data-motion='reduce'] .bm-pais-cabeca {
   border-bottom: 0;
 }
 
+/* ⚠️ SIS-259 — LEIA ISTO ANTES DOS DOIS COMENTÁRIOS ABAIXO: eles descrevem uma
+   rampa que NÃO EXISTE MAIS. A emenda de claro (`.contato-emenda-clara`) saiu de
+   cena a pedido — o off-white dissolvendo por 140px sobre o topo do painel era
+   visto como «sombra branca» / glow grosso entre as logos e o «SAIBA MAIS…».
+   Medido antes de mexer, a 1440, numa coluna FORA do cartão (x=50): **132 linhas
+   claras** abaixo do pé da faixa, com excesso de 243/255 no canal R na primeira
+   delas. Era isso a mancha.
+   O que fica valendo dos comentários abaixo: a ARITMÉTICA do vão (ele É este
+   `padding-top`, número por número) e a razão de a faixa não ter borda de baixo.
+   O que caducou: a regra de ouro «este `padding-top` >= altura da rampa» e a
+   tabela de folga por largura — sem rampa não há nada para caber fora do cartão,
+   então o `padding-top` volta a ser só respiro e pôde encurtar de vez.
+   A emenda agora é DIRETA: off-white da faixa contra o azul do painel, sem
+   degradê. Não é recurso novo — é o mesmo argumento que a borda DE CIMA desta
+   faixa já usa três parágrafos acima («a troca de superfície É a aresta»), agora
+   aplicado à borda de baixo porque o pedido tirou a dissolução de lá. */
 /* O respiro de cima cresce para caber a rampa. Sem isto o `section-py` colocaria
    o topo do cartão dentro dos 200px claros — e o cartão é escuro com texto claro,
    então o que quebraria não é o cartão (escuro sobre claro tem contraste de
@@ -8007,11 +8137,45 @@ html[data-motion='reduce'] .bm-pais-cabeca {
 
    Valores anteriores:
      padding-top: clamp(13rem, 16vw, 16rem);   208px / 230,4px / 256px / 256px */
+/* SIS-259 — encurtou de novo, e agora sem piso vindo de fora: o valor da SIS-145
+   (9,5rem / 11vw / 10,5rem = 152 / 158,4 / 168px) não era respiro escolhido, era o
+   mínimo que ainda punha a rampa de 140px acima do cartão. Com a rampa fora, o que
+   sobra é vão vazio — que é o item 2 do pedido.
+   O novo valor é respiro medido, não chute. O vão que a usuária vê vai do PÉ DA
+   ÚLTIMA LOGO ao topo do cartão, e a faixa já contribui com 40px de respiro
+   interno abaixo das logos (medido: pé da logo 200, pé da faixa 240 a 1440). Então
+   o vão total é `40px + padding-top`:
+
+     largura   padding-top          vão logo -> cartão
+     390       4,5rem = 72px        112px   (o mínimo manda; 5,5vw = 21,5px)
+     1440      5,5vw  = 79,2px      119px
+     1745+     6rem   = 96px        136px   (o teto manda)
+
+   Antes desta issue esse vão era 176px a 390 e 199px a 1440, e mais da metade dele
+   era a mancha branca.
+     padding-top: clamp(9.5rem, 11vw, 10.5rem);   152px / 158,4px / 168px */
 .fundo-contato-cena {
-  padding-top: clamp(9.5rem, 11vw, 10.5rem);
+  padding-top: clamp(4.5rem, 5.5vw, 6rem);
 }
 
-/* A rampa é uma camada PRÓPRIA no JSX, e não uma camada a mais em `.fundo-contato`
+/* ⚠️ SIS-259 — A RAMPA SAIU DE CENA. Tudo daqui até o fim do bloco comentado
+   abaixo é REGISTRO, não regra ativa: o pedido foi «retirar a sombra branca entre
+   as logos e o SAIBA MAIS», e a rampa era essa sombra. O nó irmão no JSX
+   (`src/app/contato/page.tsx`) também está comentado, com o mesmo motivo.
+
+   Por que comentar em vez de apagar: as três tentativas medidas abaixo continuam
+   sendo conhecimento caro sobre ESTA seção — se algum dia voltar a haver qualquer
+   camada precisando pintar acima de `.fundo-contato` e da `.grade-tecnica`, o
+   diagnóstico do `z-index: -1` (item 3) poupa a mesma investigação. E a altura de
+   140px com a parada a 22% é o valor já corrigido pela SIS-145; quem repuser a
+   emenda não deve recomeçar dos 200px.
+
+   O que a remoção NÃO exigiu, e foi conferido em vez de suposto: a faixa não
+   precisou de borda de baixo de volta (`border-bottom: 0` continua certo, ver a
+   regra logo acima) e nem de sombra — a troca de superfície off-white/azul é a
+   própria aresta, o mesmo argumento da borda de cima.
+
+   A rampa é uma camada PRÓPRIA no JSX, e não uma camada a mais em `.fundo-contato`
    nem um `::after` dele. Três tentativas erradas, medidas, para não serem
    refeitas:
    1. Camada no `background` da SEÇÃO: `.fundo-contato` é filho e pinta acima do
@@ -8030,47 +8194,40 @@ html[data-motion='reduce'] .bm-pais-cabeca {
       `::after` herda esse destino junto com o pai.
    Como irmã depois de `.grade-tecnica`, com `z-index: 0`, a rampa pinta acima das
    duas camadas decorativas — e é por isso que a malha NÃO precisa de máscara nova:
-   a rampa passa por cima dela. */
-.contato-emenda-clara {
-  position: absolute;
-  /* Ancorada no topo e com altura própria: `inset: 0` faria a caixa ter a altura
-     da seção inteira e a parada em 200px viraria 200px de um degradê de ~1300px —
-     mesmo resultado, mas uma camada com alfa cobrindo tudo para pintar um sexto. */
-  left: 0;
-  right: 0;
-  top: 0;
-  /* SIS-145 — 200px antes. Encurtou junto com o `padding-top` de
-     `.fundo-contato-cena`, e não por gosto: os dois andam juntos, porque a rampa
-     só lê inteira enquanto couber acima do cartão. A tabela de folga por largura
-     está no comentário daquela regra; aqui basta a regra de ouro — esta altura
-     nunca pode passar do `padding-top` mínimo de lá (hoje 9,5rem = 152px).
+   a rampa passa por cima dela.
 
-     Por que encurtar em vez de manter os 200px e só cortar o `padding-top`: a
-     dissolução precisa ser mais rápida do que era para o vão poder ser menor.
-     Mantendo 200px, o mínimo do `padding-top` ficaria preso em 200px e o vão a
-     390 quase não mudaria — o pedido da issue morreria justamente na tela onde o
-     mínimo manda. */
-  height: 140px;
-  z-index: 0;
-  pointer-events: none;
-  /* SIS-145 — a parada do meio é consequência do encurtamento, não enfeite. Com
-     duas paradas o alfa cai linearmente, então cortar 200px para 140px torna a
-     cauda mais íngreme: medido a 1440, dez pixels antes do fim a rampa ainda
-     punha R=15 sobre um topo de painel que ali lê R=0, contra R=9 quando ela
-     tinha 200px. Quinze de 255 é um degrau fraco mas visível, e ele apareceria
-     como listra reta atravessando as quatro colunas do radial do painel.
-     Levando o alfa a 22% na metade, a cauda passa a percorrer 22%->0 nos últimos
-     63px em vez de 32%->0: dez pixels antes do fim o alfa fica em ~3,5% e o
-     resíduo volta para ~8, o mesmo da versão de 200px. O topo continua opaco, que
-     é o que emenda com o `#f5faff` da faixa de logos.
-     Antes: linear-gradient(to bottom, #f5faff 0, rgb(245 250 255 / 0%) 100%) */
-  background: linear-gradient(
-    to bottom,
-    #f5faff 0,
-    rgb(245 250 255 / 22%) 55%,
-    rgb(245 250 255 / 0%) 100%
-  );
-}
+   A REGRA, como estava ao ser retirada pela SIS-259 (CSS não aninha comentários,
+   então as notas internas viram prosa aqui):
+
+   | .contato-emenda-clara {
+   |   position: absolute;
+   |   left: 0;
+   |   right: 0;
+   |   top: 0;
+   |   height: 140px;
+   |   z-index: 0;
+   |   pointer-events: none;
+   |   background: linear-gradient(
+   |     to bottom,
+   |     #f5faff 0,
+   |     rgb(245 250 255 / 22%) 55%,
+   |     rgb(245 250 255 / 0%) 100%
+   |   );
+   | }
+   |
+   | · Ancorada no topo COM ALTURA PRÓPRIA em vez de `inset: 0`: com `inset` a
+   |   caixa teria a altura da seção inteira e a parada viraria uma fração de um
+   |   degradê de ~1300px — mesmo resultado, mas uma camada com alfa cobrindo tudo
+   |   para pintar um sexto dela.
+   | · A altura foi 200px até a SIS-145. Encurtou junto com o `padding-top` de
+   |   `.fundo-contato-cena` porque os dois andavam juntos: a rampa só lia inteira
+   |   enquanto couber acima do cartão.
+   | · A parada do meio a 22% é consequência do encurtamento, não enfeite. Com
+   |   duas paradas o alfa cai linearmente, então 200px -> 140px deixava a cauda
+   |   íngreme: dez pixels antes do fim a rampa ainda punha R=15 sobre um topo de
+   |   painel que ali lê R=0 (contra R=9 com 200px), e 15/255 apareceria como
+   |   listra reta atravessando as quatro colunas do radial. Com 22% na metade a
+   |   cauda percorre 22%->0 nos últimos 63px e o resíduo volta a ~8. */
 
 /* ── SIS-134 · faixa dos sete indicadores em /contato ─────────────────────────
  *
@@ -8149,6 +8306,77 @@ html[data-motion='reduce'] .bm-pais-cabeca {
    se a faixa voltar ao escuro; ele não foi apagado. Note que, mesmo descomentado,
    ele PERDERIA de `.section-light.section-light-blue` (0,2,0 contra 0,1,0) — para
    religar, tira-se a classe do TSX, não se mexe na especificidade daqui. */
+/* ══════════════════════════════════════════════════════════════════════════
+   SIS-260 · A MALHA DA FAIXA PASSA A SER A GRADE FINA DA HOME (quadradinhos
+   discretos de 64px), NO LUGAR DA MALHA TÉCNICA DE 96px
+   ══════════════════════════════════════════════════════════════════════════
+   A issue pede a malha da home atrás dos cartões e, no item 3, que não fiquem DUAS
+   grades sobrepostas. As duas coisas são resolvidas pela mesma decisão: em vez de
+   somar uma camada nova, esta regra REESCREVE o `::before` que a faixa já herdava de
+   `.section-light`. Somar seria o defeito — a malha técnica (96px, `--grade-modulo`)
+   e a fina (64px) não são múltiplas uma da outra, então as duas juntas dariam um
+   moiré de períodos primos entre si, que é exatamente a "grade barulhenta" que o
+   critério de aceite proíbe. Reusando o pseudo, a faixa tem UMA malha, e é a pedida.
+
+   POR QUE NÃO PRECISOU DE NÓ NOVO NO JSX. `MetricsBand.tsx` é server component e a
+   `.section-light` tem os dois pseudo-elementos ocupados (`::before` = grade,
+   `::after` = pontilhado, registrado no bloco da SIS-93). Trocar o conteúdo do
+   `::before` é a mudança mínima: nada entra no DOM, nada muda de dono.
+
+   O QUE VEM DOS TOKENS E O QUE VEM DA MALHA QUE SAIU. A receita (dois
+   `repeating-linear-gradient` + `--grade-fina-modulo/-linha/-opacidade`) é a de
+   `.home-canvas::before`, lida dos mesmos tokens do `:root` — nenhuma terceira malha
+   e nenhum valor redigitado, que é o item 1 da issue. Já a ANCORAGEM e a VINHETA
+   ficam as do pseudo que estava aqui, e de propósito:
+     • `background-attachment: fixed` — é o que faz este bloco pertencer à MESMA
+       malha da página em vez de a uma sua (a razão está escrita na SIS-76, no
+       `.section-light::before`). A home resolve o mesmo problema com um layer
+       `position: fixed` cobrindo o documento inteiro; aqui a camada é de UMA seção,
+       então quem alinha a fase é o ancoramento do fundo.
+     • máscara `radial-gradient(ellipse at 50% 50%, #000 0%, transparent 75%)` — a
+       vinheta desenhada PARA CAIXA DE SEÇÃO. A da home (`ellipse 92% 84% at 50% 44%`,
+       `#000 25%`) é dimensionada para a janela inteira; numa faixa de ~349px de
+       altura ela apagaria a malha quase toda, porque os 84% de altura passariam a
+       significar 293px. Mesma família, escala diferente.
+
+   CONTRASTE: não muda, e não é palpite. Os sete cartões são superfície OPACA
+   (`#1273bc`, SIS-256), então a malha fica atrás deles e o pior pixel de fundo do
+   número, do `+` e do rótulo continua sendo o próprio cartão — remedido, os três em
+   5,00:1. Não há texto nenhum apoiado direto na faixa. */
+.contato-indicadores.section-light::before {
+  /* Valores anteriores, que são os de `.section-light::before` (a malha técnica de
+     96px, ainda de pé para as outras rotas):
+       background-image:
+         linear-gradient(rgba(0, 121, 203, 0.04) 1px, transparent 1px),
+         linear-gradient(90deg, rgba(0, 121, 203, 0.04) 1px, transparent 1px);
+       background-size: var(--grade-modulo) var(--grade-modulo);
+     `background-size` NÃO é redeclarado aqui: o período da malha fina vive DENTRO do
+     `repeating-linear-gradient` (`transparent 1px var(--grade-fina-modulo)`), e um
+     `background-size` herdado de 6rem recortaria o padrão em 96px — quadradinhos de
+     64px numa gaveta de 96, isto é, uma linha grossa a cada 96px. Por isso ele volta
+     ao padrão explicitamente. */
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      var(--grade-fina-linha) 0 1px,
+      transparent 1px var(--grade-fina-modulo)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      var(--grade-fina-linha) 0 1px,
+      transparent 1px var(--grade-fina-modulo)
+    );
+  background-size: auto auto;
+  opacity: var(--grade-fina-opacidade);
+  /* Valor anterior, o de `.section-light::before`:
+       mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, transparent 75%);
+     Trocado pelo que está registrado no cabeçalho (a malha desaparecia a 390). Os
+     dois prefixos porque é assim que a casa escreve máscara — ver
+     `.home-canvas::before`. */
+  mask-image: radial-gradient(ellipse 120% 130% at 50% 50%, #000 35%, transparent 96%);
+  -webkit-mask-image: radial-gradient(ellipse 120% 130% at 50% 50%, #000 35%, transparent 96%);
+}
+
 .contato-indicadores {
   /* Sem `section-py`: o respiro daqui é menor que o de uma seção de capítulo. A
      faixa é o rodapé da abertura, não um capítulo entre a abertura e o painel. */
@@ -8328,29 +8556,74 @@ html[data-motion='reduce'] .bm-pais-cabeca {
    O `overscroll-behavior-x` protegia o gesto lateral de trackpad de virar "voltar
    página" no fim da fileira; sem fileira rolável não há gesto a proteger.
    ══════════════════════════════════════════════════════════════════════════ */
+/* ── SIS-256 · A GRADE DEIXOU DE ESTICAR OS CARTÕES ─────────────────────────
+   A grade de colunas `1fr` saiu, e a razão é MEDIDA: com sete colunas iguais nos
+   1116px úteis do `container-lp`, cada cartão ficava com 142,3px a 1440 (baseline
+   em `docs/medidas/indicadores-sis256-antes.json`) — largura que NÃO vinha do
+   conteúdo, e sim da divisão do contêiner. Era esse esticamento que obrigava as
+   três correções do bloco de 1280 (empilhar o par, medir o número em `cqi`,
+   encolher o recuo): o cartão não era estreito por desenho, era estreito por
+   sobrar pouco.
+
+   Agora a largura vem do CONTEÚDO e a fileira QUEBRA, que é a estrutura da
+   referência que a autora mandou na issue: cartões de larguras diferentes, número
+   grande com o rótulo pequeno ao lado, agrupados num bloco centrado em vez de
+   espalhados de borda a borda. `justify-content: center` é o que faz o resto da
+   fileira quebrada ficar centrado — com `flex-start` os três últimos encostariam
+   à esquerda e o bloco leria como fileira interrompida.
+
+   Valores anteriores, para religar a grade esticada:
+     display: grid;
+     grid-template-columns: minmax(0, 1fr);
+     align-items: stretch;
+     @media (min-width: 640px)  { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+     @media (min-width: 1024px) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+     @media (min-width: 1280px) { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+   Os degraus de coluna (1 → 2 → 4 → 7) eram o eco da fileira da home; com quebra
+   por conteúdo eles deixam de ser necessários porque o número de cartões por
+   fileira passa a sair da largura disponível sozinho — e é por isso que os três
+   `@media` saem juntos, e não só o de 1280.
+
+   `align-items: stretch` é o padrão do flex e continua valendo por herança: é ele
+   que mantém os cartões de uma mesma fileira com a MESMA ALTURA, que é o que
+   impede um cartão de rótulo curto ("Clientes") de ficar mais baixo que o vizinho.
+   Nada aqui é movimento: nenhum espelho de `prefers-reduced-motion` é devido. */
+/* ── SIS-256 (3ª volta) · TODOS OS CARTÕES DO MESMO TAMANHO ──────────────────
+   Pedido literal da autora do escopo: «quando fica no mobile devem todos os cards
+   ficarem do mesmo tamanho». A medição da volta anterior mostra o defeito com
+   números (`docs/medidas/indicadores-sis256-depois.json`, viewport 390):
+   227,6 · 210,8 · 164 · 227,6 · 227,6 · 210,8 · 210,8 px — sete larguras para sete
+   cartões, porque `flex: 0 0 auto` fazia cada um MEDIR O PRÓPRIO TEXTO.
+
+   Valor anterior, para religar com o cartão que mede o conteúdo:
+     .contato-indicadores-grade { display: flex; flex-wrap: wrap;
+       justify-content: center; gap: var(--mb-gap); }
+
+   POR QUE GRADE E NÃO `flex-basis` IGUAL. Largura igual sai das duas formas; a
+   ALTURA só sai desta. Em flex com quebra, `align-items: stretch` iguala a altura
+   dentro de UMA fileira e nada entre fileiras — no mobile, com um cartão por
+   fileira, cada `<li>` seria uma fileira só e a altura voltaria a ser a do rótulo
+   (uma, duas ou três linhas). `grid-auto-rows: 1fr` iguala TODAS as fileiras pela
+   mais alta, e é isso que faz "do mesmo tamanho" valer para tamanho, não só para
+   largura. Em grade de altura automática o `1fr` não distribui sobra (não há
+   sobra): ele nivela as fileiras pela maior, que é exatamente o efeito pedido.
+
+   `minmax(0, 1fr)` e não `1fr` nas colunas: o mínimo implícito de `1fr` é
+   `auto`, e com ele o cartão de rótulo mais longo se recusaria a encolher abaixo
+   do texto e estouraria a coluna — o mesmo motivo do `min-width: 0` do rótulo.
+   Nada aqui é movimento: nenhum espelho de `prefers-reduced-motion` é devido. */
 .contato-indicadores-grade {
   display: grid;
+  /* Um por fileira no mobile: é a largura que faz o par número/rótulo caber lado a
+     lado, que é o desenho da referência. Duas colunas a 390 dariam ~167px por
+     cartão, e aí o rótulo ao lado de um número de 36px volta a ser uma palavra por
+     linha — o defeito que a volta anterior mediu a 1280. */
   grid-template-columns: minmax(0, 1fr);
-  align-items: stretch;
+  grid-auto-rows: 1fr;
   gap: var(--mb-gap);
   margin-inline: 0;
   padding-inline: 0;
   list-style: none;
-}
-@media (min-width: 640px) {
-  .contato-indicadores-grade {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-@media (min-width: 1024px) {
-  .contato-indicadores-grade {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-@media (min-width: 1280px) {
-  .contato-indicadores-grade {
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-  }
 }
 
 /* SIS-143 — o item virou CARTÃO e o rótulo foi para o LADO do número.
@@ -8407,14 +8680,66 @@ html[data-motion='reduce'] .bm-pais-cabeca {
      desta grade é `--mb-gap`, e `--mb-w` continua sendo a largura que o percurso
      comentado espera encontrar por herança. Apagar os dois é o que tornaria o
      retorno do percurso uma reconstrução em vez de um descomentar. */
+  /* SIS-256 — A LARGURA É DO CONTEÚDO, NÃO DA COLUNA. `flex: 0 0 auto` é o que
+     impede o cartão de crescer para preencher a fileira (o `1fr` de antes) e
+     também de encolher abaixo do próprio conteúdo: quem dá a largura é o par
+     número/rótulo, com o teto do rótulo declarado em
+     `.contato-indicador-rotulo`. Sem o `0` de `flex-shrink`, sete cartões numa
+     fileira que não cabe encolheriam todos em vez de o último quebrar. */
+  /* SIS-256 (3ª volta) — `flex: 0 0 auto` SAIU: o pai deixou de ser flex (ver a
+     nota da grade) e quem dá a largura agora é a coluna, igual para os sete. A
+     declaração fica comentada porque é ela que se religa junto com o cartão que
+     mede o conteúdo — e ela é a CAUSA das sete larguras diferentes que a autora
+     reprovou, não um detalhe: `auto` no `flex-basis` é "meça o próprio texto".
+     Valor anterior: `flex: 0 0 auto;`
+     `justify-content: flex-start` não é declarado porque o eixo deste flex interno
+     é vertical (`column`) — o alinhamento horizontal do par mora em
+     `.contato-indicador-corpo`, que é quem virou centrado nesta mesma volta. */
   display: flex;
   flex-direction: column;
   gap: clamp(0.6rem, 1vw, 0.85rem);
   padding: clamp(1rem, 1.5vw, 1.35rem) clamp(1.1rem, 1.6vw, 1.5rem);
-  border: 1px solid rgb(4 58 99 / 12%);
+  /* ── SIS-256 (2ª volta) · O CARTÃO JÁ NASCE ESCURO ─────────────────────────
+     Pedido literal da autora do escopo: «deixe o card dos numeros ja escuro com o
+     hover ele so fique um pouco mais em destaque para frente». O que era o estado
+     de HOVER passou a ser o estado de REPOUSO — e não é cor nova nem invenção
+     minha: são as mesmas quatro tintas que a SIS-211 deixou escritas como «valor
+     anterior, para religar com o fundo escuro» (superfície `#0a1f44 → #041b3d`,
+     número branco, `+` no ciano `#0ed8f6`, rótulo em `rgb(255 255 255 / 88%)`).
+     Valores anteriores desta regra, que eram os do cartão claro:
+       border: 1px solid rgb(4 58 99 / 12%);
+       background: linear-gradient(135deg, #ffffff 0%, rgb(255 255 255 / 72%) 100%);
+       box-shadow: 0 14px 34px -26px rgb(4 58 99 / 45%);
+     A FAIXA CONTINUA CLARA. O item 1 da SIS-211 (`section-light
+     section-light-blue` no `<section>`) não foi tocado — o pedido é sobre o CARTÃO.
+     O que isso muda de verdade é que agora são sete cartões escuros sobre azul
+     claro, e a sombra passa a ser navy mais funda para o cartão não flutuar sem
+     apoio sobre um fundo que é mais claro que ele. */
+  /* ── SIS-256 (4ª volta) · A SUPERFÍCIE É `#1273bc`, CHAPADA ────────────────
+     Pedido literal da autora do escopo: «os cards dos numeros devem ficar dessa cor
+     #1273bc». Cor declarada por ela, então é ela que entra — não uma da paleta que
+     eu ache parecida.
+     Valor anterior (o navy da 2ª volta, para religar):
+       background: linear-gradient(135deg, #0a1f44 0%, #041b3d 100%);
+     POR QUE CHAPADO E NÃO DEGRADÊ. Ela nomeou UMA cor. Qualquer segunda parada
+     seria tinta que ela não pediu, e num azul médio o degradê de 135° que estava
+     aqui aparece muito mais que sobre navy — a diferença entre as duas paradas do
+     valor anterior era imperceptível porque as duas eram quase preto. A `transition`
+     de `background` abaixo continua válida: cor chapada interpola sem depender de
+     tipo/ângulo/número de paradas iguais, que era a ressalva escrita lá.
+     A SOMBRA CLAREIA junto, e por necessidade e não por gosto: `rgb(4 27 61 / 55%)`
+     era navy quase preto, o que sob um cartão azul MÉDIO sobre faixa azul CLARA lê
+     como fuligem. `rgb(9 71 117 / …)` é o próprio `#1273bc` escurecido, então
+     nenhuma família nova entra.
+     A BORDA sobe de alfa pelo mesmo motivo: `rgb(120 200 255 / 24%)` era um azul
+     claro que se destacava contra navy e some contra azul médio — a aresta do cartão
+     é o que separa um cartão do outro na fileira, e sem ela os quatro de cima leem
+     como uma barra única. Valor anterior: `border: 1px solid rgb(120 200 255 / 24%);`
+     (hover: `rgb(120 200 255 / 42%)`, ajustado no bloco do hover pelo mesmo motivo). */
+  border: 1px solid rgb(200 232 255 / 34%);
   border-radius: 1rem;
-  background: linear-gradient(135deg, #ffffff 0%, rgb(255 255 255 / 72%) 100%);
-  box-shadow: 0 14px 34px -26px rgb(4 58 99 / 45%);
+  background: #1273bc;
+  box-shadow: 0 14px 34px -22px rgb(9 71 117 / 55%);
   /* A onda (logo abaixo) mexe em `transform`; a reação ao ponteiro mexe em tinta.
      São propriedades DISJUNTAS de propósito: animação e `:hover` disputando a
      mesma propriedade é o defeito clássico — a animação ganha por ser da camada
@@ -8427,7 +8752,9 @@ html[data-motion='reduce'] .bm-pais-cabeca {
   transition:
     background 260ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 260ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    /* `scale` é a propriedade INDIVIDUAL, não `transform` — ver a nota do hover. */
+    scale 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -8489,16 +8816,56 @@ html[data-motion='reduce'] .bm-pais-cabeca {
   }
 }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   SIS-256 (2ª volta) · O HOVER É SÓ "UM POUCO MAIS PARA A FRENTE"
+   ══════════════════════════════════════════════════════════════════════════
+   Com o cartão já escuro em repouso, o hover não tem mais para onde ir em COR: o
+   destaque virou PROFUNDIDADE — o cartão cresce 3%, a sombra fica mais funda e
+   mais espalhada, e a aresta ciana acende um pouco. Nada de tinta de texto muda,
+   porque o texto já é o do cartão escuro.
+
+   ⚠️ `scale`, E NÃO `transform: scale()` — É ISSO QUE FAZ O HOVER EXISTIR.
+   O comentário do bloco 3 abaixo dizia, corretamente, que «aqui não há elevação no
+   ponteiro, só cor», porque a onda anima `transform` infinitamente e a camada de
+   animação vence qualquer `transform` de folha de estilo: um `transform: scale(…)`
+   escrito aqui NUNCA seria aplicado enquanto a onda estivesse declarada, mesmo com
+   `animation-play-state: paused` (pausar congela o valor animado, não devolve o
+   controle da propriedade). A saída não é desistir da elevação: é usar a
+   propriedade individual `scale`, que é COMPOSTA com `transform` em vez de
+   substituída — o `translateY` da onda continua vindo dos keyframes e a escala vem
+   daqui, sem disputa. Foi a mudança do pedido que tornou essa distinção necessária.
+
+   A PAUSA CONTINUA SENDO REQUISITO (WCAG 2.2.2) e não mudou de lugar.
+
+   MOVIMENTO REDUZIDO: `scale` é movimento, então precisa dos DOIS espelhos da casa
+   — `@media (prefers-reduced-motion: reduce)` e `html[data-motion='reduce']`. Nos
+   dois a escala é neutralizada e a sombra FICA: o hover continua legível como
+   destaque, sem nada se mexendo. Estão logo abaixo, junto com os espelhos da onda. */
 .contato-indicador:hover,
 .contato-indicador:focus-within {
   animation-play-state: paused;
-  border-color: rgb(120 200 255 / 24%);
-  background: linear-gradient(135deg, #0a1f44 0%, #041b3d 100%);
-  box-shadow: 0 18px 40px -24px rgb(4 27 61 / 55%);
+  /* SIS-256 (4ª volta) — acompanham a superfície `#1273bc` (ver a nota do repouso).
+     Valores anteriores, do cartão navy:
+       border-color: rgb(120 200 255 / 42%);
+       box-shadow: 0 26px 54px -22px rgb(4 27 61 / 68%);
+     O GESTO NÃO MUDA: a aresta acende e a sombra fica mais funda e mais espalhada,
+     na mesma proporção de antes em relação ao repouso. Só a família da tinta muda. */
+  border-color: rgb(200 232 255 / 58%);
+  box-shadow: 0 26px 54px -22px rgb(9 71 117 / 68%);
+  scale: 1.03;
 }
 
-/* O número. Mesmo seletor do repouso mais o `:hover` — ver a nota dos
-   `!important` acima. */
+/* ── SIS-256 (2ª volta) · AS TRÊS TINTAS DE HOVER FICARAM REDUNDANTES ────────
+   Elas pintavam de branco/ciano o texto do cartão que ESCURECIA no ponteiro. Agora
+   o cartão já nasce escuro e essas exatas tintas são o repouso (ver as regras do
+   número, do `+` e do rótulo mais abaixo), então estas três regras declarariam o
+   valor que já vale — e uma regra que não muda nada é a que engana quem lê depois.
+   Ficam comentadas, e não apagadas, porque são o roteiro de voltar ao cartão claro:
+   quem devolver a superfície branca ao repouso precisa DELAS de volta, com a conta
+   de especificidade que está no bloco acima ((0,6,1) contra (0,5,1) no número,
+   (0,2,0) contra (0,1,0) no `+`) — sem elas o hover escureceria o cartão e deixaria
+   o texto navy sobre navy.
+
 .contato-indicadores.section-light
   .contato-indicador:hover
   .contato-indicador-valor
@@ -8519,11 +8886,20 @@ html[data-motion='reduce'] .bm-pais-cabeca {
 .contato-indicadores .contato-indicador:focus-within .contato-indicador-rotulo {
   color: rgb(255 255 255 / 88%);
 }
+   ── fim do trecho comentado pela SIS-256 (2ª volta) ─────────────────────── */
 
-/* A fileira da etapa. O contador é `color-mix` sobre `--mb-alc` no repouso; aqui
-   ele vira tinta plana, porque sobre navy não há acendimento a acompanhar — o
-   cartão inteiro já é o destaque. O nó e o fio trocam o azul `#024e86` pelo ciano,
-   que é a cor que os dois têm nas trilhas de fundo escuro do site. */
+/* ── SIS-256 · AS TRÊS REAÇÕES DE PONTEIRO DA ETAPA FICARAM SEM ALVO ─────────
+   A fileira da etapa saiu do JSX (`MetricsBand.tsx`), então estes três seletores
+   não casam com nada. Ficam comentados, e não apagados, porque são metade do
+   roteiro de religar o contador: o estado de repouso está logo abaixo, comentado no
+   mesmo turno, e sem o par de hover quem religasse teria um contador que não
+   responde ao ponteiro como respondia.
+
+   O que eles faziam: o contador virava tinta plana sobre navy (não há acendimento a
+   acompanhar quando o cartão inteiro já é o destaque), e o nó e o fio trocavam o
+   azul `#024e86` pelo ciano `#0ed8f6`, que é a cor dos dois nas trilhas de fundo
+   escuro do site.
+
 .contato-indicadores .contato-indicador:hover .contato-indicador-etapa,
 .contato-indicadores .contato-indicador:focus-within .contato-indicador-etapa {
   color: rgb(255 255 255 / 82%);
@@ -8542,6 +8918,7 @@ html[data-motion='reduce'] .bm-pais-cabeca {
     linear-gradient(to right, rgb(14 216 246 / 60%), rgb(14 216 246 / 60%)),
     repeating-linear-gradient(to right, rgb(255 255 255 / 26%) 0 2px, transparent 2px 8px);
 }
+   ── fim do trecho comentado pela SIS-256 ─────────────────────────────────── */
 
 /* Os dois canais de movimento reduzido, e são DOIS porque uma `@media` não é
    interceptável por JavaScript: a preferência do sistema e o botão da interface.
@@ -8549,10 +8926,25 @@ html[data-motion='reduce'] .bm-pais-cabeca {
    ficaria congelado no deslocamento do último quadro. O HOVER NÃO É DESFEITO em
    nenhum dos dois: trocar de cor não é movimento, e quem pediu menos movimento
    não pediu menos resposta ao ponteiro. */
+/* SIS-256 (2ª volta) — `scale: 1` ENTRA NOS DOIS ESPELHOS, e a razão é a mesma
+   frase acima lida ao contrário: trocar de cor não é movimento, mas ESCALAR é. O
+   hover novo cresce o cartão 3%, então com movimento reduzido a escala é
+   neutralizada nas duas vias. O que NÃO é neutralizado é a sombra mais funda e a
+   aresta acesa: elas continuam respondendo ao ponteiro, porque são cor, e é o que
+   mantém o «em destaque» para quem desligou o movimento.
+   `scale: 1` e não `scale: none`: os dois valem, e `1` deixa explícito que o
+   repouso é a escala natural. Precisa vencer o `:hover`, daí o seletor repetir o
+   estado — mesma técnica dos `!important` do bloco de cima, aqui sem precisar de
+   `!important` porque (0,2,0) já supera (0,1,0) do hover na media query, e no
+   `html[data-motion]` o seletor soma um elemento a mais. */
 @media (prefers-reduced-motion: reduce) {
   .contato-indicador {
     animation: none;
     transform: none;
+  }
+  .contato-indicador:hover,
+  .contato-indicador:focus-within {
+    scale: 1;
   }
 }
 
@@ -8561,16 +8953,39 @@ html[data-motion='reduce'] .contato-indicador {
   transform: none;
 }
 
+html[data-motion='reduce'] .contato-indicador:hover,
+html[data-motion='reduce'] .contato-indicador:focus-within {
+  scale: 1;
+}
+
 /* A fileira de baixo: é a linha que a SIS-143 desenhou, com o número à esquerda e
    o rótulo ao lado. `align-items: center` e o vão são os mesmos de antes — eles
    apenas mudaram de dono, do `<li>` para este embrulho. */
 .contato-indicador-corpo {
   display: flex;
   align-items: center;
+  /* SIS-256 (3ª volta) — CENTRADO, e é consequência direta do cartão de largura
+     igual. Com o cartão medindo o conteúdo o par ocupava a caixa inteira e não
+     havia o que alinhar; com a coluna dando a largura, o cartão mais largo do
+     conjunto passa a sobrar espaço para o par mais curto ("Clientes"), e encostado
+     à esquerda o vão morto ficava todo do lado direito. Centrado, o par fica onde
+     está na referência que a autora mandou. */
+  justify-content: center;
   gap: clamp(0.75rem, 1.1vw, 1rem);
 }
 
-/* ── A FILEIRA DA ETAPA (SIS-211) ───────────────────────────────────────────
+/* ── SIS-256 · A FILEIRA DA ETAPA EM REPOUSO: COMENTADA, NÃO APAGADA ─────────
+   Os três seletores abaixo (`-etapa`, `-no`, `-fio`) perderam o alvo quando o
+   contador «01 / 07» saiu do JSX a pedido da autora do escopo. Não são apagados
+   porque este bloco é o roteiro de religar — e porque o que está escrito nele é
+   medição que não se refaz de graça: o alfa de 82% do contador é o PISO DE AA do
+   estado apagado, medido (começou em 55% e reprovava com 3,69:1), e a sonda que o
+   mediu, `scripts/medir-contraste-indicadores-sis211.mjs`, continua no repositório.
+   Apagar o bloco jogaria fora a razão do número junto com o número.
+   `--mb-alc` segue declarado onde estava: `metrics-band-track.css` é dono dele e
+   nada aqui o consome mais.
+
+   ─────────────────────────────────────────────────────────────────────────────
    Vocabulário do `RoadmapTrail`: nó, contador e trecho de trilha. Aqui a trilha é
    HORIZONTAL e não existe um `<svg>` com `path` — cada cartão carrega o seu pedaço
    de fio, e é essa a razão de o fio ser um `<span>` dentro da fileira em vez de uma
@@ -8582,7 +8997,17 @@ html[data-motion='reduce'] .contato-indicador {
    `--mb-alc` é o acendimento: 1 = alcançado. Nasce em 1 aqui de propósito — na
    grade, com movimento reduzido ou sem JavaScript, os sete estão TODOS à vista e
    nenhum é "futuro". Só o percurso o torna progressivo
-   (`metrics-band-track.css`). */
+   (`metrics-band-track.css`).
+
+   ⚠️ OS DELIMITADORES DOS COMENTÁRIOS INTERNOS FORAM RETIRADOS de propósito: CSS
+   não aninha comentário, então um fecha-comentário interno fecharia este bloco no
+   meio e devolveria metade das regras ao ar — foi o que aconteceu na primeira
+   tentativa, e o dev respondeu 500 com «CssSyntaxError: Unknown word com» na linha
+   do `color-mix`. Nem em prosa se escreve a sequência aqui dentro. O texto dos
+   comentários internos continua neste bloco, inteiro; ao religar, é só devolver os
+   delimitadores.
+   ─────────────────────────────────────────────────────────────────────────────
+
 .contato-indicadores .contato-indicador-etapa {
   display: flex;
   align-items: center;
@@ -8590,7 +9015,7 @@ html[data-motion='reduce'] .contato-indicador {
   margin: 0;
   font-size: 0.72rem;
   letter-spacing: 0.1em;
-  /* `color-mix` com `calc()` no percentual é o que faz a tinta acompanhar o
+  `color-mix` com `calc()` no percentual é o que faz a tinta acompanhar o
      acendimento em vez de piscar entre dois estados. A declaração PLANA vem antes
      como reserva: onde `color-mix` não resolver, o navegador a mantém e o contador
      fica na cor apagada — legível, só sem o acento.
@@ -8605,15 +9030,15 @@ html[data-motion='reduce'] .contato-indicador {
      O QUE DISTINGUE alcançado de não alcançado depois disso não é mais só o brilho
      da tinta: é o MATIZ (azul `#024e86` contra navy acinzentado) somado ao nó, que
      se preenche, e ao fio, que passa de tracejado a contínuo. Três sinais em vez de
-     um — e nenhum deles é cor sozinha. */
+     um — e nenhum deles é cor sozinha.
   color: rgb(10 31 68 / 82%);
   color: color-mix(in srgb, #024e86 calc(var(--mb-alc) * 100%), rgb(10 31 68 / 82%));
   transition: color 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* O nó. `#024e86` e não o `#0ed8f6` da trilha escura das Implementações: ciano puro
+O nó. `#024e86` e não o `#0ed8f6` da trilha escura das Implementações: ciano puro
    sobre branco é quase invisível, e é o mesmo motivo pelo qual `.section-light`
-   troca `.text-cyan-glow` por `#024e86`. */
+   troca `.text-cyan-glow` por `#024e86`.
 .contato-indicador-no {
   flex: none;
   width: 0.6rem;
@@ -8627,10 +9052,10 @@ html[data-motion='reduce'] .contato-indicador {
     box-shadow 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* O fio: pontilhado quando o cartão ainda não foi alcançado (é o
+O fio: pontilhado quando o cartão ainda não foi alcançado (é o
    `stroke-dasharray: 2 22` de `.roadmap-route` traduzido para `repeating-linear-
    gradient`), sólido quando foi. As duas camadas ficam sobrepostas e o alfa da de
-   cima é o acendimento — trocar `background-image` no meio não interpola. */
+   cima é o acendimento — trocar `background-image` no meio não interpola.
 .contato-indicador-fio {
   flex: 1 1 auto;
   min-width: 0;
@@ -8643,6 +9068,7 @@ html[data-motion='reduce'] .contato-indicador {
     ),
     repeating-linear-gradient(to right, rgb(4 58 99 / 26%) 0 2px, transparent 2px 8px);
 }
+   ── fim do trecho comentado pela SIS-256 (etapa, nó e fio em repouso) ────── */
 
 .contato-indicadores .contato-indicador-valor {
   margin: 0;
@@ -8657,7 +9083,17 @@ html[data-motion='reduce'] .contato-indicador {
      O que autoriza o aumento é o desenho novo: com o rótulo ao lado, o número
      divide a largura do cartão com ele em vez de ter a coluna inteira, então o
      tipo maior é o que o mantém como o elemento que se lê primeiro. */
-  font-size: clamp(2.5rem, 4.2vw, 3.5rem);
+  /* SIS-256 — `clamp(2.5rem, 4.2vw, 3.5rem)` antes (56px a 1440). Ele saiu porque
+     agora é o NÚMERO QUE DÁ A LARGURA DO CARTÃO: sem a coluna esticada, o cartão
+     mede o conteúdo, e "850+" a 56px pede ~135px só de número — com o rótulo ao
+     lado o cartão passaria de 300px, que é o contrário do que a issue pede.
+     O `cqi` do bloco de 1280 também sai (comentado lá): ele existia para o número
+     caber numa coluna de 142px, e não há mais coluna a caber.
+     A HIERARQUIA CONTINUA: 36px de número contra 13,7px de rótulo, e segue muito
+     abaixo dos 7,5rem de `.impact-num` no palco da home — a razão escrita na
+     SIS-143 (lá o número é o assunto; aqui é evidência entre outras seis) não
+     mudou de valor, só de escala. As medidas estão no comentário de entrega. */
+  font-size: clamp(1.75rem, 2.5vw, 2.25rem);
   /* Não encolhe para dar espaço ao rótulo: o rótulo quebra em linha, o número
      não tem onde quebrar. Sem isto o flex tira largura do número primeiro,
      porque ele é o item de conteúdo mais rígido dos dois. */
@@ -8694,7 +9130,13 @@ html[data-motion='reduce'] .contato-indicador {
      o prefixo, o número perderia esta declaração para a cor genérica — que por
      acaso é a mesma, mas a próxima mudança aqui não teria efeito e ninguém
      entenderia por quê. */
-  color: #0a1f44;
+  /* SIS-256 (2ª volta) — VOLTA A `#fff` porque o cartão voltou a ser escuro. O
+     parágrafo acima previu exatamente isto («fica registrado porque é o que se
+     religa com o fundo escuro»), e o prefixo de seção continua sendo necessário
+     pela mesma conta de especificidade contra `.section-light p`. Valor anterior:
+     `color: #0a1f44;`. Esta declaração no `<p>` de qualquer forma não alcança o
+     número — ver a nota logo abaixo. */
+  color: #ffffff;
 }
 
 /* ── SIS-211 · O NÚMERO É `<span>`, E ISSO FOI DESCOBERTO MEDINDO ────────────
@@ -8720,7 +9162,11 @@ html[data-motion='reduce'] .contato-indicador {
   .contato-indicador
   .contato-indicador-valor
   span:not(.contato-indicador-mais) {
-  color: #0a1f44 !important;
+  /* SIS-256 (2ª volta) — branco, porque o cartão é escuro. Valor anterior:
+     `#0a1f44 !important`. O `!important` e o empate em (0,5,1) FICAM: o seletor
+     genérico de span da seção clara não mudou e continua tentando pintar os sete
+     números de `#024e86` — que sobre navy é o que reprovaria o contraste. */
+  color: #ffffff !important;
 }
 
 /* O `+` em ciano da marca é o único acento de cor da faixa. Ele fica no sufixo e
@@ -8736,7 +9182,29 @@ html[data-motion='reduce'] .contato-indicador {
    composição razoável de classes daqui o alcança. Sem isto o `+` viraria navy
    `#0a1f44` e a faixa perderia o único acento de cor que ela tem. */
 .contato-indicador-mais {
-  color: #024e86 !important;
+  /* SIS-256 (2ª volta) — o ciano da marca VOLTA, e é o caso que o parágrafo acima
+     descreve ao contrário: `#024e86` era a troca de fundo claro, e o cartão deixou
+     de ser claro. Sobre `#0a1f44` o ciano é o acento da casa (é a regra da marca:
+     glow ciano, nunca branco frio) e `#024e86` sobre navy sumiria. Valor anterior:
+     `color: #024e86 !important;`. */
+  /* ── SIS-256 (4ª volta) · O CIANO NÃO CABE EM `#1273bc`, E ISTO É UMA PERDA ───
+     Medido: `#0ed8f6` sobre `#1273bc` dá **2,90:1**, contra o piso **3,0** de texto
+     grande (o `+` herda os 36px do número). Reprova — por pouco, e "por pouco" não
+     é aprovação. Antes isto nunca aparecia porque o cartão era navy quase preto:
+     qualquer tinta clara passava com folga, e a própria sonda não media o `+`. Ela
+     passou a medir nesta volta (terceiro alvo em `scripts/medir-indicadores-sis256.mjs`).
+     Valor anterior: `color: #0ed8f6 !important;` — e ele é o roteiro de voltar.
+     BRANCO DÁ 5,00:1 e não traz cor nova nenhuma, então é o que fica. O CUSTO, dito
+     por inteiro: a faixa perde o único acento de cor que tinha — o comentário logo
+     acima dizia exatamente isso do `+`, e agora número e `+` são a mesma tinta.
+     AS DUAS SAÍDAS QUE DEVOLVEM O ACENTO, e nenhuma é minha para escolher:
+       (a) superfície mais escura que `#1273bc` — com o navy da 2ª volta o ciano
+           passava com folga. Muda a cor que a autora do escopo nomeou.
+       (b) um ciano mais claro (ciano + branco, algo como `rgb(135 236 251)` ≈ 3,66:1
+           sobre esta superfície). Passa com margem, mas é um TOKEN NOVO de marca, e
+           inventar tinta de marca não é decisão de implementação.
+     Está declarado na issue para ela decidir; até lá vale o que cumpre AA. */
+  color: #ffffff !important;
 }
 
 .contato-indicadores .contato-indicador-rotulo {
@@ -8767,11 +9235,47 @@ html[data-motion='reduce'] .contato-indicador {
      grande: ele fica em navy com alfa alto em vez do navy cheio do número — hierarquia
      preservada — e o número novo está no comentário de entrega, medido sobre o
      cartão claro no pior ponto. */
-  color: rgb(10 31 68 / 88%);
+  /* SIS-256 (2ª volta) — VOLTA a `rgb(255 255 255 / 88%)`, que é literalmente o
+     «valor anterior, para religar com o fundo escuro» escrito acima. O rótulo segue
+     sendo texto PEQUENO (piso 4,5 de AA, sem isenção de texto grande) e segue com
+     alfa alto em vez de branco cheio, para manter a hierarquia com o número — o
+     número medido sobre o cartão escuro está no comentário de entrega da issue.
+     Valor anterior: `color: rgb(10 31 68 / 88%);`. */
+  /* ── SIS-256 (4ª volta) · BRANCO CHEIO, PORQUE 88% REPROVA EM `#1273bc` ──────
+     Não é preferência: é o piso de AA, medido. Sobre a superfície nova, o rótulo em
+     `rgb(255 255 255 / 88%)` dá **4,25:1** contra o piso **4,5** de texto pequeno
+     (`docs/medidas/indicadores-sis256-depois.json`, os dois viewports). Em branco
+     cheio dá **5,00:1**. Valor anterior: `color: rgb(255 255 255 / 88%);`
+     POR QUE O ALFA NÃO SOBE UM POUCO EM VEZ DE SAIR. A conta pede ~94–95% para
+     encostar em 4,5 — isto é, passar raspando, e é o rótulo com a MENOR folga da
+     faixa. O alfa existia para segurar a hierarquia com o número; ela não dependia
+     dele: 36px contra 13,7px e a família display no número seguram sozinhas (é o
+     mesmo argumento já escrito em `.contato-indicador-valor`). Alfa que sobrevive
+     por 0,05 de contraste é o que quebra na próxima mudança de superfície.
+     ⚠️ QUEM ESCURECER OU CLAREAR O CARTÃO REMEDE AQUI. Sobre navy este rótulo dava
+     12,93:1 e o alfa não fazia diferença nenhuma; sobre azul médio ele é o alvo que
+     manda. A conta muda com a superfície, não com o texto. */
+  color: #ffffff;
   text-wrap: pretty;
   /* Em flex, o padrão `min-width: auto` faz o rótulo se recusar a ficar menor que
      a palavra mais longa e estourar o cartão em vez de quebrar. */
   min-width: 0;
+  /* ── SIS-256 · O TETO DO RÓTULO É O QUE FECHA A LARGURA DO CARTÃO ──────────
+     Com o cartão medindo o conteúdo, sem teto aqui o rótulo pediria UMA LINHA só:
+     "Mil horas de Capacidade Produtiva no Brasil" mede ~270px a 13,7px, e o cartão
+     nasceria com ~380px — mais largo que o baseline esticado, o oposto do pedido.
+     `max-width` em `ch` e não em `px` porque a unidade acompanha o corpo do próprio
+     rótulo (que é `clamp`): o número de CARACTERES por linha fica estável entre
+     390 e 1440, e é o número de caracteres que decide quantas linhas o pior rótulo
+     ocupa. 13ch põe o pior deles em três linhas e a maioria em duas, que é a
+     proporção do desenho da referência (rótulo pequeno de duas linhas ao lado do
+     número).
+     `hyphens: auto` subiu do bloco de 1280 para cá pelo mesmo motivo: o teto agora
+     vale em TODA largura, então a hifenização também precisa — sem ela, com o
+     `overflow-wrap: anywhere` da base, "Reconhecimentos" partiria em ponto que não
+     existe na língua. Depende do `lang="pt-BR"` do `<html>`. */
+  max-width: 13ch;
+  hyphens: auto;
 }
 
 /* ── 11/09 · O CARTÃO NAS SETE COLUNAS ──────────────────────────────────────
@@ -8804,9 +9308,99 @@ html[data-motion='reduce'] .contato-indicador {
 
    Nada aqui é movimento, então nenhum espelho de `prefers-reduced-motion` é
    devido. */
+/* ── SIS-256 · ESTE BLOCO INTEIRO CAIU COM A COLUNA ESTICADA ─────────────────
+   As quatro correções acima eram remendos de uma causa só: 1116px divididos por
+   sete davam 142,3px de cartão, e o desenho de cartão largo não caía nessa medida.
+   Sem `1fr` não há mais 142,3px imposto — o cartão mede o conteúdo — e cada remendo
+   passa a ser o defeito que ele existia para evitar:
+
+   (1) `flex-direction: column` no corpo EMPILHAVA o par número/rótulo. É exatamente
+       o que a autora pediu para desfazer: a referência que ela mandou tem o número
+       grande com o rótulo pequeno AO LADO, e era só a estreiteza da coluna que
+       impedia. O comentário de 1280 dizia "lado a lado eles disputariam 108px" —
+       verdade enquanto a largura vinha da coluna; agora a largura vem deles.
+   (2) `container-type: inline-size` + `14cqi` faziam o número medir o CARTÃO. Com o
+       cartão medindo o número, isso é circular: o número pediria largura do cartão
+       que pede largura do número. O corpo passa a sair de `vw`, no `clamp` novo de
+       `.contato-indicador-valor`.
+   (3) `padding-inline: 1rem` devolvia 14px de conteúdo à custa da respiração do
+       cartão; num cartão que já não é apertado, o recuo cheio volta a caber.
+   (4) `hyphens: auto` NÃO caiu — subiu para a regra base do rótulo, porque o teto
+       de largura dele agora vale em toda largura e não só aqui.
+
+   Valores anteriores, para religar junto com a grade de sete colunas:
+     @media (min-width: 1280px) {
+       .contato-indicador { container-type: inline-size; padding-inline: 1rem; }
+       .contato-indicador-corpo { flex-direction: column; align-items: flex-start;
+         gap: 0.3rem; }
+       .contato-indicadores .contato-indicador-valor {
+         font-size: clamp(1.75rem, 14cqi, 2.5rem); }
+       .contato-indicadores .contato-indicador-rotulo { hyphens: auto; }
+     }
+   A nota longa da hifenização em `.impact-rotulo` (media de 1280) segue sendo o
+   raciocínio de referência, e continua lá.
+   ── fim do trecho comentado pela SIS-256 ─────────────────────────────────── */
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SIS-256 · O ITEM (1) ACIMA VOLTA A 1280, E A CONTA ESTÁ MEDIDA
+   ══════════════════════════════════════════════════════════════════════════
+   De 1280 para cima o par número/rótulo continua EMPILHADO, e isto é o único ponto
+   em que esta entrega não segue a referência que a autora mandou. O motivo é que os
+   dois pedidos da issue se contradizem nesta largura, e a contradição foi medida em
+   vez de suposta (`docs/medidas/indicadores-sis256-depois.json`, primeira volta):
+
+     lado a lado, cartão medindo o conteúdo, a 1440 → 267,1 / 245,5 / 200,2 px
+     baseline esticado a 1440 (o que o aceite manda superar) → 142,3 px
+
+   Ou seja: com o rótulo AO LADO o cartão fica quase o DOBRO do baseline, e o aceite
+   escrito na issue é «largura visual de cada card menor que o baseline atual a
+   1440». Não há ajuste que salve os dois: o cartão é recuo + número + vão + rótulo,
+   e a 1440 o recuo cheio (46px) mais "850+" a 36px (~86px) mais o vão (14px) já
+   passam de 142px ANTES de o rótulo receber o primeiro pixel — sobrariam ~20px para
+   ele, uma letra por linha. Foi por isso que a SIS-211 empilhou aqui, e a razão
+   dela continua aritmeticamente correta.
+
+   O QUE MUDA MESMO ASSIM a 1440, e é o que o aceite pede: o cartão deixou de ser
+   esticado pela coluna e passou a medir o conteúdo, com o recuo interno de 1rem —
+   os números estão no comentário de entrega. E de 1279 para baixo, onde a largura
+   existe, o par fica LADO A LADO como na referência.
+
+   `padding-inline: 1rem` volta pelo mesmo motivo de antes, agora com outro efeito:
+   ali ele devolvia conteúdo a um cartão apertado; aqui ele ESTREITA o cartão, que é
+   o pedido. Nada aqui é movimento: nenhum espelho de `prefers-reduced-motion` é
+   devido. */
+/* ══════════════════════════════════════════════════════════════════════════
+   SIS-256 (3ª volta) · A AUTORA RESPONDEU A PERGUNTA ABERTA: VALE A REFERÊNCIA
+   ══════════════════════════════════════════════════════════════════════════
+   O bloco abaixo é o empilhamento a 1280+, e ele era o ÚNICO ponto em que a volta
+   anterior não seguia a referência — eu deixei a escolha registrada no comentário
+   da issue («lado a lado a 1440 vs. o critério literal de largura») e ofereci o
+   revert de uma linha. A resposta veio como pedido: «os cards devem ficar assim
+   [imagem] como quando fica em tamanho de mobile o tipo o layout». Isto é o revert.
+
+   O QUE ISSO CUSTA, e ela precisa saber porque foi escrito como aceite na issue: o
+   critério «largura visual de cada card menor que o baseline (142,3px a 1440)»
+   DEIXA DE SER CUMPRIDO por construção, e não por descuido meu. A aritmética está
+   no comentário logo acima e continua correta: recuo + "850+" a 36px + vão passam
+   de 142px antes de o rótulo receber um pixel. Escolher a referência é escolher o
+   cartão largo — os dois pedidos são incompatíveis nesta largura, e agora existe
+   uma decisão da dona do escopo desempatando, que é o que faltava.
+
+   Em vez de sete numa fileira, a 1280+ são QUATRO por fileira (grade de 8 colunas,
+   cada cartão em 2), e o 5º começa na coluna 2 para a fileira de baixo, que tem
+   três, ficar centrada sob a de cima. A grade de 8 colunas com `span 2` não é
+   invenção desta volta: é exatamente o mecanismo que o comentário do alto deste
+   bloco da faixa já registra como o desenho de sete colunas (itens (a), (b) e (c)
+   daquela lista), inclusive o `nth-child(5) { grid-column-start: 2 }`.
+
+   Os delimitadores dos comentários internos do bloco comentado foram RETIRADOS: CSS
+   não aninha comentário, e um fecha-comentário interno devolveria metade das regras
+   ao ar. É a mesma armadilha registrada no bloco da fileira da etapa, e ela já
+   custou um 500 nesta faixa. Nada aqui é movimento: nenhum espelho de
+   `prefers-reduced-motion` é devido.
+
 @media (min-width: 1280px) {
   .contato-indicador {
-    container-type: inline-size;
     padding-inline: 1rem;
   }
   .contato-indicador-corpo {
@@ -8814,16 +9408,64 @@ html[data-motion='reduce'] .contato-indicador {
     align-items: flex-start;
     gap: 0.3rem;
   }
-  .contato-indicadores .contato-indicador-valor {
-    font-size: clamp(1.75rem, 14cqi, 2.5rem);
-  }
-  /* (4) MESMA HIFENIZAÇÃO DA FILEIRA DA HOME, e pela mesma conta: "Reconhecimentos"
-     mede 138px a 16px, ~118px neste corpo, contra 108px úteis de cartão. Com o
-     `overflow-wrap: anywhere` de base, a palavra partiria em ponto que não existe
-     na língua. Ver a nota longa em `.impact-rotulo` (media de 1280) — o raciocínio
-     é o mesmo e não se repete aqui. Depende do `lang="pt-BR"` do `<html>`. */
+  11ch, e não os 13ch da base: com 13ch o cartão mediu 151,9px — MAIOR que o
+     baseline de 142,3px, e o aceite reprovava. A conta é direta: 151,9 − 32 de
+     recuo = 119,9px de rótulo. 11ch ≈ 101px devolve o cartão a ~133px, abaixo do
+     baseline, e cai justamente na largura de conteúdo que este bloco já tinha
+     antes da SIS-256 (o comentário revogado acima registra «108px de conteúdo»),
+     então a quebra do pior rótulo não piora em relação ao que estava publicado.
+     Medido antes e depois em `docs/medidas/indicadores-sis256-*.json`.
+  COM O ANCESTRAL, e isto foi medido: escrito como `.contato-indicador-rotulo`
+     puro (0,1,0) o 11ch não pegou — a regra base é
+     `.contato-indicadores .contato-indicador-rotulo` (0,2,0) com `max-width: 13ch`,
+     e especificidade maior vence a ordem. O cartão continuou em 151,9px, idêntico
+     ao da volta anterior, e foi essa igualdade suspeita que denunciou o erro.
   .contato-indicadores .contato-indicador-rotulo {
-    hyphens: auto;
+    max-width: 11ch;
+  }
+}
+   ── fim do trecho comentado pela 3ª volta da SIS-256 ─────────────────────── */
+
+/* A ESCADA DE COLUNAS, e cada degrau existe por uma largura medida.
+   O par número/rótulo LADO A LADO pede ~245–267px de conteúdo (as três medidas da
+   1ª volta, em `docs/medidas/indicadores-sis256-depois.json`); é esse número que
+   decide quantas colunas cabem, e não o gosto:
+     1 coluna  (até 639)  → 350px a 390. É a largura da referência que ela mandou.
+     2 colunas (640+)     → ~300px cada a 640, já acima dos 267 do pior par.
+     4 colunas (1280+)    → ~264px cada nos 1116 úteis do `container-lp`.
+   Não há degrau de 3 colunas de propósito: entre 1024 e 1279 duas colunas dão
+   ~470px por cartão, folgado, e um terceiro degrau seria uma quarta geometria para
+   remedir sem nenhum problema para resolver.
+   A 1280 o cartão fica em ~264px contra os 267 do pior par: o rótulo mais longo
+   ("Mil horas de Capacidade Produtiva no Brasil") ganha uma linha a mais, e é por
+   isso que a altura igual da grade importa — as sete alturas continuam as mesmas.
+   Nada aqui é movimento: nenhum espelho de `prefers-reduced-motion` é devido. */
+@media (min-width: 640px) {
+  .contato-indicadores-grade {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .contato-indicadores-grade {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+  .contato-indicador {
+    grid-column: span 2;
+  }
+  /* Os sete não dividem quatro colunas por igual: a fileira de baixo tem três. Sem
+     isto ela encostaria à esquerda e a faixa ficaria torta; começando o 5º na
+     coluna 2, os três de baixo ocupam as colunas 2 a 7 e ficam centrados sob os
+     quatro de cima.
+     ⚠️ `2 / span 2`, E NÃO `grid-column-start: 2` — isto foi MEDIDO e é o defeito
+     que a igualdade de largura denunciou. `grid-column: span 2` da regra acima é
+     atalho: ele escreve `start: span 2` e `end: auto`. Um `grid-column-start: 2`
+     depois substitui só o começo e deixa o fim em `auto`, que vale UMA coluna — o 5º
+     cartão saiu com 122px enquanto os outros seis tinham 264
+     (`deltaLargura: 142` na rodada anterior de `indicadores-sis256-depois.json`).
+     Declarar as duas pontas junto devolve o vão de duas colunas. */
+  .contato-indicador:nth-child(5) {
+    grid-column: 2 / span 2;
   }
 }
 
@@ -8938,12 +9580,40 @@ html[data-motion='reduce'] .contato-indicador {
      16rem AMARRADO ao `padding-top` do cartão. Agora os dois números andam
      juntos: quem mexer no `padding-top` tem de mexer aqui, e o comentário de lá
      pedia isso sem ter como garantir. */
+  /* SIS-255 — o véu estava "muito escuro e muito quadrado". Duas mudanças, e as
+     duas são medidas (sonda `scripts/medir-veu-mapa-sis255.mjs`, números em
+     `docs/medidas/veu-mapa-sis255/`):
+
+     · A COR saiu de `rgb(3 18 40)`, que é quase preto, para `#003D70` — o navy
+       da casa. Não é troca de gosto: com o alfa em 96-98% o véu não era véu,
+       era uma chapa, e a chapa era preta. Sobre o mapa real o pixel no meio do
+       cartão sai de rgb(3 19 40) para rgb(3 62 111).
+     · Os ALFAS caíram de 72/96/98% para 58/90/92%, com duas paradas novas (6rem
+       e 14rem) no meio da rampa. As paradas existem pelo mesmo motivo já
+       registrado no largo: o `linear-gradient` interpola alfa linearmente e a
+       luminância não responde linearmente ao alfa, então rampa de três paradas
+       deixa degrau no meio.
+
+     O piso é o contraste do texto do painel, e ele continua sendo o único
+     motivo pelo qual o alfa não cai mais: 90% em 16rem é o que segura o pior
+     texto da seção (o link ciano `#7fdcff`, 14px, piso 4,5:1). Medido no pior
+     caso (branco forçado no lugar do mapa, painel oculto): 11,51:1 antes,
+     5,70:1 depois, com o pixel sob o texto saindo de rgb(13 27 48) para
+     rgb(25 80 126). O título "Onde Estamos" (texto grande, piso 3:1) vai de
+     16,50:1 para 8,06:1. Quem quiser clarear mais tem de mexer na cor do link
+     primeiro: é ele, e não o branco, que encosta no piso — pela conta (véu sobre
+     branco, mesma fórmula da sonda), a 86% de alfa o link cairia para 4,8:1, e
+     aí a margem acabaria. Este número é calculado, não fotografado.
+     O 16rem continua AMARRADO ao `padding-top` do cartão, como a SIS-168
+     deixou. */
   background: linear-gradient(
     180deg,
-    rgb(3 18 40 / 0%) 0rem,
-    rgb(3 18 40 / 72%) 10.8rem,
-    rgb(3 18 40 / 96%) 16rem,
-    rgb(3 18 40 / 98%) 100%
+    rgb(0 61 112 / 0%) 0rem,
+    rgb(0 61 112 / 24%) 6rem,
+    rgb(0 61 112 / 58%) 10.8rem,
+    rgb(0 61 112 / 82%) 14rem,
+    rgb(0 61 112 / 90%) 16rem,
+    rgb(0 61 112 / 92%) 100%
   );
 }
 
@@ -9121,14 +9791,48 @@ html[data-motion='reduce'] .contato-indicador {
      em vez de 112px, e a rampa curta é justamente o que a SIS-135 mediu como
      risco de banda. Fica assim, com o número à vista, e não "corrigido" para
      pior. */
+  /* SIS-255 — "muito escuro e muito quadrado", e são dois defeitos distintos
+     com duas correções distintas. Os números são da sonda
+     `scripts/medir-veu-mapa-sis255.mjs` (`docs/medidas/veu-mapa-sis255/`).
+
+     ESCURO — a cor. `rgb(3 18 40)` a 97-98% de alfa é uma chapa quase preta: o
+     véu não lê como véu, lê como painel sólido colado no mapa. A cor passa a ser
+     `#003D70`, o navy da casa, e os alfas caem de 98/97% para 92/90%. Medido no
+     pior caso (branco forçado no lugar do mapa, painel oculto), o pixel sob o
+     texto sai de rgb(10 25 46) para rgb(24 80 126) — o contraste do pior texto
+     (link ciano de 14px, piso 4,5:1) vai de 11,40:1 para 5,46:1 a 1440 e 5,53:1
+     a 1024, e o do título "Onde Estamos" (piso 3:1) de 16,85:1 para 8,07:1.
+     Sobre o mapa real, o pixel no pino a 1024 sai de rgb(29 56 84) para
+     rgb(30 65 97).
+
+     QUADRADO — a rampa, e aqui está a única decisão difícil desta issue. A
+     rampa não pode simplesmente ficar mais longa para a direita, porque o PINO
+     mora em 50% da largura nos três provedores (nota da SIS-168 logo acima) e a
+     1024 ele já cai na cauda da rampa. Alongar a rampa mantendo o mesmo perfil
+     jogaria mais véu em cima dele — que é exatamente o que a issue proíbe.
+     A saída é mudar a FORMA da rampa em vez do comprimento útil: queda rápida
+     logo depois do painel e cauda longa e rasa. Sete paradas em vez de quatro,
+     terminando em `eixo + 34.4rem` em vez de `eixo + 31rem`.
+     O que isso rende, medido (rampa = do último ponto com alfa cheio ao primeiro
+     com alfa <= 2%):
+       · comprimento da rampa: 91px -> 138px, a 1024 e a 1440;
+       · alfa no pino a 1024: 18,3% -> 14,5% — ou seja a rampa cresceu 52% e o
+         pino ficou MENOS coberto, não mais. A 1440 o pino continua em 0%;
+       · maior degrau entre colunas vizinhas de 1px: 4/255 -> 3/255. A rampa mais
+         longa com alfa máximo menor é menos sujeita a banda, não mais.
+     O `eixo + 24rem` do início da rampa NÃO muda: é o 1rem de respiro depois do
+     texto do painel que a SIS-168 fixou, e é ele que mantém o contraste. */
   .mapa-veu {
     background: linear-gradient(
       90deg,
-      rgb(3 18 40 / 98%) 0%,
-      rgb(3 18 40 / 97%) calc(var(--mapa-eixo) + 24rem),
-      rgb(3 18 40 / 78%) calc(var(--mapa-eixo) + 26.8rem),
-      rgb(3 18 40 / 40%) calc(var(--mapa-eixo) + 28.9rem),
-      rgb(3 18 40 / 0%) calc(var(--mapa-eixo) + 31rem)
+      rgb(0 61 112 / 92%) 0%,
+      rgb(0 61 112 / 90%) calc(var(--mapa-eixo) + 24rem),
+      rgb(0 61 112 / 76%) calc(var(--mapa-eixo) + 25.4rem),
+      rgb(0 61 112 / 56%) calc(var(--mapa-eixo) + 26.8rem),
+      rgb(0 61 112 / 34%) calc(var(--mapa-eixo) + 28.2rem),
+      rgb(0 61 112 / 16%) calc(var(--mapa-eixo) + 29.8rem),
+      rgb(0 61 112 / 6%) calc(var(--mapa-eixo) + 31.4rem),
+      rgb(0 61 112 / 0%) calc(var(--mapa-eixo) + 34.4rem)
     );
     /* SIS-135, 2ª passagem — a rampa que faltava era a VERTICAL.
        O pedido novo relata véu vazio embaixo do link do Google Maps, e a medida
@@ -9187,19 +9891,63 @@ html[data-motion='reduce'] .contato-indicador {
        o número em rem sobe junto em vez de virar `%`: a banda é fixa, então o que
        a caixa crescer daqui em diante cai FORA dela e vira mapa. Números medidos
        depois da mudança estão no comentário de medição da issue. */
+    /* SIS-255 — a rampa vertical era o outro lado do "quadrado": 4rem de
+       dissolução em cima e embaixo, linear, contra uma banda opaca de 38rem. Os
+       cantos esquerdos saíam como canto de caixa.
+       A banda opaca continua em ±19rem, e isto NÃO é folga a gastar: medido, a
+       caixa do painel vai de 70 a 714 num cartão de 784 a 1440 (±322 do centro)
+       e o TEXTO dela, descontado o `padding` de 2rem, vai a ±290 — ou seja
+       sobram 14px para os 304 da banda. Encurtar a banda para alongar a rampa
+       poria o título "Onde Estamos" sobre véu já dissolvido: a 60% de máscara o
+       branco cai para ~3:1, que reprova o corpo do painel na hora.
+       O que muda é a rampa DEPOIS da banda: 4rem -> 5,6rem, e com perfil de
+       queda rápida e cauda rasa (70% / 40% / 18% / 6%) em vez de linear.
+       O perfil medido ao longo da coluna x=40, em alfa efetivo (máscara vezes
+       degradê) por distância do centro:
+         antes   19rem 98,0% · 20rem 74,2% · 21rem 49,6% · 22rem 25,4% · 23rem 0,8%
+         depois  19rem 92,2% · 20rem 65,5% · 21rem 43,9% · 22rem 26,3% · 23rem 12,9%
+                 · 24rem 4,3%
+       Ou seja: mais claro em todo o miolo da rampa até 21rem, empatado em 22rem, e
+       — o que importa para o "quadrado" — o FIM deixa de ser um corte em 23rem
+       para virar uma cauda de 13% e 4% que morre na borda do cartão. Era esse
+       corte que desenhava o canto reto; o olho lê o fim abrupto, não o
+       comprimento.
+       Os ±24,6rem são de propósito um fio além da meia-altura do cartão (49rem /
+       2 = 24,5rem): é o que faz a máscara chegar a ~0 na borda, sem degrau. Se o
+       cartão crescer, a rampa acaba antes da borda e o excedente vira mapa limpo
+       — o mesmo princípio de âncora em rem que a SIS-135 fixou aqui.
+       O maior degrau entre linhas vizinhas de 1px continua em 5/255, igual ao de
+       antes (descartadas 4 linhas de borda em cada ponta, onde o degrau é o
+       encontro do cartão com o que está atrás dele, não a máscara). */
     -webkit-mask-image: linear-gradient(
       180deg,
-      transparent calc(50% - 23rem),
+      transparent calc(50% - 24.6rem),
+      rgb(0 0 0 / 6%) calc(50% - 23.8rem),
+      rgb(0 0 0 / 18%) calc(50% - 22.6rem),
+      rgb(0 0 0 / 40%) calc(50% - 21.3rem),
+      rgb(0 0 0 / 70%) calc(50% - 20rem),
       #000 calc(50% - 19rem),
       #000 calc(50% + 19rem),
-      transparent calc(50% + 23rem)
+      rgb(0 0 0 / 70%) calc(50% + 20rem),
+      rgb(0 0 0 / 40%) calc(50% + 21.3rem),
+      rgb(0 0 0 / 18%) calc(50% + 22.6rem),
+      rgb(0 0 0 / 6%) calc(50% + 23.8rem),
+      transparent calc(50% + 24.6rem)
     );
     mask-image: linear-gradient(
       180deg,
-      transparent calc(50% - 23rem),
+      transparent calc(50% - 24.6rem),
+      rgb(0 0 0 / 6%) calc(50% - 23.8rem),
+      rgb(0 0 0 / 18%) calc(50% - 22.6rem),
+      rgb(0 0 0 / 40%) calc(50% - 21.3rem),
+      rgb(0 0 0 / 70%) calc(50% - 20rem),
       #000 calc(50% - 19rem),
       #000 calc(50% + 19rem),
-      transparent calc(50% + 23rem)
+      rgb(0 0 0 / 70%) calc(50% + 20rem),
+      rgb(0 0 0 / 40%) calc(50% + 21.3rem),
+      rgb(0 0 0 / 18%) calc(50% + 22.6rem),
+      rgb(0 0 0 / 6%) calc(50% + 23.8rem),
+      transparent calc(50% + 24.6rem)
     );
   }
 
@@ -15581,6 +16329,53 @@ html[data-motion='reduce'] .solution-info > * {
   .lp-rodape-nav:hover li:not(:hover) a {
     opacity: 0.55;
   }
+  /* SIS-266 — o item ATIVO não recua junto. O recuo acima existe para destacar o
+     item sob o cursor; aplicado ao ativo, ele apagaria o único item que a página
+     precisa manter afirmado, e o gesto passageiro venceria o estado da rota.
+     0.8 e não 1: ele cede um pouco, senão o realce de hover deixa de ser visível
+     quando o cursor está em outro item. */
+  .lp-rodape-nav:hover li:not(:hover) a[data-ativo='true'] {
+    opacity: 0.8;
+  }
+}
+
+/* --- 1b. SIS-266 · o item da PÁGINA ATUAL, na coluna "Navegação" -------------
+   Pedido: no rodapé o item da rota atual tem de ler como selecionado. O header já
+   resolvia isso (branco + sublinhado ciano + `aria-current`); aqui não havia nada,
+   e os sete links saíam iguais em qualquer página.
+
+   O realce NÃO é desenho novo: é o estado de hover desta mesma lista, fixado. A
+   seta ciana e o sublinhado ciano já existem no bloco 1 acima e já são o
+   vocabulário do rodapé — pill ou cartão seriam invenção, e a issue proíbe por
+   escrito. Então o ativo simplesmente nasce com os dois em repouso:
+
+     • branco + `font-semibold` (no Tailwind de `RodapeNav`, junto do estado de
+       repouso);
+     • seta e sublinhado ACESOS, aqui.
+
+   ⚠️ O QUE A MEDIÇÃO CORRIGIU (`docs/medidas/rodape-ativo-sis266.json`): o fundo
+   composto do rodapé é `rgb(18, 115, 188)` (o `#1273BC` a 85% acaba caindo sobre
+   navy, e o resultado é praticamente ele mesmo), e ali o branco dá 5,00:1 contra
+   4,27:1 do `--ink-muted` dos inativos. Eu havia estimado 4,6 e 2,6 — o inativo é
+   MUITO mais claro do que "muted" sugere (`#E2EFFA`). A consequência é de projeto,
+   não de número: 5,00 vs 4,27 não é diferença que se leia, então quem carrega o
+   estado aqui é o SUBLINHADO + a seta + o peso, e a cor é só reforço. Tirar o
+   sublinhado achando que "branco basta" desfaz o pedido da issue.
+
+   O seletor é `[data-ativo='true']`, e não `[aria-current='page']`, porque o item
+   também acende quando a rota é de uma FILHA (`/transformacao-legado` acende
+   "Soluções, Serviços e Consultoria") — e nesse caso não há `aria-current`, que
+   significa "este link aponta para a página em que você está". O atributo separado
+   é o que permite realçar o ramo sem mentir na semântica.
+
+   Sem transição declarada: o estado não é um gesto, ele já está lá quando a página
+   abre. A transição herdada do bloco 1 continua servindo o hover. */
+.lp-rodape-nav a[data-ativo='true']::before {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.lp-rodape-nav a[data-ativo='true']::after {
+  transform: scaleX(1);
 }
 
 /* --- 2. icones das redes: o nome emerge de tras do circulo ---------------- */
@@ -17624,67 +18419,26 @@ html[data-motion='reduce'] .eventos-mosaico-tile:hover .eventos-mosaico-face {
   }
 }
 
-/* SIS-206 · /esg — véu mais fechado, porque a manchete MUDOU DE LUGAR
+/* SIS-247 · /esg — véu assimétrico para a nova capa
    ---------------------------------------------------------------------------
-   Terceira rota a fechar o véu escopado, pelo mesmo motivo das duas anteriores —
-   `/eventos-inovacao` (SIS-105, telão de LED aceso no centro) e `/contato`
-   (SIS-126, laje branca e luminárias). As opacidades base 66/34/74% + 16% foram
-   calibradas na SIS-94 sobre takes escuros de mãos ao teclado; esta foto tem uma
-   mão CLARA sustentando um globo aceso, e a manchete pousa em cima dela.
-
-   O QUE MUDOU AGORA. Antes deste reparo o título ocupava 52vw e sua última linha
-   morria na faixa desfocada da esquerda. Com a coluna da grade invertida (bloco
-   mais abaixo) ele ficou mais estreito e mais alto — e subiu para cima do rótulo
-   "governance" e da palma da mão, que é o trecho mais claro do quadro. Medido
-   com `scripts/medir-contraste-abertura-esg-sis206.mjs`, pior pixel sob miolo de
-   letra, texto branco:
-     • 1280: 4,70:1 antes do reparo → 4,03:1 depois (REPROVA)
-     • 1440: 4,19:1 antes → 3,35:1 depois (REPROVA nas duas)
-     • 1920: 4,97:1 antes → 5,13:1 depois (passa nas duas)
-     • 390:  3,02:1 antes → 3,02:1 depois (idêntico: mobile não é grade, a dívida
-       aqui é ANTIGA e não foi criada por este reparo — mas o alvo da issue pede
-       ≥ 4,5:1 e ela entra no mesmo conserto)
-
-   POR QUE VÉU E NÃO RECUAR O TEXTO. Recuar desfaria a repartição que a SIS-138
-   entregou e esta issue foi proibida de reabrir; e a alternativa de escurecer a
-   própria foto valeria para todas as rotas com mídia. O véu é o único ajuste que
-   já é, por precedente, por rota.
-
-   ESCOLHA DO GRAU, varrido por `scripts/varrer-veu-esg-sis206.mjs` (título / a
-   continuação passa em todos os degraus, com folga de 6:1 para cima):
-     A 66/34/74+16 (base):  1280 4,03 · 1440 3,35 · 1920 5,13 · 390 3,02 — reprova
-     B 72/52/80+22:         1280 5,82 · 1440 4,97 · 1920 7,00 · 390 4,62 — passa raspando
-     C 74/60/84+28 ESCOLHIDO: 1280 7,05 · 1440 6,10 · 1920 8,33 · 390 5,75
-     D 76/68/86+34:         1280 8,24 · 1440 7,32 · 1920 9,49 · 390 7,06 — apaga a foto
-   B foi RECUSADO por margem: 4,62 e 4,97 ficam a menos de meio ponto do piso, e
-   qualquer troca futura de fonte ou de foto derruba de novo — foi exatamente
-   assim que esta abertura quebrou (a SIS-155 trocou a fonte e invalidou a premissa
-   escrita da SIS-138). D foi RECUSADO pelas capturas: o globo e os rótulos viram
-   silhueta e a foto deixa de significar algo.
-
-   GLOBO ESG LEGÍVEL, o outro alvo da issue: conferido nas capturas de C em 1280,
-   1440, 1920 e 390 — o globo, o "ESG" gravado nele, a mão e os três ícones
-   continuam distinguíveis. É por isso que a decisão parou em C e não em D.
-
-   Só as opacidades mudam: a geometria, a pluma do topo (SIS-112) e o navy da base
-   (`rgb(4 27 61)`, o mesmo `#041b3d` com que a cena seguinte abre, para a emenda
-   não virar listra) seguem os mesmos. */
+   `esgcapa.webp` reserva vazio escuro à esquerda e concentra ambiente, esfera
+   ESG+S e pessoas do centro para a direita. Por isso o véu deixou de ser um
+   banho uniforme: a camada horizontal fecha a área tipográfica e abre sobre o
+   assunto. A camada vertical recompõe navy no rodapé, onde a abertura encontra
+   a faixa seguinte, sem transformar a esfera e a dimensão social em silhueta. */
 .hero-backdrop--esg .hero-backdrop-veu {
   background:
-    linear-gradient(180deg, rgb(3 17 38 / 74%) 0%, rgb(4 27 61 / 60%) 45%, rgb(4 27 61 / 84%) 100%),
-    rgb(4 27 61 / 28%);
+    linear-gradient(180deg, rgb(3 17 38 / 38%) 0%, rgb(4 27 61 / 28%) 55%, rgb(4 27 61 / 90%) 100%),
+    linear-gradient(90deg, rgb(3 17 38 / 76%) 0%, rgb(3 17 38 / 64%) 42%, rgb(4 27 61 / 56%) 72%, rgb(4 27 61 / 32%) 100%);
 }
 
 /* SIS-113 · /esg — a manchete desloca para a esquerda sobre a foto
    ---------------------------------------------------------------------------
-   A foto (`/images/esg/esg-hero.webp`) tem o assunto à DIREITA do quadro: o globo
-   com "ESG", a mão que o sustenta e os três rótulos (environment / social /
-   governance). O terço esquerdo é fundo desfocado escuro. Com a manchete na
-   borda do `.container-lp` (x=403 num 1920, medido) ela pousava exatamente sobre
-   os rótulos da foto — duas escritas empilhadas, as duas ilegíveis.
+   A nova foto (`/images/esg/esgcapa.webp`) também concentra o assunto à direita:
+   ambiente, esfera ESG+S e dimensão social. O terço esquerdo é fundo azul escuro.
 
    Deslocá-la para a esquerda é o que a issue pede e é o que a foto quer: o texto
-   cai na área desfocada e o globo fica inteiro à direita, visível. É por isso que
+   cai na área vazia e a composição fica à direita, visível. É por isso que
    o recuo é do CONTEÚDO desta abertura, e não uma prop nova no `PageHero`, que
    serve outras treze rotas.
 
@@ -18261,16 +19015,24 @@ html[data-motion='reduce'] .eventos-mosaico-tile:hover .eventos-mosaico-face {
    critério não dependia do tamanho da fonte, como eu havia concluído: dependia
    de um erro de largura logo acima. A conclusão anterior — de que 2 linhas a 1440
    exigiriam corpo de ~43px, menor que os 50px de 1024 — era aritmética correta
-   sobre a largura ERRADA. */
+   sobre a largura ERRADA.
+
+   SIS-264 — UM degrau acima desta escala, só nesta rota: o `h1` cai em
+   `text-pagehero-medio` pelo comprimento, e o teto de 3rem a partir de 1024
+   deixava a abertura menor que o degrau médio. O PageHero global não muda. */
 .hero-backdrop--carreira .pagehero-entrada h1 {
-  font-size: clamp(2.4rem, 5.4vw, 4.25rem);
+  font-size: clamp(2.6rem, 5.8vw, 4.4rem);
   line-height: 1.03;
 }
 
+.hero-backdrop--carreira .pagehero-entrada .eyebrow {
+  font-size: 0.875rem;
+}
+
 .hero-backdrop--carreira .pagehero-entrada h1 + div {
-  /* Fixo em 20px pelo mesmo motivo registrado na SIS-133: dentro de container com
-     teto, corpo que cresce com `vw` só encurta a linha nas telas largas. */
-  font-size: 1.25rem;
+  /* Um degrau acima dos 20px anteriores; ainda fixo, pelo mesmo motivo da
+     SIS-133: `vw` dentro de coluna com teto só encurta a linha nas telas largas. */
+  font-size: 1.375rem;
 }
 
 /* Abaixo de 1024 as duas colunas não existem — o cartão fica EMBAIXO da escrita,
@@ -18279,6 +19041,38 @@ html[data-motion='reduce'] .eventos-mosaico-tile:hover .eventos-mosaico-face {
    bloco. */
 .carreira-cartao {
   margin-top: 2.5rem;
+}
+
+/* SIS-253 (pedido de acompanhamento) — O CARTÃO «Como chegar até nós» DEIXA DE SER
+   TRANSLÚCIDO e passa a azul claro OPACO.
+   O que havia: `.glass-card`, cujo fundo é `rgba(15,90,151,0.88)` sobre
+   `backdrop-filter: blur(22px)`. Por cima do vídeo da abertura, os 12% de
+   transparência somados ao desfoque deixavam as mãos e o teclado do vídeo
+   aparecerem através do cartão — foi o que a reprovação nomeou.
+   O ESCOPO É ESTE CARTÃO, e não `.glass-card`. Aquela classe é utilitária e está em
+   dezenas de blocos escuros do site; trocar o fundo dela pintaria de azul claro
+   cartão de texto branco em toda rota. Aqui o seletor é
+   `.carreira-cartao .glass-card` — duas classes, ganha das declarações de `@layer
+   components` sem `!important`.
+   O `backdrop-filter` sai junto: com fundo opaco ele não tem o que compor e
+   continuaria custando uma camada de GPU por quadro. */
+.carreira-cartao .glass-card {
+  background: #e6f2fd;
+  border: 1px solid rgb(255 255 255 / 90%);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  /* A sombra fica — é ela que separa o cartão claro do vídeo escuro atrás —, mas
+     as duas internas saem: `inset` branco a 8% e preto a 25% eram relevo para
+     vidro escuro e sobre azul claro leem como sujeira nas bordas. */
+  box-shadow:
+    0 24px 50px -22px rgb(3 17 38 / 55%),
+    0 2px 10px -4px rgb(3 17 38 / 30%);
+}
+/* O anel de 1px do `::before` é um degradê ciano→violeta desenhado para vidro
+   escuro: sobre azul claro ele aparece como fio arroxeado no canto de cima. A borda
+   sólida acima faz o trabalho dele. */
+.carreira-cartao .glass-card::before {
+  opacity: 0;
 }
 
 @media (min-width: 64rem) {
@@ -18336,6 +19130,109 @@ html[data-motion='reduce'] .eventos-mosaico-tile:hover .eventos-mosaico-face {
        devolveu logo acima. */
     padding-inline: 2rem;
     padding-block: 6rem;
+  }
+}
+
+/* SIS-258 · composição editorial da abertura de Carreira. */
+.carreira-abertura {
+  position: relative;
+}
+
+.carreira-conteudo {
+  min-width: 0;
+}
+
+.carreira-beneficios {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.875rem;
+  margin-top: 1.75rem;
+}
+
+.carreira-beneficios li {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.625rem;
+  align-items: center;
+  min-width: 0;
+  color: #fff;
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+
+.carreira-beneficios svg {
+  width: 1.75rem;
+  height: 1.75rem;
+  color: #31dff2;
+  stroke-width: 1.5;
+}
+
+.carreira-slogan {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 2.5rem;
+  color: rgb(255 255 255 / 82%);
+  font-size: 0.75rem;
+  letter-spacing: 0.24em;
+}
+
+.carreira-slogan span {
+  width: 1.5rem;
+  height: 1px;
+  flex: none;
+  background: #31dff2;
+}
+
+@media (max-width: 63.9375rem) {
+  .hero-backdrop--carreira .pagehero-entrada {
+    min-height: 0;
+    padding-block: 4rem 0;
+  }
+
+  .carreira-abertura {
+    padding-bottom: 4rem;
+  }
+
+  .carreira-abertura .cv-secao {
+    margin-top: 3rem;
+  }
+}
+
+@media (max-width: 39.9375rem) {
+  .carreira-beneficios {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .carreira-beneficios li {
+    grid-template-columns: 1.75rem 1fr;
+    font-size: 0.9375rem;
+  }
+
+  .carreira-beneficios svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .carreira-abertura {
+    grid-template-columns: minmax(0, 1fr) minmax(31rem, 1.08fr);
+    gap: clamp(2rem, 3.5vw, 3.75rem);
+    align-items: center;
+  }
+
+  .carreira-abertura .pagehero-entrada {
+    overflow: visible;
+  }
+
+  .hero-backdrop--carreira .pagehero-entrada h1 {
+    font-size: clamp(3.15rem, 3.85vw, 3.5rem);
+  }
+
+  .carreira-abertura .cv-secao {
+    align-self: center;
   }
 }
 
@@ -19836,12 +20733,126 @@ html[data-motion='reduce'] .esg-cartao-flutua {
    O VIDRO CONTINUA VIDRO: as duas camadas radiais de brilho e o `backdrop-filter`
    do `.glass-card` seguem intactos, e o alfa não vai a 1 justamente para o
    `blur(22px)` continuar tendo o que compor. */
+/* SIS-252 · A SUPERFÍCIE INVERTE DE SENTIDO, e é honesto dizer que isto desfaz a
+   direção que o parágrafo acima defende. A SIS-237 desceu o azul porque, com a
+   tinta BRANCA, descer era o único jeito de o texto passar de 4,5:1 — e a mesma
+   medida dizia que clarear reprovaria o texto. A issue desta vez muda as DUAS
+   coisas de uma vez: superfície clara E tinta escura. Com a tinta invertida a
+   restrição que travava o clareamento deixa de existir, e o parágrafo acima
+   continua verdadeiro para o que ele mediu (branco sobre claro reprova). Fica
+   escrito, e não apagado, porque quem clarear a superfície SEM trocar a tinta
+   reproduz exatamente a reprovação da SIS-139.
+
+   Medido nos doze cartões, 1440 (`docs/medidas/esg-cartoes-sis252/`):
+
+                            antes (navy)              depois (claro)
+     superfície topo        rgb(9,77,129)             ver `depois.json`
+     superfície vs faixa    1,26–1,45:1               —
+     legenda repouso        6,10–6,21:1               —
+     legenda hover          4,89–5,25:1 (pior 4,89)   —
+     troca de cor no hover  ΔRGB 34,7–37,5 (topo)     —
+
+   O AZUL É O DA CASA, não um claro novo: `#f2f7fc` e `#e4edf7` são os dois degraus
+   de `--claro-base` (o `:root`, linha ~1695), o mesmo par que pinta toda seção
+   clara do site. Não entram como `var(--fundo-claro-secao)` porque aquele token é
+   um trio de radiais dimensionado para uma FAIXA de tela inteira: dentro de um
+   cartão de ~380px os dois brilhos a 8% resolvem contra a caixa do cartão e viram
+   mancha, não superfície. O que se reaproveita é a COR, e ela é a mesma.
+
+   O ALFA CONTINUA ABAIXO DE 1 pela razão da SIS-139: o `backdrop-filter:
+   blur(22px)` do `.glass-card` precisa de algo para compor, senão o vidro deixa de
+   ser vidro. 96%/90% é o teto que ainda deixa a faixa passar sem sujar o claro.
+
+   O RADIAL ROXO SAIU. Ele era invisível sobre navy — 10% de `#7c3aed` sobre
+   `rgb(9,70,121)` não move pixel algum —, mas sobre superfície clara 10% de roxo
+   APARECE, e roxo é a única cor que a marca proíbe
+   (`.claude/skills/sistran-marca/SKILL.md`). Fica comentado abaixo com o motivo, e
+   não removido, para ninguém o repor por simetria com o `.glass-card`.
+
+   A BORDA MUDA DE FAMÍLIA. `rgb(120 201 248 / 38%)` era azul-claro contra navy:
+   aresta legível. Contra um cartão claro é claro sobre claro, e o limite do cartão
+   passaria a ser desenhado só pela faixa escura de fora. O azul primário da casa a
+   28% é a mesma escolha que `.section-light .glass-card` já faz (lá a 14%; aqui
+   mais forte porque o cartão pousa sobre faixa AZUL, não sobre claro). */
 .esg-superficie {
   background:
-    radial-gradient(120% 80% at 0% 0%, rgba(14, 216, 246, 0.1), transparent 55%),
-    radial-gradient(120% 80% at 100% 100%, rgba(124, 58, 237, 0.1), transparent 55%),
-    linear-gradient(135deg, rgba(9, 70, 121, 0.96), rgba(11, 79, 133, 0.9));
-  border-color: rgb(120 201 248 / 38%);
+    radial-gradient(120% 80% at 0% 0%, rgb(14 216 246 / 12%), transparent 55%),
+    /* SIS-252 — radial roxo aposentado: `radial-gradient(120% 80% at 100% 100%,
+       rgba(124, 58, 237, 0.1), transparent 55%)`. Sobre o claro ele deixaria de ser
+       invisível e a marca não tem roxo. */ linear-gradient(135deg, rgb(242 247 252 / 96%), rgb(228 237 247 / 90%));
+  border-color: rgb(0 121 203 / 28%);
+}
+
+/* SIS-252 · AS DUAS TINTAS DO CARTÃO CLARO.
+   ---------------------------------------------------------------------------
+   ⚠️ A ISSUE PEDE `text-ink` / `text-ink-muted` E ESSES DOIS TOKENS NÃO SERVEM —
+   apuração, não preferência. Em `tailwind.config.ts` (linhas ~30-33) a família é
+   `ink: { DEFAULT: '#f8fafc', muted: '#e2effa', faint: '#bcd8ee' }`: tinta QUASE
+   BRANCA, feita para o site escuro. As versões navy que a issue tem em mente
+   existem, mas como sobrescrita de `.section-light` (linhas ~1062-1118) — e nenhuma
+   das duas seções desta issue é `.section-light`: ENVIRONMENT e GOVERNANCE são
+   `esg-faixa-azul section-py` (`src/app/esg/page.tsx:318` e `:710`). Aplicar
+   `text-ink-muted` como escrito na issue trocaria branco a 85% por `#e2effa` —
+   ainda mais claro, texto invisível no cartão claro. Curiosamente `#e2effa` é um
+   dos claros que a própria issue sugere para a SUPERFÍCIE: os dois papéis colidem
+   no mesmo valor.
+
+   Então as tintas entram por CLASSE PRÓPRIA, com os valores que a base já usa em
+   superfície clara — `#0a1f44` e `#3d5a80`, os mesmos da sobrescrita de
+   `.section-light`. Uma classe, não um utilitário arbitrário no JSX, por dois
+   motivos: as duas grades compartilham a tinta como compartilham a superfície (é o
+   critério "mesmo vocabulário visual nas duas grades"), e o dia em que a superfície
+   mudar de novo há UM lugar para acertar.
+
+   `--esg-tinta*` fica como custom property e não como cor direta para o hover poder
+   reescrever só a variável, se algum dia precisar. Hoje a tinta é a MESMA nos dois
+   estados, e isso é conclusão medida e não economia: o hover é o caso APERTADO,
+   não o folgado. A intuição de que o banho claro "sobe a luminância e sobra
+   contraste" foi medida e é falsa — o gelo ciano é mais ESCURO que o gelo azul do
+   repouso (fundo do texto: `rgb(212,225,240)` em repouso contra
+   `rgb(132,224,242)` no hover), então quem passa no hover passa nos dois.
+
+   ⚠️ `#3d5a80` FOI TENTADO E REPROVOU. Era a escolha óbvia — é a tinta que
+   `.section-light` usa no papel de "muted", exatamente o papel que `text-white/85`
+   fazia aqui. Medido nos doze (primeira passada `depois`): repouso 4,45–4,57:1
+   (quatro dos seis cartões de ENVIRONMENT abaixo de 4,5) e hover 3,42–3,89:1 —
+   reprovação larga, no estado que a issue cobra por nome. A causa está no
+   documento de método: o veredito é o PIOR pixel, e sob o `scale(1.02)` do hover
+   todo pixel de letra é cobertura parcial, então a tinta que chega ao olho é mais
+   clara que a declarada (`#3d5a80` = `rgb(61,90,128)` lida como `rgb(69,107,143)`).
+   `.section-light` pode usar `#3d5a80` porque lá o cartão não escala.
+   `#0f2b4a` é o degrau seguinte da mesma família navy, já usado na folha, e passa
+   com folga nos dois estados. Fica registrado para ninguém "corrigir" de volta
+   para o token de `.section-light` por coerência de nome. */
+.esg-superficie {
+  --esg-tinta: #0a1f44;
+  /* Era `#3d5a80` — ver a reprovação medida acima. */
+  --esg-tinta-suave: #0f2b4a;
+}
+.esg-tinta {
+  color: var(--esg-tinta);
+}
+.esg-tinta-suave {
+  color: var(--esg-tinta-suave);
+}
+
+/* SIS-252 · A MOLDURA DE GRADIENTE TAMBÉM TINHA ROXO, e pelo mesmo motivo ela
+   também tem de mudar: `.glass-card::before` pinta
+   `rgba(124,58,237,0.35)` na parada de 45% — mais de três vezes o alfa do radial
+   que acabou de sair, e numa faixa de 1px na borda, onde o olho olha. Sobre navy
+   ninguém via; sobre claro é um lampejo lilás no canto do cartão.
+   A substituição fica na MESMA gramática (ciano → azul primário → transparente),
+   então o cartão continua tendo moldura viva e a página não ganha um segundo
+   sistema de borda. Vence a regra de `@layer components` por estar fora de camada,
+   como o `background` acima — é a mesma cascata explicada no bloco de hover. */
+.esg-superficie::before {
+  background: linear-gradient(
+    135deg,
+    rgb(0 121 203 / 45%),
+    rgb(14 216 246 / 40%) 45%,
+    rgb(0 121 203 / 12%) 75%,
+    transparent 100%
+  );
 }
 
 /* O hover soma a cor por cima da MESMA superfície corrigida — se repetisse o 0,55
@@ -19897,20 +20908,53 @@ html[data-motion='reduce'] .esg-cartao-flutua {
    teclado já existe — o item 8 da SIS-139 pede exatamente que a cor não seja sinal
    só de ponteiro. Quem apagar isto por "regra morta" reabre aquele ponto.
    `:focus-within` é a que efetivamente vale, para foco em descendente. */
+/* SIS-252 · O BANHO DE HOVER DEIXA DE SER UM VÉU E PASSA A SER OUTRA COR. O banho
+   de 24%/18% da SIS-237 era um clareamento — ele existia para mover um navy alguns
+   pontos, e mesmo assim só chegou a ΔRGB 34,7–37,5 no topo do cartão (medido nos
+   doze, `antes.json`) e a 12,6–13,7 na base, onde o halo do
+   `.glass-card::after` não alcança. Sobre superfície clara, clarear mais não é
+   caminho nenhum: não há para onde subir. A troca é de MATIZ — o cartão vai do
+   azul-gelo quase branco do repouso para o CIANO da marca (`#0ed8f6` / `#a5f0ff`,
+   `.claude/skills/sistran-marca/SKILL.md`), que é o mesmo salto que a issue nomeia
+   ("banho saturado") sem sair da paleta.
+
+   POR QUE CIANO CLARO E NÃO `#0079cb` CHEIO, que a issue também oferece: o item 3
+   da própria issue exige AA ≥ 4,5:1 no hover, e a tinta que o item 3 manda usar é
+   ESCURA. Banho de azul primário saturado derrubaria a superfície para perto da
+   luminância da tinta e reprovaria o texto exatamente no estado apontado — seria
+   cumprir o item 2 quebrando o item 3. O gelo ciano vai na direção oposta da
+   tinta: a troca fica óbvia E o contraste sobe. Os dois números do `depois.json`
+   dizem se isso se sustenta; se o ΔRGB não passar dos 34,7 do `antes`, o hover
+   novo ficou MENOS visível que o antigo e não vale.
+
+   AS DUAS CAMADAS DE REPOUSO SEGUEM REPETIDAS AQUI, e vale integralmente o
+   parágrafo abaixo: `background` é atalho. São três camadas agora e não quatro, e
+   o motivo é o radial roxo que saiu do repouso — repetir aqui um radial que já não
+   existe lá é a forma mais provável de ele voltar.
+
+   A BORDA TROCA DE FAMÍLIA OUTRA VEZ, e é o espelho da conta da SIS-237: lá o
+   ciano a 78% foi escolhido porque `rgba(0,153,230,0.45)` era "azul sobre azul,
+   invisível". Agora o cartão em hover É ciano — então ciano na borda é que
+   desaparece, e quem desenha o limite é o azul primário a 72%.
+
+   A SOMBRA CAI DE 72% PARA 55% de `rgb(3 28 56)` porque ela deixou de ter dois
+   trabalhos. Sobre navy ela era sombra E contorno (a única coisa separando cartão
+   escuro de faixa escura); com o cartão claro sobre faixa azul o contorno já vem de
+   graça, e 72% de tinta quase preta debaixo de um cartão claro lê como borrão.
+   O `inset` branco a 18% também sai: brilho branco sobre superfície quase branca é
+   invisível. No lugar dele o anel interno vira azul primário, que é o que se vê. */
 .esg-superficie:hover,
 .esg-superficie:focus-visible,
 .esg-superficie:focus-within {
   background:
-    linear-gradient(135deg, rgb(14 216 246 / 24%), rgb(0 121 203 / 18%) 60%, rgb(0 121 203 / 8%)),
-    radial-gradient(120% 80% at 0% 0%, rgba(14, 216, 246, 0.1), transparent 55%),
-    radial-gradient(120% 80% at 100% 100%, rgba(124, 58, 237, 0.1), transparent 55%),
-    linear-gradient(135deg, rgba(9, 70, 121, 0.96), rgba(11, 79, 133, 0.9));
+    linear-gradient(135deg, rgb(165 240 255 / 90%), rgb(14 216 246 / 42%) 55%, rgb(14 216 246 / 24%)),
+    radial-gradient(120% 80% at 0% 0%, rgb(14 216 246 / 12%), transparent 55%),
+    linear-gradient(135deg, rgb(242 247 252 / 96%), rgb(228 237 247 / 90%));
   transform: translateY(-12px) scale(1.02);
-  border-color: rgb(14 216 246 / 78%);
+  border-color: rgb(0 121 203 / 72%);
   box-shadow:
-    0 40px 78px -24px rgb(3 28 56 / 72%),
-    0 0 0 1px rgb(14 216 246 / 30%) inset,
-    inset 0 1px 0 rgb(255 255 255 / 18%);
+    0 40px 78px -24px rgb(3 28 56 / 55%),
+    0 0 0 1px rgb(0 121 203 / 34%) inset;
 }
 
 /* MOVIMENTO REDUZIDO, OS DOIS CANAIS — e este bloco fica DEPOIS da regra de hover
@@ -19923,8 +20967,17 @@ html[data-motion='reduce'] .esg-cartao-flutua {
    que pula 12px e cresce 2% sob o ponteiro é deslocamento grande o bastante para
    incomodar quem pediu menos movimento. Ficam -3px sem escala — o suficiente para
    o cartão não parecer travado — e ficam INTEIRAS as três reações que não são
-   movimento: cor, borda ciano e sombra. Ou seja, ninguém perde a informação de
-   "este é o cartão sob o ponteiro" por ter pedido menos animação. */
+   movimento: cor, borda e sombra. Ou seja, ninguém perde a informação de
+   "este é o cartão sob o ponteiro" por ter pedido menos animação.
+
+   SIS-252 — ESTE BLOCO NÃO PRECISOU MUDAR, e vale registrar por quê, porque o
+   critério de aceite cobra "cor do hover permanece" e a leitura apressada é que
+   isso exigiria linha nova aqui. Ele sobrescreve APENAS `transform`; a cor, a borda
+   e a sombra continuam vindo da regra de hover acima, que os dois canais de reduce
+   não tocam. Trocar o banho de véu por banho de matiz (ciano) não muda essa
+   divisão — e é justamente por a cor não morar aqui que ela sobrevive ao reduce.
+   O que MUDOU foi a razão de o -3px bastar: com o cartão claro sobre faixa azul, a
+   troca de matiz é a reação dominante e o salto virou o acessório. */
 @media (prefers-reduced-motion: reduce) {
   .esg-superficie:hover,
   .esg-superficie:focus-visible,
@@ -20232,10 +21285,19 @@ html[data-motion='reduce'] .cta-reativo:has(:focus-visible) {
    A `transition` mora no seletor SEM estado pela mesma razão do Efeito 1: na
    regra do estado escondido ela deixaria de casar no instante da virada, e o
    bloco saltaria para o lugar sem animar. */
+/* SIS-263 (2ª volta) — `--reveal-dur` e `--reveal-ease` são GANCHOS DE ESCOPO, e
+   os fallbacks são os valores que já vigoravam: sem ninguém declará-las, esta
+   regra é byte a byte equivalente à anterior, então nenhuma rota muda de
+   cadência por causa desta linha. Quem quiser um reveal mais fluido declara as
+   duas no escopo (é o que `/contato` faz, pelo `style` do `RevealScope`) em vez de
+   mexer em `--motion-reveal-base` no `:root`, que arrastaria a home e as outras
+   rotas — que a issue põe fora de escopo. */
 [data-reveal] {
   transition:
-    opacity var(--motion-reveal-base) var(--motion-ease-out),
-    transform var(--motion-reveal-base) var(--motion-ease-out);
+    opacity var(--reveal-dur, var(--motion-reveal-base))
+      var(--reveal-ease, var(--motion-ease-out)),
+    transform var(--reveal-dur, var(--motion-reveal-base))
+      var(--reveal-ease, var(--motion-ease-out));
   /* Escalonamento entre irmãos: o índice é inline (`--reveal-i`), a cadência é
      o token. Quem não declara índice entra sem atraso. */
   transition-delay: calc(var(--motion-stagger-reveal) * var(--reveal-i, 0));
@@ -20439,4 +21501,1517 @@ html[data-motion='reduce'] .cta-reativo:has(:focus-visible) {
       0 1.5rem 3.25rem -2rem rgb(2 25 59 / 68%),
       0 0 2.5rem -1.25rem rgb(0 183 255 / 52%);
   }
+}
+
+/* SIS-248 · /sistran-university — capa full-bleed com a escrita à esquerda
+   ---------------------------------------------------------------------------
+   A arte (`university-hero.webp`) empilha TUDO à direita: capelo, engrenagem,
+   livro aberto, escada, certificado e o pódio, mais os painéis de vidro em volta.
+   A metade esquerda do quadro é campo escuro com partículas — é ali que o `h1` e
+   a descrição vivem, e é por isso que este bloco existe em vez de a rota usar o
+   véu base: o véu base é VERTICAL (SIS-94, calibrado para um take escuro de ponta
+   a ponta), e aqui o lado direito é o mais aceso da página inteira.
+
+   MESMO DESENHO DE `.hero-backdrop--labs`, e de propósito: as duas capas têm o
+   mesmo problema (assunto à direita, escrita à esquerda) e resolver de outro
+   jeito só criaria um segundo dialeto para o mesmo caso. Os números não são
+   copiados, porém — esta arte é mais clara no meio do quadro (o pódio reflete a
+   luz da engrenagem) e o degradê horizontal precisa alcançar mais para a direita
+   antes de abrir. */
+.hero-backdrop--university .hero-backdrop-video {
+  /* Abaixo de 1024px a caixa é mais alta que larga e o `cover` recorta na
+     HORIZONTAL: em 390px sobrevivem 42% da largura do arquivo, e o valor aqui
+     decide QUAIS 42%. Foi calibrado com o texto na tela, em cinco passos, pela
+     sonda da issue (`scripts/medir-abertura-university-sis248.mjs`, que também
+     mede o contraste): 22% mostrava campo escuro e quase nada da arte — capa que
+     não se vê não é capa; 38% já trazia a engrenagem para debaixo da terceira
+     linha da manchete. Em 34% entram os painéis de vidro e o gráfico, que é o
+     pedaço da composição que sobrevive sozinho, e a coluna do texto continua
+     caindo no campo escuro.
+     O Y sai de 50% para 46% pelo mesmo motivo do desktop: o topo da arte tem mais
+     desenho que o pé, que é reflexo do pódio. */
+  object-position: 34% 46%;
+}
+
+.hero-backdrop--university .hero-backdrop-veu {
+  background:
+    linear-gradient(
+      100deg,
+      rgb(4 27 61 / 80%) 0%,
+      rgb(4 27 61 / 72%) 44%,
+      rgb(4 27 61 / 34%) 70%,
+      rgb(4 27 61 / 8%) 90%
+    ),
+    linear-gradient(180deg, rgb(3 17 38 / 52%) 0%, rgb(4 27 61 / 18%) 46%, rgb(4 27 61 / 86%) 100%),
+    rgb(4 27 61 / 10%);
+}
+
+/* A MESMA SOMBRA LEVE DA MANCHETE DO LABS (duas camadas: uma curta que dá aresta
+   à letra onde ela cai sobre uma partícula acesa, uma longa que assenta o bloco
+   sobre a capa). Não está comprando contraste — o véu horizontal acima já entrega
+   a folga medida na issue —, está dando relevo. Os alfas são os de lá, e subi-los
+   devolveria o halo sujo registrado na SIS-224. */
+.hero-backdrop--university .pagehero-entrada h1 {
+  text-shadow:
+    0 1px 2px rgb(2 12 28 / 45%),
+    0 6px 26px rgb(2 12 28 / 32%);
+}
+
+@media (min-width: 64rem) {
+  .hero-backdrop--university .hero-backdrop-video {
+    /* Da largura de 1024px para cima a caixa é mais LARGA que a proporção do
+       arquivo, então o recorte passa a ser vertical e o eixo horizontal mostra a
+       arte inteira — o que decide é o Y. Em 46% o certificado (o nó mais alto)
+       sobrevive no topo e o pé do pódio é o que cede. */
+    object-position: 50% 46%;
+  }
+
+  /* A manchete fica presa à área escura. `46vw` acompanha o ponto em que o
+     degradê horizontal ainda está fechado; o segundo termo impede que em telas
+     muito largas a linha cresça até o capelo. Sem isto, a terceira linha de
+     "capacitação de recursos" alcançava a engrenagem em 1440. */
+  .hero-backdrop--university .pagehero-entrada h1 {
+    max-width: min(calc(46vw - 2rem), calc(600px - 4vw));
+  }
+}
+
+@media (max-width: 63.9375rem) {
+  /* Sem a coluna vazia à direita, o degradê horizontal não tem para onde abrir: o
+     que segura o contraste em telas estreitas é o vertical, um degrau mais fechado
+     — é a mesma troca feita no Labs, e quase nos mesmos números (72/58/86 + 22%
+     contra 72/58/88 + 24% de lá).
+     O DEGRAU DO MEIO É O QUE FOI MEDIDO, e não escolhido: em 52% + 18% chapado a
+     arte aparecia melhor, mas o pior pixel de corpo do parágrafo caía em 4,60:1
+     contra piso de 4,5 — dez centésimos de folga não é folga. Em 58% + 22% a
+     mesma medição dá 4,99:1 no corpo do glifo e 4,62:1 já contando a franja de
+     antialiasing, os dois acima do piso, e a arte continua legível como arte. */
+  .hero-backdrop--university .hero-backdrop-veu {
+    background:
+      linear-gradient(180deg, rgb(3 17 38 / 72%) 0%, rgb(4 27 61 / 58%) 48%, rgb(4 27 61 / 86%) 100%),
+      rgb(4 27 61 / 22%);
+  }
+}
+
+/* A EMENDA COM `#university-programa`.
+   ---------------------------------------------------------------------------
+   O envelope `.hero-backdrop` tira a abertura de `main > section`, e a alternância
+   de superfícies (`:where(main > section:nth-of-type(even))`, no bloco de emendas
+   entre seções) passa a contar a partir da seção seguinte — a de "Programa" fica
+   sem painel e recebe o `#1273bc` do `body`. É o MESMO deslocamento que as outras
+   três rotas com capa já têm desde a SIS-113/SIS-227, e a costura é resolvida do
+   mesmo jeito de lá: o pé do véu é navy escuro, e a seção recebe esse navy no
+   topo e o dissolve no azul da rota dentro de si mesma, em 7rem.
+   É gradiente, não bloco opaco: em `linear-gradient` o segundo ponto é
+   transparente, então nada é pintado sobre o conteúdo da seção — e a seção não
+   ganha superfície própria, só a passagem. */
+.hero-backdrop--university + section {
+  background: linear-gradient(180deg, #041b3d 0%, rgb(4 27 61 / 0%) 7rem);
+}
+
+/* SIS-249 · /sistran-university — a seção do Programa ganha fundo composto
+   ---------------------------------------------------------------------------
+   A arte é o banner dos quatro painéis (Qualidade/QA, Desenvolvimento, Dados &
+   IA, Cloud & Automação) em volta de três pessoas num escritório claro. Ela é
+   CLARA de ponta a ponta — os painéis são vidro branco e o fundo é janela com
+   luz de dia —, e é esse o problema que este bloco resolve: o `h2` e o parágrafo
+   são brancos, e branco sobre aquele branco não existe.
+
+   Três decisões, nesta ordem:
+
+   1. A ARTE É FUNDO, NÃO FIGURA. Full-bleed (`inset: 0` na seção inteira),
+      recortada por `cover`, com o texto por cima. Empilhamento igual ao do
+      `.hero-backdrop`: mídia (1), véu (2), pluma (3), conteúdo (4), com
+      `isolation: isolate` fechando o contexto na seção para nada disso disputar
+      camada com o cabeçalho fixo.
+
+   2. ELA NASCE E MORRE DENTRO DA SEÇÃO. As duas pontas da faixa dissolvem
+      (`mask-image` vertical): em cima a arte emerge do navy que a capa deixa —
+      o mesmo `#041b3d → transparente em 7rem` que a SIS-248 escreveu em
+      `.hero-backdrop--university + section` está repetido como PRIMEIRA camada
+      do véu, porque o `background` da seção fica ATRÁS da mídia e não seria
+      visto; embaixo ela some e devolve o `#1273bc` do `body`, que é exatamente
+      a cor que a emenda com `#university-unidep` tinha antes desta issue. Assim
+      a costura de cima e a de baixo continuam sendo as que já estavam medidas —
+      a seção ganhou fundo, não ganhou borda.
+
+   3. O CONTRASTE É COMPRADO DUAS VEZES, e de propósito. O véu é a camada larga,
+      calibrada por faixa da tela; a pluma é uma elipse escura só atrás da
+      coluna de texto. Separar as duas é o que permite o véu abrir onde a arte
+      precisa aparecer (à direita, nas pessoas) sem que a linha mais comprida do
+      parágrafo pague por isso. Nada depende de `:hover`, de foco ou de JS: as
+      duas camadas são estáticas e `pointer-events: none`.
+
+   O QUE ESTES NÚMEROS COMPRARAM, medido em cinco larguras por
+   `scripts/medir-programa-university-sis249.mjs` (JSON em
+   `docs/medidas/programa-university-sis249/`, capturas em
+   `docs/capturas/sis249-programa/`), no corpo do glifo:
+
+     390   h2 10,91:1   parágrafo 8,21:1
+     768   h2 10,76:1   parágrafo 7,60:1
+     1024  h2  5,79:1   parágrafo 9,25:1
+     1440  h2 14,14:1   parágrafo 10,24:1
+     1920  h2 14,23:1   parágrafo 10,07:1
+
+   ANTES DESTA ISSUE o parágrafo REPROVAVA: branco a 85% sobre o `#1273bc` do
+   `body` dá 3,51:1 a 390 e 3,54:1 a 1440, contra piso de 4,5. A mesma sonda mede
+   o antes (`MODOS=antes`, que neutraliza as três camadas por CSS em vez de mexer
+   no git). Ou seja, o fundo não foi um risco de contraste que precisou ser
+   coberto — ele é que trouxe o contraste que faltava. */
+.university-programa {
+  position: relative;
+  isolation: isolate;
+  /* O PASSO das dissoluções. Não pode passar do respiro vertical da seção
+     (`.section-py`: 5rem no telefone, 8rem a partir de 1024px), senão a primeira
+     ou a última linha do texto cai dentro da faixa em que o véu está sumindo —
+     que é justamente onde o contraste despenca. */
+  --programa-dissolve: 2.5rem;
+}
+
+/* A MÍDIA SAI UM PASSO ANTES DO VÉU, e essa defasagem é o conserto de um defeito
+   medido: com as duas máscaras terminando juntas, arte e véu perdiam alfa no
+   mesmo pixel e o pé da faixa virava dupla exposição — o texto branco dos painéis
+   ("CLOUD & AUTOMAÇÃO", "aws", "redis") reacendia justamente onde a composição
+   devia estar acabando, e lia como falha de montagem, não como fundo.
+   Agora são dois trechos em sequência: primeiro a arte se apaga sob o véu cheio
+   (a faixa escurece até navy chapado), depois o véu se apaga sobre o azul da rota
+   (o navy abre até o `#1273bc` do `body`). O pé fica uma rampa escura, sem
+   fantasma aceso e sem listra. */
+.university-programa-midia {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  mask-image: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0%) 0,
+    #000 var(--programa-dissolve),
+    #000 calc(100% - var(--programa-dissolve) * 2),
+    rgb(0 0 0 / 0%) calc(100% - var(--programa-dissolve))
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0%) 0,
+    #000 var(--programa-dissolve),
+    #000 calc(100% - var(--programa-dissolve) * 2),
+    rgb(0 0 0 / 0%) calc(100% - var(--programa-dissolve))
+  );
+}
+
+.university-programa-arte {
+  /* O `next/image` com `fill` escreve `position`/`inset`/tamanho inline, mas não
+     escreve `object-fit`: sem isto a arte estica em vez de recortar. */
+  object-fit: cover;
+  /* Da largura de 1024px para cima a caixa é MUITO mais larga que a proporção do
+     arquivo (a 1440 a faixa mede ~2,8:1 contra 1,78:1 da arte), então o recorte é
+     vertical e o que decide é o Y. Em 46% sobrevivem os quatro painéis inteiros e
+     os rostos; o que cede é a tampa da mesa embaixo e a faixa de teto em cima. */
+  object-position: 50% 46%;
+}
+
+.university-programa::before {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background:
+    linear-gradient(180deg, #041b3d 0%, rgb(4 27 61 / 0%) 7rem),
+    /* O degradê horizontal fecha até 74% da largura e só então abre. O terceiro
+       ponto foi medido, não escolhido: com ele em 70% o pior pixel do `h2` caía
+       em 5,10:1 a 1024px — a largura em que este véu entra e em que a manchete
+       ainda ocupa uma linha inteira, alcançando a parte já aberta do degradê.
+       Com o ponto em 74% a mesma medição sobe para 5,79:1, e as pessoas, que
+       vivem depois de 78% da largura, continuam à vista. 1024 segue sendo o pior
+       caso da seção — nas outras quatro larguras o `h2` fica acima de 10:1 —, e
+       fechar mais o degradê para melhorá-lo custaria a arte inteira do lado
+       direito, que é o que a seção ganhou nesta issue. O piso do `h2` é 3:1
+       (65,6px), e mesmo o piso de texto normal, 4,5:1, está cumprido. */
+    linear-gradient(
+      100deg,
+      rgb(4 27 61 / 88%) 0%,
+      rgb(4 27 61 / 84%) 48%,
+      rgb(4 27 61 / 62%) 74%,
+      rgb(4 27 61 / 32%) 94%
+    ),
+    linear-gradient(180deg, rgb(3 17 38 / 34%) 0%, rgb(4 27 61 / 12%) 46%, rgb(4 27 61 / 36%) 100%),
+    rgb(4 27 61 / 12%);
+  content: "";
+  pointer-events: none;
+  /* Só o pé dissolve: o topo é a emenda com a capa e precisa ficar chapado. */
+  mask-image: linear-gradient(
+    180deg,
+    #000 0,
+    #000 calc(100% - var(--programa-dissolve)),
+    rgb(0 0 0 / 0%) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000 0,
+    #000 calc(100% - var(--programa-dissolve)),
+    rgb(0 0 0 / 0%) 100%
+  );
+}
+
+/* A PLUMA. Elipse sem aresta atrás da mancha de texto — a 1440 o `.container-lp`
+   satura em 1180px e o parágrafo (`max-w-3xl`) vai de x≈130 a x≈898, ou seja o
+   texto vive entre 9% e 62% da janela; o centro em 26% põe o miolo da elipse no
+   meio dessa mancha e a borda fecha antes das pessoas. */
+.university-programa::after {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  background: radial-gradient(120% 96% at 26% 50%, rgb(2 12 28 / 46%), rgb(2 12 28 / 0%) 70%);
+  content: "";
+  pointer-events: none;
+  mask-image: linear-gradient(
+    180deg,
+    #000 0,
+    #000 calc(100% - var(--programa-dissolve)),
+    rgb(0 0 0 / 0%) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000 0,
+    #000 calc(100% - var(--programa-dissolve)),
+    rgb(0 0 0 / 0%) 100%
+  );
+}
+
+.university-programa-conteudo {
+  position: relative;
+  z-index: 4;
+}
+
+/* A MESMA SOMBRA LEVE DAS MANCHETES DAS CAPAS (SIS-227/SIS-248): uma camada
+   curta, que dá aresta à letra onde ela cai sobre um reflexo aceso da arte, e
+   uma longa, que assenta o bloco sobre o fundo. Não é ela que compra o
+   contraste — véu e pluma já entregam a folga medida —, é relevo. */
+.university-programa h2 {
+  text-shadow:
+    0 1px 2px rgb(2 12 28 / 45%),
+    0 6px 26px rgb(2 12 28 / 32%);
+}
+
+@media (min-width: 64rem) {
+  .university-programa {
+    /* Com 8rem de respiro em cima e embaixo (`lg:py-32`), o passo pode ser maior
+       sem alcançar o texto — e quanto mais longo, menos se percebe onde a faixa
+       começa. Dois passos no pé (4 + 4) contra 8rem de recuo: a última linha do
+       parágrafo continua acima da rampa. */
+    --programa-dissolve: 4rem;
+  }
+}
+
+@media (max-width: 63.9375rem) {
+  /* Abaixo de 1024px a caixa é mais ALTA que larga e o `cover` recorta na
+     HORIZONTAL: em 390px sobrevivem 55% da largura do arquivo (medido:
+     x 0,448–1,0), e este valor decide QUAIS 55%.
+     O QUE DECIDIU FOI O LOGO, não o gosto. A marca "SISTRAN UNIVERSITY" está
+     desenhada DENTRO da arte, e termina em x≈0,44: em 50% e em 62% a janela
+     pegava o rabo dela e o telefone mostrava "STRAN UNIVERSITY" cortado, logo
+     abaixo do logo inteiro que o cabeçalho já exibe — marca truncada lê como
+     defeito, e repetida lê como duplicação. Em 100% o logo fica inteiramente
+     fora do recorte e entram o painel de Desenvolvimento e os três rostos, que
+     é o pedaço da composição que se explica sozinho em tela estreita.
+     O Y fica em 50%: nesta proporção não sobra altura para recortar. */
+  .university-programa-arte {
+    object-position: 100% 50%;
+  }
+
+  /* Sem coluna vazia à direita (o texto ocupa a largura inteira), o degradê
+     horizontal não tem para onde abrir: quem segura o contraste aqui é o
+     vertical, chapado e um degrau mais fechado. É a mesma troca que a capa faz
+     em `.hero-backdrop--university` nesta mesma largura.
+     A EMENDA CAI DE 7rem PARA 5rem — a faixa inteira tem 398px a 390, e um véu
+     navy de 112px comeria 28% dela antes de a arte começar. 5rem é o recuo que a
+     seção já tem (`py-20`), então o navy acaba exatamente onde a primeira linha
+     do `h2` começa. Não há divergência com a regra da SIS-248: naquela altura a
+     mídia é opaca, e o `background` da seção, que fica atrás dela, não aparece. */
+  .university-programa::before {
+    background:
+      linear-gradient(180deg, #041b3d 0%, rgb(4 27 61 / 0%) 5rem),
+      linear-gradient(180deg, rgb(3 17 38 / 78%) 0%, rgb(4 27 61 / 72%) 54%, rgb(4 27 61 / 78%) 100%),
+      rgb(4 27 61 / 14%);
+  }
+
+  /* A elipse volta para o centro, pelo mesmo motivo: a mancha de texto está
+     centrada na janela, não encostada à esquerda. */
+  .university-programa::after {
+    background: radial-gradient(130% 84% at 50% 46%, rgb(2 12 28 / 34%), rgb(2 12 28 / 0%) 76%);
+  }
+}
+
+/* ===========================================================
+   SIS-253 · «Fale com a Gente!» de /esg no desenho da referência
+   ===========================================================
+   Tudo aqui é alcançado SÓ pelo `ContactCTAReferencia`, que só é montado com a
+   prop `layoutReferencia` — hoje uma rota (`/esg`). Nenhum seletor deste bloco
+   encosta no cartão navy que as outras sete telas montam: os nomes começam todos
+   em `.cta-ref-`, e o bloco da SIS-142 (`.cta-halo-claro`, `.cta-reativo*`, mais
+   acima neste arquivo) fica onde está, intacto, porque as props que o acendem
+   continuam existindo no componente.
+
+   A referência é `public/imagensexemplo/falecomagente.png`. As proporções abaixo
+   saíram dela: cartão ocupando ~68% da largura com o blob à direita, fio
+   horizontal a ~26% da altura do cartão dobrando em diagonal até o botão, botão a
+   ~59% da altura. O que NÃO foi copiado ao pé da letra é a razão 3:1 da imagem
+   inteira: ali o cartão tem 1355×420 e aqui o texto é real (título de 36px e duas
+   linhas de parágrafo), então o cartão é mais alto que largo em proporção. O
+   critério da issue é composição, não a razão do PNG. */
+.cta-ref {
+  /* Fundo azul claro com ondas, no lugar do navy da rota. As "ondas" são
+     radiais de branco em % — o desenho da referência é luz difusa, não uma curva
+     desenhada, e uma onda em SVG obrigaria a um segundo elemento a sangrar de
+     borda a borda. */
+  background:
+    radial-gradient(120% 80% at 12% 0%, rgb(255 255 255 / 85%), transparent 58%),
+    radial-gradient(90% 70% at 88% 100%, rgb(120 201 248 / 32%), transparent 62%),
+    linear-gradient(170deg, #f3f9fe 0%, #e4f1fb 46%, #cfe7f7 100%);
+  /* A MESMA costura da SIS-93, pelo mesmo motivo: esta é a última seção antes do
+     rodapé e a de cima (GOVERNANCE) é navy. Um bloco claro opaco encostando no
+     escuro é um corte reto de um pixel; a sombra espalha a cor de base ~54px para
+     fora e o corte deixa de ler como listra. Máscara na própria seção recortaria
+     o conteúdo, e os dois pseudo-elementos aqui já estão ocupados. */
+  box-shadow: 0 0 54px 18px rgb(227 241 251 / 45%);
+  isolation: isolate;
+}
+.cta-ref::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(140% 60% at 50% 118%, rgb(255 255 255 / 82%), transparent 60%),
+    radial-gradient(120% 46% at 8% 92%, rgb(255 255 255 / 62%), transparent 62%),
+    radial-gradient(70% 40% at 96% 12%, rgb(14 216 246 / 12%), transparent 70%);
+}
+
+/* SIS-253 (2ª volta) — AS ONDAS. Ver a nota no componente: os radiais acima ficam
+   (são a LUZ do fundo, e a referência tem as duas coisas), e as curvas entram por
+   cima deles.
+   `z-index: 0` e não `-1`: em `-1` elas cairiam ATRÁS do `::before`, que tem
+   branco a 82% no rodapé e apagaria justamente a faixa mais baixa. Zero as põe
+   acima da luz e abaixo do cartão (`z-index: 2`), que é a ordem do PNG — lá as
+   faixas aparecem ATRAVÉS do vidro, desfocadas pelo `backdrop-filter` dele. */
+.cta-ref-ondas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.cta-ref-ondas svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* Sem isto o `viewBox` de 1440×576 seria encaixado por dentro e as faixas
+     parariam antes das bordas laterais em telas de outra proporção. */
+  fill: none;
+}
+.cta-ref-ondas path {
+  fill: none;
+  stroke: rgb(255 255 255 / 62%);
+  /* A espessura ESCALA com o SVG de propósito (nada de `non-scaling-stroke`, ao
+     contrário do fio ciano): a fita é uma forma do fundo, e num quadro mais largo
+     ela tem de ficar proporcionalmente igual, não virar fio. */
+  stroke-width: 54;
+}
+/* As faixas não têm todas o mesmo peso na referência: as duas de baixo são as mais
+   presentes, a de cima é quase só um véu, e as duas verticais são sombra fria e não
+   luz — por isso azul e não branco. */
+.cta-ref-ondas path:nth-child(2) {
+  stroke: rgb(255 255 255 / 74%);
+  stroke-width: 86;
+}
+.cta-ref-ondas path:nth-child(3) {
+  stroke: rgb(255 255 255 / 34%);
+  stroke-width: 38;
+}
+.cta-ref-ondas path:nth-child(4) {
+  stroke: rgb(164 208 240 / 30%);
+  stroke-width: 120;
+}
+.cta-ref-ondas path:nth-child(5) {
+  stroke: rgb(164 208 240 / 22%);
+  stroke-width: 70;
+}
+
+/* Os dois números que o resto do bloco consulta ficam AQUI, num lugar só: a
+   largura do cartão e o respiro interno dele. O botão é irmão do cartão (ver a
+   nota no componente) e precisa da largura para se alinhar à borda direita do
+   cartão; o invólucro do fio precisa do respiro. Sem as variáveis, mudar a
+   largura do cartão desalinharia o botão e o pouso do ponto de uma vez. */
+.cta-ref-palco {
+  --cta-ref-cartao: 100%;
+  --cta-ref-pad: 1.75rem;
+  position: relative;
+}
+
+.cta-ref-cartao {
+  position: relative;
+  z-index: 2;
+  width: var(--cta-ref-cartao);
+  padding: var(--cta-ref-pad);
+  border-radius: 1.75rem;
+  /* 3ª volta — A BORDA FOI A 2px (era 1px), valor do override. O painel passou a ter
+     2/3 da janela de largura: 1px de aresta num bloco de ~965px lê como fim da
+     imagem, não como espessura de vidro. */
+  border: 2px solid rgb(255 255 255 / 90%);
+  /* ⚠️ OS DOIS PARÁGRAFOS ABAIXO DESCREVEM UM PAINEL QUE JÁ NÃO EXISTE: a 5ª volta
+     tornou o fundo OPACO (ver a nota junto do `background`, adiante). Ficam como
+     registro do que foi tentado e por quê — quem os ler como estado atual vai
+     reabrir o alfa e desfazer o pedido mais recente. */
+  /* Vidro: translúcido e desfocando o que passa atrás (as ondas da seção).
+     SIS-253 (2ª volta) — MAIS TRANSLÚCIDO (era 82%→58%). Com o fundo sendo só luz
+     difusa, um vidro a 82% de branco sobre um gradiente quase branco não tinha o
+     que revelar e o cartão lia como retângulo BRANCO CHAPADO — foi a primeira
+     diferença do quadro reprovado. Agora que há faixas atrás, baixar a opacidade é
+     o que as faz aparecer através dele, como no PNG. O piso é o contraste do
+     texto: o `#3c5a7a` do parágrafo é medido sobre este vidro, e é ele que decide
+     quão longe isto pode descer. */
+  /* 3ª volta — COR ÚNICA no lugar do degradê 60%→40%, valor do override
+     (`rgba(247, 252, 255, 0.64)`). O degradê existia para dar volume a um painel de
+     826px; num painel de ~965px a rampa diagonal ficava tão longa que a diferença
+     entre as duas pontas deixou de ser volume e passou a ser uma metade mais suja
+     que a outra. O véu único também é o que deixa as faixas do fundo lerem parelhas
+     de ponta a ponta do vidro. */
+  /* 5ª VOLTA — O PAINEL DEIXOU DE SER VIDRO. O pedido é explícito («nao fique
+     trasparente e deixe o fundo com o mesmo azul que fica no card quando da o
+     hover»), e as duas metades dele são a mesma mudança: alfa 1 no fundo e o
+     banho ciano de `.esg-superficie:hover` no lugar do véu branco.
+
+     ⚠️ ISTO REVOGA A DECISÃO DA 2ª VOLTA, que está registrada acima e cuja
+     PREMISSA ainda é verdadeira: baixar o vidro para 64% foi o que fez as faixas
+     curvas de `.cta-ref-ondas` aparecerem através do painel, como no PNG. Com o
+     fundo opaco elas somem sob o painel e passam a ser vistas apenas em volta
+     dele. É uma perda declarada, não um esquecimento — quem quiser as faixas de
+     volta atrás do painel tem de reabrir o alfa, e aí perde o azul pedido aqui.
+     Os dois pedidos são incompatíveis nesta camada; o mais recente ganha.
+
+     AS TRÊS CAMADAS SÃO AS DE `.esg-superficie:hover` («o mesmo azul»), com UMA
+     diferença e ela é o ponto inteiro: a camada de baixo perdeu o alfa (era
+     `rgb(242 247 252 / 96%)` e `rgb(228 237 247 / 90%)`) e virou par de hexes
+     chapados. `background` é atalho, então as três precisam vir juntas — declarar
+     só o gradiente ciano apagaria a base e o painel voltaria a ser transparente,
+     que é exatamente o defeito relatado. Quem mexer no hover dos cartões de `/esg`
+     e quiser que os dois continuem iguais tem de copiar o valor para cá; são
+     lugares diferentes de propósito, porque aqui é REPOUSO e lá é hover.
+
+     `backdrop-filter` SAIU junto, e não por economia: sobre fundo opaco ele não
+     tem o que desfocar, e um `blur(18px)` que não produz pixel algum é uma camada
+     de composição de GPU cobrando o tamanho do painel de graça. */
+  background:
+    linear-gradient(135deg, rgb(165 240 255 / 90%), rgb(14 216 246 / 42%) 55%, rgb(14 216 246 / 24%)),
+    radial-gradient(120% 80% at 0% 0%, rgb(14 216 246 / 12%), transparent 55%),
+    linear-gradient(135deg, #f2f7fc, #e4edf7);
+  /* O REALCE INTERNO da aresta alta, que no PNG é o que dá espessura ao vidro: uma
+     linha de luz por dentro, no topo e à esquerda, e uma sombra fria por dentro em
+     baixo. `inset` no mesmo `box-shadow` da sombra de fora — o cartão tem os dois
+     pseudo-elementos livres de propósito e nenhum é gasto nisto. */
+  box-shadow:
+    0 28px 70px -34px rgb(0 77 138 / 45%),
+    inset 1px 1px 0 rgb(255 255 255 / 90%),
+    inset -1px -1px 0 rgb(255 255 255 / 45%);
+}
+
+/* Texto ESCURO sobre o vidro, que é o item de contraste do aceite. A cor não pode
+   vir de token de tinta: os `ink` do projeto são claros e só leem navy dentro de
+   `.section-light`, e esta seção não é uma delas (ela traz o próprio fundo). E
+   `.section-light p` também não alcança aqui, então o parágrafo é declarado. */
+.cta-ref-titulo {
+  /* 3ª volta — `#06275f`, valor do override (era `#0a1f44`). É um navio um passo mais
+     azul e um passo mais claro; o contraste medido sobre o vidro continua muito acima
+     do piso e está na tabela do relatório. */
+  color: #06275f;
+}
+.cta-ref-texto {
+  max-width: 34rem;
+  color: #3c5a7a;
+}
+
+/* ── o fio ciano ───────────────────────────────────────────────────────────── */
+/* No mobile o fio é um grafismo em fluxo, acima do título, com a diagonal
+   apontando para baixo — na direção do botão, que ali vem depois do cartão.
+   No desktop ele é ancorado por `bottom`/`right` no centro do círculo ciano do
+   botão: é essa âncora que faz o ponto POUSAR no botão em qualquer largura, e a
+   conta está no comentário de `FIO_ALTURA` no componente. */
+.cta-ref-fio {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.cta-ref-fio-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* O caminho termina EM CIMA do canto do `viewBox` e o ponto tem raio: sem isto
+     metade dele seria recortada justamente no pouso. */
+  overflow: visible;
+}
+/* 5ª VOLTA — O NÚCLEO DO FIO DEIXOU DE SER CIANO, e é consequência direta do painel
+   ter virado ciano: traço, nó e ponto eram `#0ed8f6` sobre vidro quase branco, e
+   sobre o banho ciano do fundo novo eles são a MESMA cor do que está atrás. Medido
+   na captura a 1920: a linha continuava existindo, mas como uma marca d'água — e o
+   pedido desta volta é justamente que se veja uma bolinha correndo nela, o que se
+   desfaz sozinho se a linha desaparece.
+   O núcleo passa a ser o AZUL PRIMÁRIO e o HALO SEGUE CIANO: é exatamente a troca
+   que `.esg-superficie:hover` já fez na borda, e a nota de lá serve palavra por
+   palavra — «agora o cartão em hover É ciano, então ciano na borda é que
+   desaparece, e quem desenha o limite é o azul primário». Aqui vale para o fio, com
+   o mesmo `#0079cb`. O glow não muda de família (a regra de marca é ciano, nunca
+   branco frio); o que muda é só quem faz a linha. */
+.cta-ref-fio-traco {
+  fill: none;
+  stroke: rgb(0 121 203 / 90%);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* SIS-253 (2ª volta) — O FIO ACENDE. Na referência ele não é um traço de 1px de
+     cor plana: tem halo, e é o halo que o faz ler como sinal luminoso em vez de
+     borda. `drop-shadow` e não `filter: blur` num elemento duplicado: aqui ele
+     acompanha o próprio caminho, custa um passe e o elemento é estático. */
+  filter: drop-shadow(0 0 6px rgb(14 216 246 / 75%));
+  /* O SVG escala com a largura do cartão; o traço, não. Sem isto o fio afinaria
+     em telas estreitas e engrossaria a 1440. */
+  vector-effect: non-scaling-stroke;
+}
+/* O nó e o ponto acompanham o traço (ver a nota acima): núcleo azul primário, halo
+   ciano. O `fill: #fff` do nó FICA — é branco sobre ciano, o único dos três que já
+   tinha contraste próprio contra o painel novo. */
+.cta-ref-fio-no {
+  fill: #fff;
+  stroke: #0079cb;
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  /* O nó vazado do PNG também tem halo, e mais forte que o do traço — é o ponto de
+     partida do sinal. */
+  filter: drop-shadow(0 0 8px rgb(14 216 246 / 90%));
+}
+.cta-ref-fio-ponto {
+  fill: #0079cb;
+  filter: drop-shadow(0 0 5px rgb(14 216 246 / 90%));
+}
+
+/* ── o botão branco com o círculo ciano ────────────────────────────────────── */
+.cta-ref-botao {
+  position: relative;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  height: 3.5rem;
+  margin-top: 1.75rem;
+  padding: 0 0.35rem 0 1.5rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #0a1f44;
+  /* SIS-253 (2ª volta) — 15px e não 14px: no PNG o rótulo do botão tem quase o
+     mesmo corpo do parágrafo do cartão, e a 14px ele lia como chip. */
+  font-size: 0.9375rem;
+  font-weight: 700;
+  box-shadow: 0 14px 34px -14px rgb(0 77 138 / 55%);
+  /* O DESLOCAMENTO DO HOVER É UMA VARIÁVEL, e não um `transform` inteiro escrito
+     duas vezes. A razão é o desktop: lá o botão passou a ser centrado na
+     meia-altura do cartão (como no PNG), e centrar em CSS custa um
+     `translateY(-50%)`. `transform` é uma propriedade só — a regra de hover que
+     escrevesse `translate3d(6px, 0, 0)` APAGARIA a centralização e o botão
+     saltaria meia altura para baixo ao passar o ponteiro. Com as duas parcelas em
+     variáveis, o hover mexe apenas no eixo X e a centralização sobrevive; o
+     movimento reduzido, pelo mesmo motivo, zera a variável e não o `transform`
+     (ver o bloco das duas vias no fim deste arquivo). A transição continua
+     funcionando: o valor USADO de `transform` muda quando a variável muda. */
+  --cta-ref-botao-x: 0px;
+  --cta-ref-botao-y: 0px;
+  transform: translate3d(var(--cta-ref-botao-x), var(--cta-ref-botao-y), 0);
+  /* Só `transform` e `box-shadow` entram na transição, e a sombra é a única
+     propriedade cara que fica — nada de `filter: blur()` nem de `will-change`,
+     pela mesma razão registrada em `.cta-reativo`. */
+  transition:
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* Item 2 do movimento: o botão AVANÇA alguns pixels. 6px, para a direita, que é o
+   sentido da seta e o sentido em que o fio chega nele. */
+.cta-ref-botao:hover,
+.cta-ref-botao:focus-visible {
+  --cta-ref-botao-x: 6px;
+  box-shadow: 0 18px 42px -14px rgb(0 77 138 / 62%);
+}
+.cta-ref-botao-circulo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  /* SIS-253 (2ª volta) — CIANO UM PASSO MAIS FUNDO E SETA BRANCA, como no PNG (lá
+     o disco é ciano vivo e a seta é branca; aqui a seta era navy `#04263f`).
+     O QUE ISTO CUSTA, medido e assumido: branco sobre `#17b2ec` dá 2,44:1, abaixo
+     do 3:1 de objeto gráfico. Fica assim porque a seta NÃO carrega informação —
+     o nome acessível do botão é o texto «Fale com a SISTRAN», que está na tela ao
+     lado dela com 8,7:1; um ícone que só repete o rótulo não é "gráfico
+     necessário para entender o conteúdo" (WCAG 1.4.11). Se algum dia a seta ficar
+     sozinha (botão só de ícone), esta linha volta a ser dívida e o navy tem de
+     voltar. Por isso o `#17b2ec` e não o `#0ed8f6` do fio: é o ciano mais fundo
+     que ainda lê como o disco do PNG, e ganhou 0,5 ponto de razão de graça. */
+  background: #17b2ec;
+  color: #fff;
+  overflow: hidden;
+}
+/* Item 3: o círculo GIRA. O que gira é este brilho cônico, e não o círculo
+   inteiro: girar o círculo levaria a seta com ele e a seta viraria de cabeça para
+   baixo no meio do caminho — um giro que muda o significado do ícone. Com o
+   brilho, o disco lê como girando e a seta continua apontando para a direita.
+   A seta é `position: relative` no componente para ficar acima deste `::before`. */
+.cta-ref-botao-circulo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  /* SIS-253 (2ª volta) — O BRILHO FOI REBAIXADO (era branco a 70% e ciano claro a
+     85%). Não é gosto: a seta passou a ser BRANCA, e um brilho de branco quase
+     opaco varrendo o disco APAGAVA a seta durante o giro — o efeito comia o ícone
+     que ele deveria acompanhar. A 34% o disco continua lendo como girando e a
+     seta sobrevive em toda a volta. */
+  background: conic-gradient(
+    from 0deg,
+    rgb(255 255 255 / 0%) 0deg,
+    rgb(255 255 255 / 34%) 90deg,
+    rgb(255 255 255 / 0%) 200deg,
+    rgb(165 240 255 / 40%) 300deg,
+    rgb(255 255 255 / 0%) 360deg
+  );
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cta-ref-botao:hover .cta-ref-botao-circulo::before,
+.cta-ref-botao:focus-visible .cta-ref-botao-circulo::before {
+  transform: rotate(180deg);
+}
+
+/* ── o grafismo da direita: blob, selo, órbitas, balões ────────────────────── */
+.cta-ref-arte {
+  position: relative;
+  width: min(20rem, 76%);
+  margin: 2.5rem auto 0;
+  /* 760/620 é a proporção do §8 do doc, e é o item 1 do checklist («a forma azul
+     está mais larga do que alta»). Era `1` — quadrado —, e com a forma inscrita
+     nele por `preserveAspectRatio="xMidYMid meet"` ela nunca poderia ler como
+     larga: o SVG sobraria altura nas pontas. A proporção é da CAIXA e a caixa é
+     quem manda, então ela precisa mudar aqui, não no `viewBox`. */
+  aspect-ratio: 760 / 620;
+  /* §4 do doc: «o contêiner externo pode usar `overflow: hidden`, mas a área
+     interna do componente visual deve usar `overflow: visible` para não cortar
+     órbitas, sombras ou balões». Aqui é declarado em vez de herdado do padrão
+     porque as órbitas passam de 100% da largura e o balão de baixo sangra para
+     fora — qualquer `overflow` futuro nesta regra decapitaria os dois. É o item 8
+     do checklist. */
+  overflow: visible;
+}
+/* ── a forma azul ──────────────────────────────────────────────────────────── */
+/* O DESENHO NÃO ESTÁ MAIS AQUI. Ele é um `<path>` no componente (§3 e §8 do doc),
+   e o que sobra nesta regra é só a caixa dele. Morreram com a troca:
+   `border-radius: 62% 38% 46% 54% / 42% 58% 42% 58%` (o losango de arcos que o §2
+   do doc descreve como «quase circular… silhueta irregular»), o
+   `radial-gradient` de quatro paradas terminando em `#032f60` (o «inferior escuro
+   demais» do mesmo §2), o `box-shadow` de três camadas e o `::after` com máscara
+   cônica. Cada um deles tem substituto nomeado no comentário do componente — o
+   motivo está lá porque é lá que o desenho passou a morar. */
+.cta-ref-blob {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* O `filter` do `feDropShadow` pinta fora do `viewBox`; sem isto o halo ciano
+     seria cortado na borda da caixa. */
+  overflow: visible;
+  z-index: 2;
+}
+/* A espessura da aresta fica no CSS e não no atributo `stroke-width` para poder
+   ser respondida por largura: a 360px de arte, 6 unidades de `viewBox` (~2,8px)
+   engrossam a linha ao ponto de ela ler como borda. */
+.cta-ref-blob-aresta {
+  stroke-width: 4;
+}
+/* Regra desativada com o desenho — mantida comentada porque é o registro do que a
+   máscara cônica fazia, e de por que ela não volta: ela acendia a aresta num ARCO
+   ANGULAR medido do centro da CAIXA, e a caixa não é a forma. Na silhueta de
+   curvatura variável do `<path>` o mesmo ângulo cai em pontos de espessura
+   aparente diferente. O gradiente linear do traço (no componente) apaga por
+   POSIÇÃO, que é o que a referência mostra: a luz vem de cima à esquerda.
+.cta-ref-blob::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 2px solid rgb(14 216 246 / 75%);
+  mask-image: conic-gradient(
+    from 200deg, #000 0deg, #000 120deg,
+    transparent 210deg, transparent 320deg, #000 360deg
+  );
+} */
+.cta-ref-selo {
+  position: absolute;
+  z-index: 4;
+  /* `left: 57%` e não 50%: é o §6 do doc, e é o item 6 do checklist — «o símbolo
+     está centralizado VISUALMENTE, não apenas matematicamente». A silhueta do
+     `<path>` não é simétrica (o lóbulo direito é mais cheio: 738 de avanço contra
+     65 do lado esquerdo, no `viewBox` de 760), então o centro da CAIXA cai à
+     esquerda do centro da massa. */
+  left: 57%;
+  top: 50%;
+  /* 38% (era 48%): §8 do doc, «aproximadamente 38% da largura do visual». A caixa
+     também deixou de ser quadrada, então os 48% de antes já não são comparáveis a
+     estes 38% — a mesma porcentagem de uma caixa mais larga é mais selo. */
+  width: 38%;
+  height: auto;
+  transform: translate(-50%, -50%);
+}
+.cta-ref-selo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* SIS-253 (2ª volta) — SOMBRA PRETA FORA, HALO CIANO DENTRO. `rgb(0 0 0 / 35%)`
+     sujava o branco do selo contra o blob que agora é claro no miolo — a marca
+     ficava com contorno cinza. Na referência o selo é branco puro com um respiro
+     de luz em volta, que é a regra de glow do projeto (ciano, nunca preto nem
+     branco frio). */
+  filter: drop-shadow(0 0 18px rgb(9 62 118 / 45%)) drop-shadow(0 0 6px rgb(165 240 255 / 55%));
+}
+/* As órbitas são elipses de verdade (largura ≠ altura + `border-radius: 50%`), e
+   não círculos com `scaleY`: escalar um círculo com borda afina a borda em um dos
+   eixos e a linha fica de espessura desigual. */
+.cta-ref-orbita {
+  position: absolute;
+  z-index: 3;
+  /* `left: 55%` acompanha o selo deslocado (§6 do doc): as órbitas descrevem o
+     mesmo corpo que o símbolo marca, e centradas em 50% elas sairiam pela esquerda
+     da forma e cortariam curto na direita. */
+  left: 55%;
+  top: 50%;
+  /* SIS-253 (2ª volta) — 2px E ACESA (era 1px a 55%). No quadro reprovado as duas
+     órbitas quase não existiam: 1px de ciano a 55% sobre um blob escuro é um risco
+     de meio tom, e no PNG elas são o segundo elemento mais brilhante da composição,
+     depois do selo. Espessura, alfa cheio e halo — os três juntos, porque nenhum
+     resolve sozinho (alfa sem halo lê como aresta serrada; halo sem espessura
+     dissolve a linha). */
+  border: 2px solid rgb(14 216 246 / 95%);
+  border-radius: 50%;
+  box-shadow:
+    0 0 14px rgb(14 216 246 / 55%),
+    inset 0 0 14px rgb(14 216 246 / 35%);
+}
+/* AS DUAS ÓRBITAS NA FAIXA DO §8 do doc («entre 90% e 96% da largura do visual»),
+   e é o item 7 do checklist que decide os ÂNGULOS: «as órbitas não formam um "X"
+   muito evidente». −18°/+22° somam 40° de abertura entre elas — dois eixos
+   cruzando no meio da forma, que é o X. −8°/+20° somam 28°, e como as duas passam
+   a ter a mesma largura elas lêem como duas voltas do MESMO anel visto de ângulos
+   próximos, não como duas linhas se cruzando.
+   As larguras também se aproximaram (104%/124% → 94%): parte do X vinha de uma
+   elipse passar bem além da outra na horizontal, onde as pontas se abrem. */
+/* 3ª volta — 98% × 54% (era 94% × 50%), valores do override. Sai da faixa «90% a 96%»
+   do §8 do doc por dois pontos, e é a ordem mais recente que vale: com a arte agora em
+   37vw a órbita de 94% já media 501px, e o que o quadro mostrava não era órbita larga
+   demás — era órbita CURTA em relação à forma, porque a forma cresceu com a
+   caixa e o anel não. Os 28° de abertura do item 7 não mudam. */
+.cta-ref-orbita-a {
+  width: 98%;
+  height: 54%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+}
+/* A segunda continua a mais discreta — no PNG uma passa à frente e outra atrás. A
+   discrição passou de `border-color` para `opacity` (§6 do doc): com a mesma
+   largura das duas, baixar só a cor da borda deixava a linha nítida e cinzenta;
+   `opacity` apaga a borda E o halo juntos, que é o que dá o "atrás". */
+.cta-ref-orbita-b {
+  width: 98%;
+  height: 54%;
+  opacity: 0.55;
+  transform: translate(-50%, -50%) rotate(20deg);
+}
+.cta-ref-orbita-ponto {
+  position: absolute;
+  /* Encostado na borda direita do blob e sobre a órbita, como no PNG (era
+     `right: 13%`, dentro do corpo escuro, onde ele lia como poeira). */
+  right: 5%;
+  top: 22%;
+  /* 16px e não 9px: na referência ele é uma ESFERA de luz do tamanho de um dos
+     pontos dos balões, não um pixel aceso. */
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 10px 2px rgb(255 255 255 / 85%),
+    0 0 26px 8px rgb(14 216 246 / 75%);
+}
+.cta-ref-balao {
+  position: absolute;
+  /* Camada 5 do §4 do doc: acima do símbolo, abaixo do painel. */
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  /* Balões um pouco maiores que a primeira versão (`gap: 6px`, `padding: 0.7rem
+     0.85rem`, pontos de 7px): a arte cresceu de 32% para 40% do palco, e no mesmo
+     quadro eles passaram a ler como pastilhas. Na referência cada balão ocupa ~1/5
+     da largura do blob. */
+  /* SIS-253 (2ª volta) — MAIORES E MAIS OPACOS. Sobre o blob escuro anterior um
+     vidro de branco a 22% ainda lia; sobre o blob LUMINOSO de agora ele desaparecia,
+     e no PNG os balões são placas de vidro nítidas, cada uma com ~1/4 da largura do
+     blob. Subiram o corpo (22% → 34%), a borda (42% → 62%), o raio e o respiro. */
+  /* §8 do doc — «balão superior/inferior: próximo de 18% da largura do visual». O
+     TAMANHO PASSOU A SER MEDIDO, e não somado a partir do `padding`: era
+     `padding: 1rem 1.15rem` com pontos de 11px, o que dá largura em px fixos — a
+     mesma placa a 1440 e a 360, isto é, ~11% da arte no desktop e ~30% dela no
+     mobile. Com `width` em porcentagem os 18% valem em qualquer largura, que é o
+     que a tabela do doc pede.
+     A proporção 138/78 é a do §6 (`width: 138px; height: 78px`), aqui como razão
+     para não voltar a fixar pixel. */
+  /* 3ª volta — 19% (era 18%), que é o TAMANHO do override traduzido para
+     porcentagem. O override pede `width: clamp(100px, 7vw, 144px)` e
+     `height: clamp(58px, 4.2vw, 86px)`: a 1440 isso dá 100,8 × 60,5px, e 100,8px é
+     18,9% da arte de 532,8px — daí os 19%.
+     POR QUE NÃO O `clamp` EM PX, e é a única parte do override que não entra
+     literal: px fixo dentro de uma caixa que é `vw` faz a placa valer proporções
+     diferentes em cada largura. Foi o defeito que a volta passada corrigiu aqui
+     mesmo (`padding` + pontos de 11px valiam ~11% da arte a 1440 e ~30% dela a 360),
+     e o §8 do doc pede a razão, não o pixel. Em porcentagem os 19% valem o mesmo
+     desenho em qualquer janela — e a 1440 dão exatamente o número pedido. */
+  justify-content: center;
+  width: 19%;
+  aspect-ratio: 138 / 78;
+  gap: 9%;
+  border-radius: 20%/35%;
+  /* O vidro do §6 do doc, que é AZULADO e não branco puro: sobre o azul médio da
+     forma nova, branco a 34% lia como leite. A borda subiu para 2px (também §6)
+     porque a placa encolheu — 1px numa placa de 18% da arte desaparece a 1024. */
+  background: linear-gradient(145deg, rgb(166 222 255 / 70%), rgb(52 143 214 / 36%));
+  border: 2px solid rgb(255 255 255 / 80%);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    inset 0 1px 8px rgb(255 255 255 / 55%),
+    0 12px 30px rgb(0 73 145 / 18%);
+}
+/* O BICO DO BALÃO. Na referência os dois balões têm bico — sem ele lêem como
+   etiqueta, não como fala, e era a terceira das quatro diferenças medidas contra
+   o PNG. É `::after` com `clip-path` triangular em vez de truque de borda porque
+   o balão é de VIDRO: borda em triângulo pinta cor chapada e a "ponta" ficaria
+   opaca ao lado de um corpo translúcido. Com um retângulo recortado, o bico herda
+   o mesmo fundo e o mesmo `backdrop-filter` do corpo.
+   O `border` do corpo não continua no bico, pelo mesmo limite de CSS registrado
+   no chanfro do cartão: não há borda em aresta de recorte. */
+.cta-ref-balao::after {
+  content: '';
+  position: absolute;
+  width: 0.85rem;
+  height: 0.75rem;
+  background: inherit;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.cta-ref-balao-a::after {
+  left: 0.9rem;
+  bottom: -0.7rem;
+  clip-path: polygon(0 0, 100% 0, 15% 100%);
+}
+/* SIS-253 (2ª volta) — O BICO DO BALÃO DE BAIXO PASSOU PARA BAIXO (era `top`,
+   apontando para cima). No PNG os DOIS balões apontam para baixo: eles são falas
+   que saem do blob, e o de baixo está abaixo do centro dele — bico para cima o
+   fazia apontar de volta para o selo, invertendo a leitura. */
+.cta-ref-balao-b::after {
+  right: 0.9rem;
+  bottom: -0.7rem;
+  clip-path: polygon(0 0, 100% 0, 85% 100%);
+}
+.cta-ref-balao i {
+  /* PORCENTAGEM DA PLACA, não px: o corpo passou a ser 18% da arte (regra acima) e
+     três pontos de 11px dentro dele ora sobravam ora estouravam. 14% de 18% da
+     arte dá ~11px a 1440, que é o diâmetro que já estava certo lá — e continua
+     igual ao da esfera da órbita nessa largura. */
+  flex: 0 0 auto;
+  width: 14%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 92%);
+}
+/* Os dois SOBRE o blob (o de cima estava em `left: 4%`, fora dele, flutuando no
+   fundo claro): no PNG o balão alto encosta no ombro esquerdo do selo e o baixo
+   sangra para fora da borda direita. */
+/* As posições são as do §6 do doc. `top: 19%` / `left: 32%` põe o balão alto sobre
+   o OMBRO da forma (o lóbulo de cima, que na Bézier nova sobe até y=20) em vez do
+   canto vazio da caixa, onde `left: 10%` o deixava; `bottom: 20%` / `right: 1%`
+   traz o de baixo para dentro da silhueta. `right: -6%` era o balão sangrando para
+   fora da arte — e como a arte é absoluta e sangra `-8%` para fora do palco, os
+   dois desvios somavam e o balão passava da borda da SEÇÃO, que tem
+   `overflow: hidden`: era o item 8 do checklist do doc a um pixel de falhar. */
+/* 3ª volta — as quatro posições são as do override (`top: 18%` / `left: 31%` e
+   `right: -1%` / `bottom: 18%`). O `right: -1%` REABRE o sangramento que a volta
+   passada tinha fechado, e por isso ele é medido de novo: o motivo de fechar era que
+   a arte sangrava `-8%` do palco e os dois desvios somados punham o balão fora da
+   seção, que tem `overflow: hidden`. A arte agora não é mais ancorada em `-8%` do
+   palco: ela é ancorada a `clamp(18px, 3vw, 64px)` da BORDA DA JANELA, então 1% de
+   532,8px = 5,3px de sangramento contra 43px de folga a 1440. O item 8 do checklist
+   está no relatório com o número. */
+.cta-ref-balao-a {
+  left: 31%;
+  top: 18%;
+}
+.cta-ref-balao-b {
+  right: -1%;
+  bottom: 18%;
+}
+
+/* ── o movimento lento do §10 do doc ───────────────────────────────────────── */
+/* «As animações devem ser lentas e discretas… não aplicar rotações rápidas ou
+   movimentos amplos.» São as duas do §10, com os mesmos tempos (6s e 4,5s) e a
+   mesma amplitude (10px, e a pulsação de opacidade).
+   POR QUE EM CSS E NÃO EM GSAP, com a skill de movimento aberta: a skill manda usar
+   `gsap.context` e `matchMedia` para o que precisa ser SINCRONIZADO ou desligado por
+   breakpoint. Estes dois são loops decorativos independentes de scroll e de
+   ponteiro — o GSAP aqui só acrescentaria um RAF permanente e um caminho pelo qual o
+   JS decidiria se o movimento existe, que é justamente o que o cabeçalho do
+   componente proíbe. Em `@media`/`[data-motion]` o desligamento é servido no
+   primeiro quadro, sem flash.
+   Custo: só `transform` e `opacity`, os dois compositados. Nada de `filter`
+   animado — o selo TEM `drop-shadow`, e é por isso que quem flutua é o `<span>`
+   envelope e não a imagem: animar transform num nó com filtro recomputa a sombra a
+   cada quadro. */
+@keyframes cta-ref-flutua {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-10px);
+  }
+}
+@keyframes cta-ref-orbita-pulsa {
+  0%,
+  100% {
+    opacity: calc(var(--cta-ref-orbita-op) * 0.62);
+  }
+  50% {
+    opacity: var(--cta-ref-orbita-op);
+  }
+}
+.cta-ref-selo {
+  animation: cta-ref-flutua 6s ease-in-out infinite;
+}
+.cta-ref-orbita {
+  /* O TETO DA PULSAÇÃO É POR ÓRBITA, não um par de números fixo: a `-b` é a órbita
+     "de trás" a 55%, e a pulsação do doc (0,55 → 0,9) a levaria acima do repouso da
+     `-a`, invertendo qual das duas está na frente no meio de cada ciclo. Com o teto
+     vindo da variável, cada uma pulsa dentro da própria faixa e a hierarquia se
+     mantém em todo instante do ciclo. */
+  --cta-ref-orbita-op: 1;
+  animation: cta-ref-orbita-pulsa 4.5s ease-in-out infinite;
+}
+.cta-ref-orbita-b {
+  --cta-ref-orbita-op: 0.55;
+}
+
+/* ── a composição da referência, de 1024 para cima ─────────────────────────── */
+/* 3ª volta — A COMPOSIÇÃO PASSOU A SER MEDIDA NA JANELA, NÃO NO CONTAINER.
+   É a mudança de fundo desta volta, e sem ela nenhum dos números do override cai onde
+   deve. O override dá tudo em `vw` — painel 67vw, visual 37vw, botão em `left: 52.3vw`,
+   margens em `clamp(32px, 3.6vw, 72px)` — isto é, ele descreve posições contadas da
+   BORDA DA JANELA. Mas o palco daqui é filho do `.container-lp`, que satura em 1180px
+   e ainda desconta `lg:px-8`: a 1440 ele vai de x=162 a x=1278, e não de 0 a 1440.
+   Escrever `left: 52.3vw` dentro dele mediria 52,3% da janela A PARTIR de 162, o botão
+   iria para 915 em vez de 753, e o mesmo erro de 162px deslocaria painel e visual —
+   exatamente o sintoma relatado («deslocado para a esquerda» resolvido virando
+   deslocamento para a direita).
+   A CONVERSÃO É EXATA e vale para qualquer largura porque o `.container-lp` é
+   CENTRADO: dentro dele, a borda esquerda da janela está em `50% - 50vw` e a direita em
+   `50% + 50vw` (as porcentagens resolvem contra a largura do próprio palco). Então
+   «X a partir da esquerda da janela» é `calc(X - 50vw + 50%)` e «X a partir da direita»
+   é `calc(X - 50vw + 50%)` no lado `right`. É a única aritmética nova deste bloco, e
+   está escrita aqui porque ela aparece em quatro regras abaixo.
+   As medidas viram VARIÁVEIS por um motivo concreto: o fio ciano tem de terminar no
+   centro do círculo do botão, e esse centro é a soma da margem, da largura do painel e
+   da posição/largura do botão. Com os números soltos, mexer no botão desalinharia o
+   pouso do ponto em silêncio — foi o que já produziu `dx: -16` na primeira rodada. */
+@media (min-width: 1024px) {
+  .cta-ref-palco {
+    /* Os números do override, num lugar só. `--cta-ref-cartao` (a largura em % do
+       palco) saiu de cena: a largura do painel deixou de ser fração do container. */
+    /* 4ª volta — TUDO ENCOLHEU («diminua o tamanho de todos os componentes esta
+       muito grande tudo»). Os números da 3ª volta ficam registrados porque foram
+       pedidos explicitamente e o que mudou não é a RELAÇÃO entre as peças, é a
+       escala:
+       | --cta-ref-margem: clamp(32px, 3.6vw, 72px);
+       | --cta-ref-cartao-w: min(67vw, 1380px);
+       | --cta-ref-arte-w: clamp(520px, 37vw, 760px);
+       | --cta-ref-arte-margem: clamp(18px, 3vw, 64px);
+       | --cta-ref-botao-esq: 52.3vw;
+       | --cta-ref-botao-w: clamp(290px, 20.5vw, 420px);
+       | --cta-ref-pad: 3rem;
+
+       POR QUE AS MARGENS CRESCERAM ENQUANTO TUDO O MAIS DIMINUIU — é a única
+       parte contraintuitiva, e sem ela a redução destruiria o desenho. A relação
+       exigida é «painel → botão sobreposto à borda → elemento azul parcialmente
+       atrás», e a sobreposição é a SOBRA de tinta sobre a janela:
+         sobreposição = margem + painel + margem-da-arte + arte − 100vw
+       Painel e arte estão ancorados em bordas OPOSTAS da janela. Encolher os dois
+       mantendo as margens antigas subtrai duas vezes da mesma soma: a 1440, 58vw +
+       32vw com as margens velhas dava −27px, isto é, uma FRESTA entre o painel e o
+       azul — exatamente o defeito «painel → botão → espaço vazio → elemento azul»
+       que a volta passada corrigiu. Então a composição inteira se afasta das duas
+       bordas: ela deixa de sangrar na janela e passa a ser um bloco menor e
+       centrado. Medido a 1440: painel 129,6→964,8; arte a partir de 878,4;
+       sobreposição 86px (a faixa do §8 é 80–150). A 1920 dá 108px, a 1024 dá 154px
+       — os 154 vêm do piso de 420px da arte, que existe para o SVG não virar
+       miniatura em tela pequena.
+       Órbitas, selo e balões NÃO aparecem aqui e encolheram junto: são % da arte
+       (98%/54%, 38%, 19%), então seguem `--cta-ref-arte-w` sozinhos. É a razão de
+       eles estarem em % e não em px — ver a nota do balão. */
+    /* 5ª volta — ENCOLHEU OUTRA VEZ («diminua todos os componentes»), pela mesma
+       aritmética da 4ª, que segue escrita acima e segue sendo a única coisa a
+       respeitar aqui. Os números da 4ª volta:
+       | --cta-ref-margem: clamp(40px, 9vw, 170px);
+       | --cta-ref-cartao-w: min(58vw, 1180px);
+       | --cta-ref-arte-w: clamp(420px, 32vw, 640px);
+       | --cta-ref-arte-margem: clamp(24px, 7vw, 130px);
+       | --cta-ref-botao-w: clamp(250px, 18vw, 350px);
+       | --cta-ref-pad: 2.5rem;
+       Painel 58vw→52vw, arte 32vw→29vw, botão 18vw→16vw; as duas margens crescem
+       de novo (9vw→14,5vw e 7vw→10,75vw) porque a soma
+       `margem + painel + margem-da-arte + arte − 100vw` É a sobreposição, e as
+       peças estão ancoradas em bordas opostas. Conferido nas três larguras antes de
+       escrever: a 1440 dá 1530,0 − 1440 = 90px; a 1920 dá 120px; a 1024 dá 147px —
+       as três dentro da faixa de 80–150px do §8. O teto de `--cta-ref-margem` é
+       300px e não «o que der» justamente para 1920 não cair abaixo do piso da
+       faixa por excesso de margem.
+       `--cta-ref-botao-esq` é o único que NÃO se move: em 55vw o botão continua
+       cruzando a borda direita do painel (957,6 a 1440) e entrando na forma azul
+       (que abre em 867,6). Reduzir a largura da pílula já aproxima os dois lados;
+       mexer na âncora também empurraria o pouso do ponto. */
+    --cta-ref-margem: clamp(36px, 14.5vw, 300px);
+    --cta-ref-cartao-w: min(52vw, 1060px);
+    --cta-ref-arte-w: clamp(380px, 29vw, 600px);
+    --cta-ref-arte-margem: clamp(20px, 10.75vw, 230px);
+    --cta-ref-botao-esq: 55vw;
+    /* O PISO É 240px E NÃO 225px, e o número saiu de somar o conteúdo da pílula, não
+       de arredondar: rótulo ~135px + o respiro de 1rem + o círculo de 2,8rem (44,8px)
+       + os respiros laterais ≈ 226px. Com 225 o rótulo quebrava em duas linhas a
+       1024 — medido na captura. 240 dá a folga de uma letra. */
+    --cta-ref-botao-w: clamp(240px, 16vw, 320px);
+    /* A LINHA DE CENTRO DO BOTÃO DEIXOU DE SER UMA PORCENTAGEM DA ALTURA, e esta é a
+       correção estrutural desta volta — não um número novo, um acoplamento
+       desfeito. Ela era `top: 56%` no botão e `bottom: 44%` no fio, e daí saía um
+       laço: o trecho horizontal do fio corre `0,105 × largura` ACIMA dessa linha,
+       então a altura do fio dependia da altura do painel, que depende de quantas
+       linhas o parágrafo ocupa, que depende da largura da janela. Medido: a 1024 o
+       parágrafo quebra em quatro linhas, o painel vai a 309px, a linha de centro cai
+       em 173 e o fio pousava em 115px do topo — DENTRO do título, que começa em 114.
+       Pior: a correção óbvia (aumentar o respiro de cima) realimenta o laço, porque
+       ela mesma faz o painel crescer.
+       Com a linha em PIXELS o fio passa a ter posição própria: `topo − 0,105 ×
+       largura`, sem a altura do painel na conta. Medido nas quatro larguras: 95px a
+       1024, 79px a 1280, 79px a 1440 e 68px a 1920, sempre acima das 7rem (112px) do
+       respiro. E o botão continua na meia-altura visual — 48% a 1024, 56% a 1440,
+       58% a 1920 — porque o clamp acompanha a janela, que é o que fazia o painel
+       crescer em primeiro lugar.
+       ⚠️ ESTA VARIÁVEL É USADA EM DOIS LUGARES QUE TÊM DE CONCORDAR: `top` do botão e
+       `bottom` do fio (como `100% − ela`). Foi essa concordância que manteve o erro
+       de pouso em ~2px em todas as voltas; mexer num sem o outro desalinha o pouso
+       do ponto em silêncio. */
+    --cta-ref-botao-y-topo: clamp(150px, 11vw, 175px);
+    --cta-ref-pad: 2.25rem;
+  }
+  .cta-ref-cartao {
+    /* A LARGURA SAIU DE FRAÇÃO DO CONTAINER PARA FRAÇÃO DA JANELA (67vw do
+       override). O `margin-left` negativo é a conversão da nota acima: a margem
+       pedida é contada da borda da JANELA, e o cartão nasce na borda do palco,
+       que está 162px adentro a 1440. Sem ela o painel inteiro ficaria 162px à
+       direita do lugar — que é metade do defeito relatado («pequeno e deslocado
+       para cima/esquerda» era o outro lado da mesma conta). */
+    width: var(--cta-ref-cartao-w);
+    margin-left: calc(var(--cta-ref-margem) - 50vw + 50%);
+    /* `min-height`, e NÃO o `height` do override. Título e parágrafo são texto
+       real vindo por prop: com altura fixa, uma frase mais longa transbordaria o
+       vidro. O piso é o mesmo número (clamp de 340 a 430), então o desenho medido
+       é idêntico enquanto o texto couber. */
+    /* 4ª volta — era `clamp(340px, 21vw, 430px)`. O painel encolheu na altura junto
+       com a largura; o `min-height` continua sendo mínimo, não altura, pelo motivo
+       abaixo. */
+    /* 5ª volta — era `clamp(290px, 17.5vw, 360px)`. */
+    min-height: clamp(258px, 15.6vw, 320px);
+    /* O respiro de cima é maior que os outros: é onde o trecho horizontal do fio
+       passa. Ele fica 0,150 × (largura do invólucro) acima do centro do círculo do
+       botão — ~105px a 1440 —, e esse centro agora é a meia-altura do cartão
+       (160px), então o trecho horizontal corre a ~55px do topo. As 7rem (112px)
+       deixam o título abaixo dele com folga. */
+    /* 4ª volta — 7rem para 5.5rem. O respiro é ditado pelo fio, e o fio encolheu:
+       com o painel a 290px de piso, o centro do círculo (56%) cai em 162px e o
+       invólucro do fio mede ~130px de altura, então o trecho horizontal corre a
+       ~32px do topo. 5,5rem (88px) deixa o título abaixo dele com folga. */
+    /* 5ª volta — VOLTOU A 7rem, e é a única medida do painel que NÃO encolheu.
+       O respiro é ditado pelo fio, e o fio DESCEU nesta volta (razão 0,150 → 0,105
+       em `ContactCTAReferencia.tsx`): o trecho horizontal saiu de ~32px do topo
+       para ~65px a 1440, ~101px a 1024 e ~61px a 1920. 7rem (112px) é o menor valor
+       que ainda deixa o título abaixo da linha na PIOR das três larguras — 1024,
+       onde o parágrafo quebra em três linhas, o painel passa do `min-height` e o
+       fio desce junto (ele é ancorado em 56% da ALTURA, não do `min-height`). Com
+       5,5rem a linha cruzaria o título a 1024. Quem baixar este número tem de
+       refazer a conta nas três larguras, não só a 1440. */
+    padding-top: 7rem;
+    /* Os quatro raios do override: pequenos à esquerda, MUITO grandes à direita —
+       é essa assimetria que dá ao painel o lado direito quase de cápsula do PNG.
+       Ela é o que torna o `clip-path` abaixo impossível de manter. */
+    /* 4ª volta — os quatro raios acompanham a largura do painel, senão a cápsula da
+       direita comeria proporcionalmente mais do bloco menor. Eram
+       `clamp(56px, 4.5vw, 92px)` e `clamp(120px, 10vw, 210px)`; a razão entre o par
+       pequeno e o par grande (~1:2,2) é a mesma. */
+    /* 5ª volta — os raios acompanham a largura outra vez, pelo mesmo motivo, e a
+       razão ~1:2,2 entre o par pequeno e o par grande segue igual. Eram
+       `clamp(44px, 3.6vw, 76px)` e `clamp(96px, 8vw, 170px)`. */
+    border-radius: clamp(38px, 3.2vw, 66px) clamp(84px, 7.1vw, 148px)
+      clamp(84px, 7.1vw, 148px) clamp(38px, 3.2vw, 66px);
+    /* O canto superior direito CHANFRADO da referência. `clip-path` recorta o
+       fundo já arredondado, então os outros três cantos mantêm o raio — o polígono
+       só tira o triângulo do canto.
+       O QUE ISTO CUSTA, registrado: a borda de 1px não acompanha a diagonal (não
+       há borda em aresta de recorte). Desenhar a aresta como pseudo-elemento
+       rotacionado exigiria um ângulo fixo, e o ângulo aqui depende da razão
+       largura/altura do cartão, que varia com o texto — o mesmo limite de CSS já
+       registrado no fio do marcador da torre na SIS-221. Os dois pseudo-elementos
+       do cartão, além disso, ficam livres de propósito. */
+    /* SIS-253 (3ª volta) — O CHANFRO SAIU DE CENA, comentado e não apagado, e o
+       motivo é geométrico, não de gosto:
+       1. o override declara `border-radius` assimétrico com raios GRANDES à
+          direita (o canto que o polígono cortava). Recorte e raio disputam o mesmo
+          canto: o `clip-path` vence e o raio pedido nunca apareceria;
+       2. `clip-path` recorta TODOS os descendentes, e o fio agora corre até
+          ~4px ALÉM da borda direita do cartão para encontrar o centro do círculo do
+          botão (ver a conta no `right` de `.cta-ref-fio`). Com o polígono, a ponta
+          do fio — e com ela o pouso do ponto — seria cortada.
+       Fica registrado que a silhueta chanfrada do PNG deixou de ser reproduzida:
+       é uma diferença declarada, não um esquecimento.
+    clip-path: polygon(0 0, 74% 0, 83% 17%, 100% 17%, 100% 100%, 0 100%); */
+  }
+  .cta-ref-fio {
+    position: absolute;
+    /* `left`/`right`/`bottom` mirando o CENTRO do círculo ciano do botão:
+       1,75rem é metade do círculo (2,8rem) mais o respiro de 0,35rem que ele tem
+       dentro do botão, e o botão está a `--cta-ref-pad` da borda do cartão.
+       O `bottom` é 50% porque o botão passou a ser CENTRADO na altura do cartão
+       (era `bottom: var(--cta-ref-pad)`, rodapé): 50% da altura do cartão é a
+       mesma linha do centro do botão, e é ela que o fio tem de encontrar para o
+       ponto pousar no círculo. As duas declarações precisam mudar JUNTAS — foi por
+       elas concordarem que o erro de pouso medido ficou em ~1px. */
+    /* SIS-253 (3ª volta) — AS TRÊS ÂNCORAS FORAM REFEITAS porque o botão saiu do
+       interior do cartão para a JUNÇÃO com a forma azul. O fio é medido a partir da
+       borda do CARTÃO (é filho dele), e as duas pontas agora precisam de tradução:
+       · `left` — o override põe o nó em `clamp(54px, 7.5vw, 155px)` da janela, e a
+         borda esquerda do cartão está a `--cta-ref-margem` da janela: a diferença é
+         a distância pedida.
+       · `right` — a ponta tem de cair no CENTRO do círculo ciano. Esse centro está
+         a `--cta-ref-botao-esq + --cta-ref-botao-w − 1,75rem` da janela (o círculo
+         é o último item do botão, 2,8rem de lado com 0,35rem de respiro), e a borda
+         direita do cartão está a `--cta-ref-margem + --cta-ref-cartao-w`. A
+         subtração dá ~−4px a 1440: o fio SANGRA um pouco além do cartão, e é por
+         isso que o `clip-path` teve de sair.
+       · `bottom: 44%` — o botão passou de `top: 50%` para `top: 56%`, e o palco tem
+         a altura do cartão (é o único filho de fluxo), então 56% de cima = 44% de
+         baixo. As três mudam JUNTAS: foi a concordância entre elas que manteve o
+         erro de pouso em ~1px na volta anterior. */
+    /* 4ª volta — era `clamp(54px, 7.5vw, 155px)`, a distância do NÓ vazado até a
+       borda da janela. Ela não podia simplesmente encolher: a margem do painel
+       CRESCEU (ver a nota das variáveis), e um nó a menos de `--cta-ref-margem` da
+       janela cairia FORA do painel, à esquerda dele. O novo clamp mantém o nó
+       ~29px dentro da borda esquerda do vidro a 1440, ~20px a 1024 e ~40px a 1920. */
+    /* 5ª volta — O NÓ DEIXOU DE SER MEDIDO NA JANELA, e isso conserta uma armadilha
+       que já quase derrubou o desenho duas vezes. Ele era
+       `clamp(70px, 11vw, 210px) - var(--cta-ref-margem)`: distância até a borda da
+       JANELA, convertida por subtração. Só que `--cta-ref-margem` cresce a cada
+       redução (é a aritmética da sobreposição), e assim que ela passa do clamp o
+       resultado fica NEGATIVO — o nó cai fora do painel, à esquerda dele, no meio
+       do fundo da seção. Com os 14,5vw desta volta era o que aconteceria: 158,4 −
+       208,8 = −50px a 1440. O nó pertence ao painel, então a medida certa é a
+       distância até a borda do PAINEL, que é o próprio elemento pai — e aí ela é
+       correta por construção, em qualquer margem e qualquer largura. Medido: ~32px
+       dentro do vidro a 1440, ~23px a 1024, ~40px a 1920, sempre fora do raio do
+       canto (38px) na altura em que o fio corre. */
+    left: clamp(20px, 2.2vw, 40px);
+    right: calc(
+      var(--cta-ref-margem) + var(--cta-ref-cartao-w) - var(--cta-ref-botao-esq) -
+        var(--cta-ref-botao-w) + 1.75rem
+    );
+    /* 5ª volta — era `bottom: 44%` (o complemento de `top: 56%` do botão). Agora é o
+       complemento da linha em pixels; ver a nota de `--cta-ref-botao-y-topo`. */
+    bottom: calc(100% - var(--cta-ref-botao-y-topo));
+    margin: 0;
+  }
+  .cta-ref-botao {
+    position: absolute;
+    /* SIS-253 (3ª volta) — ANCORADO PELA ESQUERDA, na janela, e não mais recuado da
+       borda direita do cartão. O defeito relatado era exatamente este: com
+       `right: calc(100% - largura-do-cartão + respiro)` o botão ficava DENTRO do
+       painel, e a leitura saía «painel → botão → espaço vazio → elemento azul».
+       Com `left: 52,3vw` traduzido para dentro do palco, a 1440 ele corre de 753 a
+       1048 — atravessa a borda direita do painel (1017) e entra na forma azul
+       (começa em 864). É a relação pedida: «painel → botão sobreposto à borda →
+       elemento azul parcialmente atrás».
+       `right: auto` é obrigatório: sem ele as duas âncoras coexistiriam e a largura
+       declarada abaixo seria ignorada. */
+    left: calc(var(--cta-ref-botao-esq) - 50vw + 50%);
+    right: auto;
+    /* 56% e não 50%: o override desce o botão um pouco abaixo da linha de centro,
+       como no PNG. A centralização continua sendo `top` + a variável Y do
+       `transform` (ver a nota da regra base), para o hover somar 6px em X sem
+       apagá-la — e o `bottom` do fio acompanha (44%). */
+    /* 5ª volta — era `top: 56%`. Ver a nota de `--cta-ref-botao-y-topo`: a
+       porcentagem trazia a altura do painel (e portanto o número de linhas do
+       parágrafo) para dentro da posição do fio. */
+    top: var(--cta-ref-botao-y-topo);
+    --cta-ref-botao-y: -50%;
+    width: var(--cta-ref-botao-w);
+    /* 4ª volta — era `clamp(58px, 4.3vw, 88px)`. A pílula perdeu ~30px de largura e
+       a altura acompanha para a razão não virar barra. */
+    /* 5ª volta — era `clamp(52px, 3.7vw, 72px)`; a pílula perdeu outros ~29px de
+       largura e a altura acompanha para a razão não virar barra. */
+    height: clamp(46px, 3.3vw, 64px);
+    /* Com largura FIXA o conteúdo passa a ter folga, e sem isto o rótulo e o
+       círculo ficariam juntos no meio da pílula. `space-between` mantém o círculo
+       encostado na direita — que é onde a conta do `right` do fio o procura. */
+    justify-content: space-between;
+    /* Largura FIXA numa pílula de rótulo variável quebra a linha em vez de crescer:
+       a 1024 o «Fale com a SISTRAN» virava duas linhas dentro dos 46px de altura.
+       `nowrap` faz a quebra deixar de ser uma opção — o piso da largura acima é que
+       garante que ela nunca é necessária. */
+    white-space: nowrap;
+    margin-top: 0;
+  }
+  /* O PARÁGRAFO NÃO PODE CORRER POR BAIXO DO BOTÃO, e a 1024 corria: o `max-width`
+     de 34rem é maior que o espaço livre do painel à esquerda da pílula, então as
+     linhas passavam por trás dela e o botão (que é IRMÃO do cartão, camada acima)
+     cobria «Então fale com a gente». Medido: parágrafo terminando em 645 contra o
+     botão abrindo em 563.
+     O limite é geométrico, não um número escolhido: a borda esquerda do botão está a
+     `--cta-ref-botao-esq` da janela e a do painel a `--cta-ref-margem`, então o
+     espaço útil é a diferença menos o respiro interno do painel; 1,5rem é a folga
+     visual. O `min()` mantém as 34rem como TETO, que é o limite de medida de linha
+     legível — nas larguras grandes é ele que vale (a 1920 a conta daria 717px).
+     O título não entra nesta conta de propósito: ele tem uma linha só e para muito
+     antes da pílula em todas as larguras medidas; prendê-lo aqui seria inventar uma
+     quebra que não existe. */
+  .cta-ref-cartao .cta-ref-texto {
+    max-width: min(
+      34rem,
+      calc(
+        var(--cta-ref-botao-esq) - var(--cta-ref-margem) - var(--cta-ref-pad) - 1.5rem
+      )
+    );
+  }
+  .cta-ref-arte {
+    position: absolute;
+    /* ABAIXO DO CARTÃO, e antes era acima (`z-index: 3`). É a inversão que os §2,
+       §4 e §7 do doc pedem — «o painel esquerdo sobrepõe parcialmente o fundo
+       azul», camada 6 contra camada 2 — e é o item 4 do checklist. A nota antiga
+       dizia «o blob entra POR CIMA do canto chanfrado»; o que o chanfro faz é
+       ABRIR o canto para a forma aparecer, e para isso ela não precisa estar na
+       frente: com o cartão em cima, o recorte do `clip-path` mostra a forma limpa
+       naquele canto e o vidro de 60→40% de branco a mostra DIFUSA no resto da
+       sobreposição, que é a leitura do PNG. Com a arte na frente, o azul cobria a
+       aresta do cartão e o painel deixava de ser o primeiro plano.
+       O botão continua acima dos dois (`z-index: 4`), que é a camada 7 do §4. */
+    z-index: 1;
+    /* SIS-253 (3ª volta) — A ARTE PASSOU A SER MEDIDA NA JANELA, e é aqui que mora
+       a maior parte do «conjunto da direita está pequeno». Estava em 42% do palco =
+       469px a 1440; o override pede `clamp(520px, 37vw, 760px)` = 533px, e ancorada
+       a `clamp(18px, 3vw, 64px)` da borda da JANELA em vez de −8% do palco. A
+       tradução `- 50vw + 50%` é a mesma da nota do topo deste bloco.
+       A nota antiga citava «cada ponto percentual vale ~11,8px de sobreposição» —
+       vale para a largura em % do palco, que deixou de existir aqui. A sobreposição
+       agora é a soma das duas âncoras: cartão terminando em 1017 contra arte
+       começando em 864 = ~153px. São 3px ACIMA da faixa de 80–150px do §8 do doc,
+       e os dois lados dessa diferença saem do MESMO override — fica declarado. */
+    right: calc(var(--cta-ref-arte-margem) - 50vw + 50%);
+    top: 50%;
+    width: var(--cta-ref-arte-w);
+    margin: 0;
+    transform: translateY(-50%);
+  }
+  /* O TÍTULO É MAIOR QUE O `md:text-4xl` (36px) que o componente pede pelas
+     utilitárias — era a quarta diferença medida contra o PNG, onde ele passa dos
+     50px. O seletor tem duas classes de propósito: uma utilitária do Tailwind
+     empata em especificidade com uma classe só, e quem venceria passaria a
+     depender da ordem das camadas no CSS compilado. Continua acima de 24px, então
+     o piso AA aplicável segue sendo 3,0:1 — o mesmo do aceite. */
+  .cta-ref-cartao .cta-ref-titulo {
+    /* 4ª volta — era `clamp(3.25rem, 3.9vw, 5rem)`, que a 1920 dava 75px: é o que a
+       captura da reprovação mostra como o componente mais desproporcional de todos.
+       O teto caiu de 80px para 62px e o piso de 52px para 42px. Continua bem acima
+       de 24px, então o piso AA aplicável segue sendo 3,0:1 — o aceite não muda. */
+    /* 5ª volta — era `clamp(2.625rem, 3.1vw, 3.875rem)`. Teto de 62px para 52px,
+       piso de 42px para 36px. Segue acima de 24px, então o piso AA aplicável
+       continua sendo 3,0:1 e o aceite não muda. */
+    font-size: clamp(2.25rem, 2.7vw, 3.25rem);
+    /* «Atualmente está fino demais» — o `font-display` do projeto entrega 600 por
+       herança, e o override pede 700. Vem aqui, e não numa utilitária no
+       componente, para não perder para o `md:text-4xl` que já está lá. */
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    margin-bottom: 18px;
+    /* A ENTRELINHA VEM JUNTA, e não é zelo: `md:text-4xl` do Tailwind declara
+       `line-height` ABSOLUTA (40px) no mesmo atalho do tamanho, e `leading-tight`
+       do componente perde para ela. Subir só o `font-size` deixava 49px de letra
+       dentro de 40px de linha — medido, a caixa do `h2` continuava com 40px de
+       altura e as maiúsculas encostavam na linha do parágrafo.
+       0,98 (era 1,1) é o valor do override: com 56px de letra a linha passa a 55px,
+       e o título de duas linhas fecha bloco, como no PNG. */
+    line-height: 0.98;
+  }
+}
+
+/* ── movimento reduzido, pelas DUAS vias ───────────────────────────────────── */
+/* O percurso do ponto não aparece aqui porque ele é JS: o `useEffect` do
+   componente lê a preferência de forma síncrona e não chega a tocar no ponto, que
+   fica pousado no fim do fio (o estado que o HTML serve). O que sobra é o hover, e
+   o hover precisa das duas regras: o reset global do topo deste arquivo zera
+   DURAÇÕES na via do `@media`, e zerar a duração de um `transform` não desfaz o
+   deslocamento — ele só passa a acontecer instantaneamente. Então o
+   deslocamento e o giro são desligados na tinta, nas duas vias.
+   O que FICA no hover: a sombra. Cor e sombra são explicitamente aceitas pela
+   issue, e sem nenhuma resposta o botão perderia o retorno de "está sob o
+   ponteiro" para quem não usa foco de teclado.
+
+   E O BOTÃO ZERA A VARIÁVEL, NÃO O `transform`: no desktop ele é centrado na
+   meia-altura do cartão por `translateY(-50%)`, e `transform: none` aqui
+   desmontaria o layout justamente para quem pediu menos movimento — o botão
+   desceria meia altura ao receber o ponteiro ou o foco. `--cta-ref-botao-x: 0px`
+   desliga só o avanço. O giro do brilho continua com `transform: none`, porque ali
+   o `transform` só existe para girar. */
+@media (prefers-reduced-motion: reduce) {
+  .cta-ref-botao,
+  .cta-ref-botao-circulo::before {
+    transition: none;
+  }
+  .cta-ref-botao:hover,
+  .cta-ref-botao:focus-visible {
+    --cta-ref-botao-x: 0px;
+  }
+  .cta-ref-botao:hover .cta-ref-botao-circulo::before,
+  .cta-ref-botao:focus-visible .cta-ref-botao-circulo::before {
+    transform: none;
+  }
+  /* Os dois loops do §10 do doc. O reset global do topo do arquivo já zera
+     `animation-duration` nesta via, mas ele também põe
+     `animation-iteration-count: 1` — e um loop de ida e volta parado no quadro 0 é
+     o estado de repouso, não um meio-caminho. Declarar `animation: none` aqui é o
+     que garante isso sem depender da ordem em que o reset e este bloco entram na
+     cascata, e é o item 11 do checklist do doc.
+     Não é o caso da regra da skill de "movimento que revela conteúdo": estes dois
+     não revelam nada — o selo e as órbitas estão inteiros e legíveis parados. */
+  .cta-ref-selo,
+  .cta-ref-orbita {
+    animation: none;
+  }
+  /* Por que basta `animation: none` e não é preciso redeclarar `transform`, ao
+     contrário do que o botão exige acima: o keyframe do selo carrega
+     `translate(-50%, -50%)` justamente para não perder a centralização durante o
+     loop, e com a animação removida o valor volta a vir da própria regra
+     `.cta-ref-selo`, que declara a mesma translação. É a mesma armadilha do botão
+     resolvida do outro lado — lá o `transform` é composto no hover, aqui ele é
+     integral na regra base. */
+}
+html[data-motion='reduce'] .cta-ref-botao,
+html[data-motion='reduce'] .cta-ref-botao-circulo::before {
+  transition: none;
+}
+html[data-motion='reduce'] .cta-ref-botao:hover,
+html[data-motion='reduce'] .cta-ref-botao:focus-visible {
+  --cta-ref-botao-x: 0px;
+}
+html[data-motion='reduce'] .cta-ref-botao:hover .cta-ref-botao-circulo::before,
+html[data-motion='reduce'] .cta-ref-botao:focus-visible .cta-ref-botao-circulo::before {
+  transform: none;
+}
+/* A segunda via para os loops do §10. Esta é a que o botão de preferência do site
+   escreve, e o `@media` não a alcança: sem estas duas linhas o selo continuaria
+   flutuando para quem desligou o movimento DENTRO do site. */
+html[data-motion='reduce'] .cta-ref-selo,
+html[data-motion='reduce'] .cta-ref-orbita {
+  animation: none;
+}
+
+/* ============================================================================
+   SIS-261 · /esg — seção intro (`#esg-introducao`)
+   ============================================================================
+   A seção passou a ser faixa clara (`section-light section-light-blue`) para bater
+   a captura: «fundo da seção: claro + grade discreta (quadradinhos leves)». O que
+   falta ao `.section-light` base é exatamente a MALHA: ele traz a malha TÉCNICA de
+   96px, e «quadradinhos leves» é a malha FINA de 64px — a mesma que a SIS-260 pôs
+   na faixa de números do Contato, e a mesma da home. Então o bloco abaixo é o
+   recorte daquele (`.contato-indicadores.section-light::before`), pelas mesmas
+   razões medidas lá, que não se repetem aqui. */
+.esg-intro.section-light::before {
+  /* Valores anteriores, os de `.section-light::before` — a malha técnica de 96px,
+     de pé para as outras rotas:
+       background-image:
+         linear-gradient(rgba(0, 121, 203, 0.04) 1px, transparent 1px),
+         linear-gradient(90deg, rgba(0, 121, 203, 0.04) 1px, transparent 1px);
+       background-size: var(--grade-modulo) var(--grade-modulo);
+     `background-size: auto auto` é OBRIGATÓRIO e não é enfeite: o período da malha
+     fina vive dentro do `repeating-linear-gradient`, e o `6rem` herdado recortaria
+     o padrão de 64px numa gaveta de 96px — o que se vê é uma linha grossa a cada
+     96px, não quadradinhos. */
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      var(--grade-fina-linha) 0 1px,
+      transparent 1px var(--grade-fina-modulo)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      var(--grade-fina-linha) 0 1px,
+      transparent 1px var(--grade-fina-modulo)
+    );
+  background-size: auto auto;
+  opacity: var(--grade-fina-opacidade);
+  /* Valor anterior, o de `.section-light::before`:
+       mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, transparent 75%);
+     Trocado pela vinheta de CAIXA DE SEÇÃO da SIS-260: a de origem some cedo demais
+     na largura de 390. Dois prefixos porque é como a casa escreve máscara. */
+  mask-image: radial-gradient(ellipse 120% 130% at 50% 50%, #000 35%, transparent 96%);
+  -webkit-mask-image: radial-gradient(ellipse 120% 130% at 50% 50%, #000 35%, transparent 96%);
+}
+
+/* O `::after` do `.section-light` é o PONTILHADO de 22px, e aqui ele sai de cena.
+   Motivo, não gosto: 64 e 22 não são múltiplos, então os dois padrões batem em
+   períodos primos entre si e o que aparece é moiré — manchas que andam com o
+   scroll sobre uma faixa que a issue pede DISCRETA. Duas malhas concorrendo também
+   contradizem «grade discreta (quadradinhos leves)», singular.
+   `display: none` e não `opacity: 0` porque é o precedente da casa para pseudo
+   perdedor, e porque `opacity` deixaria a camada composta de graça.
+   Valor anterior, herdado de `.section-light::after` (§ do pontilhado): mantido lá
+   intacto, esta regra só o desliga NESTA seção. */
+.esg-intro.section-light::after {
+  display: none;
+}
+
+/* SIS-261 — o roxo do canto inferior direito, NESTA seção.
+   `.section-light.section-light-blue` (linha ~1046) tem três camadas de fundo, e a
+   do meio é `radial-gradient(55% 60% at 92% 88%, rgba(124, 58, 237, 0.1), …)` — um
+   radial VIOLETA. Isso contraria a regra de marca da casa («sem roxo; branco e
+   azuis», `.claude/skills/sistran-marca/SKILL.md`), e não é teoria: na captura de
+   1440 desta seção o canto inferior direito sai visivelmente arroxeado, porque a
+   arte é transparente ali e o fundo aparece limpo, sem cartão por cima.
+
+   ESCOPO, de propósito: a regra compartilhada NÃO é corrigida aqui. Ela também
+   pinta Tecnologia Disruptiva, Consultoria e a própria SOCIAL de /esg, e mexer nela
+   muda três seções que ninguém pediu — é uma issue própria, já apontada no
+   relatório da SIS-260. O que se faz aqui é não INTRODUZIR o defeito numa seção
+   nova: as três camadas são repetidas idênticas e só a do meio troca o violeta pelo
+   ciano da marca, na mesma posição e no mesmo alfa, para o claro do canto não
+   mudar de valor — só de matiz.
+   Valor anterior desta camada, o da regra compartilhada:
+     radial-gradient(55% 60% at 92% 88%, rgba(124, 58, 237, 0.1), transparent 62%)
+   `box-shadow` não é redeclarado: a sangria da SIS-93 é justamente o que se quer
+   herdar, e é ela que resolve a emenda com a capa escura acima. */
+.esg-intro.section-light.section-light-blue {
+  background:
+    radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), transparent 62%),
+    radial-gradient(55% 60% at 92% 88%, rgba(14, 216, 246, 0.1), transparent 62%),
+    linear-gradient(160deg, #f2f9fe 0%, #e3f1fb 45%, #cfe7f7 100%);
 }

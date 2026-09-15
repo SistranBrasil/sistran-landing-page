@@ -116,15 +116,74 @@
 import "./events-spotlight.css";
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ImageIcon, PlayCircle } from "lucide-react";
+/* SIS-251 — só para a asserção da variável CSS `--evt-autoplay` no `style`: o
+   tipo de `style` não aceita chave arbitrária, e o `React` global não está
+   importado como namespace neste arquivo. */
+import type { CSSProperties } from "react";
+import { ChevronLeft, ChevronRight, ImageIcon, PlayCircle } from "lucide-react";
+/* SIS-235 — o carimbo dos eventos `proprio`. Componente próprio, e não markup
+   inline, porque ele nasce em DOIS lugares desta mesma cena (palco e lista estreita)
+   e a issue pede um só reutilizável. */
+import CarimboRealizadoSistran from "./CarimboRealizadoSistran";
 import { EVENTS, EVENT_KIND_META } from "@/data/events";
 import { YOUTUBE_URL } from "@/data/contact";
-import { prefersReducedMotion } from "@/lib/motion";
+import { prefersReducedMotion, useReducedMotion } from "@/lib/motion";
+import { criarConsultaDeMedia } from "@/lib/mediaStore";
 
 /* Contagem em UM lugar só, derivada do catálogo: o contador, o `aria-valuemax` e
    a divisão das colunas leem daqui. Escrever "15" à mão em três lugares é como as
    contagens divergem sem ninguém notar. */
 const TOTAL = EVENTS.length;
+
+/**
+ * SIS-239 — ESPELHO EXATO da `@media (min-width: 1024px)` que, em
+ * `events-spotlight.css`, troca `.eventos-lista` pelo palco. A string fica
+ * literal aqui de propósito (é a doutrina de `src/lib/mediaStore.ts`): o que
+ * precisa ser conferido contra o CSS é a MEDIDA, e um nome no meio a esconderia.
+ *
+ * `1023.98px` e não `1023px`: larguras de janela são fracionárias (zoom, barra de
+ * rolagem overlay), e `max-width: 1023px` deixaria a faixa de 1023,5px sem dono —
+ * o CSS já mostraria a lista e o JS ainda a trataria como desktop, ou seja
+ * carrossel montado e autoplay desligado.
+ *
+ * Ele governa SÓ o comportamento (autoplay, ouvintes, teclado). Quem monta ou
+ * esconde cada versão continua sendo o `display: none` do CSS — o hook nasce
+ * `false` no servidor e converge depois de hidratar, então decidir QUAIS NÓS
+ * EXISTEM por ele desmontaria a subárvore na convergência.
+ */
+const useListaEstreita = criarConsultaDeMedia("(max-width: 1023.98px)");
+
+/**
+ * Intervalo do laço automático. É MAIOR que os 3.600ms do carrossel de
+ * `TechnologyShowcase` porque o que passa aqui não é uma logo: são descrições de
+ * 130 a 485 caracteres, que em 390px chegam a onze linhas. 3,6s não dá para ler
+ * a mais curta, e um carrossel que troca antes da leitura terminar é pior que
+ * nenhum — obriga a esperar o laço inteiro para reencontrar o cartão.
+ *
+ * SIS-251 — O INTERVALO NÃO FOI ENCURTADO, e a issue autoriza encurtá-lo ("se o
+ * auto estiver muito sutil/lento demais, calibrar intervalo"). O diagnóstico em
+ * 390px (`scripts/diagnostico-carrossel-sis251.mjs`) mostrou que o passo já
+ * anda e anda um cartão inteiro (0px -> 331px): o que faltava não era
+ * VELOCIDADE, era AVISO. Um cartão que fica parado 6s e depois salta é
+ * indistinguível de um cartão estático até o instante do salto — quem lê e sai
+ * antes disso nunca descobre que ele anda.
+ * Encurtar para 3s tornaria o movimento perceptível ao custo da leitura, que é
+ * justamente o que este número protege (descrições de até 485 caracteres, onze
+ * linhas em 390px). Em vez disso, o tempo passou a ser MOSTRADO: a marca do
+ * cartão em quadro preenche ao longo destes 6s (`--evt-autoplay`, escrito no
+ * DOM a partir desta constante para não haver um "6000" no CSS a divergir).
+ */
+const AUTOPLAY_MS = 6000;
+/** Quanto o autoplay espera depois de um gesto antes de voltar a andar. */
+const RETOMADA_MS = 7000;
+/**
+ * Janela em que a rolagem em curso é considerada NOSSA (autoplay/teclado) e não
+ * do dedo. Existe porque a rolagem suave do navegador emite os mesmos eventos de
+ * `scroll` que um swipe, e sem distinguir os dois o autoplay pausaria a si mesmo
+ * a cada passo. É só a rede de segurança: quem solta a marca é o `scrollend`, e
+ * este prazo cobre os navegadores que ainda não o emitem.
+ */
+const ROLAGEM_NOSSA_MS = 1400;
 
 export default function EventsSpotlight() {
   const [ativo, setAtivo] = useState(0);
@@ -253,6 +312,268 @@ export default function EventsSpotlight() {
     });
   }, []);
 
+  /* ══ SIS-239 · O CARROSSEL DA LISTA ESTREITA ══════════════════════════════
+     Daqui até o fim do bloco é só a versão de baixo de 1024px. Nada deste
+     trecho toca o palco: o palco troca de destaque por ROLAGEM DA PÁGINA
+     (`ativo`, `trilhaRef`, `irPara`, acima), e a faixa troca de cartão por
+     ROLAGEM DELA MESMA (`emFoco`, `faixaRef`, `irParaCartao`). Os dois estados
+     nunca se cruzam, e é isso que mantém o desktop inalterado.
+
+     ── POR QUE `scrollLeft` É O DONO DO ESTADO ───────────────────────────────
+     O carrossel é uma faixa com `overflow-x: auto` e `scroll-snap`: quem manda
+     na posição é o navegador, e o dedo do visitante escreve nela direto, sem
+     passar por nós. Então `emFoco` não é a verdade — é a LEITURA da verdade,
+     derivada da posição de rolagem por um ouvinte. O autoplay não "avança um
+     índice", ele ROLA a faixa; o que confirma o avanço é a posição nova.
+     A alternativa (um índice em estado dirigindo `transform: translateX`) teria
+     de reimplementar swipe, inércia, snap e acessibilidade de rolagem — e
+     brigaria com o gesto nativo em vez de usá-lo.
+
+     ── AS SEIS PAUSAS, E POR QUE CADA UMA ────────────────────────────────────
+     `autoplayPausado` é uma disjunção, e cada termo responde a um pedido:
+     • `!estreito` — acima de 1024px o carrossel não está em cena.
+     • `semMovimento` — as DUAS vias de movimento reduzido do projeto, numa
+       leitura só: `useReducedMotion()` consulta `matchMedia`, e `matchMedia`
+       está embrulhado pelo script inline de `app/layout.tsx` para devolver a
+       preferência RESOLVIDA (escolha em `html[data-motion]` > preferência do
+       SO). É a mesma razão pela qual `UnitsMap` consulta `matchMedia` e não o
+       atributo. O CSS, que não tem esse embrulho, precisa dos dois blocos — e
+       os tem, no fim de `events-spotlight.css`.
+     • `!emQuadro` — faixa fora da janela não anima para ninguém, só gasta
+       bateria e desalinha o cartão para quem volta.
+     • `abaOculta` — mesmo motivo, com a aba em segundo plano.
+     • `sobre` / `comFoco` / `apoiado` — hover de mouse, foco de teclado e dedo
+       apoiado. São três entradas diferentes e cada uma é um estado próprio:
+       quem lê com o mouse parado sobre o cartão não tem foco, e quem chega pelo
+       Tab não tem ponteiro.
+     • `esperandoRetomada` — o rastro de qualquer gesto (swipe, seta, roda). O
+       autoplay não retoma no instante em que o dedo sai; espera `RETOMADA_MS`.
+
+     Nenhuma delas remove conteúdo: com o autoplay parado a faixa continua
+     rolável à mão e os quinze seguem alcançáveis — a régua de
+     `reduced-motion-conteudo` que o cabeçalho deste arquivo já aplica às
+     miniaturas do palco. */
+  const faixaRef = useRef<HTMLUListElement>(null);
+  const listaRef = useRef<HTMLElement>(null);
+  const [emFoco, setEmFoco] = useState(0);
+  const [emQuadro, setEmQuadro] = useState(false);
+  const [sobre, setSobre] = useState(false);
+  const [comFoco, setComFoco] = useState(false);
+  const [apoiado, setApoiado] = useState(false);
+  const [esperandoRetomada, setEsperandoRetomada] = useState(false);
+  /* Instantâneo do servidor é `false` e nada no HTML depende deste valor — ele
+     só liga e desliga um relógio. Ler no inicializador evita o `setState`
+     síncrono dentro do efeito (a cascata que a SIS-182 removeu). */
+  const [abaOculta, setAbaOculta] = useState(
+    () => typeof document !== "undefined" && document.hidden,
+  );
+
+  const estreito = useListaEstreita();
+  const semMovimento = useReducedMotion();
+
+  /* `true` enquanto a rolagem em curso é a NOSSA — ver `ROLAGEM_NOSSA_MS`. Ref,
+     e não estado: é lido dentro do ouvinte de `scroll`, que roda a cada quadro,
+     e um re-render por quadro para uma bandeira interna seria desperdício. */
+  const rolagemNossaRef = useRef(false);
+  const soltarRef = useRef<number | null>(null);
+  const retomadaRef = useRef<number | null>(null);
+
+  /**
+   * SIS-251 — «já mexeu aqui?». É o interruptor da dica «deslize»: uma
+   * instrução de gesto só serve a quem ainda não fez o gesto, e deixá-la em
+   * quadro depois disso é a poluição que a issue manda evitar ("sem poluir a
+   * leitura").
+   *
+   * Mora aqui, e não num ouvinte novo, porque `segurarAutoplay` JÁ é o funil por
+   * onde passa toda entrada de interação da faixa — swipe, dedo apoiado, seta do
+   * teclado, roda, e agora os botões. Um segundo detector seria uma segunda
+   * definição de "interagiu", a envelhecer separado desta.
+   */
+  const [interagiu, setInteragiu] = useState(false);
+
+  /** Segura o autoplay por `RETOMADA_MS`. Todo gesto passa por aqui. */
+  const segurarAutoplay = useCallback(() => {
+    setInteragiu(true);
+    setEsperandoRetomada(true);
+    if (retomadaRef.current) window.clearTimeout(retomadaRef.current);
+    retomadaRef.current = window.setTimeout(
+      () => setEsperandoRetomada(false),
+      RETOMADA_MS,
+    );
+  }, []);
+
+  /**
+   * Rola a faixa até o cartão N, com laço nas duas pontas.
+   *
+   * O alvo é `alvo.offsetLeft - primeiro.offsetLeft`, e a subtração não é
+   * enfeite: `offsetLeft` é medido a partir da borda do contêiner, então o do
+   * primeiro cartão VALE o `padding-inline` da faixa. Subtraí-lo dá a posição de
+   * rolagem em que o cartão encosta exatamente onde o primeiro encosta com
+   * `scrollLeft: 0` — o mesmo ponto que o `scroll-padding-inline` do CSS declara
+   * como início do snapport. Mirar `offsetLeft` cru deslocaria tudo pela margem.
+   *
+   * `scrollTo` da FAIXA, e não `scrollIntoView`: o segundo arrastaria a PÁGINA
+   * na vertical para trazer o cartão inteiro em quadro (os cartões são mais
+   * altos que a janela em 390px), e a página tem rolagem suave por biblioteca,
+   * que intercepta essa chamada — a mesma apuração de `irPara`, acima.
+   */
+  const irParaCartao = useCallback(
+    (indice: number, porGesto = false) => {
+      const faixa = faixaRef.current;
+      if (!faixa) return;
+      const cartoes =
+        faixa.querySelectorAll<HTMLElement>(".eventos-lista-item");
+      const primeiro = cartoes[0];
+      const alvo = cartoes[((indice % TOTAL) + TOTAL) % TOTAL];
+      if (!primeiro || !alvo) return;
+
+      rolagemNossaRef.current = true;
+      if (soltarRef.current) window.clearTimeout(soltarRef.current);
+      /* A função é NOMEADA e o `setTimeout` fica numa linha só por causa do
+         extrator da Regra Zero (`scripts/copy-lock.mjs`): a forma
+         `}, CONSTANTE)` — chave de fechamento de arrow, vírgula, identificador —
+         é lida por ele como nó de texto de JSX, e entrava no lock como se fosse
+         escrita do site. Bug do extrator, não deste arquivo; a saída é escrever
+         o mesmo código na forma que não o confunde. */
+      const soltarRolagemNossa = () => {
+        rolagemNossaRef.current = false;
+      };
+      soltarRef.current = window.setTimeout(soltarRolagemNossa, ROLAGEM_NOSSA_MS);
+
+      faixa.scrollTo({
+        left: alvo.offsetLeft - primeiro.offsetLeft,
+        /* Com movimento reduzido o passo é instantâneo — é a mesma decisão do
+           pulo das miniaturas do palco, e o que garante que os botões de teclado
+           continuem levando aos quinze sem animar nada. */
+        behavior: semMovimento ? "auto" : "smooth",
+      });
+      if (porGesto) segurarAutoplay();
+    },
+    [semMovimento, segurarAutoplay],
+  );
+
+  /**
+   * Qual cartão está no início da faixa, lido da posição de rolagem.
+   *
+   * Vale para os DOIS caminhos (autoplay e swipe), porque os dois terminam em
+   * `scrollLeft`. O que distingue um do outro é `rolagemNossaRef`: só a rolagem
+   * que NÃO é nossa segura o autoplay. Sem essa distinção, a rolagem suave do
+   * próprio passo se pareceria com um gesto e o autoplay pausaria a si mesmo.
+   *
+   * `requestAnimationFrame` como estrangulador: `scroll` dispara muito mais que
+   * uma vez por quadro durante um swipe, e o cálculo é uma varredura de quinze
+   * caixas. `setEmFoco` com o mesmo valor não re-renderiza (o React aborta), então
+   * na prática há um render por TROCA de cartão, não por evento.
+   */
+  useEffect(() => {
+    const faixa = faixaRef.current;
+    if (!faixa || !estreito) return;
+
+    let quadro = 0;
+    const ler = () => {
+      quadro = 0;
+      const cartoes =
+        faixa.querySelectorAll<HTMLElement>(".eventos-lista-item");
+      const primeiro = cartoes[0];
+      if (!primeiro) return;
+      const posicao = faixa.scrollLeft;
+      let melhor = 0;
+      let menor = Number.POSITIVE_INFINITY;
+      cartoes.forEach((cartao, i) => {
+        const distancia = Math.abs(
+          cartao.offsetLeft - primeiro.offsetLeft - posicao,
+        );
+        if (distancia < menor) {
+          menor = distancia;
+          melhor = i;
+        }
+      });
+      setEmFoco(melhor);
+      if (!rolagemNossaRef.current) segurarAutoplay();
+    };
+
+    const aoRolar = () => {
+      if (!quadro) quadro = requestAnimationFrame(ler);
+    };
+    /* `scrollend` é quem solta a marca de "rolagem nossa" na hora certa; o prazo
+       de `ROLAGEM_NOSSA_MS` fica como rede para quem não o emite. */
+    const aoTerminar = () => {
+      rolagemNossaRef.current = false;
+    };
+
+    faixa.addEventListener("scroll", aoRolar, { passive: true });
+    faixa.addEventListener("scrollend", aoTerminar);
+    return () => {
+      faixa.removeEventListener("scroll", aoRolar);
+      faixa.removeEventListener("scrollend", aoTerminar);
+      if (quadro) cancelAnimationFrame(quadro);
+    };
+  }, [estreito, segurarAutoplay]);
+
+  /* A faixa em quadro. `threshold: 0` porque a pergunta é binária — encostou na
+     janela ou não —, e a faixa é mais alta que a janela em 390px, de modo que
+     pedir fração visível nunca se cumpriria. */
+  useEffect(() => {
+    const alvo = listaRef.current;
+    if (!alvo) return;
+    const io = new IntersectionObserver(
+      ([entrada]) => setEmQuadro(entrada.isIntersecting),
+      { threshold: 0 },
+    );
+    io.observe(alvo);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const ler = () => setAbaOculta(document.hidden);
+    document.addEventListener("visibilitychange", ler);
+    return () => document.removeEventListener("visibilitychange", ler);
+  }, []);
+
+  useEffect(
+    () => () => {
+      if (soltarRef.current) window.clearTimeout(soltarRef.current);
+      if (retomadaRef.current) window.clearTimeout(retomadaRef.current);
+    },
+    [],
+  );
+
+  const autoplayPausado =
+    !estreito ||
+    semMovimento ||
+    !emQuadro ||
+    abaOculta ||
+    sobre ||
+    comFoco ||
+    apoiado ||
+    esperandoRetomada;
+
+  /* Um timeout só, reagendado a cada troca — o molde de `TechnologyShowcase`. O
+     `% TOTAL` de `irParaCartao` é o laço: depois do décimo quinto o passo pede o
+     zero, e a faixa volta ao começo pelo mesmo caminho que fez para chegar lá. */
+  useEffect(() => {
+    if (autoplayPausado) return;
+    const relogio = window.setTimeout(
+      () => irParaCartao(emFoco + 1),
+      AUTOPLAY_MS,
+    );
+    return () => window.clearTimeout(relogio);
+  }, [autoplayPausado, emFoco, irParaCartao]);
+
+  /* Setas do teclado. A faixa é um contêiner de rolagem focável, então o
+     navegador já responderia a elas — mas rolando por PIXELS, o que com
+     `scroll-snap: mandatory` vira um pulo de volta ao cartão de onde saiu.
+     `preventDefault` troca isso por um passo de um cartão. */
+  const aoTeclar = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      irParaCartao(emFoco - 1, true);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      irParaCartao(emFoco + 1, true);
+    }
+  };
+
   const evento = EVENTS[ativo];
   const meta = EVENT_KIND_META[evento.kind];
 
@@ -365,21 +686,35 @@ export default function EventsSpotlight() {
               aria-live="polite"
               aria-atomic="true"
             >
-              <span
-                className="eventos-destaque-chip"
-                style={{
-                  borderColor: `${meta.tone}66`,
-                  background: `${meta.tone}1f`,
-                  color: "#0b3a5c",
-                }}
-              >
+              {/* SIS-235 — nos eventos `proprio` a tag textual vira CARIMBO. Os
+                  outros três `kind` seguem no chip, e o admin e os filtros seguem
+                  com o rótulo em texto: a issue troca a tag do CARTÃO, não a
+                  taxonomia.
+
+                  O chip NÃO foi apagado — ele continua sendo o caminho dos outros
+                  três kinds, e este é o mesmo ramo, só com a condição na frente.
+                  `animar` ligado aqui e desligado na lista estreita porque o palco
+                  tem UM cartão, que remonta ao trocar de evento; a lista monta os
+                  quinze de uma vez (o porquê está no componente do carimbo). */}
+              {evento.kind === "proprio" ? (
+                <CarimboRealizadoSistran animar />
+              ) : (
                 <span
-                  className="eventos-destaque-chip-no"
-                  style={{ background: meta.tone }}
-                  aria-hidden="true"
-                />
-                {meta.label}
-              </span>
+                  className="eventos-destaque-chip"
+                  style={{
+                    borderColor: `${meta.tone}66`,
+                    background: `${meta.tone}1f`,
+                    color: "#0b3a5c",
+                  }}
+                >
+                  <span
+                    className="eventos-destaque-chip-no"
+                    style={{ background: meta.tone }}
+                    aria-hidden="true"
+                  />
+                  {meta.label}
+                </span>
+              )}
               <h3 className="eventos-destaque-cartao-titulo">{evento.title}</h3>
               <p className="eventos-destaque-cartao-texto">
                 {evento.description}
@@ -469,10 +804,64 @@ export default function EventsSpotlight() {
         </div>
       </section>
 
-      {/* ── ABAIXO DE 1024px: a lista dos quinze ───────────────────────────────
+      {/* ── ABAIXO DE 1024px: os quinze em CARROSSEL ──────────────────────────
           Sem colunas, sem fios, sem contador — nada disso caberia em 390px. O que
-          não pode faltar é o conteúdo: chip, título, descrição, arte e botão. */}
-      <section className="eventos-lista" aria-labelledby="eventos-lista-titulo">
+          não pode faltar é o conteúdo: chip, título, descrição, arte e botão.
+
+          SIS-239 — era uma PILHA VERTICAL: quinze cartões empilhados, 6.413px de
+          rolagem medidos em 390px (`scripts/medir-carrossel-eventos-sis239.mjs`,
+          corrida "antes"). Agora é uma faixa horizontal com laço automático.
+
+          O QUE NÃO MUDOU, e isto é o ponto: o conteúdo de cada cartão é o MESMO,
+          nó por nó — chip, `h3`, descrição inteira (nada de `line-clamp`), arte e
+          o botão só onde há gravação. A troca é de EIXO e de navegação, não de
+          escrita; nenhum texto foi encurtado para caber no cartão.
+
+          ── UM CARTÃO POR VEZ, COM ESPIADA ───────────────────────────────────
+          A issue deixa a escolha entre "um por vez" e "um com espiada do
+          próximo", pela legibilidade em 390px. É a segunda, e a conta está no
+          CSS (`--evt-faixa-espiada`): a espiada custa 2rem da largura do cartão
+          — de 351px para ~319px, 9% —, e em troca resolve o que a pilha
+          entregava de graça e uma faixa não entrega: a informação de que existe
+          mais coisa PARA O LADO. Sem ela, uma faixa com `scroll-snap` e sem
+          barra de rolagem parece um cartão único e estático. As marcas de
+          posição logo abaixo dizem QUANTOS; a espiada diz PARA ONDE.
+
+          ── SEM CONTROLES DE TEXTO, E POR QUE ────────────────────────────────
+          | A issue permite "controles/dots/contador". Entram as MARCAS de
+          | posição, que são decorativas (`aria-hidden`) e não escrevem uma
+          | palavra (...). Não entram setas nem contador em texto: os dois
+          | precisariam de rótulo acessível, isto é, de ESCRITA NOVA, e escrita
+          | nova nesta rota passa pelo portão da Regra Zero (`npm run test:copy`)
+          | e pelo dono do conteúdo (...). É a decisão a rever se a issue de
+          | conteúdo autorizar o texto.
+
+          ⚠️ SIS-251 É ESSA ISSUE, e ela autorizou: pede "setas/chevrons, hint
+          «deslize», dots mais claros, ou combinação" com todas as palavras. A
+          nota de cima fica registrada porque ela explica por que os controles
+          NÃO existiam — não foi esquecimento, foi um portão —, e o que mudou é
+          quem tem a chave: a dona do conteúdo pediu o texto na issue.
+          O que entrou está adiante, no bloco `.eventos-lista-controles`; o que
+          continua fora é o CONTADOR em texto («03 / 15»), que a issue lista como
+          alternativa e não como requisito — as marcas já dizem quantos e onde, e
+          um número ao lado delas seria a mesma informação duas vezes.
+
+          ⚠️ RESSALVA DA SIS-239, AGORA MENOR — MAS NÃO FECHADA (WCAG 2.2.2,
+          "Pause, Stop, Hide"). O que as setas acrescentam é CONTROLE EXPLÍCITO
+          do avanço: clicar em uma delas passa por `segurarAutoplay` e segura o
+          laço por `RETOMADA_MS`. Isso não é uma PAUSA — é um adiamento, e depois
+          de 7s o laço volta. Quem para de vez continua sendo o interruptor de
+          movimento do rodapé (as duas vias de `semMovimento`), que é o mecanismo
+          que a norma pede e que já existia.
+          Um botão dedicado de pausa continua de fora, e agora por outra razão
+          que não a do rótulo: ele seria um QUARTO controle na mesma barra de
+          390px, e a issue manda não poluir. Fica anotado como o próximo passo se
+          alguém medir que o interruptor do rodapé não é achado. */}
+      <section
+        ref={listaRef}
+        className="eventos-lista"
+        aria-labelledby="eventos-lista-titulo"
+      >
         <header className="eventos-lista-cabecalho">
           <p className="eventos-destaque-sobretitulo">
             <span className="eventos-destaque-traco" aria-hidden="true" />
@@ -483,26 +872,81 @@ export default function EventsSpotlight() {
             Eventos &amp; Inovação
           </h2>
         </header>
-        <ul className="eventos-lista-itens">
+        {/* `<ul>`/`<li>` PRESERVADOS, sem `role="group"` nem
+            `aria-roledescription`: a semântica de lista é o que anuncia "quinze
+            itens" e dá a navegação por item do leitor de tela, e trocá-la por
+            "carrossel" custaria as duas coisas em troca de uma palavra.
+
+            `tabIndex={0}` + `aria-labelledby` porque a faixa É um contêiner de
+            rolagem: sem foco, quem navega por teclado não teria como percorrê-la
+            (WCAG 2.1.1), e um contêiner focável sem nome é um destino de Tab que
+            o leitor de tela anuncia sem dizer o que é. O nome é o `h2` que já
+            está acima — sem escrita nova.
+
+            `data-lenis-prevent` é o que faz a rolagem desta faixa existir: a
+            página é rolada por biblioteca (Lenis), que intercepta a roda no
+            `window`. O atributo é o mesmo recurso que a faixa de chips do
+            `Hero` usa, e o `globals.css` já lhe dá `overscroll-behavior:
+            contain`.
+
+            NADA AQUI DEPENDE DE JAVASCRIPT PARA SER LIDO: o eixo, o snap e a
+            rolagem são CSS, e o JS só acrescenta o laço automático e o passo por
+            teclado. Sem ele a faixa continua sendo quinze cartões roláveis com o
+            dedo. */}
+        <ul
+          ref={faixaRef}
+          className="eventos-lista-itens"
+          tabIndex={0}
+          aria-labelledby="eventos-lista-titulo"
+          data-lenis-prevent
+          onKeyDown={aoTeclar}
+          onPointerEnter={(e) => {
+            if (e.pointerType === "mouse") setSobre(true);
+          }}
+          onPointerLeave={() => {
+            setSobre(false);
+            setApoiado(false);
+          }}
+          onPointerDown={() => setApoiado(true)}
+          onPointerUp={() => {
+            setApoiado(false);
+            segurarAutoplay();
+          }}
+          onPointerCancel={() => {
+            setApoiado(false);
+            segurarAutoplay();
+          }}
+          /* `onFocus`/`onBlur` do React são `focusin`/`focusout`: eles sobem dos
+             filhos, então o foco no botão do YouTube de um cartão também pausa. */
+          onFocus={() => setComFoco(true)}
+          onBlur={() => setComFoco(false)}
+        >
           {EVENTS.map((e) => {
             const m = EVENT_KIND_META[e.kind];
             return (
               <li key={e.id} className="eventos-lista-item">
-                <span
-                  className="eventos-destaque-chip"
-                  style={{
-                    borderColor: `${m.tone}66`,
-                    background: `${m.tone}1f`,
-                    color: "#0b3a5c",
-                  }}
-                >
+                {/* SIS-235 — o MESMO ramo do palco, repetido porque este bloco é a
+                    lista estreita (carrossel da SIS-239) e tem markup próprio.
+                    Sem `animar`: aqui os quinze cartões montam de uma vez. */}
+                {e.kind === "proprio" ? (
+                  <CarimboRealizadoSistran />
+                ) : (
                   <span
-                    className="eventos-destaque-chip-no"
-                    style={{ background: m.tone }}
-                    aria-hidden="true"
-                  />
-                  {m.label}
-                </span>
+                    className="eventos-destaque-chip"
+                    style={{
+                      borderColor: `${m.tone}66`,
+                      background: `${m.tone}1f`,
+                      color: "#0b3a5c",
+                    }}
+                  >
+                    <span
+                      className="eventos-destaque-chip-no"
+                      style={{ background: m.tone }}
+                      aria-hidden="true"
+                    />
+                    {m.label}
+                  </span>
+                )}
                 <h3 className="eventos-destaque-cartao-titulo">{e.title}</h3>
                 <p className="eventos-destaque-cartao-texto">{e.description}</p>
                 <div className="eventos-destaque-arte">
@@ -541,6 +985,106 @@ export default function EventsSpotlight() {
             );
           })}
         </ul>
+
+        {/* ── SIS-251 · A BARRA DE CONTROLES ────────────────────────────────
+            Seta, marcas, seta. As duas coisas que a issue quer óbvias ficam em
+            UMA linha, logo abaixo da faixa:
+
+            • QUE SE PASSA PARA O LADO — as setas. Elas são o idioma que se
+              reconhece sem instrução, e ficam ABAIXO da faixa em vez de
+              flutuando sobre as bordas dela: em 390px o cartão tem 319px de
+              largura e um botão sobreposto cobriria a arte ou o texto, que é o
+              conteúdo. Uma barra de controles debaixo do palco é a forma que
+              não disputa espaço com nada.
+            • QUE ANDA SOZINHO — as marcas, que agora contam o tempo (ver
+              `--evt-autoplay`, adiante). É a parte que faltava: o passo de 6s já
+              acontecia, mas nada o anunciava ANTES de acontecer.
+
+            As setas não desabilitam nas pontas de propósito: `irParaCartao` tem
+            `% TOTAL` nas duas direções, então o percurso é um laço e não existe
+            "fim" onde um botão morto faria sentido. Um botão desabilitado no
+            primeiro cartão diria que não há nada à esquerda, e há — o
+            décimo quinto.
+
+            `porGesto = true` nas duas chamadas: um clique é interação como o
+            swipe, e tem de segurar o laço. Sem isso o autoplay poderia avançar
+            0,3s depois do clique, levando embora o cartão que a pessoa acabou de
+            pedir. */}
+        <div className="eventos-lista-controles">
+          <button
+            type="button"
+            className="eventos-lista-seta"
+            data-lado="antes"
+            onClick={() => irParaCartao(emFoco - 1, true)}
+          >
+            <ChevronLeft className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
+            <span className="sr-only">Evento anterior</span>
+          </button>
+
+          {/* MARCAS DE POSIÇÃO — quinze, uma por cartão, a do cartão em quadro
+              alongada. `aria-hidden` e sem texto nenhum: é exatamente o que
+              `.tech-progresso` faz em `TechnologyShowcase`, e é o que permite dar
+              posição sem inventar escrita (ver a nota da seção, acima).
+              Quem ouve não perde nada — a posição, para quem navega por leitor de
+              tela, é o "item 3 de 15" que a semântica do `<ul>` já anuncia.
+
+              SIS-251 — dois atributos novos, e os dois existem para o RELÓGIO:
+              • `--evt-autoplay` vem de `AUTOPLAY_MS`, a constante deste arquivo.
+                Escrito no DOM em vez de repetido no CSS porque o preenchimento
+                tem de durar EXATAMENTE o intervalo do laço; um `6s` no CSS seria
+                um segundo número a divergir do primeiro no dia em que alguém
+                calibrar o tempo.
+              • `data-andando` congela o preenchimento quando o laço está parado,
+                por qualquer uma das oito razões de `autoplayPausado`. Congelar, e
+                não zerar: uma barra que para no meio diz "o tempo parou porque
+                você está aqui", que é a resposta honesta ao dedo apoiado. */}
+          <div
+            className="eventos-lista-bussola"
+            aria-hidden="true"
+            data-andando={autoplayPausado ? "nao" : "sim"}
+            style={{ "--evt-autoplay": `${AUTOPLAY_MS}ms` } as CSSProperties}
+          >
+            {EVENTS.map((e, i) => (
+              <span
+                key={e.id}
+                className="eventos-lista-bussola-marca"
+                data-estado={i === emFoco ? "ativo" : "inativo"}
+              />
+            ))}
+          </div>
+
+          <button
+            type="button"
+            className="eventos-lista-seta"
+            data-lado="depois"
+            onClick={() => irParaCartao(emFoco + 1, true)}
+          >
+            <ChevronRight className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
+            <span className="sr-only">Próximo evento</span>
+          </button>
+        </div>
+
+        {/* A DICA, e ela é o único texto VISÍVEL que esta issue acrescenta.
+            Some na primeira interação e some assim que a faixa sai do primeiro
+            cartão (inclusive se quem saiu foi o autoplay) — instrução de gesto
+            depois do gesto é ruído, e o pedido da issue é reforçar a affordance
+            "sem poluir a leitura".
+
+            `aria-hidden`, e isto é decisão, não descuido: a frase instrui um
+            GESTO DE TELA para quem vê a faixa. Quem navega por leitor de tela não
+            chega aqui deslizando — chega pela lista de quinze itens e pelos dois
+            botões ao lado, que têm nome próprio. Anunciar "deslize" a essa pessoa
+            descreveria uma interação que não é a dela.
+
+            O texto é `sr-only`-invertido de propósito: nada aqui repete conteúdo
+            de evento nenhum, então não há risco de leitura dupla. */}
+        {!interagiu && emFoco === 0 ? (
+          <p className="eventos-lista-dica" aria-hidden="true">
+            <ChevronLeft className="h-3.5 w-3.5" strokeWidth={2.2} />
+            deslize para ver os 15 eventos
+            <ChevronRight className="h-3.5 w-3.5" strokeWidth={2.2} />
+          </p>
+        ) : null}
       </section>
     </>
   );

@@ -108,6 +108,7 @@ import { syncSmoothScroll } from '@/lib/smoothScroll';
    exatamente para que religar fosse uma linha, e foi. */
 import HeroCaptions from './ui/HeroCaptions';
 import HeroPitch from './ui/HeroPitch';
+import { useRouteLoadGate } from './loading/RouteLoadGate';
 import { ScrollVideo } from './primitives/ScrollVideo';
 import { ScrollCue } from './primitives/ScrollCue';
 
@@ -116,18 +117,20 @@ import { ScrollCue } from './primitives/ScrollCue';
  * qualquer posição sem o decodificador recomeçar do keyframe anterior (que é o
  * que faz a imagem andar aos saltos). Comando em `ScrollVideo`.
  */
-/* SIS-178 — quadro NOVO da cena. O arquivo anterior fica no repositorio e a
-   constante fica AQUI comentada, nao apagada: é o unico registro de que o hero
-   já foi 16:9, e voltar a ele é uma linha.
-     const HERO_VIDEO = '/videos/hero-scroll.mp4';   // 1280x720, 556 quadros, 8,2 MB
-   O material bruto (`videos/videohero.mp4`, 2160x2160, 15,1s, 60fps, 98,1 MB,
-   com audio) NAO serve direto: tem só 4 keyframes, e `primitives/ScrollVideo`
+/* SIS-178 — quadro NOVO da cena. O arquivo anterior fica preservado em
+   `docs/fontes/videos/hero-scroll.mp4`; a constante fica AQUI comentada como
+   registro de que o hero já foi 16:9.
+     const HERO_VIDEO = '/videos/hero-scroll.mp4';   // 1280x720, 556 quadros, 7,83 MiB
+   O material bruto (`docs/fontes/videos/videohero.mp4`, 2160x2160, 15,1s,
+   60fps, 93,55 MiB, com audio) NAO serve direto: tem só 4 keyframes, e
+   `primitives/ScrollVideo`
    exige all-intra — com quadros interpolados o decodificador recomeça do
    keyframe anterior a cada busca e a imagem anda aos saltos. Reencodado com
-     ffmpeg -i videohero.mp4 -an -vf "scale=1440:1440,fps=24" -c:v libx264 \
-       -preset slow -crf 32 -g 1 -keyint_min 1 -sc_threshold 0 \
-       -pix_fmt yuv420p -movflags +faststart hero-scroll-v2.mp4
-   Conferido: 361 keyframes em 361 quadros (`ffprobe -skip_frame nokey`), 15,4 MB.
+     ffmpeg -i docs/fontes/videos/videohero.mp4 -an \
+       -vf "scale=1440:1440:flags=lanczos,fps=24" -c:v libx264 \
+       -preset slow -crf 35 -g 1 -keyint_min 1 -sc_threshold 0 \
+       -pix_fmt yuv420p -movflags +faststart hero-scroll-v2.sis241.mp4
+   Conferido: 361 pacotes-chave em 361 quadros, 1440x1440, 24fps, 10,43 MiB.
    O 1:1 é de proposito e casa melhor com a cena dividida da SIS-178 do que o
    16:9 antigo: a metade direita mede 885x900 a 1440, quase quadrada, então o
    `object-fit: cover` quase não corta. E o assunto de cada beat (o rotulo
@@ -148,13 +151,66 @@ export default function HeroCinematic() {
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  /* ── SIS-243 · O HERO ESPERA O PORTÃO DA ROTA ─────────────────────────────
+     A abertura da home é do `RouteLoadGate`: enquanto ele está de pé, há um
+     overlay opaco cobrindo a página inteira e a rolagem está travada
+     (`data-route-scroll-locked`). O hero começava assim mesmo — a Fase A era
+     promovida num `requestAnimationFrame` logo depois de montar, ou seja ATRÁS
+     da cortina: o vídeo gastava a entrada tocando para ninguém e, quando o
+     overlay saía, a cena já estava no meio do percurso.
+
+     `liberado` é `visible === false` do portão, e não `openingReady`: entre um e
+     outro ainda corre o fade de 240ms com o overlay pintado. A distinção está
+     escrita no próprio contexto, em `loading/RouteLoadGate`.
+
+     Sem portão em volta (`null`) o hero volta a valer por si — é o que mantém
+     este componente montável fora do `app/layout`, e o que evita que um erro de
+     composição deixe o hero esperando para sempre. O portão tem timeout de 10s,
+     então o caminho normal também não tem espera infinita. */
+  const portao = useRouteLoadGate();
+  const liberado = portao ? portao.liberado : true;
+
+  /* ── SIS-243 · A PÁGINA SE MEXEU ENQUANTO O PORTÃO ESTAVA DE PÉ? ──────────
+     Adiar a decisão até a liberação abriu uma brecha no ponto 3 da issue, e ela
+     é do portão, não do hero: enquanto o overlay está na tela, `html` e `body`
+     ficam com `overflow: hidden` (`RouteLoadGate.module.css`), e conteúdo não
+     rolável tem a posição GRAMPEADA em 0 pelo navegador. Medido numa abertura
+     por âncora (`/#contato`): o navegador rola para 8915 aos 563ms, o trinco
+     grampeia de volta para 0 aos 898ms, e o portão libera aos 1350ms com a
+     página no topo — indistinguível de quem abriu no topo.
+
+     Daí a memória: se em ALGUM instante, antes da liberação, a página esteve
+     fora do topo, a abertura automática não acontece. Uma `ref`, e não estado:
+     ela é lida uma vez, na decisão, e um `setState` por evento de rolagem
+     reentraria no render a cada quadro.
+
+     O ouvinte só existe ENQUANTO o portão está de pé — depois dele quem rola é
+     o usuário (ou a própria Fase A), e aí a memória não significa mais nada.
+     Nas limpezas de um mesmo commit o React desfaz todos os efeitos antes de
+     rodar os novos, então a `ref` chega intacta à decisão logo abaixo. */
+  const saiuDoTopo = useRef(false);
+  useEffect(() => {
+    if (liberado) return;
+    const anotar = () => {
+      if (window.scrollY > 4) saiuDoTopo.current = true;
+    };
+    /* Leitura imediata além do ouvinte: restauração de rolagem (F5 no meio da
+       página) pode acontecer antes de este componente montar, e aí não há
+       evento nenhum para ouvir. */
+    anotar();
+    window.addEventListener('scroll', anotar, { passive: true });
+    return () => window.removeEventListener('scroll', anotar);
+  }, [liberado]);
+
   /* Eixo de tempo único do hero: um `t ∈ [0,1]` que alimenta o vídeo, a manchete
      e o recolhimento em card. É o mesmo de sempre — o que a SIS-189 muda é QUEM
      escreve esse `t`, e nunca são dois ao mesmo tempo.
 
      SIS-189 — ERA: "Nada de play/pause — o vídeo só existe como função do
      scroll." Deixou de ser verdade a pedido: ao entrar na home o vídeo começa
-     sozinho. Em duas fases:
+     sozinho. SIS-243 — e "ao entrar" passou a ter hora marcada: é quando o
+     `RouteLoadGate` tira o overlay da tela, não quando o componente monta (ver
+     `liberado`, no topo da função). Em duas fases:
 
        FASE A (entrada, automática)  o vídeo TOCA e é ele o relógio. A fração de
          `currentTime` vira posição de rolagem (`aoFracaoDoVideo`), então a página
@@ -203,6 +259,15 @@ export default function HeroCinematic() {
   const alvoDaEntrada = useRef<number | null>(null);
 
   useEffect(() => {
+    /* SIS-243 — primeira guarda, antes de qualquer outra: enquanto o overlay da
+       rota estiver na tela, não há entrada a promover. O efeito roda de novo
+       quando `liberado` vira `true`, e só então decide.
+       Isto NÃO é uma segunda chance de entrada: a fase continua sendo promovida
+       no máximo uma vez por visita, porque `liberado` só muda uma vez por ciclo
+       do portão (ele remonta por rota, `key={pathname}`) e a saída da Fase A não
+       mexe em nenhuma dependência deste efeito. */
+    if (!liberado) return;
+
     const el = wrapperRef.current;
     if (!el) return;
 
@@ -224,12 +289,15 @@ export default function HeroCinematic() {
     const quadro = requestAnimationFrame(() => {
       /* Ponto 5 da issue: página aberta JÁ dentro do hero não dispara automático.
          A tolerância é de 4px porque restauração de scroll e barras de endereço
-         móveis deixam sobra de 1–2px. */
-      if (window.scrollY > 4) return;
+         móveis deixam sobra de 1–2px.
+         SIS-243 — a leitura de agora não basta mais: o trinco do portão zera a
+         posição de quem abriu no meio (ver `saiuDoTopo`, acima). São as duas
+         condições, e a memória é a que vale para o caminho novo. */
+      if (saiuDoTopo.current || window.scrollY > 4) return;
       setFase('entrada');
     });
     return () => cancelAnimationFrame(quadro);
-  }, []);
+  }, [liberado]);
 
   /* Sai da Fase A e não volta. Uma função só para os quatro caminhos de saída
      (gesto, divergência, teto, recusa do `play()`) porque o estado final é o
@@ -539,6 +607,17 @@ export default function HeroCinematic() {
             src={HERO_VIDEO}
             poster={HERO_POSTER}
             progress={scrollYProgress}
+            /* SIS-243/SIS-241 — os 10,43 MiB do `hero-scroll-v2.mp4` só partem depois que
+               o portão da rota libera. Enquanto ele está de pé, o hero é o
+               PÔSTER (58 KB) e nada mais: era o vídeo que disputava banda com
+               as fontes e as imagens que o próprio portão está esperando, e o
+               overlay durava mais por causa do que ele mesmo cobria.
+
+               Não depende de `fase` nem de `rm`: com movimento reduzido, ou
+               aberto no meio da página, não há entrada automática, mas a
+               raspagem da Fase B precisa do arquivo do mesmo jeito. O que muda é
+               QUANDO ele é pedido, nunca SE. */
+            carregar={liberado}
             /* Fase A. `rm &&` não é redundante com a guarda do efeito: aquela
                decide se a fase COMEÇA, e esta garante que ela não sobrevive a
                alguém ligar movimento reduzido pelo botão da interface com a

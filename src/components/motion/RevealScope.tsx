@@ -1,7 +1,8 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { useRevealTrigger } from './useRevealTrigger';
+import { useRouteLoadGate } from '@/components/loading/RouteLoadGate';
 
 /**
  * SIS-193 — a única fiação entre um trecho de página e os estados de movimento
@@ -16,6 +17,21 @@ import { useRevealTrigger } from './useRevealTrigger';
 type Props = {
   children: ReactNode;
   className?: string;
+  /**
+   * SIS-263 (2ª volta) — por onde a ROTA afina duração e curva do reveal, sem
+   * tocar nos tokens globais: as custom properties `--reveal-dur` e
+   * `--reveal-ease` herdam daqui para os nós marcados. Mudar
+   * `--motion-reveal-base` no `:root` mexeria na home e nas outras rotas, que
+   * estão fora do escopo da issue; mudar `--motion-ease-out` no escopo mexeria
+   * também nos hovers dos cartões que vivem dentro dele.
+   */
+  style?: CSSProperties;
+  /**
+   * `true` faz o gatilho esperar a cortina do `RouteLoadGate` levantar antes de
+   * observar — ver o motivo medido no docblock de `useRevealTrigger`. Padrão
+   * `false`: nenhuma rota já existente muda de comportamento.
+   */
+  esperarRota?: boolean;
   /** `false` reverte ao sair de cena — o comportamento da parede de logos. */
   umaVez?: boolean;
   /** Reverte apenas ao voltar acima, como `play none none reverse`. */
@@ -28,11 +44,20 @@ type Props = {
 export default function RevealScope({
   children,
   className,
+  style,
+  esperarRota = false,
   umaVez = true,
   reverterSomenteAcima = false,
   limiar = 0.2,
   margem = '0px 0px -12% 0px',
 }: Props) {
+  /* O portão devolve `null` fora do `RouteLoadGate` (testes, storybook, rota sem
+     cortina). Nesse caso não há o que esperar, e `pronto` tem de ser `true` — do
+     contrário o bloco ficaria escondido para sempre, que é o pior defeito
+     possível num sistema cuja premissa é "sem JS o conteúdo aparece". */
+  const portao = useRouteLoadGate();
+  const pronto = esperarRota ? (portao?.liberado ?? true) : true;
+
   /* `data-in` é escrito no DOM pelo próprio gatilho — ver o docblock de
      `useRevealTrigger`. Aqui só entra a `ref`. */
   const { ref } = useRevealTrigger<HTMLDivElement>({
@@ -40,10 +65,11 @@ export default function RevealScope({
     umaVez,
     reverterSomenteAcima,
     margem,
+    pronto,
   });
 
   return (
-    <div ref={ref} className={className}>
+    <div ref={ref} className={className} style={style}>
       {children}
     </div>
   );

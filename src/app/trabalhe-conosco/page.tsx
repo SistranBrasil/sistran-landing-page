@@ -1,7 +1,8 @@
-import { Linkedin } from 'lucide-react';
+import { ChartNoAxesCombined, Linkedin, Sparkles, UsersRound } from 'lucide-react';
 import PageShell from '@/components/PageShell';
 import PageHero from '@/components/PageHero';
 import Social from '@/components/Social';
+import CurriculoCard from '@/components/CurriculoCard';
 import HeroVideoBackdrop from '@/components/ui/HeroVideoBackdrop';
 import { LINKEDIN_URL } from '@/data/contact';
 
@@ -70,7 +71,17 @@ export const metadata = {
    |     <DemoForm fields={FIELDS} />
    |   </div>
    | </section>
-*/
+
+   SIS-223 — LEIA ISTO ANTES DE USAR O BLOCO ACIMA. O formulário voltou, mas não
+   descomentando este bloco: ele está em `@/components/CurriculoCard`, montado mais
+   abaixo. O bloco fica como registro do que a SIS-117 removeu, e as diferenças são
+   deliberadas — «Nome Completo» é UM campo e não o `name-pair`, e-mail e telefone
+   dividem a linha, e o campo de arquivo é uma área que aceita arrastar. Cada uma
+   está justificada em `CurriculoCard.tsx`.
+   O que a SIS-223 NÃO resolveu é o que está em "FICA ABERTO" acima: destino do
+   currículo, quem recebe, base legal, prazo de guarda. Continua sendo decisão de
+   RH. Enquanto não vier, a página diz que o envio é demonstração — é essa a
+   condição para o campo de arquivo poder existir. */
 
 /* Escrita de /trabalhe-conosco/: sobretitulo "Carreira", o titulo em duas
    linhas e a frase de apoio. O site fecha esta pagina com o CTA comercial
@@ -125,12 +136,32 @@ export default function Page() {
         foco="50% 55%"
       >
         <div className="carreira-abertura">
-          <PageHero
-            eyebrow="Carreira"
-            title="Venha fazer parte do nosso time!"
-            highlight="#SomosSistraners"
-            description={<p>Venha fazer parte de uma empresa que apoia seu desenvolvimento.</p>}
-          />
+          <div className="carreira-conteudo">
+            <PageHero
+              eyebrow="Carreira"
+              title="Venha fazer parte do nosso time!"
+              highlight="#SomosSistraners"
+              description={<p>Venha fazer parte de uma empresa que apoia seu desenvolvimento.</p>}
+            />
+            <ul className="carreira-beneficios" aria-label="Benefícios de trabalhar na Sistran">
+              <li>
+                <UsersRound aria-hidden />
+                <span>Pessoas que evoluem juntas</span>
+              </li>
+              <li>
+                <ChartNoAxesCombined aria-hidden />
+                <span>Desafios que geram impacto</span>
+              </li>
+              <li>
+                <Sparkles aria-hidden />
+                <span>Um futuro com mais possibilidades</span>
+              </li>
+            </ul>
+            <p className="carreira-slogan">
+              <span aria-hidden />
+              TECNOLOGIA QUE MOVE O AMANHÃ
+            </p>
+          </div>
 
           {/* SIS-100 — `id` para o item "Currículo" do navegador lateral. A seção já
               tinha nome acessível; o que faltava era âncora. O `id` fica onde está —
@@ -141,11 +172,21 @@ export default function Page() {
               página, e dois itens que rolam para o mesmo lugar é pior que um só.
               O item saiu de `pageSections.ts` (comentado lá, com este motivo); o
               `id` e o `scroll-mt-32` ficam, porque âncora e item de menu são coisas
-              diferentes. */}
+              diferentes.
+              | <section
+              |   id="curriculo"
+              |   aria-labelledby="curriculo-titulo"
+
+              SIS-223 — o `id="curriculo"` SAIU DAQUI e foi para a seção do
+              formulário (`CurriculoCard`, mais abaixo). Não é preferência de nome:
+              o formulário voltou, `#curriculo` só pode existir uma vez no
+              documento, e o destino honesto da âncora "Currículo" é o lugar onde se
+              envia o currículo — não o cartão que explica o caminho alternativo.
+              Este cartão fica com `#como-chegar`, que é o próprio título dele. */}
           <section
-            id="curriculo"
-            aria-labelledby="curriculo-titulo"
-            className="carreira-cartao scroll-mt-32"
+            id="como-chegar"
+            aria-labelledby="como-chegar-titulo"
+            className="hidden"
           >
             <div className="glass-card p-7 md:p-8">
             {/* SIS-137 — a pílula `#sistran` saiu daqui, e o `mt-5` do título com
@@ -153,17 +194,38 @@ export default function Page() {
                 `eyebrow` "Carreira", dois rótulos da mesma família disputando o
                 mesmo bloco. Ver o porquê inteiro no comentário acima do `Page`.
                 | <span className="tag-section">#sistran</span> */}
-            <h2 id="curriculo-titulo" className="font-display text-2xl text-white md:text-3xl">
+            {/* AS TINTAS DESTE CARTÃO VIRARAM ESCURAS, e não é escolha estética
+                separada: o fundo dele passou a ser azul claro opaco
+                (`.carreira-cartao .glass-card`, `globals.css`). Texto branco sobre
+                `#e6f2fd` daria 1,1:1 — o cartão ficaria em branco. Os dois lados da
+                troca precisam andar juntos, então este comentário fica dos dois
+                lados. As cores são as mesmas do «Fale com a Gente!» sobre vidro
+                claro: `#06275f` no título, `#3a5a7c` no corpo. */}
+            <h2 id="como-chegar-titulo" className="font-display text-2xl text-[#06275f] md:text-3xl">
               Como chegar até nós
             </h2>
             {/* Nenhuma vaga é afirmada e nenhuma é negada para sempre: o que se
-                diz é o que se sabe — esta página não publica lista de vagas. */}
-            <p className="mt-5 text-base leading-relaxed text-white/85">
-              Não publicamos uma lista de vagas nesta página, e ainda não temos um canal próprio
-              para receber currículos por aqui. Preferimos dizer isso a manter um formulário que
-              não leva o seu currículo a ninguém.
+                diz é o que se sabe — esta página não publica lista de vagas.
+
+                SIS-223 — as duas frases FORAM REESCRITAS, e não por estilo. Elas
+                diziam "ainda não temos um canal próprio para receber currículos por
+                aqui" e "preferimos dizer isso a manter um formulário que não leva o
+                seu currículo a ninguém". Com o formulário de volta logo abaixo, a
+                primeira virou informação errada e a segunda contradiz o que a
+                própria página passou a fazer. O texto antigo fica registrado:
+                | Não publicamos uma lista de vagas nesta página, e ainda não temos
+                | um canal próprio para receber currículos por aqui. Preferimos
+                | dizer isso a manter um formulário que não leva o seu currículo a
+                | ninguém.
+                O que NÃO mudou é a honestidade: continua dito que o caminho que
+                chega a alguém hoje é o LinkedIn, porque o formulário abaixo ainda
+                não tem destino (ver `src/app/actions/contato.ts`). */}
+            <p className="mt-5 text-base leading-relaxed text-[#3a5a7c]">
+              Não publicamos uma lista de vagas nesta página. O formulário abaixo já recebe seus
+              dados e o seu arquivo, mas ainda é uma demonstração: enquanto não houver um destino
+              definido, ele não entrega o seu currículo a ninguém.
             </p>
-            <p className="mt-4 text-base leading-relaxed text-white/85">
+            <p className="mt-4 text-base leading-relaxed text-[#3a5a7c]">
               As oportunidades da Sistran são anunciadas no nosso LinkedIn, e é por lá que a
               conversa começa hoje — inclusive as candidaturas.
             </p>
@@ -173,18 +235,38 @@ export default function Page() {
                 Ver oportunidades no LinkedIn
               </a>
             </div>
-            {/* Aviso no ponto onde a coleta ACONTECERIA. Enquanto não há coleta,
-                ele diz exatamente isso — é a informação que o candidato precisa
-                para não deixar dado pessoal num canal sem destino. */}
-            <p className="mt-6 text-xs leading-relaxed text-ink-faint">
-              Não coletamos currículo, nome, telefone nem e-mail nesta página. Nada é enviado,
-              armazenado ou compartilhado a partir daqui.
+            {/* SIS-223 — o aviso de privacidade DESTE cartão foi refeito porque a
+                afirmação dele deixou de ser verdadeira: o formulário abaixo coleta
+                nome, e-mail, telefone e arquivo. A frase antiga fica registrada:
+                | Não coletamos currículo, nome, telefone nem e-mail nesta página.
+                | Nada é enviado, armazenado ou compartilhado a partir daqui.
+                O aviso PRÓPRIO da coleta não vive mais aqui: ele fica no pé do
+                formulário, no ponto onde a coleta acontece (`privacyNote` em
+                `CurriculoCard.tsx`). Aqui sobra só o que este cartão precisa dizer —
+                que o caminho ao lado não passa por formulário nenhum. */}
+            {/* A LETRA MIÚDA USA A MESMA TINTA DO CORPO, e não um cinza-azul mais
+                claro. `#4c6c8e` foi a primeira escolha — hierarquia por cor, como
+                era com `text-ink-faint` sobre o vidro escuro — e ela MEDIU 4,04:1
+                sobre `#e6f2fd` a 1440. Texto de 12px é "texto normal" pela régua do
+                WCAG, então o piso é 4,5:1: passaria a ser o único texto reprovado do
+                cartão, e justamente o aviso de privacidade. A hierarquia continua
+                existindo pelo tamanho (12px contra 16px), que é o que ela já fazia. */}
+            <p className="mt-6 text-xs leading-relaxed text-[#3a5a7c]">
+              Este cartão não coleta dado algum: o link acima leva ao LinkedIn e nada é enviado a
+              partir dele.
             </p>
             </div>
           </section>
+          <CurriculoCard />
         </div>
       </HeroVideoBackdrop>
 
+      {/* SIS-223 — o formulário de currículo volta a existir, aqui, FORA da
+          abertura: ele é a segunda parada da página, entra na rolagem com o gesto
+          descrito em `CurriculoCard.tsx` e leva consigo o `id="curriculo"`. O
+          bloqueio de produto da SIS-117 (destino, base legal, prazo de guarda)
+          continua aberto — o que esta issue faz é devolver o formulário DIZENDO
+          isso, no cartão de sucesso e no pé do próprio formulário. */}
       {/* SIS-107 — sem nenhuma das duas classes de emenda.
           A premissa original desta nota caiu com a SIS-137 e fica registrada em vez
           de reescrita por cima: ela dizia "acima há o bloco navy chapado do
@@ -194,7 +276,12 @@ export default function Page() {
           `#0b4e86`, e o pé do véu do `hero-backdrop` já é navy escuro, então a
           emenda é uma diferença pequena entre dois azuis; e o respiro cheio
           (`py-24 md:py-32`) segue certo porque nenhuma convergência consome o topo
-          da seção. */}
+          da seção.
+          SIS-223 — quem antecede a Social passou a ser a seção do currículo, e não
+          mais a abertura com vídeo. A conclusão não muda: `.cv-secao` não pinta
+          fundo próprio (só um halo com `filter: blur`), então o que encosta na
+          Social continua sendo o fundo da página, e continua sendo um azul perto do
+          `#0b4e86` em que o degradê da Social abre. */}
       <Social />
     </PageShell>
   );

@@ -303,15 +303,19 @@ export const mosaicTiles: MosaicTile[] = [
 /* Sequência de montagem presa ao scroll. A montagem é ilustração do método, não
    medição de resultado: o texto não promete número que a sequência não sustenta.
 
-   `impacto-assembly-scroll.mp4` é o reencode all-intra do arquivo original —
-   todo quadro é keyframe, senão cada seek do scroll obriga o decodificador a
-   recomeçar do keyframe anterior e a imagem trava em degraus:
+   `impacto-assembly-scroll.mp4` é all-intra: todo quadro é keyframe, senão cada
+   seek do scroll obriga o decodificador a recomeçar do keyframe anterior e a
+   imagem trava em degraus. A SIS-241 reduziu o derivado de 1920x1080, 30fps e
+   6,90 MiB para 1280x720, 24fps e 2,22 MiB, preservando o all-intra:
 
-     ffmpeg -i impacto-assembly.mp4 -an \
-       -vf "trim=start_frame=1,setpts=PTS-STARTPTS" \
-       -c:v libx264 -preset slow \
-       -crf 28 -g 1 -keyint_min 1 -sc_threshold 0 -pix_fmt yuv420p \
-       -movflags +faststart impacto-assembly-scroll.mp4
+     ffmpeg -i public/videos/impacto-assembly-scroll.mp4 -an \
+       -vf "scale=1280:720:flags=lanczos,fps=24" -c:v libx264 \
+       -preset slow -crf 32 -g 1 -keyint_min 1 -sc_threshold 0 \
+       -pix_fmt yuv420p -movflags +faststart \
+       public/videos/impacto-assembly-scroll.sis241.mp4
+
+   Conferido: 225 pacotes-chave em 225 quadros; seeks aleatórios decodificaram
+   sem erro.
 
    O pôster é o quadro de 8,6s (montagem concluída), não o primeiro: o primeiro
    é quase vazio, e é ele que aparece com movimento reduzido, quando não há seek.

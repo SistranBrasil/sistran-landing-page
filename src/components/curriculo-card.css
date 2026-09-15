@@ -1,0 +1,293 @@
+/* SIS-223 · /trabalhe-conosco — a seção do currículo
+   ---------------------------------------------------------------------------
+   Duas colunas em tela larga (a escrita à esquerda, o card do formulário à
+   direita) e uma coluna em tela estreita, com a escrita antes do card — que é a
+   ordem em que se lê e a ordem do DOM, então não há `order` invertendo nada.
+
+   O card em si NÃO tem estilo próprio de moldura: ele usa `.glass-card`, a mesma
+   moldura do resto do site. Aqui só entra o que a moldura não tem — o respiro
+   interno do formulário, a linha de varredura e o halo atrás da seção. Forkar o
+   vidro para trocar duas propriedades é o que a issue proíbe. */
+
+.cv-secao {
+  position: relative;
+  /* `isolation` e não `z-index` alto: o halo abaixo é `-1` dentro DESTA pilha, e
+     sem o isolamento ele passaria para trás do fundo da página e desapareceria. */
+  isolation: isolate;
+}
+
+/* Halo frio atrás do card. Fica fora do card de propósito (ver o JSX): dentro
+   dele o `clip-path` da cortina o recortaria junto com o conteúdo. */
+.cv-brilho {
+  position: absolute;
+  z-index: -1;
+  top: 12%;
+  right: -6%;
+  width: min(46rem, 78%);
+  aspect-ratio: 1;
+  background: radial-gradient(circle at center, rgb(14 216 246 / 0.16), transparent 62%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.cv-trilha {
+  display: grid;
+  gap: 2.5rem;
+}
+
+@media (min-width: 1024px) {
+  .cv-trilha {
+    /* A escrita não precisa de mais que uma coluna estreita, e o formulário não
+       deve passar de largura confortável de leitura de campo: `1fr` para a
+       escrita e um teto explícito para o card. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 34rem);
+    gap: 4rem;
+    align-items: start;
+  }
+}
+
+.cv-escrita {
+  max-width: 34rem;
+}
+
+.cv-titulo {
+  margin-top: 1.25rem;
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.875rem, 3.2vw, 2.75rem);
+  font-weight: 700;
+  line-height: 1.12;
+  color: #fff;
+}
+
+.cv-card {
+  position: relative;
+}
+
+.cv-form {
+  padding: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .cv-form {
+    padding: 2rem;
+  }
+}
+
+/* Recorte da linha de varredura. `border-radius: inherit` para acompanhar o raio
+   do `.glass-card` sem repetir o token. */
+.cv-varredura-caixa {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* A camada que viaja tem a altura do card; o que se vê é a linha na borda de
+   baixo dela, mais um rastro curto acima. Em repouso ela está em `yPercent: 0`
+   (linha na base do card) e invisível — quem a acende e a move é a timeline, para
+   que sem JavaScript não exista traço nenhum sobrando. */
+.cv-varredura {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(to bottom, transparent 82%, rgb(14 216 246 / 0.12) 100%);
+  border-bottom: 1px solid rgb(165 240 255 / 0.9);
+  box-shadow: 0 0 18px 1px rgb(14 216 246 / 0.45);
+}
+
+/* Movimento reduzido: nas DUAS chaves da casa. A timeline nem é criada
+   (`useReducedMotion` é a porta do efeito em `CurriculoCard.tsx`), então o card
+   já aparece pronto; o que estas regras garantem é que a linha de varredura não
+   fique visível parada na base do card, e que o halo não pese sem motivo. */
+@media (prefers-reduced-motion: reduce) {
+  .cv-varredura {
+    display: none;
+  }
+}
+
+html[data-motion='reduce'] .cv-varredura {
+  display: none;
+}
+
+/* SIS-258 · variante clara do formulário dentro da abertura. */
+.cv-trilha {
+  display: block;
+}
+
+.cv-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 88%);
+  border-radius: 1.5rem 1.5rem 4.75rem 1.5rem;
+  background: linear-gradient(145deg, rgb(255 255 255 / 98%), rgb(238 247 255 / 96%));
+  box-shadow:
+    0 30px 70px -28px rgb(1 35 82 / 58%),
+    inset 0 1px 0 #fff;
+  color: #06275f;
+}
+
+.cv-brilho {
+  z-index: -1;
+  top: 4%;
+  right: -12%;
+  width: min(42rem, 95%);
+  background: radial-gradient(circle at center, rgb(76 211 255 / 0.42), transparent 67%);
+  filter: blur(52px);
+}
+
+.cv-escrita {
+  max-width: none;
+  padding: 1.5rem 1.5rem 0;
+}
+
+.cv-titulo {
+  margin: 0;
+  font-size: clamp(1.75rem, 2.4vw, 2.5rem);
+  font-weight: 700;
+  color: #061b53;
+}
+
+.cv-form {
+  padding: 1.25rem 1.5rem 0.75rem;
+}
+
+.cv-card .cv-form label,
+.cv-card .cv-form .df-checkbox {
+  color: #173965;
+}
+
+.cv-card .cv-form input:not([type='file']):not([type='checkbox']) {
+  border-color: #bed1e4;
+  background: rgb(255 255 255 / 72%);
+  color: #082a5c;
+}
+
+.cv-card .cv-form input:not([type='file']):not([type='checkbox'])::placeholder {
+  color: #6e87a5;
+}
+
+.cv-card .cv-form input:not([type='file']):not([type='checkbox']):focus {
+  border-color: #078dc9;
+  box-shadow: 0 0 0 3px rgb(14 216 246 / 18%);
+}
+
+.cv-card .df-drop {
+  min-height: 4.25rem;
+  border-color: #a8c4df;
+  background: rgb(255 255 255 / 55%);
+}
+
+.cv-card .df-drop-icone {
+  border-radius: 999px;
+  background: linear-gradient(145deg, #19d9ec, #098ed8);
+  color: #fff;
+  box-shadow: 0 8px 20px -8px rgb(9 142 216 / 80%);
+}
+
+.cv-card .df-drop-titulo {
+  color: #173965;
+}
+
+.cv-card .df-drop-regra,
+.cv-card .cv-form > p {
+  color: #587392;
+}
+
+.cv-card .df-checkbox a {
+  color: #075fad;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cv-card .cv-form button {
+  min-height: 2.75rem;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0ed8f6, #0787d5);
+  box-shadow: 0 12px 25px -12px rgb(7 135 213 / 80%);
+}
+
+.cv-card .cv-form > p:empty {
+  display: none;
+}
+
+.cv-divisor {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  padding-inline: 1.5rem;
+  color: #6b84a1;
+}
+
+.cv-divisor span {
+  height: 1px;
+  background: #c8d9e9;
+}
+
+.cv-divisor small {
+  font-size: 0.6875rem;
+}
+
+.cv-linkedin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  margin: 0.65rem 1.5rem 1.5rem;
+  border: 1px solid #168bd2;
+  border-radius: 999px;
+  color: #075fad;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.cv-linkedin:hover {
+  background: #075fad;
+  color: #fff;
+}
+
+.cv-linkedin svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.cv-linkedin svg:last-child {
+  margin-left: 0.2rem;
+}
+
+.cv-card > .glass-card {
+  margin: 1.5rem;
+  background: #eef7ff;
+  border-color: #c2d9eb;
+}
+
+.cv-card > .glass-card h3 {
+  color: #061b53;
+}
+
+.cv-card > .glass-card p {
+  color: #365987;
+}
+
+@media (min-width: 768px) {
+  .cv-escrita {
+    padding: 1.75rem 2rem 0;
+  }
+
+  .cv-form {
+    padding: 1.25rem 2rem 0.75rem;
+  }
+
+  .cv-divisor {
+    padding-inline: 2rem;
+  }
+
+  .cv-linkedin {
+    margin-inline: 2rem;
+    margin-bottom: 1.75rem;
+  }
+}

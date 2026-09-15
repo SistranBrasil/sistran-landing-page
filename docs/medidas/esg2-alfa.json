@@ -1,0 +1,59 @@
+{
+  "entrada": {
+    "arquivo": "public/images/esg/esg2.png",
+    "largura": 1613,
+    "altura": 975,
+    "canais": 3,
+    "alfa": false
+  },
+  "limiares": {
+    "RAZAO_MIN": 1.3,
+    "RAZAO_MAX": 1.56,
+    "RAIO": 6,
+    "L_MIN": 80,
+    "L_MAX": 230,
+    "SAT_XADREZ": 26,
+    "SAT_RELAXADO": 12,
+    "AREA_MINIMA": 1500,
+    "SAT_MEDIANA_MAX": 8
+  },
+  "xadrez": {
+    "componentes": 545,
+    "aceitos": [
+      757220,
+      36796,
+      472,
+      72,
+      58,
+      22,
+      18,
+      17,
+      16,
+      9,
+      9,
+      9,
+      9,
+      8,
+      7,
+      7,
+      7,
+      5,
+      2
+    ]
+  },
+  "vago": {
+    "passo2": "50.5%",
+    "passo3": "53.5%",
+    "comDilatacao": "54.1%"
+  },
+  "saida": {
+    "arquivo": "public/images/esg/esg2.webp",
+    "format": "webp",
+    "width": 1613,
+    "height": 975,
+    "channels": 4,
+    "premultiplied": false,
+    "hasAlpha": true,
+    "size": 123798
+  }
+}

@@ -1,5 +1,5 @@
 /**
- * SIS-234 — o foguete de SOCIAL em `/esg`: capturas com ele em quadro e o
+ * SIS-234/SIS-254 — o foguete de SOCIAL em `/esg`: capturas com ele em quadro e o
  * contraste do texto da seção no PIOR ponto do trajeto.
  *
  * Como o contraste é medido, e por que não é o truque de "ler o fundo ao lado do
@@ -24,15 +24,15 @@
  *
  * Uso: MARCA=antes URL_BASE=http://localhost:3000 node scripts/medir-foguete-social-sis234.mjs
  */
-import { chromium } from 'file:///C:/Users/maria.martinelli/AppData/Local/npm-cache/_npx/e41f203b7505f1fb/node_modules/playwright/index.mjs';
-import { mkdir } from 'node:fs/promises';
-import sharp from 'sharp';
+import { chromium } from "file:///C:/Users/maria.martinelli/AppData/Local/npm-cache/_npx/e41f203b7505f1fb/node_modules/playwright/index.mjs";
+import { mkdir } from "node:fs/promises";
+import sharp from "sharp";
 
-const URL_BASE = process.env.URL_BASE ?? 'http://localhost:3000';
-const MARCA = process.env.MARCA ?? 'antes';
-const PASTA = 'docs/capturas';
+const URL_BASE = process.env.URL_BASE ?? "http://localhost:3000";
+const MARCA = process.env.MARCA ?? "antes";
+const PASTA = "docs/capturas";
 await mkdir(PASTA, { recursive: true });
-const PASSOS = Number(process.env.PASSOS ?? 9);
+const PASSOS = Number(process.env.PASSOS ?? 11);
 
 const lum = (r, g, b) => {
   const c = [r, g, b].map((v) => {
@@ -50,7 +50,10 @@ for (const largura of [390, 1024, 1440]) {
     deviceScaleFactor: 1,
   });
   const pagina = await contexto.newPage();
-  await pagina.goto(`${URL_BASE}/esg`, { waitUntil: 'domcontentloaded', timeout: 180_000 });
+  await pagina.goto(`${URL_BASE}/esg`, {
+    waitUntil: "domcontentloaded",
+    timeout: 180_000,
+  });
   await pagina.waitForSelector('[data-foguete="social"]', { timeout: 180_000 });
   await pagina.addStyleTag({
     content: `nextjs-portal,[data-nextjs-toast],[data-nextjs-dev-tools-button]{display:none!important}
@@ -77,10 +80,10 @@ for (const largura of [390, 1024, 1440]) {
          fica na posição base, e duas rodadas são comparáveis. */
       *,*::before,*::after{animation:none!important;transition:none!important}
       /* SEM_FOGUETE=1 dá a referência "sem foguete nenhum" na MESMA rodada e no
-         mesmo código. É 'visibility', e não 'display', porque a caixa do <svg>
+         mesmo código. É 'visibility', e não 'display', porque a caixa do <img>
          tem de continuar existindo: é dela que sai o recorte do "pior sob o
          foguete", e sem geometria não há com o que comparar. */
-      ${process.env.SEM_FOGUETE ? '[data-foguete="social"] svg{visibility:hidden!important}' : ''}
+      ${process.env.SEM_FOGUETE ? '[data-foguete="social"] img{visibility:hidden!important}' : ""}
       /* ANTES_BRANCO=1 devolve à silhueta o branco chapado que ela tinha antes da
          SIS-234, só para a FOTO de comparação: o código já mudou, e o servidor de
          desenvolvimento lê a árvore de trabalho, então não há como fotografar o
@@ -89,10 +92,10 @@ for (const largura of [390, 1024, 1440]) {
       ${
         process.env.ANTES_BRANCO
           ? '[data-foguete="social"] svg :is(path,ellipse){fill:#ffffff!important;fill-opacity:.78!important;stroke:none!important}'
-          : ''
+          : ""
       }`,
   });
-  const continuar = pagina.getByRole('button', { name: 'Continuar' });
+  const continuar = pagina.getByRole("button", { name: "Continuar" });
   if (await continuar.count()) {
     await continuar.first().click();
     await pagina.waitForTimeout(600);
@@ -109,20 +112,21 @@ for (const largura of [390, 1024, 1440]) {
   /* DOIS piores, e não um. O pior global mede a seção inteira e inclui fundos que
      não têm nada a ver com esta issue (a placa translúcida do `glass-card`, a
      emenda do gradiente). O pior SOB O FOGUETE só olha glifos que caem dentro da
-     caixa do `<svg>` — é esse que responde à pergunta da issue, "o foguete
+     caixa do `<img>` — é esse que responde à pergunta da issue, "o foguete
      colorido derruba o texto?". Sem separar os dois, uma reprovação herdada da
      página seria lida como estrago meu. */
   let piorFoguete = null;
   let emQuadro = 0;
+  const posicoes = [];
   for (let i = 0; i < PASSOS; i += 1) {
     const p = i / (PASSOS - 1);
     const y = caixa.topo - 900 + p * (caixa.altura + 900);
     await pagina.evaluate((alvo) => window.scrollTo(0, Math.max(0, alvo)), y);
     await pagina.waitForTimeout(700);
 
-    /* O foguete está em quadro? A silhueta é o `<svg>` dentro da camada. */
+    /* O foguete está em quadro? A arte é o `<img>` dentro da camada. */
     const svg = await pagina.evaluate(() => {
-      const el = document.querySelector('[data-foguete="social"] svg');
+      const el = document.querySelector('[data-foguete="social"] img');
       const r = el.getBoundingClientRect();
       return {
         top: Math.round(r.top),
@@ -134,6 +138,7 @@ for (const largura of [390, 1024, 1440]) {
     });
     const visivel = svg.bottom > 0 && svg.top < 900;
     if (visivel) emQuadro += 1;
+    posicoes.push({ passo: i, p: p.toFixed(2), visivel, ...svg });
 
     /* Foto 1: como o visitante vê (serve de referência para achar os glifos). */
     const fotoComTexto = await pagina.screenshot();
@@ -145,14 +150,14 @@ for (const largura of [390, 1024, 1440]) {
     await pagina.evaluate(() => {
       document
         .querySelector('[data-foguete="social"]')
-        .parentElement.classList.add('medindo-fundo');
+        .parentElement.classList.add("medindo-fundo");
     });
     await pagina.waitForTimeout(250);
     const foto = await pagina.screenshot();
     await pagina.evaluate(() => {
       document
         .querySelector('[data-foguete="social"]')
-        .parentElement.classList.remove('medindo-fundo');
+        .parentElement.classList.remove("medindo-fundo");
     });
 
     const { data, info } = await sharp(foto)
@@ -160,11 +165,16 @@ for (const largura of [390, 1024, 1440]) {
       .raw()
       .toBuffer({ resolveWithObject: true });
     const comTexto = (
-      await sharp(fotoComTexto).ensureAlpha().raw().toBuffer({ resolveWithObject: true })
+      await sharp(fotoComTexto)
+        .ensureAlpha()
+        .raw()
+        .toBuffer({ resolveWithObject: true })
     ).data;
     const alvos = await pagina.evaluate(() => {
-      const secao = document.querySelector('[data-foguete="social"]').parentElement;
-      return [...secao.querySelectorAll('h2,h3,p')]
+      const secao = document.querySelector(
+        '[data-foguete="social"]',
+      ).parentElement;
+      return [...secao.querySelectorAll("h2,h3,p")]
         .filter((el) => el.textContent.trim().length > 8)
         .map((el) => {
           const r = el.getBoundingClientRect();
@@ -209,7 +219,10 @@ for (const largura of [390, 1024, 1440]) {
             piorPx = [data[idx], data[idx + 1], data[idx + 2]];
           }
           const dentroDoFoguete =
-            xx >= svg.left && xx <= svg.right && yy >= svg.top && yy <= svg.bottom;
+            xx >= svg.left &&
+            xx <= svg.right &&
+            yy >= svg.top &&
+            yy <= svg.bottom;
           if (dentroDoFoguete && L < piorLFog) {
             piorLFog = L;
             piorPxFog = [data[idx], data[idx + 1], data[idx + 2]];
@@ -217,7 +230,8 @@ for (const largura of [390, 1024, 1440]) {
         }
       }
       const rz = razao(lt, piorL);
-      if (!pior || rz < pior.rz) pior = { ...a, rz, piorPx, passo: i, p: p.toFixed(2) };
+      if (!pior || rz < pior.rz)
+        pior = { ...a, rz, piorPx, passo: i, p: p.toFixed(2) };
       if (piorPxFog) {
         const rzf = razao(lt, piorLFog);
         if (!piorFoguete || rzf < piorFoguete.rz) {
@@ -226,20 +240,36 @@ for (const largura of [390, 1024, 1440]) {
       }
     }
 
-    /* Fotos só nos passos com o foguete bem em quadro, para a issue. */
-    if (visivel && (i === Math.floor(PASSOS / 2) || i === Math.floor(PASSOS / 2) + 2)) {
-      await pagina.screenshot({ path: `${PASTA}/sis234-${MARCA}-${largura}-p${i}.png` });
+    /* Capturas de entrada, miolo e saída nos viewports pedidos pela SIS-254. */
+    if (
+      visivel &&
+      (largura === 390 || largura === 1440) &&
+      [2, Math.floor(PASSOS / 2), PASSOS - 3].includes(i)
+    ) {
+      await pagina.screenshot({
+        path: `${PASTA}/sis254-${MARCA}-${largura}-p${i}.png`,
+      });
     }
   }
+  const recorte = await pagina.evaluate(() => {
+    const camada = document.querySelector('[data-foguete="social"]');
+    const estilo = getComputedStyle(camada);
+    return { overflowX: estilo.overflowX, overflowY: estilo.overflowY };
+  });
   console.log(
     `${largura}: foguete em quadro em ${emQuadro}/${PASSOS} passos | pior contraste ${pior.rz.toFixed(2)}:1 ` +
-      `(${pior.tag} "${pior.texto}", cor ${pior.cor}, pior pixel rgb(${pior.piorPx.join(' ')}), passo ${pior.passo})`,
+      `(${pior.tag} "${pior.texto}", cor ${pior.cor}, pior pixel rgb(${pior.piorPx.join(" ")}), passo ${pior.passo})`,
+  );
+  console.log(
+    `   posições: ${posicoes
+      .map((a) => `p${a.p}=${a.visivel ? `${a.left},${a.top}` : "fora"}`)
+      .join(" | ")} | recorte ${recorte.overflowX}/${recorte.overflowY}`,
   );
   console.log(
     piorFoguete
       ? `   sob o foguete: ${piorFoguete.rz.toFixed(2)}:1 (${piorFoguete.tag} "${piorFoguete.texto}", ` +
-          `pior pixel rgb(${piorFoguete.piorPx.join(' ')}), passo ${piorFoguete.passo})`
-      : '   sob o foguete: nenhum glifo cai dentro da caixa do foguete',
+          `pior pixel rgb(${piorFoguete.piorPx.join(" ")}), passo ${piorFoguete.passo})`
+      : "   sob o foguete: nenhum glifo cai dentro da caixa do foguete",
   );
   await contexto.close();
 }

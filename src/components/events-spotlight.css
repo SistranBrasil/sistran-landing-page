@@ -73,6 +73,14 @@
 }
 
 .eventos-lista {
+  /* SIS-239 — as duas medidas da faixa horizontal moram AQUI, e não no bloco que
+     as usa, porque quem as consome são dois irmãos: a faixa (`padding-inline` e
+     `scroll-padding-inline`) e as marcas de posição, que precisam da mesma
+     margem para ficarem alinhadas com os cartões. A explicação de cada uma está
+     no bloco de `.eventos-lista-itens`, adiante. */
+  --evt-faixa-margem: clamp(1rem, 5vw, 2rem);
+  --evt-faixa-espiada: 2rem;
+
   display: block;
   position: relative;
   /* SIS-215 — claro de ponta a ponta, sem as duas pontas navy. Ver a nota da
@@ -262,6 +270,143 @@
        rede. Doze é uma linha acima do pior medido; a soma das vagas continua dentro
        da faixa (512px de 552 na coluna direita em 1024, o pior dos três larguras). */
     --evt-rotulo-linhas: 12;
+  }
+
+  /* A partir de 1200px há espaço lateral para dar mais presença às miniaturas
+     sem apertar o cartão central. A faixa cresce na mesma proporção mínima
+     (1,606×) documentada acima, portanto os recuos continuam contidos nela.
+     Em 1024–1199px ficam as medidas compactas já validadas para a janela curta.
+
+     A ARTE CRESCEU DE 0,30 PARA 0,36 DA VAGA, e é a largura da vaga que paga a
+     conta: a placa é `vaga × (1 - arte-fr)`, então subir a fração sozinha
+     estreitaria o rótulo e devolveria linhas — que é ALTURA, a medida escassa
+     desta faixa (a nota de `--evt-rotulo-linhas`, acima, conta essa história).
+     Com 11vw a placa fica MAIS larga que antes (85px contra 79px em 1366 na vaga
+     par), então nenhum título ganha linha e a arte sobe ~40% em área útil.
+     O TETO VERTICAL CONTINUA SENDO A SOMA DAS VAGAS contra a altura da faixa,
+     porque `--evt-vaga-h` deriva da arte: arte maior levanta o PISO das vagas de
+     título curto (as de título longo já passam do piso e não sentem). É por isso
+     que 0,36 e não mais — em 1366x768 a faixa tem 502px e a coluna direita é a
+     mais cheia das duas; `medir-cena-eventos-sis204.mjs` imprime a soma ao lado
+     da altura, e é essa linha que reprova um aumento maior.
+     E É ISSO QUE APROXIMA AS MINIATURAS DO CARTÃO: a faixa é ancorada pela borda
+     externa (`left`/`right` fixos), então tudo o que ela ganha de largura cresce
+     para DENTRO, na direção do centro — a borda interna avança ~29px em 1366 e
+     ~34px em 1440, e a folga até o cartão cai de 68/77px para ~39/43px, ainda
+     acima da excursão lateral da flutuação (~8px, a conta está em
+     `--evt-float-x`). Os recuos do `nth-child` não precisaram mudar por serem
+     porcentagem da faixa. */
+  /* ⚠️ O DEGRAU COMEÇA EM 1280 E NÃO EM 1200, e é conta de colisão: o cartão é
+     `min(42vw, 38rem)` e fica centrado, então a borda esquerda dele está em
+     `0,29 × largura` enquanto a janela é menor que 1447. Com a perna MÍNIMA do
+     `clamp` valendo (ela governa abaixo de ~1365), a faixa termina sempre no
+     mesmo x — e a 1200 o cartão começa em 348 contra os ~362 da faixa: 14px de
+     miniatura POR CIMA da caixa do texto, o defeito da SIS-204 de volta. A 1280 o
+     cartão começa em 371 e sobram 24px. As pernas mínimas também desceram para
+     caber em 1280 sem cliff: abaixo desta janela valem as medidas compactas de
+     1024, que a sonda já media. */
+  /* ⚠️ SIS-232 — A VAGA E A ARTE CRESCERAM SEM A FAIXA CRESCER, e isso só é possível
+     porque a banda de espalhamento estreitou. Os valores antigos:
+       --evt-vaga-w: clamp(8.8rem, 11vw, 12.4rem);
+       --evt-arte-fr: 0.36;
+     A razão a respeitar deixou de ser `× 1,606` e passou a `× 1,432` (recuo máximo de
+     26% em vez de 34% — a conta está nas regras de `nth-child`). Confere nas três
+     pernas: 9,8 × 1,432 = 14,04 <= 14,2 · 12,3 × 1,432 = 17,62 <= 17,7 · 12,4 × 1,432
+     = 17,76 <= 19,9. É 12,3vw e não 12,4vw por causa da perna do meio: 12,4 daria
+     17,76 contra os 17,7 da faixa, seis centésimos de rem POR CIMA do limite — e o
+     limite aqui é a borda do cartão.
+     `--evt-faixa-w` NÃO SE MEXE, e a razão é a das duas paredes medidas (`ScrollSpy`
+     por fora, cartão por dentro): a faixa já tem a largura máxima que cabe entre elas.
+     A ARTE DE 0,36 PARA 0,38 é modesta de propósito, e o motivo é MEDIDO, não
+     estimado. Eu escrevi 0,44 aqui primeiro — igualando este degrau ao de baixo — e a
+     sonda reprovou em 1366x768, exatamente onde a nota do degrau de baixo já avisava
+     que reprovaria ("qualquer fração acima de 0,36 estoura ali"): pior vão de 1,4px na
+     coluna esquerda, abaixo dos 3,4px que a projeção da inclinação de 2deg consome.
+     Fica registrado porque o erro foi meu e a nota que o previa já estava escrita.
+     Com 0,38 o pior vão em 1366 esquerda é 5,6px — e o ganho de arte, mesmo com a
+     fração quase parada, é de +39%, porque quem cresceu foi a VAGA (11vw -> 12,3vw) e
+     a arte é fração dela.
+     A placa do rótulo não paga: `vaga × (1 - arte-fr)` era 11 × 0,64 = 7,04vw e passa a
+     12,3 × 0,62 = 7,63vw — mais LARGA que antes. Nenhum título ganha linha, e a sonda
+     confere pelo caminho que a SIS-204 deixou: `scrollHeight` contra `clientHeight` nas
+     quinze placas, zero cortadas.
+     Valor antigo: --evt-arte-fr: 0.36; (e a tentativa reprovada, 0.44) */
+  @media (min-width: 1280px) {
+    .eventos-destaque {
+      --evt-vaga-w: clamp(9.8rem, 12.3vw, 12.4rem);
+      --evt-faixa-w: clamp(14.2rem, 17.7vw, 19.9rem);
+      --evt-arte-fr: 0.38;
+      --evt-rotulo-fs: clamp(0.65rem, 0.76vw, 0.78rem);
+    }
+  }
+
+  /* SEGUNDO DEGRAU — a arte maior pede ALTURA, e é por isso que este bloco tem
+     `min-height` e o de cima não.
+     Passar de 0,36 para 0,44 da vaga tem dois custos, os dois VERTICAIS: sobe o
+     piso `--evt-vaga-h` das vagas de título curto (que é a altura da própria arte)
+     e estreita a placa, devolvendo linha aos títulos longos. Os dois somam na
+     única medida que não se pode esticar — a soma das vagas contra a altura da
+     faixa. Medido em 1366x768, onde a faixa tem 502px e a coluna esquerda já usa
+     449px: qualquer fração acima de 0,36 estoura ali. Em 900px de altura a faixa
+     tem 627px e a mesma coluna fecha em ~567px, com folga.
+     Por isso o gate é `>= 1400px de largura E >= 900px de altura`: a largura é a
+     folga até o cartão (a 1400 a faixa termina em 383 contra o cartão em 406) e a
+     altura é a folga de empilhamento. Quem não tem as duas fica no degrau de
+     cima, que segue medido e aprovado — nenhuma janela perde nada, só não ganha.
+     A vaga cresce junto (11vw -> 11,7vw) para a placa não pagar sozinha a fração
+     nova, e a faixa a acompanha na razão de 1,606× — o que também aproxima mais a
+     faixa do cartão, na direção que a página já vinha seguindo. */
+
+  /* O teto min() de vw contra svh nao e enfeite, e a guarda da SIS-167 e que o
+     exigiu: em 1670x940 ela contou 10 pares de vaga sobre vaga. A causa e de
+     unidade, nao de calibragem — a vaga vinha so de vw, entao a arte (e com ela o
+     piso de cada vaga) crescia com a LARGURA, enquanto a faixa que tem de empilhar
+     tudo cresce com a ALTURA. Numa janela larga e baixa as duas andam em sentidos
+     opostos: a 1670 a vaga chegava a 195px e as oito vagas fechavam exatamente os
+     667px da faixa, com os vaos ja colapsados no minimo — e ai a projecao da
+     inclinacao punha vizinhas 1px uma dentro da outra. svh (e nao vh) porque e de
+     100svh que o palco tira a propria altura; duas medidas da mesma coisa em
+     unidades diferentes e o defeito que este arquivo ja registrou mais de uma vez.
+     Os 19svh saem de 1440x900, a janela em que os dois limites se encontram
+     (11,7vw = 168,5px e 19svh = 168,3px): abaixo dela manda a largura, acima dela
+     manda a altura, e nenhuma janela recebe vaga que a propria faixa nao empilhe. */
+  /* ⚠️ SIS-232 — MESMA JOGADA DO DEGRAU DE CIMA, e é aqui que o critério de 1440 é
+     cobrado. Valores antigos:
+       --evt-vaga-w: clamp(10.2rem, min(11.7vw, 19svh), 12.4rem);
+       --evt-arte-fr: 0.44;
+     Razão `× 1,432` conferida nos DOIS tetos do `min()`, que é o que a nota acima
+     sobre vw-contra-svh exige — se eu conferisse só um, a outra unidade governaria em
+     alguma janela sem ninguém ter feito a conta:
+       largura: 13,1 × 1,432 = 18,76 <= 18,8 ✓
+       altura:  20,5 × 1,432 = 29,36 <= 30,5 ✓
+     Os dois se encontram perto da mesma janela de antes (1440x900: 13,1vw = 188,6px e
+     20,5svh = 184,5px), então o ponto de troca de comando entre largura e altura não
+     se moveu de lado — era o que a nota original media, e ela continua valendo. O teto
+     de altura desceu de 21,3svh para 20,5svh, e QUEM O DERRUBOU FOI 1600x900: ali os
+     dois limites do `min()` dão a MESMA vaga que em 1440 (184,5px, a altura manda nas
+     duas), mas `--evt-rotulo-fs` é 0,76vw e portanto a placa tem letra 11% maior, o que
+     torna cada vaga mais alta numa faixa que é 7px mais BAIXA. 1600x900 é a janela que
+     amarra este degrau, não 1440.
+     A ARTE DE 0,44 PARA 0,46 é o aumento nesta faixa, e não os 0,54 que eu escrevi
+     primeiro. 0,54 reprovou medido: pior vão de 0,9px em 1440 esquerda (5 pares
+     apertados) e soma de vagas ACIMA da altura da faixa em 1600x900 (656,6 contra
+     619,3) e em 1670x940 (658,6 contra 658,4) — vaga empilhada fora da faixa. Fica
+     escrito porque errei contra uma nota que já estava neste arquivo: o custo de
+     `--evt-arte-fr` é vertical, e eu tratei 1440 como se fosse o pior caso quando o
+     pior caso é largo-e-baixo.
+     O ganho de arte em 1440 é de +21% de área (o menor de todas as janelas, e é
+     justamente a janela do critério de aceite — está dito no relatório da issue). Em
+     1600 e 1670 é +27/+29%.
+     A placa do rótulo até melhora: `vaga × (1 - arte-fr)` fica em 13,1 × 0,54 = 7,07vw
+     contra os 11,7 × 0,56 = 6,55vw de antes. Zero rótulos cortados em todas as janelas.
+     Valores antigos: --evt-vaga-w: clamp(10.2rem, min(11.7vw, 19svh), 12.4rem);
+                      --evt-arte-fr: 0.44;  (e as tentativas reprovadas, 21.3svh / 0.54) */
+  @media (min-width: 1400px) and (min-height: 900px) {
+    .eventos-destaque {
+      --evt-vaga-w: clamp(10.2rem, min(13.1vw, 20.5svh), 12.4rem);
+      --evt-faixa-w: clamp(16.4rem, min(18.8vw, 30.5svh), 20rem);
+      --evt-arte-fr: 0.46;
+    }
   }
 
   /* ══════════════════════════════════════════════════════════════════════════
@@ -469,7 +614,34 @@
        distribuir. A projeção da rotação é ~1,7px por ponta (a conta está na nota de
        `--evt-float-y`); 0,35rem cobre as duas com margem. */
     gap: 0.35rem;
-    padding-block: 4%;
+    /* ⚠️ ERA `4%`, E PORCENTAGEM AQUI RESOLVE CONTRA A LARGURA — não contra a
+       altura, que é o eixo que este `padding` recorta. É a regra do CSS para
+       `padding` em qualquer lado, e foi ela que produziu o defeito que a guarda da
+       SIS-167 pegou em 1670x940: 4% de 1670 são 66,8px em cima e embaixo, então a
+       caixa de conteúdo da faixa caía de 658px para 524px e as oito vagas (550px)
+       passavam a TRANSBORDAR. Com transbordo o `space-between` não tem sobra para
+       distribuir, os vãos desabam no `gap` mínimo de 5,6px, e aí a projeção da
+       inclinação (~3px por ponta) punha vizinhas 1px uma dentro da outra — cinco
+       pares reprovados, enquanto a soma das vagas dizia que havia 114px de folga.
+       A soma nunca foi o problema; o padding é que comia a faixa por fora.
+       Quanto mais larga a janela, pior: 41px por ponta em 1024, 58px em 1440, 67px
+       em 1670 — crescendo justamente onde a arte também cresce.
+       `1.75rem` fixos fazem o mesmo trabalho que o `4%` foi escrito para fazer
+       (as vagas das pontas não encostam na borda da faixa, no lugar dos antigos
+       `top: 3%`/`top: 87%`) sem amarrar o eixo vertical à largura da tela. Efeito
+       colateral bem-vindo: 1024 e 1366, que já transbordavam a caixa de conteúdo
+       antes desta issue, voltam a ter vão real entre as vagas.
+       1,75rem -> 1,25rem depois de medir o VÃO (e não a soma) nas nove janelas: a
+       1600x900 a coluna direita ficava com 6,1px de vão contra ~6,4px de projeção
+       da inclinação, ou seja no fio. Os 8px que cada ponta devolve levam o pior vão
+       do conjunto para ~8,8px.
+       1,25rem -> 1rem na SIS-232, e desta vez o motivo é o INVERSO: a arte maior que
+       a issue pede é paga em altura, e a única altura que sobrava na faixa era este
+       enfeite. Os 4px que cada ponta devolve são o que faz `--evt-arte-fr: 0.46` caber
+       em 1600x900, a janela que amarra o degrau de topo. O que ele foi escrito para
+       fazer continua feito: 16px por ponta ainda afastam as vagas das extremidades da
+       borda da faixa, bem acima dos ~3,4px da projeção da inclinação. */
+    padding-block: 1rem;
   }
 
   /* A medida e o motivo estão no bloco de `.eventos-destaque-coluna`, acima. À
@@ -609,8 +781,14 @@
        dois estados ter tamanhos diferentes: o `box-sizing: border-box` global salva a
        largura, não a quebra de linha do rótulo (que é medida no CONTEÚDO). Reservando
        os mesmos 0,3rem e o mesmo 1px em ambos, o destaque só troca a COR da borda —
-       e a promessa de "a faixa não se reorganiza na troca" sai da estrutura. */
-    padding: 0.3rem;
+       e a promessa de "a faixa não se reorganiza na troca" sai da estrutura.
+       0,3rem -> 0,18rem na SIS-232. A promessa acima é sobre os dois estados terem o
+       MESMO padding, não sobre o valor ser 0,3rem — reduzir os dois juntos a mantém
+       intacta. O que se ganha é vertical: 2px de altura em cada uma das quinze vagas,
+       que somados na faixa são a diferença entre `--evt-arte-fr: 0.46` caber ou
+       transbordar em 1600x900. Continua havendo borda de 1px reservada nos dois
+       estados, que é o que a nota acima protege de verdade. */
+    padding: 0.18rem;
     border: 1px solid transparent;
   }
 
@@ -652,6 +830,14 @@
      conta está no bloco de `--evt-float-x`) e o `ScrollSpy` está logo ali.
      RECUO MÁXIMO 34%: a amplitude útil é `faixa - vaga` = 40% da faixa, então 34%
      deixa o cartão dentro dela com margem em vez de encostado no limite.
+     ⚠️ SIS-232 — OS DOIS NÚMEROS ACIMA VALEM 14% E 26% AGORA, e o mínimo deixou de
+     ser governado pelo `ScrollSpy`: a 14% da faixa a vaga está ~38px dentro dela em
+     1440, folgado contra os ~7,3px da flutuação, então quem passou a governar o
+     mínimo é a APROXIMAÇÃO DO CARTÃO que a issue pede. O máximo continua sendo a
+     conta de colisão, só com o divisor novo. A apuração completa — as duas paredes
+     medidas e por que nada além da banda podia ceder — está no bloco das regras de
+     `nth-child`, logo abaixo. Estes dois parágrafos ficam porque descrevem o
+     raciocínio que produziu 4/34 e é ele que se refaz se a banda voltar a abrir.
 
      ⚠️ O `top` DE CADA PAR FOI REMOVIDO, e ficou comentado ao lado de cada regra em
      vez de apagado, porque são esses quinze números que documentam a tentativa que
@@ -675,22 +861,64 @@
      passo sem trazer de volta porcentagem de altura de janela na conta — que é a
      causa raiz do defeito de 1366. O `space-between` continua garantindo por
      construção que ninguém cobre ninguém dentro de cada faixa. */
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(1) { left: 6%; /* top: 3%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(2) { left: 30%; /* top: 15%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(3) { left: 4%; /* top: 27%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(4) { left: 34%; /* top: 39%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(5) { left: 8%; /* top: 51%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(6) { left: 28%; /* top: 63%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(7) { left: 4%; /* top: 75%; */ }
-  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(8) { left: 32%; /* top: 87%; */ }
+  /* ⚠️ SIS-232 — A BANDA DE ESPALHAMENTO ESTREITOU DE 4–34% PARA 14–26%, e ela é a
+     ÚNICA fonte dos dois ganhos que a issue pede. Os valores antigos ficam
+     comentados ao lado de cada regra porque a conta velha (recuo máximo 34%, logo
+     `--evt-faixa-w >= --evt-vaga-w × 1,606`) continua sendo a conta certa PARA ELES.
 
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(1) { right: 8%; /* top: 9%; */ }
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(2) { right: 30%; /* top: 21%; */ }
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(3) { right: 4%; /* top: 33%; */ }
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(4) { right: 32%; /* top: 45%; */ }
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(5) { right: 6%; /* top: 58%; */ }
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(6) { right: 28%; /* top: 70%; */ }
-  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(7) { right: 5%; /* top: 83%; */ }
+     POR QUE A BANDA, E NÃO A LARGURA OU O INSET. As duas paredes desta faixa foram
+     medidas por `medir-vagas-eventos-sis232.mjs`, e em 1440 elas se encostam:
+       · parede EXTERNA — o `ScrollSpy` chega a x=103 (a nota de `.eventos-destaque-
+         coluna--esq`, acima, tem a apuração), então o inset de 122,4px já vive com
+         17px de folga. Encolhê-lo devolve a colisão do mosaico.
+       · parede INTERNA — o cartão começa em x=417,6 e a vaga mais avançada chegava a
+         400,8: 16,8px, ou 7,8px depois de descontar a excursão lateral da flutuação
+         (`--evt-float-x`). Alargar a faixa para dentro estoura no cartão.
+     Somadas, as duas dizem que a faixa de 1440 já tem a largura máxima que cabe entre
+     elas — 270,7px contra os 270,6px que a razão de 1,606 exige. NÃO HÁ UM PIXEL a
+     tomar de nenhum dos lados, e é por isso que nem `--evt-faixa-w` nem os insets se
+     mexem nesta issue: qualquer aumento ali é sobreposição, não presença.
+
+     O QUE A BANDA DESTRAVA. O recuo máximo é o divisor da razão: `--evt-faixa-w >=
+     --evt-vaga-w × 1,06 / (1 - recuoMax)`. Com 34% o divisor é 0,66 e o fator 1,606;
+     com 26% é 0,74 e o fator cai para 1,432. À MESMA largura de faixa, a vaga pode
+     crescer 12% — e é daí que sai o "maiores" (a largura da vaga é o que multiplica a
+     arte, ver `--evt-vaga-w`).
+     E o piso da banda é o "mais perto": as vagas ÍMPARES eram as distantes (recuo de
+     4–8%, borda direita em 274–293 contra o cartão em 417,6, ou seja 125–143px de
+     vão). A 14–16% elas passam a ~322 e o vão cai para ~95px. Quem lê a cena como
+     "miniatura longe do cartão" está lendo essas quatro; o teto da banda é que já
+     estava encostado.
+
+     O PREÇO, ESCRITO: a amplitude do zigue-zague cai de 30% para 12% da faixa (~81px
+     para ~32px em 1440). A constelação da SIS-167 fica MENOS espalhada — não deixa de
+     existir, porque a leitura de profundidade dali nunca veio só do recuo: vem também
+     das duas profundidades (`--evt-prof` 0,86 contra 1,06 — a nota está logo abaixo),
+     do passo vertical diferente entre as duas faixas (7 vãos contra 6) e dos tempos e
+     amplitudes distintos da flutuação. É o recuo, o mais barato dos quatro, que paga
+     o aumento da arte. Se um dia o cartão central estreitar, o caminho de volta é
+     devolver banda ANTES de mexer em qualquer outra coisa.
+
+     A ordem ímpar-baixo / par-alto se mantém de propósito: a vaga ímpar é a que
+     `--evt-prof: 0.86` desenha MENOR, isto é, a que lê como "de longe", e quem está
+     longe fica mais atrás do cartão. Inverter faria a vaga pequena avançar mais que a
+     grande, que é o contrário do que a perspectiva promete. */
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(1) { left: 16%; /* SIS-232: 6% · top: 3%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(2) { left: 25%; /* SIS-232: 30% · top: 15%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(3) { left: 14%; /* SIS-232: 4% · top: 27%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(4) { left: 26%; /* SIS-232: 34% · top: 39%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(5) { left: 17%; /* SIS-232: 8% · top: 51%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(6) { left: 24%; /* SIS-232: 28% · top: 63%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(7) { left: 14%; /* SIS-232: 4% · top: 75%; */ }
+  .eventos-destaque-coluna--esq .eventos-vaga:nth-child(8) { left: 26%; /* SIS-232: 32% · top: 87%; */ }
+
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(1) { right: 17%; /* SIS-232: 8% · top: 9%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(2) { right: 25%; /* SIS-232: 30% · top: 21%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(3) { right: 14%; /* SIS-232: 4% · top: 33%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(4) { right: 26%; /* SIS-232: 32% · top: 45%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(5) { right: 16%; /* SIS-232: 6% · top: 58%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(6) { right: 24%; /* SIS-232: 28% · top: 70%; */ }
+  .eventos-destaque-coluna--dir .eventos-vaga:nth-child(7) { right: 15%; /* SIS-232: 5% · top: 83%; */ }
 
   /* ── AS DUAS PROFUNDIDADES ─────────────────────────────────────────────────
      `/transformacao-legado` faz profundidade com parallax de ROLAGEM
@@ -1257,14 +1485,92 @@
   margin-bottom: clamp(1.5rem, 6vw, 2.5rem);
 }
 
+/* ==========================================================================
+   SIS-239 — A FAIXA. A pilha vertical virou CARROSSEL HORIZONTAL.
+
+   O que era: `flex-direction: column` com `gap`, quinze cartões empilhados. Em
+   390px isso media 6.413px de altura de faixa (medido por
+   `scripts/medir-carrossel-eventos-sis239.mjs`, corrida "antes") — uma rolagem
+   de quase oito telas para percorrer a única leitura que a rota tem abaixo de
+   1024px. O que é agora: uma tela de faixa, com o percurso na horizontal e um
+   laço automático.
+
+   ── AS TRÊS MEDIDAS QUE FAZEM UM CARTÃO POR VEZ ──────────────────────────────
+   `--evt-faixa-margem` é a margem lateral da faixa, e ela aparece DUAS VEZES, em
+   `padding-inline` e em `scroll-padding-inline`. Não é redundância: o snapport
+   nasce na borda do PADDING BOX (a mesma coisa que o `scroll-padding` recua), de
+   modo que só com o `padding` o navegador alinharia o primeiro cartão numa
+   posição de rolagem de 19px em vez de 0 — isto é, comendo a margem esquerda
+   assim que o snap agisse. Escrever o mesmo valor nos dois é o que faz
+   `scrollLeft: 0` já ser uma posição snapada, e é disso que o JS depende para
+   mirar `offsetLeft - primeiro.offsetLeft`.
+
+   `--evt-faixa-espiada` é o quanto do próximo cartão fica em quadro, subtraído
+   da largura do cartão. A conta em 390px: caixa de conteúdo de 351px, cartão de
+   319px, e o próximo abre a 40px da borda direita contando o vão. O cartão perde
+   9% de largura (351 -> 319) e a faixa ganha a única pista de que existe mais
+   coisa para o lado — uma faixa com `scroll-snap` e sem barra de rolagem, sem a
+   espiada, é indistinguível de um cartão parado.
+
+   O TETO DE `26rem` existe para 768px, não para 390: sem ele o cartão cresceria
+   com a janela e um evento ocuparia 704px de largura com onze linhas de texto
+   esticadas, que é pior de ler que um cartão de 416px com a espiada do seguinte.
+
+   ── A ALTURA É A DO CARTÃO MAIS ALTO, E ISSO É DELIBERADO ────────────────────
+   As descrições do catálogo vão de 130 a 485 caracteres, então os cartões nunca
+   teriam a mesma altura natural. `align-items` fica no `stretch` padrão da faixa
+   (os quinze medem o mais alto) e a ARTE recebe `margin-top: auto`, encostando na
+   base. Assim a sobra dos cartões curtos cai ENTRE a descrição e a arte, e não
+   depois dela: a base do cartão é sempre a mesma linha, e o que se move ao trocar
+   de cartão é o texto, não a moldura.
+   A alternativa era cortar a descrição com `line-clamp` para igualar as alturas —
+   e ela está descartada pela issue, que manda manter o conteúdo completo.
+   ========================================================================== */
+
 .eventos-lista-itens {
   display: flex;
-  flex-direction: column;
-  gap: clamp(1rem, 4vw, 1.5rem);
-  padding-inline: clamp(1rem, 5vw, 2rem);
+  /* Era `column`. É a troca desta issue. */
+  flex-direction: row;
+  gap: clamp(0.6rem, 3vw, 1rem);
+  padding-inline: var(--evt-faixa-margem);
+  scroll-padding-inline: var(--evt-faixa-margem);
+  /* Folga vertical para a SOMBRA dos cartões. `overflow-x: auto` faz o eixo
+     vertical virar `auto` por computação, ou seja a caixa passa a RECORTAR nos
+     dois eixos — e sem esta folga o halo ciano do `box-shadow` sairia decepado
+     em cima e embaixo. */
+  padding-block: 0.5rem 1.1rem;
+  overflow-x: auto;
+  /* O gesto morre na faixa: sem isto, o swipe que chega ao fim encadeia na
+     página (e, no iOS, no gesto de "voltar" do navegador). */
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  /* Barra escondida porque as marcas de posição e a espiada já dizem onde se
+     está e que há mais — mesma escolha de `.tech-carrossel`. */
+  scrollbar-width: none;
+}
+
+.eventos-lista-itens::-webkit-scrollbar {
+  display: none;
+}
+
+/* A faixa é um destino de Tab (`tabIndex={0}` no componente, porque contêiner de
+   rolagem sem foco é conteúdo inalcançável por teclado). Mesmo par de cor e
+   recuo do `:focus-visible` do botão do YouTube, abaixo — um anel só para a
+   cena. */
+.eventos-lista-itens:focus-visible {
+  outline: 2px solid #0ed8f6;
+  outline-offset: 2px;
 }
 
 .eventos-lista-item {
+  /* `0 0 auto` com largura declarada: o cartão não encolhe para caber (é o que
+     transformaria quinze cartões em quinze tiras) nem cresce com a sobra. */
+  flex: 0 0 auto;
+  width: min(
+    calc(100% - var(--evt-faixa-espiada)),
+    26rem
+  );
+  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -1287,6 +1593,163 @@
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 0.6rem;
+  /* SIS-239 — a arte encosta na BASE do cartão; ver a nota da altura, acima. */
+  margin-top: auto;
+}
+
+/* ── As marcas de posição ──────────────────────────────────────────────────
+   Quinze marcas, a do cartão em quadro alongada. Decorativas (`aria-hidden` no
+   componente) e SEM TEXTO: dão posição sem escrever palavra nenhuma, que é o que
+   permite acrescentá-las sem passar pelo portão de conteúdo. Mesma ideia de
+   `.tech-progresso`, com a cor desta cena (`#0b5f80`, a do rótulo do contador do
+   palco, já medida contra a superfície clara na SIS-215). */
+
+/* ⚠️ SIS-251 MUDOU ESTE BLOCO. A nota acima descreve por que as marcas nasceram
+   sem texto, e isso continua verdade — o que caducou é a frase "acrescentá-las
+   sem passar pelo portão de conteúdo" como limite do que pode existir aqui: a
+   SIS-251 pede explicitamente setas e a palavra «deslize», então a barra de
+   controles abaixo é conteúdo AUTORIZADO, não contrabando.
+   O diagnóstico da SIS-251 em 390px, que é o que decidiu o desenho:
+   | espiada do 2º cartão = 40px · marcas EM QUADRO (topo 614 de 844)
+   | passo do autoplay = 0px → 331px, ou seja um cartão inteiro (319 + 12 de gap)
+   Nada estava quebrado. O que faltava era LEGIBILIDADE do mecanismo — as marcas
+   de 0.4rem se leem como enfeite, e nada anunciava o passo ANTES dele ocorrer. */
+
+/* A barra: [seta] [marcas] [seta], numa linha só, abaixo da faixa. Abaixo, e não
+   sobreposta às bordas do cartão, porque em 390px o cartão tem 319px de largura
+   e um botão flutuante cobriria texto ou arte — conteúdo. */
+.eventos-lista-controles {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(0.4rem, 2vw, 0.75rem);
+  margin-top: clamp(0.6rem, 3vw, 1rem);
+  padding-inline: var(--evt-faixa-margem);
+}
+
+.eventos-lista-seta {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  /* 2.75rem = 44px, o alvo de toque mínimo da WCAG 2.5.8 (Target Size Minimum).
+     O ícone tem 20px; o resto é área clicável, e é ela que faz a diferença num
+     dedo. */
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(11, 95, 128, 0.35);
+  background: rgba(255, 255, 255, 0.75);
+  color: #0b5f80;
+  transition:
+    background 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out);
+}
+
+.eventos-lista-seta:hover {
+  background: #fff;
+  border-color: #0b5f80;
+}
+
+.eventos-lista-seta:focus-visible {
+  outline: 2px solid #0ed8f6;
+  outline-offset: 2px;
+}
+
+.eventos-lista-bussola {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.eventos-lista-bussola-marca {
+  /* 0.45rem e alfa 0.45 (era 0.4rem e 0.3): é o "dots mais claros" do item 1 da
+     SIS-251. Medido em 390px antes de subir: quinze marcas + os dois botões de
+     44px cabem em 351px de faixa útil com folga (≈304px ocupados). */
+  position: relative;
+  overflow: hidden;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: rgba(11, 95, 128, 0.45);
+  transition:
+    width 0.3s var(--ease-out),
+    background 0.3s var(--ease-out);
+}
+
+/* A MARCA ATIVA É UM RELÓGIO, e é ela que responde ao "autoplay perceptível".
+   A marca vira uma pista translúcida de 2rem e o `::after` a preenche em
+   `--evt-autoplay` — o mesmo valor de `AUTOPLAY_MS` no componente, escrito no
+   DOM para não haver dois números. Assim o passo é ANUNCIADO enquanto se lê, em
+   vez de acontecer de surpresa a cada 6s; foi o que permitiu NÃO encurtar o
+   intervalo, que é o que protege descrições de até 485 caracteres. */
+.eventos-lista-bussola-marca[data-estado="ativo"] {
+  width: 2rem;
+  background: rgba(11, 95, 128, 0.28);
+}
+
+.eventos-lista-bussola-marca[data-estado="ativo"]::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  /* ⚠️ ESTE `width: 100%` É O ESTADO FINAL, e ele é obrigatório.
+     A primeira versão o omitia, confiando em que `animation: none` (em movimento
+     reduzido) deixaria a barra "no seu repouso" cheia. A sonda mediu o
+     contrário: sem `width`, uma caixa absoluta com `inset: 0 auto 0 0` resolve
+     largura AUTO — e sem conteúdo isso é ZERO. A marca ativa virava uma pista
+     translúcida vazia, ou seja, MENOS legível que a pílula sólida da SIS-239,
+     que é o pitfall que `~/.claude/skills/reduced-motion-conteudo` descreve como
+     "estado final invisível". Com esta linha, sem animação a marca é a pílula
+     cheia e o keyframe só desce o ponto de partida a zero. */
+  width: 100%;
+  border-radius: inherit;
+  background: #0b5f80;
+  animation: eventos-lista-relogio var(--evt-autoplay, 6000ms) linear forwards;
+}
+
+/* Laço parado (qualquer uma das razões de `autoplayPausado`): o preenchimento
+   CONGELA onde está, em vez de zerar. Uma barra parada no meio diz "o tempo
+   parou porque você está aqui" — que é a verdade quando o dedo está apoiado. */
+.eventos-lista-bussola[data-andando="nao"] .eventos-lista-bussola-marca[data-estado="ativo"]::after {
+  animation-play-state: paused;
+}
+
+@keyframes eventos-lista-relogio {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* A dica. Uma linha, some na primeira interação (ver `interagiu`, no
+   componente). Tamanho pequeno e cor de meio-tom: é instrução, não conteúdo do
+   evento, e não deve competir com o cartão. */
+.eventos-lista-dica {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  padding-inline: var(--evt-faixa-margem);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: rgba(11, 95, 128, 0.75);
+  /* Respiro discreto: o par de setas pulsa para o lado, sugerindo o gesto que a
+     frase descreve. É decoração pura — a frase sozinha já diz tudo —, então
+     morre inteira em movimento reduzido. */
+  animation: eventos-lista-dica-respiro 2.4s var(--ease-out) infinite;
+}
+
+@keyframes eventos-lista-dica-respiro {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .eventos-lista-item .eventos-destaque-arte img {
@@ -1343,6 +1806,37 @@
     transform: none;
   }
 
+  /* SIS-239 — a marca de posição do carrossel estreito. O que morre é só a
+     TRAVESSIA entre uma marca e a seguinte; o estado final continua aplicado,
+     porque ele é quem diz em qual dos quinze cartões a faixa está — e essa é
+     informação, não enfeite. O autoplay em si não é desligado por CSS: quem o
+     para é o `useReducedMotion()` do componente, que lê o `matchMedia`
+     embrulhado pelo `layout.tsx` e por isso responde às DUAS vias de uma vez. */
+  .eventos-lista-bussola-marca {
+    transition: none;
+  }
+
+  /* SIS-251 — o relógio da marca ativa e o respiro da dica.
+     Pela régua de `~/.claude/skills/reduced-motion-conteudo`: se isto parar para
+     sempre, perde-se INFORMAÇÃO? Não. O relógio anuncia um autoplay que em
+     movimento reduzido nem acontece (o `useReducedMotion()` do componente já o
+     desliga pelas duas vias), então uma barra correndo aqui seria mentira
+     animada. `animation: none` deixa o `::after` no `width: 100%` DECLARADO na
+     regra base (ver a advertência lá — sem essa declaração ele cairia a zero e a
+     marca ficaria vazia), e a marca ativa volta a se ler como a pílula cheia de
+     sempre: o estado final é legível, que é a exigência da
+     régua. As SETAS continuam funcionando, e é por elas que os quinze cartões
+     seguem alcançáveis sem movimento automático nenhum.
+     A dica perde só o pulso; o texto fica. */
+  .eventos-lista-bussola-marca[data-estado="ativo"]::after,
+  .eventos-lista-dica {
+    animation: none;
+  }
+
+  .eventos-lista-seta {
+    transition: none;
+  }
+
   .eventos-vaga--botao:hover {
     /* `transform: none` era o par do afago antigo, `translateY(-2px)`. O afago
        virou `filter: brightness()` (não podia ser `transform`, que agora é da
@@ -1383,4 +1877,25 @@ html[data-motion="reduce"] .eventos-destaque[data-titulo-transicao="ligada"] .ev
 }
 html[data-motion="reduce"] .eventos-destaque[data-titulo="cedido"] .eventos-destaque-cabecalho {
   transform: none;
+}
+/* SIS-239 · o espelho da marca de posição do carrossel. Uma linha, e ela é
+   obrigatória pelo mesmo motivo da de cima: o reset global de `globals.css` zera
+   durações por `prefers-reduced-motion`, não por `html[data-motion]`. Sem ela o
+   interruptor da interface mentiria — a faixa pararia de andar sozinha (o JS lê a
+   preferência resolvida) e a marca continuaria deslizando a cada gesto. */
+html[data-motion="reduce"] .eventos-lista-bussola-marca {
+  transition: none;
+}
+/* SIS-251 · o espelho do relógio e da dica. Aqui o reset global NÃO cobre nem por
+   acidente: ele zera duração de animação por `prefers-reduced-motion`, e estas
+   duas são `infinite`/`forwards` acionadas por CSS, não pelo JS que lê a
+   preferência resolvida. Sem estas linhas o interruptor da interface pararia o
+   autoplay e deixaria a barrinha correndo até o fim para um passo que não vem —
+   exatamente o tipo de sinal falso que a issue está tentando remover. */
+html[data-motion="reduce"] .eventos-lista-bussola-marca[data-estado="ativo"]::after,
+html[data-motion="reduce"] .eventos-lista-dica {
+  animation: none;
+}
+html[data-motion="reduce"] .eventos-lista-seta {
+  transition: none;
 }

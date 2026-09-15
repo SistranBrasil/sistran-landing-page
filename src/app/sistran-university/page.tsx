@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import PageShell from '@/components/PageShell';
 import PageHero from '@/components/PageHero';
+import HeroImageBackdrop from '@/components/ui/HeroImageBackdrop';
 import ContactCTA from '@/components/ContactCTA';
 
 export const metadata = {
@@ -66,8 +67,9 @@ const NUMEROS = [
    seria pedir foto nova das mesmas turmas.
    Os arquivos já são `.webp` convertidos na SIS-109 (41/67/56 KB nos 750×422
    nativos, originais guardados em `docs/fontes/esg/`, fora de `public/`), então
-   esta rota não acrescenta um byte ao que o site já baixa — e não há conversão a
-   fazer.
+   ESTA GALERIA não acrescenta um byte ao que o site já baixa — e não há conversão
+   a fazer. (A frase valia para a rota inteira até a SIS-248, que trouxe a capa da
+   abertura: hoje a rota baixa os 133 KB de `university-hero.webp`, e só eles.)
    O `alt` foi REESCRITO para esta página, e não copiado de `/esg`: lá a foto
    prova um projeto social, aqui ela mostra quem o programa de capacitação
    formou. O mesmo `alt` em duas rotas descreveria o contexto errado numa delas —
@@ -93,19 +95,85 @@ const TURMAS = [
 export default function Page() {
   return (
     <PageShell>
-      <PageHero
-        title="Autossuficiência em"
-        highlight="capacitação de recursos"
-        description={
-          <p>
-            Somos um verdadeiro banco de talentos de primeira linha, prontos para atender às demandas
-            específicas da sua seguradora com as mais avançadas tecnologias.
-          </p>
-        }
-      />
+      {/* SIS-248 — a abertura ganha CAPA, e só a moldura mudou: `title`,
+          `highlight` e a descrição são os mesmos caracteres de antes (a escrita
+          está travada em `copy-lock.json`, e a issue pede a capa, não texto novo).
+          `alt=""`: a arte é decorativa. O que ela desenha — capelo, engrenagem,
+          livro aberto, escada e certificado — é ilustração do que o `h1` e o
+          parágrafo logo abaixo já dizem em palavras; descrevê-la faria o leitor de
+          tela ouvir a mesma ideia duas vezes, uma delas em forma de inventário de
+          ícones. Mesmo critério da capa do Labs (SIS-227).
+          A fonte é o PNG de 1,9 MB (`universitycapa.png`, que fica no repositório
+          como original); o que a rota serve é a derivada WebP de 133 KB. Não é
+          zelo: `images.unoptimized` está ligado no `next.config`, então o
+          `next/image` entrega o arquivo EXATAMENTE como está em `public/` — servir
+          o PNG aqui colocaria 1,9 MB no caminho do LCP.
+          O recorte e o véu ficam escopados em `.hero-backdrop--university`, porque
+          a composição empilha tudo à direita do quadro e o texto vive à
+          esquerda. */}
+      <HeroImageBackdrop
+        src="/images/university/university-hero.webp"
+        alt=""
+        className="hero-backdrop--university"
+      >
+        <PageHero
+          title="Autossuficiência em"
+          highlight="capacitação de recursos"
+          description={
+            <p>
+              Somos um verdadeiro banco de talentos de primeira linha, prontos para atender às
+              demandas específicas da sua seguradora com as mais avançadas tecnologias.
+            </p>
+          }
+        />
+      </HeroImageBackdrop>
 
-      <section id="university-programa" aria-labelledby="university-programa-titulo" className="section-py">
-        <div className="container-lp">
+      {/* SIS-249 — a seção do programa passa a ter FUNDO, e o texto vive por cima
+          dele. A arte (`1-Sistran-university.png`, 1,9 MB) desenha os quatro
+          painéis do programa — Qualidade/QA, Desenvolvimento, Dados & IA, Cloud &
+          Automação — em volta de três pessoas trabalhando: é literalmente o que o
+          `h2` e o parágrafo dizem em palavras, e é por isso que ela entra como
+          FUNDO e não como figura ao lado do texto. Uma figura pediria legenda e
+          `alt` descritivo; o `alt=""` aqui é a consequência de a arte não
+          acrescentar informação nenhuma ao que já está escrito — descrevê-la faria
+          o leitor de tela ouvir "QA, desenvolvimento, dados, cloud" duas vezes.
+          Mesmo critério da capa (SIS-248) e da capa do Labs (SIS-227).
+
+          O QUE A ROTA SERVE É A DERIVADA WEBP de 114 kB
+          (`scripts/otimizar-programa-university-sis249.mjs`); o PNG fica no
+          repositório como fonte para regerar. Com `images.unoptimized` ligado no
+          `next.config`, o `next/image` entrega o arquivo exatamente como está em
+          `public/` — o PNG aqui seriam 1,9 MB na rota.
+
+          Sem `preload`/`fetchPriority`: a seção nasce abaixo da dobra (a capa
+          ocupa a primeira tela inteira), então o `lazy` padrão é o certo — e
+          `priority` está deprecado no Next 16 em favor de `preload`
+          (`node_modules/next/dist/docs/01-app/03-api-reference/02-components/image.md`).
+
+          Três camadas, e a ordem é a do `.hero-backdrop`: mídia, véu, conteúdo. O
+          recorte, o véu, a pluma atrás do texto e as duas dissoluções (para a capa
+          em cima, para o azul da rota embaixo) estão em `.university-programa*`,
+          no `globals.css`. */}
+      <section
+        id="university-programa"
+        aria-labelledby="university-programa-titulo"
+        className="section-py university-programa"
+      >
+        <div aria-hidden className="university-programa-midia">
+          <Image
+            src="/images/university/university-programa.webp"
+            alt=""
+            /* `fill` porque a caixa é a da seção, que muda de altura com a
+               quebra do parágrafo — não há proporção fixa a declarar. */
+            fill
+            /* Full-bleed: a mídia é `inset: 0` sobre a seção inteira, que ocupa a
+               largura da janela. (Hoje `sizes` não escolhe arquivo nenhum — ver
+               `docs/images-unoptimized.md`.) */
+            sizes="100vw"
+            className="university-programa-arte"
+          />
+        </div>
+        <div className="container-lp university-programa-conteudo">
           <h2
             id="university-programa-titulo"
             className="font-display text-section text-white"

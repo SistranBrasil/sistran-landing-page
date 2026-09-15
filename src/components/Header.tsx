@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import type Lenis from 'lenis';
 import { NAV_ITEMS } from '@/data/nav';
 import type { NavItem } from '@/data/types';
+import { matchActive, ramoAtivo } from '@/lib/navAtivo';
 import ContactModal from './ContactModal';
 
 const ACCENT = '#0ed8f6';
@@ -16,6 +17,14 @@ const PILL_BG = 'linear-gradient(135deg, rgba(14, 88, 147,0.78), rgba(15, 91, 15
 const PILL_BG_STRONG = 'linear-gradient(135deg, rgba(14, 88, 147,0.94), rgba(15, 91, 152,0.90))';
 const PILL_BORDER = '1px solid rgba(255,255,255,0.14)';
 const PILL_SHADOW = '0 24px 60px rgba(13, 86, 143,0.35), inset 0 1px 0 rgba(255,255,255,0.06)';
+
+/* ── SIS-266 · `matchActive` e `ramoAtivo` MUDARAM DE CASA ──────────────────
+   As duas foram para `@/lib/navAtivo` (import acima) porque o rodapé passou a
+   precisar da mesma regra na coluna "Navegação", e a issue manda extrair em vez
+   de copiar. NADA da lógica mudou — o header segue idêntico na tela e continua
+   sendo o único a passar `activeHash` de verdade.
+   O corpo fica comentado porque é aqui que quem procura "por que o item acende"
+   vai olhar primeiro; a explicação longa de cada regra está no módulo novo.
 
 function matchActive(href: string, pathname: string, activeHash: string) {
   if (href.startsWith('/#')) {
@@ -25,14 +34,15 @@ function matchActive(href: string, pathname: string, activeHash: string) {
   return pathname === href || pathname.startsWith(href + '/');
 }
 
-/* SIS-80/81/82 — um item com submenu acende também quando a rota atual é de um
-   FILHO. Sem isto, estar em `/sistran-labs` não marcaria nada no header: a rota
-   não aparece na lista de primeiro nível, e o menu inteiro ficaria apagado numa
-   página que ele acabou de servir. */
+// SIS-80/81/82 — um item com submenu acende também quando a rota atual é de um
+// FILHO. Sem isto, estar em `/sistran-labs` não marcaria nada no header: a rota
+// não aparece na lista de primeiro nível, e o menu inteiro ficaria apagado numa
+// página que ele acabou de servir.
 function ramoAtivo(item: NavItem, pathname: string, activeHash: string) {
   if (matchActive(item.href, pathname, activeHash)) return true;
   return (item.children ?? []).some((f) => matchActive(f.href, pathname, activeHash));
 }
+*/
 
 /* O link de primeiro nível do menu desktop. Extraído porque agora ele é
    renderizado de dois lugares — solto e dentro do invólucro do submenu — e
@@ -67,6 +77,8 @@ function LinkNav({
 
 export default function Header() {
   const pathname = usePathname();
+  const isUniversity =
+    pathname === '/sistran-university' || pathname.startsWith('/sistran-university/');
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeHash, setActiveHash] = useState('');
@@ -282,7 +294,8 @@ export default function Header() {
             transition: 'opacity 300ms ease',
           }}
         />
-        {/* LOGO */}
+        {/* LOGO — identidade do site atual, não breadcrumb. Por isso a variante
+          University continua levando à home (`/`) como a marca corporativa. */}
         <Link
           href="/"
           onClick={onLogoClick}
@@ -314,12 +327,21 @@ export default function Header() {
             arquivo; fora do escopo desta task, mas é a mesma correção. */}
           <Image
             data-morph-target=""
-            src="/images/sistran-corp-logo.png"
-            alt="Sistran"
-            width={560}
-            height={374}
+            src={
+              isUniversity
+                ? '/images/university/logo-university-header.webp'
+                : '/images/sistran-corp-logo.png'
+            }
+            alt={isUniversity ? 'Sistran University' : 'Sistran'}
+            width={isUniversity ? 264 : 560}
+            height={isUniversity ? 101 : 374}
             priority
-            className="logo-glow h-[4.5rem] w-auto object-contain md:h-[5.5rem]"
+            className={clsx(
+              'logo-glow object-contain',
+              isUniversity
+                ? 'h-auto w-32 md:w-[8.25rem]'
+                : 'h-[4.5rem] w-auto md:h-[5.5rem]',
+            )}
           />
         </Link>
 

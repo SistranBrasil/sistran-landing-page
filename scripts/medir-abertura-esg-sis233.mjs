@@ -12,9 +12,10 @@
  * escopo por escrito na issue).
  *
  * Mede também, porque são critérios:
- *  - (b) o texto da frase de ESG, verbatim, comparado com
- *    `.claude/conteudo-site/07-esg.md` (`ESPERADO` abaixo) — junção de manchete e
- *    descrição, para provar que a frase continua completa depois do recorte novo.
+ *  - (b) o texto institucional de ESG, verbatim, comparado com
+ *    `.claude/conteudo-site/07-esg.md` (`ESPERADO` abaixo). A SIS-257 transferiu
+ *    a frase da capa para a seção `#esg-introducao`; a sonda mede o novo destino
+ *    sem exigir que a copy antiga continue no `PageHero`.
  *  - (c) SOBREPOSIÇÃO com o globo da foto. O globo não é um nó do DOM (está na
  *    imagem de fundo), então o que se mede é a caixa dele em fração da foto,
  *    calibrada uma vez a olho sobre `public/images/esg/esg-hero.webp` e anotada
@@ -47,11 +48,8 @@ const DESTINO = 'docs/capturas/sis233-esg';
 const CORPO = 0.85;
 const MIUDO = 16;
 
-/* A frase institucional de `/esg`, palavra por palavra, de
-   `.claude/conteudo-site/07-esg.md:11`. A sonda compara com a JUNÇÃO de manchete e
-   descrição depois de normalizar espaços e a maiúscula inicial da descrição — o
-   recorte novo transforma ", integrando" em ". Integrando", e é exatamente essa a
-   única diferença que se aceita (a descrição passa a ser oração própria). */
+/* A frase institucional de `/esg`, palavra por palavra, na seção introdutória
+   documentada em `.claude/conteudo-site/07-esg.md`. */
 const ESPERADO =
   'A Sistran demonstra seu forte compromisso com o ESG, integrando práticas sustentáveis em suas operações e cultura corporativa.';
 
@@ -79,6 +77,7 @@ const LEVANTAR = (globo) => {
   const h1 = abertura?.querySelector('h1');
   const desc = h1?.nextElementSibling;
   const foto = document.querySelector('.pagehero-entrada img, .hero-backdrop img');
+  const introducao = document.querySelector('[data-esg-intro-copy]');
 
   /* Projeção da caixa do globo na tela. `object-fit: cover` escala pelo maior
      lado e `object-position` decide o que sobra fora — sem esta conta, comparar a
@@ -154,6 +153,7 @@ const LEVANTAR = (globo) => {
     globo: caixaGlobo,
     h1: medir(h1, 'h1'),
     descricao: medir(desc?.tagName === 'DIV' ? desc : null, 'descricao'),
+    introducao: medir(introducao, 'introducao'),
   };
 };
 
@@ -271,17 +271,9 @@ for (const largura of LARGURAS) {
     const { pagina } = await abrir(navegador, rota, largura, false);
     const medido = await pagina.evaluate(LEVANTAR, GLOBO);
     if (rotulo === 'esg') {
-      const junta = `${medido.h1?.texto ?? ''} ${medido.descricao?.texto ?? ''}`
-        .replace(/\s+/g, ' ')
-        .trim();
-      /* Normaliza só o que o recorte novo muda de propósito: o ponto que fecha a
-         manchete e a maiúscula que abre a descrição voltam a ser vírgula e
-         minúscula para a comparação. Qualquer outra diferença reprova. */
-      const normal = junta
-        .replace(/\.\s+([A-ZÀ-Ú])/g, (_, l) => `, ${l.toLowerCase()}`)
-        .replace(/\s+,/g, ',');
-      medido['#fraseCompleta'] = normal === ESPERADO;
-      medido['#fraseLida'] = normal;
+      const frase = (medido.introducao?.texto ?? '').replace(/\s+/g, ' ').trim();
+      medido['#fraseCompleta'] = frase === ESPERADO;
+      medido['#fraseLida'] = frase;
     }
     await pagina.screenshot({ path: `${DESTINO}/${MARCA}-${rotulo}-${largura}.png` });
     bloco[rotulo] = medido;

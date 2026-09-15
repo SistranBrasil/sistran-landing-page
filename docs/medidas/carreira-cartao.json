@@ -1,0 +1,102 @@
+{
+ "w1440": {
+  "estilo": {
+   "background": "rgb(230, 242, 253)",
+   "backdropFilter": "none",
+   "border": "rgba(255, 255, 255, 0.9)",
+   "antesOpacidade": "0"
+  },
+  "opacidade": {
+   "maxDeltaCanal": 0,
+   "canaisAcima2": 0,
+   "opaco": true
+  },
+  "contraste": {
+   "titulo": {
+    "razao": 12.63,
+    "tinta": "rgb(6,39,95)",
+    "fundo": "rgb(230,242,253)",
+    "cor": "rgb(6, 39, 95)",
+    "caixa": "291x39"
+   },
+   "paragrafo1": {
+    "razao": 6.3,
+    "tinta": "rgb(58,90,124)",
+    "fundo": "rgb(230,242,253)",
+    "cor": "rgb(58, 90, 124)",
+    "caixa": "433x99"
+   },
+   "paragrafo2": {
+    "razao": 6.21,
+    "tinta": "rgb(59,91,125)",
+    "fundo": "rgb(230,242,253)",
+    "cor": "rgb(58, 90, 124)",
+    "caixa": "394x73"
+   },
+   "letraMiuda": {
+    "razao": 4.84,
+    "tinta": "rgb(75,108,140)",
+    "fundo": "rgb(230,242,253)",
+    "cor": "rgb(58, 90, 124)",
+    "caixa": "403x36"
+   },
+   "botao": {
+    "razao": 4.04,
+    "tinta": "rgb(0,131,212)",
+    "fundo": "rgb(255,255,255)",
+    "cor": "rgb(255, 255, 255)",
+    "caixa": "204x18"
+   }
+  }
+ },
+ "w390": {
+  "estilo": {
+   "background": "rgb(230, 242, 253)",
+   "backdropFilter": "none",
+   "border": "rgba(255, 255, 255, 0.9)",
+   "antesOpacidade": "0"
+  },
+  "opacidade": {
+   "maxDeltaCanal": 0,
+   "canaisAcima2": 0,
+   "opaco": true
+  },
+  "contraste": {
+   "titulo": {
+    "razao": 12.63,
+    "tinta": "rgb(6,39,95)",
+    "fundo": "rgb(230,242,253)",
+    "cor": "rgb(6, 39, 95)",
+    "caixa": "233x31"
+   },
+   "paragrafo1": {
+    "razao": 6.3,
+    "tinta": "rgb(58,90,124)",
+    "fundo": "rgb(230,242,253)",
+    "cor": "rgb(58, 90, 124)",
+    "caixa": "290x151"
+   },
+   "paragrafo2": {
+    "razao": 6.3,
+    "tinta": "rgb(58,90,124)",
+    "fundo": "rgb(230,242,253)",
+    "cor": "rgb(58, 90, 124)",
+    "caixa": "277x99"
+   },
+   "letraMiuda": {
+    "razao": 5.84,
+    "tinta": "rgb(63,95,129)",
+    "fundo": "rgb(230,242,253)",
+    "cor": "rgb(58, 90, 124)",
+    "caixa": "288x36"
+   },
+   "botao": {
+    "razao": 4.04,
+    "tinta": "rgb(0,131,212)",
+    "fundo": "rgb(255,255,255)",
+    "cor": "rgb(255, 255, 255)",
+    "caixa": "204x18"
+   }
+  }
+ }
+}

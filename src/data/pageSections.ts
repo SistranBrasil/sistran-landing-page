@@ -203,7 +203,14 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
        `scroll-mt-32`), então link externo para `#curriculo` segue chegando ao
        conteúdo certo. Se o formulário voltar (ver SIS-117) e a seção descer para
        fora da abertura, este item volta descomentando a linha abaixo.
-       | { id: 'curriculo', label: 'Currículo' }, */
+
+       SIS-223 — a CONDIÇÃO ESCRITA ACIMA ACONTECEU, e por isso o item está
+       descomentado. O formulário voltou (`CurriculoCard`) e a seção nasceu FORA da
+       abertura, depois do bloco de vídeo: `#curriculo` agora é o `id` dela, não
+       mais o do cartão do LinkedIn (que passou a `#como-chegar`). O motivo de o
+       item ter saído — duas âncoras na mesma primeira tela — deixou de existir: são
+       duas seções irmãs, separadas por uma abertura de altura de viewport. */
+    { id: 'curriculo', label: 'Currículo' },
     { id: 'social', label: 'Social' },
   ],
 };

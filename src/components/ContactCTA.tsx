@@ -9,6 +9,7 @@ import { vFadeUp, VP, useReducedMotion, prefersReducedMotion } from '@/lib/motio
 import TypewriterOnView from './ui/TypewriterOnView';
 import TechnicalCursorReveal from './ui/TechnicalCursorReveal';
 import ContactModal from './ContactModal';
+import ContactCTAReferencia from './ContactCTAReferencia';
 
 type Props = {
   title?: string;
@@ -66,6 +67,16 @@ type Props = {
    * SETE telas o botão continua sendo o link de hoje, byte por byte.
    */
   contatoNoModal?: boolean;
+  /**
+   * SIS-253 — troca o cartão navy pelo desenho de
+   * `public/imagensexemplo/falecomagente.png`: fundo azul claro, cartão de vidro
+   * com texto escuro, fio ciano com nó, blob com o selo da marca e o botão branco
+   * com o círculo ciano. Opt-in pelo mesmo motivo das outras: são OITO telas
+   * montando este bloco e o pedido é de UMA (`/esg`). Com a prop desligada, nada
+   * abaixo desta linha muda — o `ContactCTAReferencia` nem chega a ser
+   * renderizado, então as outras sete continuam byte por byte.
+   */
+  layoutReferencia?: boolean;
 };
 
 /** Encadeamento pedido depois que o titulo termina de ser digitado. */
@@ -83,6 +94,7 @@ export default function ContactCTA({
   haloClaro = false,
   reativo = false,
   contatoNoModal = false,
+  layoutReferencia = false,
 }: Props) {
   const rm = useReducedMotion();
   /* SIS-142 · item 4 — o estado do modal vive AQUI, e não na rota. O ponto de
@@ -135,6 +147,30 @@ export default function ContactCTA({
       window.setTimeout(() => etapa('botao'), ATRASO_PARAGRAFO_MS + ATRASO_BOTAO_MS),
     );
   }, [etapa]);
+
+  /* SIS-253 — a bifurcação fica DEPOIS de todos os hooks (nenhum deles é
+     condicional) e ANTES da árvore de hoje, que segue intocada logo abaixo.
+     O estado do modal continua morando aqui: os dois desenhos usam o MESMO
+     `ContactModal`, e o item 4 da issue pede que o contato de `/esg` continue
+     abrindo em painel. `motionShowcase`, `haloClaro` e `reativo` não têm efeito
+     neste caminho — o que eles decoram (o cartão navy, o halo atrás dele e o
+     grafismo de ponteiro sobre ele) é justamente a superfície que a referência
+     substitui. Ver a nota do mount em `src/app/esg/page.tsx`. */
+  if (layoutReferencia) {
+    return (
+      <>
+        <ContactCTAReferencia
+          title={title}
+          description={description}
+          contatoNoModal={contatoNoModal}
+          onContato={() => setModalAberto(true)}
+        />
+        {contatoNoModal && (
+          <ContactModal open={modalAberto} onClose={() => setModalAberto(false)} />
+        )}
+      </>
+    );
+  }
 
   return (
     <section

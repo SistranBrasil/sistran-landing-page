@@ -19,6 +19,19 @@ const FADE_MS = 240;
 type RouteLoadContextValue = {
   forceMapLoad: boolean;
   reportMapReady: () => void;
+  /**
+   * SIS-243 — o portão SAIU DA TELA, e não "o portão está pronto".
+   *
+   * É `!visible`, nunca `openingReady`: entre um e outro ainda há o fade de
+   * `FADE_MS`, com o overlay pintado por cima da página. Quem liga a abertura do
+   * hero por `openingReady` começa o movimento atrás de uma cortina que ainda
+   * está lá — que é exatamente o defeito desta issue.
+   *
+   * Vira `true` também pelo TIMEOUT: o caminho de saída é um só
+   * (`exiting` → `setVisible(false)`), então nada que dependa deste booleano
+   * pode ficar esperando para sempre.
+   */
+  liberado: boolean;
 };
 
 const RouteLoadContext = createContext<RouteLoadContextValue | null>(null);
@@ -71,6 +84,17 @@ function waitForVideo(video: HTMLVideoElement) {
     const image = new Image();
     image.src = poster;
     return waitForImage(image);
+  }
+
+  /* SIS-243 — vídeo SEM fonte não vai emitir `loadeddata` nem `error`: esperar
+     por ele é esperar até o timeout de 10s. E agora isso não é hipótese — o
+     hero da home adia o `src` justamente até este portão liberar (ver
+     `primitives/ScrollVideo`, prop `carregar`), então o portão não pode ter como
+     condição a mídia que só chega DEPOIS dele. Hoje o hero também manda
+     `poster`, e a saída acima já o atende; esta guarda existe para que remover o
+     pôster um dia seja uma mudança visual, e não um travamento de 10s. */
+  if (!video.currentSrc && !video.getAttribute('src') && !video.querySelector('source')) {
+    return Promise.resolve();
   }
 
   return new Promise<void>((resolve) => {
@@ -126,7 +150,7 @@ function RouteLoadCycle({ pathname, children }: { pathname: string; children: Re
 
   const reportMapReady = useCallback(() => setMapReady(true), []);
   const contextValue = useMemo(
-    () => ({ forceMapLoad: requiresMap && visible, reportMapReady }),
+    () => ({ forceMapLoad: requiresMap && visible, reportMapReady, liberado: !visible }),
     [reportMapReady, requiresMap, visible],
   );
 
@@ -188,6 +212,10 @@ function RouteLoadCycle({ pathname, children }: { pathname: string; children: Re
         data-route-opening-ready={openingReady ? 'true' : 'false'}
         data-route-map-ready={mapReady ? 'true' : 'false'}
         data-route-timeout={timedOut ? 'true' : 'false'}
+        /* SIS-243 — o mesmo `liberado` do contexto, publicado no DOM: é por ele
+           que a medição (`scripts/medir-portao-hero-sis243.mjs`) prova a ordem
+           overlay → reveal → vídeo sem depender de estado interno do React. */
+        data-route-liberado={visible ? 'false' : 'true'}
         aria-busy={visible}
         inert={visible || undefined}
       >

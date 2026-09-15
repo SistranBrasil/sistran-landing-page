@@ -27,12 +27,40 @@ import type { StyleSpecification } from 'maplibre-gl';
  * exige que ele esteja VISÍVEL. Ver o `<p>` de atribuição em `UnitsMap.tsx`.
  */
 
+/* SIS-245 — O AZUL CLAREOU, E ENTROU UM TOQUE DE BRANCO.
+ *
+ * O pedido é "mapa azul mais claro", e a restrição escrita na issue é não
+ * abandonar a linguagem dark da seção. Então o que mudou foi o DEGRAU de cada
+ * tom, não a família: todo valor abaixo é o antigo com mais luz e um pouco menos
+ * de saturação, e nenhum deles vira cinza-claro nem azul-de-dia.
+ *
+ * O "toque de branco" está onde ele é lido como acabamento e não como fundo
+ * lavado: nos RÓTULOS (cidade, bairro, rua) e no realce dos prédios. Clarear o
+ * fundo até o branco apagaria as vias, que são desenhadas por diferença de tom
+ * contra ele — o mapa ficaria mais claro e menos legível, o oposto do pedido.
+ *
+ * O contorno escuro do rótulo (`CONTORNO_ROTULO`) clareou o mínimo: ele é o que
+ * garante a leitura do texto sobre qualquer cor do mapa, e é justamente com o
+ * fundo mais claro que ele passa a trabalhar mais.
+ *
+ * As cores continuam espelhando o `ESTILO_ESCURO` de `UnitsMap.tsx`, uma a uma —
+ * aquele é o degrau da Maps JS API, que hoje não roda (não há
+ * `NEXT_PUBLIC_GOOGLE_MAPS_KEY` no repositório) mas volta a valer no dia em que
+ * houver chave. Quem mexer aqui mexe lá; é o único jeito de os dois degraus não
+ * virarem dois mapas diferentes.
+ * Valores anteriores, para poder voltar atrás em um diff:
+ * | fundo #0e1b2e · água #062036 · rótulo d'água #3d7ba8 · prédio #16273e
+ * | via local #17293f · arterial #1d3350 · expressa #25456b · limite #1f3a5c
+ * | parque/mata #102a24 · rótulo #8ab4d8 · contorno #0a1526 · rua #7fa6c8
+ * | cidade #a9cbe6
+ */
+
 /** Rótulo em português quando o dado tem, com queda para o nome local. */
 const NOME = ['coalesce', ['get', 'name:pt'], ['get', 'name']] as unknown;
 
-const TINTA_ROTULO = '#8ab4d8';
-const CONTORNO_ROTULO = '#0a1526';
-const TINTA_RUA = '#7fa6c8';
+const TINTA_ROTULO = '#c9def0';
+const CONTORNO_ROTULO = '#0b1b2c';
+const TINTA_RUA = '#aecbe2';
 
 export const ESTILO_MAPA_ESCURO: StyleSpecification = {
   version: 8,
@@ -49,7 +77,7 @@ export const ESTILO_MAPA_ESCURO: StyleSpecification = {
     },
   },
   layers: [
-    { id: 'fundo', type: 'background', paint: { 'background-color': '#0e1b2e' } },
+    { id: 'fundo', type: 'background', paint: { 'background-color': '#16304d' } },
 
     /* Verde de parque: é o `poi.park` do estilo antigo (#102a24). Vem antes da
        água para um parque de beira de rio não cobrir o rio. */
@@ -58,7 +86,7 @@ export const ESTILO_MAPA_ESCURO: StyleSpecification = {
       type: 'fill',
       source: 'openmaptiles',
       'source-layer': 'park',
-      paint: { 'fill-color': '#102a24', 'fill-opacity': 0.6 },
+      paint: { 'fill-color': '#173d33', 'fill-opacity': 0.6 },
     },
     {
       id: 'mata',
@@ -66,7 +94,7 @@ export const ESTILO_MAPA_ESCURO: StyleSpecification = {
       source: 'openmaptiles',
       'source-layer': 'landcover',
       filter: ['in', 'class', 'wood', 'grass'],
-      paint: { 'fill-color': '#102a24', 'fill-opacity': 0.45 },
+      paint: { 'fill-color': '#173d33', 'fill-opacity': 0.45 },
     },
 
     {
@@ -74,7 +102,7 @@ export const ESTILO_MAPA_ESCURO: StyleSpecification = {
       type: 'fill',
       source: 'openmaptiles',
       'source-layer': 'water',
-      paint: { 'fill-color': '#062036' },
+      paint: { 'fill-color': '#0e3a5c' },
     },
     {
       id: 'curso-de-agua',
@@ -82,7 +110,7 @@ export const ESTILO_MAPA_ESCURO: StyleSpecification = {
       source: 'openmaptiles',
       'source-layer': 'waterway',
       paint: {
-        'line-color': '#062036',
+        'line-color': '#0e3a5c',
         'line-width': ['interpolate', ['linear'], ['zoom'], 8, 0.5, 16, 3],
       },
     },
@@ -99,7 +127,7 @@ export const ESTILO_MAPA_ESCURO: StyleSpecification = {
       'source-layer': 'building',
       minzoom: 14,
       paint: {
-        'fill-color': '#16273e',
+        'fill-color': '#254a6e',
         'fill-opacity': ['interpolate', ['linear'], ['zoom'], 14, 0, 16, 0.7],
       },
     },
@@ -116,7 +144,7 @@ export const ESTILO_MAPA_ESCURO: StyleSpecification = {
       filter: ['in', 'class', 'minor', 'service', 'track', 'path'],
       minzoom: 12,
       paint: {
-        'line-color': '#17293f',
+        'line-color': '#24425f',
         'line-width': ['interpolate', ['linear'], ['zoom'], 12, 0.5, 16, 4, 19, 14],
       },
     },
@@ -127,7 +155,7 @@ export const ESTILO_MAPA_ESCURO: StyleSpecification = {
       'source-layer': 'transportation',
       filter: ['in', 'class', 'secondary', 'tertiary', 'trunk', 'primary'],
       paint: {
-        'line-color': '#1d3350',
+        'line-color': '#2e5175',
         'line-width': ['interpolate', ['linear'], ['zoom'], 8, 0.8, 12, 2.5, 16, 8, 19, 20],
       },
     },
@@ -138,7 +166,7 @@ export const ESTILO_MAPA_ESCURO: StyleSpecification = {
       'source-layer': 'transportation',
       filter: ['==', 'class', 'motorway'],
       paint: {
-        'line-color': '#25456b',
+        'line-color': '#3d6b96',
         'line-width': ['interpolate', ['linear'], ['zoom'], 6, 1, 12, 4, 16, 11, 19, 24],
       },
     },
@@ -152,7 +180,7 @@ export const ESTILO_MAPA_ESCURO: StyleSpecification = {
       'source-layer': 'boundary',
       filter: ['<=', 'admin_level', 6],
       paint: {
-        'line-color': '#1f3a5c',
+        'line-color': '#325a85',
         'line-width': ['interpolate', ['linear'], ['zoom'], 4, 0.6, 12, 1.6],
         'line-dasharray': [3, 2],
       },
@@ -195,7 +223,7 @@ export const ESTILO_MAPA_ESCURO: StyleSpecification = {
         'symbol-placement': 'line',
       },
       paint: {
-        'text-color': '#3d7ba8',
+        'text-color': '#79aed6',
         'text-halo-color': CONTORNO_ROTULO,
         'text-halo-width': 1.2,
       },
@@ -241,7 +269,7 @@ export const ESTILO_MAPA_ESCURO: StyleSpecification = {
         'text-max-width': 9,
       },
       paint: {
-        'text-color': '#a9cbe6',
+        'text-color': '#e6f2fc',
         'text-halo-color': CONTORNO_ROTULO,
         'text-halo-width': 1.6,
       },

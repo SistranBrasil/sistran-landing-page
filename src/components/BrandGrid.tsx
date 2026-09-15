@@ -41,9 +41,18 @@
  *     viewport depois de duas a três telas de rolagem — está MAIS longe da dobra
  *     agora do que estava no rodapé, não menos.
  *     E o `fetchPriority="low"` fica pelo motivo original intacto e agora mais
- *     forte: o LCP da home é o vídeo do hero, 15,4 MB, e quinze logos disputando
+ *     forte: o LCP da home é o vídeo do hero, 10,43 MiB, e quinze logos disputando
  *     banda com ele é exatamente o que `low` existe para evitar.
  *     Nenhum dos três atributos (`loading`, `decoding`, `fetchPriority`) muda.
+ *
+ *     SIS-240 — OS 10,43 MiB FORAM RECONFERIDOS, E CONTINUAM SENDO ESSE NÚMERO.
+ *     A issue pedia atualizar este bloco se ele citasse peso ou hero vencidos.
+ *     `public/videos/hero-scroll-v2.mp4` = 10.936.383 bytes = 10,43 MiB, exatamente
+ *     o que está escrito acima, e o arquivo do hero continua sendo esse
+ *     (`HeroCinematic.tsx`, `HERO_VIDEO`). Então nada a corrigir aqui — o registro
+ *     fica para que a próxima pessoa não gaste a rodada duvidando do mesmo número.
+ *     Quem MUDA esse peso é a SIS-241 (recompressão do bruto), não esta issue; se ele
+ *     cair, é lá que a frase acima passa a estar velha.
  *
  * SIS-195 — AS LOGOS PASSARAM A ENTRAR EM CASCATA, E O ITEM 1 ACIMA CONTINUA
  * VALENDO. O que mudou é a ENTRADA (uma vez, ao chegar em cena, revertida ao

@@ -123,6 +123,14 @@
  * 3. A terceira mudança (seção mais baixa) não passa por aqui: é o passo do
  *    percurso, em `ui/PercursoIndicadores.tsx`.
  *
+ * ── SIS-256 REVOGA O ITEM 2 ACIMA (a fileira da etapa) ──────────────────────
+ * O contador «01 / 07», o nó e o fio SAÍRAM dos sete cartões, a pedido da autora
+ * do escopo, junto com o pedido de cartão mais estreito. O item 2 continua escrito
+ * porque é ele que explica o que existia e como se religa — inclusive o cuidado com
+ * o copy-lock, que segue valendo caso o contador volte: ele era uma única expressão,
+ * sem nó de texto literal, e é assim que teria de voltar. O que caducou é a
+ * conclusão, não o raciocínio. O item 1 (faixa clara) não foi tocado.
+ *
  * Marcação: `<ul>` com número e descrição no MESMO item, na ordem em que se leem.
  * O leitor de tela anuncia "850+, Membros do Grupo Sistran" como um par. Não é
  * `<dl>` porque o par que o `<dl>` modela seria `<dt>` descrição / `<dd>` valor —
@@ -130,8 +138,15 @@
  * DOM em relação à visual, ou inverter a semântica; a lista simples não obriga a
  * escolher. O número também não é `aria-label` de nada: os dois são texto.
  */
+import type { CSSProperties } from 'react';
 import { METRICS } from '@/data/metrics';
 import { CountUp } from '@/components/primitives/CountUp';
+import RevealScope from '@/components/motion/RevealScope';
+import {
+  AFINACAO_INDICADORES,
+  LIMIAR_REVEAL,
+  MARGEM_REVEAL,
+} from '@/app/contato/reveal-calibre';
 /* O PERCURSO SAIU (pedido de 11/09), e o import fica comentado em vez de apagado:
    ativo, o lint quebra por import não utilizado; apagado, ninguém saberia que esta
    faixa já teve palco preso. O motivo da saída está no bloco do JSX, onde o mount
@@ -169,7 +184,33 @@ export default function MetricsBand() {
           tocados, e o CSS de repouso desta faixa (`globals.css`) é o único lugar
           que precisaria voltar à fileira de largura fixa.
       <PercursoIndicadores> */}
-        <div className="container-lp">
+        {/* SIS-263 — o escopo de reveal desta faixa. `RevealScope` recebe o
+            `className` do contêiner e OCUPA o lugar do `<div className="container-lp">`
+            que estava aqui: nenhum nó novo na árvore, então nenhum seletor de
+            `globals.css` que dependa da relação pai/filho muda. O componente é
+            `'use client'` mas recebe os cartões como `children`, então o `<ul>`, os
+            sete números e os rótulos continuam saindo prontos do servidor — o mesmo
+            arranjo que o `PercursoIndicadores` usava (ver acima).
+            Não é `SectionReveal` (GSAP) nem `motion/react`: a issue prescreve as
+            primitivas da casa, e são elas que a folha já cobre em movimento
+            reduzido. */}
+        {/* SIS-263 (2ª volta) — ESTE ESCOPO É O DA PRIMEIRA DOBRA, e é por ele que
+            o pedido «que as coisas comecem a surgir após o carregamento» se
+            resolve. Medido a 1440×900: a faixa começa em y=742 e o escopo vai até
+            y=1000, então 61% dele já está na tela quando a página abre. Sem
+            `esperarRota`, ele acendia com a cortina do `RouteLoadGate` ainda de pé
+            — a entrada rodava no escuro e, quando a cortina levantava, os sete
+            cartões já estavam parados no estado final. Com a espera, o primeiro
+            gesto visível da rota é a cascata surgindo.
+            O calibre (margem, limiar, duração, curva, passo) mora em
+            `app/contato/reveal-calibre.ts`, com o motivo de cada número. */}
+        <RevealScope
+          className="container-lp"
+          esperarRota
+          limiar={LIMIAR_REVEAL}
+          margem={MARGEM_REVEAL}
+          style={AFINACAO_INDICADORES}
+        >
           {/* O `tabIndex={0}` SAIU JUNTO, e é consequência da grade, não descuido:
               ele existia porque a fileira era um contêiner de rolagem horizontal
               (`overflow-x: auto`), e no Chrome região rolável não entra na
@@ -191,22 +232,57 @@ export default function MetricsBand() {
                  O passo mora AQUI, e não no CSS, porque só a marcação conhece o
                  índice; e é o mesmo recurso dos cartões do ESG (`--esg-fase-onda`
                  em `app/esg/page.tsx`), que é o precedente da casa. */
+              /* SIS-263 — `data-reveal="fade"` e NÃO `fade-up`, e o motivo é
+                  medido na cascata, não estético: este `<li>` já tem uma animação
+                  de `transform` infinita (`contato-indicador-onda`, `globals.css`),
+                  e animação vence transição na cascata. Um `fade-up` aqui
+                  declararia `translate3d(0, 24px, 0)` num nó cujo `transform` está
+                  sob controle do `@keyframes` — a subida simplesmente não
+                  aconteceria, e o que ficaria no código seria uma marcação que
+                  parece funcionar. Por opacidade os dois convivem: a onda mexe no
+                  `transform`, o reveal na `opacity`.
+                  `--reveal-i` é a ordem de leitura; a cadência é o token
+                  `--motion-stagger-reveal`, dentro da faixa de 70–120ms que
+                  `docs/scroll.md` §4.3 recomenda.
+                  ⚠️ 2ª volta: o passo NÃO é mais o 80ms do token — o escopo acima
+                  redefine `--motion-stagger-reveal` para 95ms via
+                  `AFINACAO_INDICADORES`, porque com a duração em 820ms os 80ms
+                  deixavam os sete quase simultâneos. Valor anterior: 80ms (560ms
+                  para a fileira); agora 6 × 95 = 570ms até o último começar. */
               <li
                 key={m.id}
                 className="contato-indicador"
-                style={{ ['--ind-fase' as string]: `-${(i * 0.7).toFixed(1)}s` }}
+                data-reveal="fade"
+                style={
+                  {
+                    ['--ind-fase' as string]: `-${(i * 0.7).toFixed(1)}s`,
+                    ['--reveal-i' as string]: i,
+                  } as CSSProperties
+                }
               >
-                {/* A fileira da etapa. O `nó` e o `fio` são vazios de propósito —
-                    são grafismo, e o CSS os acende conforme o percurso avança
-                    (`--mb-alc` em `metrics-band-track.css`). Fora do percurso
-                    nascem acesos, para que a grade não pareça uma trilha parada. */}
+                {/* ── SIS-256 · A FILEIRA DA ETAPA SAIU ───────────────────────
+                    A autora do escopo pediu por escrito que o contador «01 / 07» e
+                    os grafismos de passo (nó + fio) saíssem dos SETE cartões. Isto
+                    DESFAZ o item 2 da SIS-211, que os havia pedido — e a issue de
+                    lá segue In Review, então o que muda não é um erro dela: é o
+                    mesmo desenho revisto depois de ver na tela. O motivo declarado
+                    é largura: a fileira da etapa é o que obrigava o cartão a ter
+                    duas fileiras e um fio esticado de borda a borda, e cartão mais
+                    estreito é o outro pedido da mesma issue.
+                    Fica COMENTADO e não apagado porque é o roteiro de religar, junto
+                    com o CSS de `.contato-indicador-etapa`/`-no`/`-fio` em
+                    `globals.css`, comentado no mesmo turno. O `aria-hidden` já
+                    dizia que nada disto era conteúdo — nenhum dado sai de cena com
+                    ele, só grafismo ordinal.
                 <p className="contato-indicador-etapa lp-numeric" aria-hidden="true">
                   <span className="contato-indicador-no" />
                   {`${String(i + 1).padStart(2, '0')} / ${String(METRICS.length).padStart(2, '0')}`}
                   <span className="contato-indicador-fio" />
-                </p>
-                {/* Corpo: o par número/rótulo que a SIS-143 desenhou, agora dentro
-                    de um embrulho para poder ser a segunda fileira do cartão. */}
+                </p> */}
+                {/* Corpo: o par número/rótulo que a SIS-143 desenhou. O embrulho
+                    FICA mesmo sendo agora filho único: é ele que carrega o
+                    `display: flex` que põe o rótulo ao lado do número, que é a
+                    estrutura da referência que a autora mandou na SIS-256. */}
                 <div className="contato-indicador-corpo">
                   <p className="contato-indicador-valor">
                     {/* `srText` com o sufixo dentro, senão o leitor de tela anuncia
@@ -228,7 +304,7 @@ export default function MetricsBand() {
               </li>
             ))}
           </ul>
-        </div>
+        </RevealScope>
       {/* </PercursoIndicadores> */}
     </section>
   );

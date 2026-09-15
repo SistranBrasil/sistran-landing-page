@@ -1,9 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Linkedin, Youtube } from 'lucide-react';
-import { NAV_ITEMS } from '@/data/nav';
+/* SIS-266 — `NAV_ITEMS` saiu daqui porque a lista mudou de dono: quem itera agora
+   é `layout/RodapeNav` (ver o bloco comentado na coluna "Navegação"). O import
+   fica comentado em vez de apagado, como o resto do repositório faz — ativo, o
+   lint quebra por import não utilizado.
+   import { NAV_ITEMS } from '@/data/nav'; */
 import { LINKEDIN_URL, YOUTUBE_URL, UNITS } from '@/data/contact';
 import { MotionPreferenceTrigger } from '@/components/layout/MotionPreferenceTrigger';
+import RodapeNav from '@/components/layout/RodapeNav';
 
 /* O rodape do site tem: logo, os 3 escritorios (Sao Paulo com endereco e
    telefone; Pato Branco e Rio de Janeiro apenas com o nome), o menu, "Conheça
@@ -74,6 +79,17 @@ export default function Footer() {
           <h4 className="lp-rodape-titulo mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-[#0ed8f6]">
             Navegação
           </h4>
+          {/* ── SIS-266 · A LISTA VIROU `layout/RodapeNav` ────────────────────
+              O item da página atual precisa aparecer selecionado, e para isso é
+              preciso ler a rota — `usePathname` só existe em Client Component.
+              Este `Footer` CONTINUA Server Component: o que virou cliente é só a
+              lista de sete links; logo, escritórios, coluna Institucional e o
+              copyright seguem saindo prontos do servidor. Virar o rodapé inteiro
+              teria mandado tudo isso para o bundle sem necessidade nenhuma.
+              A marcação é a mesma (`<ul className="lp-rodape-nav">` com um `<li>`
+              e um `<Link>` por item), então nenhum seletor do bloco do rodapé em
+              `globals.css` muda de alvo.
+              O que estava aqui, para quem comparar:
           <ul className="lp-rodape-nav space-y-2">
             {NAV_ITEMS.map((n) => (
               <li key={n.href}>
@@ -82,7 +98,8 @@ export default function Footer() {
                 </Link>
               </li>
             ))}
-          </ul>
+          </ul> */}
+          <RodapeNav />
         </div>
 
         {/* Coluna 3: Dados */}

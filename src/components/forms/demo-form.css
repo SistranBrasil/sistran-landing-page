@@ -1,0 +1,144 @@
+/* SIS-223 · área de envio de arquivo do `DemoForm`
+   ---------------------------------------------------------------------------
+   Só o campo de arquivo tem CSS próprio. O resto do formulário continua em
+   utilitários (`labelClass`/`controlClass` no componente), e é de propósito: o
+   que este arquivo resolve é o que utilitário não resolve — o input `opacity: 0`
+   cobrindo a área, o anel de foco vindo de `:focus-within` num elemento que não
+   é o controle, e os três estados da área (arrastando, preenchido, inválido).
+
+   Nenhuma regra aqui esconde o input de verdade. Ver o comentário de
+   `CampoArquivo` em `DemoForm.tsx`: `display: none` faria o Chrome recusar o foco
+   na validação nativa e o formulário travaria em silêncio. */
+
+.df-drop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin-top: 0.25rem;
+  padding: 1.125rem 1.25rem;
+  border: 1px dashed rgb(255 255 255 / 0.22);
+  border-radius: 0.75rem;
+  background: rgb(255 255 255 / 0.04);
+  /* `border-color`/`background` e nada de layout: a área não muda de tamanho
+     entre os estados, então acender e apagar não reflui o formulário. */
+  transition:
+    border-color 0.24s var(--ease-out, ease),
+    background-color 0.24s var(--ease-out, ease),
+    box-shadow 0.24s var(--ease-out, ease);
+}
+
+/* O controle de verdade, por cima da área inteira. `opacity: 0` e não
+   `visibility`/`display`: precisa continuar clicável, focável e ancorando a
+   bolha de validação nativa. */
+.df-drop-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* O anel de foco é desenhado pela ÁREA, porque é ela que se vê. Sem isto o foco
+   ficaria invisível: o anel do navegador acompanharia um elemento transparente.
+   `:focus-visible` no input, para o clique de mouse não acender o anel. */
+.df-drop:has(.df-drop-input:focus-visible) {
+  border-color: rgb(14 216 246 / 0.7);
+  box-shadow: 0 0 0 3px rgb(14 216 246 / 0.28);
+}
+
+.df-drop[data-arrastando='true'] {
+  border-color: rgb(14 216 246 / 0.75);
+  border-style: solid;
+  background: rgb(14 216 246 / 0.08);
+}
+
+.df-drop[data-preenchido='true'] {
+  border-style: solid;
+  border-color: rgb(52 211 153 / 0.55);
+  background: rgb(52 211 153 / 0.07);
+}
+
+.df-drop[data-invalido='true'] {
+  border-style: solid;
+  border-color: rgb(255 180 180 / 0.7);
+  background: rgb(255 180 180 / 0.07);
+}
+
+.df-drop-icone {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.625rem;
+  background: rgb(255 255 255 / 0.08);
+  color: #a5f0ff;
+}
+
+.df-drop[data-preenchido='true'] .df-drop-icone {
+  background: rgb(52 211 153 / 0.16);
+  color: #34d399;
+}
+
+.df-drop[data-invalido='true'] .df-drop-icone {
+  background: rgb(255 180 180 / 0.16);
+  color: #ffb4b4;
+}
+
+.df-drop-texto {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.df-drop-titulo {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  color: rgb(255 255 255 / 0.9);
+  /* Nome de arquivo é texto que o usuário não controla: `.pdf` de currículo
+     costuma trazer nome, sobrenome e cargo. Sem o corte, a área cresceria e
+     empurraria o botão de envio para fora da tela. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.df-drop-regra {
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: rgb(255 255 255 / 0.55);
+}
+
+/* Movimento reduzido: as duas chaves da casa (a preferência do sistema e a
+   escolha do visitante, gravada em `<html data-motion="reduce">`). A transição
+   da área é decorativa — o estado é dito também por cor, ícone e texto —, então
+   ela apenas deixa de interpolar. Nada de conteúdo depende dela. */
+@media (prefers-reduced-motion: reduce) {
+  .df-drop {
+    transition: none;
+  }
+}
+
+html[data-motion='reduce'] .df-drop {
+  transition: none;
+}
+
+.df-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.78);
+}
+
+.df-checkbox input {
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.0625rem;
+  flex: none;
+  accent-color: #0ed8f6;
+}

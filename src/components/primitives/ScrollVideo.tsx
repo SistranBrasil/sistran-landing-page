@@ -33,6 +33,25 @@ type Props = {
    */
   reproduzir?: boolean;
   /**
+   * SIS-243 — quando `false`, o elemento sai SEM `src` e com `preload="none"`:
+   * o que se vê é só o `poster`, e o arquivo de vídeo não disputa rede com o
+   * resto da abertura. Voltar para `true` grava o `src` e o navegador inicia o
+   * carregamento ali (trocar o atributo `src` invoca o algoritmo de load do
+   * elemento de mídia), sem precisar de `load()` na mão.
+   *
+   * Default `true` — os outros consumos (`legacy/ImpactSequence`,
+   * `legacy/StackScenes`) continuam pedindo o arquivo na montagem.
+   *
+   * ⚠️ O elemento continua marcado como `data-route-critical-media`, e isso é
+   * deliberado: quem espera por ele é o `RouteLoadGate`, e o que ele espera de
+   * um `<video>` com pôster é o PÔSTER, não o arquivo (ver `waitForVideo` lá).
+   * Se um dia este componente for usado adiado e SEM pôster, o portão também
+   * não trava — há guarda explícita para vídeo sem fonte. Sem uma das duas
+   * coisas, adiar o `src` seria pedir ao portão que esperasse a mídia que só
+   * chega depois dele: o impasse que a issue manda não criar.
+   */
+  carregar?: boolean;
+  /**
    * Fração do vídeo em que a Fase A para. `1` toca até o fim.
    *
    * Existe porque o vídeo do hero deixa de ser o assunto antes do fim do
@@ -94,6 +113,7 @@ export function ScrollVideo({
   poster,
   revelarQuandoPronto = false,
   reproduzir = false,
+  carregar = true,
   tetoReproducao = 1,
   onFracao,
   onEntradaEncerrada,
@@ -253,14 +273,21 @@ export function ScrollVideo({
     <video
       ref={video}
       data-route-critical-media=""
+      /* SIS-243 — o estado do adiamento fica legível no DOM: é o que a medição
+         lê para provar que na abertura só havia pôster. */
+      data-video-adiado={carregar ? undefined : ''}
       className={className}
-      src={src}
+      src={carregar ? src : undefined}
       poster={poster}
       // `muted` e `playsInline` continuam necessários mesmo sem autoplay: sem o
       // segundo, o iOS abre o vídeo em tela cheia ao primeiro toque.
       muted
       playsInline
-      preload="auto"
+      /* Sem `src` o `preload` não tem o que buscar, mas escrevê-lo mesmo assim
+         mantém o elemento coerente com o que ele é naquele momento — e é o que
+         diz ao navegador, em uma palavra, que aquele `<video>` não é rede a
+         disputar. `auto` volta junto com o `src`, no mesmo commit. */
+      preload={carregar ? 'auto' : 'none'}
       aria-hidden="true"
       tabIndex={-1}
     />
