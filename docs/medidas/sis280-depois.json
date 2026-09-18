@@ -1,0 +1,205 @@
+{
+  "issue": "SIS-280",
+  "destinoPedido": "https://www.sistran.com/latam/",
+  "submenuDesktop": [
+    {
+      "rotulo": "A Sistran",
+      "tag": "a",
+      "hrefEscrito": "/quem-somos",
+      "destinoResolvido": "http://localhost:3000/quem-somos",
+      "externo": false,
+      "target": null,
+      "rel": null,
+      "ariaCurrent": null
+    },
+    {
+      "rotulo": "Sistran Labs",
+      "tag": "a",
+      "hrefEscrito": "/sistran-labs",
+      "destinoResolvido": "http://localhost:3000/sistran-labs",
+      "externo": false,
+      "target": null,
+      "rel": null,
+      "ariaCurrent": null
+    },
+    {
+      "rotulo": "Sistran University",
+      "tag": "a",
+      "hrefEscrito": "/sistran-university",
+      "destinoResolvido": "http://localhost:3000/sistran-university",
+      "externo": false,
+      "target": null,
+      "rel": null,
+      "ariaCurrent": null
+    },
+    {
+      "rotulo": "Sistran Latam",
+      "tag": "a",
+      "hrefEscrito": "https://www.sistran.com/latam/",
+      "destinoResolvido": "https://www.sistran.com/latam/",
+      "externo": true,
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "ariaCurrent": null
+    },
+    {
+      "rotulo": "Soluções, Serviços e Consultoria",
+      "tag": "a",
+      "hrefEscrito": "/solucoes",
+      "destinoResolvido": "http://localhost:3000/solucoes",
+      "externo": false,
+      "target": null,
+      "rel": null,
+      "ariaCurrent": null
+    },
+    {
+      "rotulo": "Transformação de Legado",
+      "tag": "a",
+      "hrefEscrito": "/transformacao-legado",
+      "destinoResolvido": "http://localhost:3000/transformacao-legado",
+      "externo": false,
+      "target": null,
+      "rel": null,
+      "ariaCurrent": null
+    }
+  ],
+  "submenuAberto": true,
+  "abaNovaDesktop": {
+    "url": "https://www.sistran.com/latam/",
+    "origemContinuaEm": "/"
+  },
+  "submenuFechouAposClique": true,
+  "naRotaLatam": {
+    "rota": "/latam",
+    "submenu": [
+      {
+        "rotulo": "A Sistran",
+        "tag": "a",
+        "hrefEscrito": "/quem-somos",
+        "destinoResolvido": "http://localhost:3000/quem-somos",
+        "externo": false,
+        "target": null,
+        "rel": null,
+        "ariaCurrent": null
+      },
+      {
+        "rotulo": "Sistran Labs",
+        "tag": "a",
+        "hrefEscrito": "/sistran-labs",
+        "destinoResolvido": "http://localhost:3000/sistran-labs",
+        "externo": false,
+        "target": null,
+        "rel": null,
+        "ariaCurrent": null
+      },
+      {
+        "rotulo": "Sistran University",
+        "tag": "a",
+        "hrefEscrito": "/sistran-university",
+        "destinoResolvido": "http://localhost:3000/sistran-university",
+        "externo": false,
+        "target": null,
+        "rel": null,
+        "ariaCurrent": null
+      },
+      {
+        "rotulo": "Sistran Latam",
+        "tag": "a",
+        "hrefEscrito": "https://www.sistran.com/latam/",
+        "destinoResolvido": "https://www.sistran.com/latam/",
+        "externo": true,
+        "target": "_blank",
+        "rel": "noopener noreferrer",
+        "ariaCurrent": null
+      },
+      {
+        "rotulo": "Soluções, Serviços e Consultoria",
+        "tag": "a",
+        "hrefEscrito": "/solucoes",
+        "destinoResolvido": "http://localhost:3000/solucoes",
+        "externo": false,
+        "target": null,
+        "rel": null,
+        "ariaCurrent": null
+      },
+      {
+        "rotulo": "Transformação de Legado",
+        "tag": "a",
+        "hrefEscrito": "/transformacao-legado",
+        "destinoResolvido": "http://localhost:3000/transformacao-legado",
+        "externo": false,
+        "target": null,
+        "rel": null,
+        "ariaCurrent": null
+      }
+    ],
+    "paiAceso": {
+      "cor": "rgba(255, 255, 255, 0.68)",
+      "ariaCurrent": null
+    }
+  },
+  "drawer390": [
+    {
+      "rotulo": "A Sistran",
+      "tag": "a",
+      "destinoResolvido": "http://localhost:3000/quem-somos",
+      "externo": false,
+      "target": null,
+      "rel": null,
+      "ariaCurrent": null
+    },
+    {
+      "rotulo": "Sistran Labs",
+      "tag": "a",
+      "destinoResolvido": "http://localhost:3000/sistran-labs",
+      "externo": false,
+      "target": null,
+      "rel": null,
+      "ariaCurrent": null
+    },
+    {
+      "rotulo": "Sistran University",
+      "tag": "a",
+      "destinoResolvido": "http://localhost:3000/sistran-university",
+      "externo": false,
+      "target": null,
+      "rel": null,
+      "ariaCurrent": null
+    },
+    {
+      "rotulo": "Sistran Latam",
+      "tag": "a",
+      "destinoResolvido": "https://www.sistran.com/latam/",
+      "externo": true,
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "ariaCurrent": null
+    },
+    {
+      "rotulo": "Soluções, Serviços e Consultoria",
+      "tag": "a",
+      "destinoResolvido": "http://localhost:3000/solucoes",
+      "externo": false,
+      "target": null,
+      "rel": null,
+      "ariaCurrent": null
+    },
+    {
+      "rotulo": "Transformação de Legado",
+      "tag": "a",
+      "destinoResolvido": "http://localhost:3000/transformacao-legado",
+      "externo": false,
+      "target": null,
+      "rel": null,
+      "ariaCurrent": null
+    }
+  ],
+  "abaNovaMobile": {
+    "url": "https://www.sistran.com/latam/"
+  },
+  "drawerFechouAposClique": {
+    "alturaMaxima": "0px",
+    "opacidade": "0",
+    "eventos": "none"
+  }
+}

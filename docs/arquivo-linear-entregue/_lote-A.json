@@ -1,0 +1,268 @@
+{
+  "lote": "A",
+  "exportadoEm": "2026-09-15T21:08:47.969Z",
+  "fonte": "Linear MCP user-linear, somente leitura",
+  "chamadas": {
+    "get_issue": {
+      "includeRelations": true,
+      "includeCustomerNeeds": true,
+      "includeReleases": true
+    },
+    "list_comments": {
+      "limit": 250,
+      "orderBy": "createdAt"
+    }
+  },
+  "linearAlterado": false,
+  "idsSolicitados": [
+    "SIS-147",
+    "SIS-120",
+    "SIS-121",
+    "SIS-180",
+    "SIS-171",
+    "SIS-172",
+    "SIS-163",
+    "SIS-173",
+    "SIS-191",
+    "SIS-192",
+    "SIS-119",
+    "SIS-125",
+    "SIS-188",
+    "SIS-155",
+    "SIS-178",
+    "SIS-159",
+    "SIS-169",
+    "SIS-122",
+    "SIS-176"
+  ],
+  "idsExportadosMarkdown": [
+    "SIS-147",
+    "SIS-120",
+    "SIS-121",
+    "SIS-180",
+    "SIS-171",
+    "SIS-172",
+    "SIS-163",
+    "SIS-173",
+    "SIS-191",
+    "SIS-192",
+    "SIS-119",
+    "SIS-125",
+    "SIS-188",
+    "SIS-155",
+    "SIS-178",
+    "SIS-159",
+    "SIS-169",
+    "SIS-122",
+    "SIS-176"
+  ],
+  "idsPendentesMarkdown": [],
+  "porIssue": {
+    "SIS-147": {
+      "comentarios": 2,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-147.md",
+      "hasNextPage": false
+    },
+    "SIS-120": {
+      "comentarios": 3,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-120.md",
+      "hasNextPage": false
+    },
+    "SIS-121": {
+      "comentarios": 7,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-121.md",
+      "hasNextPage": false
+    },
+    "SIS-180": {
+      "comentarios": 2,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-180.md",
+      "hasNextPage": false
+    },
+    "SIS-171": {
+      "comentarios": 2,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-171.md",
+      "hasNextPage": false
+    },
+    "SIS-172": {
+      "comentarios": 2,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-172.md",
+      "hasNextPage": false
+    },
+    "SIS-163": {
+      "comentarios": 5,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-163.md",
+      "hasNextPage": false
+    },
+    "SIS-173": {
+      "comentarios": 2,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-173.md",
+      "hasNextPage": false
+    },
+    "SIS-191": {
+      "comentarios": 5,
+      "anexosIssue": 2,
+      "anexosComentarios": 0,
+      "downloadsOk": 2,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-191.md",
+      "hasNextPage": false
+    },
+    "SIS-192": {
+      "comentarios": 3,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-192.md",
+      "hasNextPage": false
+    },
+    "SIS-119": {
+      "comentarios": 2,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-119.md",
+      "hasNextPage": false
+    },
+    "SIS-125": {
+      "comentarios": 7,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-125.md",
+      "hasNextPage": false
+    },
+    "SIS-188": {
+      "comentarios": 5,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-188.md",
+      "hasNextPage": false
+    },
+    "SIS-155": {
+      "comentarios": 8,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-155.md",
+      "hasNextPage": false
+    },
+    "SIS-178": {
+      "comentarios": 7,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-178.md",
+      "hasNextPage": false
+    },
+    "SIS-159": {
+      "comentarios": 6,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-159.md",
+      "hasNextPage": false
+    },
+    "SIS-169": {
+      "comentarios": 7,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-169.md",
+      "hasNextPage": false
+    },
+    "SIS-122": {
+      "comentarios": 2,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-122.md",
+      "hasNextPage": false
+    },
+    "SIS-176": {
+      "comentarios": 6,
+      "anexosIssue": 0,
+      "anexosComentarios": 0,
+      "downloadsOk": 0,
+      "downloadsFalho": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-176.md",
+      "hasNextPage": false
+    }
+  },
+  "downloads": {
+    "ok": [
+      {
+        "issue": "SIS-191",
+        "id": "e6c55734-emenda-depois (attachment Linear)",
+        "arquivoLocal": "docs/arquivo-linear-entregue/anexos/SIS-191/e6c55734-emenda-depois-1440x900.png",
+        "bytes": 828609,
+        "contentType": "image/png",
+        "http": 200
+      },
+      {
+        "issue": "SIS-191",
+        "id": "931d5e8f-emenda-antes (attachment Linear)",
+        "arquivoLocal": "docs/arquivo-linear-entregue/anexos/SIS-191/931d5e8f-emenda-antes-1440x900.png",
+        "bytes": 738817,
+        "contentType": "image/png",
+        "http": 200
+      }
+    ],
+    "falhos": []
+  },
+  "lacunas": [
+    "SIS-180: descrição cita captura colada no Linear; attachments=[] e comentários sem attachments. Nada para baixar.",
+    "SIS-147: descrição cita captura 1920×648; attachments=[].",
+    "SIS-191: pedido original menciona duas capturas da conversa para anexar no despacho; os dois anexos baixados são da entrega (antes/depois 1440×900), não necessariamente as capturas do pedido.",
+    "Comentários de todas as issues lidas tinham attachments=[]. Nenhum download de anexo de comentário.",
+    "Releases e customerNeeds vazios em todas as issues lidas.",
+    "SIS-176: blockedBy inclui SIS-179 (na leitura get_issue).",
+    "Campo assignee às vezes ausente na resposta get_issue (ex.: SIS-122, SIS-180, SIS-119 nesta leitura)."
+  ],
+  "cobertura": {
+    "solicitadas": 19,
+    "exportadas": 19,
+    "completasNoDisco": 19
+  }
+}

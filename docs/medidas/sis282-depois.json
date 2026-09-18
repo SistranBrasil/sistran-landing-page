@@ -1,0 +1,222 @@
+{
+ "issue": "SIS-282",
+ "momento": "depois",
+ "rota": "/sistran-university",
+ "erros": [],
+ "porLargura": {
+  "1024": {
+   "programa": {
+    "texto": "Formar especialistas em tecnologia de ponta",
+    "pesoComputado": "700",
+    "fontSize": "35.2px",
+    "lineHeight": "33.792px",
+    "familia": "Geist",
+    "fontSynthesis": "none",
+    "caixa": {
+     "w": 418,
+     "h": 67.6
+    },
+    "linhasDeTinta": [
+     {
+      "topo": -169,
+      "w": 332.5,
+      "h": 45
+     },
+     {
+      "topo": -136,
+      "w": 372.9,
+      "h": 45
+     }
+    ],
+    "quantasLinhas": 2,
+    "linhasPorAltura": 2,
+    "larguraDaLinhaMaisLarga": 372.9,
+    "somaDaTinta": 705.4
+   },
+   "programaRealce": {
+    "texto": "tecnologia de ponta",
+    "pesoComputado": "700",
+    "fontSize": "35.2px",
+    "lineHeight": "33.792px",
+    "familia": "Geist",
+    "fontSynthesis": "none",
+    "caixa": {
+     "w": 316.5,
+     "h": 45
+    },
+    "linhasDeTinta": [
+     {
+      "topo": -136,
+      "w": 316.5,
+      "h": 45
+     }
+    ],
+    "quantasLinhas": 1,
+    "linhasPorAltura": 1,
+    "larguraDaLinhaMaisLarga": 316.5,
+    "somaDaTinta": 316.5
+   },
+   "unidep": {
+    "texto": "Em parceria com o Unidep",
+    "pesoComputado": "700",
+    "fontSize": "47.104px",
+    "lineHeight": "45.2198px",
+    "familia": "Geist",
+    "fontSynthesis": "none",
+    "caixa": {
+     "w": 960,
+     "h": 45.2
+    },
+    "linhasDeTinta": [
+     {
+      "topo": 306,
+      "w": 550,
+      "h": 61
+     }
+    ],
+    "quantasLinhas": 1,
+    "linhasPorAltura": 1,
+    "larguraDaLinhaMaisLarga": 550,
+    "somaDaTinta": 550
+   },
+   "paragrafoStrong": {
+    "texto": "Sistran University",
+    "pesoComputado": "700",
+    "fontSize": "18px",
+    "lineHeight": "29.25px",
+    "familia": "Geist",
+    "fontSynthesis": "none",
+    "caixa": {
+     "w": 157.4,
+     "h": 23
+    },
+    "linhasDeTinta": [
+     {
+      "topo": -69,
+      "w": 157.4,
+      "h": 23
+     }
+    ],
+    "quantasLinhas": 1,
+    "linhasPorAltura": 1,
+    "larguraDaLinhaMaisLarga": 157.4,
+    "somaDaTinta": 157.4
+   },
+   "copy": {
+    "programa": "Formar especialistas em tecnologia de ponta",
+    "unidep": "Em parceria com o Unidep",
+    "paragrafo": "O Sistran University, programa de capacitação intensiva da Sistran, dedicado a formar especialistas em tecnologia de ponta e desenvolvimento de sistemas."
+   },
+   "rolagemHorizontal": {
+    "vaza": false
+   }
+  },
+  "1440": {
+   "programa": {
+    "texto": "Formar especialistas em tecnologia de ponta",
+    "pesoComputado": "700",
+    "fontSize": "43px",
+    "lineHeight": "41.28px",
+    "familia": "Geist",
+    "fontSynthesis": "none",
+    "caixa": {
+     "w": 483.9,
+     "h": 82.5
+    },
+    "linhasDeTinta": [
+     {
+      "topo": -209,
+      "w": 406.2,
+      "h": 56
+     },
+     {
+      "topo": -168,
+      "w": 455.6,
+      "h": 56
+     }
+    ],
+    "quantasLinhas": 2,
+    "linhasPorAltura": 2,
+    "larguraDaLinhaMaisLarga": 455.6,
+    "somaDaTinta": 861.8
+   },
+   "programaRealce": {
+    "texto": "tecnologia de ponta",
+    "pesoComputado": "700",
+    "fontSize": "43px",
+    "lineHeight": "41.28px",
+    "familia": "Geist",
+    "fontSynthesis": "none",
+    "caixa": {
+     "w": 386.6,
+     "h": 56
+    },
+    "linhasDeTinta": [
+     {
+      "topo": -168,
+      "w": 386.6,
+      "h": 56
+     }
+    ],
+    "quantasLinhas": 1,
+    "linhasPorAltura": 1,
+    "larguraDaLinhaMaisLarga": 386.6,
+    "somaDaTinta": 386.6
+   },
+   "unidep": {
+    "texto": "Em parceria com o Unidep",
+    "pesoComputado": "700",
+    "fontSize": "65.6px",
+    "lineHeight": "62.976px",
+    "familia": "Geist",
+    "fontSynthesis": "none",
+    "caixa": {
+     "w": 1116,
+     "h": 63
+    },
+    "linhasDeTinta": [
+     {
+      "topo": 278,
+      "w": 766,
+      "h": 85
+     }
+    ],
+    "quantasLinhas": 1,
+    "linhasPorAltura": 1,
+    "larguraDaLinhaMaisLarga": 766,
+    "somaDaTinta": 766
+   },
+   "paragrafoStrong": {
+    "texto": "Sistran University",
+    "pesoComputado": "700",
+    "fontSize": "18px",
+    "lineHeight": "29.25px",
+    "familia": "Geist",
+    "fontSynthesis": "none",
+    "caixa": {
+     "w": 157.4,
+     "h": 23
+    },
+    "linhasDeTinta": [
+     {
+      "topo": -92,
+      "w": 157.4,
+      "h": 23
+     }
+    ],
+    "quantasLinhas": 1,
+    "linhasPorAltura": 1,
+    "larguraDaLinhaMaisLarga": 157.4,
+    "somaDaTinta": 157.4
+   },
+   "copy": {
+    "programa": "Formar especialistas em tecnologia de ponta",
+    "unidep": "Em parceria com o Unidep",
+    "paragrafo": "O Sistran University, programa de capacitação intensiva da Sistran, dedicado a formar especialistas em tecnologia de ponta e desenvolvimento de sistemas."
+   },
+   "rolagemHorizontal": {
+    "vaza": false
+   }
+  }
+ }
+}

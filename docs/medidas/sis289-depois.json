@@ -1,0 +1,54 @@
+{
+  "rota": "/sistran-university",
+  "issue": "SIS-289",
+  "pedido": "reveal on scroll igual ao de /contato: primitivas da casa (RevealScope + [data-reveal]), calibre canônico, cadência POR SCROLL",
+  "calibre": {
+    "arquivo": "src/app/sistran-university/reveal-calibre.ts",
+    "forma": "reexport de src/lib/reveal-calibre.ts",
+    "MARGEM_REVEAL": "0px 0px -12% 0px",
+    "LIMIAR_REVEAL": 0.15,
+    "esperarRota": "não usado em nenhum escopo (removido de #university-numeros)"
+  },
+  "escopos": [
+    { "escopo": "university-programa-grade", "secao": "#university-programa", "yDeIgnicao": 400, "topoDoEscopoNaIgnicao": 734, "pctDaJanela": 82, "nosMarcados": 4 },
+    { "escopo": "container-lp relative", "secao": "#university-unidep", "yDeIgnicao": 900, "pctDaJanela": 66, "nosMarcados": 6 },
+    { "escopo": "container-lp", "secao": "#university-numeros", "yDeIgnicao": 2100, "pctDaJanela": 61, "nosMarcados": 6 },
+    { "escopo": "cta-ref-palco", "secao": "fecho (ContactCTA layoutReferencia)", "yDeIgnicao": 2700, "pctDaJanela": 77, "nosMarcados": 3 }
+  ],
+  "cadencia": {
+    "viewport": "1440x900",
+    "noLoad": "todos os 4 escopos com data-in=\"false\" — nada acende depois do load",
+    "rampa": "passos de 60px; ignição registrada por escopo no y da tabela acima",
+    "faixaDeIgnicao": "61%–82% da janela, comparável aos 72%–84% medidos em /contato na SIS-269"
+  },
+  "presets": {
+    "fade-up": ["h2#university-programa-titulo", "transcrição do Programa", "h2#university-unidep-titulo", ".university-unidep-lead", ".university-numeros-cartao"],
+    "fade": ["eyebrow O PROGRAMA", ".university-programa-palco", "os 3 cartões do Unidep", "a pílula ESG", "os 3 filhos do CTA"],
+    "razaoDoFade": "palco do Programa carrega perspective/preserve-3d e o quadro tem tilt em transform (o transform:none do preset endireitaria para sempre); cartões do Unidep já flutuam 8px para sempre — dois movimentos verticais no mesmo nó"
+  },
+  "censoDeTransicao": {
+    "nos": 20,
+    "resultado": "todos os 20 reportam canal opacity com transition-delay = 80ms × --reveal-i",
+    "correcoesDeCascata": [
+      ".university-unidep-cartao — shorthand da regra zerava transition e transition-delay do preset; canal opacity acrescentado com o atraso dentro do canal",
+      ".university-unidep-pilula — idem (é link, hover tem de continuar imediato)",
+      ".university-numeros-cartao (@media hover) — canais opacity E transform; corrige defeito pré-existente da SIS-284 (os 3 cartões apareciam instantâneos no desktop)",
+      ".cta-ref-botao — canal opacity; corrige o mesmo defeito pré-existente da SIS-271, e por isso TOCA /esg, corrigindo-o igual"
+    ]
+  },
+  "reduce": "prefers-reduced-motion: reduce — os 20 nós em opacity 1; nenhuma regra nova foi necessária (globals.css já cobre [data-reveal] genericamente em dois lugares)",
+  "semJS": "JS desabilitado — os 20 nós em opacity 1 (o esconde só vale sob ancestral com data-in=\"false\")",
+  "hero": "HeroImageBackdrop + PageHero SEM reveal — é o LCP, §3 de docs/scroll.md",
+  "residuo": [
+    "transcrição do Programa começa 50px abaixo da dobra na ignição do escopo",
+    "pílula ESG do Unidep, 252px",
+    "assinatura/régua dos Números, 206/213px"
+  ],
+  "notaSobreResiduo": "é a granularidade do escopo, o mesmo resíduo que /esg declarou em vez de corrigir com calibre; corrigir exigiria partir cada seção em dois escopos, o que a issue não pede",
+  "portoes": {
+    "copy-lock --check": "OK (1213 textos distintos, nada mudou)",
+    "tsc --noEmit": "limpo",
+    "npm run lint": "79 problems (31 errors, 48 warnings) — linha de base inalterada",
+    "next build": "verificado neste turno"
+  }
+}

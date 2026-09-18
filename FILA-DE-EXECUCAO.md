@@ -91,7 +91,7 @@ item 2 da **SIS-185** (violeta de `BRASIL`).
 | **SIS-186** | Todo | Contraste × antialiasing em texto miúdo |
 | **SIS-185** | Backlog | Divisas SP/PR + token violeta `BRASIL` |
 | **SIS-187** | Backlog | Emenda hero → grade (precisa do seu aval) |
-| **SIS-188** | Backlog | Componentes órfãos |
+| **SIS-188** | Todo | sistran-labs | Principais Soluções: tag → `carimbo-sistran-labs.png` + efeito batida |
 
 ## Doc Terminal Industries → home (09/09)
 
@@ -128,7 +128,7 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-213** | Todo | home | Números: retirar sombra/faixa branca do fundo |
 | **SIS-214** | Todo | home | Sobre o Luminna AI entre Números e Desafios |
 | **SIS-215** | Todo | eventos | Retirar/clarear bandas azuis escuras no início e fim do scroll |
-| **SIS-216** | Backlog | eventos | Esboço: admin com senha (sem sessão/seção pública) — não implementar ainda |
+| **SIS-216** | Todo | sistran-labs | Negrito: capa, intro, Já desenvolvemos, Churn/Fast/Smart Miner, Principais Soluções |
 | **SIS-244** | Backlog | home | Soluções: trocar imagens — **artes da usuária** (não despachar ao robô) |
 | **SIS-267** | Backlog | arte | Logo Picsel HD (PNG + transparente) — **sua**; não despachar até o arquivo |
 | **SIS-217** | Todo | solucoes | Cards aceleradores: logos `public/images/logos` + reação no hover |
@@ -145,6 +145,7 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-273** | Todo | solucoes | Reveal on scroll (`docs/scroll.md`) — após SIS-269 |
 | **SIS-275** | In Review | home | Reveal on scroll (`docs/scroll.md`) — entregue; conferência dispensada |
 | **SIS-274** | Todo | loading | RouteLoadGate: fundo `#1273bc` + logo HD no lugar de SISTRAN |
+| **SIS-278** | Todo | site | Barra de progresso de scroll no topo (ciano, acima do navbar) |
 | **SIS-266** | Todo | footer | Item ativo na coluna Navegação conforme a página |
 | **SIS-247** | In Review | esg | Capa de abertura = esgcapa.png |
 | **SIS-257** | In Review | esg | Capa «ESG - Environment, Social & Governance» + seção intro com esg1.png |
@@ -152,7 +153,16 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-262** | Todo | esg | Negrito em ENVIRONMENT: / SOCIAL: / GOVERNANCE: nos títulos |
 | **SIS-248** | Todo | sistran-university | Capa universitycapa.png (padrão HeroImageBackdrop) |
 | **SIS-249** | Todo | sistran-university | Seção Formar especialistas: arte + texto sombreado |
-| **SIS-250** | Todo | sistran-university | Logo University no navbar (só nesta página) |
+| **SIS-250** | In Review | sistran-university | Logo University no navbar (só nesta página) |
+| **SIS-279** | Done | sistran-university | Navbar: duas logos + linha vertical (pós-250) — fechada em 15/09 **sem conferência** |
+| **SIS-280** | Todo | menu / quem-somos | **Sistran Latam** → [https://www.sistran.com/latam/](https://www.sistran.com/latam/) (externo, nova aba) — slot reaproveitado 17/09 (cota); corpo antigo «O Programa» saiu |
+| **SIS-281** | Todo | sistran-university | Capa «Sistran University» em negrito + Autossuficiência vira seção própria |
+| **SIS-282** | Todo | sistran-university | Negrito em «Formar especialistas…» + «Em parceria com o Unidep» |
+| **SIS-283** | Todo | sistran-university | Fale com a Gente! igual ao de `/esg` (`layoutReferencia`) |
+| **SIS-284** | Todo | sistran-university | Desde 2022 / números igual a `university.png` |
+| **SIS-285** | Todo | sistran-university | Unidep / turmas igual a `parceriauniversy.png` |
+| **SIS-288** | Todo | sistran-university | O Programa: linhas de destaque do card Unidep no quadro (+ quadrado azul) |
+| **SIS-289** | Todo | sistran-university | Reveal on scroll (`docs/scroll.md`, igual `/contato`) |
 | **SIS-223** | In Review | trabalhe-conosco | Formulário em card no scroll (envio tipo Contato) |
 | **SIS-224** | In Review | trabalhe-conosco | Suavizar véu/sombra feia da abertura |
 | **SIS-258** | Todo | trabalhe-conosco | Abertura igual a exemplotrabalheconosco.png |
@@ -160,8 +170,15 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-225** | Todo | parceiros | Capa `fundocapaparceiros` no fundo do título + descrição |
 | **SIS-226** | Todo | home | Hero: escritas alternando no vídeo (3 slides + pitch final) |
 | **SIS-227** | Todo | sistran-labs | Capa `SISTRAN-LABS.png` no fundo do título |
+| **SIS-286** | Todo | sistran-labs | Fale com a Gente! igual ao de `/sistran-university` (`layoutReferencia`) |
+| **SIS-287** | Todo | labs + university | Navbar: **só** a logo da página (Labs / University) — sem par + corp; slot reaproveitado 17/09 |
+| **SIS-290** | Done | sistran-labs | Intro «nativos digitais»: fundo `section-light` |
+| **SIS-291** | Todo | sistran-labs | «Já desenvolvemos…» = `sistran-labs-5` + ícones (`guru1` / churn / fast / smart / email) |
+| **SIS-292** | Done | sistran-labs | Principais Soluções: só arte `principais-solucoes1` (reta + dinâmica), sem cards |
+| **SIS-293** | In Review | sistran-labs | 3 fotos (abas) surgindo de lado — **supersedida em parte por SIS-294** (pares texto+foto) |
+| **SIS-294** | Todo | sistran-labs | Intro: 3 parágrafos + abas em zigzag (azul claro) |
 | **SIS-228** | Todo | parceiros | Sombra atrás do título + descrição na abertura (pós-225) |
-| **SIS-229** | Todo | sistran-labs | Principais Soluções: arte `principaissolucoes` bem integrada |
+| **SIS-229** | In Review | sistran-labs | Principais Soluções (arte) — **cards desta seção supersedidos por SIS-292** |
 | **SIS-230** | In Review | quem-somos | Premiações Celent (montagem 230) — supersedida visualmente por SIS-238 |
 | **SIS-231** | Todo | solucoes | Remover seção Transformação de Legado (método / quatro movimentos) |
 | **SIS-232** | In Review | eventos | Miniaturas laterais maiores e mais perto do card em destaque |

@@ -1,0 +1,145 @@
+{
+  "lote": "B",
+  "exportadoEm": "2026-09-15T20:50:00.000Z",
+  "modo": "READ-ONLY",
+  "linearAlterado": false,
+  "mcp": {
+    "server": "user-linear",
+    "descritoresLidosAntesDasChamadas": [
+      "mcps/user-linear/tools/get_issue.json",
+      "mcps/user-linear/tools/list_comments.json"
+    ],
+    "get_issue": {
+      "includeRelations": true,
+      "includeCustomerNeeds": true,
+      "includeReleases": true
+    },
+    "list_comments": {
+      "limit": 250,
+      "orderBy": "createdAt"
+    }
+  },
+  "pedidas": [
+    "SIS-144",
+    "SIS-177",
+    "SIS-141",
+    "SIS-167",
+    "SIS-196",
+    "SIS-116",
+    "SIS-179",
+    "SIS-257",
+    "SIS-181",
+    "SIS-193",
+    "SIS-190",
+    "SIS-138",
+    "SIS-187",
+    "SIS-195",
+    "SIS-194",
+    "SIS-170",
+    "SIS-174",
+    "SIS-168",
+    "SIS-118"
+  ],
+  "contagens": {
+    "issuesPedidas": 19,
+    "get_issueOk": 19,
+    "list_commentsOk": 19,
+    "list_commentsHasNextPage": false,
+    "markdownCompletosEmDisco": 7,
+    "markdownPendentesEmDisco": 12,
+    "anexosIssueComUrl": 2,
+    "anexosBaixadosComSucesso": 2,
+    "falhasDownload": 2
+  },
+  "comentariosPorIssue": {
+    "SIS-144": 5,
+    "SIS-177": 2,
+    "SIS-141": 6,
+    "SIS-167": 3,
+    "SIS-196": 12,
+    "SIS-116": 2,
+    "SIS-179": 6,
+    "SIS-257": 3,
+    "SIS-181": 4,
+    "SIS-193": 2,
+    "SIS-190": 4,
+    "SIS-138": 4,
+    "SIS-187": 2,
+    "SIS-195": 4,
+    "SIS-194": 2,
+    "SIS-170": 5,
+    "SIS-174": 2,
+    "SIS-168": 6,
+    "SIS-118": 2
+  },
+  "markdownEmDisco": [
+    "SIS-116",
+    "SIS-118",
+    "SIS-177",
+    "SIS-187",
+    "SIS-193",
+    "SIS-194",
+    "SIS-257"
+  ],
+  "markdownPendentes": [
+    "SIS-144",
+    "SIS-141",
+    "SIS-167",
+    "SIS-196",
+    "SIS-179",
+    "SIS-181",
+    "SIS-190",
+    "SIS-138",
+    "SIS-195",
+    "SIS-170",
+    "SIS-174",
+    "SIS-168"
+  ],
+  "anexos": [
+    {
+      "issue": "SIS-257",
+      "id": "9de83e76-8882-414e-a698-a7dc92325845",
+      "title": "Arte — esg1.png (seção intro)",
+      "urlOrigem": "https://uploads.linear.app/5ee948d4-4128-4d5f-8661-8bdc047db37b/d19da85b-5074-4f10-bebc-5793a9f954e7/be45dac5-12fe-4b26-8bc2-4fe5c2f29942",
+      "local": "docs/arquivo-linear-entregue/anexos/SIS-257/01-arte-esg1.png",
+      "bytes": 1911417,
+      "status": "baixado"
+    },
+    {
+      "issue": "SIS-190",
+      "id": "247d4790-d342-4af3-89d8-4b10dea65ab3",
+      "title": "Referência visual — public/referenciavideo.png",
+      "urlOrigem": "https://github.com/sistran-labs/sistran-landing-page/blob/main/public/referenciavideo.png",
+      "local": "docs/arquivo-linear-entregue/anexos/SIS-190/01-referenciavideo-local-public.png",
+      "bytes": 1705329,
+      "status": "copiado-do-workspace public/referenciavideo.png (GitHub raw 404)"
+    }
+  ],
+  "relacoesCustomerNeedsReleases": {
+    "todasAs19Issues": "get_issue devolveu relations (blocks/blockedBy/relatedTo/duplicateOf), customerNeeds=[] e releases=[] em todas; documents=[] em todas"
+  },
+  "comentariosInlineQuotedTextAnexos": "Nos 19 list_comments, attachments=[] e quotedText=null e onBehalfOf=null em todos os comentários devolvidos. Nenhum print embutido em comentário com URL Linear baixável.",
+  "observacaoOrdenacao": "list_comments orderBy=createdAt nem sempre veio crescente; os .md gerados reordenam por createdAt crescente (desempate id).",
+  "falhas": [
+    {
+      "url": "https://raw.githubusercontent.com/sistran-labs/sistran-landing-page/main/public/referenciavideo.png",
+      "erro": "HTTP 404",
+      "issue": "SIS-190"
+    },
+    {
+      "url": "https://github.com/sistran-labs/sistran-landing-page/blob/main/public/referenciavideo.png",
+      "erro": "conexão fechada de modo inesperado ao baixar o blob",
+      "issue": "SIS-190"
+    },
+    {
+      "url": "get_attachment id=9de83e76-8882-4e8e-a698-a7dc92325845",
+      "erro": "Could not find referenced Attachment (id digitado errado; o id correto 9de83e76-8882-414e-a698-a7dc92325845 respondeu URL assinada e o arquivo foi baixado)",
+      "issue": "SIS-257"
+    },
+    {
+      "tipo": "lacuna-arquivo",
+      "erro": "12 markdowns ainda não gravados em docs/arquivo-linear-entregue/issues/. get_issue + list_comments (hasNextPage=false) já lidos via MCP para todas as 19. Pendentes: SIS-144, SIS-141, SIS-167, SIS-196, SIS-179, SIS-181, SIS-190, SIS-138, SIS-195, SIS-170, SIS-174, SIS-168",
+      "issue": null
+    }
+  ]
+}

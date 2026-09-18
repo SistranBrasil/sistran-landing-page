@@ -1,0 +1,170 @@
+{
+ "issue": "SIS-277",
+ "momento": "antes",
+ "rota": "/parceiros-e-implementacoes",
+ "erros": [],
+ "porLargura": {
+  "1024": {
+   "tagTextual": {
+    "texto": "Parceiros e Implementações",
+    "caixa": {
+     "topo": 314,
+     "esq": 32,
+     "w": 273,
+     "h": 16
+    },
+    "fontSize": "12px"
+   },
+   "textoDaTagForaDoH1": [
+    "Parceiros e Implementações"
+   ],
+   "h1": {
+    "texto": "Parceiros e Implementações",
+    "caixa": {
+     "topo": 348,
+     "esq": 32,
+     "w": 439,
+     "h": 98.3
+    },
+    "fontSize": "51.2px",
+    "quantosH1NaPagina": 1
+   },
+   "carimbo": null,
+   "rolagemHorizontal": {
+    "scrollWidth": 1024,
+    "clientWidth": 1024,
+    "vaza": false
+   },
+   "motion": null,
+   "portaoLiberado": "true",
+   "batida": {
+    "liberadoEm": 2786,
+    "quantasAmostras": 0,
+    "primeira": null,
+    "ultima": null,
+    "escalaMax": null,
+    "escalaMin": null,
+    "opacidadeMin": null,
+    "giroMax": null,
+    "quadrosEmMovimento": 0,
+    "amostrasIniciais": []
+   }
+  },
+  "1440": {
+   "tagTextual": {
+    "texto": "Parceiros e Implementações",
+    "caixa": {
+     "topo": 277,
+     "esq": 162,
+     "w": 273,
+     "h": 16
+    },
+    "fontSize": "12px"
+   },
+   "textoDaTagForaDoH1": [
+    "Parceiros e Implementações"
+   ],
+   "h1": {
+    "texto": "Parceiros e Implementações",
+    "caixa": {
+     "topo": 311,
+     "esq": 162,
+     "w": 500.4,
+     "h": 135.2
+    },
+    "fontSize": "70.4px",
+    "quantosH1NaPagina": 1
+   },
+   "carimbo": null,
+   "rolagemHorizontal": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "vaza": false
+   },
+   "motion": null,
+   "portaoLiberado": "true",
+   "batida": {
+    "liberadoEm": 2715,
+    "quantasAmostras": 0,
+    "primeira": null,
+    "ultima": null,
+    "escalaMax": null,
+    "escalaMin": null,
+    "opacidadeMin": null,
+    "giroMax": null,
+    "quadrosEmMovimento": 0,
+    "amostrasIniciais": []
+   }
+  }
+ },
+ "reduce": {
+  "mediaQuery": {
+   "tagTextual": {
+    "texto": "Parceiros e Implementações",
+    "caixa": {
+     "topo": 277,
+     "esq": 162,
+     "w": 273,
+     "h": 16
+    },
+    "fontSize": "12px"
+   },
+   "textoDaTagForaDoH1": [
+    "Parceiros e Implementações"
+   ],
+   "h1": {
+    "texto": "Parceiros e Implementações",
+    "caixa": {
+     "topo": 311,
+     "esq": 162,
+     "w": 500.4,
+     "h": 135.2
+    },
+    "fontSize": "70.4px",
+    "quantosH1NaPagina": 1
+   },
+   "carimbo": null,
+   "rolagemHorizontal": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "vaza": false
+   },
+   "motion": "reduce",
+   "portaoLiberado": "true"
+  },
+  "atributo": {
+   "tagTextual": {
+    "texto": "Parceiros e Implementações",
+    "caixa": {
+     "topo": 277,
+     "esq": 162,
+     "w": 273,
+     "h": 16
+    },
+    "fontSize": "12px"
+   },
+   "textoDaTagForaDoH1": [
+    "Parceiros e Implementações"
+   ],
+   "h1": {
+    "texto": "Parceiros e Implementações",
+    "caixa": {
+     "topo": 311,
+     "esq": 162,
+     "w": 500.4,
+     "h": 135.2
+    },
+    "fontSize": "70.4px",
+    "quantosH1NaPagina": 1
+   },
+   "carimbo": null,
+   "rolagemHorizontal": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "vaza": false
+   },
+   "motion": "reduce",
+   "portaoLiberado": "true"
+  }
+ }
+}

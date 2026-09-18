@@ -1,0 +1,301 @@
+{
+  "rota": "/sistran-labs",
+  "secao": "#labs-solucoes",
+  "imagens1440": {
+    "letreiro": {
+      "arquivo": "/images/sistran-labs/icones/guru1.webp",
+      "alt": "",
+      "naturais": "800x351",
+      "renderizado": "250.2x109.8",
+      "objectFit": "contain",
+      "filtro": "drop-shadow(rgba(3, 45, 92, 0.92) 0px 0px 1px) drop-shadow(rgba(3, 45, 92, 0.62) 0px 2px 3px) drop-shadow(rgba(3, 45, 92, 0.3) 0px 12px 18px)"
+    },
+    "arte": {
+      "arquivo": "/images/sistran-labs/guru-de-seguros-arte.webp",
+      "alt": "Guru meditando ao centro de um anel de ícones de seguros: residência, viagem, vida, família, saúde e automóvel.",
+      "naturais": "596x682",
+      "renderizado": "205.2x234.8",
+      "objectFit": "fill",
+      "filtro": "drop-shadow(rgba(3, 45, 92, 0.24) 0px 16px 20px)"
+    },
+    "icones": [
+      {
+        "arquivo": "/images/sistran-labs/icones/churn.webp",
+        "alt": "",
+        "naturais": "128x128",
+        "renderizado": "31x31",
+        "objectFit": "contain",
+        "filtro": "none"
+      },
+      {
+        "arquivo": "/images/sistran-labs/icones/fast.webp",
+        "alt": "",
+        "naturais": "128x128",
+        "renderizado": "31x31",
+        "objectFit": "contain",
+        "filtro": "none"
+      },
+      {
+        "arquivo": "/images/sistran-labs/icones/smart.webp",
+        "alt": "",
+        "naturais": "128x128",
+        "renderizado": "31x31",
+        "objectFit": "contain",
+        "filtro": "none"
+      }
+    ],
+    "selo": {
+      "arquivo": "/images/sistran-labs/icones/email.webp",
+      "alt": "",
+      "naturais": "128x128",
+      "renderizado": "28x28",
+      "objectFit": "contain",
+      "filtro": "none"
+    },
+    "botaoDaBarra": {
+      "tag": "svg (lucide)",
+      "cor": "rgb(255, 255, 255)"
+    },
+    "tituloAcessivel": {
+      "texto": "guru de seguros",
+      "classe": "labs-guru-nome sr-only",
+      "largura": 1,
+      "posicao": "absolute",
+      "clip": "none"
+    }
+  },
+  "contrasteDoLetreiro1440": {
+    "comoFoiMedido": "recorte raster da caixa do letreiro + 12px de margem; fundo = mediana do anel de margem; pior pixel por faixa",
+    "fundoDaCapsula": 0.894,
+    "faixaDeSeguros": {
+      "pixelMaisClaro": 0.964,
+      "pixelMaisEscuro": 0.087,
+      "brancoContraContorno": 7.42,
+      "brancoContraCapsula": 1.07,
+      "contornoContraCapsula": 6.9
+    },
+    "faixaGuru": {
+      "pixelMaisEscuro": 0.083,
+      "azulContraCapsula": 7.1
+    }
+  },
+  "flutuacao1440": {
+    "regra": {
+      "grade": "labs-desenvolvemos-flutuar 6s 0s infinite",
+      "barra": "labs-desenvolvemos-flutuar 6s -3s infinite",
+      "fio": "none",
+      "cartao": "none"
+    },
+    "amostras": [
+      {
+        "grade": "0px -0.608933px",
+        "barra": "0px -5.39107px"
+      },
+      {
+        "grade": "0px -0.0175172px",
+        "barra": "0px -5.98248px"
+      },
+      {
+        "grade": "0px -0.21284px",
+        "barra": "0px -5.78716px"
+      },
+      {
+        "grade": "0px -1.12386px",
+        "barra": "0px -4.87614px"
+      },
+      {
+        "grade": "0px -2.65511px",
+        "barra": "0px -3.34489px"
+      },
+      {
+        "grade": "0px -4.46592px",
+        "barra": "0px -1.53408px"
+      },
+      {
+        "grade": "0px -5.58971px",
+        "barra": "0px -0.410292px"
+      },
+      {
+        "grade": "0px -5.99963px",
+        "barra": "0px -0.000369398px"
+      }
+    ]
+  },
+  "flutuacaoPausaNoHover": {
+    "primeira": "0px -5.32814px",
+    "segunda": "0px -5.32814px",
+    "parou": true
+  },
+  "barraHorizontal1440": false,
+  "hoverGuru": {
+    "cartao": "matrix(1, 0, 0, 1, 0, -6)",
+    "arte": "matrix(1.035, 0, 0, 1.035, 0, 0)",
+    "sombra": "rgba(3, 45, 92, 0.34) 0px 36px 72px -28px, rgba(14, 216, 246, 0.7) 0px 0px 56px -16px"
+  },
+  "hoverCartao": {
+    "cartao": "matrix(1, 0, 0, 1, 0, -3.99998)",
+    "plaqueta": "rgb(220, 237, 251)",
+    "icone": "none"
+  },
+  "imagens390": {
+    "letreiro": {
+      "arquivo": "/images/sistran-labs/icones/guru1.webp",
+      "alt": "",
+      "naturais": "800x351",
+      "renderizado": "308x135.1",
+      "objectFit": "contain",
+      "filtro": "drop-shadow(rgba(3, 45, 92, 0.92) 0px 0px 1px) drop-shadow(rgba(3, 45, 92, 0.62) 0px 2px 3px) drop-shadow(rgba(3, 45, 92, 0.3) 0px 12px 18px)"
+    },
+    "arte": {
+      "arquivo": "/images/sistran-labs/guru-de-seguros-arte.webp",
+      "alt": "Guru meditando ao centro de um anel de ícones de seguros: residência, viagem, vida, família, saúde e automóvel.",
+      "naturais": "596x682",
+      "renderizado": "308x352.4",
+      "objectFit": "fill",
+      "filtro": "drop-shadow(rgba(3, 45, 92, 0.24) 0px 16px 20px)"
+    },
+    "icones": [
+      {
+        "arquivo": "/images/sistran-labs/icones/churn.webp",
+        "alt": "",
+        "naturais": "128x128",
+        "renderizado": "26x26",
+        "objectFit": "contain",
+        "filtro": "none"
+      },
+      {
+        "arquivo": "/images/sistran-labs/icones/fast.webp",
+        "alt": "",
+        "naturais": "128x128",
+        "renderizado": "26x26",
+        "objectFit": "contain",
+        "filtro": "none"
+      },
+      {
+        "arquivo": "/images/sistran-labs/icones/smart.webp",
+        "alt": "",
+        "naturais": "128x128",
+        "renderizado": "26x26",
+        "objectFit": "contain",
+        "filtro": "none"
+      }
+    ],
+    "selo": {
+      "arquivo": "/images/sistran-labs/icones/email.webp",
+      "alt": "",
+      "naturais": "128x128",
+      "renderizado": "28x28",
+      "objectFit": "contain",
+      "filtro": "none"
+    },
+    "botaoDaBarra": {
+      "tag": "svg (lucide)",
+      "cor": "rgb(255, 255, 255)"
+    },
+    "tituloAcessivel": {
+      "texto": "guru de seguros",
+      "classe": "labs-guru-nome sr-only",
+      "largura": 1,
+      "posicao": "absolute",
+      "clip": "none"
+    }
+  },
+  "barraHorizontal390": false,
+  "reduceMidia": [
+    {
+      "preset": "fade-up",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-right",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-left",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-left",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-left",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-up",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    }
+  ],
+  "flutuacaoReduceMidia": {
+    "grade": {
+      "animacao": "none",
+      "translate": "0px"
+    },
+    "barra": {
+      "animacao": "none",
+      "translate": "0px"
+    }
+  },
+  "motionAtributo": "reduce",
+  "reduceAtributo": [
+    {
+      "preset": "fade-up",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-right",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-left",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-left",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-left",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-up",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    }
+  ],
+  "flutuacaoReduceAtributo": {
+    "grade": {
+      "animacao": "none",
+      "translate": "0px"
+    },
+    "barra": {
+      "animacao": "none",
+      "translate": "0px"
+    }
+  }
+}

@@ -1,0 +1,891 @@
+{
+ "issue": "SIS-286",
+ "erros": [],
+ "porLargura": {
+  "390": {
+   "/sistran-labs": {
+    "temReferencia": true,
+    "temCartaoNavyLegado": false,
+    "secao": {
+     "classes": "cta-ref section-py relative overflow-hidden",
+     "fundo": "radial-gradient(120% 80% at 12% 0px, rgba(255, 255, 255, 0.8",
+     "sombra": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px",
+     "caixa": {
+      "topo": 5222.9,
+      "h": 772.9,
+      "w": 390
+     }
+    },
+    "cartao": {
+     "existe": true,
+     "w": 350,
+     "h": 271.9,
+     "backdropFilter": "none",
+     "borderTopWidth": "2px",
+     "borderRadius": "28px"
+    },
+    "fio": {
+     "existe": true,
+     "cor": "rgba(0, 121, 203, 0.9)",
+     "largura": "2px",
+     "dasharray": "none",
+     "dashoffset": 0
+    },
+    "pontoDoFio": {
+     "existe": true,
+     "w": 6.4,
+     "h": 6.4,
+     "fill": "rgb(0, 121, 203)",
+     "opacity": "0.6294"
+    },
+    "blob": {
+     "existe": true,
+     "w": 266,
+     "h": 217
+    },
+    "selo": {
+     "existe": true,
+     "w": 101.1,
+     "h": 101.1
+    },
+    "botao": {
+     "existe": true,
+     "tag": "BUTTON",
+     "rotulo": "Fale com a SISTRAN",
+     "w": 237.1,
+     "h": 56,
+     "fundo": "rgb(255, 255, 255)",
+     "cor": "rgb(10, 31, 68)"
+    },
+    "circuloDoBotao": {
+     "existe": true,
+     "w": 44.8,
+     "h": 44.8,
+     "backgroundColor": "rgb(23, 178, 236)"
+    },
+    "botaoEmRepouso": {
+     "translate": "0px",
+     "varX": "0px",
+     "fundo": "rgb(255, 255, 255)",
+     "circuloAntes": {
+      "transform": "none",
+      "opacidade": "1"
+     }
+    },
+    "titulo": "Fale com a Gente!",
+    "texto": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+    "secaoDeCima": {
+     "classes": "labs-principais section-py section-light section-light-blue",
+     "fim": 5222.9
+    },
+    "vaza": false,
+    "emenda": {
+     "perfil": [
+      [
+       -40,
+       228.1
+      ],
+      [
+       -32,
+       228.4
+      ],
+      [
+       -24,
+       228.6
+      ],
+      [
+       -16,
+       229.6
+      ],
+      [
+       -8,
+       230.5
+      ],
+      [
+       0,
+       250.4
+      ],
+      [
+       8,
+       250.4
+      ],
+      [
+       16,
+       250.4
+      ],
+      [
+       24,
+       250.2
+      ],
+      [
+       32,
+       250.2
+      ],
+      [
+       40,
+       250.2
+      ]
+     ],
+     "saltoDe1px": 19.1,
+     "saltoDe1pxEm": -1,
+     "rampaTotal": 22.1
+    }
+   },
+   "/sistran-university": {
+    "temReferencia": true,
+    "temCartaoNavyLegado": false,
+    "secao": {
+     "classes": "cta-ref section-py relative overflow-hidden",
+     "fundo": "radial-gradient(120% 80% at 12% 0px, rgba(255, 255, 255, 0.8",
+     "sombra": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px",
+     "caixa": {
+      "topo": 3846.6,
+      "h": 772.9,
+      "w": 390
+     }
+    },
+    "cartao": {
+     "existe": true,
+     "w": 350,
+     "h": 271.9,
+     "backdropFilter": "none",
+     "borderTopWidth": "2px",
+     "borderRadius": "28px"
+    },
+    "fio": {
+     "existe": true,
+     "cor": "rgba(0, 121, 203, 0.9)",
+     "largura": "2px",
+     "dasharray": "none",
+     "dashoffset": 0
+    },
+    "pontoDoFio": {
+     "existe": true,
+     "w": 6.4,
+     "h": 6.4,
+     "fill": "rgb(0, 121, 203)",
+     "opacity": "0.356"
+    },
+    "blob": {
+     "existe": true,
+     "w": 266,
+     "h": 217
+    },
+    "selo": {
+     "existe": true,
+     "w": 101.1,
+     "h": 101.1
+    },
+    "botao": {
+     "existe": true,
+     "tag": "BUTTON",
+     "rotulo": "Fale com a SISTRAN",
+     "w": 237.1,
+     "h": 56,
+     "fundo": "rgb(255, 255, 255)",
+     "cor": "rgb(10, 31, 68)"
+    },
+    "circuloDoBotao": {
+     "existe": true,
+     "w": 44.8,
+     "h": 44.8,
+     "backgroundColor": "rgb(23, 178, 236)"
+    },
+    "botaoEmRepouso": {
+     "translate": "0px",
+     "varX": "0px",
+     "fundo": "rgb(255, 255, 255)",
+     "circuloAntes": {
+      "transform": "none",
+      "opacidade": "1"
+     }
+    },
+    "titulo": "Fale com a Gente!",
+    "texto": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+    "secaoDeCima": {
+     "classes": "section-py section-light university-numeros",
+     "fim": 3846.6
+    },
+    "vaza": false,
+    "emenda": {
+     "perfil": [
+      [
+       -40,
+       244.1
+      ],
+      [
+       -32,
+       244.1
+      ],
+      [
+       -24,
+       242.9
+      ],
+      [
+       -16,
+       243.5
+      ],
+      [
+       -8,
+       242.8
+      ],
+      [
+       0,
+       250.4
+      ],
+      [
+       8,
+       250.4
+      ],
+      [
+       16,
+       250.4
+      ],
+      [
+       24,
+       250.2
+      ],
+      [
+       32,
+       250.2
+      ],
+      [
+       40,
+       250.2
+      ]
+     ],
+     "saltoDe1px": 21,
+     "saltoDe1pxEm": -1,
+     "rampaTotal": 6.1
+    }
+   },
+   "/esg": {
+    "temReferencia": true,
+    "temCartaoNavyLegado": false,
+    "secao": {
+     "classes": "cta-ref section-py relative overflow-hidden",
+     "fundo": "radial-gradient(120% 80% at 12% 0px, rgba(255, 255, 255, 0.8",
+     "sombra": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px",
+     "caixa": {
+      "topo": 8795.4,
+      "h": 772.9,
+      "w": 390
+     }
+    },
+    "cartao": {
+     "existe": true,
+     "w": 350,
+     "h": 271.9,
+     "backdropFilter": "none",
+     "borderTopWidth": "2px",
+     "borderRadius": "28px"
+    },
+    "fio": {
+     "existe": true,
+     "cor": "rgba(0, 121, 203, 0.9)",
+     "largura": "2px",
+     "dasharray": "none",
+     "dashoffset": 0
+    },
+    "pontoDoFio": {
+     "existe": true,
+     "w": 6.4,
+     "h": 6.4,
+     "fill": "rgb(0, 121, 203)",
+     "opacity": "0.6032"
+    },
+    "blob": {
+     "existe": true,
+     "w": 266,
+     "h": 217
+    },
+    "selo": {
+     "existe": true,
+     "w": 101.1,
+     "h": 101.1
+    },
+    "botao": {
+     "existe": true,
+     "tag": "BUTTON",
+     "rotulo": "Fale com a SISTRAN",
+     "w": 237.1,
+     "h": 56,
+     "fundo": "rgb(255, 255, 255)",
+     "cor": "rgb(10, 31, 68)"
+    },
+    "circuloDoBotao": {
+     "existe": true,
+     "w": 44.8,
+     "h": 44.8,
+     "backgroundColor": "rgb(23, 178, 236)"
+    },
+    "botaoEmRepouso": {
+     "translate": "0px",
+     "varX": "0px",
+     "fundo": "rgb(255, 255, 255)",
+     "circuloAntes": {
+      "transform": "none",
+      "opacidade": "1"
+     }
+    },
+    "titulo": "Fale com a Gente!",
+    "texto": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+    "secaoDeCima": {
+     "classes": "esg-faixa-azul section-py relative isolate overflow-x-clip",
+     "fim": 8795.4
+    },
+    "vaza": false,
+    "emenda": {
+     "perfil": [
+      [
+       -40,
+       112.2
+      ],
+      [
+       -32,
+       119.5
+      ],
+      [
+       -24,
+       127.2
+      ],
+      [
+       -16,
+       136.1
+      ],
+      [
+       -8,
+       144.5
+      ],
+      [
+       0,
+       250.2
+      ],
+      [
+       8,
+       250.2
+      ],
+      [
+       16,
+       250.2
+      ],
+      [
+       24,
+       249.4
+      ],
+      [
+       32,
+       249
+      ],
+      [
+       40,
+       249
+      ]
+     ],
+     "saltoDe1px": 101.3,
+     "saltoDe1pxEm": -1,
+     "rampaTotal": 136.8
+    }
+   },
+   "/quem-somos": {
+    "temReferencia": false,
+    "temCartaoNavyLegado": true,
+    "secao": null,
+    "cartao": null,
+    "fio": null,
+    "pontoDoFio": null,
+    "blob": null,
+    "selo": null,
+    "botao": null,
+    "circuloDoBotao": null,
+    "botaoEmRepouso": null,
+    "titulo": null,
+    "texto": null,
+    "secaoDeCima": null,
+    "vaza": false
+   },
+   "/blog": {
+    "temReferencia": false,
+    "temCartaoNavyLegado": true,
+    "secao": null,
+    "cartao": null,
+    "fio": null,
+    "pontoDoFio": null,
+    "blob": null,
+    "selo": null,
+    "botao": null,
+    "circuloDoBotao": null,
+    "botaoEmRepouso": null,
+    "titulo": null,
+    "texto": null,
+    "secaoDeCima": null,
+    "vaza": false
+   }
+  },
+  "1440": {
+   "/sistran-labs": {
+    "temReferencia": true,
+    "temCartaoNavyLegado": false,
+    "secao": {
+     "classes": "cta-ref section-py relative overflow-hidden",
+     "fundo": "radial-gradient(120% 80% at 12% 0px, rgba(255, 255, 255, 0.8",
+     "sombra": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px",
+     "caixa": {
+      "topo": 4281.4,
+      "h": 542.1,
+      "w": 1440
+     }
+    },
+    "cartao": {
+     "existe": true,
+     "w": 748.8,
+     "h": 286.1,
+     "backdropFilter": "none",
+     "borderTopWidth": "2px",
+     "borderRadius": "46.08px 102.24px 102.24px 46.08px"
+    },
+    "fio": {
+     "existe": true,
+     "cor": "rgba(0, 121, 203, 0.9)",
+     "largura": "2px",
+     "dasharray": "none",
+     "dashoffset": 0
+    },
+    "pontoDoFio": {
+     "existe": true,
+     "w": 16.7,
+     "h": 16.7,
+     "fill": "rgb(0, 121, 203)",
+     "opacity": "0.3364"
+    },
+    "blob": {
+     "existe": true,
+     "w": 417.6,
+     "h": 340.7
+    },
+    "selo": {
+     "existe": true,
+     "w": 158.7,
+     "h": 158.7
+    },
+    "botao": {
+     "existe": true,
+     "tag": "BUTTON",
+     "rotulo": "Fale com a SISTRAN",
+     "w": 240,
+     "h": 47.5,
+     "fundo": "rgb(255, 255, 255)",
+     "cor": "rgb(10, 31, 68)"
+    },
+    "circuloDoBotao": {
+     "existe": true,
+     "w": 44.8,
+     "h": 44.8,
+     "backgroundColor": "rgb(23, 178, 236)"
+    },
+    "botaoEmRepouso": {
+     "translate": "0px -50%",
+     "varX": "0px",
+     "fundo": "rgb(255, 255, 255)",
+     "circuloAntes": {
+      "transform": "none",
+      "opacidade": "1"
+     }
+    },
+    "titulo": "Fale com a Gente!",
+    "texto": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+    "secaoDeCima": {
+     "classes": "labs-principais section-py section-light section-light-blue",
+     "fim": 4281.4
+    },
+    "vaza": false,
+    "emenda": {
+     "perfil": [
+      [
+       -40,
+       229.5
+      ],
+      [
+       -32,
+       230.5
+      ],
+      [
+       -24,
+       230.5
+      ],
+      [
+       -16,
+       231.5
+      ],
+      [
+       -8,
+       232
+      ],
+      [
+       0,
+       248.5
+      ],
+      [
+       8,
+       248.5
+      ],
+      [
+       16,
+       248.3
+      ],
+      [
+       24,
+       248.1
+      ],
+      [
+       32,
+       248.1
+      ],
+      [
+       40,
+       247.9
+      ]
+     ],
+     "saltoDe1px": 16.9,
+     "saltoDe1pxEm": -1,
+     "rampaTotal": 18.4
+    },
+    "botaoEmHover": {
+     "translate": "6px -50%",
+     "varX": "6px",
+     "fundo": "rgb(255, 255, 255)",
+     "circuloAntes": {
+      "transform": "matrix(-0.994557, 0.104195, -0.104195, -0.994557, 0, 0)",
+      "opacidade": "1"
+     }
+    },
+    "modal": {
+     "abriu": true,
+     "modal": true,
+     "rotulo": "Entre em contato conosco",
+     "altura": 752
+    }
+   },
+   "/sistran-university": {
+    "temReferencia": true,
+    "temCartaoNavyLegado": false,
+    "secao": {
+     "classes": "cta-ref section-py relative overflow-hidden",
+     "fundo": "radial-gradient(120% 80% at 12% 0px, rgba(255, 255, 255, 0.8",
+     "sombra": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px",
+     "caixa": {
+      "topo": 2906.2,
+      "h": 542.1,
+      "w": 1440
+     }
+    },
+    "cartao": {
+     "existe": true,
+     "w": 748.8,
+     "h": 286.1,
+     "backdropFilter": "none",
+     "borderTopWidth": "2px",
+     "borderRadius": "46.08px 102.24px 102.24px 46.08px"
+    },
+    "fio": {
+     "existe": true,
+     "cor": "rgba(0, 121, 203, 0.9)",
+     "largura": "2px",
+     "dasharray": "none",
+     "dashoffset": 0
+    },
+    "pontoDoFio": {
+     "existe": true,
+     "w": 16.7,
+     "h": 16.7,
+     "fill": "rgb(0, 121, 203)",
+     "opacity": "0.2368"
+    },
+    "blob": {
+     "existe": true,
+     "w": 417.6,
+     "h": 340.7
+    },
+    "selo": {
+     "existe": true,
+     "w": 158.7,
+     "h": 158.7
+    },
+    "botao": {
+     "existe": true,
+     "tag": "BUTTON",
+     "rotulo": "Fale com a SISTRAN",
+     "w": 240,
+     "h": 47.5,
+     "fundo": "rgb(255, 255, 255)",
+     "cor": "rgb(10, 31, 68)"
+    },
+    "circuloDoBotao": {
+     "existe": true,
+     "w": 44.8,
+     "h": 44.8,
+     "backgroundColor": "rgb(23, 178, 236)"
+    },
+    "botaoEmRepouso": {
+     "translate": "0px -50%",
+     "varX": "0px",
+     "fundo": "rgb(255, 255, 255)",
+     "circuloAntes": {
+      "transform": "none",
+      "opacidade": "1"
+     }
+    },
+    "titulo": "Fale com a Gente!",
+    "texto": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+    "secaoDeCima": {
+     "classes": "section-py section-light university-numeros",
+     "fim": 2906.2
+    },
+    "vaza": false,
+    "emenda": {
+     "perfil": [
+      [
+       -40,
+       244.4
+      ],
+      [
+       -32,
+       244.9
+      ],
+      [
+       -24,
+       243
+      ],
+      [
+       -16,
+       243.7
+      ],
+      [
+       -8,
+       242.8
+      ],
+      [
+       0,
+       248.5
+      ],
+      [
+       8,
+       248.5
+      ],
+      [
+       16,
+       247.3
+      ],
+      [
+       24,
+       247.1
+      ],
+      [
+       32,
+       248.1
+      ],
+      [
+       40,
+       247.9
+      ]
+     ],
+     "saltoDe1px": 20,
+     "saltoDe1pxEm": -1,
+     "rampaTotal": 3.5
+    },
+    "botaoEmHover": {
+     "translate": "5.99796px -50%",
+     "varX": "6px",
+     "fundo": "rgb(255, 255, 255)",
+     "circuloAntes": {
+      "transform": "matrix(-0.969765, 0.244039, -0.244039, -0.969765, 0, 0)",
+      "opacidade": "1"
+     }
+    },
+    "modal": {
+     "abriu": true,
+     "modal": true,
+     "rotulo": "Entre em contato conosco",
+     "altura": 752
+    }
+   },
+   "/esg": {
+    "temReferencia": true,
+    "temCartaoNavyLegado": false,
+    "secao": {
+     "classes": "cta-ref section-py relative overflow-hidden",
+     "fundo": "radial-gradient(120% 80% at 12% 0px, rgba(255, 255, 255, 0.8",
+     "sombra": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px",
+     "caixa": {
+      "topo": 5174.4,
+      "h": 542.1,
+      "w": 1440
+     }
+    },
+    "cartao": {
+     "existe": true,
+     "w": 748.8,
+     "h": 286.1,
+     "backdropFilter": "none",
+     "borderTopWidth": "2px",
+     "borderRadius": "46.08px 102.24px 102.24px 46.08px"
+    },
+    "fio": {
+     "existe": true,
+     "cor": "rgba(0, 121, 203, 0.9)",
+     "largura": "2px",
+     "dasharray": "none",
+     "dashoffset": 0
+    },
+    "pontoDoFio": {
+     "existe": true,
+     "w": 16.7,
+     "h": 16.7,
+     "fill": "rgb(0, 121, 203)",
+     "opacity": "0.3136"
+    },
+    "blob": {
+     "existe": true,
+     "w": 417.6,
+     "h": 340.7
+    },
+    "selo": {
+     "existe": true,
+     "w": 158.7,
+     "h": 158.7
+    },
+    "botao": {
+     "existe": true,
+     "tag": "BUTTON",
+     "rotulo": "Fale com a SISTRAN",
+     "w": 240,
+     "h": 47.5,
+     "fundo": "rgb(255, 255, 255)",
+     "cor": "rgb(10, 31, 68)"
+    },
+    "circuloDoBotao": {
+     "existe": true,
+     "w": 44.8,
+     "h": 44.8,
+     "backgroundColor": "rgb(23, 178, 236)"
+    },
+    "botaoEmRepouso": {
+     "translate": "0px -50%",
+     "varX": "0px",
+     "fundo": "rgb(255, 255, 255)",
+     "circuloAntes": {
+      "transform": "none",
+      "opacidade": "1"
+     }
+    },
+    "titulo": "Fale com a Gente!",
+    "texto": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+    "secaoDeCima": {
+     "classes": "esg-faixa-azul section-py relative isolate overflow-x-clip",
+     "fim": 5174.4
+    },
+    "vaza": false,
+    "emenda": {
+     "perfil": [
+      [
+       -40,
+       100
+      ],
+      [
+       -32,
+       110.4
+      ],
+      [
+       -24,
+       121.2
+      ],
+      [
+       -16,
+       130.7
+      ],
+      [
+       -8,
+       139.4
+      ],
+      [
+       0,
+       248.5
+      ],
+      [
+       8,
+       248.5
+      ],
+      [
+       16,
+       247.3
+      ],
+      [
+       24,
+       247.1
+      ],
+      [
+       32,
+       248.1
+      ],
+      [
+       40,
+       247.9
+      ]
+     ],
+     "saltoDe1px": 99.6,
+     "saltoDe1pxEm": -1,
+     "rampaTotal": 147.9
+    },
+    "botaoEmHover": {
+     "translate": "6px -50%",
+     "varX": "6px",
+     "fundo": "rgb(255, 255, 255)",
+     "circuloAntes": {
+      "transform": "matrix(-0.994565, 0.104115, -0.104115, -0.994565, 0, 0)",
+      "opacidade": "1"
+     }
+    },
+    "modal": {
+     "abriu": true,
+     "modal": true,
+     "rotulo": "Entre em contato conosco",
+     "altura": 752
+    }
+   },
+   "/quem-somos": {
+    "temReferencia": false,
+    "temCartaoNavyLegado": true,
+    "secao": null,
+    "cartao": null,
+    "fio": null,
+    "pontoDoFio": null,
+    "blob": null,
+    "selo": null,
+    "botao": null,
+    "circuloDoBotao": null,
+    "botaoEmRepouso": null,
+    "titulo": null,
+    "texto": null,
+    "secaoDeCima": null,
+    "vaza": false
+   },
+   "/blog": {
+    "temReferencia": false,
+    "temCartaoNavyLegado": true,
+    "secao": null,
+    "cartao": null,
+    "fio": null,
+    "pontoDoFio": null,
+    "blob": null,
+    "selo": null,
+    "botao": null,
+    "circuloDoBotao": null,
+    "botaoEmRepouso": null,
+    "titulo": null,
+    "texto": null,
+    "secaoDeCima": null,
+    "vaza": false
+   }
+  }
+ }
+}

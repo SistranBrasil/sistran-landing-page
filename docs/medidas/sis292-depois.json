@@ -1,0 +1,730 @@
+{
+ "issue": "SIS-292",
+ "erros": [],
+ "rede": {
+  "390": [
+   {
+    "arquivo": "logo-labs-header.webp",
+    "status": 200,
+    "bytes": 12288,
+    "tipo": "image/webp"
+   },
+   {
+    "arquivo": "labs-hero.webp",
+    "status": 200,
+    "bytes": 125624,
+    "tipo": "image/webp"
+   },
+   {
+    "arquivo": "principais-solucoes1.webp",
+    "status": 200,
+    "bytes": 228974,
+    "tipo": "image/webp"
+   }
+  ],
+  "1440": [
+   {
+    "arquivo": "logo-labs-header.webp",
+    "status": 200,
+    "bytes": 12288,
+    "tipo": "image/webp"
+   },
+   {
+    "arquivo": "labs-hero.webp",
+    "status": 200,
+    "bytes": 125624,
+    "tipo": "image/webp"
+   },
+   {
+    "arquivo": "principais-solucoes1.webp",
+    "status": 200,
+    "bytes": 228974,
+    "tipo": "image/webp"
+   }
+  ]
+ },
+ "porLargura": {
+  "390": {
+   "labs": {
+    "cartoes": {
+     "nestaSecao": 0,
+     "naSecaoDeCima": 4,
+     "listasNestaSecao": 0
+    },
+    "figura": {
+     "tag": "FIGURE",
+     "temQuadro": true
+    },
+    "arte": {
+     "src": "/images/sistran-labs/principais-solucoes1.webp",
+     "alt": "Hub central de dados ligado por feixes luminosos a seis plataformas: Data Analytics, Cloud Migration, AI & Machine Learning, App Modernization, IoT e Data Mining & Enrichment",
+     "altVazio": false,
+     "sizes": null,
+     "atributos": {
+      "width": "1672",
+      "height": "941"
+     },
+     "natural": {
+      "w": 1672,
+      "h": 941
+     },
+     "pintada": {
+      "w": 362,
+      "h": 203.7
+     },
+     "completa": true
+    },
+    "legenda": {
+     "texto": "Da esquerda para a direita: Data Analytics, Cloud Migration, AI & Machine Learning, App Modernization, IoT e Data Mining & Enrichment.",
+     "display": "block",
+     "cor": "rgb(10, 31, 68)",
+     "altura": 67.2
+    },
+    "palco": {
+     "existe": true,
+     "w": 366,
+     "h": 290.9,
+     "position": "relative",
+     "transform": "none",
+     "perspective": "none",
+     "marginTop": "32px"
+    },
+    "placaDeSombra": {
+     "existe": true,
+     "transform": "matrix(1, 0, 0, 1, 9.6, 16)",
+     "filter": "blur(21.6px)",
+     "backgroundColor": "rgba(3, 45, 92, 0.26)",
+     "borderRadius": "16px"
+    },
+    "quadradinho": {
+     "existe": true,
+     "backgroundColor": "rgb(14, 216, 246)",
+     "width": "14px",
+     "right": "-4.8px",
+     "bottom": "6.4px",
+     "boxShadow": "rgba(14, 216, 246, 0.7) 0px 0px 20px -4px"
+    },
+    "quadro": {
+     "existe": true,
+     "w": 366,
+     "h": 207.7,
+     "overflow": "hidden",
+     "border": "2px solid rgba(14, 216, 246, 0.88)",
+     "borderRadius": "16px",
+     "backgroundColor": "rgb(233, 243, 252)",
+     "boxShadow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+     "filter": "drop-shadow(rgba(3, 45, 92, 0.24) 0px 16px 20px) drop-shadow(rgba(3, 45, 92, 0.14) 0px 6.4px 7.2px) drop-shadow(rgba(14, 216, 246, 0.38) 0px 0px 13.6px)",
+     "outline": "rgba(14, 216, 246, 0.45) solid 1px",
+     "outlineOffset": "3px",
+     "transform": "none",
+     "rotate": "none",
+     "transition": "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1), filter 0.55s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.55s cubic-bezier(0.22, 1, 0.36, 1), outline-color 0.55s cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "fioDoTopo": {
+     "existe": true,
+     "backgroundImage": "linear-gradient(90deg, rgba(255, 255, 255, 0), rgb(255, 255, 255) 35%, rgb(255, 255, 255) 65%, rgba(255, 255, 255, 0))",
+     "boxShadow": "rgba(14, 216, 246, 0.85) 0px 0px 12px 2px",
+     "height": "3px",
+     "width": "48px"
+    },
+    "imagem": {
+     "existe": true,
+     "w": 362,
+     "h": 203.7,
+     "transform": "none",
+     "display": "block",
+     "filter": "none",
+     "transition": "transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "vaza": false,
+    "motion": null,
+    "repouso": {
+     "palco": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "quadro": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "imagem": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "placa": {
+      "transform": "matrix(1, 0, 0, 1, 9.6, 16)",
+      "filter": "blur(21.6px)"
+     },
+     "borda": "rgba(14, 216, 246, 0.88)",
+     "anel": "rgba(14, 216, 246, 0.45)",
+     "sombra": "drop-shadow(rgba(3, 45, 92, 0.24) 0px 16px 20px) drop-shadow(rgba(3, 45, 92, 0.14) 0px 6.4px 7.2px) drop-shadow(rgba(14, 216, 246, 0.38) 0px 0px 13.6px)"
+    },
+    "hover": {
+     "palco": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "quadro": {
+      "transform": "matrix(1.012, 0, 0, 1.012, 0, -8)",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "imagem": {
+      "transform": "matrix(1.06, 0, 0, 1.06, 0, -2.15942)",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "placa": {
+      "transform": "matrix(1, 0, 0, 1, 12, 27.2)",
+      "filter": "blur(27.2px)"
+     },
+     "borda": "rgb(14, 216, 246)",
+     "anel": "rgba(14, 216, 246, 0.75)",
+     "sombra": "drop-shadow(rgba(3, 45, 92, 0.32) 0px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.2) 0px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+    },
+    "reduceAtributo": {
+     "palco": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "quadro": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "imagem": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "placa": {
+      "transform": "matrix(1, 0, 0, 1, 9.6, 16)",
+      "filter": "blur(27.2px)"
+     },
+     "borda": "rgb(14, 216, 246)",
+     "anel": "rgba(14, 216, 246, 0.75)",
+     "sombra": "drop-shadow(rgba(3, 45, 92, 0.32) 0px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.2) 0px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+    },
+    "reduceMedia": {
+     "palco": "none",
+     "quadro": "none",
+     "imagem": "none",
+     "placa": "matrix(1, 0, 0, 1, 9.6, 16)"
+    }
+   },
+   "programa": {
+    "cartoes": {
+     "nestaSecao": 0,
+     "naSecaoDeCima": 0,
+     "listasNestaSecao": 0
+    },
+    "figura": {
+     "tag": "DIV",
+     "temQuadro": true
+    },
+    "arte": {
+     "src": "/images/university/university-programa.webp",
+     "alt": "",
+     "altVazio": true,
+     "sizes": null,
+     "atributos": {
+      "width": "1672",
+      "height": "941"
+     },
+     "natural": {
+      "w": 1672,
+      "h": 941
+     },
+     "pintada": {
+      "w": 349.5,
+      "h": 203.1
+     },
+     "completa": true
+    },
+    "legenda": null,
+    "palco": {
+     "existe": true,
+     "w": 350,
+     "h": 198.7,
+     "position": "relative",
+     "transform": "none",
+     "perspective": "1100px",
+     "marginTop": "0px"
+    },
+    "placaDeSombra": {
+     "existe": true,
+     "transform": "matrix3d(0.997311, -0.0244238, 0.0690976, 0, 0.0225472, 0.999359, 0.0278097, 0, -0.0697326, -0.0261769, 0.997222, 0, 10.7566, 14.0046, -22.9471, 1)",
+     "filter": "blur(17.6px)",
+     "backgroundColor": "rgba(3, 45, 92, 0.28)",
+     "borderRadius": "16px"
+    },
+    "quadradinho": {
+     "existe": true,
+     "backgroundColor": "rgb(14, 216, 246)",
+     "width": "14px",
+     "right": "-4.8px",
+     "bottom": "6.4px",
+     "boxShadow": "rgba(14, 216, 246, 0.7) 0px 0px 20px -4px"
+    },
+    "quadro": {
+     "existe": true,
+     "w": 353.6,
+     "h": 207.2,
+     "overflow": "hidden",
+     "border": "2px solid rgba(14, 216, 246, 0.88)",
+     "borderRadius": "16px",
+     "backgroundColor": "rgb(233, 243, 252)",
+     "boxShadow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+     "filter": "drop-shadow(rgba(3, 45, 92, 0.28) 8.8px 16px 20px) drop-shadow(rgba(3, 45, 92, 0.16) 3.2px 6.4px 7.2px) drop-shadow(rgba(14, 216, 246, 0.38) 0px 0px 13.6px)",
+     "outline": "rgba(14, 216, 246, 0.45) solid 1px",
+     "outlineOffset": "3px",
+     "transform": "matrix3d(0.997311, -0.0244238, 0.0690976, 0, 0.0225472, 0.999359, 0.0278097, 0, -0.0697326, -0.0261769, 0.997222, 0, 0, 0, 0, 1)",
+     "rotate": "none",
+     "transition": "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1), filter 0.55s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.55s cubic-bezier(0.22, 1, 0.36, 1), outline-color 0.55s cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "fioDoTopo": {
+     "existe": true,
+     "backgroundImage": "linear-gradient(90deg, rgba(255, 255, 255, 0), rgb(255, 255, 255) 35%, rgb(255, 255, 255) 65%, rgba(255, 255, 255, 0))",
+     "boxShadow": "rgba(14, 216, 246, 0.85) 0px 0px 12px 2px",
+     "height": "3px",
+     "width": "48px"
+    },
+    "imagem": {
+     "existe": true,
+     "w": 349.5,
+     "h": 203.1,
+     "transform": "none",
+     "display": "block",
+     "filter": "none",
+     "transition": "transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "vaza": false,
+    "motion": null,
+    "repouso": {
+     "palco": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "quadro": {
+      "transform": "matrix3d(0.997311, -0.0244238, 0.0690976, 0, 0.0225472, 0.999359, 0.0278097, 0, -0.0697326, -0.0261769, 0.997222, 0, 0, 0, 0, 1)",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "imagem": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "placa": {
+      "transform": "matrix3d(0.997311, -0.0244238, 0.0690976, 0, 0.0225472, 0.999359, 0.0278097, 0, -0.0697326, -0.0261769, 0.997222, 0, 10.7566, 14.0046, -22.9471, 1)",
+      "filter": "blur(17.6px)"
+     },
+     "borda": "rgba(14, 216, 246, 0.88)",
+     "anel": "rgba(14, 216, 246, 0.45)",
+     "sombra": "drop-shadow(rgba(3, 45, 92, 0.28) 8.8px 16px 20px) drop-shadow(rgba(3, 45, 92, 0.16) 3.2px 6.4px 7.2px) drop-shadow(rgba(14, 216, 246, 0.38) 0px 0px 13.6px)"
+    },
+    "hover": {
+     "palco": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "quadro": {
+      "transform": "matrix3d(1.01397, -0.0123984, 0.0440542, 0, 0.0116158, 1.01477, 0.0182369, 0, -0.0436127, -0.0174524, 0.998896, 0, -0.100709, -8.798, -0.158113, 1)",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "imagem": {
+      "transform": "matrix(1.07, 0, 0, 1.07, -5.18308, -2.08349)",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "placa": {
+      "transform": "matrix3d(0.998983, -0.0122151, 0.0434031, 0, 0.0114442, 0.999773, 0.0179674, 0, -0.0436127, -0.0174524, 0.998896, 0, 19.6654, 30.0764, -38.6601, 1)",
+      "filter": "blur(27.2px)"
+     },
+     "borda": "rgb(14, 216, 246)",
+     "anel": "rgba(14, 216, 246, 0.75)",
+     "sombra": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+    },
+    "reduceAtributo": {
+     "palco": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "quadro": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "imagem": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "placa": {
+      "transform": "matrix(1, 0, 0, 1, 11.2, 16)",
+      "filter": "blur(27.2px)"
+     },
+     "borda": "rgb(14, 216, 246)",
+     "anel": "rgba(14, 216, 246, 0.75)",
+     "sombra": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+    },
+    "reduceMedia": {
+     "palco": "none",
+     "quadro": "none",
+     "imagem": "none",
+     "placa": "matrix(1, 0, 0, 1, 11.2, 16)"
+    }
+   }
+  },
+  "1440": {
+   "labs": {
+    "cartoes": {
+     "nestaSecao": 0,
+     "naSecaoDeCima": 4,
+     "listasNestaSecao": 0
+    },
+    "figura": {
+     "tag": "FIGURE",
+     "temQuadro": true
+    },
+    "arte": {
+     "src": "/images/sistran-labs/principais-solucoes1.webp",
+     "alt": "Hub central de dados ligado por feixes luminosos a seis plataformas: Data Analytics, Cloud Migration, AI & Machine Learning, App Modernization, IoT e Data Mining & Enrichment",
+     "altVazio": false,
+     "sizes": null,
+     "atributos": {
+      "width": "1672",
+      "height": "941"
+     },
+     "natural": {
+      "w": 1672,
+      "h": 941
+     },
+     "pintada": {
+      "w": 1112,
+      "h": 625.8
+     },
+     "completa": true
+    },
+    "legenda": {
+     "texto": "Da esquerda para a direita: Data Analytics, Cloud Migration, AI & Machine Learning, App Modernization, IoT e Data Mining & Enrichment.",
+     "display": "block",
+     "cor": "rgb(10, 31, 68)",
+     "altura": 22.4
+    },
+    "palco": {
+     "existe": true,
+     "w": 1116,
+     "h": 676.2,
+     "position": "relative",
+     "transform": "none",
+     "perspective": "none",
+     "marginTop": "56px"
+    },
+    "placaDeSombra": {
+     "existe": true,
+     "transform": "matrix(1, 0, 0, 1, 9.6, 16)",
+     "filter": "blur(21.6px)",
+     "backgroundColor": "rgba(3, 45, 92, 0.26)",
+     "borderRadius": "28px"
+    },
+    "quadradinho": {
+     "existe": true,
+     "backgroundColor": "rgb(14, 216, 246)",
+     "width": "18px",
+     "right": "-8px",
+     "bottom": "8.8px",
+     "boxShadow": "rgba(14, 216, 246, 0.7) 0px 0px 20px -4px"
+    },
+    "quadro": {
+     "existe": true,
+     "w": 1116,
+     "h": 629.8,
+     "overflow": "hidden",
+     "border": "2px solid rgba(14, 216, 246, 0.88)",
+     "borderRadius": "28px",
+     "backgroundColor": "rgb(233, 243, 252)",
+     "boxShadow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+     "filter": "drop-shadow(rgba(3, 45, 92, 0.26) 0px 21.6px 27.2px) drop-shadow(rgba(3, 45, 92, 0.16) 0px 8px 8.8px) drop-shadow(rgba(14, 216, 246, 0.42) 0px 0px 18.4px)",
+     "outline": "rgba(14, 216, 246, 0.45) solid 1px",
+     "outlineOffset": "6px",
+     "transform": "none",
+     "rotate": "none",
+     "transition": "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1), filter 0.55s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.55s cubic-bezier(0.22, 1, 0.36, 1), outline-color 0.55s cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "fioDoTopo": {
+     "existe": true,
+     "backgroundImage": "linear-gradient(90deg, rgba(255, 255, 255, 0), rgb(255, 255, 255) 35%, rgb(255, 255, 255) 65%, rgba(255, 255, 255, 0))",
+     "boxShadow": "rgba(14, 216, 246, 0.85) 0px 0px 12px 2px",
+     "height": "3px",
+     "width": "72px"
+    },
+    "imagem": {
+     "existe": true,
+     "w": 1112,
+     "h": 625.8,
+     "transform": "none",
+     "display": "block",
+     "filter": "none",
+     "transition": "transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "vaza": false,
+    "motion": null,
+    "repouso": {
+     "palco": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "quadro": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "imagem": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "placa": {
+      "transform": "matrix(1, 0, 0, 1, 9.6, 16)",
+      "filter": "blur(21.6px)"
+     },
+     "borda": "rgba(14, 216, 246, 0.88)",
+     "anel": "rgba(14, 216, 246, 0.45)",
+     "sombra": "drop-shadow(rgba(3, 45, 92, 0.26) 0px 21.6px 27.2px) drop-shadow(rgba(3, 45, 92, 0.16) 0px 8px 8.8px) drop-shadow(rgba(14, 216, 246, 0.42) 0px 0px 18.4px)"
+    },
+    "hover": {
+     "palco": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "quadro": {
+      "transform": "matrix(1.01193, 0, 0, 1.01193, 0, -7.95188)",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "imagem": {
+      "transform": "matrix(1.05844, 0, 0, 1.05844, 0, -6.45154)",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "placa": {
+      "transform": "matrix(1, 0, 0, 1, 11.9856, 27.1326)",
+      "filter": "blur(27.1663px)"
+     },
+     "borda": "rgba(14, 216, 246, 1)",
+     "anel": "rgba(14, 216, 246, 0.75)",
+     "sombra": "drop-shadow(rgba(3, 45, 92, 0.32) 0px 34.323px 37.5374px) drop-shadow(rgba(3, 45, 92, 0.2) 0px 12.7711px 13.5711px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 27.9423px)"
+    },
+    "reduceAtributo": {
+     "palco": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "quadro": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "imagem": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "placa": {
+      "transform": "matrix(1, 0, 0, 1, 9.6, 16)",
+      "filter": "blur(27.2px)"
+     },
+     "borda": "rgb(14, 216, 246)",
+     "anel": "rgba(14, 216, 246, 0.75)",
+     "sombra": "drop-shadow(rgba(3, 45, 92, 0.32) 0px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.2) 0px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+    },
+    "reduceMedia": {
+     "palco": "none",
+     "quadro": "none",
+     "imagem": "none",
+     "placa": "matrix(1, 0, 0, 1, 9.6, 16)"
+    }
+   },
+   "programa": {
+    "cartoes": {
+     "nestaSecao": 0,
+     "naSecaoDeCima": 0,
+     "listasNestaSecao": 0
+    },
+    "figura": {
+     "tag": "DIV",
+     "temQuadro": true
+    },
+    "arte": {
+     "src": "/images/university/university-programa.webp",
+     "alt": "",
+     "altVazio": true,
+     "sizes": null,
+     "atributos": {
+      "width": "1672",
+      "height": "941"
+     },
+     "natural": {
+      "w": 1672,
+      "h": 941
+     },
+     "pintada": {
+      "w": 570.3,
+      "h": 342.8
+     },
+     "completa": true
+    },
+    "legenda": null,
+    "palco": {
+     "existe": true,
+     "w": 568.1,
+     "h": 321.5,
+     "position": "relative",
+     "transform": "none",
+     "perspective": "1000px",
+     "marginTop": "0px"
+    },
+    "placaDeSombra": {
+     "existe": true,
+     "transform": "matrix3d(0.986981, -0.0453198, 0.154319, 0, 0.0379879, 0.99802, 0.0501343, 0, -0.156286, -0.0436194, 0.986748, 0, 19.7482, 19.3175, -32.5017, 1)",
+     "filter": "blur(21.6px)",
+     "backgroundColor": "rgba(3, 45, 92, 0.28)",
+     "borderRadius": "28px"
+    },
+    "quadradinho": {
+     "existe": true,
+     "backgroundColor": "rgb(14, 216, 246)",
+     "width": "18px",
+     "right": "-8px",
+     "bottom": "8.8px",
+     "boxShadow": "rgba(14, 216, 246, 0.7) 0px 0px 20px -4px"
+    },
+    "quadro": {
+     "existe": true,
+     "w": 574.5,
+     "h": 347,
+     "overflow": "hidden",
+     "border": "2px solid rgba(14, 216, 246, 0.88)",
+     "borderRadius": "28px",
+     "backgroundColor": "rgb(233, 243, 252)",
+     "boxShadow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+     "filter": "drop-shadow(rgba(3, 45, 92, 0.3) 13.6px 21.6px 27.2px) drop-shadow(rgba(3, 45, 92, 0.18) 4.8px 8px 8.8px) drop-shadow(rgba(14, 216, 246, 0.42) 0px 0px 18.4px)",
+     "outline": "rgba(14, 216, 246, 0.45) solid 1px",
+     "outlineOffset": "6px",
+     "transform": "matrix3d(0.986981, -0.0453198, 0.154319, 0, 0.0379879, 0.99802, 0.0501343, 0, -0.156286, -0.0436194, 0.986748, 0, 0, 0, 0, 1)",
+     "rotate": "none",
+     "transition": "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1), filter 0.55s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.55s cubic-bezier(0.22, 1, 0.36, 1), outline-color 0.55s cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "fioDoTopo": {
+     "existe": true,
+     "backgroundImage": "linear-gradient(90deg, rgba(255, 255, 255, 0), rgb(255, 255, 255) 35%, rgb(255, 255, 255) 65%, rgba(255, 255, 255, 0))",
+     "boxShadow": "rgba(14, 216, 246, 0.85) 0px 0px 12px 2px",
+     "height": "3px",
+     "width": "72px"
+    },
+    "imagem": {
+     "existe": true,
+     "w": 570.3,
+     "h": 342.8,
+     "transform": "none",
+     "display": "block",
+     "filter": "none",
+     "transition": "transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "vaza": false,
+    "motion": null,
+    "repouso": {
+     "palco": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "quadro": {
+      "transform": "matrix3d(0.986981, -0.0453198, 0.154319, 0, 0.0379879, 0.99802, 0.0501343, 0, -0.156286, -0.0436194, 0.986748, 0, 0, 0, 0, 1)",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "imagem": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "placa": {
+      "transform": "matrix3d(0.986981, -0.0453198, 0.154319, 0, 0.0379879, 0.99802, 0.0501343, 0, -0.156286, -0.0436194, 0.986748, 0, 19.7482, 19.3175, -32.5017, 1)",
+      "filter": "blur(21.6px)"
+     },
+     "borda": "rgba(14, 216, 246, 0.88)",
+     "anel": "rgba(14, 216, 246, 0.45)",
+     "sombra": "drop-shadow(rgba(3, 45, 92, 0.3) 13.6px 21.6px 27.2px) drop-shadow(rgba(3, 45, 92, 0.18) 4.8px 8px 8.8px) drop-shadow(rgba(14, 216, 246, 0.42) 0px 0px 18.4px)"
+    },
+    "hover": {
+     "palco": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "quadro": {
+      "transform": "matrix3d(1.01397, -0.0123984, 0.0440542, 0, 0.0116158, 1.01477, 0.0182369, 0, -0.0436127, -0.0174524, 0.998896, 0, -0.100709, -8.798, -0.158113, 1)",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "imagem": {
+      "transform": "matrix(1.07, 0, 0, 1.07, -8.45012, -3.39692)",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "placa": {
+      "transform": "matrix3d(0.998983, -0.0122151, 0.0434031, 0, 0.0114442, 0.999773, 0.0179674, 0, -0.0436127, -0.0174524, 0.998896, 0, 19.6654, 30.0764, -38.6601, 1)",
+      "filter": "blur(27.2px)"
+     },
+     "borda": "rgb(14, 216, 246)",
+     "anel": "rgba(14, 216, 246, 0.75)",
+     "sombra": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+    },
+    "reduceAtributo": {
+     "palco": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "quadro": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "imagem": {
+      "transform": "none",
+      "rotate": "none",
+      "translate": "none"
+     },
+     "placa": {
+      "transform": "matrix(1, 0, 0, 1, 11.2, 16)",
+      "filter": "blur(27.2px)"
+     },
+     "borda": "rgb(14, 216, 246)",
+     "anel": "rgba(14, 216, 246, 0.75)",
+     "sombra": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+    },
+    "reduceMedia": {
+     "palco": "none",
+     "quadro": "none",
+     "imagem": "none",
+     "placa": "matrix(1, 0, 0, 1, 11.2, 16)"
+    }
+   }
+  }
+ }
+}

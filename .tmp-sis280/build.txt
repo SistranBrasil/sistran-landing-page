@@ -1,0 +1,63 @@
+﻿
+> sistran-landing-page@0.1.0 prebuild
+> node scripts/copiar-worker-maplibre.mjs
+
+worker do MapLibre 6.7.0 copiado para public/maplibre/ (maplibre-gl-worker.mjs, maplibre-gl-shared.mjs)
+
+> sistran-landing-page@0.1.0 build
+> next build
+
+Ôû▓ Next.js 16.3.0 (Turbopack)
+- Environments: .env.local
+Ô£ô Running next.config.mjs took 49ms
+
+  Creating an optimized production build ...
+Ô£ô Compiled successfully in 6.7s
+  Running TypeScript ...
+  Finished TypeScript in 6.6s ...
+  Collecting page data using 7 workers ...
+  Generating static pages using 7 workers (0/28) ...
+  Generating static pages using 7 workers (7/28) 
+  Generating static pages using 7 workers (14/28) 
+  Generating static pages using 7 workers (21/28) 
+Ô£ô Generating static pages using 7 workers (28/28) in 2.6s
+  Finalizing page optimization ...
+
+Route (app)
+Ôöî Ôùï /
+Ôö£ Ôùï /_not-found
+Ôö£ ãÆ /admin/carimbo
+Ôö£ ãÆ /admin/entrar
+Ôö£ ãÆ /admin/eventos
+Ôö£ ãÆ /admin/eventos/[id]
+Ôö£ Ôùï /blog
+Ôö£   /blog/[slug]
+Ôöé Ôöö ÔùÅ /blog/webinar-suitability-e-ai-em-seguros-ruptura-ou-inovacao
+Ôö£ Ôùï /contato
+Ôö£ Ôùï /esg
+Ôö£ Ôùï /eventos-inovacao
+Ôö£ Ôùï /latam
+Ôö£ Ôùï /parceiros-e-implementacoes
+Ôö£ Ôùï /politica-de-privacidade
+Ôö£ Ôùï /quem-somos
+Ôö£ Ôùï /relatorio-de-transparencia-salarial
+Ôö£ Ôùï /robots.txt
+Ôö£ Ôùï /sistran-labs
+Ôö£ Ôùï /sistran-university
+Ôö£ Ôùï /sitemap.xml
+Ôö£ Ôùï /solucoes
+Ôö£   /solucoes/[slug]
+Ôöé Ôö£ ÔùÅ /solucoes/match-ai
+Ôöé Ôö£ ÔùÅ /solucoes/lumina-ai
+Ôöé Ôö£ ÔùÅ /solucoes/fast
+Ôöé Ôöö ÔùÅ [+4 more paths]
+Ôö£ Ôùï /trabalhe-conosco
+Ôöö Ôùï /transformacao-legado
+
+
+ãÆ Proxy (Middleware)
+
+Ôùï  (Static)   prerendered as static content
+ÔùÅ  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ãÆ  (Dynamic)  server-rendered on demand
+

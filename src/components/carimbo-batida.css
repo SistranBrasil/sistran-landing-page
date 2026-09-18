@@ -1,0 +1,89 @@
+/**
+ * SIS-277 — folha do carimbo com batida de entrada.
+ *
+ * Um só número governa a escala — `--carimbo-batida-w` —, e a altura sai do
+ * `aspect-ratio` da arte. Quem quiser outro tamanho num lugar novo troca a
+ * variável e não duas medidas que podem divergir e achatar o desenho.
+ */
+
+.carimbo-batida {
+  /* SIS-188 — `--carimbo-batida-ar` SAIU DAQUI e passou a ser escrito pelo TSX a
+     partir de `larguraIntrinseca`/`alturaIntrinseca`. A linha era:
+
+         --carimbo-batida-ar: 640 / 200;
+
+     …o tamanho do arquivo derivado de `/parceiros`
+     (`scripts/gerar-carimbo-parcerias-sis277.mjs`). Ela era correta enquanto
+     havia UM consumidor e virou uma bomba no segundo: a arte de `/sistran-labs`
+     é 640x224, e com 640/200 na folha o desenho sairia achatado em 12% — o
+     defeito que a nota original dizia querer evitar. Agora a razão tem uma fonte
+     só, o próprio arquivo, e a folha não tem número de arte nenhuma. Continua
+     escrita como razão, e não como altura em px, pelo mesmo motivo de sempre. */
+
+  /* ⚠️ TAMANHO MEDIDO, NÃO ESCOLHIDO — e o que o decidiu foi a LEGIBILIDADE DA
+     LINHA MENOR, não o gosto.
+     A arte tem duas linhas de texto, e a proporção delas dentro do arquivo foi
+     medida no perfil de tinta do PNG (1524x476): «PARCEIROS E» ocupa ~11,8% da
+     altura e «Implementações» ~22%. Então, para uma altura de exibição H:
+
+         H = 65px  →  «PARCEIROS E» com 7,7px   (ilegível)
+         H = 75px  →  8,8px                      (limite)
+         H = 85px  →  10,0px e «Implementações» com 18,8px   ← alvo
+
+     A tag textual que sai de cena tinha 273x16 e `font-size: 12px` a 1440
+     (`docs/medidas/sis277-antes.json`), e o `h1` tem 500,4x135,2 com fonte de
+     70,4px. Os 273px de largura desta arte a 1440 dão a MESMA largura da tag
+     antiga e 55% da largura do título — é a leitura de «legível na abertura, sem
+     dominar o h1» virada em número.
+
+     O piso de 15rem (240px → H=75px) é o menor tamanho em que a linha de cima
+     ainda se lê; ele governa de 1024 para baixo, onde 19vw ficaria menor que
+     isso. */
+  --carimbo-batida-w: clamp(15rem, 19vw, 17.5rem);
+
+  display: block;
+  width: var(--carimbo-batida-w);
+  aspect-ratio: var(--carimbo-batida-ar);
+
+  /* SEM `rotate` DE REPOUSO, e isto é uma decisão medida, não um esquecimento: a
+     cápsula já vem tombada −3,05° dentro do arquivo (borda superior em x=400 →
+     y=70 e em x=1300 → y=22). Um tombo em CSS somaria ao da arte e, pior,
+     duplicaria um valor que o GSAP anula — ver "A ARTE JÁ VEM TOMBADA" no TSX. */
+
+  /* `transform-origin` no centro é o padrão e é o certo: a batida cresce e
+     assenta em torno do próprio miolo, como borracha descendo reta no papel. */
+
+  /* Nenhuma `box-shadow` nem `filter: drop-shadow`: um carimbo é tinta NO papel,
+     não uma peça sobre ele. O contraste já está resolvido pelo fundo — a abertura
+     desta rota é a capa escura de `hero-backdrop--parceiros` e a tinta é ciano. */
+}
+
+.carimbo-batida img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* `contain` e não `cover`: `cover` recortaria a borda tracejada da cápsula, que
+     é justamente o que faz o desenho parecer carimbo. */
+  object-fit: contain;
+}
+
+/* ── MOVIMENTO REDUZIDO ──
+   O componente já não monta a linha do tempo quando a preferência está ligada
+   (`prefersReducedMotion` no TSX), então aqui não há animação para desligar. A
+   regra existe para o caso de o GSAP ter escrito `transform` num quadro antes do
+   desmonte: sem ela sobraria uma matriz inline e o carimbo ficaria numa escala
+   que ninguém pediu. Estado final explícito, nunca `opacity: 0`.
+
+   Os DOIS canais da casa, sempre juntos: a preferência do sistema e o seletor de
+   movimento do site (`html[data-motion="reduce"]`). */
+@media (prefers-reduced-motion: reduce) {
+  .carimbo-batida {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+html[data-motion='reduce'] .carimbo-batida {
+  transform: none !important;
+  opacity: 1 !important;
+}

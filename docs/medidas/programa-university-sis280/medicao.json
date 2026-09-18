@@ -1,0 +1,1504 @@
+{
+  "390x844": {
+    "janela": {
+      "w": 390,
+      "h": 844
+    },
+    "overflow": {
+      "scrollWidthDoDoc": 390,
+      "innerWidth": 390,
+      "excesso": 0
+    },
+    "secao": {
+      "caixa": {
+        "x": 0,
+        "y": 40,
+        "w": 390,
+        "h": 681,
+        "direita": 390,
+        "topoDoc": 500,
+        "peDoc": 1181
+      },
+      "classes": "section-py section-light university-programa",
+      "position": "relative",
+      "isolation": "isolate",
+      "overflowX": "clip",
+      "fundo": "radial-gradient(70% 60% at 20% 10%, rgba(0, 121, 203, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(50% 60% at 90% 90%, rgba(14, 216, 246, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(70% 80%, rgb(255, 255, 255) 0%, rgb",
+      "sombraDeSangria": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px",
+      "paddingTopo": "80px",
+      "paddingPe": "80px"
+    },
+    "grade": {
+      "display": "grid",
+      "templateColunas": "350px",
+      "vao": "40px",
+      "alinhamento": "normal",
+      "caixa": {
+        "x": 0,
+        "y": 120,
+        "w": 390,
+        "h": 521,
+        "direita": 390,
+        "topoDoc": 580,
+        "peDoc": 1101
+      },
+      "colunas": [
+        {
+          "classe": "university-programa-escrita",
+          "x": 20,
+          "y": 120,
+          "w": 350,
+          "h": 282,
+          "direita": 370,
+          "topoDoc": 580,
+          "peDoc": 862
+        },
+        {
+          "classe": "university-programa-palco",
+          "x": 20,
+          "y": 442,
+          "w": 350,
+          "h": 199,
+          "direita": 370,
+          "topoDoc": 902,
+          "peDoc": 1101
+        }
+      ],
+      "empilhado": true,
+      "fracoes": [
+        89.7,
+        89.7
+      ]
+    },
+    "escrita": {
+      "caixa": {
+        "x": 20,
+        "y": 120,
+        "w": 350,
+        "h": 282,
+        "direita": 370,
+        "topoDoc": 580,
+        "peDoc": 862
+      },
+      "maxWidth": "672px"
+    },
+    "container": {
+      "x": 0,
+      "y": 120,
+      "w": 390,
+      "h": 521,
+      "direita": 390,
+      "topoDoc": 580,
+      "peDoc": 1101
+    },
+    "palco": {
+      "caixa": {
+        "x": 20,
+        "y": 442,
+        "w": 350,
+        "h": 199,
+        "direita": 370,
+        "topoDoc": 902,
+        "peDoc": 1101
+      },
+      "perspective": "1100px",
+      "transformStyle": "preserve-3d"
+    },
+    "quadro": {
+      "caixa": {
+        "x": 21,
+        "y": 437,
+        "w": 354,
+        "h": 207,
+        "direita": 374,
+        "topoDoc": 897,
+        "peDoc": 1104
+      },
+      "transform": "matrix3d(0.997311, -0.0244238, 0.0690976, 0, 0.0225472, 0.999359, 0.0278097, 0, -0.0697326, -0.0261769, 0.997222, 0, 0, 0, 0, 1)",
+      "transition": "transform, box-shadow, filter, border-color 0.55s, 0.55s, 0.55s, 0.55s",
+      "borda": "2px solid rgba(14, 216, 246, 0.88)",
+      "raio": "16px",
+      "sombra": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+      "filtro": "drop-shadow(rgba(3, 45, 92, 0.28) 8.8px 16px 20px) drop-shadow(rgba(3, 45, 92, 0.16) 3.2px 6.4px 7.2px) drop-shadow(rgba(14, 216, 246, 0.38) 0px 0px 13.6px)",
+      "overflow": "hidden",
+      "folgaAteAJanela": 16,
+      "tabindex": null,
+      "role": null,
+      "focavel": false
+    },
+    "acentos": {
+      "display": "none",
+      "ariaHidden": "true",
+      "pointerEvents": "auto",
+      "zIndex": "auto"
+    },
+    "focaveis": 0,
+    "foto": {
+      "src": "http://localhost:3000/images/university/university-programa.webp",
+      "alt": "",
+      "altVazio": true,
+      "loading": "lazy",
+      "fetchpriority": null,
+      "decoding": "async",
+      "sizes": null,
+      "srcset": null,
+      "width": "1672",
+      "height": "941",
+      "natural": {
+        "w": 1672,
+        "h": 941
+      },
+      "objectFit": "fill",
+      "razaoDaCaixa": 1.721,
+      "razaoDoArquivo": 1.777,
+      "caixa": {
+        "x": 23,
+        "y": 439,
+        "w": 350,
+        "h": 203,
+        "direita": 372,
+        "topoDoc": 899,
+        "peDoc": 1102
+      },
+      "transform": "none",
+      "transition": "transform 0.7s"
+    },
+    "rotulo": {
+      "rotulo": "rotulo",
+      "texto": "O PROGRAMA",
+      "px": 12,
+      "peso": "600",
+      "cor": "rgb(2, 78, 134)",
+      "caixaDeTexto": {
+        "x": 20,
+        "y": 128,
+        "w": 138,
+        "h": 16,
+        "direita": 158,
+        "topoDoc": 588,
+        "peDoc": 604
+      },
+      "linhas": 1,
+      "linhaMaisLarga": 108,
+      "sombra": "none"
+    },
+    "h2": {
+      "rotulo": "h2",
+      "texto": "Formar especialistas em tecnologia de ponta",
+      "px": 35.2,
+      "peso": "400",
+      "cor": "rgb(10, 31, 68)",
+      "caixaDeTexto": {
+        "x": 20,
+        "y": 164,
+        "w": 350,
+        "h": 68,
+        "direita": 370,
+        "topoDoc": 624,
+        "peDoc": 692
+      },
+      "linhas": 2,
+      "linhaMaisLarga": 347,
+      "sombra": "none"
+    },
+    "realce": {
+      "rotulo": "realce",
+      "texto": "tecnologia de ponta",
+      "px": 35.2,
+      "peso": "400",
+      "cor": "rgb(0, 121, 203)",
+      "caixaDeTexto": {
+        "x": 75,
+        "y": 192,
+        "w": 292,
+        "h": 45,
+        "direita": 367,
+        "topoDoc": 652,
+        "peDoc": 697
+      },
+      "linhas": 1,
+      "linhaMaisLarga": 292,
+      "sombra": "none"
+    },
+    "paragrafo": {
+      "rotulo": "paragrafo",
+      "texto": "O Sistran University, programa de capacitação intensiva da Sistran, dedicado a formar especialistas em tecnologia de ponta e desenvolvimento de sistemas.",
+      "px": 18,
+      "peso": "400",
+      "cor": "rgb(10, 31, 68)",
+      "caixaDeTexto": {
+        "x": 20,
+        "y": 256,
+        "w": 350,
+        "h": 146,
+        "direita": 370,
+        "topoDoc": 716,
+        "peDoc": 862
+      },
+      "linhas": 5,
+      "linhaMaisLarga": 322,
+      "sombra": "none"
+    },
+    "forte": {
+      "rotulo": "forte",
+      "texto": "Sistran University",
+      "px": 18,
+      "peso": "700",
+      "cor": "rgb(10, 31, 68)",
+      "caixaDeTexto": {
+        "x": 38,
+        "y": 259,
+        "w": 157,
+        "h": 23,
+        "direita": 195,
+        "topoDoc": 719,
+        "peDoc": 742
+      },
+      "linhas": 1,
+      "linhaMaisLarga": 157,
+      "sombra": "none"
+    },
+    "emendas": {
+      "capa": {
+        "peDaCapa": 500,
+        "topoDaSecao": 500,
+        "folga": 0
+      },
+      "unidep": {
+        "peDaSecao": 1181,
+        "topoDoUnidep": 1181,
+        "folga": 0
+      }
+    },
+    "junta": {
+      "topo": 40,
+      "pe": 721
+    },
+    "#verbatim": {
+      "rotulo": true,
+      "titulo": true,
+      "realce": true,
+      "paragrafo": true
+    },
+    "#ancora": 460,
+    "#transform": {
+      "repouso": {
+        "quadro": {
+          "transform": "matrix3d(0.997311, -0.0244238, 0.0690976, 0, 0.0225472, 0.999359, 0.0278097, 0, -0.0697326, -0.0261769, 0.997222, 0, 0, 0, 0, 1)",
+          "transition": "0.55s, 0.55s, 0.55s, 0.55s",
+          "boxShadow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+          "filter": "drop-shadow(rgba(3, 45, 92, 0.28) 8.8px 16px 20px) drop-shadow(rgba(3, 45, 92, 0.16) 3.2px 6.4px 7.2px) drop-shadow(rgba(14, 216, 246, 0.38) 0px 0px 13.6px)"
+        },
+        "arte": {
+          "transform": "none",
+          "transition": "0.7s",
+          "boxShadow": "none",
+          "filter": "none"
+        }
+      },
+      "hover": {
+        "quadro": {
+          "transform": "matrix3d(1.01397, -0.0123984, 0.0440542, 0, 0.0116158, 1.01477, 0.0182369, 0, -0.0436127, -0.0174524, 0.998896, 0, -0.100709, -8.798, -0.158113, 1)",
+          "transition": "0.55s, 0.55s, 0.55s, 0.55s",
+          "boxShadow": "rgba(255, 255, 255, 0.78) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.28) 0px 0px 22.4px 0px inset",
+          "filter": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+        },
+        "arte": {
+          "transform": "matrix(1.07, 0, 0, 1.07, -5.18308, -2.08349)",
+          "transition": "0.7s",
+          "boxShadow": "none",
+          "filter": "none"
+        }
+      }
+    },
+    "#contraste": {
+      "#tintaTeimosa": 0,
+      "#ancoraIgual": true,
+      "rotulo": {
+        "px": 12,
+        "peso": "600",
+        "tinta": [
+          2,
+          78,
+          134
+        ],
+        "alfa": 1,
+        "caixas": 1,
+        "piso": 4.5,
+        "razao": 6.3,
+        "rasterPior": 6.24,
+        "piorCorpo": {
+          "razao": 6.3,
+          "fundo": [
+            204,
+            223,
+            237
+          ],
+          "cobertura": 0.96,
+          "em": {
+            "x": 72,
+            "y": 132
+          }
+        },
+        "pixels": 534,
+        "pixelsCorpo": 151,
+        "passa": true
+      },
+      "titulo": {
+        "px": 35.2,
+        "peso": "400",
+        "tinta": [
+          10,
+          31,
+          68
+        ],
+        "alfa": 1,
+        "caixas": 3,
+        "piso": 3,
+        "razao": 13.43,
+        "rasterPior": 13.43,
+        "piorCorpo": {
+          "razao": 13.43,
+          "fundo": [
+            223,
+            235,
+            246
+          ],
+          "cobertura": 1,
+          "em": {
+            "x": 32,
+            "y": 168
+          }
+        },
+        "pixels": 4158,
+        "pixelsCorpo": 2138,
+        "passa": true
+      },
+      "realce": {
+        "px": 35.2,
+        "peso": "400",
+        "tinta": [
+          0,
+          121,
+          203
+        ],
+        "alfa": 1,
+        "caixas": 1,
+        "piso": 3,
+        "razao": 3.92,
+        "rasterPior": 3.92,
+        "piorCorpo": {
+          "razao": 3.92,
+          "fundo": [
+            228,
+            239,
+            248
+          ],
+          "cobertura": 1,
+          "em": {
+            "x": 104,
+            "y": 192
+          }
+        },
+        "pixels": 3588,
+        "pixelsCorpo": 1923,
+        "passa": true
+      },
+      "paragrafo": {
+        "px": 18,
+        "peso": "400",
+        "tinta": [
+          10,
+          31,
+          68
+        ],
+        "alfa": 1,
+        "caixas": 8,
+        "piso": 4.5,
+        "razao": 14.25,
+        "rasterPior": 14.24,
+        "piorCorpo": {
+          "razao": 14.25,
+          "fundo": [
+            233,
+            241,
+            249
+          ],
+          "cobertura": 0.94,
+          "em": {
+            "x": 76,
+            "y": 270
+          }
+        },
+        "pixels": 10367,
+        "pixelsCorpo": 3172,
+        "passa": true
+      },
+      "forte": {
+        "px": 18,
+        "peso": "700",
+        "tinta": [
+          10,
+          31,
+          68
+        ],
+        "alfa": 1,
+        "caixas": 1,
+        "piso": 4.5,
+        "razao": 14.25,
+        "rasterPior": 14.25,
+        "piorCorpo": {
+          "razao": 14.25,
+          "fundo": [
+            233,
+            241,
+            249
+          ],
+          "cobertura": 0.94,
+          "em": {
+            "x": 76,
+            "y": 270
+          }
+        },
+        "pixels": 1337,
+        "pixelsCorpo": 591,
+        "passa": true
+      }
+    },
+    "#juntaTopo": [
+      {
+        "y": 12,
+        "cor": [
+          34,
+          66,
+          96
+        ]
+      },
+      {
+        "y": 16,
+        "cor": [
+          37,
+          73,
+          103
+        ]
+      },
+      {
+        "y": 20,
+        "cor": [
+          43,
+          74,
+          104
+        ]
+      },
+      {
+        "y": 24,
+        "cor": [
+          46,
+          77,
+          107
+        ]
+      },
+      {
+        "y": 28,
+        "cor": [
+          51,
+          81,
+          112
+        ]
+      },
+      {
+        "y": 32,
+        "cor": [
+          55,
+          86,
+          115
+        ]
+      },
+      {
+        "y": 36,
+        "cor": [
+          58,
+          89,
+          119
+        ]
+      },
+      {
+        "y": 40,
+        "cor": [
+          205,
+          222,
+          237
+        ]
+      },
+      {
+        "y": 44,
+        "cor": [
+          203,
+          221,
+          236
+        ]
+      },
+      {
+        "y": 48,
+        "cor": [
+          202,
+          219,
+          236
+        ]
+      },
+      {
+        "y": 52,
+        "cor": [
+          200,
+          219,
+          235
+        ]
+      },
+      {
+        "y": 56,
+        "cor": [
+          199,
+          217,
+          235
+        ]
+      },
+      {
+        "y": 60,
+        "cor": [
+          198,
+          217,
+          235
+        ]
+      },
+      {
+        "y": 64,
+        "cor": [
+          196,
+          215,
+          234
+        ]
+      }
+    ],
+    "#juntaPe": [
+      {
+        "y": 693,
+        "cor": [
+          232,
+          240,
+          248
+        ]
+      },
+      {
+        "y": 697,
+        "cor": [
+          232,
+          240,
+          248
+        ]
+      },
+      {
+        "y": 701,
+        "cor": [
+          231,
+          239,
+          248
+        ]
+      },
+      {
+        "y": 705,
+        "cor": [
+          231,
+          239,
+          248
+        ]
+      },
+      {
+        "y": 709,
+        "cor": [
+          231,
+          239,
+          248
+        ]
+      },
+      {
+        "y": 713,
+        "cor": [
+          231,
+          239,
+          248
+        ]
+      },
+      {
+        "y": 717,
+        "cor": [
+          231,
+          239,
+          248
+        ]
+      },
+      {
+        "y": 721,
+        "cor": [
+          64,
+          134,
+          183
+        ]
+      },
+      {
+        "y": 725,
+        "cor": [
+          60,
+          131,
+          183
+        ]
+      },
+      {
+        "y": 729,
+        "cor": [
+          56,
+          129,
+          180
+        ]
+      },
+      {
+        "y": 733,
+        "cor": [
+          51,
+          125,
+          178
+        ]
+      },
+      {
+        "y": 737,
+        "cor": [
+          46,
+          122,
+          176
+        ]
+      },
+      {
+        "y": 741,
+        "cor": [
+          41,
+          119,
+          173
+        ]
+      },
+      {
+        "y": 745,
+        "cor": [
+          36,
+          115,
+          171
+        ]
+      }
+    ],
+    "#reduceSistema": {
+      "quadro": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+        "filter": "drop-shadow(rgba(3, 45, 92, 0.28) 8.8px 16px 20px) drop-shadow(rgba(3, 45, 92, 0.16) 3.2px 6.4px 7.2px) drop-shadow(rgba(14, 216, 246, 0.38) 0px 0px 13.6px)"
+      },
+      "arte": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "none",
+        "filter": "none"
+      }
+    },
+    "#reduceSistemaComHover": {
+      "quadro": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "rgba(255, 255, 255, 0.78) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.28) 0px 0px 22.4px 0px inset",
+        "filter": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+      },
+      "arte": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "none",
+        "filter": "none"
+      }
+    },
+    "#reduceAtributo": {
+      "quadro": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+        "filter": "drop-shadow(rgba(3, 45, 92, 0.28) 8.8px 16px 20px) drop-shadow(rgba(3, 45, 92, 0.16) 3.2px 6.4px 7.2px) drop-shadow(rgba(14, 216, 246, 0.38) 0px 0px 13.6px)"
+      },
+      "arte": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "none",
+        "filter": "none"
+      }
+    },
+    "#reduceAtributoComHover": {
+      "quadro": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "rgba(255, 255, 255, 0.78) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.28) 0px 0px 22.4px 0px inset",
+        "filter": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+      },
+      "arte": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "none",
+        "filter": "none"
+      }
+    }
+  },
+  "1440x900": {
+    "janela": {
+      "w": 1440,
+      "h": 900
+    },
+    "overflow": {
+      "scrollWidthDoDoc": 1440,
+      "innerWidth": 1440,
+      "excesso": 0
+    },
+    "secao": {
+      "caixa": {
+        "x": 0,
+        "y": 40,
+        "w": 1440,
+        "h": 577,
+        "direita": 1440,
+        "topoDoc": 666,
+        "peDoc": 1243
+      },
+      "classes": "section-py section-light university-programa",
+      "position": "relative",
+      "isolation": "isolate",
+      "overflowX": "clip",
+      "fundo": "radial-gradient(70% 60% at 20% 10%, rgba(0, 121, 203, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(50% 60% at 90% 90%, rgba(14, 216, 246, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(70% 80%, rgb(255, 255, 255) 0%, rgb",
+      "sombraDeSangria": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px",
+      "paddingTopo": "128px",
+      "paddingPe": "128px"
+    },
+    "grade": {
+      "display": "grid",
+      "templateColunas": "483.906px 568.094px",
+      "vao": "64px",
+      "alinhamento": "center",
+      "caixa": {
+        "x": 130,
+        "y": 168,
+        "w": 1180,
+        "h": 321,
+        "direita": 1310,
+        "topoDoc": 794,
+        "peDoc": 1115
+      },
+      "colunas": [
+        {
+          "classe": "university-programa-escrita",
+          "x": 162,
+          "y": 207,
+          "w": 484,
+          "h": 244,
+          "direita": 646,
+          "topoDoc": 833,
+          "peDoc": 1077
+        },
+        {
+          "classe": "university-programa-palco",
+          "x": 710,
+          "y": 168,
+          "w": 568,
+          "h": 321,
+          "direita": 1278,
+          "topoDoc": 794,
+          "peDoc": 1115
+        }
+      ],
+      "empilhado": false,
+      "fracoes": [
+        41,
+        48.1
+      ]
+    },
+    "escrita": {
+      "caixa": {
+        "x": 162,
+        "y": 207,
+        "w": 484,
+        "h": 244,
+        "direita": 646,
+        "topoDoc": 833,
+        "peDoc": 1077
+      },
+      "maxWidth": "672px"
+    },
+    "container": {
+      "x": 130,
+      "y": 168,
+      "w": 1180,
+      "h": 321,
+      "direita": 1310,
+      "topoDoc": 794,
+      "peDoc": 1115
+    },
+    "palco": {
+      "caixa": {
+        "x": 710,
+        "y": 168,
+        "w": 568,
+        "h": 321,
+        "direita": 1278,
+        "topoDoc": 794,
+        "peDoc": 1115
+      },
+      "perspective": "1000px",
+      "transformStyle": "preserve-3d"
+    },
+    "quadro": {
+      "caixa": {
+        "x": 722,
+        "y": 149,
+        "w": 574,
+        "h": 347,
+        "direita": 1296,
+        "topoDoc": 775,
+        "peDoc": 1122
+      },
+      "transform": "matrix3d(0.986981, -0.0453198, 0.154319, 0, 0.0379879, 0.99802, 0.0501343, 0, -0.156286, -0.0436194, 0.986748, 0, 0, 0, 0, 1)",
+      "transition": "transform, box-shadow, filter, border-color 0.55s, 0.55s, 0.55s, 0.55s",
+      "borda": "2px solid rgba(14, 216, 246, 0.88)",
+      "raio": "28px",
+      "sombra": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+      "filtro": "drop-shadow(rgba(3, 45, 92, 0.3) 13.6px 21.6px 27.2px) drop-shadow(rgba(3, 45, 92, 0.18) 4.8px 8px 8.8px) drop-shadow(rgba(14, 216, 246, 0.42) 0px 0px 18.4px)",
+      "overflow": "hidden",
+      "folgaAteAJanela": 144,
+      "tabindex": null,
+      "role": null,
+      "focavel": false
+    },
+    "acentos": {
+      "display": "block",
+      "ariaHidden": "true",
+      "pointerEvents": "none",
+      "zIndex": "0"
+    },
+    "focaveis": 0,
+    "foto": {
+      "src": "http://localhost:3000/images/university/university-programa.webp",
+      "alt": "",
+      "altVazio": true,
+      "loading": "lazy",
+      "fetchpriority": null,
+      "decoding": "async",
+      "sizes": null,
+      "srcset": null,
+      "width": "1672",
+      "height": "941",
+      "natural": {
+        "w": 1672,
+        "h": 941
+      },
+      "objectFit": "fill",
+      "razaoDaCaixa": 1.664,
+      "razaoDoArquivo": 1.777,
+      "caixa": {
+        "x": 723,
+        "y": 151,
+        "w": 570,
+        "h": 343,
+        "direita": 1294,
+        "topoDoc": 777,
+        "peDoc": 1120
+      },
+      "transform": "none",
+      "transition": "transform 0.7s"
+    },
+    "rotulo": {
+      "rotulo": "rotulo",
+      "texto": "O PROGRAMA",
+      "px": 12,
+      "peso": "600",
+      "cor": "rgb(2, 78, 134)",
+      "caixaDeTexto": {
+        "x": 162,
+        "y": 215,
+        "w": 138,
+        "h": 16,
+        "direita": 300,
+        "topoDoc": 841,
+        "peDoc": 857
+      },
+      "linhas": 1,
+      "linhaMaisLarga": 108,
+      "sombra": "none"
+    },
+    "h2": {
+      "rotulo": "h2",
+      "texto": "Formar especialistas em tecnologia de ponta",
+      "px": 46,
+      "peso": "400",
+      "cor": "rgb(10, 31, 68)",
+      "caixaDeTexto": {
+        "x": 162,
+        "y": 251,
+        "w": 484,
+        "h": 88,
+        "direita": 646,
+        "topoDoc": 877,
+        "peDoc": 965
+      },
+      "linhas": 2,
+      "linhaMaisLarga": 453,
+      "sombra": "none"
+    },
+    "realce": {
+      "rotulo": "realce",
+      "texto": "tecnologia de ponta",
+      "px": 46,
+      "peso": "400",
+      "cor": "rgb(0, 121, 203)",
+      "caixaDeTexto": {
+        "x": 234,
+        "y": 287,
+        "w": 382,
+        "h": 60,
+        "direita": 615,
+        "topoDoc": 913,
+        "peDoc": 973
+      },
+      "linhas": 1,
+      "linhaMaisLarga": 382,
+      "sombra": "none"
+    },
+    "paragrafo": {
+      "rotulo": "paragrafo",
+      "texto": "O Sistran University, programa de capacitação intensiva da Sistran, dedicado a formar especialistas em tecnologia de ponta e desenvolvimento de sistemas.",
+      "px": 18,
+      "peso": "400",
+      "cor": "rgb(10, 31, 68)",
+      "caixaDeTexto": {
+        "x": 162,
+        "y": 363,
+        "w": 484,
+        "h": 88,
+        "direita": 646,
+        "topoDoc": 989,
+        "peDoc": 1077
+      },
+      "linhas": 3,
+      "linhaMaisLarga": 473,
+      "sombra": "none"
+    },
+    "forte": {
+      "rotulo": "forte",
+      "texto": "Sistran University",
+      "px": 18,
+      "peso": "700",
+      "cor": "rgb(10, 31, 68)",
+      "caixaDeTexto": {
+        "x": 180,
+        "y": 366,
+        "w": 157,
+        "h": 23,
+        "direita": 337,
+        "topoDoc": 992,
+        "peDoc": 1015
+      },
+      "linhas": 1,
+      "linhaMaisLarga": 157,
+      "sombra": "none"
+    },
+    "emendas": {
+      "capa": {
+        "peDaCapa": 666,
+        "topoDaSecao": 666,
+        "folga": 0
+      },
+      "unidep": {
+        "peDaSecao": 1243,
+        "topoDoUnidep": 1243,
+        "folga": 0
+      }
+    },
+    "junta": {
+      "topo": 40,
+      "pe": 617
+    },
+    "#verbatim": {
+      "rotulo": true,
+      "titulo": true,
+      "realce": true,
+      "paragrafo": true
+    },
+    "#ancora": 626,
+    "#transform": {
+      "repouso": {
+        "quadro": {
+          "transform": "matrix3d(0.986981, -0.0453198, 0.154319, 0, 0.0379879, 0.99802, 0.0501343, 0, -0.156286, -0.0436194, 0.986748, 0, 0, 0, 0, 1)",
+          "transition": "0.55s, 0.55s, 0.55s, 0.55s",
+          "boxShadow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+          "filter": "drop-shadow(rgba(3, 45, 92, 0.3) 13.6px 21.6px 27.2px) drop-shadow(rgba(3, 45, 92, 0.18) 4.8px 8px 8.8px) drop-shadow(rgba(14, 216, 246, 0.42) 0px 0px 18.4px)"
+        },
+        "arte": {
+          "transform": "none",
+          "transition": "0.7s",
+          "boxShadow": "none",
+          "filter": "none"
+        }
+      },
+      "hover": {
+        "quadro": {
+          "transform": "matrix3d(1.01397, -0.0123984, 0.0440542, 0, 0.0116158, 1.01477, 0.0182369, 0, -0.0436127, -0.0174524, 0.998896, 0, -0.100709, -8.798, -0.158113, 1)",
+          "transition": "0.55s, 0.55s, 0.55s, 0.55s",
+          "boxShadow": "rgba(255, 255, 255, 0.78) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.28) 0px 0px 22.4px 0px inset",
+          "filter": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+        },
+        "arte": {
+          "transform": "matrix(1.07, 0, 0, 1.07, -8.45012, -3.39692)",
+          "transition": "0.7s",
+          "boxShadow": "none",
+          "filter": "none"
+        }
+      }
+    },
+    "#contraste": {
+      "#tintaTeimosa": 0,
+      "#ancoraIgual": true,
+      "rotulo": {
+        "px": 12,
+        "peso": "600",
+        "tinta": [
+          2,
+          78,
+          134
+        ],
+        "alfa": 1,
+        "caixas": 1,
+        "piso": 4.5,
+        "razao": 7.56,
+        "rasterPior": 7.48,
+        "piorCorpo": {
+          "razao": 7.56,
+          "fundo": [
+            233,
+            241,
+            250
+          ],
+          "cobertura": 0.98,
+          "em": {
+            "x": 193,
+            "y": 221
+          }
+        },
+        "pixels": 534,
+        "pixelsCorpo": 152,
+        "passa": true
+      },
+      "titulo": {
+        "px": 46,
+        "peso": "400",
+        "tinta": [
+          10,
+          31,
+          68
+        ],
+        "alfa": 1,
+        "caixas": 3,
+        "piso": 3,
+        "razao": 14.08,
+        "rasterPior": 14.08,
+        "piorCorpo": {
+          "razao": 14.08,
+          "fundo": [
+            230,
+            240,
+            249
+          ],
+          "cobertura": 1,
+          "em": {
+            "x": 384,
+            "y": 270
+          }
+        },
+        "pixels": 6620,
+        "pixelsCorpo": 4020,
+        "passa": true
+      },
+      "realce": {
+        "px": 46,
+        "peso": "400",
+        "tinta": [
+          0,
+          121,
+          203
+        ],
+        "alfa": 1,
+        "caixas": 1,
+        "piso": 3,
+        "razao": 4.02,
+        "rasterPior": 4.01,
+        "piorCorpo": {
+          "razao": 4.02,
+          "fundo": [
+            232,
+            242,
+            249
+          ],
+          "cobertura": 1,
+          "em": {
+            "x": 384,
+            "y": 314
+          }
+        },
+        "pixels": 6144,
+        "pixelsCorpo": 3887,
+        "passa": true
+      },
+      "paragrafo": {
+        "px": 18,
+        "peso": "400",
+        "tinta": [
+          10,
+          31,
+          68
+        ],
+        "alfa": 1,
+        "caixas": 6,
+        "piso": 4.5,
+        "razao": 14.61,
+        "rasterPior": 14.32,
+        "piorCorpo": {
+          "razao": 14.61,
+          "fundo": [
+            236,
+            244,
+            250
+          ],
+          "cobertura": 1,
+          "em": {
+            "x": 516,
+            "y": 380
+          }
+        },
+        "pixels": 10384,
+        "pixelsCorpo": 3139,
+        "passa": true
+      },
+      "forte": {
+        "px": 18,
+        "peso": "700",
+        "tinta": [
+          10,
+          31,
+          68
+        ],
+        "alfa": 1,
+        "caixas": 1,
+        "piso": 4.5,
+        "razao": 14.8,
+        "rasterPior": 14.8,
+        "piorCorpo": {
+          "razao": 14.8,
+          "fundo": [
+            239,
+            245,
+            251
+          ],
+          "cobertura": 0.96,
+          "em": {
+            "x": 274,
+            "y": 380
+          }
+        },
+        "pixels": 1337,
+        "pixelsCorpo": 591,
+        "passa": true
+      }
+    },
+    "#juntaTopo": [
+      {
+        "y": 12,
+        "cor": [
+          40,
+          62,
+          91
+        ]
+      },
+      {
+        "y": 16,
+        "cor": [
+          46,
+          67,
+          96
+        ]
+      },
+      {
+        "y": 20,
+        "cor": [
+          52,
+          73,
+          101
+        ]
+      },
+      {
+        "y": 24,
+        "cor": [
+          57,
+          78,
+          105
+        ]
+      },
+      {
+        "y": 28,
+        "cor": [
+          62,
+          83,
+          111
+        ]
+      },
+      {
+        "y": 32,
+        "cor": [
+          66,
+          88,
+          113
+        ]
+      },
+      {
+        "y": 36,
+        "cor": [
+          71,
+          92,
+          118
+        ]
+      },
+      {
+        "y": 40,
+        "cor": [
+          221,
+          234,
+          246
+        ]
+      },
+      {
+        "y": 44,
+        "cor": [
+          221,
+          234,
+          246
+        ]
+      },
+      {
+        "y": 48,
+        "cor": [
+          220,
+          233,
+          245
+        ]
+      },
+      {
+        "y": 52,
+        "cor": [
+          220,
+          235,
+          245
+        ]
+      },
+      {
+        "y": 56,
+        "cor": [
+          221,
+          235,
+          246
+        ]
+      },
+      {
+        "y": 60,
+        "cor": [
+          221,
+          235,
+          246
+        ]
+      },
+      {
+        "y": 64,
+        "cor": [
+          221,
+          235,
+          246
+        ]
+      }
+    ],
+    "#juntaPe": [
+      {
+        "y": 589,
+        "cor": [
+          232,
+          240,
+          248
+        ]
+      },
+      {
+        "y": 593,
+        "cor": [
+          231,
+          239,
+          248
+        ]
+      },
+      {
+        "y": 597,
+        "cor": [
+          231,
+          239,
+          248
+        ]
+      },
+      {
+        "y": 601,
+        "cor": [
+          231,
+          239,
+          248
+        ]
+      },
+      {
+        "y": 605,
+        "cor": [
+          231,
+          239,
+          248
+        ]
+      },
+      {
+        "y": 609,
+        "cor": [
+          231,
+          239,
+          248
+        ]
+      },
+      {
+        "y": 613,
+        "cor": [
+          231,
+          239,
+          248
+        ]
+      },
+      {
+        "y": 617,
+        "cor": [
+          74,
+          141,
+          188
+        ]
+      },
+      {
+        "y": 621,
+        "cor": [
+          69,
+          138,
+          186
+        ]
+      },
+      {
+        "y": 625,
+        "cor": [
+          64,
+          134,
+          185
+        ]
+      },
+      {
+        "y": 629,
+        "cor": [
+          58,
+          131,
+          182
+        ]
+      },
+      {
+        "y": 633,
+        "cor": [
+          52,
+          127,
+          180
+        ]
+      },
+      {
+        "y": 637,
+        "cor": [
+          47,
+          123,
+          178
+        ]
+      },
+      {
+        "y": 641,
+        "cor": [
+          41,
+          119,
+          175
+        ]
+      }
+    ],
+    "#reduceSistema": {
+      "quadro": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+        "filter": "drop-shadow(rgba(3, 45, 92, 0.3) 13.6px 21.6px 27.2px) drop-shadow(rgba(3, 45, 92, 0.18) 4.8px 8px 8.8px) drop-shadow(rgba(14, 216, 246, 0.42) 0px 0px 18.4px)"
+      },
+      "arte": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "none",
+        "filter": "none"
+      }
+    },
+    "#reduceSistemaComHover": {
+      "quadro": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "rgba(255, 255, 255, 0.78) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.28) 0px 0px 22.4px 0px inset",
+        "filter": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+      },
+      "arte": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "none",
+        "filter": "none"
+      }
+    },
+    "#reduceAtributo": {
+      "quadro": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+        "filter": "drop-shadow(rgba(3, 45, 92, 0.3) 13.6px 21.6px 27.2px) drop-shadow(rgba(3, 45, 92, 0.18) 4.8px 8px 8.8px) drop-shadow(rgba(14, 216, 246, 0.42) 0px 0px 18.4px)"
+      },
+      "arte": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "none",
+        "filter": "none"
+      }
+    },
+    "#reduceAtributoComHover": {
+      "quadro": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "rgba(255, 255, 255, 0.78) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.28) 0px 0px 22.4px 0px inset",
+        "filter": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)"
+      },
+      "arte": {
+        "transform": "none",
+        "transition": "1e-05s",
+        "boxShadow": "none",
+        "filter": "none"
+      }
+    }
+  }
+}

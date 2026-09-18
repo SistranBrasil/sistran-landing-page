@@ -1,0 +1,54 @@
+{
+  "d1440": {
+    "secao": true,
+    "tagBotao": "BUTTON",
+    "textoBotao": "Fale com a SISTRAN",
+    "titulo": "Fale com a Gente!",
+    "paragrafo": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+    "temArte": true,
+    "temBlob": true,
+    "dataIn": "nenhum",
+    "marcados": 0,
+    "emenda": {
+      "fimAnterior": 2837,
+      "inicioCta": 2837,
+      "sombra": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px",
+      "fundoAnterior": "rgba(0, 0, 0, 0)"
+    },
+    "pousoDoPonto": {
+      "dx": -2,
+      "dy": 2
+    },
+    "cartaoLargura": 749,
+    "transbordo": 0
+  },
+  "hover": {
+    "translateBotao": "6px -50%",
+    "varX": "6px",
+    "transformCirculo": "matrix(-1, 0, 0, -1, 0, 0)"
+  },
+  "modal": {
+    "abriu": true,
+    "rotulo": "Entre em contato conosco",
+    "ariaModal": null
+  },
+  "d390": {
+    "transbordo": 0,
+    "rolagemHorizontal": 0,
+    "cartaoLargura": 350,
+    "botaoVisivel": true,
+    "arteExibicao": "block"
+  },
+  "reduzido": {
+    "cx": "1000",
+    "cy": "105",
+    "opacidade": "1",
+    "transformPonto": "none"
+  },
+  "semJs": {
+    "titulo": true,
+    "paragrafo": true,
+    "rotulo": true,
+    "secaoRef": true
+  }
+}

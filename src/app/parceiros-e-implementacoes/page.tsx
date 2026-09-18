@@ -1,5 +1,6 @@
 import PageShell from '@/components/PageShell';
 import PageHero from '@/components/PageHero';
+import CarimboBatida from '@/components/CarimboBatida';
 import PartnerTerminalCards from '@/components/PartnerTerminalCards';
 /* SIS-202 — `import PartnersTrail from '@/components/PartnersTrail';` saiu junto
    com a montagem: o arquivo fica no repositório, mas sem import o bundle desta
@@ -59,8 +60,31 @@ export default function Page() {
         alt=""
         className="hero-backdrop--parceiros"
       >
+        {/* SIS-277 — a tag textual da abertura virou CARIMBO.
+            `eyebrow` sai de cena e no lugar dele entra a arte, com a batida de
+            entrada do `CarimboBatida` (que espera o portão da rota liberar; ver o
+            docblock dele). A linha antiga era exatamente esta:
+
+              eyebrow="Parceiros e Implementações"
+
+            Ela fica registrada aqui porque a palavra não desapareceu do site —
+            ela migrou para o `alt` da arte, que é onde o sentido é lido por quem
+            não vê a imagem. O `h1` («Parceiros e Implementações») CONTINUA
+            intacto: a issue manda não apagá-lo sem aval, e a redundância entre a
+            arte e o título é a mesma que a tag textual já criava.
+
+            A arte é a derivada de 640px (38 kB) e não o PNG de 1524px (185 kB) —
+            apuração de peso no cabeçalho de
+            `scripts/gerar-carimbo-parcerias-sis277.mjs`. */}
         <PageHero
-          eyebrow="Parceiros e Implementações"
+          eyebrowArte={
+            <CarimboBatida
+              src="/images/parceiros/carimbo-parcerias.webp"
+              alt="Parceiros e Implementações"
+              larguraIntrinseca={640}
+              alturaIntrinseca={200}
+            />
+          }
           title="Parceiros e"
           highlight="Implementações"
           description={

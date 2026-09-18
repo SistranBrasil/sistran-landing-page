@@ -1,0 +1,321 @@
+/* SIS-280 · /sistran-university — o Programa no desenho da referência
+   ---------------------------------------------------------------------------
+   Referência: `public/imagensexemplo/exemploprograma.png`, que tem 1672×941, a
+   MESMA caixa da arte. O que ela mostra foi medido pixel a pixel, e não estimado
+   a olho (sonda desta issue em `scripts/medir-programa-university-sis280.mjs`;
+   leituras da referência em `docs/medidas/programa-university-sis280/`):
+
+     fundo          #f2f9fe no alto, #f3f8fd no pé — quase chapado, com grade fina
+     rótulo         traço ciano #00dffe + "O PROGRAMA" em #0076e5, caps, tracking
+     título         navy quase preto, segunda parte em #0074e5
+     parágrafo      navy, "Sistran University" em negrito
+     quadro         começa em x 0,36 e sangra pela direita · y 0,16 a 0,87
+     inclinação     topo subindo para a direita, entre −2,8° e −3,4°
+     borda          ciano saturado com halo pálido em volta (#9df4fe)
+     acentos        quadrados pálidos arredondados (#dbf1fd) e malhas de pontos
+
+   TRÊS DECISÕES, e nenhuma delas inventa cor nova.
+
+   1. A SUPERFÍCIE É `.section-light`, E NÃO UM CLARO NOVO. O token
+      `--fundo-claro-secao` resolve para branco no centro e `#e4edf7` na borda —
+      contra o `#f2f9fe` quase chapado da referência é a mesma leitura —, e ele
+      vem com duas coisas que de outro modo teriam de ser reescritas à mão: a
+      GRADE de 96px (`.section-light::before`, mesma malha e mesma âncora da
+      `.grade-tecnica`, SIS-76) e os overrides de tinta navy de `h2`/`p`/`strong`.
+      `section-light-blue` ficou de fora por MEDIÇÃO: ela desce até `#cfe7f7` no
+      pé, e a referência não escurece de cima para baixo.
+
+   2. AS DUAS EMENDAS SÃO AS DA CASA, E NÃO UMA FAIXA. Em cima está a capa navy
+      (`.hero-backdrop--university`), embaixo o `#1273bc` do `body` que
+      `#university-unidep` mostra. A sangria em `box-shadow` da SIS-93 espalha a
+      cor de base ~54px para fora, e os dois cortes deixam de ler como listra. É o
+      mesmo arranjo que `/parceiros-e-implementacoes` tem desde a SIS-236 — capa
+      escura com seção clara colada nela, sem nenhuma faixa entre as duas. A
+      passagem navy que a SIS-248 escrevia aqui saiu: ver a nota logo acima.
+
+   3. O HOVER É CSS PURO, sem componente client e sem estado por quadro. A issue
+      abria a porta para ponteiro dinâmico (variável CSS por `ref`/rAF), e ela
+      não se justificou: o que se pede é "mover/tiltar/parallax de forma
+      perceptível mas controlada", e duas transições — o quadro se endireita e
+      sobe, a arte cresce e escorre dentro do recorte — entregam isso com zero
+      JavaScript. A página continua sendo Server Component inteira.
+
+   O QUE ESTE BLOCO SUBSTITUIU. A SIS-249 punha a arte em `fill` `inset: 0` sobre
+   a seção inteira, com véu de quatro camadas, pluma elíptica atrás do texto e
+   duas dissoluções verticais (`--programa-dissolve`), tudo para sustentar texto
+   BRANCO sobre uma arte que é clara de ponta a ponta. Era a resposta certa para
+   "a arte é o fundo", e essa deixou de ser a pergunta: com a arte virando FIGURA
+   num quadro próprio, o texto sai de cima dela e o contraste passa a vir da folha
+   clara. As três camadas e os dois `@media` que as calibravam por largura foram
+   REMOVIDOS em vez de comentados — nenhum seletor deste bloco reaproveita o
+   nome `.university-programa-midia`, `-conteudo`, `::before` ou `::after`, e
+   deixá-los aqui seria CSS órfão pintando por cima da folha.
+   Os números de contraste que a SIS-249 registrou (h2 de 5,79:1 a 14,23:1,
+   parágrafo de 7,60:1 a 10,24:1) eram contra o véu navy e não valem mais: os
+   desta composição estão em `docs/medidas/programa-university-sis280/`. */
+.university-programa {
+  /* `position: relative` e `isolation: isolate` já vêm de `.section-light`. */
+
+  /* A SANGRIA DA SIS-93, com o valor de lá. `rgb(227 241 251)` é o meio de
+     `section-light-blue` e fica a 4/255 do `#e4edf7` que é a parada externa do
+     `--fundo-claro-secao` desta seção: mesma cor para o olho, e nenhum hex novo
+     entra na paleta. */
+  box-shadow: 0 0 54px 18px rgb(227 241 251 / 45%);
+
+  /* `clip`, e não `hidden`. O quadro inclinado passa alguns pixels da coluna, e o
+     que precisa ser contido é só o eixo HORIZONTAL: `overflow-x: hidden` tornaria
+     a seção um contêiner de rolagem (e mataria qualquer `position: sticky` que
+     venha a ser montado aqui dentro), enquanto `clip` recorta sem criar rolagem e
+     é o único valor que deixa o outro eixo em `visible` — que é o que a sangria
+     acima precisa para sangrar. */
+  overflow-x: clip;
+}
+
+.university-programa-grade {
+  position: relative;
+  /* Acima dos acentos (0) e da grade de `.section-light::before` (−1). */
+  z-index: 1;
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* O teto da MEDIDA DE LEITURA, e ele existe para a PILHA: abaixo de 1024px a
+   coluna da escrita é a largura inteira do container, e a 768px isso dá linha de
+   parágrafo com 720px — medida ruim. Acima de 1024 a coluna da grade já é o
+   limite e esta regra fica inerte. */
+.university-programa-escrita {
+  max-width: 42rem;
+}
+
+@media (min-width: 64rem) {
+  .university-programa-grade {
+    /* A referência dá 35% para a escrita e 60% para a arte, mas lá o quadro
+       sangra pela borda direita do próprio arquivo. Aqui ele vive dentro do
+       `.container-lp`, e a issue pede colunas EQUILIBRADAS: 46/54 com 4rem de
+       vão — a 1440 são 484px para a escrita e 568px para o quadro.
+       `minmax(0, …)` nas duas porque `fr` sozinho tem mínimo `auto`, e daí uma
+       palavra longa do título faria a coluna crescer além da fração. */
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    align-items: center;
+  }
+}
+
+/* O REALCE DO TÍTULO ("tecnologia de ponta").
+   `#0079cb` é o azul primário da marca. O medido na referência é `#0074e5`, e a
+   troca é para MAIS folga, não para menos: contra a folha (`#f3f9fe`) o da
+   referência dá 3,50:1 e o da casa 4,31:1, com piso de 3:1 — o título mede 48px
+   a 1440, que é texto grande. O ciano `#0ed8f6` está fora por MEDIÇÃO e não por
+   gosto: 1,63:1 sobre folha clara, o mesmo número que já obriga o `#024e86` em
+   `.text-cyan-glow` e o `#1479ec` no título dos escritórios (SIS-185).
+
+   `!important` aqui é ESPECIFICIDADE MEDIDA, não hábito. O override de fundo
+   claro é
+     `.section-light span:not([class*="badge"]):not([class*="pill"])
+                          :not([class*="eyebrow"]):not([class*="tag-section"])`
+   e ele soma (0,5,1), porque cada `:not()` contribui a especificidade do próprio
+   argumento. Nenhuma combinação razoável de classes deste bloco alcança isso, e
+   utility do Tailwind (`text-[#0079cb]`) perderia de qualquer jeito: ela vive em
+   `@layer utilities` e camada perde para regra sem camada antes de a
+   especificidade ser consultada. É o mesmo recurso que as regras vizinhas de
+   `.section-light` usam para o eyebrow, vinte linhas acima neste arquivo. */
+.section-light .university-programa-realce {
+  color: #0079cb !important;
+}
+
+/* OS ACENTOS GEOMÉTRICOS.
+   Camada só de decoração, `pointer-events: none`, e ela existe como NÓ no TSX em
+   vez de pseudo-elemento da seção porque os dois pseudos de `.section-light` já
+   estão gastos — a grade e o pontilhado dela. Escrever `::before` aqui apagaria a
+   grade, que é metade do fundo que a referência mostra.
+   A MALHA DE PONTOS fica no `::before` e não no próprio nó, e isso não é gosto:
+   ela carrega `mask` própria (duas elipses que recortam a malha infinita em duas
+   MANCHAS, como na referência), e `mask` no elemento recortaria também os
+   pseudos — o quadrado pálido desapareceria fora das elipses.
+   SÓ DE 1024px PARA CIMA: na pilha não existem as margens vazias que acolhem os
+   acentos, e acento atrás de texto é risco de contraste sem ganho nenhum. */
+.university-programa-acentos {
+  display: none;
+}
+
+@media (min-width: 64rem) {
+  .university-programa-acentos {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    display: block;
+    pointer-events: none;
+  }
+
+  .university-programa-acentos::before {
+    position: absolute;
+    inset: 0;
+    /* Ponto de 1,5px a cada 14px. A tinta é o azul da marca a 24%: sobre a folha
+       clara compõe ~#dae9f6, e o miolo da mancha da referência mede #e3f5fe (mais
+       claro porque lá ele já está dissolvendo na borda). */
+    background-image: radial-gradient(rgb(0 121 203 / 24%) 1.5px, rgb(0 0 0 / 0%) 1.6px);
+    background-size: 0.875rem 0.875rem;
+    content: "";
+    mask-image:
+      radial-gradient(8rem 7rem at 7% 82%, #000 0, rgb(0 0 0 / 0%) 70%),
+      radial-gradient(7rem 6rem at 88% 12%, #000 0, rgb(0 0 0 / 0%) 70%);
+    -webkit-mask-image:
+      radial-gradient(8rem 7rem at 7% 82%, #000 0, rgb(0 0 0 / 0%) 70%),
+      radial-gradient(7rem 6rem at 88% 12%, #000 0, rgb(0 0 0 / 0%) 70%);
+  }
+
+  /* O quadrado pálido arredondado no alto da coluna vazia. `rgb(0 121 203 / 10%)`
+     sobre a folha compõe ~#dbecf9; o medido na referência foi #dbf1fd. */
+  .university-programa-acentos::after {
+    position: absolute;
+    top: 9%;
+    left: 4%;
+    width: clamp(3rem, 4.5vw, 4.25rem);
+    aspect-ratio: 1;
+    border-radius: 0.5rem;
+    background: linear-gradient(160deg, rgb(0 121 203 / 10%), rgb(14 216 246 / 7%));
+    content: "";
+  }
+}
+
+/* O PALCO guarda só a `perspective`, e ela tem de morar no PAI: `perspective()`
+   escrita dentro da própria `transform` do quadro é resolvida por elemento, então
+   o ponto de fuga andaria junto com o quadro no hover em vez de ficar parado na
+   coluna — e o tilt lê como distorção, não como profundidade. */
+.university-programa-palco {
+  position: relative;
+  perspective: 1400px;
+}
+
+/* O QUADRINHO CIANO da referência (medido em x 0,888 · y 0,845, o único acento
+   saturado da composição). Fica no palco e não no quadro porque o quadro tem
+   `overflow: hidden` para recortar o parallax, e ali ele seria cortado. */
+.university-programa-palco::after {
+  position: absolute;
+  right: -0.35rem;
+  bottom: 1.5rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 0.25rem;
+  background: #0ed8f6;
+  box-shadow: 0 0 1.25rem -0.25rem rgb(14 216 246 / 70%);
+  content: "";
+}
+
+/* O QUADRO. Em repouso ele JÁ ESTÁ INCLINADO, como na referência: o topo sobe
+   para a direita e o lado direito vem para frente. Os dois números saíram da
+   medição — o topo da referência corre entre −2,8° e −3,4° (ajuste de reta sobre
+   dez colunas), e a borda esquerda pende mais do que uma rotação plana
+   explicaria, o que é perspectiva e não giro. Daí o par: `rotate` para o eixo do
+   quadro, `rotateY` para a profundidade. */
+.university-programa-quadro {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid rgb(14 216 246 / 82%);
+  border-radius: clamp(1rem, 2.4vw, 1.75rem);
+  /* Enquanto a arte não decodifica, a caixa é uma placa clara e não um retângulo
+     branco piscando. A proporção já está reservada pelo par `width`/`height` do
+     `next/image`, então isto não desloca nada quando o arquivo chega. */
+  background: #e9f3fc;
+  /* Sombra discreta, no vocabulário da casa: uma difusa que assenta o quadro na
+     folha e um eco ciano curto, que é o halo pálido da borda na referência. */
+  box-shadow:
+    0 1.5rem 3rem -1.75rem rgb(3 45 92 / 30%),
+    0 0 2.25rem -1rem rgb(14 216 246 / 40%);
+  transform: rotateY(-6deg) rotate(-2.4deg);
+}
+
+.university-programa-arte {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* O HOVER, e SÓ onde há ponteiro fino capaz de PAIRAR. Em tela de toque
+   `:hover` fica preso depois do toque, e o quadro ficaria endireitado para
+   sempre — um estado de realce sem ninguém realçando nada. */
+@media (hover: hover) and (pointer: fine) {
+  .university-programa-quadro {
+    transition:
+      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .university-programa-arte {
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* O ponteiro é lido no PALCO e não no quadro: o quadro está inclinado, e a área
+     que responderia ao mouse seria o paralelogramo projetado — entrar pela quina
+     daria acende/apaga. O palco é a caixa reta da coluna. */
+  .university-programa-palco:hover .university-programa-quadro {
+    transform: rotateY(-1.5deg) rotate(-0.7deg) translateY(-0.5rem) scale(1.015);
+    box-shadow:
+      0 2rem 3.5rem -1.75rem rgb(3 45 92 / 34%),
+      0 0 3rem -0.75rem rgb(14 216 246 / 52%);
+  }
+
+  /* O PARALLAX. A arte cresce 7% e escorre para o alto e para a esquerda; o quadro
+     vai para o outro lado (sobe e se endireita), e é a DIFERENÇA entre os dois que
+     se lê como profundidade.
+     Crescer antes de deslocar é o que garante que nenhuma borda do arquivo
+     apareça: `transform` resolve da direita para a esquerda, então o
+     deslocamento efetivo é 1,07 × 1,4% = 1,5% da largura, contra 3,5% de folga de
+     cada lado. Sobram 2% no lado mais apertado. */
+  .university-programa-palco:hover .university-programa-arte {
+    transform: scale(1.07) translate3d(-1.4%, -1%, 0);
+  }
+}
+
+@media (max-width: 63.9375rem) {
+  /* Na pilha o quadro ocupa a largura inteira do container, e a inclinação de
+     repouso CAI. Não é limite de espaço — a 390px os 2,4° pendem 4px para cada
+     lado e o recuo lateral é de 20px —, é leitura: placa girada num cartão que
+     ocupa a tela toda lê como desalinhamento, não como perspectiva. Fica um grau
+     e pouco, o bastante para não parecer retângulo colado, e sem `rotateY`: a
+     profundidade só existe quando há coluna vazia ao lado para ela apontar. */
+  .university-programa-quadro {
+    border-radius: 1rem;
+    transform: rotate(-1.2deg);
+  }
+
+  .university-programa-palco::after {
+    right: -0.25rem;
+    bottom: 1rem;
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+}
+
+/* MOVIMENTO REDUZIDO: o quadro fica RETO, e não apenas parado.
+   A issue permite tirar a inclinação de repouso se a referência estática ficar
+   mais confortável, e é o caso: uma placa girada em 3D que nunca reage é a pose
+   de um efeito que não existe, e a versão reta é a única em que nada do quadro
+   nem da arte depende de `transform`. O `perspective` do palco fica onde está e
+   deixa de ter efeito sozinho.
+   A SOMBRA DE HOVER CONTINUA, e é decisão registrada: trocar de sombra não é
+   movimento, e é o mesmo critério que a casa já aplica no realce de lista
+   (`globals.css`, «o movimento para; o realce fica»).
+   AS DUAS VIAS, porque o visitante tem duas: a preferência do sistema e o
+   diálogo da própria página. Uma `@media` não é interceptável por JavaScript, e
+   por isso o espelho em `html[data-motion="reduce"]` não é redundância — mexer
+   em um sem o outro reproduz o defeito medido na SIS-159.
+   Sem `!important` nos dois: `transform` de repouso é (0,1,0) e o de hover
+   (0,3,0), e estas regras vêm DEPOIS no arquivo com a mesma especificidade — o
+   espelho do atributo ainda soma o `html[…]` e fica em (0,3,1). */
+@media (prefers-reduced-motion: reduce) {
+  .university-programa-quadro,
+  .university-programa-arte,
+  .university-programa-palco:hover .university-programa-quadro,
+  .university-programa-palco:hover .university-programa-arte {
+    transform: none;
+    transition: none;
+  }
+}
+
+html[data-motion="reduce"] .university-programa-quadro,
+html[data-motion="reduce"] .university-programa-arte,
+html[data-motion="reduce"] .university-programa-palco:hover .university-programa-quadro,
+html[data-motion="reduce"] .university-programa-palco:hover .university-programa-arte {
+  transform: none;
+  transition: none;
+}

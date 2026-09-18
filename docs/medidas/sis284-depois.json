@@ -1,0 +1,2689 @@
+{
+ "issue": "SIS-284",
+ "momento": "depois",
+ "rota": "/sistran-university",
+ "erros": [],
+ "porLargura": {
+  "390": {
+   "folha": {
+    "temClasseSectionLight": true,
+    "corDeFundo": "rgba(0, 0, 0, 0)",
+    "gradeNoPseudo": "linear-gradient(rgba(0, 121, 203, 0.04) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(90deg,",
+    "gradeZ": "-1",
+    "acentos": {
+     "display": "none",
+     "quadradoA": "none",
+     "quadradoB": "none"
+    }
+   },
+   "manchete": {
+    "texto": "Desde 2022, já formamos mais de 60 especialistas",
+    "caixa": {
+     "topo": 2755.4,
+     "esq": 20,
+     "w": 350,
+     "h": 107.5,
+     "centroY": 2809.1
+    },
+    "fontSize": "32px",
+    "pesoComputado": "700",
+    "cor": "rgb(10, 31, 68)",
+    "quantasLinhas": 3,
+    "linhasDeTinta": [
+     {
+      "topo": 42,
+      "w": 235.7
+     },
+     {
+      "topo": 78,
+      "w": 336.2
+     },
+     {
+      "topo": 114,
+      "w": 208.9
+     }
+    ],
+    "realces": [
+     {
+      "texto": "Desde",
+      "cor": "rgb(0, 121, 203)"
+     },
+     {
+      "texto": "especialistas",
+      "cor": "rgb(0, 121, 203)"
+     }
+    ]
+   },
+   "lead": {
+    "texto": "Com mentalidade inovadora, aprendem na prática e acumulam experiência em mais de 17 projetos reais para o mercado de seguros.",
+    "caixa": {
+     "topo": 2882.9,
+     "esq": 20,
+     "w": 350,
+     "h": 117,
+     "centroY": 2941.4
+    },
+    "fontSize": "18px",
+    "cor": "rgb(61, 90, 128)",
+    "quantasLinhas": 4
+   },
+   "fileira": {
+    "colunas": "350px",
+    "quantasColunas": 1,
+    "vao": "16px",
+    "fio1": {
+     "content": "\"\"",
+     "display": "none",
+     "esq": "calc(33.3333% - 2.66667px)",
+     "w": "16px",
+     "camadas": "radial-gradient(4px, rgb(255, 255, 255) 0px, rgb(255, 255, 2",
+     "tamanhos": "8px 8px, 100% 1px"
+    },
+    "fio2": {
+     "content": "\"\"",
+     "display": "none",
+     "esq": "calc(66.6667% + 2.66667px)",
+     "w": "16px",
+     "camadas": "radial-gradient(4px, rgb(255, 255, 255) 0px, rgb(255, 255, 2",
+     "tamanhos": "8px 8px, 100% 1px"
+    }
+   },
+   "quantosCartoes": 3,
+   "cartoes": [
+    {
+     "destaque": false,
+     "rotulo": "Desde",
+     "valor": "2022",
+     "apoio": "O início de uma jornada contínua",
+     "caixa": {
+      "topo": 3055.9,
+      "esq": 20,
+      "w": 350,
+      "h": 186,
+      "centroY": 3148.9
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(0, 121, 203)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": false,
+      "caixaQuadrado": {
+       "topo": 3111.4,
+       "esq": 297,
+       "w": 52,
+       "h": 52,
+       "centroY": 3137.4
+      },
+      "caixaImg": {
+       "topo": 3123.4,
+       "esq": 309,
+       "w": 28,
+       "h": 28,
+       "centroY": 3137.4
+      },
+      "src": "/images/university/icones/calendario-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 3054.9,
+       "esq": 19,
+       "w": 352,
+       "h": 188,
+       "centroY": 3148.9
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "0px -7.9421px",
+     "transform": "none",
+     "animacao": "university-numeros-flutua",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "0s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 308,
+      "deslocamentoDoTraco": 125.5,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    },
+    {
+     "destaque": true,
+     "rotulo": "Especialistas formados",
+     "valor": "mais de 60 especialistas formados60+",
+     "apoio": "Aprendizado prático, mentoria e experiência real.",
+     "caixa": {
+      "topo": 3264.6,
+      "esq": 20,
+      "w": 350,
+      "h": 208.5,
+      "centroY": 3368.9
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(10, 31, 68)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": true,
+      "caixaQuadrado": {
+       "topo": 3318.1,
+       "esq": 293,
+       "w": 56,
+       "h": 56,
+       "centroY": 3346.1
+      },
+      "caixaImg": {
+       "topo": 3318.1,
+       "esq": 293,
+       "w": 56,
+       "h": 56,
+       "centroY": 3346.1
+      },
+      "src": "/images/university/icones/especialista-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 3263.6,
+       "esq": 19,
+       "w": 352,
+       "h": 210.5,
+       "centroY": 3368.9
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "0px -1.23049px",
+     "transform": "none",
+     "animacao": "university-numeros-flutua",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "-2s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 308,
+      "deslocamentoDoTraco": 125.5,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    },
+    {
+     "destaque": false,
+     "rotulo": "Projetos reais",
+     "valor": "mais de 17 projetos reais0+",
+     "apoio": "Experiência aplicada ao mercado de seguros",
+     "caixa": {
+      "topo": 3487.8,
+      "esq": 20,
+      "w": 350,
+      "h": 186,
+      "centroY": 3580.8
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(0, 121, 203)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": false,
+      "caixaQuadrado": {
+       "topo": 3543.3,
+       "esq": 297,
+       "w": 52,
+       "h": 52,
+       "centroY": 3569.3
+      },
+      "caixaImg": {
+       "topo": 3555.3,
+       "esq": 309,
+       "w": 28,
+       "h": 28,
+       "centroY": 3569.3
+      },
+      "src": "/images/university/icones/projeto-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 3486.8,
+       "esq": 19,
+       "w": 352,
+       "h": 188,
+       "centroY": 3580.8
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "0px -2.5838px",
+     "transform": "none",
+     "animacao": "university-numeros-flutua",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "-4s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 308,
+      "deslocamentoDoTraco": 125.5,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    }
+   ],
+   "centrosDosCartoes": [
+    3148.9,
+    3368.9,
+    3580.8
+   ],
+   "maiorDesvioDeCentro": 431.9,
+   "assinatura": {
+    "texto": "Sistran University",
+    "caixa": {
+     "topo": 3724.4,
+     "esq": 20,
+     "w": 350,
+     "h": 16.5,
+     "centroY": 3732.6
+    },
+    "cor": "rgb(2, 78, 134)",
+    "letterSpacing": "3.08px",
+    "regua": {
+     "w": 40,
+     "transform": "none",
+     "origem": "40px 0.5px",
+     "opacidade": "1"
+    }
+   },
+   "reveal": {
+    "dataIn": "true",
+    "nosRevelados": [
+     {
+      "preset": "fade-up",
+      "i": null,
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "1",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "2",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "3",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "4",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "5",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "line-up",
+      "i": "5",
+      "opacidade": "1",
+      "transform": "none"
+     }
+    ]
+   },
+   "contadores": [
+    {
+     "textoTotal": "2022",
+     "srOnly": null,
+     "animado": null
+    },
+    {
+     "textoTotal": "mais de 60 especialistas formados60+",
+     "srOnly": "mais de 60 especialistas formados",
+     "animado": "60"
+    },
+    {
+     "textoTotal": "mais de 17 projetos reais0+",
+     "srOnly": "mais de 17 projetos reais",
+     "animado": "0"
+    }
+   ],
+   "motion": null,
+   "rolagemHorizontal": {
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "vaza": false
+   }
+  },
+  "1024": {
+   "folha": {
+    "temClasseSectionLight": true,
+    "corDeFundo": "rgba(0, 0, 0, 0)",
+    "gradeNoPseudo": "linear-gradient(rgba(0, 121, 203, 0.04) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(90deg,",
+    "gradeZ": "-1",
+    "acentos": {
+     "display": "block",
+     "quadradoA": "linear-gradient(155deg, rgba(0, 121, 203, 0.09), rgba(14, 21",
+     "quadradoB": "linear-gradient(155deg, rgba(0, 121, 203, 0.07), rgba(14, 21"
+    }
+   },
+   "manchete": {
+    "texto": "Desde 2022, já formamos mais de 60 especialistas",
+    "caixa": {
+     "topo": 2150.7,
+     "esq": 32,
+     "w": 421.3,
+     "h": 71.7,
+     "centroY": 2186.5
+    },
+    "fontSize": "32px",
+    "pesoComputado": "700",
+    "cor": "rgb(10, 31, 68)",
+    "quantasLinhas": 2,
+    "linhasDeTinta": [
+     {
+      "topo": 319,
+      "w": 401.7
+     },
+     {
+      "topo": 355,
+      "w": 386.4
+     }
+    ],
+    "realces": [
+     {
+      "texto": "Desde",
+      "cor": "rgb(0, 121, 203)"
+     },
+     {
+      "texto": "especialistas",
+      "cor": "rgb(0, 121, 203)"
+     }
+    ]
+   },
+   "lead": {
+    "texto": "Com mentalidade inovadora, aprendem na prática e acumulam experiência em mais de 17 projetos reais para o mercado de seguros.",
+    "caixa": {
+     "topo": 2242.4,
+     "esq": 32,
+     "w": 620.6,
+     "h": 58.5,
+     "centroY": 2271.6
+    },
+    "fontSize": "18px",
+    "cor": "rgb(61, 90, 128)",
+    "quantasLinhas": 2
+   },
+   "fileira": {
+    "colunas": "307.719px 307.719px 307.719px",
+    "quantasColunas": 3,
+    "vao": "18.432px",
+    "fio1": {
+     "content": "\"\"",
+     "display": "block",
+     "esq": "316.922px",
+     "w": "18.4219px",
+     "camadas": "radial-gradient(4px, rgb(255, 255, 255) 0px, rgb(255, 255, 2",
+     "tamanhos": "8px 8px, 100% 1px"
+    },
+    "fio2": {
+     "content": "\"\"",
+     "display": "block",
+     "esq": "643.062px",
+     "w": "18.4219px",
+     "camadas": "radial-gradient(4px, rgb(255, 255, 255) 0px, rgb(255, 255, 2",
+     "tamanhos": "8px 8px, 100% 1px"
+    }
+   },
+   "quantosCartoes": 3,
+   "cartoes": [
+    {
+     "destaque": false,
+     "rotulo": "Desde",
+     "valor": "2022",
+     "apoio": "O início de uma jornada contínua",
+     "caixa": {
+      "topo": 2357.2,
+      "esq": 32,
+      "w": 307.7,
+      "h": 209.4,
+      "centroY": 2462
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(0, 121, 203)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": false,
+      "caixaQuadrado": {
+       "topo": 2413.2,
+       "esq": 266.3,
+       "w": 52,
+       "h": 52,
+       "centroY": 2439.2
+      },
+      "caixaImg": {
+       "topo": 2425.2,
+       "esq": 278.3,
+       "w": 28,
+       "h": 28,
+       "centroY": 2439.2
+      },
+      "src": "/images/university/icones/calendario-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2356.2,
+       "esq": 31,
+       "w": 309.7,
+       "h": 211.4,
+       "centroY": 2462
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "0px -7.63866px",
+     "transform": "none",
+     "animacao": "university-numeros-flutua",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "0s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 264.8,
+      "deslocamentoDoTraco": 126,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    },
+    {
+     "destaque": true,
+     "rotulo": "Especialistas formados",
+     "valor": "mais de 60 especialistas formados60+",
+     "apoio": "Aprendizado prático, mentoria e experiência real.",
+     "caixa": {
+      "topo": 2364.3,
+      "esq": 358.1,
+      "w": 307.7,
+      "h": 209.4,
+      "centroY": 2469
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(10, 31, 68)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": true,
+      "caixaQuadrado": {
+       "topo": 2418.3,
+       "esq": 588.4,
+       "w": 56,
+       "h": 56,
+       "centroY": 2446.3
+      },
+      "caixaImg": {
+       "topo": 2418.3,
+       "esq": 588.4,
+       "w": 56,
+       "h": 56,
+       "centroY": 2446.3
+      },
+      "src": "/images/university/icones/especialista-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2363.3,
+       "esq": 357.1,
+       "w": 309.7,
+       "h": 211.4,
+       "centroY": 2469
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "0px -0.546654px",
+     "transform": "none",
+     "animacao": "university-numeros-flutua",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "-2s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 264.8,
+      "deslocamentoDoTraco": 126,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    },
+    {
+     "destaque": false,
+     "rotulo": "Projetos reais",
+     "valor": "mais de 17 projetos reais17+",
+     "apoio": "Experiência aplicada ao mercado de seguros",
+     "caixa": {
+      "topo": 2361.1,
+      "esq": 684.3,
+      "w": 307.7,
+      "h": 209.4,
+      "centroY": 2465.8
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(0, 121, 203)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": false,
+      "caixaQuadrado": {
+       "topo": 2417.1,
+       "esq": 918.5,
+       "w": 52,
+       "h": 52,
+       "centroY": 2443.1
+      },
+      "caixaImg": {
+       "topo": 2429.1,
+       "esq": 930.5,
+       "w": 28,
+       "h": 28,
+       "centroY": 2443.1
+      },
+      "src": "/images/university/icones/projeto-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2360.1,
+       "esq": 683.3,
+       "w": 309.7,
+       "h": 211.4,
+       "centroY": 2465.8
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "0px -3.76934px",
+     "transform": "none",
+     "animacao": "university-numeros-flutua",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "-4s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 264.8,
+      "deslocamentoDoTraco": 126,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    }
+   ],
+   "centrosDosCartoes": [
+    2462,
+    2469,
+    2465.8
+   ],
+   "maiorDesvioDeCentro": 7,
+   "assinatura": {
+    "texto": "Sistran University",
+    "caixa": {
+     "topo": 2622.3,
+     "esq": 32,
+     "w": 960,
+     "h": 16.5,
+     "centroY": 2630.6
+    },
+    "cor": "rgb(2, 78, 134)",
+    "letterSpacing": "3.08px",
+    "regua": {
+     "w": 51.2,
+     "transform": "none",
+     "origem": "51.1875px 0.5px",
+     "opacidade": "1"
+    }
+   },
+   "reveal": {
+    "dataIn": "true",
+    "nosRevelados": [
+     {
+      "preset": "fade-up",
+      "i": null,
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "1",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "2",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "3",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "4",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "5",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "line-up",
+      "i": "5",
+      "opacidade": "1",
+      "transform": "none"
+     }
+    ]
+   },
+   "contadores": [
+    {
+     "textoTotal": "2022",
+     "srOnly": null,
+     "animado": null
+    },
+    {
+     "textoTotal": "mais de 60 especialistas formados60+",
+     "srOnly": "mais de 60 especialistas formados",
+     "animado": "60"
+    },
+    {
+     "textoTotal": "mais de 17 projetos reais17+",
+     "srOnly": "mais de 17 projetos reais",
+     "animado": "17"
+    }
+   ],
+   "motion": null,
+   "rolagemHorizontal": {
+    "scrollWidth": 1024,
+    "clientWidth": 1024,
+    "vaza": false
+   }
+  },
+  "1440": {
+   "folha": {
+    "temClasseSectionLight": true,
+    "corDeFundo": "rgba(0, 0, 0, 0)",
+    "gradeNoPseudo": "linear-gradient(rgba(0, 121, 203, 0.04) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(90deg,",
+    "gradeZ": "-1",
+    "acentos": {
+     "display": "block",
+     "quadradoA": "linear-gradient(155deg, rgba(0, 121, 203, 0.09), rgba(14, 21",
+     "quadradoB": "linear-gradient(155deg, rgba(0, 121, 203, 0.07), rgba(14, 21"
+    }
+   },
+   "manchete": {
+    "texto": "Desde 2022, já formamos mais de 60 especialistas",
+    "caixa": {
+     "topo": 2232.1,
+     "esq": 162,
+     "w": 579.3,
+     "h": 98.5,
+     "centroY": 2281.4
+    },
+    "fontSize": "44px",
+    "pesoComputado": "700",
+    "cor": "rgb(10, 31, 68)",
+    "quantasLinhas": 2,
+    "linhasDeTinta": [
+     {
+      "topo": 289,
+      "w": 552.4
+     },
+     {
+      "topo": 338,
+      "w": 531.3
+     }
+    ],
+    "realces": [
+     {
+      "texto": "Desde",
+      "cor": "rgb(0, 121, 203)"
+     },
+     {
+      "texto": "especialistas",
+      "cor": "rgb(0, 121, 203)"
+     }
+    ]
+   },
+   "lead": {
+    "texto": "Com mentalidade inovadora, aprendem na prática e acumulam experiência em mais de 17 projetos reais para o mercado de seguros.",
+    "caixa": {
+     "topo": 2350.7,
+     "esq": 162,
+     "w": 620.6,
+     "h": 58.5,
+     "centroY": 2379.9
+    },
+    "fontSize": "18px",
+    "cor": "rgb(61, 90, 128)",
+    "quantasLinhas": 2
+   },
+   "fileira": {
+    "colunas": "354.719px 354.734px 354.719px",
+    "quantasColunas": 3,
+    "vao": "25.92px",
+    "fio1": {
+     "content": "\"\"",
+     "display": "block",
+     "esq": "367.672px",
+     "w": "25.9062px",
+     "camadas": "radial-gradient(4px, rgb(255, 255, 255) 0px, rgb(255, 255, 2",
+     "tamanhos": "8px 8px, 100% 1px"
+    },
+    "fio2": {
+     "content": "\"\"",
+     "display": "block",
+     "esq": "748.312px",
+     "w": "25.9062px",
+     "camadas": "radial-gradient(4px, rgb(255, 255, 255) 0px, rgb(255, 255, 2",
+     "tamanhos": "8px 8px, 100% 1px"
+    }
+   },
+   "quantosCartoes": 3,
+   "cartoes": [
+    {
+     "destaque": false,
+     "rotulo": "Desde",
+     "valor": "2022",
+     "apoio": "O início de uma jornada contínua",
+     "caixa": {
+      "topo": 2465.3,
+      "esq": 162,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2577.5
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(0, 121, 203)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": false,
+      "caixaQuadrado": {
+       "topo": 2528.8,
+       "esq": 435.7,
+       "w": 52,
+       "h": 52,
+       "centroY": 2554.8
+      },
+      "caixaImg": {
+       "topo": 2540.8,
+       "esq": 447.7,
+       "w": 28,
+       "h": 28,
+       "centroY": 2554.8
+      },
+      "src": "/images/university/icones/calendario-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2464.3,
+       "esq": 161,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2577.5
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "0px -7.90548px",
+     "transform": "none",
+     "animacao": "university-numeros-flutua",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "0s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 296.7,
+      "deslocamentoDoTraco": 133.5,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    },
+    {
+     "destaque": true,
+     "rotulo": "Especialistas formados",
+     "valor": "mais de 60 especialistas formados60+",
+     "apoio": "Aprendizado prático, mentoria e experiência real.",
+     "caixa": {
+      "topo": 2472.1,
+      "esq": 542.6,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2584.3
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(10, 31, 68)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": true,
+      "caixaQuadrado": {
+       "topo": 2533.6,
+       "esq": 812.4,
+       "w": 56,
+       "h": 56,
+       "centroY": 2561.6
+      },
+      "caixaImg": {
+       "topo": 2533.6,
+       "esq": 812.4,
+       "w": 56,
+       "h": 56,
+       "centroY": 2561.6
+      },
+      "src": "/images/university/icones/especialista-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2471.1,
+       "esq": 541.6,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2584.3
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "0px -1.08115px",
+     "transform": "none",
+     "animacao": "university-numeros-flutua",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "-2s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 296.7,
+      "deslocamentoDoTraco": 133.5,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    },
+    {
+     "destaque": false,
+     "rotulo": "Projetos reais",
+     "valor": "mais de 17 projetos reais17+",
+     "apoio": "Experiência aplicada ao mercado de seguros",
+     "caixa": {
+      "topo": 2470.4,
+      "esq": 923.3,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2582.6
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(0, 121, 203)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": false,
+      "caixaQuadrado": {
+       "topo": 2533.9,
+       "esq": 1197,
+       "w": 52,
+       "h": 52,
+       "centroY": 2559.9
+      },
+      "caixaImg": {
+       "topo": 2545.9,
+       "esq": 1209,
+       "w": 28,
+       "h": 28,
+       "centroY": 2559.9
+      },
+      "src": "/images/university/icones/projeto-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2469.4,
+       "esq": 922.3,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2582.6
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "0px -2.79784px",
+     "transform": "none",
+     "animacao": "university-numeros-flutua",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "-4s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 296.7,
+      "deslocamentoDoTraco": 133.5,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    }
+   ],
+   "centrosDosCartoes": [
+    2577.5,
+    2584.3,
+    2582.6
+   ],
+   "maiorDesvioDeCentro": 6.8,
+   "assinatura": {
+    "texto": "Sistran University",
+    "caixa": {
+     "topo": 2761.7,
+     "esq": 162,
+     "w": 1116,
+     "h": 16.5,
+     "centroY": 2769.9
+    },
+    "cor": "rgb(2, 78, 134)",
+    "letterSpacing": "3.08px",
+    "regua": {
+     "w": 64,
+     "transform": "none",
+     "origem": "64px 0.5px",
+     "opacidade": "1"
+    }
+   },
+   "reveal": {
+    "dataIn": "true",
+    "nosRevelados": [
+     {
+      "preset": "fade-up",
+      "i": null,
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "1",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "2",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "3",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "4",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "5",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "line-up",
+      "i": "5",
+      "opacidade": "1",
+      "transform": "none"
+     }
+    ]
+   },
+   "contadores": [
+    {
+     "textoTotal": "2022",
+     "srOnly": null,
+     "animado": null
+    },
+    {
+     "textoTotal": "mais de 60 especialistas formados60+",
+     "srOnly": "mais de 60 especialistas formados",
+     "animado": "60"
+    },
+    {
+     "textoTotal": "mais de 17 projetos reais17+",
+     "srOnly": "mais de 17 projetos reais",
+     "animado": "17"
+    }
+   ],
+   "motion": null,
+   "rolagemHorizontal": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "vaza": false
+   }
+  }
+ },
+ "flutuacao": {
+  "amostras": [
+   [
+    {
+     "translate": "0px -6.38698px",
+     "topo": 527.8
+    },
+    {
+     "translate": "0px -0.00758731px",
+     "topo": 534.2
+    },
+    {
+     "translate": "0px -5.8904px",
+     "topo": 528.3
+    }
+   ],
+   [
+    {
+     "translate": "0px -4.07712px",
+     "topo": 530.1
+    },
+    {
+     "translate": "0px -0.418645px",
+     "topo": 533.8
+    },
+    {
+     "translate": "0px -7.51945px",
+     "topo": 526.7
+    }
+   ],
+   [
+    {
+     "translate": "0px -1.91735px",
+     "topo": 532.3
+    },
+    {
+     "translate": "0px -1.79196px",
+     "topo": 532.4
+    },
+    {
+     "translate": "0px -7.99952px",
+     "topo": 526.2
+    }
+   ],
+   [
+    {
+     "translate": "0px -0.480745px",
+     "topo": 533.7
+    },
+    {
+     "translate": "0px -3.92242px",
+     "topo": 530.2
+    },
+    {
+     "translate": "0px -7.58153px",
+     "topo": 526.6
+    }
+   ],
+   [
+    {
+     "translate": "0px -0.000485176px",
+     "topo": 534.2
+    },
+    {
+     "translate": "0px -6.08227px",
+     "topo": 528.1
+    },
+    {
+     "translate": "0px -6.20841px",
+     "topo": 528
+    }
+   ],
+   [
+    {
+     "translate": "0px -0.389303px",
+     "topo": 533.8
+    },
+    {
+     "translate": "0px -7.48678px",
+     "topo": 526.7
+    },
+    {
+     "translate": "0px -4.15431px",
+     "topo": 530
+    }
+   ]
+  ]
+ },
+ "hover": {
+  "cartao1": {
+   "maiorDesvioDeCentro": 6,
+   "cartoes": [
+    {
+     "destaque": false,
+     "rotulo": "Desde",
+     "corDaBorda": "rgba(14, 216, 246, 0.55)",
+     "margemBloco": "0px / 0px",
+     "caixa": {
+      "topo": 2463.4,
+      "esq": 154,
+      "w": 370.7,
+      "h": 234.6,
+      "centroY": 2580.7
+     },
+     "escala": "1.045",
+     "deslocamento": "0px -4.68598px",
+     "animacaoEstado": "paused",
+     "zIndex": "1",
+     "halo": {
+      "opacidade": "1",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2462.4,
+       "esq": 153,
+       "w": 372.8,
+       "h": 236.7,
+       "centroY": 2580.7
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "university-numeros-giro",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(from 95.0032deg, rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg,",
+      "anelBorda": "0px"
+     }
+    },
+    {
+     "destaque": true,
+     "rotulo": "Especialistas formados",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "caixa": {
+      "topo": 2471.1,
+      "esq": 542.6,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2583.4
+     },
+     "escala": "none",
+     "deslocamento": "0px -2.04328px",
+     "animacaoEstado": "running",
+     "zIndex": "auto",
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2470.1,
+       "esq": 541.6,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2583.4
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     }
+    },
+    {
+     "destaque": false,
+     "rotulo": "Projetos reais",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "caixa": {
+      "topo": 2465.2,
+      "esq": 923.3,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2577.4
+     },
+     "escala": "none",
+     "deslocamento": "0px -7.9958px",
+     "animacaoEstado": "running",
+     "zIndex": "auto",
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2464.2,
+       "esq": 922.3,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2577.4
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     }
+    }
+   ]
+  },
+  "cartao2": {
+   "maiorDesvioDeCentro": 3.1,
+   "cartoes": [
+    {
+     "destaque": false,
+     "rotulo": "Desde",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "caixa": {
+      "topo": 2471.3,
+      "esq": 162,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2583.6
+     },
+     "escala": "none",
+     "deslocamento": "0px -1.85499px",
+     "animacaoEstado": "running",
+     "zIndex": "auto",
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2470.3,
+       "esq": 161,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2583.6
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     }
+    },
+    {
+     "destaque": true,
+     "rotulo": "Especialistas formados",
+     "corDaBorda": "rgba(14, 216, 246, 0.55)",
+     "margemBloco": "0px / 0px",
+     "caixa": {
+      "topo": 2463.2,
+      "esq": 534.6,
+      "w": 370.7,
+      "h": 234.6,
+      "centroY": 2580.5
+     },
+     "escala": "1.045",
+     "deslocamento": "0px -4.90853px",
+     "animacaoEstado": "paused",
+     "zIndex": "1",
+     "halo": {
+      "opacidade": "1",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2462.2,
+       "esq": 533.6,
+       "w": 372.8,
+       "h": 236.7,
+       "centroY": 2580.5
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "university-numeros-giro",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(from 97.4912deg, rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg,",
+      "anelBorda": "0px"
+     }
+    },
+    {
+     "destaque": false,
+     "rotulo": "Projetos reais",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "caixa": {
+      "topo": 2468.6,
+      "esq": 923.3,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2580.9
+     },
+     "escala": "none",
+     "deslocamento": "0px -4.53565px",
+     "animacaoEstado": "running",
+     "zIndex": "auto",
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2467.6,
+       "esq": 922.3,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2580.9
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     }
+    }
+   ]
+  },
+  "cartao3": {
+   "maiorDesvioDeCentro": 6.8,
+   "cartoes": [
+    {
+     "destaque": false,
+     "rotulo": "Desde",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "caixa": {
+      "topo": 2470.6,
+      "esq": 162,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2582.8
+     },
+     "escala": "none",
+     "deslocamento": "0px -2.58335px",
+     "animacaoEstado": "running",
+     "zIndex": "auto",
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2469.6,
+       "esq": 161,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2582.8
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     }
+    },
+    {
+     "destaque": true,
+     "rotulo": "Especialistas formados",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "caixa": {
+      "topo": 2466.3,
+      "esq": 542.6,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2578.6
+     },
+     "escala": "none",
+     "deslocamento": "0px -6.86997px",
+     "animacaoEstado": "running",
+     "zIndex": "auto",
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2465.3,
+       "esq": 541.6,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2578.6
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rgb(0, 121, 203)",
+      "anelBorda": "0px"
+     }
+    },
+    {
+     "destaque": false,
+     "rotulo": "Projetos reais",
+     "corDaBorda": "rgba(14, 216, 246, 0.55)",
+     "margemBloco": "0px / 0px",
+     "caixa": {
+      "topo": 2468.1,
+      "esq": 915.3,
+      "w": 370.7,
+      "h": 234.6,
+      "centroY": 2585.4
+     },
+     "escala": "1.045",
+     "deslocamento": "0px -0.00760579px",
+     "animacaoEstado": "paused",
+     "zIndex": "1",
+     "halo": {
+      "opacidade": "1",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2467.1,
+       "esq": 914.2,
+       "w": 372.8,
+       "h": 236.7,
+       "centroY": 2585.4
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "university-numeros-giro",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "conic-gradient(from 77.5deg, rgb(127, 230, 255) 0deg, rgb(14, 216, 246) 8deg, rg",
+      "anelBorda": "0px"
+     }
+    }
+   ]
+  },
+  "foraDosCartoes": [
+   {
+    "rotulo": "Desde",
+    "corDaBorda": "rgba(0, 121, 203, 0.12)",
+    "haloOpacidade": "0",
+    "haloAnimacao": "none"
+   },
+   {
+    "rotulo": "Especialistas formados",
+    "corDaBorda": "rgba(0, 121, 203, 0.12)",
+    "haloOpacidade": "0",
+    "haloAnimacao": "none"
+   },
+   {
+    "rotulo": "Projetos reais",
+    "corDaBorda": "rgba(0, 121, 203, 0.12)",
+    "haloOpacidade": "0",
+    "haloAnimacao": "none"
+   }
+  ]
+ },
+ "reduce": {
+  "mediaQuery": {
+   "folha": {
+    "temClasseSectionLight": true,
+    "corDeFundo": "rgba(0, 0, 0, 0)",
+    "gradeNoPseudo": "linear-gradient(rgba(0, 121, 203, 0.04) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(90deg,",
+    "gradeZ": "-1",
+    "acentos": {
+     "display": "block",
+     "quadradoA": "linear-gradient(155deg, rgba(0, 121, 203, 0.09), rgba(14, 21",
+     "quadradoB": "linear-gradient(155deg, rgba(0, 121, 203, 0.07), rgba(14, 21"
+    }
+   },
+   "manchete": {
+    "texto": "Desde 2022, já formamos mais de 60 especialistas",
+    "caixa": {
+     "topo": 2232.1,
+     "esq": 162,
+     "w": 579.3,
+     "h": 98.5,
+     "centroY": 2281.4
+    },
+    "fontSize": "44px",
+    "pesoComputado": "700",
+    "cor": "rgb(10, 31, 68)",
+    "quantasLinhas": 2,
+    "linhasDeTinta": [
+     {
+      "topo": 289,
+      "w": 552.4
+     },
+     {
+      "topo": 338,
+      "w": 531.3
+     }
+    ],
+    "realces": [
+     {
+      "texto": "Desde",
+      "cor": "rgb(0, 121, 203)"
+     },
+     {
+      "texto": "especialistas",
+      "cor": "rgb(0, 121, 203)"
+     }
+    ]
+   },
+   "lead": {
+    "texto": "Com mentalidade inovadora, aprendem na prática e acumulam experiência em mais de 17 projetos reais para o mercado de seguros.",
+    "caixa": {
+     "topo": 2350.7,
+     "esq": 162,
+     "w": 620.6,
+     "h": 58.5,
+     "centroY": 2379.9
+    },
+    "fontSize": "18px",
+    "cor": "rgb(61, 90, 128)",
+    "quantasLinhas": 2
+   },
+   "fileira": {
+    "colunas": "354.719px 354.734px 354.719px",
+    "quantasColunas": 3,
+    "vao": "25.92px",
+    "fio1": {
+     "content": "\"\"",
+     "display": "block",
+     "esq": "367.672px",
+     "w": "25.9062px",
+     "camadas": "radial-gradient(4px, rgb(255, 255, 255) 0px, rgb(255, 255, 2",
+     "tamanhos": "8px 8px, 100% 1px"
+    },
+    "fio2": {
+     "content": "\"\"",
+     "display": "block",
+     "esq": "748.312px",
+     "w": "25.9062px",
+     "camadas": "radial-gradient(4px, rgb(255, 255, 255) 0px, rgb(255, 255, 2",
+     "tamanhos": "8px 8px, 100% 1px"
+    }
+   },
+   "quantosCartoes": 3,
+   "cartoes": [
+    {
+     "destaque": false,
+     "rotulo": "Desde",
+     "valor": "2022",
+     "apoio": "O início de uma jornada contínua",
+     "caixa": {
+      "topo": 2473.2,
+      "esq": 162,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2585.4
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(14, 216, 246, 0.55)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(0, 121, 203)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": false,
+      "caixaQuadrado": {
+       "topo": 2536.7,
+       "esq": 435.7,
+       "w": 52,
+       "h": 52,
+       "centroY": 2562.7
+      },
+      "caixaImg": {
+       "topo": 2548.7,
+       "esq": 447.7,
+       "w": 28,
+       "h": 28,
+       "centroY": 2562.7
+      },
+      "src": "/images/university/icones/calendario-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "1",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2472.2,
+       "esq": 161,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2585.4
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "none",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "none",
+     "transform": "none",
+     "animacao": "none",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "0s",
+     "zIndex": "1",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 296.7,
+      "deslocamentoDoTraco": 133.5,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    },
+    {
+     "destaque": true,
+     "rotulo": "Especialistas formados",
+     "valor": "mais de 60 especialistas formados60+",
+     "apoio": "Aprendizado prático, mentoria e experiência real.",
+     "caixa": {
+      "topo": 2473.2,
+      "esq": 542.6,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2585.4
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(10, 31, 68)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": true,
+      "caixaQuadrado": {
+       "topo": 2534.7,
+       "esq": 812.4,
+       "w": 56,
+       "h": 56,
+       "centroY": 2562.7
+      },
+      "caixaImg": {
+       "topo": 2534.7,
+       "esq": 812.4,
+       "w": 56,
+       "h": 56,
+       "centroY": 2562.7
+      },
+      "src": "/images/university/icones/especialista-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2472.2,
+       "esq": 541.6,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2585.4
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "none",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "none",
+     "transform": "none",
+     "animacao": "none",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "0s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 296.7,
+      "deslocamentoDoTraco": 133.5,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    },
+    {
+     "destaque": false,
+     "rotulo": "Projetos reais",
+     "valor": "mais de 17 projetos reais17+",
+     "apoio": "Experiência aplicada ao mercado de seguros",
+     "caixa": {
+      "topo": 2473.2,
+      "esq": 923.3,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2585.4
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(0, 121, 203)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": false,
+      "caixaQuadrado": {
+       "topo": 2536.7,
+       "esq": 1197,
+       "w": 52,
+       "h": 52,
+       "centroY": 2562.7
+      },
+      "caixaImg": {
+       "topo": 2548.7,
+       "esq": 1209,
+       "w": 28,
+       "h": 28,
+       "centroY": 2562.7
+      },
+      "src": "/images/university/icones/projeto-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2472.2,
+       "esq": 922.3,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2585.4
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "none",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "none",
+     "transform": "none",
+     "animacao": "none",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "0s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 296.7,
+      "deslocamentoDoTraco": 133.5,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    }
+   ],
+   "centrosDosCartoes": [
+    2585.4,
+    2585.4,
+    2585.4
+   ],
+   "maiorDesvioDeCentro": 0,
+   "assinatura": {
+    "texto": "Sistran University",
+    "caixa": {
+     "topo": 2761.7,
+     "esq": 162,
+     "w": 1116,
+     "h": 16.5,
+     "centroY": 2769.9
+    },
+    "cor": "rgb(2, 78, 134)",
+    "letterSpacing": "3.08px",
+    "regua": {
+     "w": 64,
+     "transform": "none",
+     "origem": "64px 0.5px",
+     "opacidade": "1"
+    }
+   },
+   "reveal": {
+    "dataIn": "true",
+    "nosRevelados": [
+     {
+      "preset": "fade-up",
+      "i": null,
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "1",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "2",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "3",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "4",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "5",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "line-up",
+      "i": "5",
+      "opacidade": "1",
+      "transform": "none"
+     }
+    ]
+   },
+   "contadores": [
+    {
+     "textoTotal": "2022",
+     "srOnly": null,
+     "animado": null
+    },
+    {
+     "textoTotal": "mais de 60 especialistas formados60+",
+     "srOnly": "mais de 60 especialistas formados",
+     "animado": "60"
+    },
+    {
+     "textoTotal": "mais de 17 projetos reais17+",
+     "srOnly": "mais de 17 projetos reais",
+     "animado": "17"
+    }
+   ],
+   "motion": "reduce",
+   "rolagemHorizontal": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "vaza": false
+   }
+  },
+  "atributo": {
+   "folha": {
+    "temClasseSectionLight": true,
+    "corDeFundo": "rgba(0, 0, 0, 0)",
+    "gradeNoPseudo": "linear-gradient(rgba(0, 121, 203, 0.04) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(90deg,",
+    "gradeZ": "-1",
+    "acentos": {
+     "display": "block",
+     "quadradoA": "linear-gradient(155deg, rgba(0, 121, 203, 0.09), rgba(14, 21",
+     "quadradoB": "linear-gradient(155deg, rgba(0, 121, 203, 0.07), rgba(14, 21"
+    }
+   },
+   "manchete": {
+    "texto": "Desde 2022, já formamos mais de 60 especialistas",
+    "caixa": {
+     "topo": 2232.1,
+     "esq": 162,
+     "w": 579.3,
+     "h": 98.5,
+     "centroY": 2281.4
+    },
+    "fontSize": "44px",
+    "pesoComputado": "700",
+    "cor": "rgb(10, 31, 68)",
+    "quantasLinhas": 2,
+    "linhasDeTinta": [
+     {
+      "topo": 289,
+      "w": 552.4
+     },
+     {
+      "topo": 338,
+      "w": 531.3
+     }
+    ],
+    "realces": [
+     {
+      "texto": "Desde",
+      "cor": "rgb(0, 121, 203)"
+     },
+     {
+      "texto": "especialistas",
+      "cor": "rgb(0, 121, 203)"
+     }
+    ]
+   },
+   "lead": {
+    "texto": "Com mentalidade inovadora, aprendem na prática e acumulam experiência em mais de 17 projetos reais para o mercado de seguros.",
+    "caixa": {
+     "topo": 2350.7,
+     "esq": 162,
+     "w": 620.6,
+     "h": 58.5,
+     "centroY": 2379.9
+    },
+    "fontSize": "18px",
+    "cor": "rgb(61, 90, 128)",
+    "quantasLinhas": 2
+   },
+   "fileira": {
+    "colunas": "354.719px 354.734px 354.719px",
+    "quantasColunas": 3,
+    "vao": "25.92px",
+    "fio1": {
+     "content": "\"\"",
+     "display": "block",
+     "esq": "367.672px",
+     "w": "25.9062px",
+     "camadas": "radial-gradient(4px, rgb(255, 255, 255) 0px, rgb(255, 255, 2",
+     "tamanhos": "8px 8px, 100% 1px"
+    },
+    "fio2": {
+     "content": "\"\"",
+     "display": "block",
+     "esq": "748.312px",
+     "w": "25.9062px",
+     "camadas": "radial-gradient(4px, rgb(255, 255, 255) 0px, rgb(255, 255, 2",
+     "tamanhos": "8px 8px, 100% 1px"
+    }
+   },
+   "quantosCartoes": 3,
+   "cartoes": [
+    {
+     "destaque": false,
+     "rotulo": "Desde",
+     "valor": "2022",
+     "apoio": "O início de uma jornada contínua",
+     "caixa": {
+      "topo": 2473.2,
+      "esq": 162,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2585.4
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(14, 216, 246, 0.55)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(0, 121, 203)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": false,
+      "caixaQuadrado": {
+       "topo": 2536.7,
+       "esq": 435.7,
+       "w": 52,
+       "h": 52,
+       "centroY": 2562.7
+      },
+      "caixaImg": {
+       "topo": 2548.7,
+       "esq": 447.7,
+       "w": 28,
+       "h": 28,
+       "centroY": 2562.7
+      },
+      "src": "/images/university/icones/calendario-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "1",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2472.2,
+       "esq": 161,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2585.4
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "none",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "none",
+     "transform": "none",
+     "animacao": "none",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "0s",
+     "zIndex": "1",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 296.7,
+      "deslocamentoDoTraco": 133.5,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    },
+    {
+     "destaque": true,
+     "rotulo": "Especialistas formados",
+     "valor": "mais de 60 especialistas formados60+",
+     "apoio": "Aprendizado prático, mentoria e experiência real.",
+     "caixa": {
+      "topo": 2473.2,
+      "esq": 542.6,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2585.4
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(10, 31, 68)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": true,
+      "caixaQuadrado": {
+       "topo": 2534.7,
+       "esq": 812.4,
+       "w": 56,
+       "h": 56,
+       "centroY": 2562.7
+      },
+      "caixaImg": {
+       "topo": 2534.7,
+       "esq": 812.4,
+       "w": 56,
+       "h": 56,
+       "centroY": 2562.7
+      },
+      "src": "/images/university/icones/especialista-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2472.2,
+       "esq": 541.6,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2585.4
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "none",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "none",
+     "transform": "none",
+     "animacao": "none",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "0s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 296.7,
+      "deslocamentoDoTraco": 133.5,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    },
+    {
+     "destaque": false,
+     "rotulo": "Projetos reais",
+     "valor": "mais de 17 projetos reais17+",
+     "apoio": "Experiência aplicada ao mercado de seguros",
+     "caixa": {
+      "topo": 2473.2,
+      "esq": 923.3,
+      "w": 354.7,
+      "h": 224.5,
+      "centroY": 2585.4
+     },
+     "corDeFundo": "rgb(255, 255, 255)",
+     "corDaBorda": "rgba(0, 121, 203, 0.12)",
+     "margemBloco": "0px / 0px",
+     "corDoValor": "rgb(0, 121, 203)",
+     "corDoRotulo": "rgb(2, 78, 134)",
+     "corDoApoio": "rgb(61, 90, 128)",
+     "numeroTabular": "tabular-nums",
+     "icone": {
+      "nu": false,
+      "caixaQuadrado": {
+       "topo": 2536.7,
+       "esq": 1197,
+       "w": 52,
+       "h": 52,
+       "centroY": 2562.7
+      },
+      "caixaImg": {
+       "topo": 2548.7,
+       "esq": 1209,
+       "w": 28,
+       "h": 28,
+       "centroY": 2562.7
+      },
+      "src": "/images/university/icones/projeto-128.webp",
+      "naturalW": 128,
+      "carregou": true,
+      "objectFit": "contain",
+      "display": "block"
+     },
+     "halo": {
+      "opacidade": "0",
+      "pointerEvents": "none",
+      "caixa": {
+       "topo": 2472.2,
+       "esq": 922.3,
+       "w": 356.7,
+       "h": 226.5,
+       "centroY": 2585.4
+      },
+      "anelContent": "\"\"",
+      "anelAnimacao": "none",
+      "anelEstado": "running",
+      "anelPadding": "2px",
+      "anelMascaraComposta": "exclude, exclude",
+      "anelFundo": "none",
+      "anelBorda": "0px"
+     },
+     "fio": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "fundo": "none"
+     },
+     "no": {
+      "content": "none",
+      "display": "block",
+      "w": "auto",
+      "borda": "rgb(229, 231, 235)"
+     },
+     "escala": "none",
+     "deslocamento": "none",
+     "transform": "none",
+     "animacao": "none",
+     "animacaoEstado": "running",
+     "animacaoAtraso": "0s",
+     "zIndex": "auto",
+     "temFaixa": true,
+     "traco": {
+      "borda": "1px solid rgba(0, 121, 203, 0.12)",
+      "larguraDoTraco": 296.7,
+      "deslocamentoDoTraco": 133.5,
+      "recuoAteOTexto": "16px"
+     },
+     "temSeta": false,
+     "quantosSvg": 0
+    }
+   ],
+   "centrosDosCartoes": [
+    2585.4,
+    2585.4,
+    2585.4
+   ],
+   "maiorDesvioDeCentro": 0,
+   "assinatura": {
+    "texto": "Sistran University",
+    "caixa": {
+     "topo": 2761.7,
+     "esq": 162,
+     "w": 1116,
+     "h": 16.5,
+     "centroY": 2769.9
+    },
+    "cor": "rgb(2, 78, 134)",
+    "letterSpacing": "3.08px",
+    "regua": {
+     "w": 64,
+     "transform": "none",
+     "origem": "64px 0.5px",
+     "opacidade": "1"
+    }
+   },
+   "reveal": {
+    "dataIn": "true",
+    "nosRevelados": [
+     {
+      "preset": "fade-up",
+      "i": null,
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "1",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "2",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "3",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "4",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "fade-up",
+      "i": "5",
+      "opacidade": "1",
+      "transform": "none"
+     },
+     {
+      "preset": "line-up",
+      "i": "5",
+      "opacidade": "1",
+      "transform": "none"
+     }
+    ]
+   },
+   "contadores": [
+    {
+     "textoTotal": "2022",
+     "srOnly": null,
+     "animado": null
+    },
+    {
+     "textoTotal": "mais de 60 especialistas formados60+",
+     "srOnly": "mais de 60 especialistas formados",
+     "animado": "60"
+    },
+    {
+     "textoTotal": "mais de 17 projetos reais17+",
+     "srOnly": "mais de 17 projetos reais",
+     "animado": "17"
+    }
+   ],
+   "motion": "reduce",
+   "rolagemHorizontal": {
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "vaza": false
+   }
+  }
+ },
+ "semJS": {
+  "cartoes": [
+   {
+    "opacidade": "1",
+    "transform": "none",
+    "h": 225
+   },
+   {
+    "opacidade": "1",
+    "transform": "none",
+    "h": 225
+   },
+   {
+    "opacidade": "1",
+    "transform": "none",
+    "h": 225
+   }
+  ],
+  "valores": [
+   "2022",
+   "mais de 60 especialistas formados60+",
+   "mais de 17 projetos reais17+"
+  ],
+  "manchete": "Desde 2022, já formamos mais de 60 especialistas"
+ }
+}

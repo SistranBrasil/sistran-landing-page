@@ -24,7 +24,16 @@ export const NAV_ITEMS: readonly NavItem[] = [
       { label: 'A Sistran', href: '/quem-somos' },
       { label: 'Sistran Labs', href: '/sistran-labs' },
       { label: 'Sistran University', href: '/sistran-university' },
-      { label: 'Sistran Latam', href: '/latam' },
+      /* SIS-280 — «Sistran Latam» sai do app e vai para o site LATAM oficial. A
+         linha anterior era exatamente esta:
+           { label: 'Sistran Latam', href: '/latam' },
+         A rota interna `/latam` CONTINUA existindo (sitemap, legado, links de
+         dentro do conteúdo) — a issue mexe neste clique do menu e em mais nada.
+         O tipo não mudou: `NavItem.href` é `string` e sempre aceitou endereço
+         absoluto; quem passou a ler o esquema é `ehLinkExterno` em
+         `src/lib/navAtivo.ts`, e é o Header que decide `<a>` em vez de `<Link>`.
+         A barra final faz parte do endereço publicado pelo próprio site. */
+      { label: 'Sistran Latam', href: 'https://www.sistran.com/latam/' },
     ],
   },
   /* SIS-119 · item 2 — `/transformacao-legado` entra no menu como FILHA de

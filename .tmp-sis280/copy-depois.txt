@@ -1,0 +1,19 @@
+﻿
+> sistran-landing-page@0.1.0 test:copy
+> node scripts/copy-lock.mjs --check
+
+node.exe : copy-lock: a escrita do site mudou.
+No linha:1 caractere:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (copy-lock: a escrita do site mudou.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+
+Textos novos (3):
+  + Parceiros e Implementa├º├Áes  (2x -> 3x)
+  + void; revelar?:  (0x -> 1x)
+  + portao?.liberado ?? true  (0x -> 1x)
+
+Se a mudanca foi deliberada e aprovada pelo dono do conteudo, atualize o lock: node scripts/copy-lock.mjs

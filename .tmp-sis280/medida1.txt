@@ -1,0 +1,50 @@
+﻿
+ÔöÇÔöÇ 390x844 ÔöÇÔöÇ
+rotulo 6.3:1 (piso 4.5, passa) ┬À titulo 13.43:1 (piso 3, passa) ┬À realce 3.92:1 (piso 3, passa) ┬À paragrafo 14.25:1 (piso 4.5, passa) ┬À forte 14.25:1 (piso 4.5, passa)
+colunas 350px ┬À fra├º├Áes 89.7/89.7 ┬À empilhado true
+overflow 0px ┬À quadro at├® x=372 (folga 18px) ┬À foc├íveis na se├º├úo 0
+repouso  matrix(0.999781, -0.0209424, 0.0209424, 0.999781, 0, 0)
+hover    matrix3d(1.01458, -0.0124003, 0.0265676, 0, 0.012396, 1.01492, 0.000324601, 0, -0.0261769, 0, 0.999657, 0, -0.0977025, -7.9994, -0.00255843, 1)
+arte rep none ┬À hover matrix(1.07, 0, 0, 1.07, -5.18308, -2.08349)
+reduce sistema none / arte none
+reduce atributo none / arte none
+verbatim r├│tulo=true t├¡tulo=true realce=true par├ígrafo=true
+emendas capa=0px ┬À unidep=0px ┬À alt vazio=true ┬À loading=lazy
+
+ÔöÇÔöÇ 768x1024 ÔöÇÔöÇ
+rotulo 6.76:1 (piso 4.5, passa) ┬À titulo 13.66:1 (piso 3, passa) ┬À realce 4.09:1 (piso 3, passa) ┬À paragrafo 13.86:1 (piso 4.5, passa) ┬À forte 13.86:1 (piso 4.5, passa)
+colunas 720px ┬À fra├º├Áes 87.5/93.8 ┬À empilhado true
+overflow 0px ┬À quadro at├® x=748 (folga 20px) ┬À foc├íveis na se├º├úo 0
+repouso  matrix(0.999781, -0.0209424, 0.0209424, 0.999781, 0, 0)
+hover    matrix3d(1.01458, -0.0124003, 0.0265676, 0, 0.012396, 1.01492, 0.000324601, 0, -0.0261769, 0, 0.999657, 0, -0.0977025, -7.9994, -0.00255843, 1)
+arte rep none ┬À hover matrix(1.07, 0, 0, 1.07, -10.7257, -4.3116)
+reduce sistema none / arte none
+reduce atributo none / arte none
+verbatim r├│tulo=true t├¡tulo=true realce=true par├ígrafo=true
+emendas capa=0px ┬À unidep=0px ┬À alt vazio=true ┬À loading=lazy
+
+ÔöÇÔöÇ 1024x768 ÔöÇÔöÇ
+rotulo 7.2:1 (piso 4.5, passa) ┬À titulo 13.91:1 (piso 3, passa) ┬À realce 4.03:1 (piso 3, passa) ┬À paragrafo 12.44:1 (piso 4.5, passa) ┬À forte 14.58:1 (piso 4.5, passa)
+colunas 418.047px 490.766px ┬À fra├º├Áes 40.8/47.9 ┬À empilhado false
+overflow 0px ┬À quadro at├® x=1001 (folga 23px) ┬À foc├íveis na se├º├úo 0
+repouso  matrix3d(0.99365, -0.0418757, 0.104437, 0, 0.0416463, 0.999123, 0.0043772, 0, -0.104528, 0, 0.994522, 0, 0, 0, 0, 1)
+hover    matrix3d(1.01458, -0.0124003, 0.0265676, 0, 0.012396, 1.01492, 0.000324601, 0, -0.0261769, 0, 0.999657, 0, -0.0977025, -7.9994, -0.00255843, 1)
+arte rep none ┬À hover matrix(1.07, 0, 0, 1.07, -7.29175, -2.93113)
+reduce sistema none / arte none
+reduce atributo none / arte none
+verbatim r├│tulo=true t├¡tulo=true realce=true par├ígrafo=true
+emendas capa=0px ┬À unidep=0px ┬À alt vazio=true ┬À loading=lazy
+
+ÔöÇÔöÇ 1440x900 ÔöÇÔöÇ
+rotulo 7.18:1 (piso 4.5, passa) ┬À titulo 14.04:1 (piso 3, passa) ┬À realce 4.02:1 (piso 3, passa) ┬À paragrafo 14.08:1 (piso 4.5, passa) ┬À forte 14.82:1 (piso 4.5, passa)
+colunas 483.906px 568.094px ┬À fra├º├Áes 41/48.1 ┬À empilhado false
+overflow 0px ┬À quadro at├® x=1289 (folga 151px) ┬À foc├íveis na se├º├úo 0
+repouso  matrix3d(0.99365, -0.0418757, 0.104437, 0, 0.0416463, 0.999123, 0.0043772, 0, -0.104528, 0, 0.994522, 0, 0, 0, 0, 1)
+hover    matrix3d(1.01458, -0.0124003, 0.0265676, 0, 0.012396, 1.01492, 0.000324601, 0, -0.0261769, 0, 0.999657, 0, -0.0977025, -7.9994, -0.00255843, 1)
+arte rep none ┬À hover matrix(1.07, 0, 0, 1.07, -8.45012, -3.39692)
+reduce sistema none / arte none
+reduce atributo none / arte none
+verbatim r├│tulo=true t├¡tulo=true realce=true par├ígrafo=true
+emendas capa=0px ┬À unidep=0px ┬À alt vazio=true ┬À loading=lazy
+
+medi├º├úo completa: docs/medidas/programa-university-sis280/medicao.json

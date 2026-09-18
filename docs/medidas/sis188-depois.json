@@ -1,0 +1,226 @@
+{
+ "volta": "depois",
+ "rota": "http://localhost:3000/sistran-labs",
+ "viewport": "1440x900",
+ "secao": {
+  "classe": "labs-principais section-py section-light section-light-blue",
+  "fundo": "rgba(0, 0, 0, 0)",
+  "fundoImagem": "radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0, 0, 0) 62%), radial-gradient(55% 60% at 92% 88%, r"
+ },
+ "alvo": {
+  "etiqueta": "span",
+  "classe": "carimbo-batida labs-principais-carimbo",
+  "texto": null,
+  "caixa": {
+   "x": 162,
+   "y": 3073,
+   "w": 240,
+   "h": 84
+  },
+  "ar": {
+   "aspect-ratio": "640 / 224",
+   "--carimbo-batida-ar": "640 / 224",
+   "--carimbo-batida-w": "clamp(12.5rem, 16.7vw, 15rem)"
+  },
+  "transform": "none",
+  "opacity": "1"
+ },
+ "imagem": {
+  "src": "/images/sistran-labs/carimbo-sistran-labs.webp",
+  "alt": "Realizado pela Sistran Labs",
+  "w": "640",
+  "h": "224",
+  "naturalW": 640,
+  "naturalH": 224,
+  "fetchpriority": null,
+  "loading": "lazy",
+  "objectFit": "contain",
+  "caixa": {
+   "x": 162,
+   "y": 3073,
+   "w": 240,
+   "h": 84
+  }
+ },
+ "titulo": {
+  "etiqueta": "h2",
+  "id": "labs-principais",
+  "texto": "Principais Soluções Sistran Labs",
+  "fonte": "65.6px",
+  "peso": "700",
+  "cor": "rgb(10, 31, 68)",
+  "caixa": {
+   "x": 162,
+   "y": 3173,
+   "w": 672,
+   "h": 125.9
+  }
+ },
+ "rotulo": "labs-principais",
+ "tagTextualSobrou": false,
+ "razaoDeAspecto": {
+  "intrinsecaDoArquivo": 2.8571,
+  "exibida": 2.8571,
+  "bate": true
+ },
+ "linhaMenor": {
+  "fracaoNoArquivo": 0.092,
+  "alturaExibida": 84,
+  "pxDaLetra": 7.72,
+  "alvoDaCasa": 10
+ },
+ "larguraRelativaAoTitulo": 35.7,
+ "batida": {
+  "antesDeRolar": {
+   "transform": "none",
+   "opacity": "1",
+   "foraDeQuadro": true,
+   "topo": 3073,
+   "viewport": 900
+  },
+  "quadros": 160,
+  "escalaMaxima": 1.85,
+  "escalaFinal": 1,
+  "giroMaximoAbs": 7,
+  "giroFinal": 0,
+  "opacidadeMinima": 0,
+  "opacidadeFinal": 1,
+  "trilha": [
+   {
+    "t": 41,
+    "escala": 1,
+    "giro": 0,
+    "op": 1
+   },
+   {
+    "t": 353,
+    "escala": 1.85,
+    "giro": -7,
+    "op": 0
+   },
+   {
+    "t": 407,
+    "escala": 0.917,
+    "giro": 0.68,
+    "op": 1.0971
+   },
+   {
+    "t": 438,
+    "escala": 0.936,
+    "giro": 0.53,
+    "op": 1.0751
+   },
+   {
+    "t": 674,
+    "escala": 1,
+    "giro": 0,
+    "op": 1
+   }
+  ]
+ },
+ "reduce": {
+  "media": {
+   "transform": "none",
+   "opacity": "1",
+   "visivel": true,
+   "caixa": {
+    "w": 240,
+    "h": 84
+   }
+  },
+  "atributo": {
+   "transform": "none",
+   "opacity": "1",
+   "visivel": true,
+   "caixa": {
+    "w": 240,
+    "h": 84
+   }
+  }
+ },
+ "contraste": {
+  "tinta": "rgb(7, 87, 199)",
+  "pilhaDeFundo": {
+   "backgroundColor": "rgba(0, 0, 0, 0)",
+   "backgroundImage": "radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0, 0, 0) 62%), radial-gradient(55% 60% at 92% 88%, rgba(124, 58, 237, 0.1), rgba(0, 0, 0, 0) 62%), linear-gradient(160deg, rgb(242, 249, 254) 0%, rgb(22"
+  },
+  "pixelsDeTinta": 2444,
+  "pixelsDeFranja": 1305,
+  "fundoDaSecaoAoLado": {
+   "amostra": "40x40 em x=482, y=510",
+   "pixels": 1600,
+   "maisEscuro": {
+    "cor": "rgb(213, 233, 246)",
+    "razao": 5.26
+   },
+   "medio": {
+    "razao": 5.39
+   }
+  },
+  "pixelsDeFundoAmostrados": 16651,
+  "fundoMaisEscuro": {
+   "cor": "rgb(168, 200, 236)",
+   "razao": 3.8
+  },
+  "fundoMedio": {
+   "razao": 5.12
+  },
+  "exigido": 4.5
+ },
+ "rede": [
+  {
+   "url": "/_next/static/chunks/src_components_carimbo-batida_1h57n4k.css",
+   "status": 200,
+   "tipo": "text/css; charset=UTF-8",
+   "bytes": 657
+  },
+  {
+   "url": "/images/sistran-labs/carimbo-sistran-labs.webp",
+   "status": 200,
+   "tipo": "image/webp",
+   "bytes": 43654
+  },
+  {
+   "url": "/_next/static/chunks/src_components_carimbo-batida_1h57n4k.css",
+   "status": 200,
+   "tipo": "text/css; charset=UTF-8",
+   "bytes": 657
+  },
+  {
+   "url": "/images/sistran-labs/carimbo-sistran-labs.webp",
+   "status": 200,
+   "tipo": "image/webp",
+   "bytes": 43654
+  },
+  {
+   "url": "/_next/static/chunks/src_components_carimbo-batida_1h57n4k.css",
+   "status": 200,
+   "tipo": "text/css; charset=UTF-8",
+   "bytes": 657
+  },
+  {
+   "url": "/images/sistran-labs/carimbo-sistran-labs.webp",
+   "status": 200,
+   "tipo": "image/webp",
+   "bytes": 43654
+  },
+  {
+   "url": "/_next/static/chunks/src_components_carimbo-batida_1h57n4k.css",
+   "status": 200,
+   "tipo": "text/css; charset=UTF-8",
+   "bytes": 657
+  },
+  {
+   "url": "/images/sistran-labs/carimbo-sistran-labs.webp",
+   "status": 200,
+   "tipo": "image/webp",
+   "bytes": 43654
+  }
+ ],
+ "vaza": {
+  "scroll": 1440,
+  "cliente": 1440,
+  "vaza": false
+ },
+ "erros": []
+}

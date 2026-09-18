@@ -1,0 +1,44 @@
+{
+  "rota": "/sistran-university",
+  "secao": "#university-programa",
+  "contexto": "Três voltas de pedido no chat sobre a escrita da SIS-281: (1) o par «Autossuficiência em capacitação de recursos» + o parágrafo do banco de talentos saem da seção própria e entram em «O PROGRAMA»; (2) o par passa a TITULAR a seção, com a frase do «O Sistran University…» como transcrição; (3) «Formar especialistas em tecnologia de ponta» e «Somos um verdadeiro banco de talentos…» são RETIRADOS da rota. Este arquivo mede o estado final.",
+  "largo": {
+    "viewport": "1440x900",
+    "rotulada": "university-programa-titulo",
+    "titulos": ["H2 Autossuficiência em capacitação de recursos"],
+    "nos": [
+      { "tag": "SPAN", "texto": "O PROGRAMA", "corpo": "12px", "peso": "600", "cor": "rgb(2, 78, 134)", "linhas": 1 },
+      { "tag": "H2", "texto": "Autossuficiência em capacitação de recursos", "corpo": "43px", "peso": "700", "cor": "rgb(10, 31, 68)", "linhas": 2 },
+      { "tag": "P", "texto": "O Sistran University, programa de capacitação intensiva…", "corpo": "18px", "peso": "400", "cor": "rgb(10, 31, 68)", "linhas": 3 }
+    ],
+    "realceDoTitulo": "rgb(0, 121, 203)",
+    "alturaSecao": 577,
+    "alturaEscrita": 238,
+    "alturaQuadro": 347,
+    "residuoHorizontal": 0
+  },
+  "estreito": {
+    "viewport": "390x844",
+    "rotulada": "university-programa-titulo",
+    "titulos": ["H2 Autossuficiência em capacitação de recursos"],
+    "nos": [
+      { "tag": "SPAN", "texto": "O PROGRAMA", "corpo": "12px", "peso": "600", "cor": "rgb(2, 78, 134)", "linhas": 1 },
+      { "tag": "H2", "texto": "Autossuficiência em capacitação de recursos", "corpo": "35.2px", "peso": "700", "cor": "rgb(10, 31, 68)", "linhas": 3 },
+      { "tag": "P", "texto": "O Sistran University, programa de capacitação intensiva…", "corpo": "18px", "peso": "400", "cor": "rgb(10, 31, 68)", "linhas": 5 }
+    ],
+    "alturaSecao": 714,
+    "alturaEscrita": 316,
+    "alturaQuadro": 207,
+    "residuoHorizontal": 0
+  },
+  "reduzido": {
+    "viewport": "1440x900 com prefers-reduced-motion: reduce",
+    "observado": "mesma árvore, mesmos corpos e pesos do estado largo; nada depende de movimento para ser lido (medido na volta 2, antes da retirada do segundo tempo, e a retirada não introduz movimento)"
+  },
+  "pesoReal": "700 nos títulos e no <strong> «Sistran University», com font-synthesis: none em html — o corte 700 da Geist Sans está carregado no layout.tsx, então o peso é real e não sintetizado",
+  "notas": [
+    "A seção tem UM h2. O id university-programa-titulo continua nele, e é o aria-labelledby da section e o alvo de #university-programa no ScrollSpy.",
+    "O realce ciano #A5F0FF que o par tinha na capa NÃO veio com as palavras: sobre a folha clara daria ~1,4:1. O acento é .university-programa-realce.",
+    "A costura navy de 7rem de .university-abertura ficou comentada no globals.css: sem seção escura encostando na capa, quem encosta é a folha clara do Programa, cuja emenda é a sangria em box-shadow da SIS-93."
+  ]
+}

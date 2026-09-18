@@ -1,0 +1,231 @@
+/* SIS-249 · /sistran-university — a seção do Programa ganha fundo composto
+   ---------------------------------------------------------------------------
+   A arte é o banner dos quatro painéis (Qualidade/QA, Desenvolvimento, Dados &
+   IA, Cloud & Automação) em volta de três pessoas num escritório claro. Ela é
+   CLARA de ponta a ponta — os painéis são vidro branco e o fundo é janela com
+   luz de dia —, e é esse o problema que este bloco resolve: o `h2` e o parágrafo
+   são brancos, e branco sobre aquele branco não existe.
+
+   Três decisões, nesta ordem:
+
+   1. A ARTE É FUNDO, NÃO FIGURA. Full-bleed (`inset: 0` na seção inteira),
+      recortada por `cover`, com o texto por cima. Empilhamento igual ao do
+      `.hero-backdrop`: mídia (1), véu (2), pluma (3), conteúdo (4), com
+      `isolation: isolate` fechando o contexto na seção para nada disso disputar
+      camada com o cabeçalho fixo.
+
+   2. ELA NASCE E MORRE DENTRO DA SEÇÃO. As duas pontas da faixa dissolvem
+      (`mask-image` vertical): em cima a arte emerge do navy que a capa deixa —
+      o mesmo `#041b3d → transparente em 7rem` que a SIS-248 escreveu em
+      `.hero-backdrop--university + section` está repetido como PRIMEIRA camada
+      do véu, porque o `background` da seção fica ATRÁS da mídia e não seria
+      visto; embaixo ela some e devolve o `#1273bc` do `body`, que é exatamente
+      a cor que a emenda com `#university-unidep` tinha antes desta issue. Assim
+      a costura de cima e a de baixo continuam sendo as que já estavam medidas —
+      a seção ganhou fundo, não ganhou borda.
+
+   3. O CONTRASTE É COMPRADO DUAS VEZES, e de propósito. O véu é a camada larga,
+      calibrada por faixa da tela; a pluma é uma elipse escura só atrás da
+      coluna de texto. Separar as duas é o que permite o véu abrir onde a arte
+      precisa aparecer (à direita, nas pessoas) sem que a linha mais comprida do
+      parágrafo pague por isso. Nada depende de `:hover`, de foco ou de JS: as
+      duas camadas são estáticas e `pointer-events: none`.
+
+   O QUE ESTES NÚMEROS COMPRARAM, medido em cinco larguras por
+   `scripts/medir-programa-university-sis249.mjs` (JSON em
+   `docs/medidas/programa-university-sis249/`, capturas em
+   `docs/capturas/sis249-programa/`), no corpo do glifo:
+
+     390   h2 10,91:1   parágrafo 8,21:1
+     768   h2 10,76:1   parágrafo 7,60:1
+     1024  h2  5,79:1   parágrafo 9,25:1
+     1440  h2 14,14:1   parágrafo 10,24:1
+     1920  h2 14,23:1   parágrafo 10,07:1
+
+   ANTES DESTA ISSUE o parágrafo REPROVAVA: branco a 85% sobre o `#1273bc` do
+   `body` dá 3,51:1 a 390 e 3,54:1 a 1440, contra piso de 4,5. A mesma sonda mede
+   o antes (`MODOS=antes`, que neutraliza as três camadas por CSS em vez de mexer
+   no git). Ou seja, o fundo não foi um risco de contraste que precisou ser
+   coberto — ele é que trouxe o contraste que faltava. */
+.university-programa {
+  position: relative;
+  isolation: isolate;
+  /* O PASSO das dissoluções. Não pode passar do respiro vertical da seção
+     (`.section-py`: 5rem no telefone, 8rem a partir de 1024px), senão a primeira
+     ou a última linha do texto cai dentro da faixa em que o véu está sumindo —
+     que é justamente onde o contraste despenca. */
+  --programa-dissolve: 2.5rem;
+}
+
+/* A MÍDIA SAI UM PASSO ANTES DO VÉU, e essa defasagem é o conserto de um defeito
+   medido: com as duas máscaras terminando juntas, arte e véu perdiam alfa no
+   mesmo pixel e o pé da faixa virava dupla exposição — o texto branco dos painéis
+   ("CLOUD & AUTOMAÇÃO", "aws", "redis") reacendia justamente onde a composição
+   devia estar acabando, e lia como falha de montagem, não como fundo.
+   Agora são dois trechos em sequência: primeiro a arte se apaga sob o véu cheio
+   (a faixa escurece até navy chapado), depois o véu se apaga sobre o azul da rota
+   (o navy abre até o `#1273bc` do `body`). O pé fica uma rampa escura, sem
+   fantasma aceso e sem listra. */
+.university-programa-midia {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  mask-image: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0%) 0,
+    #000 var(--programa-dissolve),
+    #000 calc(100% - var(--programa-dissolve) * 2),
+    rgb(0 0 0 / 0%) calc(100% - var(--programa-dissolve))
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0%) 0,
+    #000 var(--programa-dissolve),
+    #000 calc(100% - var(--programa-dissolve) * 2),
+    rgb(0 0 0 / 0%) calc(100% - var(--programa-dissolve))
+  );
+}
+
+.university-programa-arte {
+  /* O `next/image` com `fill` escreve `position`/`inset`/tamanho inline, mas não
+     escreve `object-fit`: sem isto a arte estica em vez de recortar. */
+  object-fit: cover;
+  /* Da largura de 1024px para cima a caixa é MUITO mais larga que a proporção do
+     arquivo (a 1440 a faixa mede ~2,8:1 contra 1,78:1 da arte), então o recorte é
+     vertical e o que decide é o Y. Em 46% sobrevivem os quatro painéis inteiros e
+     os rostos; o que cede é a tampa da mesa embaixo e a faixa de teto em cima. */
+  object-position: 50% 46%;
+}
+
+.university-programa::before {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background:
+    linear-gradient(180deg, #041b3d 0%, rgb(4 27 61 / 0%) 7rem),
+    /* O degradê horizontal fecha até 74% da largura e só então abre. O terceiro
+       ponto foi medido, não escolhido: com ele em 70% o pior pixel do `h2` caía
+       em 5,10:1 a 1024px — a largura em que este véu entra e em que a manchete
+       ainda ocupa uma linha inteira, alcançando a parte já aberta do degradê.
+       Com o ponto em 74% a mesma medição sobe para 5,79:1, e as pessoas, que
+       vivem depois de 78% da largura, continuam à vista. 1024 segue sendo o pior
+       caso da seção — nas outras quatro larguras o `h2` fica acima de 10:1 —, e
+       fechar mais o degradê para melhorá-lo custaria a arte inteira do lado
+       direito, que é o que a seção ganhou nesta issue. O piso do `h2` é 3:1
+       (65,6px), e mesmo o piso de texto normal, 4,5:1, está cumprido. */
+    linear-gradient(
+      100deg,
+      rgb(4 27 61 / 88%) 0%,
+      rgb(4 27 61 / 84%) 48%,
+      rgb(4 27 61 / 62%) 74%,
+      rgb(4 27 61 / 32%) 94%
+    ),
+    linear-gradient(180deg, rgb(3 17 38 / 34%) 0%, rgb(4 27 61 / 12%) 46%, rgb(4 27 61 / 36%) 100%),
+    rgb(4 27 61 / 12%);
+  content: "";
+  pointer-events: none;
+  /* Só o pé dissolve: o topo é a emenda com a capa e precisa ficar chapado. */
+  mask-image: linear-gradient(
+    180deg,
+    #000 0,
+    #000 calc(100% - var(--programa-dissolve)),
+    rgb(0 0 0 / 0%) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000 0,
+    #000 calc(100% - var(--programa-dissolve)),
+    rgb(0 0 0 / 0%) 100%
+  );
+}
+
+/* A PLUMA. Elipse sem aresta atrás da mancha de texto — a 1440 o `.container-lp`
+   satura em 1180px e o parágrafo (`max-w-3xl`) vai de x≈130 a x≈898, ou seja o
+   texto vive entre 9% e 62% da janela; o centro em 26% põe o miolo da elipse no
+   meio dessa mancha e a borda fecha antes das pessoas. */
+.university-programa::after {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  background: radial-gradient(120% 96% at 26% 50%, rgb(2 12 28 / 46%), rgb(2 12 28 / 0%) 70%);
+  content: "";
+  pointer-events: none;
+  mask-image: linear-gradient(
+    180deg,
+    #000 0,
+    #000 calc(100% - var(--programa-dissolve)),
+    rgb(0 0 0 / 0%) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000 0,
+    #000 calc(100% - var(--programa-dissolve)),
+    rgb(0 0 0 / 0%) 100%
+  );
+}
+
+.university-programa-conteudo {
+  position: relative;
+  z-index: 4;
+}
+
+/* A MESMA SOMBRA LEVE DAS MANCHETES DAS CAPAS (SIS-227/SIS-248): uma camada
+   curta, que dá aresta à letra onde ela cai sobre um reflexo aceso da arte, e
+   uma longa, que assenta o bloco sobre o fundo. Não é ela que compra o
+   contraste — véu e pluma já entregam a folga medida —, é relevo. */
+.university-programa h2 {
+  text-shadow:
+    0 1px 2px rgb(2 12 28 / 45%),
+    0 6px 26px rgb(2 12 28 / 32%);
+}
+
+@media (min-width: 64rem) {
+  .university-programa {
+    /* Com 8rem de respiro em cima e embaixo (`lg:py-32`), o passo pode ser maior
+       sem alcançar o texto — e quanto mais longo, menos se percebe onde a faixa
+       começa. Dois passos no pé (4 + 4) contra 8rem de recuo: a última linha do
+       parágrafo continua acima da rampa. */
+    --programa-dissolve: 4rem;
+  }
+}
+
+@media (max-width: 63.9375rem) {
+  /* Abaixo de 1024px a caixa é mais ALTA que larga e o `cover` recorta na
+     HORIZONTAL: em 390px sobrevivem 55% da largura do arquivo (medido:
+     x 0,448–1,0), e este valor decide QUAIS 55%.
+     O QUE DECIDIU FOI O LOGO, não o gosto. A marca "SISTRAN UNIVERSITY" está
+     desenhada DENTRO da arte, e termina em x≈0,44: em 50% e em 62% a janela
+     pegava o rabo dela e o telefone mostrava "STRAN UNIVERSITY" cortado, logo
+     abaixo do logo inteiro que o cabeçalho já exibe — marca truncada lê como
+     defeito, e repetida lê como duplicação. Em 100% o logo fica inteiramente
+     fora do recorte e entram o painel de Desenvolvimento e os três rostos, que
+     é o pedaço da composição que se explica sozinho em tela estreita.
+     O Y fica em 50%: nesta proporção não sobra altura para recortar. */
+  .university-programa-arte {
+    object-position: 100% 50%;
+  }
+
+  /* Sem coluna vazia à direita (o texto ocupa a largura inteira), o degradê
+     horizontal não tem para onde abrir: quem segura o contraste aqui é o
+     vertical, chapado e um degrau mais fechado. É a mesma troca que a capa faz
+     em `.hero-backdrop--university` nesta mesma largura.
+     A EMENDA CAI DE 7rem PARA 5rem — a faixa inteira tem 398px a 390, e um véu
+     navy de 112px comeria 28% dela antes de a arte começar. 5rem é o recuo que a
+     seção já tem (`py-20`), então o navy acaba exatamente onde a primeira linha
+     do `h2` começa. Não há divergência com a regra da SIS-248: naquela altura a
+     mídia é opaca, e o `background` da seção, que fica atrás dela, não aparece. */
+  .university-programa::before {
+    background:
+      linear-gradient(180deg, #041b3d 0%, rgb(4 27 61 / 0%) 5rem),
+      linear-gradient(180deg, rgb(3 17 38 / 78%) 0%, rgb(4 27 61 / 72%) 54%, rgb(4 27 61 / 78%) 100%),
+      rgb(4 27 61 / 14%);
+  }
+
+  /* A elipse volta para o centro, pelo mesmo motivo: a mancha de texto está
+     centrada na janela, não encostada à esquerda. */
+  .university-programa::after {
+    background: radial-gradient(130% 84% at 50% 46%, rgb(2 12 28 / 34%), rgb(2 12 28 / 0%) 76%);
+  }
+}
+

@@ -1,0 +1,273 @@
+{
+  "rota": "/sistran-labs",
+  "secao": "#labs-ambiente",
+  "passoDaRampa": 60,
+  "noLoad1440": [
+    {
+      "dentro": "false",
+      "opacidade": "0.0647388",
+      "transform": "matrix(1, 0, 0, 1, -44.8925, 0)",
+      "topoNaTela": 1579
+    },
+    {
+      "dentro": "false",
+      "opacidade": "0.0647388",
+      "transform": "matrix(1, 0, 0, 1, 44.8925, 0)",
+      "topoNaTela": 2091
+    },
+    {
+      "dentro": "false",
+      "opacidade": "0.0647388",
+      "transform": "matrix(1, 0, 0, 1, -44.8925, 0)",
+      "topoNaTela": 2599
+    }
+  ],
+  "ignicao1440": [
+    {
+      "scrollY": 900,
+      "topoDaFiguraNaTela": 679,
+      "fracaoDaViewport": 75.4,
+      "fimDaFiguraNaTela": false
+    },
+    {
+      "scrollY": 1380,
+      "topoDaFiguraNaTela": 711,
+      "fracaoDaViewport": 79,
+      "fimDaFiguraNaTela": false
+    },
+    {
+      "scrollY": 1920,
+      "topoDaFiguraNaTela": 679,
+      "fracaoDaViewport": 75.4,
+      "fimDaFiguraNaTela": false
+    }
+  ],
+  "repouso1440": [
+    {
+      "dentro": "true",
+      "preset": "fade-left",
+      "arquivo": "/images/sistran-labs/1-aba-sistran-labs.webp",
+      "alt": "Fachada da Sistran: prédio branco com vitrines espelhadas e o letreiro azul da marca com a assinatura Beyond Technology.",
+      "l": 759,
+      "a": 464,
+      "x": 162,
+      "topoNaTela": 248,
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1s, 1s",
+      "atraso": "0s"
+    },
+    {
+      "dentro": "true",
+      "preset": "fade-right",
+      "arquivo": "/images/sistran-labs/2-aba-sistran-labs.webp",
+      "alt": "O time da Sistran reunido na escada do prédio: dezenas de pessoas de crachá, em camisetas azuis, posando para a foto.",
+      "l": 759,
+      "a": 460,
+      "x": 519,
+      "topoNaTela": 760,
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1s, 1s",
+      "atraso": "0s"
+    },
+    {
+      "dentro": "true",
+      "preset": "fade-left",
+      "arquivo": "/images/sistran-labs/3-aba-sistran-labs.webp",
+      "alt": "Sala de trabalho do Sistran Labs: bancadas compartilhadas com monitores e notebooks, a equipe em atividade e a marca Sistran na parede ao fundo.",
+      "l": 759,
+      "a": 458,
+      "x": 162,
+      "topoNaTela": 1268,
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1s, 1s",
+      "atraso": "0s"
+    }
+  ],
+  "pilha1440": {
+    "vao": "48px",
+    "overflowX": "clip",
+    "largura": 1116
+  },
+  "barraHorizontal1440": false,
+  "duranteEntrada": [
+    {
+      "dentro": "true",
+      "preset": "fade-left",
+      "arquivo": "/images/sistran-labs/1-aba-sistran-labs.webp",
+      "alt": "Fachada da Sistran: prédio branco com vitrines espelhadas e o letreiro azul da marca com a assinatura Beyond Technology.",
+      "l": 759,
+      "a": 464,
+      "x": 162,
+      "topoNaTela": 298,
+      "opacidade": "0.996649",
+      "transform": "matrix(1, 0, 0, 1, -0.160869, 0)",
+      "duracao": "1s, 1s",
+      "atraso": "0s"
+    },
+    {
+      "dentro": "false",
+      "preset": "fade-right",
+      "arquivo": "/images/sistran-labs/2-aba-sistran-labs.webp",
+      "alt": "O time da Sistran reunido na escada do prédio: dezenas de pessoas de crachá, em camisetas azuis, posando para a foto.",
+      "l": 759,
+      "a": 460,
+      "x": 567,
+      "topoNaTela": 810,
+      "opacidade": "0",
+      "transform": "matrix(1, 0, 0, 1, 48, 0)",
+      "duracao": "1s, 1s",
+      "atraso": "0s"
+    },
+    {
+      "dentro": "false",
+      "preset": "fade-left",
+      "arquivo": "/images/sistran-labs/3-aba-sistran-labs.webp",
+      "alt": "Sala de trabalho do Sistran Labs: bancadas compartilhadas com monitores e notebooks, a equipe em atividade e a marca Sistran na parede ao fundo.",
+      "l": 759,
+      "a": 458,
+      "x": 114,
+      "topoNaTela": 1318,
+      "opacidade": "0",
+      "transform": "matrix(1, 0, 0, 1, -48, 0)",
+      "duracao": "1s, 1s",
+      "atraso": "0s"
+    }
+  ],
+  "repouso390": [
+    {
+      "dentro": "true",
+      "preset": "fade-left",
+      "arquivo": "/images/sistran-labs/1-aba-sistran-labs.webp",
+      "alt": "Fachada da Sistran: prédio branco com vitrines espelhadas e o letreiro azul da marca com a assinatura Beyond Technology.",
+      "l": 350,
+      "a": 214,
+      "x": 20,
+      "topoNaTela": 200,
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1s, 1s",
+      "atraso": "0s"
+    },
+    {
+      "dentro": "true",
+      "preset": "fade-right",
+      "arquivo": "/images/sistran-labs/2-aba-sistran-labs.webp",
+      "alt": "O time da Sistran reunido na escada do prédio: dezenas de pessoas de crachá, em camisetas azuis, posando para a foto.",
+      "l": 350,
+      "a": 213,
+      "x": 20,
+      "topoNaTela": 438,
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1s, 1s",
+      "atraso": "0s"
+    },
+    {
+      "dentro": "true",
+      "preset": "fade-left",
+      "arquivo": "/images/sistran-labs/3-aba-sistran-labs.webp",
+      "alt": "Sala de trabalho do Sistran Labs: bancadas compartilhadas com monitores e notebooks, a equipe em atividade e a marca Sistran na parede ao fundo.",
+      "l": 350,
+      "a": 212,
+      "x": 20,
+      "topoNaTela": 675,
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1s, 1s",
+      "atraso": "0s"
+    }
+  ],
+  "barraHorizontal390": false,
+  "reduceMidia": [
+    {
+      "dentro": "true",
+      "preset": "fade-left",
+      "arquivo": "/images/sistran-labs/1-aba-sistran-labs.webp",
+      "alt": "Fachada da Sistran: prédio branco com vitrines espelhadas e o letreiro azul da marca com a assinatura Beyond Technology.",
+      "l": 759,
+      "a": 464,
+      "x": 162,
+      "topoNaTela": 248,
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s",
+      "atraso": "0s"
+    },
+    {
+      "dentro": "false",
+      "preset": "fade-right",
+      "arquivo": "/images/sistran-labs/2-aba-sistran-labs.webp",
+      "alt": "O time da Sistran reunido na escada do prédio: dezenas de pessoas de crachá, em camisetas azuis, posando para a foto.",
+      "l": 759,
+      "a": 460,
+      "x": 519,
+      "topoNaTela": 760,
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s",
+      "atraso": "0s"
+    },
+    {
+      "dentro": "false",
+      "preset": "fade-left",
+      "arquivo": "/images/sistran-labs/3-aba-sistran-labs.webp",
+      "alt": "Sala de trabalho do Sistran Labs: bancadas compartilhadas com monitores e notebooks, a equipe em atividade e a marca Sistran na parede ao fundo.",
+      "l": 759,
+      "a": 458,
+      "x": 162,
+      "topoNaTela": 1268,
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s",
+      "atraso": "0s"
+    }
+  ],
+  "motionAtributo": "reduce",
+  "reduceAtributo": [
+    {
+      "dentro": "true",
+      "preset": "fade-left",
+      "arquivo": "/images/sistran-labs/1-aba-sistran-labs.webp",
+      "alt": "Fachada da Sistran: prédio branco com vitrines espelhadas e o letreiro azul da marca com a assinatura Beyond Technology.",
+      "l": 759,
+      "a": 464,
+      "x": 162,
+      "topoNaTela": 248,
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s",
+      "atraso": "0s"
+    },
+    {
+      "dentro": "false",
+      "preset": "fade-right",
+      "arquivo": "/images/sistran-labs/2-aba-sistran-labs.webp",
+      "alt": "O time da Sistran reunido na escada do prédio: dezenas de pessoas de crachá, em camisetas azuis, posando para a foto.",
+      "l": 759,
+      "a": 460,
+      "x": 519,
+      "topoNaTela": 760,
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s",
+      "atraso": "0s"
+    },
+    {
+      "dentro": "false",
+      "preset": "fade-left",
+      "arquivo": "/images/sistran-labs/3-aba-sistran-labs.webp",
+      "alt": "Sala de trabalho do Sistran Labs: bancadas compartilhadas com monitores e notebooks, a equipe em atividade e a marca Sistran na parede ao fundo.",
+      "l": 759,
+      "a": 458,
+      "x": 162,
+      "topoNaTela": 1268,
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s",
+      "atraso": "0s"
+    }
+  ]
+}

@@ -1,0 +1,470 @@
+{
+ "issue": "SIS-288",
+ "rota": "/sistran-university",
+ "erros": [],
+ "porLargura": {
+  "1440": {
+   "repouso": {
+    "programa": {
+     "anel": {
+      "largura": "1px",
+      "estilo": "solid",
+      "cor": "rgba(14, 216, 246, 0.45)",
+      "offset": "6px",
+      "avanco": 7
+     },
+     "borda": "2px solid rgba(14, 216, 246, 0.88)",
+     "raio": "28px",
+     "glow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+     "filtro": "drop-shadow(rgba(3, 45, 92, 0.3) 13.6px 21.6px 27.2px) drop-shadow(rgba(3, 45, 92, 0.18) 4.8px 8px 8.8px) drop-shadow(rgba(14, 216, 246, 0.42) 0px 0px 18.4px)",
+     "fio": {
+      "pseudo": "::after",
+      "existe": true,
+      "content": "\"\"",
+      "fundo": "linear-gradient(90deg, rgba(255, 255, 255, 0), rgb(255, 255, 255) 35%, rgb(255, 255, 255) 65%, rgba(255, 255, 255, 0))",
+      "altura": "3px",
+      "largura": "72px",
+      "topo": "0px",
+      "opacidade": "1"
+     }
+    },
+    "programaCaixa": {
+     "esq": 721.6,
+     "dir": 1296.1,
+     "topo": 386,
+     "w": 574.5,
+     "h": 347
+    },
+    "transformDoQuadro": "matrix3d(0.986981, -0.0453198, 0.154319, 0, 0.0379879, 0.99802, 0.0501343, 0, -0.156286, -0.0436194, 0.986748, 0, 0, 0, 0, 1)",
+    "transformDaArte": "none",
+    "quadradinho": {
+     "existe": true,
+     "content": "\"\"",
+     "fundo": "rgb(14, 216, 246)",
+     "zIndex": "2",
+     "glow": "rgba(14, 216, 246, 0.7) 0px 0px 20px -4px",
+     "lado": "18px x 18px",
+     "folgaAteOQuadradinho": 1,
+     "bordaDireitaPintada": 1286
+    },
+    "unidep": {
+     "anel": {
+      "largura": "1px",
+      "estilo": "solid",
+      "cor": "rgba(0, 0, 0, 0)",
+      "offset": "9px",
+      "avanco": 10
+     },
+     "borda": "1px solid rgba(165, 240, 255, 0.16)",
+     "raio": "18px",
+     "glow": "rgba(1, 16, 34, 0.6) 0px 24px 48px -28px",
+     "filtro": null,
+     "fio": {
+      "pseudo": "::before",
+      "existe": true,
+      "content": "\"\"",
+      "fundo": "linear-gradient(90deg, rgba(14, 216, 246, 0), rgb(14, 216, 246), rgba(14, 216, 246, 0))",
+      "altura": "2px",
+      "largura": "72px",
+      "topo": "-1px",
+      "opacidade": "0"
+     }
+    },
+    "vazamento": {
+     "scrollWidth": 1440,
+     "clientWidth": 1440,
+     "vaza": false,
+     "folgaDoQuadroAteAJanela": 143.9
+    }
+   },
+   "hover": {
+    "programa": {
+     "anel": {
+      "largura": "1px",
+      "estilo": "solid",
+      "cor": "rgba(14, 216, 246, 0.75)",
+      "offset": "6px",
+      "avanco": 7
+     },
+     "borda": "2px solid rgb(14, 216, 246)",
+     "raio": "28px",
+     "glow": "rgba(255, 255, 255, 0.78) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.28) 0px 0px 22.4px 0px inset",
+     "filtro": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)",
+     "fio": {
+      "pseudo": "::after",
+      "existe": true,
+      "content": "\"\"",
+      "fundo": "linear-gradient(90deg, rgba(255, 255, 255, 0), rgb(255, 255, 255) 35%, rgb(255, 255, 255) 65%, rgba(255, 255, 255, 0))",
+      "altura": "3px",
+      "largura": "72px",
+      "topo": "0px",
+      "opacidade": "1"
+     }
+    },
+    "programaCaixa": {
+     "esq": 708.4,
+     "dir": 1288.2,
+     "topo": 388.6,
+     "w": 579.8,
+     "h": 333.4
+    },
+    "transformDoQuadro": "matrix3d(1.01397, -0.0123984, 0.0440542, 0, 0.0116158, 1.01477, 0.0182369, 0, -0.0436127, -0.0174524, 0.998896, 0, -0.100709, -8.798, -0.158113, 1)",
+    "transformDaArte": "matrix(1.07, 0, 0, 1.07, -8.44998, -3.39686)",
+    "quadradinho": {
+     "existe": true,
+     "content": "\"\"",
+     "fundo": "rgb(14, 216, 246)",
+     "zIndex": "2",
+     "glow": "rgba(14, 216, 246, 0.7) 0px 0px 20px -4px",
+     "lado": "18px x 18px",
+     "folgaAteOQuadradinho": 1,
+     "bordaDireitaPintada": 1286
+    },
+    "unidep": {
+     "anel": {
+      "largura": "1px",
+      "estilo": "solid",
+      "cor": "rgba(0, 0, 0, 0)",
+      "offset": "9px",
+      "avanco": 10
+     },
+     "borda": "1px solid rgba(165, 240, 255, 0.16)",
+     "raio": "18px",
+     "glow": "rgba(1, 16, 34, 0.6) 0px 24px 48px -28px",
+     "filtro": null,
+     "fio": {
+      "pseudo": "::before",
+      "existe": true,
+      "content": "\"\"",
+      "fundo": "linear-gradient(90deg, rgba(14, 216, 246, 0), rgb(14, 216, 246), rgba(14, 216, 246, 0))",
+      "altura": "2px",
+      "largura": "72px",
+      "topo": "-1px",
+      "opacidade": "0"
+     }
+    },
+    "vazamento": {
+     "scrollWidth": 1440,
+     "clientWidth": 1440,
+     "vaza": false,
+     "folgaDoQuadroAteAJanela": 151.8
+    }
+   },
+   "unidepEmDestaque": {
+    "anel": {
+     "largura": "1px",
+     "estilo": "solid",
+     "cor": "rgba(14, 216, 246, 0.45)",
+     "offset": "9px",
+     "avanco": 10
+    },
+    "borda": "1px solid rgba(0, 121, 203, 0.45)",
+    "raio": "18px",
+    "glow": "rgba(1, 16, 34, 0.7) 0px 36px 72px -24px, rgba(14, 216, 246, 0.3) 0px 0px 48px -20px",
+    "filtro": null,
+    "fio": {
+     "pseudo": "::before",
+     "existe": true,
+     "content": "\"\"",
+     "fundo": "linear-gradient(90deg, rgba(14, 216, 246, 0), rgb(14, 216, 246), rgba(14, 216, 246, 0))",
+     "altura": "2px",
+     "largura": "72px",
+     "topo": "-1px",
+     "opacidade": "1"
+    }
+   },
+   "reduceSistema": {
+    "programa": {
+     "anel": {
+      "largura": "1px",
+      "estilo": "solid",
+      "cor": "rgba(14, 216, 246, 0.45)",
+      "offset": "6px",
+      "avanco": 7
+     },
+     "borda": "2px solid rgba(14, 216, 246, 0.88)",
+     "raio": "28px",
+     "glow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+     "filtro": "drop-shadow(rgba(3, 45, 92, 0.3) 13.6px 21.6px 27.2px) drop-shadow(rgba(3, 45, 92, 0.18) 4.8px 8px 8.8px) drop-shadow(rgba(14, 216, 246, 0.42) 0px 0px 18.4px)",
+     "fio": {
+      "pseudo": "::after",
+      "existe": true,
+      "content": "\"\"",
+      "fundo": "linear-gradient(90deg, rgba(255, 255, 255, 0), rgb(255, 255, 255) 35%, rgb(255, 255, 255) 65%, rgba(255, 255, 255, 0))",
+      "altura": "3px",
+      "largura": "72px",
+      "topo": "0px",
+      "opacidade": "1"
+     }
+    },
+    "programaCaixa": {
+     "esq": 709.9,
+     "dir": 1278,
+     "topo": 405,
+     "w": 568.1,
+     "h": 321.5
+    },
+    "transformDoQuadro": "none",
+    "transformDaArte": "none",
+    "quadradinho": {
+     "existe": true,
+     "content": "\"\"",
+     "fundo": "rgb(14, 216, 246)",
+     "zIndex": "2",
+     "glow": "rgba(14, 216, 246, 0.7) 0px 0px 20px -4px",
+     "lado": "18px x 18px",
+     "folgaAteOQuadradinho": 1,
+     "bordaDireitaPintada": 1286
+    },
+    "unidep": {
+     "anel": {
+      "largura": "1px",
+      "estilo": "solid",
+      "cor": "rgba(0, 0, 0, 0)",
+      "offset": "9px",
+      "avanco": 10
+     },
+     "borda": "1px solid rgba(165, 240, 255, 0.16)",
+     "raio": "18px",
+     "glow": "rgba(1, 16, 34, 0.6) 0px 24px 48px -28px",
+     "filtro": null,
+     "fio": {
+      "pseudo": "::before",
+      "existe": true,
+      "content": "\"\"",
+      "fundo": "linear-gradient(90deg, rgba(14, 216, 246, 0), rgb(14, 216, 246), rgba(14, 216, 246, 0))",
+      "altura": "2px",
+      "largura": "72px",
+      "topo": "-1px",
+      "opacidade": "0"
+     }
+    },
+    "vazamento": {
+     "scrollWidth": 1440,
+     "clientWidth": 1440,
+     "vaza": false,
+     "folgaDoQuadroAteAJanela": 162
+    }
+   },
+   "reduceSistemaComHover": {
+    "programa": {
+     "anel": {
+      "largura": "1px",
+      "estilo": "solid",
+      "cor": "rgba(14, 216, 246, 0.75)",
+      "offset": "6px",
+      "avanco": 7
+     },
+     "borda": "2px solid rgb(14, 216, 246)",
+     "raio": "28px",
+     "glow": "rgba(255, 255, 255, 0.78) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.28) 0px 0px 22.4px 0px inset",
+     "filtro": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)",
+     "fio": {
+      "pseudo": "::after",
+      "existe": true,
+      "content": "\"\"",
+      "fundo": "linear-gradient(90deg, rgba(255, 255, 255, 0), rgb(255, 255, 255) 35%, rgb(255, 255, 255) 65%, rgba(255, 255, 255, 0))",
+      "altura": "3px",
+      "largura": "72px",
+      "topo": "0px",
+      "opacidade": "1"
+     }
+    },
+    "programaCaixa": {
+     "esq": 709.9,
+     "dir": 1278,
+     "topo": 405,
+     "w": 568.1,
+     "h": 321.5
+    },
+    "transformDoQuadro": "none",
+    "transformDaArte": "none",
+    "quadradinho": {
+     "existe": true,
+     "content": "\"\"",
+     "fundo": "rgb(14, 216, 246)",
+     "zIndex": "2",
+     "glow": "rgba(14, 216, 246, 0.7) 0px 0px 20px -4px",
+     "lado": "18px x 18px",
+     "folgaAteOQuadradinho": 1,
+     "bordaDireitaPintada": 1286
+    },
+    "unidep": {
+     "anel": {
+      "largura": "1px",
+      "estilo": "solid",
+      "cor": "rgba(0, 0, 0, 0)",
+      "offset": "9px",
+      "avanco": 10
+     },
+     "borda": "1px solid rgba(165, 240, 255, 0.16)",
+     "raio": "18px",
+     "glow": "rgba(1, 16, 34, 0.6) 0px 24px 48px -28px",
+     "filtro": null,
+     "fio": {
+      "pseudo": "::before",
+      "existe": true,
+      "content": "\"\"",
+      "fundo": "linear-gradient(90deg, rgba(14, 216, 246, 0), rgb(14, 216, 246), rgba(14, 216, 246, 0))",
+      "altura": "2px",
+      "largura": "72px",
+      "topo": "-1px",
+      "opacidade": "0"
+     }
+    },
+    "vazamento": {
+     "scrollWidth": 1440,
+     "clientWidth": 1440,
+     "vaza": false,
+     "folgaDoQuadroAteAJanela": 162
+    }
+   },
+   "reduceAtributo": {
+    "programa": {
+     "anel": {
+      "largura": "1px",
+      "estilo": "solid",
+      "cor": "rgba(14, 216, 246, 0.45)",
+      "offset": "6px",
+      "avanco": 7
+     },
+     "borda": "2px solid rgba(14, 216, 246, 0.88)",
+     "raio": "28px",
+     "glow": "rgba(255, 255, 255, 0.62) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.16) 0px 0px 18.4px 0px inset",
+     "filtro": "drop-shadow(rgba(3, 45, 92, 0.3) 13.6px 21.6px 27.2px) drop-shadow(rgba(3, 45, 92, 0.18) 4.8px 8px 8.8px) drop-shadow(rgba(14, 216, 246, 0.42) 0px 0px 18.4px)",
+     "fio": {
+      "pseudo": "::after",
+      "existe": true,
+      "content": "\"\"",
+      "fundo": "linear-gradient(90deg, rgba(255, 255, 255, 0), rgb(255, 255, 255) 35%, rgb(255, 255, 255) 65%, rgba(255, 255, 255, 0))",
+      "altura": "3px",
+      "largura": "72px",
+      "topo": "0px",
+      "opacidade": "1"
+     }
+    },
+    "programaCaixa": {
+     "esq": 709.9,
+     "dir": 1278,
+     "topo": 405,
+     "w": 568.1,
+     "h": 321.5
+    },
+    "transformDoQuadro": "none",
+    "transformDaArte": "none",
+    "quadradinho": {
+     "existe": true,
+     "content": "\"\"",
+     "fundo": "rgb(14, 216, 246)",
+     "zIndex": "2",
+     "glow": "rgba(14, 216, 246, 0.7) 0px 0px 20px -4px",
+     "lado": "18px x 18px",
+     "folgaAteOQuadradinho": 1,
+     "bordaDireitaPintada": 1286
+    },
+    "unidep": {
+     "anel": {
+      "largura": "1px",
+      "estilo": "solid",
+      "cor": "rgba(0, 0, 0, 0)",
+      "offset": "9px",
+      "avanco": 10
+     },
+     "borda": "1px solid rgba(165, 240, 255, 0.16)",
+     "raio": "18px",
+     "glow": "rgba(1, 16, 34, 0.6) 0px 24px 48px -28px",
+     "filtro": null,
+     "fio": {
+      "pseudo": "::before",
+      "existe": true,
+      "content": "\"\"",
+      "fundo": "linear-gradient(90deg, rgba(14, 216, 246, 0), rgb(14, 216, 246), rgba(14, 216, 246, 0))",
+      "altura": "2px",
+      "largura": "72px",
+      "topo": "-1px",
+      "opacidade": "0"
+     }
+    },
+    "vazamento": {
+     "scrollWidth": 1440,
+     "clientWidth": 1440,
+     "vaza": false,
+     "folgaDoQuadroAteAJanela": 162
+    }
+   },
+   "reduceAtributoComHover": {
+    "programa": {
+     "anel": {
+      "largura": "1px",
+      "estilo": "solid",
+      "cor": "rgba(14, 216, 246, 0.75)",
+      "offset": "6px",
+      "avanco": 7
+     },
+     "borda": "2px solid rgb(14, 216, 246)",
+     "raio": "28px",
+     "glow": "rgba(255, 255, 255, 0.78) 0px 0px 0px 1px inset, rgba(14, 216, 246, 0.28) 0px 0px 22.4px 0px inset",
+     "filtro": "drop-shadow(rgba(3, 45, 92, 0.36) 18.4px 34.4px 37.6px) drop-shadow(rgba(3, 45, 92, 0.22) 6.4px 12.8px 13.6px) drop-shadow(rgba(14, 216, 246, 0.58) 0px 0px 28px)",
+     "fio": {
+      "pseudo": "::after",
+      "existe": true,
+      "content": "\"\"",
+      "fundo": "linear-gradient(90deg, rgba(255, 255, 255, 0), rgb(255, 255, 255) 35%, rgb(255, 255, 255) 65%, rgba(255, 255, 255, 0))",
+      "altura": "3px",
+      "largura": "72px",
+      "topo": "0px",
+      "opacidade": "1"
+     }
+    },
+    "programaCaixa": {
+     "esq": 709.9,
+     "dir": 1278,
+     "topo": 405,
+     "w": 568.1,
+     "h": 321.5
+    },
+    "transformDoQuadro": "none",
+    "transformDaArte": "none",
+    "quadradinho": {
+     "existe": true,
+     "content": "\"\"",
+     "fundo": "rgb(14, 216, 246)",
+     "zIndex": "2",
+     "glow": "rgba(14, 216, 246, 0.7) 0px 0px 20px -4px",
+     "lado": "18px x 18px",
+     "folgaAteOQuadradinho": 1,
+     "bordaDireitaPintada": 1286
+    },
+    "unidep": {
+     "anel": {
+      "largura": "1px",
+      "estilo": "solid",
+      "cor": "rgba(0, 0, 0, 0)",
+      "offset": "9px",
+      "avanco": 10
+     },
+     "borda": "1px solid rgba(165, 240, 255, 0.16)",
+     "raio": "18px",
+     "glow": "rgba(1, 16, 34, 0.6) 0px 24px 48px -28px",
+     "filtro": null,
+     "fio": {
+      "pseudo": "::before",
+      "existe": true,
+      "content": "\"\"",
+      "fundo": "linear-gradient(90deg, rgba(14, 216, 246, 0), rgb(14, 216, 246), rgba(14, 216, 246, 0))",
+      "altura": "2px",
+      "largura": "72px",
+      "topo": "-1px",
+      "opacidade": "0"
+     }
+    },
+    "vazamento": {
+     "scrollWidth": 1440,
+     "clientWidth": 1440,
+     "vaza": false,
+     "folgaDoQuadroAteAJanela": 162
+    }
+   }
+  }
+ }
+}

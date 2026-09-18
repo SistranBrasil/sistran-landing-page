@@ -1,0 +1,366 @@
+{
+  "rota": "/sistran-labs",
+  "secao": "#labs-o-que-e",
+  "fileiras1440": [
+    {
+      "indice": 1,
+      "nome": "labs-intro-1",
+      "espelhada": false,
+      "colunas": "526px 526px",
+      "ladoDaFoto": "direita",
+      "empilhado": false,
+      "textoAcimaDaFoto": false,
+      "texto": {
+        "x": 162,
+        "largura": 526,
+        "topo": -389,
+        "altura": 234
+      },
+      "figura": {
+        "x": 752,
+        "largura": 526,
+        "topo": -432,
+        "altura": 321
+      },
+      "presetDaFoto": "fade-right",
+      "presetDoTexto": "fade-up",
+      "aceso": "true",
+      "raio": "23.04px",
+      "sombra": "rgba(3, 45, 92, 0.22) 0px 12px 24px -16px, rgba(3, 45, 92, 0.28) 0px 32px 56px -24px",
+      "duracao": "1s",
+      "arquivo": "/images/sistran-labs/1-aba-sistran-labs.webp",
+      "alt": "Fachada da Sistran: prédio branco com vitrines espelhadas e o letreiro azul da marca com a assinatura Beyond Technology.",
+      "naturais": "1600x976",
+      "atributos": "1600x976",
+      "renderizada": {
+        "x": 752,
+        "largura": 526,
+        "topo": -432,
+        "altura": 321
+      }
+    },
+    {
+      "indice": 2,
+      "nome": "labs-intro-2",
+      "espelhada": true,
+      "colunas": "526px 526px",
+      "ladoDaFoto": "esquerda",
+      "empilhado": false,
+      "textoAcimaDaFoto": false,
+      "texto": {
+        "x": 752,
+        "largura": 526,
+        "topo": 47,
+        "altura": 146
+      },
+      "figura": {
+        "x": 162,
+        "largura": 526,
+        "topo": -39,
+        "altura": 319
+      },
+      "presetDaFoto": "fade-left",
+      "presetDoTexto": "fade-up",
+      "aceso": "true",
+      "raio": "23.04px",
+      "sombra": "rgba(3, 45, 92, 0.22) 0px 12px 24px -16px, rgba(3, 45, 92, 0.28) 0px 32px 56px -24px",
+      "duracao": "1s",
+      "arquivo": "/images/sistran-labs/2-aba-sistran-labs.webp",
+      "alt": "O time da Sistran reunido na escada do prédio: dezenas de pessoas de crachá, em camisetas azuis, posando para a foto.",
+      "naturais": "1600x969",
+      "atributos": "1600x969",
+      "renderizada": {
+        "x": 162,
+        "largura": 526,
+        "topo": -39,
+        "altura": 319
+      }
+    },
+    {
+      "indice": 3,
+      "nome": "labs-intro-3",
+      "espelhada": false,
+      "colunas": "526px 526px",
+      "ladoDaFoto": "direita",
+      "empilhado": false,
+      "textoAcimaDaFoto": false,
+      "texto": {
+        "x": 162,
+        "largura": 526,
+        "topo": 378,
+        "altura": 263
+      },
+      "figura": {
+        "x": 752,
+        "largura": 526,
+        "topo": 351,
+        "altura": 317
+      },
+      "presetDaFoto": "fade-right",
+      "presetDoTexto": "fade-up",
+      "aceso": "true",
+      "raio": "23.04px",
+      "sombra": "rgba(3, 45, 92, 0.22) 0px 12px 24px -16px, rgba(3, 45, 92, 0.28) 0px 32px 56px -24px",
+      "duracao": "1s",
+      "arquivo": "/images/sistran-labs/3-aba-sistran-labs.webp",
+      "alt": "Sala de trabalho do Sistran Labs: bancadas compartilhadas com monitores e notebooks, a equipe em atividade e a marca Sistran na parede ao fundo.",
+      "naturais": "1600x964",
+      "atributos": "1600x964",
+      "renderizada": {
+        "x": 752,
+        "largura": 526,
+        "topo": 351,
+        "altura": 317
+      }
+    }
+  ],
+  "superficie": {
+    "classesDaSecao": "labs-intro section-py section-light",
+    "fundoDaSecao": "rgba(0, 0, 0, 0)",
+    "fundoDoTrilho": "rgba(0, 0, 0, 0)",
+    "corDoParagrafo": "rgb(10, 31, 68)",
+    "linhaDeFronteira": "1px solid rgba(3, 45, 92, 0.08)",
+    "overflowXDoTrilho": "clip",
+    "fundoNoRaster": {
+      "cor": "rgb(237, 243, 250)",
+      "amostradoEm": {
+        "x": 122,
+        "y": 510
+      }
+    },
+    "contrasteDoParagrafo": 14.55
+  },
+  "imagensDaPagina": {
+    "total": 15,
+    "repetidas": [
+      [
+        "/images/sistran-corp-logo.png",
+        2
+      ]
+    ],
+    "abas": [
+      "/images/sistran-labs/1-aba-sistran-labs.webp",
+      "/images/sistran-labs/2-aba-sistran-labs.webp",
+      "/images/sistran-labs/3-aba-sistran-labs.webp"
+    ]
+  },
+  "ancoraAmbienteAindaExiste": false,
+  "paradasDoScrollSpy": [
+    {
+      "href": "#topo",
+      "existe": true
+    },
+    {
+      "href": "#labs-o-que-e",
+      "existe": true
+    },
+    {
+      "href": "#labs-solucoes",
+      "existe": true
+    },
+    {
+      "href": "#labs-principais",
+      "existe": true
+    }
+  ],
+  "barraHorizontal1440": false,
+  "ignicaoPorFileira1440": {
+    "passo": 60,
+    "y": {
+      "labs-intro-1": 60,
+      "labs-intro-2": 480,
+      "labs-intro-3": 840
+    }
+  },
+  "fileiras390": [
+    {
+      "indice": 1,
+      "nome": "labs-intro-1",
+      "espelhada": false,
+      "colunas": "350px",
+      "ladoDaFoto": "direita",
+      "empilhado": true,
+      "textoAcimaDaFoto": true,
+      "texto": {
+        "x": 20,
+        "largura": 350,
+        "topo": -979,
+        "altura": 351
+      },
+      "figura": {
+        "x": 20,
+        "largura": 350,
+        "topo": -604,
+        "altura": 214
+      },
+      "presetDaFoto": "fade-right",
+      "presetDoTexto": "fade-up",
+      "aceso": "true",
+      "raio": "16px",
+      "sombra": "rgba(3, 45, 92, 0.22) 0px 12px 24px -16px, rgba(3, 45, 92, 0.28) 0px 32px 56px -24px",
+      "duracao": "1s",
+      "arquivo": "/images/sistran-labs/1-aba-sistran-labs.webp",
+      "alt": "Fachada da Sistran: prédio branco com vitrines espelhadas e o letreiro azul da marca com a assinatura Beyond Technology.",
+      "naturais": "1600x976",
+      "atributos": "1600x976",
+      "renderizada": {
+        "x": 20,
+        "largura": 350,
+        "topo": -604,
+        "altura": 214
+      }
+    },
+    {
+      "indice": 2,
+      "nome": "labs-intro-2",
+      "espelhada": true,
+      "colunas": "350px",
+      "ladoDaFoto": "direita",
+      "empilhado": true,
+      "textoAcimaDaFoto": true,
+      "texto": {
+        "x": 20,
+        "largura": 350,
+        "topo": -350,
+        "altura": 234
+      },
+      "figura": {
+        "x": 20,
+        "largura": 350,
+        "topo": -92,
+        "altura": 212
+      },
+      "presetDaFoto": "fade-left",
+      "presetDoTexto": "fade-up",
+      "aceso": "true",
+      "raio": "16px",
+      "sombra": "rgba(3, 45, 92, 0.22) 0px 12px 24px -16px, rgba(3, 45, 92, 0.28) 0px 32px 56px -24px",
+      "duracao": "1s",
+      "arquivo": "/images/sistran-labs/2-aba-sistran-labs.webp",
+      "alt": "O time da Sistran reunido na escada do prédio: dezenas de pessoas de crachá, em camisetas azuis, posando para a foto.",
+      "naturais": "1600x969",
+      "atributos": "1600x969",
+      "renderizada": {
+        "x": 20,
+        "largura": 350,
+        "topo": -92,
+        "altura": 212
+      }
+    },
+    {
+      "indice": 3,
+      "nome": "labs-intro-3",
+      "espelhada": false,
+      "colunas": "350px",
+      "ladoDaFoto": "direita",
+      "empilhado": true,
+      "textoAcimaDaFoto": true,
+      "texto": {
+        "x": 20,
+        "largura": 350,
+        "topo": 160,
+        "altura": 410
+      },
+      "figura": {
+        "x": 20,
+        "largura": 350,
+        "topo": 593,
+        "altura": 211
+      },
+      "presetDaFoto": "fade-right",
+      "presetDoTexto": "fade-up",
+      "aceso": "true",
+      "raio": "16px",
+      "sombra": "rgba(3, 45, 92, 0.22) 0px 12px 24px -16px, rgba(3, 45, 92, 0.28) 0px 32px 56px -24px",
+      "duracao": "1s",
+      "arquivo": "/images/sistran-labs/3-aba-sistran-labs.webp",
+      "alt": "Sala de trabalho do Sistran Labs: bancadas compartilhadas com monitores e notebooks, a equipe em atividade e a marca Sistran na parede ao fundo.",
+      "naturais": "1600x964",
+      "atributos": "1600x964",
+      "renderizada": {
+        "x": 20,
+        "largura": 350,
+        "topo": 593,
+        "altura": 211
+      }
+    }
+  ],
+  "barraHorizontal390": false,
+  "reduceMidia": [
+    {
+      "preset": "fade-up",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-right",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-up",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-left",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-up",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-right",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    }
+  ],
+  "motionAtributo": "reduce",
+  "reduceAtributo": [
+    {
+      "preset": "fade-up",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-right",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-up",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-left",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-up",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    },
+    {
+      "preset": "fade-right",
+      "opacidade": "1",
+      "transform": "none",
+      "duracao": "1e-05s"
+    }
+  ]
+}

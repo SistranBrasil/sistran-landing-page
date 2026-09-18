@@ -1,0 +1,156 @@
+{
+  "lote": "C",
+  "exportadoEm": "2026-09-15T20:51:04.575Z",
+  "fuso": "America/Sao_Paulo",
+  "fonte": "Linear MCP user-linear (get_issue + list_comments), somente leitura",
+  "linearAlterado": false,
+  "mcp": {
+    "get_issue": {
+      "id": "identifier SIS-NNN",
+      "includeRelations": true,
+      "includeReleases": true,
+      "includeCustomerNeeds": true
+    },
+    "list_comments": {
+      "issueId": "SIS-NNN",
+      "limit": 250,
+      "orderBy": "createdAt"
+    }
+  },
+  "camposAusentesNaRespostaGetIssue": [
+    "assignee",
+    "assigneeId",
+    "project",
+    "projectId",
+    "cycle",
+    "estimate",
+    "parent"
+  ],
+  "idsSolicitados": [
+    "SIS-186",
+    "SIS-219",
+    "SIS-200",
+    "SIS-201",
+    "SIS-185",
+    "SIS-184",
+    "SIS-212",
+    "SIS-206",
+    "SIS-214",
+    "SIS-202",
+    "SIS-251",
+    "SIS-230",
+    "SIS-220",
+    "SIS-236",
+    "SIS-226",
+    "SIS-221",
+    "SIS-256",
+    "SIS-234",
+    "SIS-233"
+  ],
+  "coberturaGetIssue": {
+    "solicitadas": 19,
+    "obtidas": 19,
+    "falhasHttpOuMcp": []
+  },
+  "coberturaListComments": {
+    "solicitadas": 19,
+    "obtidas": 19,
+    "hasNextPage": false,
+    "porIssue": {
+      "SIS-186": 1,
+      "SIS-219": 1,
+      "SIS-200": 2,
+      "SIS-201": 8,
+      "SIS-185": 5,
+      "SIS-184": 2,
+      "SIS-212": 1,
+      "SIS-206": 2,
+      "SIS-214": 1,
+      "SIS-202": 4,
+      "SIS-251": 1,
+      "SIS-230": 2,
+      "SIS-220": 1,
+      "SIS-236": 1,
+      "SIS-226": 1,
+      "SIS-221": 1,
+      "SIS-256": 4,
+      "SIS-234": 2,
+      "SIS-233": 2
+    },
+    "totalComentarios": 42
+  },
+  "markdownIssues": {
+    "diretorio": "docs/arquivo-linear-entregue/issues",
+    "completosComCorpoIntegral": [
+      "SIS-186",
+      "SIS-219",
+      "SIS-200",
+      "SIS-201",
+      "SIS-185",
+      "SIS-184",
+      "SIS-212",
+      "SIS-206",
+      "SIS-214",
+      "SIS-202",
+      "SIS-251",
+      "SIS-230",
+      "SIS-220",
+      "SIS-236",
+      "SIS-226",
+      "SIS-221",
+      "SIS-256",
+      "SIS-234",
+      "SIS-233"
+    ],
+    "pendentesGravacaoArquivo": []
+  },
+  "anexos": {
+    "registro": "docs/arquivo-linear-entregue/_anexos-lote-C.json",
+    "baixados": 33,
+    "falhasDownload": 0,
+    "porIssue": {
+      "SIS-200": {
+        "issueAttachments": 2,
+        "commentAttachments": 0
+      },
+      "SIS-201": {
+        "issueAttachments": 9,
+        "commentAttachments": 0
+      },
+      "SIS-185": {
+        "issueAttachments": 1,
+        "commentAttachments": 0
+      },
+      "SIS-212": {
+        "issueAttachments": 2,
+        "commentAttachments": 0
+      },
+      "SIS-206": {
+        "issueAttachments": 6,
+        "commentAttachments": 0
+      },
+      "SIS-202": {
+        "issueAttachments": 0,
+        "commentAttachmentsUnicos": 13
+      }
+    }
+  },
+  "releases": {
+    "todasVazias": true
+  },
+  "customerNeeds": {
+    "todasVazias": true
+  },
+  "documents": {
+    "todasVazias": true
+  },
+  "falhas": [],
+  "lacunas": [
+    "assignee/project/cycle/estimate/parent não vêm em get_issue deste MCP.",
+    "Descrição de SIS-220, SIS-221, SIS-236 cita captura anexa e issue.attachments=[] — arquivo Linear não expôs esses blobs via get_issue.",
+    "Comentários SIS-251/SIS-221/SIS-256/SIS-230/SIS-226 referem capturas só no repo (docs/capturas), sem attachments MCP.",
+    "URLs assinadas de uploads.linear.app expiram (~5 min); cópia local em anexos/ é a persistência.",
+    "list_comments attachments não trazem id Linear (só title+url) — nomes locais usam UUID do path do upload.",
+    "list_comments orderBy=createdAt às vezes devolve ordem descendente; arquivos gravados usam crescente por createdAt."
+  ]
+}

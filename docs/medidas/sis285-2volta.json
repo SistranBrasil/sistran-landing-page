@@ -1,0 +1,150 @@
+{
+  "quando": "2026-09-16T17:35:26.834Z",
+  "largo": {
+    "colunas": "358px 358px 358px",
+    "cartoes": [
+      {
+        "destaque": false,
+        "w": 358,
+        "h": 287,
+        "animacao": "university-unidep-flutuar 6s atraso 0s",
+        "escala": "none",
+        "margem": "0px/0px"
+      },
+      {
+        "destaque": true,
+        "w": 358,
+        "h": 287,
+        "animacao": "university-unidep-flutuar 6s atraso -2s",
+        "escala": "none",
+        "margem": "0px/0px"
+      },
+      {
+        "destaque": false,
+        "w": 358,
+        "h": 287,
+        "animacao": "university-unidep-flutuar 6s atraso -4s",
+        "escala": "none",
+        "margem": "0px/0px"
+      }
+    ],
+    "cursoFlutuacao": [
+      6.8,
+      7.9,
+      5.5
+    ],
+    "defasado": true,
+    "hoverAntes": {
+      "w": 358,
+      "h": 287
+    },
+    "hover": {
+      "w": 372.3,
+      "h": 298.8,
+      "escala": "1.04",
+      "z": "2",
+      "sombra": "rgba(1, 16, 34, 0.7) 0px 36px 72px -24px, rgba(14, 216, 246, 0.3) 0px 0px 48px -20px",
+      "estadoAnimacao": "paused",
+      "folgaAteVizinho": 13.8
+    },
+    "residuo": 0
+  },
+  "estreito": {
+    "colunas": "350px",
+    "cartoes": [
+      {
+        "destaque": false,
+        "w": 350,
+        "h": 283,
+        "animacao": "university-unidep-flutuar 6s atraso 0s",
+        "escala": "none",
+        "margem": "0px/0px"
+      },
+      {
+        "destaque": true,
+        "w": 350,
+        "h": 283,
+        "animacao": "university-unidep-flutuar 6s atraso -2s",
+        "escala": "none",
+        "margem": "0px/0px"
+      },
+      {
+        "destaque": false,
+        "w": 350,
+        "h": 283,
+        "animacao": "university-unidep-flutuar 6s atraso -4s",
+        "escala": "none",
+        "margem": "0px/0px"
+      }
+    ],
+    "cursoFlutuacao": [
+      6.2,
+      4.3,
+      9.9
+    ],
+    "defasado": true,
+    "hoverAntes": {
+      "w": 350,
+      "h": 283
+    },
+    "hover": {
+      "w": 364,
+      "h": 294.1,
+      "escala": "1.04",
+      "z": "2",
+      "sombra": "rgba(1, 16, 34, 0.7) 0px 36px 72px -24px, rgba(14, 216, 246, 0.3) 0px 0px 48px -20px",
+      "estadoAnimacao": "paused",
+      "folgaAteVizinho": -357
+    },
+    "residuo": 0
+  },
+  "reduzido": {
+    "colunas": "358px 358px 358px",
+    "cartoes": [
+      {
+        "destaque": false,
+        "w": 358,
+        "h": 287,
+        "animacao": "none 1e-05s atraso 0s",
+        "escala": "none",
+        "margem": "0px/0px"
+      },
+      {
+        "destaque": true,
+        "w": 358,
+        "h": 287,
+        "animacao": "none 1e-05s atraso -2s",
+        "escala": "none",
+        "margem": "0px/0px"
+      },
+      {
+        "destaque": false,
+        "w": 358,
+        "h": 287,
+        "animacao": "none 1e-05s atraso -4s",
+        "escala": "none",
+        "margem": "0px/0px"
+      }
+    ],
+    "cursoFlutuacao": [
+      0,
+      0,
+      0
+    ],
+    "defasado": false,
+    "hoverAntes": {
+      "w": 358,
+      "h": 287
+    },
+    "hover": {
+      "w": 358,
+      "h": 287.3,
+      "escala": "1",
+      "z": "2",
+      "sombra": "rgba(1, 16, 34, 0.7) 0px 36px 72px -24px, rgba(14, 216, 246, 0.3) 0px 0px 48px -20px",
+      "estadoAnimacao": "paused",
+      "folgaAteVizinho": 21
+    },
+    "residuo": 0
+  }
+}

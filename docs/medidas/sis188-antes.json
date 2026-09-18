@@ -1,0 +1,188 @@
+{
+ "volta": "antes",
+ "rota": "http://localhost:3000/sistran-labs",
+ "viewport": "1440x900",
+ "secao": {
+  "classe": "labs-principais section-py section-light section-light-blue",
+  "fundo": "rgba(0, 0, 0, 0)",
+  "fundoImagem": "radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0, 0, 0) 62%), radial-gradient(55% 60% at 92% 88%, r"
+ },
+ "alvo": {
+  "etiqueta": "span",
+  "classe": "tag-section",
+  "texto": "Sistran Labs",
+  "caixa": {
+   "x": 162,
+   "y": 3068.3,
+   "w": 150.4,
+   "h": 30.5
+  },
+  "ar": {
+   "aspect-ratio": "auto",
+   "--carimbo-batida-ar": "",
+   "--carimbo-batida-w": ""
+  },
+  "transform": "none",
+  "opacity": "1"
+ },
+ "imagem": null,
+ "titulo": {
+  "etiqueta": "h2",
+  "id": "labs-principais",
+  "texto": "Principais Soluções Sistran Labs",
+  "fonte": "65.6px",
+  "peso": "400",
+  "cor": "rgb(10, 31, 68)",
+  "caixa": {
+   "x": 162,
+   "y": 3114.8,
+   "w": 672,
+   "h": 125.9
+  }
+ },
+ "rotulo": "labs-principais",
+ "tagTextualSobrou": true,
+ "razaoDeAspecto": {
+  "intrinsecaDoArquivo": null,
+  "exibida": 4.9311,
+  "bate": null
+ },
+ "linhaMenor": {
+  "fracaoNoArquivo": 0.092,
+  "alturaExibida": 30.5,
+  "pxDaLetra": 2.8,
+  "alvoDaCasa": 10
+ },
+ "larguraRelativaAoTitulo": 22.4,
+ "batida": {
+  "antesDeRolar": {
+   "transform": "none",
+   "opacity": "1",
+   "foraDeQuadro": true,
+   "topo": 3068,
+   "viewport": 900
+  },
+  "quadros": 13,
+  "escalaMaxima": 1,
+  "escalaFinal": 1,
+  "giroMaximoAbs": 0,
+  "giroFinal": 0,
+  "opacidadeMinima": 1,
+  "opacidadeFinal": 1,
+  "trilha": [
+   {
+    "t": 0,
+    "escala": 1,
+    "giro": 0,
+    "op": 1
+   },
+   {
+    "t": 290,
+    "escala": 1,
+    "giro": 0,
+    "op": 1
+   },
+   {
+    "t": 471,
+    "escala": 1,
+    "giro": 0,
+    "op": 1
+   },
+   {
+    "t": 727,
+    "escala": 1,
+    "giro": 0,
+    "op": 1
+   },
+   {
+    "t": 922,
+    "escala": 1,
+    "giro": 0,
+    "op": 1
+   }
+  ]
+ },
+ "reduce": {
+  "media": {
+   "transform": "none",
+   "opacity": "1",
+   "visivel": true,
+   "caixa": {
+    "w": 150.4,
+    "h": 30.5
+   }
+  },
+  "atributo": {
+   "transform": "none",
+   "opacity": "1",
+   "visivel": true,
+   "caixa": {
+    "w": 150.4,
+    "h": 30.5
+   }
+  }
+ },
+ "contraste": {
+  "tinta": "rgb(7, 87, 199)",
+  "fundo": {
+   "backgroundColor": "rgba(0, 0, 0, 0)",
+   "backgroundImage": "radial-gradient(70% 60% at 18% 8%, rgba(0, 121, 203, 0.14), rgba(0, 0, 0, 0) 62%), radial-gradient(55% 60% at 92% 88%, rgba(124, 58, 237, 0.1), rgba(0, 0, 0, 0) 62%), linear-gradient(160deg, rgb(242, ",
+   "paradas": [
+    "rgba(0, 121, 203, 0.14)",
+    "rgba(0, 0, 0, 0)",
+    "rgba(124, 58, 237, 0.1)",
+    "rgba(0, 0, 0, 0)",
+    "rgb(242, 249, 254)",
+    "rgb(227, 241, 251)",
+    "rgb(207, 231, 247)"
+   ],
+   "fundoEfetivo": "rgb(18, 115, 188)"
+  },
+  "medidos": [
+   {
+    "fundo": "rgb(18, 115, 188)",
+    "razao": 1.32
+   },
+   {
+    "fundo": "rgba(0, 121, 203, 0.14)",
+    "razao": 1.44
+   },
+   {
+    "fundo": "rgba(0, 0, 0, 0)",
+    "razao": 3.2
+   },
+   {
+    "fundo": "rgba(124, 58, 237, 0.1)",
+    "razao": 1.15
+   },
+   {
+    "fundo": "rgba(0, 0, 0, 0)",
+    "razao": 3.2
+   },
+   {
+    "fundo": "rgb(242, 249, 254)",
+    "razao": 6.18
+   },
+   {
+    "fundo": "rgb(227, 241, 251)",
+    "razao": 5.71
+   },
+   {
+    "fundo": "rgb(207, 231, 247)",
+    "razao": 5.14
+   }
+  ],
+  "pior": {
+   "fundo": "rgba(124, 58, 237, 0.1)",
+   "razao": 1.15
+  },
+  "exigido": 4.5
+ },
+ "rede": [],
+ "vaza": {
+  "scroll": 1440,
+  "cliente": 1440,
+  "vaza": false
+ },
+ "erros": []
+}

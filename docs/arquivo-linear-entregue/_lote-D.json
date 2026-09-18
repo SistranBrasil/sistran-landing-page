@@ -1,0 +1,73 @@
+{
+  "lote": "D",
+  "exportadoEm": "2026-09-15T20:55:00.000Z",
+  "modo": "read-only",
+  "linearAlterado": false,
+  "mcp": {
+    "get_issue": {
+      "includeRelations": true,
+      "includeCustomerNeeds": true,
+      "includeReleases": true
+    },
+    "list_comments": {
+      "limit": 250,
+      "orderBy": "createdAt"
+    }
+  },
+  "idsSolicitados": [
+    "SIS-207", "SIS-259", "SIS-199", "SIS-211", "SIS-261", "SIS-260", "SIS-175", "SIS-205", "SIS-223",
+    "SIS-266", "SIS-183", "SIS-274", "SIS-215", "SIS-204", "SIS-182", "SIS-276", "SIS-270", "SIS-197", "SIS-189"
+  ],
+  "idsObtidos": [
+    "SIS-207", "SIS-259", "SIS-199", "SIS-211", "SIS-261", "SIS-260", "SIS-175", "SIS-205", "SIS-223",
+    "SIS-266", "SIS-183", "SIS-274", "SIS-215", "SIS-204", "SIS-182", "SIS-276", "SIS-270", "SIS-197", "SIS-189"
+  ],
+  "cobertura": {
+    "get_issue": "19/19",
+    "list_comments": "19/19",
+    "hasNextPage": "false em todas",
+    "markdownFiel": "3/19 gravados no disco (SIS-207, SIS-259, SIS-266)",
+    "markdownPendente": [
+      "SIS-199", "SIS-211", "SIS-261", "SIS-260", "SIS-175", "SIS-205", "SIS-223",
+      "SIS-183", "SIS-274", "SIS-215", "SIS-204", "SIS-182", "SIS-276", "SIS-270", "SIS-197", "SIS-189"
+    ],
+    "anexosBaixados": "26/26",
+    "falhasDownload": 0
+  },
+  "contagens": {
+    "SIS-207": { "comentarios": 1, "anexosIssue": 5, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-259": { "comentarios": 1, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-199": { "comentarios": 1, "anexosIssue": 0, "anexosComentario": 10, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-211": { "comentarios": 3, "anexosIssue": 4, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-261": { "comentarios": 1, "anexosIssue": 1, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-260": { "comentarios": 1, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-175": { "comentarios": 2, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-205": { "comentarios": 1, "anexosIssue": 2, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-223": { "comentarios": 3, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-266": { "comentarios": 1, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-183": { "comentarios": 1, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-274": { "comentarios": 1, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-215": { "comentarios": 1, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-204": { "comentarios": 2, "anexosIssue": 0, "anexosComentario": 4, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-182": { "comentarios": 1, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-276": { "comentarios": 1, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-270": { "comentarios": 1, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-197": { "comentarios": 2, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false },
+    "SIS-189": { "comentarios": 1, "anexosIssue": 0, "anexosComentario": 0, "releases": 0, "customerNeeds": 0, "hasNextPage": false }
+  },
+  "anexos": {
+    "destino": "docs/arquivo-linear-entregue/anexos/<ISSUE>/",
+    "baixados": 26,
+    "falhas": []
+  },
+  "falhas": [
+    {
+      "tipo": "markdown",
+      "erro": "16 issues com get_issue+list_comments lidos (hasNextPage=false) mas sem arquivo docs/arquivo-linear-entregue/issues/<ISSUE>.md emitido nesta sessão",
+      "ids": [
+        "SIS-199", "SIS-211", "SIS-261", "SIS-260", "SIS-175", "SIS-205", "SIS-223",
+        "SIS-183", "SIS-274", "SIS-215", "SIS-204", "SIS-182", "SIS-276", "SIS-270", "SIS-197", "SIS-189"
+      ]
+    }
+  ]
+}

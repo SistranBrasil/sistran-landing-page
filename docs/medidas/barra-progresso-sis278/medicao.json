@@ -1,0 +1,1184 @@
+{
+  "homeLonga1440": [
+    {
+      "posicao": "topo",
+      "fracaoPedida": 0,
+      "quantasBarras": 1,
+      "paiDireto": "body",
+      "ancestraisQueContem": [],
+      "scrollP": "0.0000",
+      "scrollPNumero": 0,
+      "progressoEsperado": 0,
+      "scrollY": 0,
+      "curso": 10136,
+      "scrollHeight": 11036,
+      "innerHeight": 900,
+      "larguraJanela": 1440,
+      "larguraVisual": 0,
+      "escalaVisual": 0,
+      "caixaTop": 0,
+      "caixaLeft": 0,
+      "caixaAltura": 3,
+      "computado": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "height": "3px",
+        "zIndex": "60",
+        "transform": "matrix(0, 0, 0, 1, 0, 0)",
+        "transformOrigin": "0px 1.5px",
+        "pointerEvents": "none",
+        "background": "rgb(14, 216, 246)",
+        "boxShadow": "rgba(4, 27, 61, 0.55) 0px 1px 0px 0px, rgba(14, 216, 246, 0.42) 0px 1px 8px 0px",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "willChange": "transform"
+      },
+      "ariaHidden": "true",
+      "tabIndex": -1,
+      "textoInterno": "",
+      "zIndexHeader": "50",
+      "topHeader": 16,
+      "dataMotion": null,
+      "lenisAtivo": true,
+      "pixels": [
+        [
+          215,
+          230,
+          242
+        ],
+        [
+          214,
+          229,
+          243
+        ],
+        [
+          214,
+          229,
+          242
+        ],
+        [
+          213,
+          227,
+          242
+        ],
+        [
+          213,
+          228,
+          242
+        ],
+        [
+          213,
+          227,
+          242
+        ],
+        [
+          212,
+          227,
+          241
+        ],
+        [
+          212,
+          227,
+          242
+        ],
+        [
+          211,
+          227,
+          240
+        ],
+        [
+          211,
+          226,
+          241
+        ],
+        [
+          210,
+          226,
+          240
+        ],
+        [
+          209,
+          226,
+          241
+        ],
+        [
+          209,
+          226,
+          239
+        ],
+        [
+          208,
+          226,
+          240
+        ]
+      ],
+      "contrasteBarraContraFundo": 1.03,
+      "contrasteFioNavyContraFundo": 1.02,
+      "contrasteCianoDeclaradoContraFundo": 1.3
+    },
+    {
+      "posicao": "meio",
+      "fracaoPedida": 0.5,
+      "quantasBarras": 1,
+      "paiDireto": "body",
+      "ancestraisQueContem": [],
+      "scrollP": "0.5000",
+      "scrollPNumero": 0.5,
+      "progressoEsperado": 0.5,
+      "scrollY": 5068,
+      "curso": 10136,
+      "scrollHeight": 11036,
+      "innerHeight": 900,
+      "larguraJanela": 1440,
+      "larguraVisual": 720,
+      "escalaVisual": 0.5,
+      "caixaTop": 0,
+      "caixaLeft": 0,
+      "caixaAltura": 3,
+      "computado": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "height": "3px",
+        "zIndex": "60",
+        "transform": "matrix(0.5, 0, 0, 1, 0, 0)",
+        "transformOrigin": "0px 1.5px",
+        "pointerEvents": "none",
+        "background": "rgb(14, 216, 246)",
+        "boxShadow": "rgba(4, 27, 61, 0.55) 0px 1px 0px 0px, rgba(14, 216, 246, 0.42) 0px 1px 8px 0px",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "willChange": "transform"
+      },
+      "ariaHidden": "true",
+      "tabIndex": -1,
+      "textoInterno": "",
+      "zIndexHeader": "50",
+      "topHeader": 16,
+      "dataMotion": null,
+      "lenisAtivo": true,
+      "pixels": [
+        [
+          14,
+          216,
+          246
+        ],
+        [
+          14,
+          216,
+          246
+        ],
+        [
+          14,
+          216,
+          246
+        ],
+        [
+          88,
+          117,
+          143
+        ],
+        [
+          193,
+          227,
+          242
+        ],
+        [
+          195,
+          227,
+          243
+        ],
+        [
+          197,
+          227,
+          242
+        ],
+        [
+          199,
+          226,
+          241
+        ],
+        [
+          202,
+          226,
+          240
+        ],
+        [
+          205,
+          226,
+          242
+        ],
+        [
+          206,
+          226,
+          241
+        ],
+        [
+          207,
+          227,
+          241
+        ],
+        [
+          208,
+          225,
+          240
+        ],
+        [
+          208,
+          226,
+          241
+        ]
+      ],
+      "contrasteBarraContraFundo": 1.29,
+      "contrasteFioNavyContraFundo": 3.61,
+      "contrasteCianoDeclaradoContraFundo": 1.29
+    },
+    {
+      "posicao": "fim",
+      "fracaoPedida": 1,
+      "quantasBarras": 1,
+      "paiDireto": "body",
+      "ancestraisQueContem": [],
+      "scrollP": "1.0000",
+      "scrollPNumero": 1,
+      "progressoEsperado": 1,
+      "scrollY": 10136,
+      "curso": 10136,
+      "scrollHeight": 11036,
+      "innerHeight": 900,
+      "larguraJanela": 1440,
+      "larguraVisual": 1440,
+      "escalaVisual": 1,
+      "caixaTop": 0,
+      "caixaLeft": 0,
+      "caixaAltura": 3,
+      "computado": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "height": "3px",
+        "zIndex": "60",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "transformOrigin": "0px 1.5px",
+        "pointerEvents": "none",
+        "background": "rgb(14, 216, 246)",
+        "boxShadow": "rgba(4, 27, 61, 0.55) 0px 1px 0px 0px, rgba(14, 216, 246, 0.42) 0px 1px 8px 0px",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "willChange": "transform"
+      },
+      "ariaHidden": "true",
+      "tabIndex": -1,
+      "textoInterno": "",
+      "zIndexHeader": "50",
+      "topHeader": 16,
+      "dataMotion": null,
+      "lenisAtivo": true,
+      "pixels": [
+        [
+          14,
+          216,
+          246
+        ],
+        [
+          14,
+          216,
+          246
+        ],
+        [
+          14,
+          216,
+          246
+        ],
+        [
+          12,
+          65,
+          110
+        ],
+        [
+          23,
+          111,
+          169
+        ],
+        [
+          23,
+          110,
+          168
+        ],
+        [
+          24,
+          109,
+          167
+        ],
+        [
+          22,
+          106,
+          165
+        ],
+        [
+          22,
+          105,
+          164
+        ],
+        [
+          23,
+          103,
+          163
+        ],
+        [
+          23,
+          102,
+          163
+        ],
+        [
+          23,
+          101,
+          162
+        ],
+        [
+          23,
+          99,
+          161
+        ],
+        [
+          23,
+          100,
+          161
+        ]
+      ],
+      "contrasteBarraContraFundo": 3.65,
+      "contrasteFioNavyContraFundo": 1.67,
+      "contrasteCianoDeclaradoContraFundo": 3.65
+    }
+  ],
+  "cursoPorRota": [
+    {
+      "rota": "/",
+      "curso": 10136,
+      "scrollY": 0,
+      "scrollP": "0.0000",
+      "escalaVisual": 0,
+      "larguraVisual": 0,
+      "quantasBarras": 1
+    },
+    {
+      "rota": "/quem-somos",
+      "curso": 19437,
+      "scrollY": 0,
+      "scrollP": "0.0000",
+      "escalaVisual": 0,
+      "larguraVisual": 0,
+      "quantasBarras": 1
+    },
+    {
+      "rota": "/contato",
+      "curso": 3380,
+      "scrollY": 0,
+      "scrollP": "0.0000",
+      "escalaVisual": 0,
+      "larguraVisual": 0,
+      "quantasBarras": 1
+    },
+    {
+      "rota": "/politica-de-privacidade",
+      "curso": 1794,
+      "scrollY": 0,
+      "scrollP": "0.0000",
+      "escalaVisual": 0,
+      "larguraVisual": 0,
+      "quantasBarras": 1
+    },
+    {
+      "rota": "/relatorio-de-transparencia-salarial",
+      "curso": 926,
+      "scrollY": 0,
+      "scrollP": "0.0000",
+      "escalaVisual": 0,
+      "larguraVisual": 0,
+      "quantasBarras": 1
+    },
+    {
+      "rota": "/admin/entrar",
+      "curso": 0,
+      "scrollY": 0,
+      "scrollP": "0.0000",
+      "escalaVisual": 0,
+      "larguraVisual": 0,
+      "quantasBarras": 1
+    }
+  ],
+  "rotaSemCurso": {
+    "janela": "1440x2400",
+    "rota": "/admin/entrar",
+    "antesDoGesto": {
+      "quantasBarras": 1,
+      "paiDireto": "body",
+      "ancestraisQueContem": [],
+      "scrollP": "0.0000",
+      "scrollPNumero": 0,
+      "progressoEsperado": 0,
+      "scrollY": 0,
+      "curso": 0,
+      "scrollHeight": 2400,
+      "innerHeight": 2400,
+      "larguraJanela": 1440,
+      "larguraVisual": 0,
+      "escalaVisual": 0,
+      "caixaTop": 0,
+      "caixaLeft": 0,
+      "caixaAltura": 3,
+      "computado": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "height": "3px",
+        "zIndex": "60",
+        "transform": "matrix(0, 0, 0, 1, 0, 0)",
+        "transformOrigin": "0px 1.5px",
+        "pointerEvents": "none",
+        "background": "rgb(14, 216, 246)",
+        "boxShadow": "rgba(4, 27, 61, 0.55) 0px 1px 0px 0px, rgba(14, 216, 246, 0.42) 0px 1px 8px 0px",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "willChange": "transform"
+      },
+      "ariaHidden": "true",
+      "tabIndex": -1,
+      "textoInterno": "",
+      "zIndexHeader": "20",
+      "topHeader": 0,
+      "dataMotion": null,
+      "lenisAtivo": true
+    },
+    "depoisDoGesto": {
+      "quantasBarras": 1,
+      "paiDireto": "body",
+      "ancestraisQueContem": [],
+      "scrollP": "0.0000",
+      "scrollPNumero": 0,
+      "progressoEsperado": 0,
+      "scrollY": 0,
+      "curso": 0,
+      "scrollHeight": 2400,
+      "innerHeight": 2400,
+      "larguraJanela": 1440,
+      "larguraVisual": 0,
+      "escalaVisual": 0,
+      "caixaTop": 0,
+      "caixaLeft": 0,
+      "caixaAltura": 3,
+      "computado": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "height": "3px",
+        "zIndex": "60",
+        "transform": "matrix(0, 0, 0, 1, 0, 0)",
+        "transformOrigin": "0px 1.5px",
+        "pointerEvents": "none",
+        "background": "rgb(14, 216, 246)",
+        "boxShadow": "rgba(4, 27, 61, 0.55) 0px 1px 0px 0px, rgba(14, 216, 246, 0.42) 0px 1px 8px 0px",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "willChange": "transform"
+      },
+      "ariaHidden": "true",
+      "tabIndex": -1,
+      "textoInterno": "",
+      "zIndexHeader": "20",
+      "topHeader": 0,
+      "dataMotion": null,
+      "lenisAtivo": true
+    },
+    "scrollPEhNaN": false
+  },
+  "navegacaoClientSide": [
+    {
+      "momento": "home a 60% do curso, antes de navegar",
+      "rota": "/",
+      "scrollP": "0.6000",
+      "progressoEsperado": 0.6,
+      "escalaVisual": 0.6,
+      "larguraVisual": 864,
+      "scrollY": 6082,
+      "curso": 10136,
+      "quantasBarras": 1
+    },
+    {
+      "momento": "rota curta, ~150ms depois da troca (cortina ainda no ar)",
+      "rota": "/politica-de-privacidade",
+      "scrollP": "0.0000",
+      "progressoEsperado": 0,
+      "escalaVisual": 0,
+      "larguraVisual": 0,
+      "scrollY": 0,
+      "curso": 1794,
+      "quantasBarras": 1
+    },
+    {
+      "momento": "rota curta, cortina fora",
+      "rota": "/politica-de-privacidade",
+      "scrollP": "0.0000",
+      "progressoEsperado": 0,
+      "escalaVisual": 0,
+      "larguraVisual": 0,
+      "scrollY": 0,
+      "curso": 1794,
+      "quantasBarras": 1
+    },
+    {
+      "momento": "rota curta a 50% do curso",
+      "rota": "/politica-de-privacidade",
+      "scrollP": "0.5000",
+      "progressoEsperado": 0.5,
+      "escalaVisual": 0.5,
+      "larguraVisual": 720,
+      "scrollY": 897,
+      "curso": 1794,
+      "quantasBarras": 1
+    },
+    {
+      "momento": "volta para a home, ~150ms depois da troca",
+      "rota": "/",
+      "scrollP": "0.0000",
+      "progressoEsperado": 0,
+      "escalaVisual": 0,
+      "larguraVisual": 0,
+      "scrollY": 0,
+      "curso": 10136,
+      "quantasBarras": 1
+    },
+    {
+      "momento": "volta para a home, cortina fora",
+      "rota": "/",
+      "scrollP": "0.0027",
+      "progressoEsperado": 0.0027,
+      "escalaVisual": 0.0027,
+      "larguraVisual": 3.89,
+      "scrollY": 27,
+      "curso": 10136,
+      "quantasBarras": 1
+    },
+    {
+      "momento": "home no fim do curso",
+      "rota": "/",
+      "scrollP": "1.0000",
+      "progressoEsperado": 1,
+      "escalaVisual": 1,
+      "larguraVisual": 1440,
+      "scrollY": 10136,
+      "curso": 10136,
+      "quantasBarras": 1
+    }
+  ],
+  "movimentoReduzido": [
+    {
+      "posicao": "topo",
+      "quantasBarras": 1,
+      "paiDireto": "body",
+      "ancestraisQueContem": [],
+      "scrollP": "0.0000",
+      "scrollPNumero": 0,
+      "progressoEsperado": 0,
+      "scrollY": 0,
+      "curso": 9354,
+      "scrollHeight": 10254,
+      "innerHeight": 900,
+      "larguraJanela": 1440,
+      "larguraVisual": 0,
+      "escalaVisual": 0,
+      "caixaTop": 0,
+      "caixaLeft": 0,
+      "caixaAltura": 3,
+      "computado": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "height": "3px",
+        "zIndex": "60",
+        "transform": "matrix(0, 0, 0, 1, 0, 0)",
+        "transformOrigin": "0px 1.5px",
+        "pointerEvents": "none",
+        "background": "rgb(14, 216, 246)",
+        "boxShadow": "rgba(4, 27, 61, 0.55) 0px 1px 0px 0px, rgba(14, 216, 246, 0.42) 0px 1px 8px 0px",
+        "transitionDuration": "1e-05s",
+        "animationName": "none",
+        "willChange": "transform"
+      },
+      "ariaHidden": "true",
+      "tabIndex": -1,
+      "textoInterno": "",
+      "zIndexHeader": "50",
+      "topHeader": 16,
+      "dataMotion": "reduce",
+      "lenisAtivo": false
+    },
+    {
+      "posicao": "meio",
+      "quantasBarras": 1,
+      "paiDireto": "body",
+      "ancestraisQueContem": [],
+      "scrollP": "0.5000",
+      "scrollPNumero": 0.5,
+      "progressoEsperado": 0.5,
+      "scrollY": 4677,
+      "curso": 9354,
+      "scrollHeight": 10254,
+      "innerHeight": 900,
+      "larguraJanela": 1440,
+      "larguraVisual": 720,
+      "escalaVisual": 0.5,
+      "caixaTop": 0,
+      "caixaLeft": 0,
+      "caixaAltura": 3,
+      "computado": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "height": "3px",
+        "zIndex": "60",
+        "transform": "matrix(0.5, 0, 0, 1, 0, 0)",
+        "transformOrigin": "0px 1.5px",
+        "pointerEvents": "none",
+        "background": "rgb(14, 216, 246)",
+        "boxShadow": "rgba(4, 27, 61, 0.55) 0px 1px 0px 0px, rgba(14, 216, 246, 0.42) 0px 1px 8px 0px",
+        "transitionDuration": "1e-05s",
+        "animationName": "none",
+        "willChange": "transform"
+      },
+      "ariaHidden": "true",
+      "tabIndex": -1,
+      "textoInterno": "",
+      "zIndexHeader": "50",
+      "topHeader": 16,
+      "dataMotion": "reduce",
+      "lenisAtivo": false
+    },
+    {
+      "posicao": "fim",
+      "quantasBarras": 1,
+      "paiDireto": "body",
+      "ancestraisQueContem": [],
+      "scrollP": "1.0000",
+      "scrollPNumero": 1,
+      "progressoEsperado": 1,
+      "scrollY": 9354,
+      "curso": 9354,
+      "scrollHeight": 10254,
+      "innerHeight": 900,
+      "larguraJanela": 1440,
+      "larguraVisual": 1440,
+      "escalaVisual": 1,
+      "caixaTop": 0,
+      "caixaLeft": 0,
+      "caixaAltura": 3,
+      "computado": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "height": "3px",
+        "zIndex": "60",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "transformOrigin": "0px 1.5px",
+        "pointerEvents": "none",
+        "background": "rgb(14, 216, 246)",
+        "boxShadow": "rgba(4, 27, 61, 0.55) 0px 1px 0px 0px, rgba(14, 216, 246, 0.42) 0px 1px 8px 0px",
+        "transitionDuration": "1e-05s",
+        "animationName": "none",
+        "willChange": "transform"
+      },
+      "ariaHidden": "true",
+      "tabIndex": -1,
+      "textoInterno": "",
+      "zIndexHeader": "50",
+      "topHeader": 16,
+      "dataMotion": "reduce",
+      "lenisAtivo": false
+    }
+  ],
+  "mobile390": [
+    {
+      "posicao": "topo",
+      "quantasBarras": 1,
+      "paiDireto": "body",
+      "ancestraisQueContem": [],
+      "scrollP": "0.0000",
+      "scrollPNumero": 0,
+      "progressoEsperado": 0,
+      "scrollY": 0,
+      "curso": 22223,
+      "scrollHeight": 23067,
+      "innerHeight": 844,
+      "larguraJanela": 390,
+      "larguraVisual": 0,
+      "escalaVisual": 0,
+      "caixaTop": 0,
+      "caixaLeft": 0,
+      "caixaAltura": 3,
+      "computado": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "height": "3px",
+        "zIndex": "60",
+        "transform": "matrix(0, 0, 0, 1, 0, 0)",
+        "transformOrigin": "0px 1.5px",
+        "pointerEvents": "none",
+        "background": "rgb(14, 216, 246)",
+        "boxShadow": "rgba(4, 27, 61, 0.55) 0px 1px 0px 0px, rgba(14, 216, 246, 0.42) 0px 1px 8px 0px",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "willChange": "transform"
+      },
+      "ariaHidden": "true",
+      "tabIndex": -1,
+      "textoInterno": "",
+      "zIndexHeader": "50",
+      "topHeader": 16,
+      "dataMotion": null,
+      "lenisAtivo": true,
+      "pixels": [
+        [
+          4,
+          29,
+          63
+        ],
+        [
+          4,
+          29,
+          63
+        ],
+        [
+          4,
+          29,
+          63
+        ],
+        [
+          4,
+          29,
+          64
+        ],
+        [
+          4,
+          29,
+          64
+        ],
+        [
+          4,
+          29,
+          64
+        ],
+        [
+          4,
+          29,
+          64
+        ],
+        [
+          4,
+          29,
+          65
+        ],
+        [
+          4,
+          30,
+          65
+        ],
+        [
+          4,
+          30,
+          66
+        ],
+        [
+          4,
+          30,
+          65
+        ],
+        [
+          4,
+          30,
+          66
+        ],
+        [
+          4,
+          31,
+          66
+        ],
+        [
+          4,
+          31,
+          66
+        ]
+      ],
+      "contrasteBarraContraFundo": 1.02
+    },
+    {
+      "posicao": "meio",
+      "quantasBarras": 1,
+      "paiDireto": "body",
+      "ancestraisQueContem": [],
+      "scrollP": "0.5000",
+      "scrollPNumero": 0.5,
+      "progressoEsperado": 0.5,
+      "scrollY": 11111,
+      "curso": 22223,
+      "scrollHeight": 23067,
+      "innerHeight": 844,
+      "larguraJanela": 390,
+      "larguraVisual": 195,
+      "escalaVisual": 0.5,
+      "caixaTop": 0,
+      "caixaLeft": 0,
+      "caixaAltura": 3,
+      "computado": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "height": "3px",
+        "zIndex": "60",
+        "transform": "matrix(0.5, 0, 0, 1, 0, 0)",
+        "transformOrigin": "0px 1.5px",
+        "pointerEvents": "none",
+        "background": "rgb(14, 216, 246)",
+        "boxShadow": "rgba(4, 27, 61, 0.55) 0px 1px 0px 0px, rgba(14, 216, 246, 0.42) 0px 1px 8px 0px",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "willChange": "transform"
+      },
+      "ariaHidden": "true",
+      "tabIndex": -1,
+      "textoInterno": "",
+      "zIndexHeader": "50",
+      "topHeader": 16,
+      "dataMotion": null,
+      "lenisAtivo": true,
+      "pixels": [
+        [
+          14,
+          216,
+          246
+        ],
+        [
+          14,
+          216,
+          246
+        ],
+        [
+          14,
+          216,
+          246
+        ],
+        [
+          101,
+          126,
+          146
+        ],
+        [
+          222,
+          245,
+          250
+        ],
+        [
+          223,
+          245,
+          249
+        ],
+        [
+          225,
+          244,
+          249
+        ],
+        [
+          228,
+          244,
+          249
+        ],
+        [
+          231,
+          245,
+          249
+        ],
+        [
+          235,
+          246,
+          250
+        ],
+        [
+          236,
+          245,
+          249
+        ],
+        [
+          238,
+          245,
+          249
+        ],
+        [
+          239,
+          244,
+          249
+        ],
+        [
+          239,
+          245,
+          248
+        ]
+      ],
+      "contrasteBarraContraFundo": 1.56
+    },
+    {
+      "posicao": "fim",
+      "quantasBarras": 1,
+      "paiDireto": "body",
+      "ancestraisQueContem": [],
+      "scrollP": "1.0000",
+      "scrollPNumero": 1,
+      "progressoEsperado": 1,
+      "scrollY": 22223,
+      "curso": 22223,
+      "scrollHeight": 23067,
+      "innerHeight": 844,
+      "larguraJanela": 390,
+      "larguraVisual": 390,
+      "escalaVisual": 1,
+      "caixaTop": 0,
+      "caixaLeft": 0,
+      "caixaAltura": 3,
+      "computado": {
+        "position": "fixed",
+        "top": "0px",
+        "left": "0px",
+        "height": "3px",
+        "zIndex": "60",
+        "transform": "matrix(1, 0, 0, 1, 0, 0)",
+        "transformOrigin": "0px 1.5px",
+        "pointerEvents": "none",
+        "background": "rgb(14, 216, 246)",
+        "boxShadow": "rgba(4, 27, 61, 0.55) 0px 1px 0px 0px, rgba(14, 216, 246, 0.42) 0px 1px 8px 0px",
+        "transitionDuration": "0s",
+        "animationName": "none",
+        "willChange": "transform"
+      },
+      "ariaHidden": "true",
+      "tabIndex": -1,
+      "textoInterno": "",
+      "zIndexHeader": "50",
+      "topHeader": 16,
+      "dataMotion": null,
+      "lenisAtivo": true,
+      "pixels": [
+        [
+          14,
+          216,
+          246
+        ],
+        [
+          14,
+          216,
+          246
+        ],
+        [
+          14,
+          216,
+          246
+        ],
+        [
+          8,
+          70,
+          120
+        ],
+        [
+          15,
+          122,
+          191
+        ],
+        [
+          15,
+          121,
+          189
+        ],
+        [
+          15,
+          120,
+          188
+        ],
+        [
+          15,
+          118,
+          187
+        ],
+        [
+          15,
+          116,
+          186
+        ],
+        [
+          15,
+          115,
+          187
+        ],
+        [
+          15,
+          114,
+          185
+        ],
+        [
+          15,
+          112,
+          184
+        ],
+        [
+          15,
+          112,
+          184
+        ],
+        [
+          15,
+          112,
+          184
+        ]
+      ],
+      "contrasteBarraContraFundo": 3.02
+    }
+  ],
+  "legibilidadeNaDobra": [
+    {
+      "rota": "/",
+      "scrollP": "0.0600",
+      "escalaVisual": 0.06,
+      "larguraVisual": 86.4,
+      "barra": [
+        14,
+        216,
+        246
+      ],
+      "fioNavy": [
+        91,
+        120,
+        144
+      ],
+      "fundoHero": [
+        220,
+        233,
+        246
+      ],
+      "contrasteBarraContraHero": 1.4,
+      "contrasteFioContraHero": 3.76
+    },
+    {
+      "rota": "/quem-somos",
+      "scrollP": "0.0600",
+      "escalaVisual": 0.06,
+      "larguraVisual": 86.4,
+      "barra": [
+        14,
+        216,
+        246
+      ],
+      "fioNavy": [
+        93,
+        122,
+        146
+      ],
+      "fundoHero": [
+        225,
+        239,
+        249
+      ],
+      "contrasteBarraContraHero": 1.47,
+      "contrasteFioContraHero": 3.84
+    },
+    {
+      "rota": "/esg",
+      "scrollP": "0.0599",
+      "escalaVisual": 0.0599,
+      "larguraVisual": 86.26,
+      "barra": [
+        14,
+        216,
+        246
+      ],
+      "fioNavy": [
+        3,
+        33,
+        62
+      ],
+      "fundoHero": [
+        2,
+        19,
+        45
+      ],
+      "contrasteBarraContraHero": 10.74,
+      "contrasteFioContraHero": 1.14
+    },
+    {
+      "rota": "/contato",
+      "scrollP": "0.0601",
+      "escalaVisual": 0.0601,
+      "larguraVisual": 86.54,
+      "barra": [
+        14,
+        216,
+        246
+      ],
+      "fioNavy": [
+        8,
+        40,
+        71
+      ],
+      "fundoHero": [
+        8,
+        28,
+        56
+      ],
+      "contrasteBarraContraHero": 9.87,
+      "contrasteFioContraHero": 1.14
+    },
+    {
+      "rota": "/sistran-labs",
+      "scrollP": "0.0601",
+      "escalaVisual": 0.0601,
+      "larguraVisual": 86.54,
+      "barra": [
+        14,
+        216,
+        246
+      ],
+      "fioNavy": [
+        3,
+        35,
+        67
+      ],
+      "fundoHero": [
+        2,
+        24,
+        56
+      ],
+      "contrasteBarraContraHero": 10.23,
+      "contrasteFioContraHero": 1.11
+    },
+    {
+      "rota": "/solucoes",
+      "scrollP": "0.0599",
+      "escalaVisual": 0.0599,
+      "larguraVisual": 86.26,
+      "barra": [
+        14,
+        216,
+        246
+      ],
+      "fioNavy": [
+        4,
+        33,
+        62
+      ],
+      "fundoHero": [
+        6,
+        21,
+        45
+      ],
+      "contrasteBarraContraHero": 10.56,
+      "contrasteFioContraHero": 1.12
+    }
+  ]
+}

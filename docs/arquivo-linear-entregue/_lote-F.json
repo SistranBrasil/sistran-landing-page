@@ -1,0 +1,299 @@
+{
+  "lote": "F",
+  "modo": "read-only",
+  "linearAlterado": false,
+  "exportadoEm": "2026-09-15T20:51:00.000Z",
+  "fonte": {
+    "mcp": "user-linear",
+    "get_issue": {
+      "includeRelations": true,
+      "includeCustomerNeeds": true,
+      "includeReleases": true
+    },
+    "list_comments": {
+      "limit": 250,
+      "orderBy": "createdAt"
+    }
+  },
+  "saida": {
+    "issuesDir": "docs/arquivo-linear-entregue/issues",
+    "anexosDir": "docs/arquivo-linear-entregue/anexos"
+  },
+  "pedido": [
+    "SIS-87",
+    "SIS-92",
+    "SIS-88",
+    "SIS-90",
+    "SIS-89",
+    "SIS-238",
+    "SIS-161",
+    "SIS-42",
+    "SIS-94",
+    "SIS-254",
+    "SIS-165",
+    "SIS-245",
+    "SIS-93",
+    "SIS-91",
+    "SIS-278",
+    "SIS-272",
+    "SIS-267",
+    "SIS-268"
+  ],
+  "cobertura": {
+    "issuesPedidas": 18,
+    "get_issueOk": 18,
+    "get_issueFalha": 0,
+    "list_commentsOk": 18,
+    "list_commentsFalha": 0,
+    "list_commentsHasNextPage": false,
+    "markdownEscritos": 18,
+    "comentariosTotais": 37,
+    "anexosIssueTotais": 2,
+    "anexosComentarioTotais": 0,
+    "downloadsOk": 2,
+    "downloadsFalha": 0,
+    "releasesNaoVazios": 0,
+    "customerNeedsNaoVazios": 0
+  },
+  "issues": [
+    {
+      "id": "SIS-87",
+      "uuid": "663bcc1e-7c7c-4c99-92f6-65d3de75eda2",
+      "status": "Entregue",
+      "comentarios": 1,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-87.md"
+    },
+    {
+      "id": "SIS-92",
+      "uuid": "33ae88cb-b955-4d9b-9c51-1673ef340602",
+      "status": "Entregue",
+      "comentarios": 1,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-92.md"
+    },
+    {
+      "id": "SIS-88",
+      "uuid": "96157983-e672-4293-aa23-147bef5b2460",
+      "status": "Entregue",
+      "comentarios": 1,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-88.md"
+    },
+    {
+      "id": "SIS-90",
+      "uuid": "2f422022-7c12-442e-8a4f-31b9cfdfea9b",
+      "status": "Entregue",
+      "comentarios": 1,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-90.md"
+    },
+    {
+      "id": "SIS-89",
+      "uuid": "59ebec63-8269-4af2-9650-e62cdd93a678",
+      "status": "Entregue",
+      "comentarios": 1,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-89.md"
+    },
+    {
+      "id": "SIS-238",
+      "uuid": "9352ba74-2f9b-42a7-99c4-64d06d70c6b5",
+      "status": "Entregue",
+      "labels": ["conferir"],
+      "comentarios": 1,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-238.md"
+    },
+    {
+      "id": "SIS-161",
+      "uuid": "df4643f7-9931-4394-9677-ccb047165af0",
+      "status": "Entregue",
+      "comentarios": 7,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-161.md"
+    },
+    {
+      "id": "SIS-42",
+      "uuid": "1e2ac48f-ca18-4038-a3cf-79289f4fb39b",
+      "status": "Entregue",
+      "comentarios": 1,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-42.md"
+    },
+    {
+      "id": "SIS-94",
+      "uuid": "8dce53d0-5dea-4a1a-98d9-606750d94670",
+      "status": "Entregue",
+      "comentarios": 1,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-94.md"
+    },
+    {
+      "id": "SIS-254",
+      "uuid": "06a8a94e-30ca-4112-b999-e48058070131",
+      "status": "Entregue",
+      "comentarios": 6,
+      "hasNextPage": false,
+      "anexosIssue": 1,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-254.md"
+    },
+    {
+      "id": "SIS-165",
+      "uuid": "8badc6cf-6b08-4962-a101-2161723bdf53",
+      "status": "Entregue",
+      "comentarios": 4,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-165.md"
+    },
+    {
+      "id": "SIS-245",
+      "uuid": "2c79d00a-9a14-43b1-8050-bae116bde554",
+      "status": "Entregue",
+      "labels": ["conferir"],
+      "comentarios": 1,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-245.md"
+    },
+    {
+      "id": "SIS-93",
+      "uuid": "74b03f56-51f9-4455-b28d-027e51dc8287",
+      "status": "Entregue",
+      "comentarios": 1,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-93.md"
+    },
+    {
+      "id": "SIS-91",
+      "uuid": "57ad9ee3-96ed-4553-9591-e20bde1c7abd",
+      "status": "Entregue",
+      "comentarios": 1,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-91.md"
+    },
+    {
+      "id": "SIS-278",
+      "uuid": "ec2be689-488b-4112-a4bd-ff4e78a7553c",
+      "status": "Entregue",
+      "comentarios": 2,
+      "hasNextPage": false,
+      "anexosIssue": 1,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-278.md"
+    },
+    {
+      "id": "SIS-272",
+      "uuid": "d378843f-80dc-4aa1-8e70-befb5eeeee41",
+      "status": "Entregue",
+      "comentarios": 2,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-272.md"
+    },
+    {
+      "id": "SIS-267",
+      "uuid": "f8442493-db9d-477d-bd40-877807389b54",
+      "status": "Entregue",
+      "comentarios": 0,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-267.md"
+    },
+    {
+      "id": "SIS-268",
+      "uuid": "ed53f218-e4c1-4fb3-bc67-b633c43948a6",
+      "status": "Entregue",
+      "comentarios": 5,
+      "hasNextPage": false,
+      "anexosIssue": 0,
+      "markdown": "docs/arquivo-linear-entregue/issues/SIS-268.md"
+    }
+  ],
+  "downloads": [
+    {
+      "issue": "SIS-254",
+      "attachmentId": "c1f66785-1ef7-442f-b86d-102e9efeea26",
+      "title": "Arte — foguete.png",
+      "origem": "https://uploads.linear.app/5ee948d4-4128-4d5f-8661-8bdc047db37b/54e915bd-98a6-4b20-a0a3-055ae921512f/289e18f7-f357-433b-9ab1-d9d9a5d2a208",
+      "origemCompletaComAssinatura": "https://uploads.linear.app/5ee948d4-4128-4d5f-8661-8bdc047db37b/54e915bd-98a6-4b20-a0a3-055ae921512f/289e18f7-f357-433b-9ab1-d9d9a5d2a208?signature=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXRoIjoiLzVlZTk0OGQ0LTQxMjgtNGQ1Zi04NjYxLThiZGMwNDdkYjM3Yi81NGU5MTViZC05OGE2LTRiMjAtYTBhMy0wNTVhZTkyMTUxMmYvMjg5ZTE4ZjctZjM1Ny00MzNiLTlhYjEtZDlkOWE1ZDJhMjA4IiwiaWF0IjoxNzg5NTA1MTcxLCJleHAiOjE3ODk1MDU0NzF9.xHx1KxmM5OacRhaJBNj7xi8gZu-rhUMbtT69MUo8QwM",
+      "arquivo": "docs/arquivo-linear-entregue/anexos/SIS-254/01-c1f66785-arte-foguete.png",
+      "bytes": 1681797,
+      "tipoDetectado": "image/png",
+      "status": "ok"
+    },
+    {
+      "issue": "SIS-278",
+      "attachmentId": "084bb9b9-6ab8-49b4-99d1-a7ed623121d3",
+      "title": "Referência — barra de scroll (Raul Strombeck)",
+      "subtitle": "Da atuação hands-on à liderança, com especialidade em Governança de Dados.",
+      "origem": "https://raul-strombeck-lp.vercel.app/",
+      "arquivo": "docs/arquivo-linear-entregue/anexos/SIS-278/01-084bb9b9-referencia-raul-strombeck.html",
+      "bytes": 239704,
+      "tipoDetectado": "text/html",
+      "status": "ok-snapshot-html",
+      "nota": "Anexo Linear é URL de página, não upload. Snapshot do HTML da origem; CSS/JS/imagens da página não foram espelhados."
+    }
+  ],
+  "falhas": [
+    {
+      "severidade": "info",
+      "issue": "SIS-278",
+      "tipo": "anexo-nao-e-arquivo-binario",
+      "detalhe": "O anexo é https://raul-strombeck-lp.vercel.app/ (página). HTML snapshot salvo; sub-recursos da LP não baixados."
+    },
+    {
+      "severidade": "info",
+      "issue": "SIS-254",
+      "tipo": "url-assinada-expira",
+      "detalhe": "URL Linear uploads com JWT (iat/exp ~5 min). Cópia local PNG 1681797 bytes; a URL de origem deixará de servir."
+    },
+    {
+      "severidade": "info",
+      "issue": "SIS-267",
+      "tipo": "zero-comentarios",
+      "detalhe": "list_comments retornou comments: [] com hasNextPage=false. Arte HD pedida não estava anexada."
+    },
+    {
+      "severidade": "info",
+      "issue": "SIS-268",
+      "tipo": "print-mencionado-sem-anexo-api",
+      "detalhe": "Descrição cita print anexado; get_issue.attachments=[] e comentários sem attachments."
+    },
+    {
+      "severidade": "info",
+      "issue": "SIS-238",
+      "tipo": "label-conferir-ainda-presente",
+      "detalhe": "status Entregue com label conferir na API."
+    },
+    {
+      "severidade": "info",
+      "issue": "SIS-245",
+      "tipo": "label-conferir-ainda-presente",
+      "detalhe": "status Entregue com label conferir na API."
+    },
+    {
+      "severidade": "info",
+      "issue": "*",
+      "tipo": "campos-ausentes-get-issue",
+      "detalhe": "Na maioria das issues assignee/project não vieram no JSON (não nulos explícitos). Exceções: SIS-42 (assignee+project), SIS-267 (assignee)."
+    },
+    {
+      "severidade": "info",
+      "issue": "*",
+      "tipo": "releases-customerNeeds-vazios",
+      "detalhe": "Todas as 18 issues: releases=[] e customerNeeds=[]."
+    }
+  ]
+}

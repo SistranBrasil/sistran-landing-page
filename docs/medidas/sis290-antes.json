@@ -1,0 +1,519 @@
+{
+ "issue": "SIS-290",
+ "etapa": "antes",
+ "erros": [],
+ "porLargura": {
+  "1440": {
+   "labs-intro": {
+    "classes": "section-py",
+    "fundo": "linear-gradient(rgb(4, 27, 61) 0%, rgba(4, 27, 61, 0) 112px)",
+    "fundoCor": "rgba(0, 0, 0, 0)",
+    "sombra": "none",
+    "grade": {
+     "existe": false,
+     "imagem": "none",
+     "modulo": "auto",
+     "ancora": "scroll"
+    },
+    "caixa": {
+     "topo": 666,
+     "h": 785.3,
+     "w": 1440
+    },
+    "vizinhas": {
+     "acima": {
+      "tag": "DIV",
+      "classes": "hero-backdrop hero-backdrop--labs"
+     },
+     "abaixo": {
+      "tag": "SECTION",
+      "classes": "section-py"
+     }
+    },
+    "textos": [
+     {
+      "tag": "H2",
+      "classes": "sr-only",
+      "cor": "rgb(248, 250, 252)",
+      "tamanho": "16px",
+      "peso": "400",
+      "amostra": {
+       "x": 165,
+       "y": 793.5
+      },
+      "trecho": "O Sistran Labs",
+      "fundoAtras": [
+       20,
+       120,
+       193
+      ],
+      "contraste": 4.47
+     },
+     {
+      "tag": "P",
+      "classes": "",
+      "cor": "rgba(255, 255, 255, 0.85)",
+      "tamanho": "18px",
+      "peso": "400",
+      "amostra": {
+       "x": 166,
+       "y": 881.8
+      },
+      "trecho": "Formado por uma equipe de nativos ",
+      "fundoAtras": [
+       18,
+       116,
+       189
+      ],
+      "contraste": 4.93
+     },
+     {
+      "tag": "SPAN",
+      "classes": "uppercase",
+      "cor": "rgba(255, 255, 255, 0.85)",
+      "tamanho": "18px",
+      "peso": "400",
+      "amostra": {
+       "x": 295.1,
+       "y": 896.3
+      },
+      "trecho": "Inteligência de Negócios em Seguro",
+      "fundoAtras": [
+       21,
+       115,
+       191
+      ],
+      "contraste": 4.96
+     },
+     {
+      "tag": "SPAN",
+      "classes": "uppercase",
+      "cor": "rgba(255, 255, 255, 0.85)",
+      "tamanho": "18px",
+      "peso": "400",
+      "amostra": {
+       "x": 589.1,
+       "y": 954.8
+      },
+      "trecho": "cloud",
+      "fundoAtras": [
+       18,
+       115,
+       188
+      ],
+      "contraste": 5
+     },
+     {
+      "tag": "P",
+      "classes": "",
+      "cor": "rgba(255, 255, 255, 0.85)",
+      "tamanho": "18px",
+      "peso": "400",
+      "amostra": {
+       "x": 166,
+       "y": 1044
+      },
+      "trecho": "O Sistran Labs com sua expertise t",
+      "fundoAtras": [
+       18,
+       115,
+       188
+      ],
+      "contraste": 5
+     },
+     {
+      "tag": "SPAN",
+      "classes": "uppercase",
+      "cor": "rgba(255, 255, 255, 0.85)",
+      "tamanho": "18px",
+      "peso": "400",
+      "amostra": {
+       "x": 166,
+       "y": 1014.6
+      },
+      "trecho": "testar, desenvolver e/ou homologar",
+      "fundoAtras": [
+       18,
+       115,
+       188
+      ],
+      "contraste": 5
+     },
+     {
+      "tag": "P",
+      "classes": "",
+      "cor": "rgba(255, 255, 255, 0.85)",
+      "tamanho": "18px",
+      "peso": "400",
+      "amostra": {
+       "x": 166,
+       "y": 1220.9
+      },
+      "trecho": "Nosso time de experts, amplia a ca",
+      "fundoAtras": [
+       70,
+       145,
+       202
+      ],
+      "contraste": 3.41
+     }
+    ],
+    "vaza": false,
+    "pixelDoFundo": [
+     {
+      "emX": "12%",
+      "rgb": [
+       216,
+       232,
+       244
+      ],
+      "l": 229.5
+     },
+     {
+      "emX": "50%",
+      "rgb": [
+       18,
+       115,
+       188
+      ],
+      "l": 99.6
+     },
+     {
+      "emX": "88%",
+      "rgb": [
+       18,
+       115,
+       188
+      ],
+      "l": 99.6
+     }
+    ],
+    "emendas": {
+     "topo": {
+      "saltoDe1px": 2,
+      "saltoDe1pxEm": 38,
+      "rampaTotal": 26,
+      "perfil": [
+       [
+        -40,
+        27
+       ],
+       [
+        -30,
+        26.3
+       ],
+       [
+        -20,
+        26
+       ],
+       [
+        -10,
+        25.2
+       ],
+       [
+        0,
+        24.6
+       ],
+       [
+        10,
+        31.4
+       ],
+       [
+        20,
+        38.7
+       ],
+       [
+        30,
+        45
+       ],
+       [
+        40,
+        53
+       ]
+      ]
+     },
+     "base": {
+      "saltoDe1px": 30.6,
+      "saltoDe1pxEm": -1,
+      "rampaTotal": -30.6,
+      "perfil": [
+       [
+        -40,
+        99.6
+       ],
+       [
+        -30,
+        99.6
+       ],
+       [
+        -20,
+        99.6
+       ],
+       [
+        -10,
+        99.6
+       ],
+       [
+        0,
+        69
+       ],
+       [
+        10,
+        69
+       ],
+       [
+        20,
+        69
+       ],
+       [
+        30,
+        69
+       ],
+       [
+        40,
+        69
+       ]
+      ]
+     }
+    }
+   },
+   "programa": {
+    "classes": "section-py section-light university-programa",
+    "fundo": "radial-gradient(70% 60% at 20% 10%, rgba(0, 121, 203, 0.08), rgba(0, 0, 0, 0) 60%), radial-gradient(50% 60% at 90% 90%, ",
+    "fundoCor": "rgba(0, 0, 0, 0)",
+    "sombra": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px",
+    "grade": {
+     "existe": true,
+     "imagem": "linear-gradient(rgba(0, 121, 203, 0.04) 1px, rgba(0, 0, 0, 0) 1px), li",
+     "modulo": "96px 96px, 96px 96px",
+     "ancora": "fixed, fixed"
+    },
+    "caixa": {
+     "topo": 666,
+     "h": 577.5,
+     "w": 1440
+    },
+    "vizinhas": {
+     "acima": {
+      "tag": "DIV",
+      "classes": "hero-backdrop hero-backdrop--university"
+     },
+     "abaixo": {
+      "tag": "SECTION",
+      "classes": "section-py university-unidep relative overflow-x-clip"
+     }
+    },
+    "textos": [
+     {
+      "tag": "SPAN",
+      "classes": "eyebrow eyebrow--traco",
+      "cor": "rgb(2, 78, 134)",
+      "tamanho": "12px",
+      "peso": "600",
+      "amostra": {
+       "x": 166,
+       "y": 851.6
+      },
+      "trecho": "O PROGRAMA",
+      "fundoAtras": [
+       233,
+       242,
+       249
+      ],
+      "contraste": 7.61
+     },
+     {
+      "tag": "H2",
+      "classes": "mt-5 font-display font-bold text-section",
+      "cor": "rgb(10, 31, 68)",
+      "tamanho": "43px",
+      "peso": "700",
+      "amostra": {
+       "x": 166,
+       "y": 944.9
+      },
+      "trecho": "Autossuficiência em capacitação de",
+      "fundoAtras": [
+       242,
+       247,
+       252
+      ],
+      "contraste": 15.08
+     },
+     {
+      "tag": "SPAN",
+      "classes": "university-programa-realce",
+      "cor": "rgb(0, 121, 203)",
+      "tamanho": "43px",
+      "peso": "700",
+      "amostra": {
+       "x": 166,
+       "y": 964.9
+      },
+      "trecho": "capacitação de recursos",
+      "fundoAtras": [
+       242,
+       247,
+       252
+      ],
+      "contraste": 4.24
+     },
+     {
+      "tag": "P",
+      "classes": "mt-6 text-lg leading-relaxed",
+      "cor": "rgb(10, 31, 68)",
+      "tamanho": "18px",
+      "peso": "400",
+      "amostra": {
+       "x": 166,
+       "y": 1054
+      },
+      "trecho": "O Sistran University, programa de ",
+      "fundoAtras": [
+       240,
+       246,
+       251
+      ],
+      "contraste": 14.92
+     },
+     {
+      "tag": "STRONG",
+      "classes": "font-bold",
+      "cor": "rgb(10, 31, 68)",
+      "tamanho": "18px",
+      "peso": "700",
+      "amostra": {
+       "x": 183.8,
+       "y": 1024.6
+      },
+      "trecho": "Sistran University",
+      "fundoAtras": [
+       242,
+       247,
+       252
+      ],
+      "contraste": 15.08
+     }
+    ],
+    "vaza": false,
+    "pixelDoFundo": [
+     {
+      "emX": "12%",
+      "rgb": [
+       242,
+       247,
+       252
+      ],
+      "l": 246.3
+     },
+     {
+      "emX": "50%",
+      "rgb": [
+       255,
+       255,
+       255
+      ],
+      "l": 255
+     },
+     {
+      "emX": "88%",
+      "rgb": [
+       242,
+       247,
+       252
+      ],
+      "l": 246.3
+     }
+    ],
+    "emendas": {
+     "topo": {
+      "saltoDe1px": 143.8,
+      "saltoDe1pxEm": -1,
+      "rampaTotal": 194.6,
+      "perfil": [
+       [
+        -40,
+        47.4
+       ],
+       [
+        -30,
+        57.6
+       ],
+       [
+        -20,
+        70.5
+       ],
+       [
+        -10,
+        84.4
+       ],
+       [
+        0,
+        240.8
+       ],
+       [
+        10,
+        241.1
+       ],
+       [
+        20,
+        242
+       ],
+       [
+        30,
+        242
+       ],
+       [
+        40,
+        242
+       ]
+      ]
+     },
+     "base": {
+      "saltoDe1px": 175.2,
+      "saltoDe1pxEm": -2,
+      "rampaTotal": -177.3,
+      "perfil": [
+       [
+        -40,
+        246.3
+       ],
+       [
+        -30,
+        245.4
+       ],
+       [
+        -20,
+        245.1
+       ],
+       [
+        -10,
+        244.4
+       ],
+       [
+        0,
+        69.8
+       ],
+       [
+        10,
+        69.8
+       ],
+       [
+        20,
+        69.7
+       ],
+       [
+        30,
+        69.7
+       ],
+       [
+        40,
+        69
+       ]
+      ]
+     }
+    }
+   }
+  }
+ }
+}

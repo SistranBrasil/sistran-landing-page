@@ -1,0 +1,288 @@
+﻿
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\Consulting.tsx
+  115:14  warning  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\Consulting.tsx:115:14
+  113 |             }}
+  114 |           >
+> 115 |             <Icon
+      |              ^^^^ This component is created during render
+  116 |               className="h-6 w-6 transition-colors duration-500"
+  117 |               style={{ color: active ? accent : 'rgba(60,90,122,0.75)' }}
+  118 |               strokeWidth={1.8}
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\Consulting.tsx:41:16
+  39 |   onActivate: () => void;
+  40 | }) {
+> 41 |   const Icon = getIcon(c.icon);
+     |                ^^^^^^^^^^^^^^^ The component is created during render here
+  42 |   const accent = accentOf(index);
+  43 |
+  44 |   return (  react-hooks/static-components
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\ContactModal.tsx
+  42:15  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\ContactModal.tsx:42:15
+  40 |   const [sessao, setSessao] = useState(0);
+  41 |   useEffect(() => {
+> 42 |     if (open) setSessao((n) => n + 1);
+     |               ^^^^^^^^^ Avoid calling setState() directly within an effect
+  43 |   }, [open]);
+  44 |
+  45 |   /* Escrita em ref durante o render ├® proibida (o lint apontava exatamente                                 react-hooks/set-state-in-effect
+  62:19  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\ContactModal.tsx:62:19
+  60 |      efeito de abertura, porque no primeiro passe o ref ainda ├® null. */
+  61 |   const [montado, setMontado] = useState(false);
+> 62 |   useEffect(() => setMontado(true), []);
+     |                   ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  63 |
+  64 |   useEffect(() => {
+  65 |     if (!montado || !open) return;  react-hooks/set-state-in-effect
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\EventsGrid.tsx
+  252:14  warning  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\EventsGrid.tsx:252:14
+  250 |         <div className="evento-texto relative max-w-[52ch]">
+  251 |           <span className="evento-selo inline-flex items-center gap-2">
+> 252 |             <Icon className="h-3.5 w-3.5" strokeWidth={2} style={{ color: tone }} />
+      |              ^^^^ This component is created during render
+  253 |             <span style={{ color: tone }}>{EVENT_KIND_META[e.kind].label}</span>
+  254 |           </span>
+  255 |
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\EventsGrid.tsx:206:16
+  204 |   aoRegistrar: (el: HTMLLIElement | null) => void;
+  205 | }) {
+> 206 |   const Icon = getIcon(e.icon);
+      |                ^^^^^^^^^^^^^^^ The component is created during render here
+  207 |   const tone = EVENT_KIND_META[e.kind].tone;
+  208 |   const temVideo = e.id === 'web-summit-ai' || e.id === 'suitability-ai';
+  209 |  react-hooks/static-components
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\EventsSpotlight.tsx
+  248:7  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\EventsSpotlight.tsx:248:7
+  246 |     const heroTitulo = document.querySelector<HTMLElement>("#topo h1");
+  247 |     if (!heroTitulo) {
+> 248 |       setCessao("assumido");
+      |       ^^^^^^^^^ Avoid calling setState() directly within an effect
+  249 |       return;
+  250 |     }
+  251 |     const io = new IntersectionObserver(  react-hooks/set-state-in-effect
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\Header.tsx
+  241:19  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\Header.tsx:241:19
+  239 |   const hidden = isHome && !scrolled;
+  240 |
+> 241 |   useEffect(() => setOpen(false), [pathname]);
+      |                   ^^^^^^^ Avoid calling setState() directly within an effect
+  242 |   useEffect(() => setSubmenu(null), [pathname]);
+  243 |
+  244 |   /* Escape fecha o submenu. Efeito pr├│prio, e n├úo uma linha dentro do Escape do                                               react-hooks/set-state-in-effect
+  242:19  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\Header.tsx:242:19
+  240 |
+  241 |   useEffect(() => setOpen(false), [pathname]);
+> 242 |   useEffect(() => setSubmenu(null), [pathname]);
+      |                   ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  243 |
+  244 |   /* Escape fecha o submenu. Efeito pr├│prio, e n├úo uma linha dentro do Escape do
+  245 |      drawer: aquele s├│ roda quando `open` ├® true, e o submenu do desktop existe  react-hooks/set-state-in-effect
+  326:7   warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\Header.tsx:326:7
+  324 |   useEffect(() => {
+  325 |     if (pathname !== '/') {
+> 326 |       setActiveHash('');
+      |       ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  327 |       return;
+  328 |     }
+  329 |     const ids = NAV_ITEMS.filter((n) => n.href.startsWith('/#')).map((n) => n.href.slice(2));                                                                                  react-hooks/set-state-in-effect
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\PartnersGrid.tsx
+  118:12  warning  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\PartnersGrid.tsx:118:12
+  116 |           }}
+  117 |         >
+> 118 |           <Icon className="h-7 w-7" style={{ color: tone }} strokeWidth={1.8} />
+      |            ^^^^ This component is created during render
+  119 |         </div>
+  120 |
+  121 |         <div className="flex flex-col items-end gap-2">
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\PartnersGrid.tsx:39:16
+  37 |   const rm = useReducedMotion();
+  38 |   const { hover, mouse, handlers, tiltTransform } = useTilt(!rm);
+> 39 |   const Icon = getIcon(p.icon);
+     |                ^^^^^^^^^^^^^^^ The component is created during render here
+  40 |   const tone = CATEGORY_TONES[p.category];
+  41 |   const tilt = { x: mouse.x * 100, y: mouse.y * 100 };
+  42 |  react-hooks/static-components
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\ProofJourney.tsx
+  331:14  warning  The ref value 'faixas.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'faixas.current' to a variable inside the effect, and use that variable in the cleanup function  react-hooks/exhaustive-deps
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\layout\MotionPreferenceDialog.tsx
+  56:19  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\layout\MotionPreferenceDialog.tsx:56:19
+  54 |
+  55 |   const [montado, setMontado] = useState(false);
+> 56 |   useEffect(() => setMontado(true), []);
+     |                   ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  57 |
+  58 |   // Sobe um quadro depois de montar: nasce fora da tela (`data-open` ausente)
+  59 |   // e s├│ depois ganha o atributo que dispara a transi├º├úo de entrada  react-hooks/set-state-in-effect
+  68:19  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\layout\MotionPreferenceDialog.tsx:68:19
+  66 |
+  67 |   const [selected, setSelected] = useState<MotionPreference>('full');
+> 68 |   useEffect(() => setSelected(readMotionPreference()), []);
+     |                   ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  69 |
+  70 |   const [expanded, setExpanded] = useState(mode === 'settings');
+  71 |                                            react-hooks/set-state-in-effect
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\layout\MotionPreferenceIntro.tsx
+  31:33  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\layout\MotionPreferenceIntro.tsx:31:33
+  29 |        tivesse a ver com o que estava na tela. */
+  30 |     if (rota?.startsWith('/admin')) return;
+> 31 |     if (!hasSeenMotionPrompt()) setOpen(true);
+     |                                 ^^^^^^^ Avoid calling setState() directly within an effect
+  32 |   }, [rota]);
+  33 |
+  34 |   if (!open) return null;  react-hooks/set-state-in-effect
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\legacy\RoadmapStopDialog.tsx
+  61:19  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\legacy\RoadmapStopDialog.tsx:61:19
+  59 |   // teria uma ├írvore diferente da hidrata├º├úo.
+  60 |   const [montado, setMontado] = useState(false)
+> 61 |   useEffect(() => setMontado(true), [])
+     |                   ^^^^^^^^^^ Avoid calling setState() directly within an effect
+  62 |
+  63 |   // O `close` nativo ├® ouvido ├á m├úo, e o aviso ao pai s├│ sai se o di├ílogo
+  64 |   // estiver de fato fechado. O motivo ├® o remonte do StrictMode: a limpeza  react-hooks/set-state-in-effect
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\ui\MorphingHeadline.tsx
+  30:7  warning  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\ui\MorphingHeadline.tsx:30:7
+  28 |        chegar ÔÇö a├¡ o effect sa├¡a por aqui e ningu├®m mais as revelava. */
+  29 |     if (rm || prefersReducedMotion()) {
+> 30 |       setIntroDone(true);
+     |       ^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  31 |       return;
+  32 |     }
+  33 |     const l1 = line1Ref.current;  react-hooks/set-state-in-effect
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\ui\PillarsCarousel.tsx
+  105:16  warning  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\ui\PillarsCarousel.tsx:105:16
+  103 |               }}
+  104 |             >
+> 105 |               <Icon className="h-7 w-7" style={{ color: current.color }} strokeWidth={1.8} />
+      |                ^^^^ This component is created during render
+  106 |             </div>
+  107 |             <h3 className="font-display text-xl leading-tight text-white md:text-2xl">
+  108 |               {current.title}
+
+C:\Users\maria.martinelli\inovacao_landing_page\sistran-landing-page\src\components\ui\PillarsCarousel.tsx:40:16
+  38 |
+  39 |   const current = DIFFERENTIALS[i];
+> 40 |   const Icon = getIcon(current.icon);
+     |                ^^^^^^^^^^^^^^^^^^^^^ The component is created during render here
+  41 |
+  42 |   return (
+  43 |     <div  react-hooks/static-components
+
+Ô£û 16 problems (0 errors, 16 warnings)
+

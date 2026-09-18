@@ -1,0 +1,193 @@
+{
+  "rota": "/sistran-labs",
+  "issue": "SIS-216",
+  "pontos": [
+    {
+      "rotulo": "capa-h1",
+      "existe": true,
+      "tag": "h1",
+      "texto": "Sistran Labs: Laboratório de Inovação",
+      "peso": "700",
+      "corpo": "70.4px",
+      "caixa": "none",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 3,
+      "pesoDoHighlight": "700"
+    },
+    {
+      "rotulo": "intro-1-inteligencia-100",
+      "existe": true,
+      "tag": "strong",
+      "texto": "Inteligência de Negócios em Seguros 100%",
+      "peso": "700",
+      "corpo": "18px",
+      "caixa": "none",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 2,
+      "caixaDoSpanInterno": "uppercase",
+      "terminaEm100": true
+    },
+    {
+      "rotulo": "intro-2-testar-desenvolver-homologar",
+      "existe": true,
+      "tag": "strong",
+      "texto": "testar, desenvolver e/ou homologar",
+      "peso": "700",
+      "corpo": "18px",
+      "caixa": "uppercase",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 1
+    },
+    {
+      "rotulo": "intro-3-staff-augmentation",
+      "existe": true,
+      "tag": "strong",
+      "texto": "Seguradora “Staff Augmentation”",
+      "peso": "700",
+      "corpo": "18px",
+      "caixa": "none",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 2
+    },
+    {
+      "rotulo": "intro-3-innovation-that-matters",
+      "existe": true,
+      "tag": "strong",
+      "texto": "“Innovation that matters!”",
+      "peso": "700",
+      "corpo": "18px",
+      "caixa": "none",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 1
+    },
+    {
+      "rotulo": "h2-ja-desenvolvemos",
+      "existe": true,
+      "tag": "h2",
+      "texto": "Já desenvolvemos muitas soluções, entre elas:",
+      "peso": "700",
+      "corpo": "65.6px",
+      "caixa": "none",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 2
+    },
+    {
+      "rotulo": "h2-principais-solucoes",
+      "existe": true,
+      "tag": "h2",
+      "texto": "Principais Soluções Sistran Labs",
+      "peso": "700",
+      "corpo": "65.6px",
+      "caixa": "none",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 2
+    },
+    {
+      "rotulo": "cartao-1-nome",
+      "existe": true,
+      "tag": "h3",
+      "texto": "Predição de Churn",
+      "peso": "700",
+      "corpo": "16px",
+      "caixa": "uppercase",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 1
+    },
+    {
+      "rotulo": "cartao-2-nome",
+      "existe": true,
+      "tag": "h3",
+      "texto": "Fast Claims",
+      "peso": "700",
+      "corpo": "16px",
+      "caixa": "uppercase",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 1
+    },
+    {
+      "rotulo": "cartao-3-nome",
+      "existe": true,
+      "tag": "h3",
+      "texto": "Smart Miner",
+      "peso": "700",
+      "corpo": "16px",
+      "caixa": "uppercase",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 1
+    },
+    {
+      "rotulo": "controle-paragrafo-1-inteiro",
+      "existe": true,
+      "tag": "p",
+      "texto": "Formado por uma equipe de nativos digitais, o Sistran Labs é o laboratório de inovações da Sistran. Aqui, as ideias se transformam em verdadeiras soluções assertivas que impulsionam o crescimento das Seguradoras. O Sistran Labs possui foco em Inteligência de Negócios em Seguros 100% voltados ao estudo/aplicação das soluções mais eficientes para transformação digital, utilizando/criando tecnologia disruptiva (DS/AI/ML/cloud/No & Low-code).",
+      "peso": "400",
+      "corpo": "18px",
+      "caixa": "none",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 8
+    },
+    {
+      "rotulo": "controle-descricao-cartao",
+      "existe": true,
+      "tag": "p",
+      "texto": "Data Science com ações de retenção e aumento da renovação.",
+      "peso": "400",
+      "corpo": "14px",
+      "caixa": "none",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 2
+    },
+    {
+      "rotulo": "controle-guru-nome",
+      "existe": true,
+      "tag": "h3",
+      "texto": "guru de seguros",
+      "peso": "400",
+      "corpo": "16px",
+      "caixa": "none",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "corte700Existe": true,
+      "linhas": 0
+    }
+  ],
+  "escritaIntacta": [
+    {
+      "indice": 1,
+      "igual": true,
+      "lido": "Formado por uma equipe de nativos digitais, o Sistran Labs é o laboratório de inovações da Sistran. Aqui, as ideias se transformam em verdadeiras soluções assertivas que impulsionam o crescimento das Seguradoras. O Sistran Labs possui foco em Inteligência de Negócios em Seguros 100% voltados ao estudo/aplicação das soluções mais eficientes para transformação digital, utilizando/criando tecnologia disruptiva (DS/AI/ML/cloud/No & Low-code)."
+    },
+    {
+      "indice": 2,
+      "igual": true,
+      "lido": "O Sistran Labs com sua expertise tecnológica, é a solução ideal para testar, desenvolver e/ou homologar as tecnologias e soluções de negócio mais adequadas com foco em automatizar processos, adicionar segurança, melhorar a experiência do usuário."
+    },
+    {
+      "indice": 3,
+      "igual": true,
+      "lido": "Nosso time de experts, amplia a capacidade da Seguradora “Staff Augmentation”, com custos racionais, eventualmente interligando-se aos Labs de referência (da seguradora / internacional), validando e localizando soluções. Selecionamos, treinamos e capacitamos recursos para as seguradoras, recebendo colaboradores e devolvendo profissionais em outro patamar de competência. Estamos falando da excelência operacional certeira de um time especializado em Seguros. “Innovation that matters!”"
+    }
+  ],
+  "contraste": {
+    "corDoNegrito": "rgb(10, 31, 68)",
+    "folhaNoRaster": "rgb(248, 250, 253)",
+    "amostradoEm": {
+      "x": 720,
+      "y": 314
+    },
+    "razao": 15.54
+  },
+  "barraHorizontal1440": false,
+  "errosDeConsole": []
+}

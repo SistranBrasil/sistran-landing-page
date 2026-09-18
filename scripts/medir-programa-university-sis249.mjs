@@ -1,4 +1,14 @@
 /**
+ * ⚠️ SONDA HISTÓRICA — A SIS-280 DESFEZ O QUE ELA MEDE.
+ *
+ * A seção deixou de ser fundo escuro com texto por cima e passou a ser folha
+ * clara com a arte num quadro inclinado à direita. Os três alvos desta sonda
+ * (`.university-programa-midia`, o véu em `::before`, a pluma em `::after`) e o
+ * `.university-programa-conteudo` NÃO EXISTEM MAIS no `globals.css`, então
+ * `camadas` sai tudo `null` e o modo `antes` não neutraliza nada. Ela fica no
+ * repositório como registro do que foi medido naquela volta; quem quiser medir a
+ * composição de hoje usa `scripts/medir-programa-university-sis280.mjs`.
+ *
  * SIS-249 — a seção `#university-programa` de `/sistran-university` passa a ter
  * fundo composto (`university-programa.webp` + véu + pluma). Esta sonda mede o
  * que a issue cobra, nas duas larguras de referência (390 e 1440):

@@ -1,0 +1,233 @@
+{
+  "largo": {
+    "h1": {
+      "texto": "Sistran University",
+      "peso": "700",
+      "tamanho": "89.6px",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "testemunhaPeso": {
+        "em400": 719,
+        "em700": 784
+      },
+      "caixa": {
+        "largura": 542,
+        "altura": 172
+      },
+      "maxWidth": "542.4px",
+      "linhas": 2,
+      "descricaoNaCapa": false
+    },
+    "secao": {
+      "existe": true,
+      "id": "university-abertura",
+      "rotulada": "university-abertura-titulo",
+      "fundo": "linear-gradient(rgb(3, 27, 61) 0%, rgba(3, 27, 61, 0) 112px)",
+      "topoDoc": 666,
+      "h2": {
+        "tag": "H2",
+        "texto": "Autossuficiência em capacitação de recursos",
+        "peso": "400",
+        "tamanho": "65.6px",
+        "cor": "rgb(255, 255, 255)",
+        "realce": "rgb(165, 240, 255)",
+        "caixa": {
+          "largura": 957,
+          "altura": 126
+        },
+        "maxWidth": "956.842px",
+        "linhas": 2
+      },
+      "lead": {
+        "texto": "Somos um verdadeiro banco de talentos de",
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "tamanho": "18px",
+        "caixa": {
+          "largura": 672,
+          "altura": 59
+        },
+        "linhas": 2
+      }
+    },
+    "emendas": {
+      "pePaginaCapa": 666,
+      "acimaDaEmenda1": {
+        "seletor": "font-sans antialiased",
+        "cor": "rgb(18, 115, 188)",
+        "imagem": "none"
+      },
+      "abaixoDaEmenda1": {
+        "seletor": "section-py university-abertura",
+        "cor": "rgba(0, 0, 0, 0)",
+        "imagem": "linear-gradient(rgb(3, 27, 61) 0%, rgba(3, 27, 61, 0) 112px), radial-g"
+      },
+      "fundoDaAbertura": "rgba(0, 0, 0, 0)",
+      "fundoDaEntrada": "none",
+      "programaClaro": "radial-gradient(70% 60% at 20% 10%, rgba",
+      "unidepFundo": "radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), ",
+      "numerosFundo": "radial-gradient(70% 60% at 20% 10%, rgba"
+    },
+    "residuoHorizontal": 0,
+    "pixels": {
+      "emenda": 666,
+      "capa8pxAcima": "rgb(3, 26, 60)",
+      "capa1pxAcima": "rgb(3, 27, 61)",
+      "abertura1pxAbaixo": "rgb(3, 27, 61)",
+      "abertura8pxAbaixo": "rgb(2, 28, 63)",
+      "abertura40pxAbaixo": "rgb(1, 34, 72)"
+    }
+  },
+  "estreito": {
+    "h1": {
+      "texto": "Sistran University",
+      "peso": "700",
+      "tamanho": "41.6px",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "testemunhaPeso": {
+        "em400": 334,
+        "em700": 364
+      },
+      "caixa": {
+        "largura": 350,
+        "altura": 40
+      },
+      "maxWidth": "634.234px",
+      "linhas": 1,
+      "descricaoNaCapa": false
+    },
+    "secao": {
+      "existe": true,
+      "id": "university-abertura",
+      "rotulada": "university-abertura-titulo",
+      "fundo": "linear-gradient(rgb(3, 27, 61) 0%, rgba(3, 27, 61, 0) 112px)",
+      "topoDoc": 500,
+      "h2": {
+        "tag": "H2",
+        "texto": "Autossuficiência em capacitação de recursos",
+        "peso": "400",
+        "tamanho": "35.2px",
+        "cor": "rgb(255, 255, 255)",
+        "realce": "rgb(165, 240, 255)",
+        "caixa": {
+          "largura": 350,
+          "altura": 101
+        },
+        "maxWidth": "513.427px",
+        "linhas": 3
+      },
+      "lead": {
+        "texto": "Somos um verdadeiro banco de talentos de",
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "tamanho": "18px",
+        "caixa": {
+          "largura": 350,
+          "altura": 117
+        },
+        "linhas": 4
+      }
+    },
+    "emendas": {
+      "pePaginaCapa": 500,
+      "acimaDaEmenda1": {
+        "seletor": "font-sans antialiased",
+        "cor": "rgb(18, 115, 188)",
+        "imagem": "none"
+      },
+      "abaixoDaEmenda1": {
+        "seletor": "section-py university-abertura",
+        "cor": "rgba(0, 0, 0, 0)",
+        "imagem": "linear-gradient(rgb(3, 27, 61) 0%, rgba(3, 27, 61, 0) 112px), radial-g"
+      },
+      "fundoDaAbertura": "rgba(0, 0, 0, 0)",
+      "fundoDaEntrada": "none",
+      "programaClaro": "radial-gradient(70% 60% at 20% 10%, rgba",
+      "unidepFundo": "radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), ",
+      "numerosFundo": "radial-gradient(70% 60% at 20% 10%, rgba"
+    },
+    "residuoHorizontal": 0,
+    "pixels": {
+      "emenda": 500,
+      "capa8pxAcima": "rgb(3, 34, 69)",
+      "capa1pxAcima": "rgb(3, 35, 69)",
+      "abertura1pxAbaixo": "rgb(2, 27, 61)",
+      "abertura8pxAbaixo": "rgb(2, 28, 62)",
+      "abertura40pxAbaixo": "rgb(1, 31, 68)"
+    }
+  },
+  "reduzido": {
+    "h1": {
+      "texto": "Sistran University",
+      "peso": "700",
+      "tamanho": "89.6px",
+      "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+      "testemunhaPeso": {
+        "em400": 719,
+        "em700": 784
+      },
+      "caixa": {
+        "largura": 542,
+        "altura": 172
+      },
+      "maxWidth": "542.4px",
+      "linhas": 2,
+      "descricaoNaCapa": false
+    },
+    "secao": {
+      "existe": true,
+      "id": "university-abertura",
+      "rotulada": "university-abertura-titulo",
+      "fundo": "linear-gradient(rgb(3, 27, 61) 0%, rgba(3, 27, 61, 0) 112px)",
+      "topoDoc": 666,
+      "h2": {
+        "tag": "H2",
+        "texto": "Autossuficiência em capacitação de recursos",
+        "peso": "400",
+        "tamanho": "65.6px",
+        "cor": "rgb(255, 255, 255)",
+        "realce": "rgb(165, 240, 255)",
+        "caixa": {
+          "largura": 957,
+          "altura": 126
+        },
+        "maxWidth": "956.842px",
+        "linhas": 2
+      },
+      "lead": {
+        "texto": "Somos um verdadeiro banco de talentos de",
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "tamanho": "18px",
+        "caixa": {
+          "largura": 672,
+          "altura": 59
+        },
+        "linhas": 2
+      }
+    },
+    "emendas": {
+      "pePaginaCapa": 666,
+      "acimaDaEmenda1": {
+        "seletor": "font-sans antialiased",
+        "cor": "rgb(18, 115, 188)",
+        "imagem": "none"
+      },
+      "abaixoDaEmenda1": {
+        "seletor": "section-py university-abertura",
+        "cor": "rgba(0, 0, 0, 0)",
+        "imagem": "linear-gradient(rgb(3, 27, 61) 0%, rgba(3, 27, 61, 0) 112px), radial-g"
+      },
+      "fundoDaAbertura": "rgba(0, 0, 0, 0)",
+      "fundoDaEntrada": "none",
+      "programaClaro": "radial-gradient(70% 60% at 20% 10%, rgba",
+      "unidepFundo": "radial-gradient(circle at 15% 42%, rgba(0, 174, 239, 0.16), ",
+      "numerosFundo": "radial-gradient(70% 60% at 20% 10%, rgba"
+    },
+    "residuoHorizontal": 0,
+    "pixels": {
+      "emenda": 666,
+      "capa8pxAcima": "rgb(3, 26, 60)",
+      "capa1pxAcima": "rgb(3, 27, 61)",
+      "abertura1pxAbaixo": "rgb(3, 27, 61)",
+      "abertura8pxAbaixo": "rgb(2, 28, 63)",
+      "abertura40pxAbaixo": "rgb(1, 34, 72)"
+    }
+  }
+}

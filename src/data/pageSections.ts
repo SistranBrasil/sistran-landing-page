@@ -137,6 +137,21 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
        com conteúdo da rota fora do navegador lateral. O título dela é `sr-only`
        (o rótulo visível da parada é este aqui), pelo motivo escrito na página. */
     { id: 'labs-o-que-e', label: 'O Labs' },
+    /* SIS-294 — A PARADA «Ambiente» SAI, e sai porque a seção que ela nomeava
+       deixou de existir: as três fotos passaram a viver dentro da intro, uma por
+       parágrafo, e o `id="labs-ambiente"` foi com a casca (o registro completo
+       está no lugar em que a seção estava, em `src/app/sistran-labs/page.tsx`).
+       Parada apontando para `id` ausente não é enfeite inofensivo: o ScrollSpy
+       resolve cada item por `getElementById`, então ela ficaria eternamente
+       inativa e o clique não rolaria para lugar nenhum.
+       Não há parada nova em troca — as fotos agora SÃO a seção `labs-o-que-e`
+       logo acima, e um segundo rótulo para o mesmo trecho de página daria duas
+       paradas acendendo juntas.
+       A linha anterior, para o registro:
+         { id: 'labs-ambiente', label: 'Ambiente' },
+       e o comentário dela dizia que a âncora nascia «na posição em que a seção
+       nasceu na página (entre a intro e as soluções)», com o rótulo servindo de
+       único nome visível de uma seção de título `sr-only`. */
     /* SIS-181 — azul intermediário medido na margem esquerda: rgb(21 125 196). */
     { id: 'labs-solucoes', label: 'Soluções', tom: 'medio' },
     { id: 'labs-principais', label: 'Principais' },

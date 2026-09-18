@@ -1,0 +1,662 @@
+{
+  "url": "http://localhost:3000/sistran-university",
+  "quando": "2026-09-16T15:43:06.021Z",
+  "largo": {
+    "secao": {
+      "x": 0,
+      "y": 11,
+      "w": 1440,
+      "h": 857
+    },
+    "fundoSecao": "rgba(0, 0, 0, 0)",
+    "malha": true,
+    "circuito": {
+      "caixa": {
+        "x": 0,
+        "y": 11,
+        "w": 1440,
+        "h": 857
+      },
+      "display": "block"
+    },
+    "manchete": {
+      "caixa": {
+        "x": 162,
+        "y": 139,
+        "w": 1116,
+        "h": 109
+      },
+      "corpo": "48px",
+      "linha1": {
+        "x": 162,
+        "y": 139,
+        "w": 1116,
+        "h": 55,
+        "cor": "rgb(165, 240, 255)"
+      },
+      "linha2": {
+        "x": 162,
+        "y": 194,
+        "w": 1116,
+        "h": 55,
+        "cor": "rgb(248, 250, 252)"
+      },
+      "nomeAcessivel": "Em parceria com o Unidep, treinamos nossos próprios talentos."
+    },
+    "lead": {
+      "caixa": {
+        "x": 162,
+        "y": 269,
+        "w": 931,
+        "h": 59
+      },
+      "cor": "rgba(255, 255, 255, 0.82)"
+    },
+    "fileira": {
+      "caixa": {
+        "x": 162,
+        "y": 375,
+        "w": 1116,
+        "h": 273
+      },
+      "colunas": "350.969px 372.047px 350.984px",
+      "vao": "21px"
+    },
+    "cartoes": [
+      {
+        "destaque": false,
+        "caixa": {
+          "x": 162,
+          "y": 375,
+          "w": 351,
+          "h": 273
+        },
+        "centroY": 512,
+        "contorno": "3px / 0px",
+        "sombra": "rgba(1, 16, 34, 0.6) 0px 24px 48px -28px",
+        "foto": {
+          "x": 175,
+          "y": 388,
+          "w": 325,
+          "h": 183
+        },
+        "fotoNatural": "750x422",
+        "rotulo": {
+          "texto": "1ª TURMA",
+          "corpo": "17px"
+        },
+        "apoio": {
+          "texto": "Formação prática",
+          "corpo": "14px",
+          "caixa": {
+            "x": 181,
+            "y": 612,
+            "w": 111,
+            "h": 20
+          }
+        },
+        "seta": {
+          "caixa": {
+            "x": 458,
+            "y": 590,
+            "w": 36,
+            "h": 36
+          },
+          "fundo": "rgba(0, 0, 0, 0)",
+          "borda": "rgba(165, 240, 255, 0.35)"
+        },
+        "barraTopo": null
+      },
+      {
+        "destaque": true,
+        "caixa": {
+          "x": 534,
+          "y": 355,
+          "w": 372,
+          "h": 313
+        },
+        "centroY": 512,
+        "contorno": "1px / 9px",
+        "sombra": "rgba(1, 16, 34, 0.65) 0px 28px 56px -28px, rgba(14, 216, 246, 0.38) 0px 0px 60px -18px",
+        "foto": {
+          "x": 547,
+          "y": 368,
+          "w": 346,
+          "h": 195
+        },
+        "fotoNatural": "750x422",
+        "rotulo": {
+          "texto": "2ª TURMA",
+          "corpo": "17px"
+        },
+        "apoio": {
+          "texto": "Tecnologia • Seguros • Experiência real",
+          "corpo": "13px",
+          "caixa": {
+            "x": 553,
+            "y": 621,
+            "w": 254,
+            "h": 30
+          }
+        },
+        "seta": {
+          "caixa": {
+            "x": 845,
+            "y": 602,
+            "w": 42,
+            "h": 42
+          },
+          "fundo": "rgb(14, 216, 246)",
+          "borda": "rgba(0, 0, 0, 0)"
+        },
+        "barraTopo": {
+          "largura": "72px",
+          "altura": "2px"
+        }
+      },
+      {
+        "destaque": false,
+        "caixa": {
+          "x": 927,
+          "y": 375,
+          "w": 351,
+          "h": 273
+        },
+        "centroY": 512,
+        "contorno": "3px / 0px",
+        "sombra": "rgba(1, 16, 34, 0.6) 0px 24px 48px -28px",
+        "foto": {
+          "x": 940,
+          "y": 388,
+          "w": 325,
+          "h": 183
+        },
+        "fotoNatural": "750x422",
+        "rotulo": {
+          "texto": "3ª TURMA",
+          "corpo": "17px"
+        },
+        "apoio": {
+          "texto": "Novas trajetórias",
+          "corpo": "14px",
+          "caixa": {
+            "x": 946,
+            "y": 612,
+            "w": 109,
+            "h": 20
+          }
+        },
+        "seta": {
+          "caixa": {
+            "x": 1223,
+            "y": 590,
+            "w": 36,
+            "h": 36
+          },
+          "fundo": "rgba(0, 0, 0, 0)",
+          "borda": "rgba(165, 240, 255, 0.35)"
+        },
+        "barraTopo": null
+      }
+    ],
+    "pilula": {
+      "caixa": {
+        "x": 162,
+        "y": 696,
+        "w": 290,
+        "h": 44
+      },
+      "href": "/esg#esg-social",
+      "texto": "Projeto Gerando Talentos, em ESG",
+      "corpo": "14px",
+      "raio": "999px",
+      "transicao": "0.3s, 0.3s, 0.3s"
+    },
+    "vizinhos": {
+      "programaFim": 11,
+      "numerosTopo": 868
+    },
+    "residuo": 0
+  },
+  "estreito": {
+    "secao": {
+      "x": 0,
+      "y": 24,
+      "w": 390,
+      "h": 1471
+    },
+    "fundoSecao": "rgba(0, 0, 0, 0)",
+    "malha": true,
+    "circuito": {
+      "caixa": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "display": "none"
+    },
+    "manchete": {
+      "caixa": {
+        "x": 20,
+        "y": 104,
+        "w": 350,
+        "h": 146
+      },
+      "corpo": "32px",
+      "linha1": {
+        "x": 20,
+        "y": 104,
+        "w": 350,
+        "h": 73,
+        "cor": "rgb(165, 240, 255)"
+      },
+      "linha2": {
+        "x": 20,
+        "y": 176,
+        "w": 350,
+        "h": 73,
+        "cor": "rgb(248, 250, 252)"
+      },
+      "nomeAcessivel": "Em parceria com o Unidep, treinamos nossos próprios talentos."
+    },
+    "lead": {
+      "caixa": {
+        "x": 20,
+        "y": 269,
+        "w": 350,
+        "h": 146
+      },
+      "cor": "rgba(255, 255, 255, 0.82)"
+    },
+    "fileira": {
+      "caixa": {
+        "x": 20,
+        "y": 464,
+        "w": 350,
+        "h": 859
+      },
+      "colunas": "350px",
+      "vao": "16px"
+    },
+    "cartoes": [
+      {
+        "destaque": false,
+        "caixa": {
+          "x": 20,
+          "y": 464,
+          "w": 350,
+          "h": 272
+        },
+        "centroY": 600,
+        "contorno": "3px / 0px",
+        "sombra": "rgba(1, 16, 34, 0.6) 0px 24px 48px -28px",
+        "foto": {
+          "x": 33,
+          "y": 477,
+          "w": 324,
+          "h": 182
+        },
+        "fotoNatural": "750x422",
+        "rotulo": {
+          "texto": "1ª TURMA",
+          "corpo": "17px"
+        },
+        "apoio": {
+          "texto": "Formação prática",
+          "corpo": "14px",
+          "caixa": {
+            "x": 39,
+            "y": 699,
+            "w": 111,
+            "h": 20
+          }
+        },
+        "seta": {
+          "caixa": {
+            "x": 315,
+            "y": 678,
+            "w": 36,
+            "h": 36
+          },
+          "fundo": "rgba(0, 0, 0, 0)",
+          "borda": "rgba(165, 240, 255, 0.35)"
+        },
+        "barraTopo": null
+      },
+      {
+        "destaque": true,
+        "caixa": {
+          "x": 20,
+          "y": 752,
+          "w": 350,
+          "h": 283
+        },
+        "centroY": 893,
+        "contorno": "3px / 7px",
+        "sombra": "rgba(1, 16, 34, 0.65) 0px 28px 56px -28px, rgba(14, 216, 246, 0.38) 0px 0px 60px -18px",
+        "foto": {
+          "x": 33,
+          "y": 765,
+          "w": 324,
+          "h": 182
+        },
+        "fotoNatural": "750x422",
+        "rotulo": {
+          "texto": "2ª TURMA",
+          "corpo": "17px"
+        },
+        "apoio": {
+          "texto": "Tecnologia • Seguros • Experiência real",
+          "corpo": "13px",
+          "caixa": {
+            "x": 39,
+            "y": 988,
+            "w": 254,
+            "h": 30
+          }
+        },
+        "seta": {
+          "caixa": {
+            "x": 309,
+            "y": 968,
+            "w": 42,
+            "h": 42
+          },
+          "fundo": "rgb(14, 216, 246)",
+          "borda": "rgba(0, 0, 0, 0)"
+        },
+        "barraTopo": {
+          "largura": "48px",
+          "altura": "2px"
+        }
+      },
+      {
+        "destaque": false,
+        "caixa": {
+          "x": 20,
+          "y": 1051,
+          "w": 350,
+          "h": 272
+        },
+        "centroY": 1187,
+        "contorno": "3px / 0px",
+        "sombra": "rgba(1, 16, 34, 0.6) 0px 24px 48px -28px",
+        "foto": {
+          "x": 33,
+          "y": 1064,
+          "w": 324,
+          "h": 182
+        },
+        "fotoNatural": "750x422",
+        "rotulo": {
+          "texto": "3ª TURMA",
+          "corpo": "17px"
+        },
+        "apoio": {
+          "texto": "Novas trajetórias",
+          "corpo": "14px",
+          "caixa": {
+            "x": 39,
+            "y": 1286,
+            "w": 109,
+            "h": 20
+          }
+        },
+        "seta": {
+          "caixa": {
+            "x": 315,
+            "y": 1265,
+            "w": 36,
+            "h": 36
+          },
+          "fundo": "rgba(0, 0, 0, 0)",
+          "borda": "rgba(165, 240, 255, 0.35)"
+        },
+        "barraTopo": null
+      }
+    ],
+    "pilula": {
+      "caixa": {
+        "x": 20,
+        "y": 1371,
+        "w": 290,
+        "h": 44
+      },
+      "href": "/esg#esg-social",
+      "texto": "Projeto Gerando Talentos, em ESG",
+      "corpo": "14px",
+      "raio": "999px",
+      "transicao": "0.3s, 0.3s, 0.3s"
+    },
+    "vizinhos": {
+      "programaFim": 24,
+      "numerosTopo": 1495
+    },
+    "residuo": 0
+  },
+  "reduzido": {
+    "secao": {
+      "x": 0,
+      "y": 8,
+      "w": 1440,
+      "h": 857
+    },
+    "fundoSecao": "rgba(0, 0, 0, 0)",
+    "malha": true,
+    "circuito": {
+      "caixa": {
+        "x": 0,
+        "y": 8,
+        "w": 1440,
+        "h": 857
+      },
+      "display": "block"
+    },
+    "manchete": {
+      "caixa": {
+        "x": 162,
+        "y": 136,
+        "w": 1116,
+        "h": 109
+      },
+      "corpo": "48px",
+      "linha1": {
+        "x": 162,
+        "y": 136,
+        "w": 1116,
+        "h": 55,
+        "cor": "rgb(165, 240, 255)"
+      },
+      "linha2": {
+        "x": 162,
+        "y": 191,
+        "w": 1116,
+        "h": 55,
+        "cor": "rgb(248, 250, 252)"
+      },
+      "nomeAcessivel": "Em parceria com o Unidep, treinamos nossos próprios talentos."
+    },
+    "lead": {
+      "caixa": {
+        "x": 162,
+        "y": 266,
+        "w": 931,
+        "h": 59
+      },
+      "cor": "rgba(255, 255, 255, 0.82)"
+    },
+    "fileira": {
+      "caixa": {
+        "x": 162,
+        "y": 372,
+        "w": 1116,
+        "h": 273
+      },
+      "colunas": "350.969px 372.047px 350.984px",
+      "vao": "21px"
+    },
+    "cartoes": [
+      {
+        "destaque": false,
+        "caixa": {
+          "x": 162,
+          "y": 372,
+          "w": 351,
+          "h": 273
+        },
+        "centroY": 509,
+        "contorno": "3px / 0px",
+        "sombra": "rgba(1, 16, 34, 0.6) 0px 24px 48px -28px",
+        "foto": {
+          "x": 175,
+          "y": 385,
+          "w": 325,
+          "h": 183
+        },
+        "fotoNatural": "750x422",
+        "rotulo": {
+          "texto": "1ª TURMA",
+          "corpo": "17px"
+        },
+        "apoio": {
+          "texto": "Formação prática",
+          "corpo": "14px",
+          "caixa": {
+            "x": 181,
+            "y": 609,
+            "w": 111,
+            "h": 20
+          }
+        },
+        "seta": {
+          "caixa": {
+            "x": 458,
+            "y": 587,
+            "w": 36,
+            "h": 36
+          },
+          "fundo": "rgba(0, 0, 0, 0)",
+          "borda": "rgba(165, 240, 255, 0.35)"
+        },
+        "barraTopo": null
+      },
+      {
+        "destaque": true,
+        "caixa": {
+          "x": 534,
+          "y": 352,
+          "w": 372,
+          "h": 313
+        },
+        "centroY": 509,
+        "contorno": "1px / 9px",
+        "sombra": "rgba(1, 16, 34, 0.65) 0px 28px 56px -28px, rgba(14, 216, 246, 0.38) 0px 0px 60px -18px",
+        "foto": {
+          "x": 547,
+          "y": 365,
+          "w": 346,
+          "h": 195
+        },
+        "fotoNatural": "750x422",
+        "rotulo": {
+          "texto": "2ª TURMA",
+          "corpo": "17px"
+        },
+        "apoio": {
+          "texto": "Tecnologia • Seguros • Experiência real",
+          "corpo": "13px",
+          "caixa": {
+            "x": 553,
+            "y": 618,
+            "w": 254,
+            "h": 30
+          }
+        },
+        "seta": {
+          "caixa": {
+            "x": 845,
+            "y": 599,
+            "w": 42,
+            "h": 42
+          },
+          "fundo": "rgb(14, 216, 246)",
+          "borda": "rgba(0, 0, 0, 0)"
+        },
+        "barraTopo": {
+          "largura": "72px",
+          "altura": "2px"
+        }
+      },
+      {
+        "destaque": false,
+        "caixa": {
+          "x": 927,
+          "y": 372,
+          "w": 351,
+          "h": 273
+        },
+        "centroY": 509,
+        "contorno": "3px / 0px",
+        "sombra": "rgba(1, 16, 34, 0.6) 0px 24px 48px -28px",
+        "foto": {
+          "x": 940,
+          "y": 385,
+          "w": 325,
+          "h": 183
+        },
+        "fotoNatural": "750x422",
+        "rotulo": {
+          "texto": "3ª TURMA",
+          "corpo": "17px"
+        },
+        "apoio": {
+          "texto": "Novas trajetórias",
+          "corpo": "14px",
+          "caixa": {
+            "x": 946,
+            "y": 609,
+            "w": 109,
+            "h": 20
+          }
+        },
+        "seta": {
+          "caixa": {
+            "x": 1223,
+            "y": 587,
+            "w": 36,
+            "h": 36
+          },
+          "fundo": "rgba(0, 0, 0, 0)",
+          "borda": "rgba(165, 240, 255, 0.35)"
+        },
+        "barraTopo": null
+      }
+    ],
+    "pilula": {
+      "caixa": {
+        "x": 162,
+        "y": 693,
+        "w": 290,
+        "h": 44
+      },
+      "href": "/esg#esg-social",
+      "texto": "Projeto Gerando Talentos, em ESG",
+      "corpo": "14px",
+      "raio": "999px",
+      "transicao": "1e-05s"
+    },
+    "vizinhos": {
+      "programaFim": 8,
+      "numerosTopo": 865
+    },
+    "residuo": 0
+  },
+  "semJs": {
+    "manchete": true,
+    "lead": true,
+    "turmas": true,
+    "pilula": true,
+    "hrefEsg": true
+  }
+}

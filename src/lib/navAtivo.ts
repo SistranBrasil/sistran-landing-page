@@ -30,7 +30,32 @@ import type { NavItem } from '@/data/types';
  * passa string vazia — nenhum item de `NAV_ITEMS` é âncora hoje, e o parâmetro
  * fica porque o header rastreia e a regra é dele também.
  */
+/**
+ * SIS-280 — o `href` aponta para FORA do app?
+ *
+ * Mora aqui, junto de `matchActive`, porque é a mesma pergunta vista de dois
+ * ângulos: quem decide se um item acende também precisa saber que um endereço
+ * absoluto nunca é «a página atual». O Header importa daqui para escolher entre
+ * `<Link>` e `<a>`, e assim a regra do que é externo existe UMA vez — se ela
+ * ficasse escrita no Header como um `startsWith('http')` solto, o rodapé
+ * (`RodapeNav`, que itera a mesma lista) poderia divergir sem ninguém notar.
+ *
+ * `http(s)` e não `//`: a lista é escrita à mão em `data/nav.ts` e um endereço
+ * sem esquema não aparece nela — reconhecer só o que existe evita tratar como
+ * externa uma futura rota interna que comece com duas barras por erro de digitação.
+ */
+export function ehLinkExterno(href: string) {
+  return /^https?:\/\//i.test(href);
+}
+
 export function matchActive(href: string, pathname: string, activeHash: string) {
+  /* SIS-280 — endereço externo NUNCA é a página atual. Sem esta linha o
+     resultado já era `false` por acidente (nenhum `pathname` começa com
+     `https://`), e é justamente por ser acidente que a guarda entra: a issue pede
+     que `aria-current` não marque o item de «Sistran Latam» quando o visitante
+     está na rota interna `/latam`, e depender de duas strings não se encontrarem
+     por sorte deixaria a garantia refém do próximo ajuste no prefixo abaixo. */
+  if (ehLinkExterno(href)) return false;
   if (href.startsWith('/#')) {
     return pathname === '/' && activeHash === href.slice(1);
   }

@@ -1,0 +1,246 @@
+{
+  "issue": "SIS-287",
+  "volta": "2ª (marca única)",
+  "leituras": {
+    "/sistran-labs @360": {
+      "marcas": [
+        {
+          "arquivo": "…/sistran-labs/logo-labs-header.webp",
+          "alt": "Sistran Labs",
+          "recortada": true,
+          "larguraPintada": 122.8,
+          "alturaPintada": 28,
+          "destino": "/sistran-labs",
+          "rotulo": "Sistran Labs, ir para a página da Sistran Labs"
+        }
+      ],
+      "divisores": 0,
+      "navVisivel": false,
+      "larguraNav": 0,
+      "larguraBotao": 0,
+      "caixaConteudo": 296,
+      "sobraParaMarca": 244,
+      "transbordou": false
+    },
+    "/sistran-labs @390": {
+      "marcas": [
+        {
+          "arquivo": "…/sistran-labs/logo-labs-header.webp",
+          "alt": "Sistran Labs",
+          "recortada": true,
+          "larguraPintada": 122.8,
+          "alturaPintada": 28,
+          "destino": "/sistran-labs",
+          "rotulo": "Sistran Labs, ir para a página da Sistran Labs"
+        }
+      ],
+      "divisores": 0,
+      "navVisivel": false,
+      "larguraNav": 0,
+      "larguraBotao": 0,
+      "caixaConteudo": 326,
+      "sobraParaMarca": 274,
+      "transbordou": false
+    },
+    "/sistran-labs @1280": {
+      "marcas": [
+        {
+          "arquivo": "…/sistran-labs/logo-labs-header.webp",
+          "alt": "Sistran Labs",
+          "recortada": true,
+          "larguraPintada": 175.4,
+          "alturaPintada": 40,
+          "destino": "/sistran-labs",
+          "rotulo": "Sistran Labs, ir para a página da Sistran Labs"
+        }
+      ],
+      "divisores": 0,
+      "navVisivel": false,
+      "larguraNav": 0,
+      "larguraBotao": 161.3,
+      "caixaConteudo": 1208,
+      "sobraParaMarca": 994.7,
+      "transbordou": false
+    },
+    "/sistran-labs @1440": {
+      "marcas": [
+        {
+          "arquivo": "…/sistran-labs/logo-labs-header.webp",
+          "alt": "Sistran Labs",
+          "recortada": true,
+          "larguraPintada": 175.4,
+          "alturaPintada": 40,
+          "destino": "/sistran-labs",
+          "rotulo": "Sistran Labs, ir para a página da Sistran Labs"
+        }
+      ],
+      "divisores": 0,
+      "navVisivel": true,
+      "larguraNav": 833.1,
+      "larguraBotao": 161.3,
+      "caixaConteudo": 1208,
+      "sobraParaMarca": 201.6,
+      "transbordou": false
+    },
+    "/sistran-university @360": {
+      "marcas": [
+        {
+          "arquivo": "…/university/logo-university-header.webp",
+          "alt": "Sistran University",
+          "recortada": true,
+          "larguraPintada": 103.1,
+          "alturaPintada": 34,
+          "destino": "/sistran-university",
+          "rotulo": "Sistran University, ir para a página da Sistran University"
+        }
+      ],
+      "divisores": 0,
+      "navVisivel": false,
+      "larguraNav": 0,
+      "larguraBotao": 0,
+      "caixaConteudo": 296,
+      "sobraParaMarca": 244,
+      "transbordou": false
+    },
+    "/sistran-university @390": {
+      "marcas": [
+        {
+          "arquivo": "…/university/logo-university-header.webp",
+          "alt": "Sistran University",
+          "recortada": true,
+          "larguraPintada": 103.1,
+          "alturaPintada": 34,
+          "destino": "/sistran-university",
+          "rotulo": "Sistran University, ir para a página da Sistran University"
+        }
+      ],
+      "divisores": 0,
+      "navVisivel": false,
+      "larguraNav": 0,
+      "larguraBotao": 0,
+      "caixaConteudo": 326,
+      "sobraParaMarca": 274,
+      "transbordou": false
+    },
+    "/sistran-university @1280": {
+      "marcas": [
+        {
+          "arquivo": "…/university/logo-university-header.webp",
+          "alt": "Sistran University",
+          "recortada": true,
+          "larguraPintada": 127.3,
+          "alturaPintada": 42,
+          "destino": "/sistran-university",
+          "rotulo": "Sistran University, ir para a página da Sistran University"
+        }
+      ],
+      "divisores": 0,
+      "navVisivel": false,
+      "larguraNav": 0,
+      "larguraBotao": 161.3,
+      "caixaConteudo": 1208,
+      "sobraParaMarca": 994.7,
+      "transbordou": false
+    },
+    "/sistran-university @1440": {
+      "marcas": [
+        {
+          "arquivo": "…/university/logo-university-header.webp",
+          "alt": "Sistran University",
+          "recortada": true,
+          "larguraPintada": 127.3,
+          "alturaPintada": 42,
+          "destino": "/sistran-university",
+          "rotulo": "Sistran University, ir para a página da Sistran University"
+        }
+      ],
+      "divisores": 0,
+      "navVisivel": true,
+      "larguraNav": 833.1,
+      "larguraBotao": 161.3,
+      "caixaConteudo": 1208,
+      "sobraParaMarca": 201.6,
+      "transbordou": false
+    },
+    "/esg @360": {
+      "marcas": [
+        {
+          "arquivo": "…/sistran-corp-logo.png",
+          "alt": "Sistran",
+          "recortada": false,
+          "larguraPintada": 107.8,
+          "alturaPintada": 72,
+          "destino": "/",
+          "rotulo": "Sistran, ir para a página inicial"
+        }
+      ],
+      "divisores": 0,
+      "navVisivel": false,
+      "larguraNav": 0,
+      "larguraBotao": 0,
+      "caixaConteudo": 296,
+      "sobraParaMarca": 244,
+      "transbordou": false
+    },
+    "/esg @390": {
+      "marcas": [
+        {
+          "arquivo": "…/sistran-corp-logo.png",
+          "alt": "Sistran",
+          "recortada": false,
+          "larguraPintada": 107.8,
+          "alturaPintada": 72,
+          "destino": "/",
+          "rotulo": "Sistran, ir para a página inicial"
+        }
+      ],
+      "divisores": 0,
+      "navVisivel": false,
+      "larguraNav": 0,
+      "larguraBotao": 0,
+      "caixaConteudo": 326,
+      "sobraParaMarca": 274,
+      "transbordou": false
+    },
+    "/esg @1280": {
+      "marcas": [
+        {
+          "arquivo": "…/sistran-corp-logo.png",
+          "alt": "Sistran",
+          "recortada": false,
+          "larguraPintada": 131.8,
+          "alturaPintada": 88,
+          "destino": "/",
+          "rotulo": "Sistran, ir para a página inicial"
+        }
+      ],
+      "divisores": 0,
+      "navVisivel": false,
+      "larguraNav": 0,
+      "larguraBotao": 161.3,
+      "caixaConteudo": 1208,
+      "sobraParaMarca": 994.7,
+      "transbordou": false
+    },
+    "/esg @1440": {
+      "marcas": [
+        {
+          "arquivo": "…/sistran-corp-logo.png",
+          "alt": "Sistran",
+          "recortada": false,
+          "larguraPintada": 131.8,
+          "alturaPintada": 88,
+          "destino": "/",
+          "rotulo": "Sistran, ir para a página inicial"
+        }
+      ],
+      "divisores": 0,
+      "navVisivel": true,
+      "larguraNav": 889.1,
+      "larguraBotao": 161.3,
+      "caixaConteudo": 1208,
+      "sobraParaMarca": 145.6,
+      "transbordou": false
+    }
+  }
+}

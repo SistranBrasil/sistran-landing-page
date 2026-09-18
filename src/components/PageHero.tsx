@@ -8,9 +8,50 @@ import { useProgressoDeSecao } from '@/lib/scrollProgress';
 
 type Props = {
   eyebrow?: string;
+  /**
+   * SIS-277 — ARTE no lugar da tag textual.
+   *
+   * Quando vem preenchida, ela ENTRA NO LUGAR do `eyebrow`: as duas juntas
+   * diriam a mesma coisa duas vezes na mesma linha. Por isso `eyebrow` continua
+   * sendo aceito e ignorado nesse caso — a rota que troca a tag por arte não
+   * precisa apagar a palavra da chamada para depois não saber mais qual era o
+   * texto (o `alt` da arte é quem o carrega agora).
+   *
+   * Prop opcional, e não troca do tipo de `eyebrow` para `ReactNode`: são
+   * quatorze rotas usando este componente com uma string, e alargar o tipo
+   * abriria a porta para cada uma inventar uma marcação diferente na mesma
+   * posição.
+   *
+   * O nó da arte NÃO recebe `variants`. Ela traz a própria entrada (a batida do
+   * `CarimboBatida`, escrita por quadro pelo GSAP), e valor por quadro
+   * disputando `transform` com uma segunda fonte é a colisão do SIS-42 — a
+   * mesma razão pela qual a partida cinematográfica vive no wrapper externo e
+   * não no `motion.div`. Um dono por nó.
+   */
+  eyebrowArte?: React.ReactNode;
   title: string;
   highlight?: string;
   description?: React.ReactNode;
+  /**
+   * SIS-281 — a manchete em PESO REAL, quando a rota pede.
+   *
+   * Opt-in, pelo mesmo motivo do `cinematografico` e do `eyebrowArte`: são
+   * quatorze rotas montando este componente, e engrossar o `h1` aqui dentro sem
+   * porta seria uma mudança de quatorze páginas escondida numa de uma — e uma
+   * mudança contra a assinatura do projeto, que normalizou o display para 400
+   * (SIS-155: 73 pontos de JSX perderam `font-bold`/`font-black`).
+   *
+   * O peso é REAL, não sintetizado, e isso precisa ser dito porque `html`
+   * declara `font-synthesis: none`: pedir um peso sem corte carregado não
+   * engrossaria nada. O corte existe — `layout.tsx` carrega a Geist Sans em
+   * 400/500/600/700 —, e é a mesma exceção que a SIS-282 abriu para os `h2`
+   * desta mesma rota, a pedido e por escrito.
+   *
+   * Utilitária do Tailwind, e não regra no `globals.css`: nada fixa
+   * `font-weight` nestes `h1` fora do reset, então não há especificidade a
+   * vencer (o `h1` de `/contato` mora no CSS por esse motivo, não por política).
+   */
+  tituloForte?: boolean;
   /**
    * Partida cinematográfica: a entrada recua enquanto sai de cena e acende um fio
    * ciano na borda inferior, que a seção seguinte recebe como trilho.
@@ -52,9 +93,11 @@ function escalaDoTitulo(comprimento: number) {
 
 export default function PageHero({
   eyebrow,
+  eyebrowArte,
   title,
   highlight,
   description,
+  tituloForte = false,
   cinematografico = false,
 }: Props) {
   const rm = useReducedMotion();
@@ -110,14 +153,32 @@ export default function PageHero({
              (`max-w-2xl`, abaixo) e o título passa a ocupar o container. */
           className="w-full"
         >
-          {eyebrow && (
-            <motion.span variants={vEyebrow} className="eyebrow !text-[#A5F0FF]">
-              {eyebrow}
-            </motion.span>
+          {/* SIS-277 — arte OU tag textual, nunca as duas: ver `eyebrowArte` no
+              tipo das props. O `<span>` de fora existe para dar a linha própria
+              que o `.eyebrow` (bloco) dava, sem herdar caps, tracking nem o ponto
+              do `::before` daquela classe. */}
+          {eyebrowArte ? (
+            <span className="block">{eyebrowArte}</span>
+          ) : (
+            eyebrow && (
+              <motion.span variants={vEyebrow} className="eyebrow !text-[#A5F0FF]">
+                {eyebrow}
+              </motion.span>
+            )
           )}
           <motion.h1
             variants={vTitle}
-            className={`mt-4 font-display tracking-tight text-white ${escala.fonte} ${escala.medida}`}
+            /* Era o template string `mt-4 font-display tracking-tight text-white
+               ${escala.fonte} ${escala.medida}`. Passou a `clsx` só porque
+               entrou uma classe CONDICIONAL (`tituloForte`): concatenar
+               `${forte ? 'font-bold' : ''}` deixaria um espaço duplo no
+               atributo, e o componente já importa `clsx` para a `<section>`. */
+            className={clsx(
+              'mt-4 font-display tracking-tight text-white',
+              escala.fonte,
+              escala.medida,
+              tituloForte && 'font-bold',
+            )}
           >
             {title}
             {highlight && <span className="text-[#A5F0FF]"> {highlight}</span>}

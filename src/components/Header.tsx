@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import type Lenis from 'lenis';
 import { NAV_ITEMS } from '@/data/nav';
 import type { NavItem } from '@/data/types';
-import { matchActive, ramoAtivo } from '@/lib/navAtivo';
+import { ehLinkExterno, matchActive, ramoAtivo } from '@/lib/navAtivo';
 import ContactModal from './ContactModal';
 
 const ACCENT = '#0ed8f6';
@@ -51,16 +51,32 @@ function LinkNav({
   item,
   isActive,
   current,
+  compacto,
 }: {
   item: NavItem;
   isActive: boolean;
   current: boolean;
+  /* SIS-279 — 6px a menos de respiro lateral por item, e só onde a pílula
+     carrega DUAS marcas. Ver a nota do bloco duplo mais abaixo: a 1440 o
+     cabeçalho já fechava com 1px de sobra, então os 56px que estes sete itens
+     devolvem são o que impede o botão «Fale com a gente» de sair da pílula.
+     Nada mais muda — mesmo corpo de letra, mesma altura de alvo de clique. */
+  compacto: boolean;
 }) {
   return (
     <Link
       href={item.href}
       aria-current={current ? 'page' : undefined}
-      className="relative whitespace-nowrap px-2.5 py-2.5 text-[0.75rem] font-semibold transition-colors duration-200"
+      /* A classe inteira nos dois ramos, em vez de `clsx(base, px-1.5|px-2.5)`:
+         o extrator do copy-lock captura o literal escolhido por ternário, e
+         `px-1.5` solto passa por escrita do site (chegou a entrar no lock na
+         primeira volta desta issue). A classe completa ele descarta pela forma.
+         A única diferença entre as duas linhas é o `px`. */
+      className={
+        compacto
+          ? 'relative whitespace-nowrap px-1.5 py-2.5 text-[0.75rem] font-semibold transition-colors duration-200'
+          : 'relative whitespace-nowrap px-2.5 py-2.5 text-[0.75rem] font-semibold transition-colors duration-200'
+      }
       style={{ color: isActive ? '#fff' : 'rgba(255,255,255,0.68)' }}
     >
       {item.label}
@@ -75,10 +91,195 @@ function LinkNav({
   );
 }
 
+/* SIS-279 — a caixa do arquivo NÃO é a marca.
+
+   Medido pixel a pixel (alfa > 12) nos dois arquivos que o header usa:
+
+     `sistran-corp-logo.png`            560×374, tinta 506×127 em (19,103)
+     `university/logo-university-header.webp`  291×96, tinta = o arquivo inteiro
+
+   No corporativo a tinta ocupa 34% da altura do arquivo e fica ACIMA do centro
+   dele. Dimensionar pela caixa, que é o que `object-contain` faz, tem duas
+   consequências que só aparecem quando as duas marcas dividem a pílula: elas
+   saem com tamanhos visíveis diferentes, e a corporativa fica ~5% mais alta que
+   a outra na vertical. Pior: para a tinta corporativa chegar aos ~27px que
+   equilibram a da University, a caixa teria de passar de 80px — não cabe nos
+   72px da pílula no mobile.
+
+   Por isso, NAS ROTAS COM MARCA PRÓPRIA, ela entra recortada na própria tinta.
+   O invólucro tem o tamanho do que se vê — é ele que o flex mede, então o
+   respiro até a nav sai do que se enxerga, e não do vazio do arquivo — e a
+   imagem é posicionada dentro dele em PORCENTAGEM da tinta: proporção, não
+   pixel, então a mesma conta vale nos dois tamanhos e sobrevive a qualquer troca
+   de altura.
+
+   SIS-287 (2ª volta) — o parágrafo acima fala de «as duas marcas dividindo a
+   pílula» porque foi esse o caso que descobriu o problema; o par acabou, mas o
+   recorte FICA, e por um motivo que independe dele: sem recortar, a altura que se
+   escreve não é a altura do que se vê, e a marca da página apareceria menor do
+   que a medida pedida, com o vazio do arquivo empurrando a nav.
+
+   Nas outras rotas nada disto entra em cena: aquele caminho continua sendo o
+   `<Image>` solto de antes, com `data-morph-target` e `onLogoClick`. */
+const TINTA = {
+  /* Arte trocada a pedido, fora do escopo do SIS-287 (que listou «trocar o
+     arquivo da arte» como não-escopo) e por decisão dela: a nova é
+     `public/images/university/logo-university.png`, 2033×773, com alfa de
+     verdade e cor de verdade (`satMax 255`). A derivada vem de
+     `scripts/gerar-marca-university-header.mjs`, que RECORTA na tinta medida
+     (alfa > 12: x 42, y 96, 1942×641) e reduz para 96px de altura → 291×96.
+
+     Duas consequências de o recorte já vir aplicado no arquivo:
+       • `caixa` passa a ser o arquivo inteiro. `MarcaRecortada` continua sendo o
+         caminho — ela é que garante que a altura escrita seja a altura do que se
+         vê — só que agora com deslocamento zero.
+       • a razão da tinta é 3,03, contra 3,05 da arte anterior. É por isso que
+         `MARCA_DA_ROTA.university.altura` NÃO muda: a 42px a marca pinta ~127px,
+         bem dentro dos ~201px que sobram na fila a 1440.
+
+     O arquivo derivado, aliás, não existia mais na árvore de trabalho (aparecia
+     apagado no `git status`) enquanto o `src` aqui continuava apontando para ele
+     — este script também repõe isso. O PNG fonte fica no repo para regerar. */
+  university: {
+    src: '/images/university/logo-university-header.webp',
+    alt: 'Sistran University',
+    natural: { w: 291, h: 96 },
+    caixa: { x: 0, y: 0, w: 291, h: 96 },
+  },
+  /* SIS-287 (2ª volta) — a tinta CORPORATIVA sai desta tabela porque perdeu o
+     único chamador: ela existia para desenhar a segunda marca do par, e o par
+     acabou. As demais rotas nunca passaram por aqui — lá a corporativa é o
+     `<Image>` solto com `object-contain` no ramo `else`, intacto.
+
+     Fica comentada, e não apagada, porque a medição da caixa é trabalho de
+     medir arquivo (a tinta ocupa 34% da altura, deslocada para cima) e quem
+     precisar dela de volta não deve refazer a conta:
+       corporativa: {
+         src: '/images/sistran-corp-logo.png',
+         alt: 'Sistran',
+         natural: { w: 560, h: 374 },
+         caixa: { x: 19, y: 103, w: 506, h: 127 },
+       }, */
+  /* SIS-287 — a marca Labs. A `caixa` é o arquivo INTEIRO, ao contrário das duas
+     de cima, porque o derivado já sai cortado na tinta: a arte entregue
+     (`logosemfundo.png`, 1024x576) tem o fundo preto CHAPADO — nome mentiroso,
+     `hasAlpha: false` — e quem recorta o alfa é
+     `scripts/gerar-marca-labs-header-sis287.mjs`, onde está a medição toda.
+
+     O número que manda no layout é a RAZÃO: a tinta desta marca é 961x219,
+     razão 4,39, contra 3,05 da University. Ela é 44% mais larga para a mesma
+     altura, e é por isso que as alturas abaixo não são as da University. */
+  labs: {
+    src: '/images/sistran-labs/logo-labs-header.webp',
+    alt: 'Sistran Labs',
+    natural: { w: 421, h: 96 },
+    caixa: { x: 0, y: 0, w: 421, h: 96 },
+  },
+} as const;
+
+function MarcaRecortada({
+  marca,
+  className,
+}: {
+  marca: (typeof TINTA)[keyof typeof TINTA];
+  /* Só a ALTURA da tinta por breakpoint; a largura sai do `aspect-ratio`. */
+  className: string;
+}) {
+  const { natural, caixa } = marca;
+  return (
+    <span
+      className={clsx('logo-glow relative block flex-none overflow-hidden', className)}
+      style={{ aspectRatio: `${caixa.w} / ${caixa.h}` }}
+    >
+      <Image
+        src={marca.src}
+        alt={marca.alt}
+        width={natural.w}
+        height={natural.h}
+        priority
+        className="absolute max-w-none"
+        style={{
+          width: `${(natural.w / caixa.w) * 100}%`,
+          height: `${(natural.h / caixa.h) * 100}%`,
+          left: `${(-caixa.x / caixa.w) * 100}%`,
+          top: `${(-caixa.y / caixa.h) * 100}%`,
+        }}
+      />
+    </span>
+  );
+}
+
+/* SIS-287 (2ª volta) — as DUAS rotas que trocam a marca da pílula, numa tabela só.
+
+   Antes esta tabela se chamava `PAR_DE_MARCAS` e cada linha trazia também a
+   altura do `divisor`, porque a rota mostrava marca da página | fio | marca da
+   casa. O par saiu: agora cada rota mostra UMA marca, a sua. O que sobrou de
+   variável entre as duas continua sendo dado — arquivo, destino, rótulo e altura
+   por faixa —, e o nome mudou para dizer o que a tabela é hoje; deixar
+   `PAR_DE_MARCAS` seria documentação mentindo no próprio identificador.
+
+   As linhas do divisor eram estas, para quem precisar reconstituir o par:
+     university → 'h-[22px] md:h-[27px] [@media(min-width:1440px)]:h-[19px]'
+     labs       → 'h-[18px] md:h-[26px] [@media(min-width:1440px)]:h-[15px]'
+
+   AS ALTURAS DE 1440 RELAXARAM, e é a única mudança de número desta volta. Elas
+   existiam por aperto de largura, não por gosto: com o par, o orçamento medido a
+   1440 (`scripts/medir-marcas-header-sis279.mjs`) era de ~201px — caixa de
+   conteúdo de 1208px menos menu compacto (833,1px), `mr-3` (12px) e botão
+   (161,3px) —, e a marca da página tinha de caber ali JUNTO com divisor, respiros
+   e corporativa. Daí 30px na University e 23px na Labs, contra os 42/40px de `md`:
+   a marca do desktop grande ficava MENOR que a do tablet, o que só se explicava
+   pela segunda marca ao lado.
+
+   Sem par, o mesmo orçamento de ~201px recebe uma marca só: a University a 42px
+   pinta 128px de largura (razão 3,05) e a Labs a 40px pinta 176px (razão 4,39).
+   As duas entram, a Labs com ~25px de sobra — medido nesta volta, não deduzido.
+   Então a faixa ≥1440 deixa de ter regra própria e herda `md`, e a marca para de
+   encolher justamente onde há mais espaço.
+
+   O `compacto` do menu CONTINUA ligado nas duas rotas. Ele devolve 56px que a
+   Labs ainda precisa: sem ele o menu volta a 889,1px, o orçamento cai a ~145px e
+   os 176px da Labs estouram. A University caberia sem o compacto, mas manter uma
+   regra só para «rota com marca própria» evita que as duas divirjam por descuido.
+
+   Consequência declarada, que o par escondia e uma marca só torna mais visível:
+   nesta arte da Labs a palavra «SISTRAN LABS» é só 63 das 219 linhas de tinta
+   (29% da altura), porque o símbolo do rosto/engrenagem ocupa a caixa inteira.
+   A 40px de bloco a palavra sai com ~11,5px de caixa alta — melhor que os ~6,6px
+   de antes, ainda menor que a da University. É o desenho do lockup entregue, em
+   que o texto é a parte pequena; crescer o texto pediria recortar as trilhas de
+   circuito, isto é, mexer na silhueta da marca, e a issue põe a troca de arte
+   fora de escopo. */
+const MARCA_DA_ROTA = {
+  university: {
+    marca: TINTA.university,
+    href: '/sistran-university',
+    rotulo: 'Sistran University, ir para a página da Sistran University',
+    altura: 'h-[34px] md:h-[42px]',
+  },
+  labs: {
+    marca: TINTA.labs,
+    href: '/sistran-labs',
+    rotulo: 'Sistran Labs, ir para a página da Sistran Labs',
+    altura: 'h-[28px] md:h-[40px]',
+  },
+} as const;
+
 export default function Header() {
   const pathname = usePathname();
   const isUniversity =
     pathname === '/sistran-university' || pathname.startsWith('/sistran-university/');
+  /* SIS-287 — a rota Labs e suas subrotas, na mesma forma da University acima. */
+  const isLabs = pathname === '/sistran-labs' || pathname.startsWith('/sistran-labs/');
+  /* SIS-287 (2ª volta) — `par` virou `marcaDaRota`: o valor deixou de descrever um
+     par de logos e passou a ser «a marca desta rota, ou nenhuma». `null` continua
+     querendo dizer «rota comum, logo corporativa», e é o que o `compacto` do menu
+     lê mais abaixo. */
+  const marcaDaRota = isUniversity
+    ? MARCA_DA_ROTA.university
+    : isLabs
+      ? MARCA_DA_ROTA.labs
+      : null;
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeHash, setActiveHash] = useState('');
@@ -294,18 +495,57 @@ export default function Header() {
             transition: 'opacity 300ms ease',
           }}
         />
-        {/* LOGO — identidade do site atual, não breadcrumb. Por isso a variante
-          University continua levando à home (`/`) como a marca corporativa. */}
-        <Link
-          href="/"
-          onClick={onLogoClick}
-          aria-label="Sistran, ir para a página inicial"
-          className="inline-flex flex-shrink-0 items-center gap-4"
-        >
-          {/* `data-morph-target`: destino da abertura opcional da home
+        {/* LOGO — identidade do site atual, não breadcrumb. */}
+        {marcaDaRota ? (
+          /* SIS-287 (2ª volta) — a pílula mostra UMA marca nestas rotas: a da
+            própria página. O par «marca da página | divisor | corporativa» que
+            morava aqui (SIS-279 na University, 1ª volta desta issue na Labs) foi
+            desfeito por pedido, e com ele saíram o `<span>` do fio e o segundo
+            `<Link href="/">`. Era este o bloco removido, em resumo:
+              <div className="flex … gap-2.5 md:gap-3 …:gap-2">
+                <Link href={par.href} …><MarcaRecortada marca={par.marca} …/></Link>
+                <span aria-hidden className="w-px … bg-white/35 …" />
+                <Link href="/" aria-label="Sistran, ir para a página inicial">
+                  <MarcaRecortada marca={TINTA.corporativa}
+                    className="h-[24px] md:h-[30px] …:h-[20px]" />
+                </Link>
+              </div>
+            A corporativa a 24/30/20px repetia o tamanho que ela tem nas demais
+            rotas, onde continua igual — nada aqui mexe naquele caminho.
+
+            O `<div>` de flex também saiu: com um filho só, o `inline-flex` do
+            próprio `<Link>` faz o alinhamento, e o `gap` não tinha mais o que
+            espaçar. `flex-shrink-0` mudou de invólucro para o link, porque é ele
+            quem agora responde pela largura da marca na fila do header.
+
+            O DESTINO é a própria rota, como a issue pede no item 3 — quem clica
+            numa marca que nomeia a página em que está espera continuar nela (e o
+            Next não navega para a rota atual, então o clique é inerte, que é o
+            comportamento honesto). A casa continua alcançável pelo menu «Quem
+            somos» e pelo rodapé.
+
+            Sem `data-morph-target`: o alvo da abertura da home é único por
+            definição, e a abertura só roda na home, que não passa por aqui.
+            `onLogoClick` também fica de fora — ele resolve «clicar na logo
+            estando na home não faz nada», e esta marca não leva à home. */
+          <Link
+            href={marcaDaRota.href}
+            aria-label={marcaDaRota.rotulo}
+            className="inline-flex flex-shrink-0 items-center"
+          >
+            <MarcaRecortada marca={marcaDaRota.marca} className={marcaDaRota.altura} />
+          </Link>
+        ) : (
+          <Link
+            href="/"
+            onClick={onLogoClick}
+            aria-label="Sistran, ir para a página inicial"
+            className="inline-flex flex-shrink-0 items-center gap-4"
+          >
+            {/* `data-morph-target`: destino da abertura opcional da home
             (OptionalMorphIntro). O atributo e so uma marca de medicao — o logo
             continua correto e visivel sem o efeito. */}
-          {/* SIS-65 — uma altura só, a maior, sem depender de estado de scroll:
+            {/* SIS-65 — uma altura só, a maior, sem depender de estado de scroll:
             4,5rem no estreito e 5,5rem a partir de `md`. O
             `transition-[height]` saiu com ela — altura fixa não transiciona.
 
@@ -325,25 +565,22 @@ export default function Header() {
 
             O mesmo par errado está no `Footer.tsx` (360x124) com o mesmo
             arquivo; fora do escopo desta task, mas é a mesma correção. */}
-          <Image
-            data-morph-target=""
-            src={
-              isUniversity
-                ? '/images/university/logo-university-header.webp'
-                : '/images/sistran-corp-logo.png'
-            }
-            alt={isUniversity ? 'Sistran University' : 'Sistran'}
-            width={isUniversity ? 264 : 560}
-            height={isUniversity ? 101 : 374}
-            priority
-            className={clsx(
-              'logo-glow object-contain',
-              isUniversity
-                ? 'h-auto w-32 md:w-[8.25rem]'
-                : 'h-[4.5rem] w-auto md:h-[5.5rem]',
-            )}
-          />
-        </Link>
+            {/* SIS-279 — as ramificações `isUniversity` que existiam aqui (src,
+            alt, width/height, classe) saíram: esta marcação passou a ser o
+            caminho de TODAS AS ROTAS MENOS a University, então a condição era
+            sempre falsa. Tamanho, arquivo e atributos da marca corporativa
+            seguem exatamente os de antes. */}
+            <Image
+              data-morph-target=""
+              src="/images/sistran-corp-logo.png"
+              alt="Sistran"
+              width={560}
+              height={374}
+              priority
+              className="logo-glow h-[4.5rem] w-auto object-contain md:h-[5.5rem]"
+            />
+          </Link>
+        )}
 
         {/* NAV desktop */}
         <nav
@@ -360,6 +597,13 @@ export default function Header() {
                 item={item}
                 isActive={isActive}
                 current={matchActive(item.href, pathname, activeHash)}
+                /* SIS-287 — era `isUniversity`. Agora é «esta rota tem marca
+                 própria?», porque a razão do compacto nunca foi a University: são
+                 os 56px que os sete itens devolvem para a marca caber.
+                 2ª volta: sem o par, a Labs sozinha a 40px ainda pinta 176px, e
+                 sem o compacto o menu volta a 889,1px e sobram ~145px — continua
+                 estourando. Então o compacto FICA, e por medida, não por herança. */
+                compacto={Boolean(marcaDaRota)}
               />
             );
             if (!item.children) return <span key={item.href}>{link}</span>;
@@ -463,22 +707,56 @@ export default function Header() {
                   >
                     {item.children.map((filho) => {
                       const filhoAtivo = matchActive(filho.href, pathname, activeHash);
+                      /* SIS-280 — «Sistran Latam» aponta para fora do app. A
+                         aparência é a MESMA nos dois casos, então a classe é
+                         calculada uma vez e os dois ramos a recebem: se ela
+                         estivesse escrita duas vezes, o próximo ajuste de estilo
+                         acertaria um item do submenu e esqueceria o outro. */
+                      const externo = ehLinkExterno(filho.href);
+                      const classeDoItem = clsx(
+                        'block whitespace-nowrap rounded-[10px] px-3 py-2 text-[0.78rem] font-semibold transition-colors',
+                        filhoAtivo
+                          ? 'bg-white/12 text-white'
+                          : 'text-white/70 hover:bg-white/8 hover:text-white',
+                      );
                       return (
                         <li key={filho.label}>
-                          <Link
-                            href={filho.href}
-                            data-item-submenu=""
-                            aria-current={filhoAtivo ? 'page' : undefined}
-                            onClick={() => setSubmenu(null)}
-                            className={clsx(
-                              'block whitespace-nowrap rounded-[10px] px-3 py-2 text-[0.78rem] font-semibold transition-colors',
-                              filhoAtivo
-                                ? 'bg-white/12 text-white'
-                                : 'text-white/70 hover:bg-white/8 hover:text-white',
-                            )}
-                          >
-                            {filho.label}
-                          </Link>
+                          {externo ? (
+                            /* `<a>` e não `<Link>`: o `next/link` serve navegação
+                               do roteador — para endereço absoluto ele não tem o
+                               que prefetch nem transição a fazer, e usá-lo aqui
+                               só esconderia atrás de um componente de rota o que
+                               é uma saída do site. `target="_blank"` porque a
+                               issue pede nova aba, e `rel="noopener noreferrer"`
+                               vai COM ele: sem `noopener` a página de destino
+                               recebe `window.opener` e pode reescrever esta.
+                               Sem `aria-current`: nenhum endereço externo é a
+                               página atual (`matchActive` devolve `false` por
+                               guarda explícita desde esta issue).
+                               O `onClick` fecha o submenu igual ao ramo interno —
+                               a aba nova rouba o foco e a lista ficaria aberta
+                               por baixo quando o visitante voltasse. */
+                            <a
+                              href={filho.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              data-item-submenu=""
+                              onClick={() => setSubmenu(null)}
+                              className={classeDoItem}
+                            >
+                              {filho.label}
+                            </a>
+                          ) : (
+                            <Link
+                              href={filho.href}
+                              data-item-submenu=""
+                              aria-current={filhoAtivo ? 'page' : undefined}
+                              onClick={() => setSubmenu(null)}
+                              className={classeDoItem}
+                            >
+                              {filho.label}
+                            </Link>
+                          )}
                         </li>
                       );
                     })}
@@ -557,20 +835,42 @@ export default function Header() {
                     <ul className="ml-4 mt-0.5 space-y-0.5 border-l border-white/12 pl-2">
                       {item.children.map((filho) => {
                         const filhoAtivo = matchActive(filho.href, pathname, activeHash);
+                        /* SIS-280 — mesma bifurcação do submenu de desktop, pela
+                           mesma razão, e com a classe calculada uma vez só. */
+                        const externo = ehLinkExterno(filho.href);
+                        const classeDoItem = clsx(
+                          'block rounded-lg px-4 py-2.5 text-[0.8rem] font-semibold transition-colors',
+                          filhoAtivo
+                            ? 'bg-white/10 text-white'
+                            : 'text-white/60 hover:bg-white/5 hover:text-white',
+                        );
                         return (
                           <li key={filho.label}>
-                            <Link
-                              href={filho.href}
-                              aria-current={filhoAtivo ? 'page' : undefined}
-                              className={clsx(
-                                'block rounded-lg px-4 py-2.5 text-[0.8rem] font-semibold transition-colors',
-                                filhoAtivo
-                                  ? 'bg-white/10 text-white'
-                                  : 'text-white/60 hover:bg-white/5 hover:text-white',
-                              )}
-                            >
-                              {filho.label}
-                            </Link>
+                            {externo ? (
+                              /* O `onClick` aqui NÃO é cópia decorativa do ramo
+                                 de desktop: o drawer fecha por
+                                 `useEffect(() => setOpen(false), [pathname])`, e
+                                 endereço externo não muda `pathname` nenhum — sem
+                                 esta linha o menu ficaria escancarado atrás da aba
+                                 nova, esperando um toque no fundo para sumir. */
+                              <a
+                                href={filho.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setOpen(false)}
+                                className={classeDoItem}
+                              >
+                                {filho.label}
+                              </a>
+                            ) : (
+                              <Link
+                                href={filho.href}
+                                aria-current={filhoAtivo ? 'page' : undefined}
+                                className={classeDoItem}
+                              >
+                                {filho.label}
+                              </Link>
+                            )}
                           </li>
                         );
                       })}

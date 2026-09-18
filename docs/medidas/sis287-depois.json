@@ -1,0 +1,526 @@
+{
+ "issue": "SIS-287",
+ "erros": [],
+ "porLargura": {
+  "360": {
+   "/sistran-labs": {
+    "temPar": true,
+    "conteudo": 296,
+    "bloco": 239.4,
+    "marcas": [
+     {
+      "alt": "Sistran Labs",
+      "src": "/images/sistran-labs/logo-labs-header.webp",
+      "w": 122.8,
+      "h": 28
+     },
+     {
+      "alt": "Sistran",
+      "src": "/images/sistran-corp-logo.png",
+      "w": 95.6,
+      "h": 24
+     }
+    ],
+    "divisor": 18,
+    "nav": null,
+    "botoes": [
+     0,
+     0,
+     0,
+     44,
+     300
+    ],
+    "folgaAteOMenu": null,
+    "folgaAteOVizinho": 10.6,
+    "folgaNaDireita": 1,
+    "vazaNaJanela": false,
+    "caixaDaPrimeiraMarca": {
+     "x": 37,
+     "y": 38,
+     "w": 122.8,
+     "h": 28,
+     "dpr": 1
+    },
+    "fundoNaCaixa": [
+     [
+      14,
+      86,
+      145
+     ],
+     [
+      13,
+      86,
+      146
+     ],
+     [
+      13,
+      86,
+      144
+     ],
+     [
+      14,
+      88,
+      147
+     ]
+    ],
+    "luminanciaDeFundo": 75.2
+   },
+   "/sistran-university": {
+    "temPar": true,
+    "conteudo": 296,
+    "bloco": 220.2,
+    "marcas": [
+     {
+      "alt": "Sistran University",
+      "src": "/images/university/logo-university-header.webp",
+      "w": 103.6,
+      "h": 34
+     },
+     {
+      "alt": "Sistran",
+      "src": "/images/sistran-corp-logo.png",
+      "w": 95.6,
+      "h": 24
+     }
+    ],
+    "divisor": 22,
+    "nav": null,
+    "botoes": [
+     0,
+     0,
+     0,
+     44,
+     300
+    ],
+    "folgaAteOMenu": null,
+    "folgaAteOVizinho": 29.8,
+    "folgaNaDireita": 1,
+    "vazaNaJanela": false,
+    "caixaDaPrimeiraMarca": {
+     "x": 37,
+     "y": 35,
+     "w": 103.6,
+     "h": 34,
+     "dpr": 1
+    }
+   },
+   "/": {
+    "temPar": false,
+    "conteudo": 296,
+    "bloco": 107.8,
+    "marcas": [
+     {
+      "alt": "Sistran",
+      "src": "/images/sistran-corp-logo.png",
+      "w": 107.8,
+      "h": 72
+     }
+    ],
+    "divisor": null,
+    "nav": null,
+    "botoes": [
+     0,
+     0,
+     0,
+     44,
+     300
+    ],
+    "folgaAteOMenu": null,
+    "folgaAteOVizinho": 142.2,
+    "folgaNaDireita": 1,
+    "vazaNaJanela": false,
+    "caixaDaPrimeiraMarca": null
+   }
+  },
+  "390": {
+   "/sistran-labs": {
+    "temPar": true,
+    "conteudo": 326,
+    "bloco": 239.4,
+    "marcas": [
+     {
+      "alt": "Sistran Labs",
+      "src": "/images/sistran-labs/logo-labs-header.webp",
+      "w": 122.8,
+      "h": 28
+     },
+     {
+      "alt": "Sistran",
+      "src": "/images/sistran-corp-logo.png",
+      "w": 95.6,
+      "h": 24
+     }
+    ],
+    "divisor": 18,
+    "nav": null,
+    "botoes": [
+     0,
+     0,
+     0,
+     44,
+     330
+    ],
+    "folgaAteOMenu": null,
+    "folgaAteOVizinho": 40.6,
+    "folgaNaDireita": 1,
+    "vazaNaJanela": false,
+    "caixaDaPrimeiraMarca": {
+     "x": 37,
+     "y": 38,
+     "w": 122.8,
+     "h": 28,
+     "dpr": 1
+    },
+    "fundoNaCaixa": [
+     [
+      14,
+      86,
+      145
+     ],
+     [
+      13,
+      86,
+      146
+     ],
+     [
+      13,
+      86,
+      144
+     ],
+     [
+      14,
+      87,
+      146
+     ]
+    ],
+    "luminanciaDeFundo": 75
+   },
+   "/sistran-university": {
+    "temPar": true,
+    "conteudo": 326,
+    "bloco": 220.2,
+    "marcas": [
+     {
+      "alt": "Sistran University",
+      "src": "/images/university/logo-university-header.webp",
+      "w": 103.6,
+      "h": 34
+     },
+     {
+      "alt": "Sistran",
+      "src": "/images/sistran-corp-logo.png",
+      "w": 95.6,
+      "h": 24
+     }
+    ],
+    "divisor": 22,
+    "nav": null,
+    "botoes": [
+     0,
+     0,
+     0,
+     44,
+     330
+    ],
+    "folgaAteOMenu": null,
+    "folgaAteOVizinho": 59.8,
+    "folgaNaDireita": 1,
+    "vazaNaJanela": false,
+    "caixaDaPrimeiraMarca": {
+     "x": 37,
+     "y": 35,
+     "w": 103.6,
+     "h": 34,
+     "dpr": 1
+    }
+   },
+   "/": {
+    "temPar": false,
+    "conteudo": 326,
+    "bloco": 107.8,
+    "marcas": [
+     {
+      "alt": "Sistran",
+      "src": "/images/sistran-corp-logo.png",
+      "w": 107.8,
+      "h": 72
+     }
+    ],
+    "divisor": null,
+    "nav": null,
+    "botoes": [
+     0,
+     0,
+     0,
+     44,
+     330
+    ],
+    "folgaAteOMenu": null,
+    "folgaAteOVizinho": 172.2,
+    "folgaNaDireita": 1,
+    "vazaNaJanela": false,
+    "caixaDaPrimeiraMarca": null
+   }
+  },
+  "1024": {
+   "/sistran-labs": {
+    "temPar": true,
+    "conteudo": 960,
+    "bloco": 319.9,
+    "marcas": [
+     {
+      "alt": "Sistran Labs",
+      "src": "/images/sistran-labs/logo-labs-header.webp",
+      "w": 175.4,
+      "h": 40
+     },
+     {
+      "alt": "Sistran",
+      "src": "/images/sistran-corp-logo.png",
+      "w": 119.5,
+      "h": 30
+     }
+    ],
+    "divisor": 26,
+    "nav": null,
+    "botoes": [
+     0,
+     0,
+     161.3,
+     44,
+     964
+    ],
+    "folgaAteOMenu": null,
+    "folgaAteOVizinho": 212.4,
+    "folgaNaDireita": 1,
+    "vazaNaJanela": false,
+    "caixaDaPrimeiraMarca": {
+     "x": 37,
+     "y": 40,
+     "w": 175.4,
+     "h": 40,
+     "dpr": 1
+    },
+    "fundoNaCaixa": [
+     [
+      14,
+      84,
+      143
+     ],
+     [
+      14,
+      85,
+      143
+     ],
+     [
+      13,
+      84,
+      142
+     ],
+     [
+      13,
+      85,
+      143
+     ]
+    ],
+    "luminanciaDeFundo": 73.6
+   },
+   "/sistran-university": {
+    "temPar": true,
+    "conteudo": 960,
+    "bloco": 272.5,
+    "marcas": [
+     {
+      "alt": "Sistran University",
+      "src": "/images/university/logo-university-header.webp",
+      "w": 128,
+      "h": 42
+     },
+     {
+      "alt": "Sistran",
+      "src": "/images/sistran-corp-logo.png",
+      "w": 119.5,
+      "h": 30
+     }
+    ],
+    "divisor": 27,
+    "nav": null,
+    "botoes": [
+     0,
+     0,
+     161.3,
+     44,
+     964
+    ],
+    "folgaAteOMenu": null,
+    "folgaAteOVizinho": 236.1,
+    "folgaNaDireita": 1,
+    "vazaNaJanela": false,
+    "caixaDaPrimeiraMarca": {
+     "x": 37,
+     "y": 39,
+     "w": 128,
+     "h": 42,
+     "dpr": 1
+    }
+   },
+   "/": {
+    "temPar": false,
+    "conteudo": 960,
+    "bloco": 131.8,
+    "marcas": [
+     {
+      "alt": "Sistran",
+      "src": "/images/sistran-corp-logo.png",
+      "w": 131.8,
+      "h": 88
+     }
+    ],
+    "divisor": null,
+    "nav": null,
+    "botoes": [
+     0,
+     0,
+     161.3,
+     44,
+     964
+    ],
+    "folgaAteOMenu": null,
+    "folgaAteOVizinho": 306.5,
+    "folgaNaDireita": 1,
+    "vazaNaJanela": false,
+    "caixaDaPrimeiraMarca": null
+   }
+  },
+  "1440": {
+   "/sistran-labs": {
+    "temPar": true,
+    "conteudo": 1208,
+    "bloco": 197.5,
+    "marcas": [
+     {
+      "alt": "Sistran Labs",
+      "src": "/images/sistran-labs/logo-labs-header.webp",
+      "w": 100.9,
+      "h": 23
+     },
+     {
+      "alt": "Sistran",
+      "src": "/images/sistran-corp-logo.png",
+      "w": 79.7,
+      "h": 20
+     }
+    ],
+    "divisor": 15,
+    "nav": 833.1,
+    "botoes": [
+     20,
+     20,
+     161.3,
+     0,
+     0
+    ],
+    "folgaAteOMenu": 2.1,
+    "folgaAteOVizinho": 2.1,
+    "folgaNaDireita": 1,
+    "vazaNaJanela": false,
+    "caixaDaPrimeiraMarca": {
+     "x": 121,
+     "y": 48.5,
+     "w": 100.9,
+     "h": 23,
+     "dpr": 1
+    },
+    "fundoNaCaixa": [
+     [
+      13,
+      84,
+      142
+     ],
+     [
+      13,
+      84,
+      142
+     ],
+     [
+      13,
+      84,
+      142
+     ],
+     [
+      13,
+      84,
+      142
+     ]
+    ],
+    "luminanciaDeFundo": 73.1
+   },
+   "/sistran-university": {
+    "temPar": true,
+    "conteudo": 1208,
+    "bloco": 188.1,
+    "marcas": [
+     {
+      "alt": "Sistran University",
+      "src": "/images/university/logo-university-header.webp",
+      "w": 91.4,
+      "h": 30
+     },
+     {
+      "alt": "Sistran",
+      "src": "/images/sistran-corp-logo.png",
+      "w": 79.7,
+      "h": 20
+     }
+    ],
+    "divisor": 19,
+    "nav": 833.1,
+    "botoes": [
+     20,
+     20,
+     161.3,
+     0,
+     0
+    ],
+    "folgaAteOMenu": 11.5,
+    "folgaAteOVizinho": 11.5,
+    "folgaNaDireita": 1,
+    "vazaNaJanela": false,
+    "caixaDaPrimeiraMarca": {
+     "x": 121,
+     "y": 45,
+     "w": 91.4,
+     "h": 30,
+     "dpr": 1
+    }
+   },
+   "/": {
+    "temPar": false,
+    "conteudo": 1208,
+    "bloco": 131.8,
+    "marcas": [
+     {
+      "alt": "Sistran",
+      "src": "/images/sistran-corp-logo.png",
+      "w": 131.8,
+      "h": 88
+     }
+    ],
+    "divisor": null,
+    "nav": 889.1,
+    "botoes": [
+     20,
+     20,
+     161.3,
+     0,
+     0
+    ],
+    "folgaAteOMenu": 11.9,
+    "folgaAteOVizinho": 11.9,
+    "folgaNaDireita": 1,
+    "vazaNaJanela": false,
+    "caixaDaPrimeiraMarca": null
+   }
+  }
+ }
+}
