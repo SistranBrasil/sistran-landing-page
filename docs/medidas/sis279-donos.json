@@ -1,0 +1,422 @@
+{
+  "390": {
+    "alturaDocumento": 3705,
+    "semDono": [
+      {
+        "sel": "h3.eventos-destaque-cartao-titulo",
+        "altura": 42,
+        "presoEm": null,
+        "donos": [],
+        "curso": 942
+      },
+      {
+        "sel": "h3.eventos-destaque-cartao-titulo",
+        "altura": 42,
+        "presoEm": null,
+        "donos": [],
+        "curso": 942
+      },
+      {
+        "sel": "h3.eventos-destaque-cartao-titulo",
+        "altura": 42,
+        "presoEm": null,
+        "donos": [],
+        "curso": 942
+      },
+      {
+        "sel": "div.eventos-lista-controles",
+        "altura": 44,
+        "presoEm": null,
+        "donos": [],
+        "curso": 944
+      },
+      {
+        "sel": "header.eventos-lista-cabecalho",
+        "altura": 53,
+        "presoEm": null,
+        "donos": [],
+        "curso": 953
+      },
+      {
+        "sel": "p.eventos-destaque-cartao-texto",
+        "altura": 59,
+        "presoEm": null,
+        "donos": [],
+        "curso": 959
+      },
+      {
+        "sel": "h3.eventos-destaque-cartao-titulo",
+        "altura": 63,
+        "presoEm": null,
+        "donos": [],
+        "curso": 963
+      },
+      {
+        "sel": "p.eventos-destaque-cartao-texto",
+        "altura": 79,
+        "presoEm": null,
+        "donos": [],
+        "curso": 979
+      },
+      {
+        "sel": "p.eventos-destaque-cartao-texto",
+        "altura": 79,
+        "presoEm": null,
+        "donos": [],
+        "curso": 979
+      },
+      {
+        "sel": "ul.lp-rodape-nav.space-y-2",
+        "altura": 88,
+        "presoEm": null,
+        "donos": [],
+        "curso": 988
+      },
+      {
+        "sel": "span.eventos-carimbo",
+        "altura": 90,
+        "presoEm": null,
+        "donos": [],
+        "curso": 990
+      },
+      {
+        "sel": "span.eventos-carimbo",
+        "altura": 90,
+        "presoEm": null,
+        "donos": [],
+        "curso": 990
+      },
+      {
+        "sel": "span.eventos-carimbo",
+        "altura": 90,
+        "presoEm": null,
+        "donos": [],
+        "curso": 990
+      },
+      {
+        "sel": "p.eventos-destaque-cartao-texto",
+        "altura": 98,
+        "presoEm": null,
+        "donos": [],
+        "curso": 998
+      },
+      {
+        "sel": "p.eventos-destaque-cartao-texto",
+        "altura": 98,
+        "presoEm": null,
+        "donos": [],
+        "curso": 998
+      },
+      {
+        "sel": "p.eventos-destaque-cartao-texto",
+        "altura": 98,
+        "presoEm": null,
+        "donos": [],
+        "curso": 998
+      },
+      {
+        "sel": "p.eventos-destaque-cartao-texto",
+        "altura": 118,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1018
+      },
+      {
+        "sel": "h2.mt-5.font-display",
+        "altura": 122,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1022
+      },
+      {
+        "sel": "p.eventos-destaque-cartao-texto",
+        "altura": 138,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1038
+      },
+      {
+        "sel": "p.eventos-destaque-cartao-texto",
+        "altura": 138,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1038
+      },
+      {
+        "sel": "p.eventos-destaque-cartao-texto",
+        "altura": 158,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1058
+      },
+      {
+        "sel": "p.eventos-destaque-cartao-texto",
+        "altura": 158,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1058
+      }
+    ],
+    "semDonoMasPreso": [
+      {
+        "sel": "div.pointer-events-none.fixed",
+        "altura": 900,
+        "presoEm": "pointer-events-none:fixed",
+        "donos": [],
+        "curso": 1800
+      },
+      {
+        "sel": "ul.ml-4.mt-0.5",
+        "altura": 163,
+        "presoEm": "fixed:fixed",
+        "donos": [],
+        "curso": 1063
+      }
+    ]
+  },
+  "1440": {
+    "alturaDocumento": 9916,
+    "semDono": [
+      {
+        "sel": "ul.lp-rodape-nav.space-y-2",
+        "altura": 88,
+        "presoEm": null,
+        "donos": [],
+        "curso": 988
+      },
+      {
+        "sel": "ul.space-y-4.text-sm",
+        "altura": 203,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1103
+      },
+      {
+        "sel": "ul.lp-rodape-nav.space-y-2",
+        "altura": 216,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1116
+      },
+      {
+        "sel": "div.hero-backdrop.hero-backdrop--eventos",
+        "altura": 414,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1314
+      },
+      {
+        "sel": "section.pagehero-entrada.relative",
+        "altura": 414,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1314
+      },
+      {
+        "sel": "div.pointer-events-none.absolute",
+        "altura": 414,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1314
+      },
+      {
+        "sel": "span.lp-rodape-malha.pointer-events-none",
+        "altura": 441,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1341
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      },
+      {
+        "sel": "span.eventos-destaque-sentinela",
+        "altura": 504,
+        "presoEm": null,
+        "donos": [],
+        "curso": 1404
+      }
+    ],
+    "semDonoMasPreso": [
+      {
+        "sel": "div.pointer-events-none.fixed",
+        "altura": 900,
+        "presoEm": "pointer-events-none:fixed",
+        "donos": [],
+        "curso": 1800
+      },
+      {
+        "sel": "div.eventos-destaque-palco",
+        "altura": 900,
+        "presoEm": "eventos-destaque-palco:sticky",
+        "donos": [],
+        "curso": 1800
+      },
+      {
+        "sel": "h2.eventos-destaque-titulo",
+        "altura": 54,
+        "presoEm": "eventos-destaque-palco:sticky",
+        "donos": [],
+        "curso": 954
+      },
+      {
+        "sel": "div.eventos-destaque-corpo",
+        "altura": 627,
+        "presoEm": "eventos-destaque-palco:sticky",
+        "donos": [],
+        "curso": 1527
+      },
+      {
+        "sel": "div.eventos-destaque-coluna.eventos-destaque-coluna--esq",
+        "altura": 708,
+        "presoEm": "eventos-destaque-palco:sticky",
+        "donos": [],
+        "curso": 1608
+      },
+      {
+        "sel": "span.eventos-vaga-arte",
+        "altura": 43,
+        "presoEm": "eventos-destaque-palco:sticky",
+        "donos": [],
+        "curso": 943
+      },
+      {
+        "sel": "span.eventos-vaga-rotulo",
+        "altura": 87,
+        "presoEm": "eventos-destaque-palco:sticky",
+        "donos": [],
+        "curso": 987
+      },
+      {
+        "sel": "span.eventos-vaga-arte",
+        "altura": 54,
+        "presoEm": "eventos-destaque-palco:sticky",
+        "donos": [],
+        "curso": 954
+      },
+      {
+        "sel": "span.eventos-vaga-arte",
+        "altura": 42,
+        "presoEm": "eventos-destaque-palco:sticky",
+        "donos": [],
+        "curso": 942
+      },
+      {
+        "sel": "span.eventos-vaga-arte",
+        "altura": 51,
+        "presoEm": "eventos-destaque-palco:sticky",
+        "donos": [],
+        "curso": 951
+      },
+      {
+        "sel": "span.eventos-vaga-arte",
+        "altura": 43,
+        "presoEm": "eventos-destaque-palco:sticky",
+        "donos": [],
+        "curso": 943
+      },
+      {
+        "sel": "span.eventos-vaga-arte",
+        "altura": 51,
+        "presoEm": "eventos-destaque-palco:sticky",
+        "donos": [],
+        "curso": 951
+      }
+    ]
+  }
+}

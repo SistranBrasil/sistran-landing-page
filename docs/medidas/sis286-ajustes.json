@@ -1,0 +1,277 @@
+{
+  "w390": {
+    "ficha": {
+      "texto": "Mais agilidadepara o seu negócio",
+      "ariaHidden": false,
+      "tinta": "rgb(10, 31, 68)",
+      "left": 36,
+      "largura": 318,
+      "dentroDaColunaDaFoto": true,
+      "amostra": {
+        "x": 48,
+        "y": -4869
+      }
+    },
+    "hub": {
+      "caixas": [
+        {
+          "titulo": "Sistemas da seguradoraOs sistemas existentes, já em operação",
+          "apoio": "Sistemas da seguradora",
+          "left": 20,
+          "largura": 350,
+          "display": "flex"
+        },
+        {
+          "titulo": "Sistemas de OCRLeitura e extração de documentos",
+          "apoio": "Sistemas de OCR",
+          "left": 20,
+          "largura": 350,
+          "display": "flex"
+        },
+        {
+          "titulo": "ERPs e outrosIntegração pronta para funcionar",
+          "apoio": "ERPs e outros",
+          "left": 20,
+          "largura": 350,
+          "display": "flex"
+        }
+      ],
+      "centro": {
+        "texto": "FastAutomação de sinistros",
+        "largura": 280,
+        "temHalo": true
+      },
+      "trilhosVisiveis": 0,
+      "troncosVisiveis": 0,
+      "metadesDoTronco": [],
+      "emenda": null,
+      "eixoDosTrilhosDeRamo": [],
+      "centrosDosDestinos": [
+        -3094,
+        -2996
+      ],
+      "desvioTrilhoVsCaixa": []
+    },
+    "beneficios": [
+      {
+        "left": 20,
+        "largura": 350,
+        "alinhamento": "left",
+        "bordaEsq": "0px",
+        "numero": "95%",
+        "deltaEixoY": 0,
+        "discoAntesDoNumero": true
+      },
+      {
+        "left": 20,
+        "largura": 350,
+        "alinhamento": "left",
+        "bordaEsq": "0px",
+        "numero": "0%",
+        "deltaEixoY": 0,
+        "discoAntesDoNumero": true
+      },
+      {
+        "left": 20,
+        "largura": 350,
+        "alinhamento": "left",
+        "bordaEsq": "0px",
+        "numero": "450",
+        "deltaEixoY": 0,
+        "discoAntesDoNumero": true
+      }
+    ],
+    "fichaComposto": {
+      "fundoComposto": "rgb(243, 244, 245)",
+      "tinta": "rgb(10, 31, 68)",
+      "contraste": 14.76
+    },
+    "contagem": {
+      "antesDeEntrar": [
+        "95%/-",
+        "0%/-",
+        "450/-"
+      ],
+      "meio": [
+        "67%/ativa",
+        "6%/ativa",
+        "319/ativa"
+      ],
+      "fim": [
+        "95%/fim",
+        "0%/fim",
+        "450/fim"
+      ]
+    },
+    "erros": []
+  },
+  "w1440": {
+    "ficha": {
+      "texto": "Mais agilidadepara o seu negócio",
+      "ariaHidden": false,
+      "tinta": "rgb(10, 31, 68)",
+      "left": 1113,
+      "largura": 189,
+      "dentroDaColunaDaFoto": true,
+      "amostra": {
+        "x": 1125,
+        "y": -2927
+      }
+    },
+    "hub": {
+      "caixas": [
+        {
+          "titulo": "Sistemas da seguradoraOs sistemas existentes, já em operação",
+          "apoio": "Sistemas da seguradora",
+          "left": 162,
+          "largura": 287,
+          "display": "flex"
+        },
+        {
+          "titulo": "Sistemas de OCRLeitura e extração de documentos",
+          "apoio": "Sistemas de OCR",
+          "left": 991,
+          "largura": 287,
+          "display": "flex"
+        },
+        {
+          "titulo": "ERPs e outrosIntegração pronta para funcionar",
+          "apoio": "ERPs e outros",
+          "left": 991,
+          "largura": 287,
+          "display": "flex"
+        }
+      ],
+      "centro": {
+        "texto": "FastAutomação de sinistros",
+        "largura": 280,
+        "temHalo": true
+      },
+      "trilhosVisiveis": 3,
+      "troncosVisiveis": 2,
+      "metadesDoTronco": [
+        {
+          "topo": -1848,
+          "base": -1799
+        },
+        {
+          "topo": -1799,
+          "base": -1750
+        }
+      ],
+      "emenda": 0,
+      "eixoDosTrilhosDeRamo": [
+        -1848,
+        -1750
+      ],
+      "centrosDosDestinos": [
+        -1848,
+        -1750
+      ],
+      "desvioTrilhoVsCaixa": [
+        0,
+        0
+      ]
+    },
+    "beneficios": [
+      {
+        "left": 162,
+        "largura": 351,
+        "alinhamento": "left",
+        "bordaEsq": "0px",
+        "numero": "95%",
+        "deltaEixoY": 0,
+        "discoAntesDoNumero": true
+      },
+      {
+        "left": 545,
+        "largura": 351,
+        "alinhamento": "left",
+        "bordaEsq": "1px",
+        "numero": "0%",
+        "deltaEixoY": 0,
+        "discoAntesDoNumero": true
+      },
+      {
+        "left": 927,
+        "largura": 351,
+        "alinhamento": "left",
+        "bordaEsq": "1px",
+        "numero": "450",
+        "deltaEixoY": 0,
+        "discoAntesDoNumero": true
+      }
+    ],
+    "fichaComposto": {
+      "fundoComposto": "rgb(243, 248, 252)",
+      "tinta": "rgb(10, 31, 68)",
+      "contraste": 15.2
+    },
+    "contagem": {
+      "antesDeEntrar": [
+        "95%/-",
+        "0%/-",
+        "450/-"
+      ],
+      "meio": [
+        "69%/ativa",
+        "6%/ativa",
+        "325/ativa"
+      ],
+      "fim": [
+        "95%/fim",
+        "0%/fim",
+        "450/fim"
+      ]
+    },
+    "erros": []
+  },
+  "reduce-media": {
+    "atributoNoHtml": "reduce",
+    "distintos": [
+      "95%/-|0%/-|450/-"
+    ],
+    "final": [
+      "95%/-",
+      "0%/-",
+      "450/-"
+    ],
+    "invisiveisNaTela": [
+      "H2.font-display text-section text-ink",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "H2.font-display text-section text-ink",
+      "P.max-w-2xl text-lg leading-relaxed text-i",
+      "P.max-w-2xl text-lg leading-relaxed text-i",
+      "P.",
+      "DIV.relative"
+    ],
+    "erros": []
+  },
+  "reduce-preferencia": {
+    "atributoNoHtml": "reduce",
+    "distintos": [
+      "95%/-|0%/-|450/-"
+    ],
+    "final": [
+      "95%/-",
+      "0%/-",
+      "450/-"
+    ],
+    "invisiveisNaTela": [
+      "H2.font-display text-section text-ink",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "H2.font-display text-section text-ink",
+      "P.max-w-2xl text-lg leading-relaxed text-i",
+      "P.max-w-2xl text-lg leading-relaxed text-i",
+      "P.",
+      "DIV.relative"
+    ],
+    "erros": []
+  }
+}

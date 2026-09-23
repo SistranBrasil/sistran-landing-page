@@ -1,0 +1,374 @@
+{
+  "w390": {
+    "secoes": [
+      {
+        "titulo": "O que é o Fast?",
+        "id": "o-que-e-o-fast",
+        "topoDoc": 112,
+        "claro": false,
+        "fundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "titulo": "O que o Fast oferece?",
+        "id": "o-que-o-fast-oferece",
+        "topoDoc": 920,
+        "claro": true,
+        "fundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "titulo": "Integração sem Fronteiras",
+        "id": "integracao-sem-fronteiras",
+        "topoDoc": 1903,
+        "claro": false,
+        "fundo": "rgb(0, 26, 61)"
+      },
+      {
+        "titulo": "Benefícios",
+        "id": "beneficios",
+        "topoDoc": 2911,
+        "claro": true,
+        "fundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "titulo": "Monitore e Aprimore seus Processos",
+        "id": "monitore-e-aprimore-seus-processos",
+        "topoDoc": 3808,
+        "claro": true,
+        "fundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "titulo": "Outras soluções",
+        "id": "outras-solucoes",
+        "topoDoc": 4585,
+        "claro": true,
+        "fundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "titulo": "Fale com a Gente!",
+        "id": null,
+        "topoDoc": 4976,
+        "claro": false,
+        "fundo": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "ancorasAusentes": [],
+    "oferece": [
+      {
+        "termo": "Automatização e Aceleração",
+        "left": 20,
+        "largura": 350
+      },
+      {
+        "termo": "Redução de erros de validação",
+        "left": 20,
+        "largura": 350
+      },
+      {
+        "termo": "Trilha de Auditoria Completa",
+        "left": 20,
+        "largura": 350
+      },
+      {
+        "termo": "Redução de custos",
+        "left": 20,
+        "largura": 350
+      }
+    ],
+    "benef": [
+      {
+        "numero": "95%",
+        "rotulo": "mais rápido",
+        "left": 20,
+        "largura": 350,
+        "bordaEsq": "0px"
+      },
+      {
+        "numero": "0%",
+        "rotulo": "de falhas",
+        "left": 20,
+        "largura": 350,
+        "bordaEsq": "0px"
+      },
+      {
+        "numero": "450",
+        "rotulo": "horas economizadas",
+        "left": 20,
+        "largura": 350,
+        "bordaEsq": "0px"
+      }
+    ],
+    "hub": [
+      "Sistemas da seguradora",
+      "Fast",
+      "Sistemas de OCR",
+      "ERPs e outros"
+    ],
+    "conectoresVisiveis": 0,
+    "imagens": [
+      {
+        "src": "/images/solucoes/fast-hero.webp",
+        "alt": ""
+      },
+      {
+        "src": "/images/solucoes/fast-hero.webp",
+        "alt": ""
+      },
+      {
+        "src": "/images/esg/logo-sistran-cta.webp",
+        "alt": ""
+      }
+    ],
+    "invisiveis": [],
+    "pilula": {
+      "texto": "Conheça o dashboard — fale com a gente",
+      "tinta": "rgba(255, 255, 255, 0.88)",
+      "fundo": "rgb(0, 96, 168)",
+      "x": 125,
+      "y": -1695
+    },
+    "composto": {
+      "faixaEscura": {
+        "css": "rgb(0, 26, 61)",
+        "contrasteBranco085": 12.24
+      },
+      "pilulaDashboard": {
+        "fundoComposto": "rgb(0, 96, 168)",
+        "tintaComputada": "rgba(255, 255, 255, 0.88)",
+        "contraste": 6.48
+      }
+    },
+    "tons": {
+      "o-que-o-fast-oferece": {
+        "css": "rgb(250, 252, 254)",
+        "luminancia": 0.971
+      },
+      "beneficios": {
+        "css": "rgb(240, 245, 251)",
+        "luminancia": 0.908
+      },
+      "monitore-e-aprimore-seus-processos": {
+        "css": "rgb(227, 241, 251)",
+        "luminancia": 0.8621
+      }
+    },
+    "erros": []
+  },
+  "w1440": {
+    "secoes": [
+      {
+        "titulo": "O que é o Fast?",
+        "id": "o-que-e-o-fast",
+        "topoDoc": 144,
+        "claro": false,
+        "fundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "titulo": "O que o Fast oferece?",
+        "id": "o-que-o-fast-oferece",
+        "topoDoc": 740,
+        "claro": true,
+        "fundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "titulo": "Integração sem Fronteiras",
+        "id": "integracao-sem-fronteiras",
+        "topoDoc": 1310,
+        "claro": false,
+        "fundo": "rgb(0, 26, 61)"
+      },
+      {
+        "titulo": "Benefícios",
+        "id": "beneficios",
+        "topoDoc": 2041,
+        "claro": true,
+        "fundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "titulo": "Monitore e Aprimore seus Processos",
+        "id": "monitore-e-aprimore-seus-processos",
+        "topoDoc": 2577,
+        "claro": true,
+        "fundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "titulo": "Outras soluções",
+        "id": "outras-solucoes",
+        "topoDoc": 3192,
+        "claro": true,
+        "fundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "titulo": "Fale com a Gente!",
+        "id": null,
+        "topoDoc": 3583,
+        "claro": false,
+        "fundo": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "ancorasAusentes": [],
+    "oferece": [
+      {
+        "termo": "Automatização e Aceleração",
+        "left": 166,
+        "largura": 256
+      },
+      {
+        "termo": "Redução de erros de validação",
+        "left": 450,
+        "largura": 256
+      },
+      {
+        "termo": "Trilha de Auditoria Completa",
+        "left": 734,
+        "largura": 256
+      },
+      {
+        "termo": "Redução de custos",
+        "left": 1018,
+        "largura": 256
+      }
+    ],
+    "benef": [
+      {
+        "numero": "95%",
+        "rotulo": "mais rápido",
+        "left": 162,
+        "largura": 351,
+        "bordaEsq": "0px"
+      },
+      {
+        "numero": "0%",
+        "rotulo": "de falhas",
+        "left": 545,
+        "largura": 351,
+        "bordaEsq": "1px"
+      },
+      {
+        "numero": "450",
+        "rotulo": "horas economizadas",
+        "left": 927,
+        "largura": 351,
+        "bordaEsq": "1px"
+      }
+    ],
+    "hub": [
+      "Sistemas da seguradora",
+      "Fast",
+      "Sistemas de OCR",
+      "ERPs e outros"
+    ],
+    "conectoresVisiveis": 2,
+    "imagens": [
+      {
+        "src": "/images/solucoes/fast-hero.webp",
+        "alt": ""
+      },
+      {
+        "src": "/images/solucoes/fast-hero.webp",
+        "alt": ""
+      },
+      {
+        "src": "/images/esg/logo-sistran-cta.webp",
+        "alt": ""
+      }
+    ],
+    "invisiveis": [
+      "H2.font-display text-section text-ink",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "LI.h-full rounded-2xl border border-[#0079C"
+    ],
+    "pilula": {
+      "texto": "Conheça o dashboard — fale com a gente",
+      "tinta": "rgba(255, 255, 255, 0.88)",
+      "fundo": "rgb(0, 96, 168)",
+      "x": 267,
+      "y": -625
+    },
+    "composto": {
+      "faixaEscura": {
+        "css": "rgb(0, 26, 61)",
+        "contrasteBranco085": 12.24
+      },
+      "pilulaDashboard": {
+        "fundoComposto": "rgb(0, 96, 168)",
+        "tintaComputada": "rgba(255, 255, 255, 0.88)",
+        "contraste": 6.48
+      }
+    },
+    "tons": {
+      "o-que-o-fast-oferece": {
+        "css": "rgb(233, 244, 252)",
+        "luminancia": 0.8905
+      },
+      "beneficios": {
+        "css": "rgb(238, 244, 251)",
+        "luminancia": 0.8984
+      },
+      "monitore-e-aprimore-seus-processos": {
+        "css": "rgb(233, 244, 252)",
+        "luminancia": 0.8905
+      }
+    },
+    "erros": []
+  },
+  "reduce-media": {
+    "secoes": 7,
+    "invisiveis": [
+      "H2.font-display text-section text-ink"
+    ],
+    "ancorasAusentes": [],
+    "erros": []
+  },
+  "reduce-atributo": {
+    "secoes": 7,
+    "invisiveis": [
+      "H2.font-display text-section text-ink",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "LI.h-full rounded-2xl border border-[#0079C",
+      "LI.h-full rounded-2xl border border-[#0079C"
+    ],
+    "ancorasAusentes": [],
+    "erros": []
+  },
+  "outrasSlugs": {
+    "match-ai": {
+      "temBackdrop": false,
+      "navClaro": null,
+      "h2Outras": null,
+      "erros": []
+    },
+    "lumina-ai": {
+      "temBackdrop": false,
+      "navClaro": false,
+      "h2Outras": "font-display text-xl text-white",
+      "erros": []
+    },
+    "qa-integrado": {
+      "temBackdrop": true,
+      "navClaro": false,
+      "h2Outras": "font-display text-xl text-white",
+      "erros": []
+    },
+    "connect-api": {
+      "temBackdrop": true,
+      "navClaro": false,
+      "h2Outras": "font-display text-xl text-white",
+      "erros": []
+    },
+    "smart-miner": {
+      "temBackdrop": true,
+      "navClaro": false,
+      "h2Outras": "font-display text-xl text-white",
+      "erros": []
+    },
+    "guru-de-seguros": {
+      "temBackdrop": true,
+      "navClaro": false,
+      "h2Outras": "font-display text-xl text-white",
+      "erros": []
+    }
+  }
+}

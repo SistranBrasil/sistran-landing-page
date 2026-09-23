@@ -1,0 +1,487 @@
+/* SIS-204 — a seção «Consultoria» de `/solucoes` (`Consulting.tsx`).
+
+   FONTE: `docs/consultoria.md`, que a issue declara ser a fonte da verdade, mais a
+   mock `public/imagensexemplo/consultoria.png` (1586×992) para o que o documento
+   não numera. Onde os dois discordam, o documento vence — e cada divergência está
+   anotada no ponto onde ela aparece.
+
+   POR QUE UMA FOLHA COLOCALIZADA E NÃO UTILITÁRIAS
+   Mesmo motivo de `sobre-nos.css` e `accelerators.css`: o gradiente no texto por
+   `background-clip`, o fundo empilhado (duas linhas de grade + a cor), a cápsula
+   que atravessa a borda inferior da foto e a grade interna de cada frente são
+   quatro composições sem utilitária. Escrevê-las em `style={{}}` espalharia os
+   números do documento por dentro do JSX, onde a próxima issue não os acha.
+
+   ── O FUNDO DESTA SEÇÃO VOLTA A SER OPACO, E ISSO É MEDIDO ──────────────────
+   A própria SIS-204 pôs o plano claro da rota no `<main>` (`.solucoes-canvas`,
+   `globals.css` ~31405) e fez as ilhas claras pararem de pintar
+   (`.solucoes-canvas .section-light { background: transparent }`). O documento
+   desta seção pede `#EFF8FE` explícito, então a faixa passa a declarar a própria
+   superfície — e o degrau que isso reabre é de 5/255 numa componente: o plano da
+   rota lê rgb(244 250 255) na calha desta faixa (medição de `pageSections.ts`) e
+   `#EFF8FE` é rgb(239 248 254). Não é ilha nova: é a mesma cor com outra origem.
+   É também por isso que o `<section>` deixou de carregar `section-light
+   section-light-blue` — com aquelas classes, a regra escopada na `<main>`
+   (0,2,0) venceria a cor declarada aqui (0,1,0) e a seção continuaria
+   transparente. O `isolation: isolate` que vinha de `.section-light` é
+   redeclarado abaixo.
+
+   A emenda com o fecho continua sendo claro contra claro, e por pouco: `.cta-ref`
+   mede rgb(239 247 253) na calha (a mesma medição citada em `solucoes/page.tsx`)
+   contra os rgb(239 248 254) daqui — 1/255 em duas componentes. */
+
+.consultoria-secao {
+  position: relative;
+  /* `overflow-x: clip`, nunca `overflow: hidden`: o detalhe geométrico do
+     `::after` encosta na borda direita e a cápsula da foto sangra para baixo, mas
+     `hidden` criaria contexto de rolagem e desligaria qualquer `sticky` de
+     ancestral (a lição está em `sobre-nos.css`). */
+  overflow-x: clip;
+  isolation: isolate;
+  /* Os números são os do documento: `#EFF8FE` e a grade técnica azul a 4%. O passo
+     de 48px é o da malha leve da casa; a opacidade é a que o documento pede. */
+  background:
+    linear-gradient(rgb(7 87 199 / 4%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(7 87 199 / 4%) 1px, transparent 1px),
+    #eff8fe;
+  background-size:
+    48px 48px,
+    48px 48px,
+    auto;
+}
+
+/* «Detalhes geométricos abstratos quase imperceptíveis» — dois focos de luz muito
+   diluídos. São radiais e não geometria de verdade porque gradiente é uma camada
+   de pintura, e o documento proíbe linha curva passando ENTRE os conteúdos: uma
+   camada de fundo não passa entre nada. */
+.consultoria-secao::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 42% at 88% 12%, rgb(113 56 239 / 5%), transparent 70%),
+    radial-gradient(42% 46% at 6% 78%, rgb(8 127 226 / 6%), transparent 72%);
+}
+
+/* O único traço geométrico com contorno: um quadrado arredondado enorme, saindo
+   pela direita, a 4% de tinta. É o vocabulário da atmosfera da própria rota
+   (`AtmosferaQuadrados`), não um desenho novo — e fica atrás de tudo. */
+.consultoria-secao::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 12%;
+  right: -9%;
+  width: 34rem;
+  height: 34rem;
+  border: 1px solid rgb(20 142 211 / 9%);
+  border-radius: 6rem;
+  rotate: -8deg;
+  pointer-events: none;
+}
+
+/* ── O CONTAINER ─────────────────────────────────────────────────────────────
+   `max-width: 1440px` e o padding vertical `64px 0 88px` são os do documento. O
+   horizontal é escrito em três degraus porque o documento dá DOIS números para ele
+   e nenhum é o mesmo: 24px no telefone (<720px) e 72–96px no desktop. O degrau do
+   meio é a interpolação, e o desktop é `clamp(72px, 6vw, 96px)` — 72px a 1024,
+   86,4px a 1440, 96px de 1600 para cima, tudo dentro da faixa pedida. */
+.consultoria-conteudo {
+  position: relative;
+  z-index: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 64px 24px 88px;
+  /* «Se houver animação de entrada, utilize somente fade e deslocamento vertical
+     máximo de 16px» — o preset `[data-reveal="fade-up"]` do `globals.css` desloca
+     `--motion-distance-sm`, que é 24px no `:root`. A variável é redeclarada NO
+     ESCOPO em vez de no token global: mexer no `:root` mudaria o reveal das doze
+     rotas, e o documento só governa esta seção. */
+  --motion-distance-sm: 16px;
+}
+
+@media (min-width: 45rem) {
+  .consultoria-conteudo {
+    padding-inline: 48px;
+  }
+}
+
+@media (min-width: 64rem) {
+  .consultoria-conteudo {
+    padding-inline: clamp(72px, 6vw, 96px);
+  }
+}
+
+/* ── O CORREDOR DO ScrollSpy, E ELE NÃO É GOSTO: É UMA COLISÃO MEDIDA ────────
+   `/solucoes` monta o indicador lateral de seções (`ui/ScrollSpy`, vem do
+   `PageShell` sem prop nenhuma), e de 1440px para cima o rótulo do item ACESO se
+   pinta em repouso. Medido na página, com `Range` e não com a caixa: a tinta de
+   «CONSULTORIA» termina em x=144,84 a 1440 e em x=152,84 de 1536 para cima (ali o
+   `nav` anda 8px para a direita, `2xl:left-5`). A coluna de texto desta seção
+   começa em 86,4px a 1440 — ou seja o rótulo entrava 58,4px DENTRO do parágrafo, e
+   a captura de conferência o mostra escrito por cima da última linha.
+
+   As outras seções da rota escapam porque vivem no `.container-lp` (1180px
+   centrado, que a 1440 começa em 162px). Esta sangra na janela, como a cena de
+   `/quem-somos` (SIS-191) e a seção «Sobre nós» (SIS-280) — as duas pagaram este
+   mesmo corredor, com a medição na folha. Abaixo de 1439,98px não há o que
+   reservar: ali o rótulo do ativo fica em `opacity: 0` em repouso (SIS-170) e só
+   aparece em hover, que é sobreposição transitória e pedida por quem interage.
+
+   ⚠️ DESVIO DECLARADO DE `docs/consultoria.md`, que pede 72–96px de padding
+   horizontal no desktop. O `max()` limita o desvio à faixa em que a colisão
+   existe: o container tem `max-width: 1440px`, então a partir de 1440 a borda dele
+   entra (100vw − 1440) / 2, e o corredor só precisa cobrir o que falta para o
+   conteúdo começar em 176px (a tinta de 152,84 mais ~23px de folga, a mesma ordem
+   de folga da SIS-280). Resultado: 176px a 1440, 128px a 1536, 96px a 1600 e, de
+   ~1712 para cima, os 96px do documento sem correção nenhuma. O padding DIREITO
+   fica como o documento manda — o corredor é de um lado só. */
+@media (min-width: 1439.99px) {
+  .consultoria-conteudo {
+    padding-left: max(clamp(72px, 6vw, 96px), 176px - (100vw - 1440px) / 2);
+  }
+}
+
+/* ── BLOCO SUPERIOR ──────────────────────────────────────────────────────────
+   Uma coluna até 1024px («transforme o bloco superior em uma coluna», e o texto
+   antes da fotografia — que é a ordem do DOM, sem `order`). As duas colunas e o
+   vão de 56px são os do documento; `minmax(0, …)` para o `1.15fr` da foto não ser
+   esticado pela largura intrínseca da imagem. */
+.consultoria-topo {
+  display: grid;
+  gap: 56px;
+  align-items: center;
+}
+
+@media (min-width: 64rem) {
+  .consultoria-topo {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.15fr);
+  }
+}
+
+.consultoria-texto {
+  min-width: 0;
+}
+
+/* O CARIMBO. `CarimboBatida` declara `--carimbo-batida-w` dentro da própria
+   `.carimbo-batida`, e declaração no elemento vence herança do pai — então a
+   largura tem de ser escrita NA classe que vai pela prop `className`.
+
+   SEM `rotate`: a arte já vem tombada −2,96° (medido no alfa de
+   `carimbo-consultoria-ticket-outline-0757c7.png`, 963×348: a primeira linha com
+   tinta cai de y=51 em x=200 para y=14 em x=800). O documento pede o carimbo
+   «levemente inclinado, conforme o próprio arquivo» — qualquer giro em CSS aqui
+   somaria ao do arquivo, e ainda duplicaria um valor que o GSAP anula na batida. */
+.consultoria-carimbo {
+  --carimbo-batida-w: 240px;
+  display: block;
+}
+
+@media (min-width: 45rem) {
+  .consultoria-carimbo {
+    --carimbo-batida-w: 280px;
+  }
+}
+
+@media (min-width: 64rem) {
+  .consultoria-carimbo {
+    --carimbo-batida-w: 340px;
+  }
+}
+
+/* O TÍTULO. Tamanho, entrelinha, tracking e as três paradas do gradiente são os do
+   documento. `color: transparent` junto de `background-clip: text` — e não
+   `-webkit-text-fill-color` sozinho — para o texto não virar invisível caso o
+   recorte não aplique: sem suporte, `transparent` ainda deixa a seleção e o
+   contorno de foco no lugar, e o `@supports` abaixo devolve a cor chapada. */
+.consultoria-titulo {
+  margin: 22px 0 0;
+  /* `fit-content` É PARTE DO GRADIENTE, não arrumação de caixa: com o `h2` em bloco
+     a caixa de pintura tem a largura da COLUNA (531,8px a 1440, medido), e a parada
+     de `#7138ef` em 100% cai fora dos glifos — a palavra terminaria no azul do meio
+     e o violeta do documento nunca apareceria. Com a caixa colada no texto (424,2px
+     a 1440) as três paradas se distribuem sobre «Consultoria», que é o «aplique o
+     gradiente diretamente no texto» do documento. */
+  width: fit-content;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(48px, 15vw, 64px);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
+  background: linear-gradient(90deg, #167fd7 0%, #2569df 48%, #7138ef 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@supports not ((background-clip: text) or (-webkit-background-clip: text)) {
+  .consultoria-titulo {
+    background: none;
+    color: #2569df;
+  }
+}
+
+@media (min-width: 45rem) {
+  .consultoria-titulo {
+    /* «Reduza o título principal para aproximadamente 68px» no tablet. */
+    font-size: 68px;
+  }
+}
+
+@media (min-width: 64rem) {
+  .consultoria-titulo {
+    font-size: clamp(64px, 6vw, 100px);
+  }
+}
+
+/* OS DOIS PARÁGRAFOS, verbatim no TSX. Cor, corpo, entrelinha, medida e o respiro
+   de 20px entre eles são os do documento. O primeiro ganha 24px do título. */
+.consultoria-paragrafo {
+  max-width: 610px;
+  margin: 20px 0 0;
+  color: #4e709b;
+  font-size: 19px;
+  line-height: 1.55;
+}
+
+.consultoria-paragrafo:first-of-type {
+  margin-top: 24px;
+}
+
+/* ── A FOTOGRAFIA ────────────────────────────────────────────────────────────
+   `16 / 9` e `object-fit: cover`: o arquivo é 1536×1024 (3/2), então o recorte
+   tira faixas em cima e embaixo — que é o enquadramento da mock, com a mesa e as
+   três pessoas em quadro. Raio, borda branca translúcida e sombra suave são os do
+   documento; nenhum filtro azul sobre a foto, como ele manda. */
+.consultoria-foto {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  border-radius: 30px;
+  border: 1px solid rgb(255 255 255 / 70%);
+  box-shadow: 0 26px 54px -34px rgb(8 43 100 / 32%);
+  /* A cápsula sangra para fora da borda inferior, então o recorte NÃO pode estar
+     aqui: ele vive no `<img>`, que é quem precisa ser cortado pelo raio. */
+}
+
+@media (min-width: 45rem) {
+  .consultoria-foto {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+.consultoria-foto-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: inherit;
+}
+
+/* A CÁPSULA «Estratégia sob medida». Altura, padding horizontal, fundo a 96% e o
+   formato são os do documento.
+
+   ⚠️ DIVERGÊNCIA DECLARADA entre documento e mock, resolvida no meio: o documento
+   pede «posicionamento parcialmente sobreposto à borda inferior da imagem», a mock
+   traz a cápsula INTEIRA dentro da foto, com a base ~10px acima da borda (medido:
+   cápsula até y≈477, borda da foto em y≈487 no arquivo de 1586×992). `bottom:
+   -12px` deixa ~79% da cápsula sobre a fotografia e faz a base atravessar a borda
+   — atende a palavra do documento sem afastar a peça do lugar em que a mock a
+   desenha. */
+.consultoria-selo {
+  position: absolute;
+  left: 26px;
+  bottom: -12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  height: 58px;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 96%);
+  box-shadow: 0 16px 30px -20px rgb(8 43 100 / 38%);
+  color: #082b64;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  /* Flutuação vertical contínua — mesma família do `.esg-selo` (translateY +
+     alternate). O portão `scripts/medir-solucoes-ajustes.mjs` exige mudança de
+     `transform` dentro de ~4,2s; 3,8s de ciclo deixa a amostragem ver os dois
+     extremos. */
+  transform-origin: center center;
+  animation: consultoria-selo-flutua 3.8s cubic-bezier(0.37, 0, 0.63, 1) infinite
+    alternate;
+  will-change: transform;
+}
+
+@keyframes consultoria-selo-flutua {
+  from {
+    transform: translateY(8px);
+  }
+  to {
+    transform: translateY(-8px);
+  }
+}
+
+/* WCAG 2.2.2 — laço infinito pausa sob o cursor/foco. */
+.consultoria-selo:hover,
+.consultoria-selo:focus-within {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .consultoria-selo {
+    animation: none;
+    transform: none;
+    will-change: auto;
+  }
+}
+
+html[data-motion='reduce'] .consultoria-selo {
+  animation: none;
+  transform: none;
+  will-change: auto;
+}
+
+.consultoria-selo-icone {
+  width: 22px;
+  height: 22px;
+  /* «Ícone de alvo em azul-escuro», contra o azul-marinho do texto. */
+  color: #0a3d82;
+}
+
+/* ── O DIVISOR ───────────────────────────────────────────────────────────────
+   34px de respiro, o rótulo e — na MESMA linha — uma única régua de 1px até o fim
+   do container. É a única linha decorativa permitida nesta área, e por isso ela é
+   um `<span>` `aria-hidden` e não uma borda de qualquer outro nó. */
+.consultoria-divisor {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 34px;
+}
+
+.consultoria-divisor-titulo {
+  margin: 0;
+  flex: 0 0 auto;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(28px, 2.2vw, 32px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #082b64;
+}
+
+.consultoria-divisor-linha {
+  flex: 1 1 auto;
+  height: 1px;
+  background: rgb(20 142 211 / 35%);
+}
+
+/* ── AS FRENTES DE ATUAÇÃO ───────────────────────────────────────────────────
+   Grade aberta, direto sobre o fundo da seção: sem card, sem fundo branco
+   individual, sem borda em volta do texto, sem sombra, sem linha ligando itens,
+   sem número e sem seta — a lista de proibições do documento, item por item.
+
+   O telefone entra primeiro (uma coluna, 42px entre itens, que são os números do
+   documento para <720px) e as duas colunas chegam por `min-width`. */
+.consultoria-frentes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 42px;
+  margin: 40px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 45rem) {
+  .consultoria-frentes {
+    /* «Mantenha as frentes em duas colunas quando houver espaço»: a 768 sobram
+       ~672px de container, e 48px de vão deixam 312px por coluna — largura de
+       texto confortável. Os 100px do documento só entram no desktop, abaixo. */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 48px;
+    row-gap: 56px;
+  }
+}
+
+@media (min-width: 64rem) {
+  .consultoria-frentes {
+    column-gap: 100px;
+    row-gap: 72px;
+  }
+}
+
+.consultoria-frente {
+  display: grid;
+  grid-template-columns: 60px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+@media (min-width: 45rem) {
+  .consultoria-frente {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 22px;
+  }
+}
+
+/* O ÍCONE CIRCULAR. 52px no telefone e 64px daí para cima, contorno ciano de
+   1,5px e miolo quase branco — os números do documento. O ciano é o traço medido
+   na mock (rgb(26 186 253) no contorno do primeiro item).
+
+   ⚠️ O 1,5px É DECLARADO E O MOTOR NÃO O DEVOLVE: `borderTopWidth` computado lê
+   `1px` no Chromium, e medido nos dois fatores de escala (DPR 1 e DPR 2) — ele
+   encaixa largura de borda fracionária na grade de pixels e não guarda o 1,5.
+   O valor fica escrito porque é o do documento e porque um motor que honre
+   fracionário vai pintá-lo; trocar por `box-shadow: inset` só para a sonda ler
+   «1.5px» seria mentir sobre a propriedade que desenha a borda. */
+.consultoria-frente-icone {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1.5px solid rgb(26 186 253 / 90%);
+  background: rgb(255 255 255 / 45%);
+  color: #087fe2;
+}
+
+.consultoria-frente-icone svg {
+  width: 24px;
+  height: 24px;
+}
+
+@media (min-width: 45rem) {
+  .consultoria-frente-icone {
+    width: 64px;
+    height: 64px;
+  }
+
+  .consultoria-frente-icone svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.consultoria-frente-titulo {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #062963;
+}
+
+.consultoria-frente-texto {
+  margin: 10px 0 0;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #52729c;
+}

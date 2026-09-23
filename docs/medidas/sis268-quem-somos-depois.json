@@ -1,0 +1,544 @@
+{
+  "issue": "SIS-268",
+  "rota": "/quem-somos",
+  "marca": "depois",
+  "larguras": {
+    "390": {
+      "desenho": {
+        "temCtaRef": true,
+        "blocosFaleComAGente": 1,
+        "cartaoNavyForaDaRef": 0,
+        "pecas": {
+          "vidro": true,
+          "fio": true,
+          "no": true,
+          "blob": true,
+          "selo": true,
+          "botaoCirculo": true,
+          "ondas": true,
+          "rotuloMobile": true
+        },
+        "nosComDataReveal": 0
+      },
+      "escrita": {
+        "titulo": "Fale com a Gente!",
+        "paragrafo": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+        "botao": "Fale com a SISTRAN"
+      },
+      "botao": {
+        "tag": "button",
+        "href": null,
+        "tipo": "button"
+      },
+      "dialogosNoDocumento": 0,
+      "vazamento": {
+        "fonteClasses": "vaza-fonte section-py section-light section-light-blue",
+        "fontePaddingBottom": "80px",
+        "fonteZIndex": "auto",
+        "cartoesMarginBottom": "0px",
+        "receptorTag": null,
+        "receptorPaddingTop": null,
+        "caixaCartoes": {
+          "topo": 21810,
+          "base": 22195,
+          "esq": 20,
+          "dir": 370,
+          "alt": 385,
+          "larg": 350
+        },
+        "caixaCartaoEsq": {
+          "topo": 21810,
+          "base": 22005,
+          "esq": 20,
+          "dir": 370,
+          "alt": 194,
+          "larg": 350
+        },
+        "caixaCartaoDir": {
+          "topo": 22029,
+          "base": 22195,
+          "esq": 20,
+          "dir": 370,
+          "alt": 166,
+          "larg": 350
+        }
+      },
+      "junta": {
+        "irmaoAcimaDoFecho": "section.vaza-fonte.section-py.section-light.section-light-blue",
+        "temNotch": false,
+        "notchFill": null,
+        "caixaNotch": null,
+        "corAcimaDoFecho": {
+          "seletor": "section.vaza-fonte.section-py.section-light",
+          "bg": "rgba(0, 0, 0, 0)",
+          "temImagem": true
+        },
+        "corNoTopoDoFecho": {
+          "seletor": "section.cta-ref.section-py.relative",
+          "bg": "rgba(0, 0, 0, 0)",
+          "temImagem": true
+        },
+        "corEntreCartoesEFecho": {
+          "seletor": "section.vaza-fonte.section-py.section-light",
+          "bg": "rgba(0, 0, 0, 0)",
+          "temImagem": true
+        }
+      },
+      "fecho": {
+        "tag": "section",
+        "classe": "cta-ref section-py relative overflow-hidden",
+        "caixa": {
+          "topo": 22275,
+          "base": 23024,
+          "esq": 0,
+          "dir": 390,
+          "alt": 749,
+          "larg": 390
+        },
+        "fundo": "radial-gradient(120% 80% at 12% 0px, rgba(255, 255, 255, 0.85), rgba(0, 0, 0, 0) 58%), radial-gradient(90% 70% at 88% 10",
+        "sombra": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px"
+      },
+      "pecasDoFecho": {
+        "vidro": {
+          "topo": 22655,
+          "base": 22838,
+          "esq": 50,
+          "dir": 340,
+          "alt": 184,
+          "larg": 290
+        },
+        "rotulo": {
+          "topo": 22655,
+          "base": 22673,
+          "esq": 50,
+          "dir": 340,
+          "alt": 18,
+          "larg": 290
+        },
+        "titulo": {
+          "topo": 22681,
+          "base": 22718,
+          "esq": 50,
+          "dir": 340,
+          "alt": 38,
+          "larg": 290
+        },
+        "botao": {
+          "topo": 22858,
+          "base": 22914,
+          "esq": 50,
+          "dir": 340,
+          "alt": 56,
+          "larg": 290
+        },
+        "arte": {
+          "topo": 22429,
+          "base": 22623,
+          "esq": 76,
+          "dir": 314,
+          "alt": 194,
+          "larg": 238
+        }
+      },
+      "overflow": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "vazaNaHorizontal": false
+      },
+      "saliencia": {
+        "descePraDentroDoFechoPx": -80,
+        "colisoes": {
+          "vidro": {
+            "sobrepoePx": 0,
+            "folgaPx": 460
+          },
+          "rotulo": {
+            "sobrepoePx": 0,
+            "folgaPx": 460
+          },
+          "titulo": {
+            "sobrepoePx": 0,
+            "folgaPx": 486
+          },
+          "botao": {
+            "sobrepoePx": 0,
+            "folgaPx": 663
+          },
+          "arte": {
+            "sobrepoePx": 0,
+            "folgaPx": 234
+          }
+        }
+      },
+      "escritaIgualAoPadrao": {
+        "titulo": true,
+        "paragrafo": true,
+        "botao": true
+      }
+    },
+    "768": {
+      "desenho": {
+        "temCtaRef": true,
+        "blocosFaleComAGente": 1,
+        "cartaoNavyForaDaRef": 0,
+        "pecas": {
+          "vidro": true,
+          "fio": true,
+          "no": true,
+          "blob": true,
+          "selo": true,
+          "botaoCirculo": true,
+          "ondas": true,
+          "rotuloMobile": true
+        },
+        "nosComDataReveal": 0
+      },
+      "escrita": {
+        "titulo": "Fale com a Gente!",
+        "paragrafo": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+        "botao": "Fale com a SISTRAN"
+      },
+      "botao": {
+        "tag": "button",
+        "href": null,
+        "tipo": "button"
+      },
+      "dialogosNoDocumento": 0,
+      "vazamento": {
+        "fonteClasses": "vaza-fonte section-py section-light section-light-blue",
+        "fontePaddingBottom": "112px",
+        "fonteZIndex": "auto",
+        "cartoesMarginBottom": "0px",
+        "receptorTag": null,
+        "receptorPaddingTop": null,
+        "caixaCartoes": {
+          "topo": 18487,
+          "base": 18682,
+          "esq": 24,
+          "dir": 744,
+          "alt": 194,
+          "larg": 720
+        },
+        "caixaCartaoEsq": {
+          "topo": 18487,
+          "base": 18682,
+          "esq": 24,
+          "dir": 372,
+          "alt": 194,
+          "larg": 348
+        },
+        "caixaCartaoDir": {
+          "topo": 18487,
+          "base": 18682,
+          "esq": 396,
+          "dir": 744,
+          "alt": 194,
+          "larg": 348
+        }
+      },
+      "junta": {
+        "irmaoAcimaDoFecho": "section.vaza-fonte.section-py.section-light.section-light-blue",
+        "temNotch": false,
+        "notchFill": null,
+        "caixaNotch": null,
+        "corAcimaDoFecho": {
+          "seletor": "section.vaza-fonte.section-py.section-light",
+          "bg": "rgba(0, 0, 0, 0)",
+          "temImagem": true
+        },
+        "corNoTopoDoFecho": {
+          "seletor": "section.cta-ref.section-py.relative",
+          "bg": "rgba(0, 0, 0, 0)",
+          "temImagem": true
+        },
+        "corEntreCartoesEFecho": {
+          "seletor": "section.vaza-fonte.section-py.section-light",
+          "bg": "rgba(0, 0, 0, 0)",
+          "temImagem": true
+        }
+      },
+      "fecho": {
+        "tag": "section",
+        "classe": "cta-ref section-py relative overflow-hidden",
+        "caixa": {
+          "topo": 18794,
+          "base": 19586,
+          "esq": 0,
+          "dir": 768,
+          "alt": 792,
+          "larg": 768
+        },
+        "fundo": "radial-gradient(120% 80% at 12% 0px, rgba(255, 255, 255, 0.85), rgba(0, 0, 0, 0) 58%), radial-gradient(90% 70% at 88% 10",
+        "sombra": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px"
+      },
+      "pecasDoFecho": {
+        "vidro": {
+          "topo": 19234,
+          "base": 19368,
+          "esq": 54,
+          "dir": 714,
+          "alt": 134,
+          "larg": 660
+        },
+        "rotulo": {
+          "topo": 19234,
+          "base": 19252,
+          "esq": 54,
+          "dir": 714,
+          "alt": 18,
+          "larg": 660
+        },
+        "titulo": {
+          "topo": 19260,
+          "base": 19300,
+          "esq": 54,
+          "dir": 714,
+          "alt": 40,
+          "larg": 660
+        },
+        "botao": {
+          "topo": 19388,
+          "base": 19444,
+          "esq": 54,
+          "dir": 714,
+          "alt": 56,
+          "larg": 660
+        },
+        "arte": {
+          "topo": 18980,
+          "base": 19202,
+          "esq": 248,
+          "dir": 520,
+          "alt": 222,
+          "larg": 272
+        }
+      },
+      "overflow": {
+        "scrollWidth": 768,
+        "innerWidth": 768,
+        "vazaNaHorizontal": false
+      },
+      "saliencia": {
+        "descePraDentroDoFechoPx": -112,
+        "colisoes": {
+          "vidro": {
+            "sobrepoePx": 0,
+            "folgaPx": 552
+          },
+          "rotulo": {
+            "sobrepoePx": 0,
+            "folgaPx": 552
+          },
+          "titulo": {
+            "sobrepoePx": 0,
+            "folgaPx": 578
+          },
+          "botao": {
+            "sobrepoePx": 0,
+            "folgaPx": 706
+          },
+          "arte": {
+            "sobrepoePx": 0,
+            "folgaPx": 298
+          }
+        }
+      },
+      "escritaIgualAoPadrao": {
+        "titulo": true,
+        "paragrafo": true,
+        "botao": true
+      }
+    },
+    "1440": {
+      "desenho": {
+        "temCtaRef": true,
+        "blocosFaleComAGente": 1,
+        "cartaoNavyForaDaRef": 0,
+        "pecas": {
+          "vidro": true,
+          "fio": true,
+          "no": true,
+          "blob": true,
+          "selo": true,
+          "botaoCirculo": true,
+          "ondas": true,
+          "rotuloMobile": false
+        },
+        "nosComDataReveal": 0
+      },
+      "escrita": {
+        "titulo": "Fale com a Gente!",
+        "paragrafo": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+        "botao": "Fale com a SISTRAN"
+      },
+      "botao": {
+        "tag": "button",
+        "href": null,
+        "tipo": "button"
+      },
+      "dialogosNoDocumento": 0,
+      "vazamento": {
+        "fonteClasses": "vaza-fonte section-py section-light section-light-blue",
+        "fontePaddingBottom": "0px",
+        "fonteZIndex": "1",
+        "cartoesMarginBottom": "-80px",
+        "receptorTag": null,
+        "receptorPaddingTop": null,
+        "caixaCartoes": {
+          "topo": 19092,
+          "base": 19235,
+          "esq": 162,
+          "dir": 1278,
+          "alt": 144,
+          "larg": 1116
+        },
+        "caixaCartaoEsq": {
+          "topo": 19092,
+          "base": 19235,
+          "esq": 162,
+          "dir": 708,
+          "alt": 144,
+          "larg": 546
+        },
+        "caixaCartaoDir": {
+          "topo": 19092,
+          "base": 19235,
+          "esq": 732,
+          "dir": 1278,
+          "alt": 144,
+          "larg": 546
+        }
+      },
+      "junta": {
+        "irmaoAcimaDoFecho": "section.vaza-fonte.section-py.section-light.section-light-blue",
+        "temNotch": false,
+        "notchFill": null,
+        "caixaNotch": null,
+        "corAcimaDoFecho": {
+          "seletor": "section.vaza-fonte.section-py.section-light",
+          "bg": "rgba(0, 0, 0, 0)",
+          "temImagem": true
+        },
+        "corNoTopoDoFecho": {
+          "seletor": "section.vaza-fonte.section-py.section-light",
+          "bg": "rgba(0, 0, 0, 0)",
+          "temImagem": true
+        },
+        "corEntreCartoesEFecho": {
+          "semFaixa": true,
+          "px": -80
+        }
+      },
+      "fecho": {
+        "tag": "section",
+        "classe": "cta-ref section-py relative overflow-hidden",
+        "caixa": {
+          "topo": 19155,
+          "base": 19697,
+          "esq": 0,
+          "dir": 1440,
+          "alt": 542,
+          "larg": 1440
+        },
+        "fundo": "radial-gradient(120% 80% at 12% 0px, rgba(255, 255, 255, 0.85), rgba(0, 0, 0, 0) 58%), radial-gradient(90% 70% at 88% 10",
+        "sombra": "rgba(227, 241, 251, 0.45) 0px 0px 54px 18px"
+      },
+      "pecasDoFecho": {
+        "vidro": {
+          "topo": 19283,
+          "base": 19569,
+          "esq": 209,
+          "dir": 958,
+          "alt": 286,
+          "larg": 749
+        },
+        "rotulo": {
+          "topo": 18795,
+          "base": 18795,
+          "esq": 0,
+          "dir": 0,
+          "alt": 0,
+          "larg": 0
+        },
+        "titulo": {
+          "topo": 19397,
+          "base": 19435,
+          "esq": 247,
+          "dir": 920,
+          "alt": 38,
+          "larg": 673
+        },
+        "botao": {
+          "topo": 19418,
+          "base": 19465,
+          "esq": 792,
+          "dir": 1032,
+          "alt": 48,
+          "larg": 240
+        },
+        "arte": {
+          "topo": 19256,
+          "base": 19596,
+          "esq": 868,
+          "dir": 1285,
+          "alt": 341,
+          "larg": 418
+        }
+      },
+      "overflow": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "vazaNaHorizontal": false
+      },
+      "saliencia": {
+        "descePraDentroDoFechoPx": 80,
+        "colisoes": {
+          "vidro": {
+            "sobrepoePx": 0,
+            "folgaPx": 48
+          },
+          "rotulo": {
+            "sobrepoePx": 440,
+            "folgaPx": -440
+          },
+          "titulo": {
+            "sobrepoePx": 0,
+            "folgaPx": 162
+          },
+          "botao": {
+            "sobrepoePx": 0,
+            "folgaPx": 183
+          },
+          "arte": {
+            "sobrepoePx": 0,
+            "folgaPx": 21
+          }
+        }
+      },
+      "escritaIgualAoPadrao": {
+        "titulo": true,
+        "paragrafo": true,
+        "botao": true
+      }
+    }
+  },
+  "capturas": [
+    "docs/capturas/sis268-quem-somos-depois-390.png",
+    "docs/capturas/sis268-quem-somos-depois-junta-390.png",
+    "docs/capturas/sis268-quem-somos-depois-768.png",
+    "docs/capturas/sis268-quem-somos-depois-junta-768.png",
+    "docs/capturas/sis268-quem-somos-depois-1440.png",
+    "docs/capturas/sis268-quem-somos-depois-junta-1440.png",
+    "docs/capturas/sis268-quem-somos-depois-modal.png"
+  ],
+  "modal": {
+    "urlAntes": "http://localhost:3000/quem-somos",
+    "urlDepoisDoClique": "http://localhost:3000/quem-somos",
+    "navegou": false,
+    "aberto": {
+      "tag": "dialog",
+      "visivel": true
+    },
+    "fechouComEsc": true
+  }
+}

@@ -1,0 +1,2042 @@
+{
+  "rota": "http://localhost:3000/quem-somos",
+  "quando": "2026-09-23T02:09:52.121Z",
+  "larguras": {
+    "390": {
+      "estrutura": {
+        "altura": 620,
+        "alturaMinimaComputada": "0px",
+        "fundoDeclarado": "linear-gradient(rgb(248, 252, 255) 0%, rgb(238, 248, 255) 52%, rgb(229, 244, 255) 100%)",
+        "headings": [],
+        "textoVisivel": "Automação & Processos Cloud & Infraestrutura CRM & Relacionamento",
+        "palavraTecnologiasEmTextoVisivel": false,
+        "rotuloDaSecao": "Tecnologias utilizadas pela Sistran",
+        "carimbo": {
+          "arquivo": "carimbo-tecnologias-ticket-outline-0757c7.png",
+          "largura": 245,
+          "altura": 83,
+          "proporcao": 2.964,
+          "esquerda": 20,
+          "esquerdaDoMiolo": 0
+        },
+        "linhaDeCima": {
+          "faixaEsquerda": 0,
+          "carimboDireita": 265,
+          "começaDepoisDoCarimbo": false,
+          "cruzaNaAlturaDoCarimbo": false,
+          "centroDaFaixa": 326,
+          "centroDoCarimbo": 229
+        },
+        "controles": {
+          "botoes": 0,
+          "svgs": 0,
+          "inputs": 0,
+          "comRoleDeBotao": 0,
+          "barrasDeProgresso": 0
+        },
+        "transbordoDoDocumento": 0,
+        "imagens": [
+          {
+            "alt": "Carimbo Sistran Tecnologias",
+            "temAlt": true,
+            "arquivo": "carimbo-tecnologias-ticket-outline-0757c7.png",
+            "exibida": 245,
+            "intrinseca": 978,
+            "folgaRetina": 488
+          },
+          {
+            "alt": "React",
+            "temAlt": true,
+            "arquivo": "react.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "MongoDB",
+            "temAlt": true,
+            "arquivo": "mongodb.png",
+            "exibida": 98,
+            "intrinseca": 2172,
+            "folgaRetina": 1976
+          },
+          {
+            "alt": "Redis",
+            "temAlt": true,
+            "arquivo": "redis.png",
+            "exibida": 44,
+            "intrinseca": 1347,
+            "folgaRetina": 1259
+          },
+          {
+            "alt": "Python",
+            "temAlt": true,
+            "arquivo": "python.png",
+            "exibida": 96,
+            "intrinseca": 2062,
+            "folgaRetina": 1870
+          },
+          {
+            "alt": "Angular",
+            "temAlt": true,
+            "arquivo": "angular.png",
+            "exibida": 98,
+            "intrinseca": 2172,
+            "folgaRetina": 1976
+          },
+          {
+            "alt": "Java",
+            "temAlt": true,
+            "arquivo": "java.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "React",
+            "temAlt": true,
+            "arquivo": "react.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "MongoDB",
+            "temAlt": true,
+            "arquivo": "mongodb.png",
+            "exibida": 98,
+            "intrinseca": 2172,
+            "folgaRetina": 1976
+          },
+          {
+            "alt": "Redis",
+            "temAlt": true,
+            "arquivo": "redis.png",
+            "exibida": 44,
+            "intrinseca": 1347,
+            "folgaRetina": 1259
+          },
+          {
+            "alt": "Python",
+            "temAlt": true,
+            "arquivo": "python.png",
+            "exibida": 96,
+            "intrinseca": 2062,
+            "folgaRetina": 1870
+          },
+          {
+            "alt": "Angular",
+            "temAlt": true,
+            "arquivo": "angular.png",
+            "exibida": 98,
+            "intrinseca": 2172,
+            "folgaRetina": 1976
+          },
+          {
+            "alt": "Java",
+            "temAlt": true,
+            "arquivo": "java.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "React",
+            "temAlt": true,
+            "arquivo": "react.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "MongoDB",
+            "temAlt": true,
+            "arquivo": "mongodb.png",
+            "exibida": 98,
+            "intrinseca": 2172,
+            "folgaRetina": 1976
+          },
+          {
+            "alt": "Redis",
+            "temAlt": true,
+            "arquivo": "redis.png",
+            "exibida": 44,
+            "intrinseca": 1347,
+            "folgaRetina": 1259
+          },
+          {
+            "alt": "Python",
+            "temAlt": true,
+            "arquivo": "python.png",
+            "exibida": 96,
+            "intrinseca": 2062,
+            "folgaRetina": 1870
+          },
+          {
+            "alt": "Angular",
+            "temAlt": true,
+            "arquivo": "angular.png",
+            "exibida": 98,
+            "intrinseca": 2172,
+            "folgaRetina": 1976
+          },
+          {
+            "alt": "Java",
+            "temAlt": true,
+            "arquivo": "java.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "React",
+            "temAlt": true,
+            "arquivo": "react.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "MongoDB",
+            "temAlt": true,
+            "arquivo": "mongodb.png",
+            "exibida": 98,
+            "intrinseca": 2172,
+            "folgaRetina": 1976
+          },
+          {
+            "alt": "Redis",
+            "temAlt": true,
+            "arquivo": "redis.png",
+            "exibida": 44,
+            "intrinseca": 1347,
+            "folgaRetina": 1259
+          },
+          {
+            "alt": "Python",
+            "temAlt": true,
+            "arquivo": "python.png",
+            "exibida": 96,
+            "intrinseca": 2062,
+            "folgaRetina": 1870
+          },
+          {
+            "alt": "Angular",
+            "temAlt": true,
+            "arquivo": "angular.png",
+            "exibida": 98,
+            "intrinseca": 2172,
+            "folgaRetina": 1976
+          },
+          {
+            "alt": "Java",
+            "temAlt": true,
+            "arquivo": "java.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "Pega",
+            "temAlt": true,
+            "arquivo": "pega-oficial.png",
+            "exibida": 135,
+            "intrinseca": 2172,
+            "folgaRetina": 1902
+          },
+          {
+            "alt": "Amazon Web Services",
+            "temAlt": true,
+            "arquivo": "aws.png",
+            "exibida": 77,
+            "intrinseca": 600,
+            "folgaRetina": 446
+          },
+          {
+            "alt": "Salesforce",
+            "temAlt": true,
+            "arquivo": "salesforce.png",
+            "exibida": 98,
+            "intrinseca": 149,
+            "folgaRetina": -47
+          },
+          {
+            "alt": "REST API",
+            "temAlt": true,
+            "arquivo": "rest-api.png",
+            "exibida": 96,
+            "intrinseca": 2160,
+            "folgaRetina": 1968
+          },
+          {
+            "alt": "Spring Boot",
+            "temAlt": true,
+            "arquivo": "spring-boot.png",
+            "exibida": 83,
+            "intrinseca": 1938,
+            "folgaRetina": 1772
+          },
+          {
+            "alt": "Node.js",
+            "temAlt": true,
+            "arquivo": "nodejs.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": ".NET",
+            "temAlt": true,
+            "arquivo": "dotnet.png",
+            "exibida": 40,
+            "intrinseca": 1274,
+            "folgaRetina": 1194
+          },
+          {
+            "alt": "Inteligência Artificial",
+            "temAlt": true,
+            "arquivo": "ai-ml-ds.png",
+            "exibida": 50,
+            "intrinseca": 154,
+            "folgaRetina": 54
+          },
+          {
+            "alt": "REST API",
+            "temAlt": true,
+            "arquivo": "rest-api.png",
+            "exibida": 96,
+            "intrinseca": 2160,
+            "folgaRetina": 1968
+          },
+          {
+            "alt": "Spring Boot",
+            "temAlt": true,
+            "arquivo": "spring-boot.png",
+            "exibida": 83,
+            "intrinseca": 1938,
+            "folgaRetina": 1772
+          },
+          {
+            "alt": "Node.js",
+            "temAlt": true,
+            "arquivo": "nodejs.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": ".NET",
+            "temAlt": true,
+            "arquivo": "dotnet.png",
+            "exibida": 40,
+            "intrinseca": 1274,
+            "folgaRetina": 1194
+          },
+          {
+            "alt": "Inteligência Artificial",
+            "temAlt": true,
+            "arquivo": "ai-ml-ds.png",
+            "exibida": 50,
+            "intrinseca": 154,
+            "folgaRetina": 54
+          },
+          {
+            "alt": "REST API",
+            "temAlt": true,
+            "arquivo": "rest-api.png",
+            "exibida": 96,
+            "intrinseca": 2160,
+            "folgaRetina": 1968
+          },
+          {
+            "alt": "Spring Boot",
+            "temAlt": true,
+            "arquivo": "spring-boot.png",
+            "exibida": 83,
+            "intrinseca": 1938,
+            "folgaRetina": 1772
+          },
+          {
+            "alt": "Node.js",
+            "temAlt": true,
+            "arquivo": "nodejs.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": ".NET",
+            "temAlt": true,
+            "arquivo": "dotnet.png",
+            "exibida": 40,
+            "intrinseca": 1274,
+            "folgaRetina": 1194
+          },
+          {
+            "alt": "Inteligência Artificial",
+            "temAlt": true,
+            "arquivo": "ai-ml-ds.png",
+            "exibida": 50,
+            "intrinseca": 154,
+            "folgaRetina": 54
+          },
+          {
+            "alt": "REST API",
+            "temAlt": true,
+            "arquivo": "rest-api.png",
+            "exibida": 96,
+            "intrinseca": 2160,
+            "folgaRetina": 1968
+          },
+          {
+            "alt": "Spring Boot",
+            "temAlt": true,
+            "arquivo": "spring-boot.png",
+            "exibida": 83,
+            "intrinseca": 1938,
+            "folgaRetina": 1772
+          },
+          {
+            "alt": "Node.js",
+            "temAlt": true,
+            "arquivo": "nodejs.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": ".NET",
+            "temAlt": true,
+            "arquivo": "dotnet.png",
+            "exibida": 40,
+            "intrinseca": 1274,
+            "folgaRetina": 1194
+          },
+          {
+            "alt": "Inteligência Artificial",
+            "temAlt": true,
+            "arquivo": "ai-ml-ds.png",
+            "exibida": 50,
+            "intrinseca": 154,
+            "folgaRetina": 54
+          }
+        ],
+        "logosInterpoladas": [
+          "salesforce.png"
+        ],
+        "semAlt": [],
+        "faixas": [
+          {
+            "sentido": "esquerda",
+            "rotulo": "Linguagens e bancos de dados",
+            "larguraDaFita": 3408,
+            "metadeDaFita": 1704,
+            "larguraDoGrupo": 1704,
+            "erroDaEmenda": 0,
+            "vao": "14px",
+            "paddingDireitoDoGrupo": "14px",
+            "grupoMaisLargoQueAJanela": true,
+            "capsulas": 24,
+            "clonesEscondidos": 1,
+            "animacao": "tec-para-esquerda",
+            "duracao": "31s",
+            "estado": "running",
+            "mascara": "linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, ",
+            "alturaDaCapsula": 66,
+            "raioDaCapsula": "20px"
+          },
+          {
+            "sentido": "direita",
+            "rotulo": "Integração, frameworks e inteligência artificial",
+            "larguraDaFita": 2840,
+            "metadeDaFita": 1420,
+            "larguraDoGrupo": 1420,
+            "erroDaEmenda": 0,
+            "vao": "14px",
+            "paddingDireitoDoGrupo": "14px",
+            "grupoMaisLargoQueAJanela": true,
+            "capsulas": 20,
+            "clonesEscondidos": 1,
+            "animacao": "tec-para-direita",
+            "duracao": "35s",
+            "estado": "running",
+            "mascara": "linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, ",
+            "alturaDaCapsula": 66,
+            "raioDaCapsula": "20px"
+          }
+        ],
+        "destaque": [
+          {
+            "categoria": "Automação & Processos",
+            "pos": "1",
+            "largura": 217,
+            "altura": 124,
+            "raio": "24px",
+            "borda": "2px rgba(205, 231, 248, 0.55)",
+            "opacidade": "0.45",
+            "duracaoDaTransicao": "0.65s, 0.65s, 0.65s, 0.65s, 0.65s",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1), cubic-be"
+          },
+          {
+            "categoria": "Cloud & Infraestrutura",
+            "pos": "-1",
+            "largura": 217,
+            "altura": 124,
+            "raio": "24px",
+            "borda": "2px rgba(205, 231, 248, 0.55)",
+            "opacidade": "0.45",
+            "duracaoDaTransicao": "0.65s, 0.65s, 0.65s, 0.65s, 0.65s",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1), cubic-be"
+          },
+          {
+            "categoria": "CRM & Relacionamento",
+            "pos": "0",
+            "largura": 320,
+            "altura": 182,
+            "raio": "24px",
+            "borda": "2px rgb(33, 198, 244)",
+            "opacidade": "1",
+            "duracaoDaTransicao": "0.65s, 0.65s, 0.65s, 0.65s, 0.65s",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1), cubic-be"
+          }
+        ]
+      },
+      "fundo": {
+        "pontos": [
+          {
+            "x": 16,
+            "y": 189,
+            "rgb": [
+              239,
+              247,
+              253
+            ],
+            "luminancia": 0.9196,
+            "sobreConteudo": "tec-carimbo"
+          },
+          {
+            "x": 16,
+            "y": 710,
+            "rgb": [
+              222,
+              240,
+              252
+            ],
+            "luminancia": 0.8488,
+            "sobreConteudo": null
+          },
+          {
+            "x": 117,
+            "y": 189,
+            "rgb": [
+              237,
+              248,
+              254
+            ],
+            "luminancia": 0.923,
+            "sobreConteudo": "Carimbo Sistran Tecnologias"
+          },
+          {
+            "x": 117,
+            "y": 710,
+            "rgb": [
+              218,
+              237,
+              251
+            ],
+            "luminancia": 0.8244,
+            "sobreConteudo": null
+          },
+          {
+            "x": 195,
+            "y": 189,
+            "rgb": [
+              235,
+              247,
+              254
+            ],
+            "luminancia": 0.9134,
+            "sobreConteudo": "Carimbo Sistran Tecnologias"
+          },
+          {
+            "x": 195,
+            "y": 710,
+            "rgb": [
+              220,
+              238,
+              250
+            ],
+            "luminancia": 0.8327,
+            "sobreConteudo": null
+          },
+          {
+            "x": 273,
+            "y": 189,
+            "rgb": [
+              237,
+              248,
+              254
+            ],
+            "luminancia": 0.923,
+            "sobreConteudo": "tec-carimbo"
+          },
+          {
+            "x": 273,
+            "y": 710,
+            "rgb": [
+              213,
+              234,
+              248
+            ],
+            "luminancia": 0.7977,
+            "sobreConteudo": null
+          },
+          {
+            "x": 374,
+            "y": 189,
+            "rgb": [
+              240,
+              247,
+              253
+            ],
+            "luminancia": 0.9214,
+            "sobreConteudo": "tec-carimbo"
+          },
+          {
+            "x": 374,
+            "y": 710,
+            "rgb": [
+              222,
+              240,
+              252
+            ],
+            "luminancia": 0.8488,
+            "sobreConteudo": null
+          }
+        ],
+        "pontosDeFundo": 5,
+        "luminanciaMinima": 0.7977,
+        "todosClaros": true
+      },
+      "movimento": {
+        "antes": {
+          "superior": -365.52,
+          "inferior": -1149.54
+        },
+        "depois": {
+          "superior": -415.9,
+          "inferior": -1113.02
+        },
+        "deltaSuperior": -50.38,
+        "deltaInferior": 36.52,
+        "sentidosOpostos": true
+      },
+      "respostas400": [],
+      "errosDeConsole": []
+    },
+    "1024": {
+      "estrutura": {
+        "altura": 850,
+        "alturaMinimaComputada": "850px",
+        "fundoDeclarado": "linear-gradient(rgb(248, 252, 255) 0%, rgb(238, 248, 255) 52%, rgb(229, 244, 255) 100%)",
+        "headings": [],
+        "textoVisivel": "Automação & Processos Cloud & Infraestrutura CRM & Relacionamento",
+        "palavraTecnologiasEmTextoVisivel": false,
+        "rotuloDaSecao": "Tecnologias utilizadas pela Sistran",
+        "carimbo": {
+          "arquivo": "carimbo-tecnologias-ticket-outline-0757c7.png",
+          "largura": 370,
+          "altura": 125,
+          "proporcao": 2.964,
+          "esquerda": 41,
+          "esquerdaDoMiolo": 0
+        },
+        "linhaDeCima": {
+          "faixaEsquerda": 468,
+          "carimboDireita": 411,
+          "começaDepoisDoCarimbo": true,
+          "cruzaNaAlturaDoCarimbo": true,
+          "centroDaFaixa": 226,
+          "centroDoCarimbo": 226
+        },
+        "controles": {
+          "botoes": 0,
+          "svgs": 0,
+          "inputs": 0,
+          "comRoleDeBotao": 0,
+          "barrasDeProgresso": 0
+        },
+        "transbordoDoDocumento": 0,
+        "imagens": [
+          {
+            "alt": "Carimbo Sistran Tecnologias",
+            "temAlt": true,
+            "arquivo": "carimbo-tecnologias-ticket-outline-0757c7.png",
+            "exibida": 370,
+            "intrinseca": 978,
+            "folgaRetina": 238
+          },
+          {
+            "alt": "React",
+            "temAlt": true,
+            "arquivo": "react.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "MongoDB",
+            "temAlt": true,
+            "arquivo": "mongodb.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "Redis",
+            "temAlt": true,
+            "arquivo": "redis.png",
+            "exibida": 53,
+            "intrinseca": 1347,
+            "folgaRetina": 1241
+          },
+          {
+            "alt": "Python",
+            "temAlt": true,
+            "arquivo": "python.png",
+            "exibida": 112,
+            "intrinseca": 2062,
+            "folgaRetina": 1838
+          },
+          {
+            "alt": "Angular",
+            "temAlt": true,
+            "arquivo": "angular.png",
+            "exibida": 115,
+            "intrinseca": 2172,
+            "folgaRetina": 1942
+          },
+          {
+            "alt": "Java",
+            "temAlt": true,
+            "arquivo": "java.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": "React",
+            "temAlt": true,
+            "arquivo": "react.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "MongoDB",
+            "temAlt": true,
+            "arquivo": "mongodb.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "Redis",
+            "temAlt": true,
+            "arquivo": "redis.png",
+            "exibida": 53,
+            "intrinseca": 1347,
+            "folgaRetina": 1241
+          },
+          {
+            "alt": "Python",
+            "temAlt": true,
+            "arquivo": "python.png",
+            "exibida": 112,
+            "intrinseca": 2062,
+            "folgaRetina": 1838
+          },
+          {
+            "alt": "Angular",
+            "temAlt": true,
+            "arquivo": "angular.png",
+            "exibida": 115,
+            "intrinseca": 2172,
+            "folgaRetina": 1942
+          },
+          {
+            "alt": "Java",
+            "temAlt": true,
+            "arquivo": "java.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": "React",
+            "temAlt": true,
+            "arquivo": "react.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "MongoDB",
+            "temAlt": true,
+            "arquivo": "mongodb.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "Redis",
+            "temAlt": true,
+            "arquivo": "redis.png",
+            "exibida": 53,
+            "intrinseca": 1347,
+            "folgaRetina": 1241
+          },
+          {
+            "alt": "Python",
+            "temAlt": true,
+            "arquivo": "python.png",
+            "exibida": 112,
+            "intrinseca": 2062,
+            "folgaRetina": 1838
+          },
+          {
+            "alt": "Angular",
+            "temAlt": true,
+            "arquivo": "angular.png",
+            "exibida": 115,
+            "intrinseca": 2172,
+            "folgaRetina": 1942
+          },
+          {
+            "alt": "Java",
+            "temAlt": true,
+            "arquivo": "java.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": "React",
+            "temAlt": true,
+            "arquivo": "react.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "MongoDB",
+            "temAlt": true,
+            "arquivo": "mongodb.png",
+            "exibida": 0,
+            "intrinseca": 0,
+            "folgaRetina": 0
+          },
+          {
+            "alt": "Redis",
+            "temAlt": true,
+            "arquivo": "redis.png",
+            "exibida": 53,
+            "intrinseca": 1347,
+            "folgaRetina": 1241
+          },
+          {
+            "alt": "Python",
+            "temAlt": true,
+            "arquivo": "python.png",
+            "exibida": 112,
+            "intrinseca": 2062,
+            "folgaRetina": 1838
+          },
+          {
+            "alt": "Angular",
+            "temAlt": true,
+            "arquivo": "angular.png",
+            "exibida": 115,
+            "intrinseca": 2172,
+            "folgaRetina": 1942
+          },
+          {
+            "alt": "Java",
+            "temAlt": true,
+            "arquivo": "java.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": "Pega",
+            "temAlt": true,
+            "arquivo": "pega-oficial.png",
+            "exibida": 249,
+            "intrinseca": 2172,
+            "folgaRetina": 1674
+          },
+          {
+            "alt": "Amazon Web Services",
+            "temAlt": true,
+            "arquivo": "aws.png",
+            "exibida": 116,
+            "intrinseca": 600,
+            "folgaRetina": 368
+          },
+          {
+            "alt": "Salesforce",
+            "temAlt": true,
+            "arquivo": "salesforce.png",
+            "exibida": 100,
+            "intrinseca": 149,
+            "folgaRetina": -51
+          },
+          {
+            "alt": "REST API",
+            "temAlt": true,
+            "arquivo": "rest-api.png",
+            "exibida": 112,
+            "intrinseca": 2160,
+            "folgaRetina": 1936
+          },
+          {
+            "alt": "Spring Boot",
+            "temAlt": true,
+            "arquivo": "spring-boot.png",
+            "exibida": 98,
+            "intrinseca": 1938,
+            "folgaRetina": 1742
+          },
+          {
+            "alt": "Node.js",
+            "temAlt": true,
+            "arquivo": "nodejs.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": ".NET",
+            "temAlt": true,
+            "arquivo": "dotnet.png",
+            "exibida": 47,
+            "intrinseca": 1274,
+            "folgaRetina": 1180
+          },
+          {
+            "alt": "Inteligência Artificial",
+            "temAlt": true,
+            "arquivo": "ai-ml-ds.png",
+            "exibida": 59,
+            "intrinseca": 154,
+            "folgaRetina": 36
+          },
+          {
+            "alt": "REST API",
+            "temAlt": true,
+            "arquivo": "rest-api.png",
+            "exibida": 112,
+            "intrinseca": 2160,
+            "folgaRetina": 1936
+          },
+          {
+            "alt": "Spring Boot",
+            "temAlt": true,
+            "arquivo": "spring-boot.png",
+            "exibida": 98,
+            "intrinseca": 1938,
+            "folgaRetina": 1742
+          },
+          {
+            "alt": "Node.js",
+            "temAlt": true,
+            "arquivo": "nodejs.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": ".NET",
+            "temAlt": true,
+            "arquivo": "dotnet.png",
+            "exibida": 47,
+            "intrinseca": 1274,
+            "folgaRetina": 1180
+          },
+          {
+            "alt": "Inteligência Artificial",
+            "temAlt": true,
+            "arquivo": "ai-ml-ds.png",
+            "exibida": 59,
+            "intrinseca": 154,
+            "folgaRetina": 36
+          },
+          {
+            "alt": "REST API",
+            "temAlt": true,
+            "arquivo": "rest-api.png",
+            "exibida": 112,
+            "intrinseca": 2160,
+            "folgaRetina": 1936
+          },
+          {
+            "alt": "Spring Boot",
+            "temAlt": true,
+            "arquivo": "spring-boot.png",
+            "exibida": 98,
+            "intrinseca": 1938,
+            "folgaRetina": 1742
+          },
+          {
+            "alt": "Node.js",
+            "temAlt": true,
+            "arquivo": "nodejs.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": ".NET",
+            "temAlt": true,
+            "arquivo": "dotnet.png",
+            "exibida": 47,
+            "intrinseca": 1274,
+            "folgaRetina": 1180
+          },
+          {
+            "alt": "Inteligência Artificial",
+            "temAlt": true,
+            "arquivo": "ai-ml-ds.png",
+            "exibida": 59,
+            "intrinseca": 154,
+            "folgaRetina": 36
+          },
+          {
+            "alt": "REST API",
+            "temAlt": true,
+            "arquivo": "rest-api.png",
+            "exibida": 112,
+            "intrinseca": 2160,
+            "folgaRetina": 1936
+          },
+          {
+            "alt": "Spring Boot",
+            "temAlt": true,
+            "arquivo": "spring-boot.png",
+            "exibida": 98,
+            "intrinseca": 1938,
+            "folgaRetina": 1742
+          },
+          {
+            "alt": "Node.js",
+            "temAlt": true,
+            "arquivo": "nodejs.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": ".NET",
+            "temAlt": true,
+            "arquivo": "dotnet.png",
+            "exibida": 47,
+            "intrinseca": 1274,
+            "folgaRetina": 1180
+          },
+          {
+            "alt": "Inteligência Artificial",
+            "temAlt": true,
+            "arquivo": "ai-ml-ds.png",
+            "exibida": 59,
+            "intrinseca": 154,
+            "folgaRetina": 36
+          }
+        ],
+        "logosInterpoladas": [
+          "salesforce.png"
+        ],
+        "semAlt": [],
+        "faixas": [
+          {
+            "sentido": "esquerda",
+            "rotulo": "Linguagens e bancos de dados",
+            "larguraDaFita": 4042,
+            "metadeDaFita": 2021,
+            "larguraDoGrupo": 2021,
+            "erroDaEmenda": 0,
+            "vao": "18.432px",
+            "paddingDireitoDoGrupo": "18.432px",
+            "grupoMaisLargoQueAJanela": true,
+            "capsulas": 24,
+            "clonesEscondidos": 1,
+            "animacao": "tec-para-esquerda",
+            "duracao": "31s",
+            "estado": "running",
+            "mascara": "linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, ",
+            "alturaDaCapsula": 78,
+            "raioDaCapsula": "20px"
+          },
+          {
+            "sentido": "direita",
+            "rotulo": "Integração, frameworks e inteligência artificial",
+            "larguraDaFita": 3368,
+            "metadeDaFita": 1684,
+            "larguraDoGrupo": 1684,
+            "erroDaEmenda": 0,
+            "vao": "18.432px",
+            "paddingDireitoDoGrupo": "18.432px",
+            "grupoMaisLargoQueAJanela": true,
+            "capsulas": 20,
+            "clonesEscondidos": 1,
+            "animacao": "tec-para-direita",
+            "duracao": "35s",
+            "estado": "running",
+            "mascara": "linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, ",
+            "alturaDaCapsula": 78,
+            "raioDaCapsula": "20px"
+          }
+        ],
+        "destaque": [
+          {
+            "categoria": "Automação & Processos",
+            "pos": "0",
+            "largura": 390,
+            "altura": 245,
+            "raio": "24px",
+            "borda": "2px rgb(33, 198, 244)",
+            "opacidade": "1",
+            "duracaoDaTransicao": "0.65s, 0.65s, 0.65s, 0.65s, 0.65s",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1), cubic-be"
+          },
+          {
+            "categoria": "Cloud & Infraestrutura",
+            "pos": "1",
+            "largura": 281,
+            "altura": 176,
+            "raio": "24px",
+            "borda": "2px rgba(205, 231, 248, 0.55)",
+            "opacidade": "0.45",
+            "duracaoDaTransicao": "0.65s, 0.65s, 0.65s, 0.65s, 0.65s",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1), cubic-be"
+          },
+          {
+            "categoria": "CRM & Relacionamento",
+            "pos": "-1",
+            "largura": 281,
+            "altura": 176,
+            "raio": "24px",
+            "borda": "2px rgba(205, 231, 248, 0.55)",
+            "opacidade": "0.45",
+            "duracaoDaTransicao": "0.65s, 0.65s, 0.65s, 0.65s, 0.65s",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1), cubic-be"
+          }
+        ]
+      },
+      "fundo": {
+        "pontos": [
+          {
+            "x": 41,
+            "y": 173,
+            "rgb": [
+              240,
+              247,
+              253
+            ],
+            "luminancia": 0.9214,
+            "sobreConteudo": "Carimbo Sistran Tecnologias"
+          },
+          {
+            "x": 41,
+            "y": 814,
+            "rgb": [
+              231,
+              245,
+              255
+            ],
+            "luminancia": 0.8951,
+            "sobreConteudo": null
+          },
+          {
+            "x": 307,
+            "y": 173,
+            "rgb": [
+              88,
+              142,
+              216
+            ],
+            "luminancia": 0.2638,
+            "sobreConteudo": "Carimbo Sistran Tecnologias"
+          },
+          {
+            "x": 307,
+            "y": 814,
+            "rgb": [
+              229,
+              244,
+              255
+            ],
+            "luminancia": 0.8858,
+            "sobreConteudo": null
+          },
+          {
+            "x": 512,
+            "y": 173,
+            "rgb": [
+              230,
+              243,
+              250
+            ],
+            "luminancia": 0.8783,
+            "sobreConteudo": null
+          },
+          {
+            "x": 512,
+            "y": 814,
+            "rgb": [
+              226,
+              241,
+              254
+            ],
+            "luminancia": 0.8624,
+            "sobreConteudo": null
+          },
+          {
+            "x": 717,
+            "y": 173,
+            "rgb": [
+              234,
+              243,
+              251
+            ],
+            "luminancia": 0.8856,
+            "sobreConteudo": null
+          },
+          {
+            "x": 717,
+            "y": 814,
+            "rgb": [
+              229,
+              244,
+              255
+            ],
+            "luminancia": 0.8858,
+            "sobreConteudo": null
+          },
+          {
+            "x": 983,
+            "y": 173,
+            "rgb": [
+              241,
+              248,
+              254
+            ],
+            "luminancia": 0.9299,
+            "sobreConteudo": null
+          },
+          {
+            "x": 983,
+            "y": 814,
+            "rgb": [
+              231,
+              245,
+              255
+            ],
+            "luminancia": 0.8951,
+            "sobreConteudo": null
+          }
+        ],
+        "pontosDeFundo": 8,
+        "luminanciaMinima": 0.8624,
+        "todosClaros": true
+      },
+      "movimento": {
+        "antes": {
+          "superior": -581.3,
+          "inferior": -1254.36
+        },
+        "depois": {
+          "superior": -642.14,
+          "inferior": -1210.26
+        },
+        "deltaSuperior": -60.84,
+        "deltaInferior": 44.1,
+        "sentidosOpostos": true
+      },
+      "respostas400": [],
+      "errosDeConsole": []
+    },
+    "1440": {
+      "estrutura": {
+        "altura": 850,
+        "alturaMinimaComputada": "850px",
+        "fundoDeclarado": "linear-gradient(rgb(248, 252, 255) 0%, rgb(238, 248, 255) 52%, rgb(229, 244, 255) 100%)",
+        "headings": [],
+        "textoVisivel": "Automação & Processos Cloud & Infraestrutura CRM & Relacionamento",
+        "palavraTecnologiasEmTextoVisivel": false,
+        "rotuloDaSecao": "Tecnologias utilizadas pela Sistran",
+        "carimbo": {
+          "arquivo": "carimbo-tecnologias-ticket-outline-0757c7.png",
+          "largura": 370,
+          "altura": 125,
+          "proporcao": 2.964,
+          "esquerda": 56,
+          "esquerdaDoMiolo": 0
+        },
+        "linhaDeCima": {
+          "faixaEsquerda": 505,
+          "carimboDireita": 426,
+          "começaDepoisDoCarimbo": true,
+          "cruzaNaAlturaDoCarimbo": true,
+          "centroDaFaixa": 212,
+          "centroDoCarimbo": 212
+        },
+        "controles": {
+          "botoes": 0,
+          "svgs": 0,
+          "inputs": 0,
+          "comRoleDeBotao": 0,
+          "barrasDeProgresso": 0
+        },
+        "transbordoDoDocumento": 0,
+        "imagens": [
+          {
+            "alt": "Carimbo Sistran Tecnologias",
+            "temAlt": true,
+            "arquivo": "carimbo-tecnologias-ticket-outline-0757c7.png",
+            "exibida": 370,
+            "intrinseca": 978,
+            "folgaRetina": 238
+          },
+          {
+            "alt": "React",
+            "temAlt": true,
+            "arquivo": "react.png",
+            "exibida": 122,
+            "intrinseca": 2048,
+            "folgaRetina": 1804
+          },
+          {
+            "alt": "MongoDB",
+            "temAlt": true,
+            "arquivo": "mongodb.png",
+            "exibida": 137,
+            "intrinseca": 2172,
+            "folgaRetina": 1898
+          },
+          {
+            "alt": "Redis",
+            "temAlt": true,
+            "arquivo": "redis.png",
+            "exibida": 53,
+            "intrinseca": 1347,
+            "folgaRetina": 1241
+          },
+          {
+            "alt": "Python",
+            "temAlt": true,
+            "arquivo": "python.png",
+            "exibida": 123,
+            "intrinseca": 2062,
+            "folgaRetina": 1816
+          },
+          {
+            "alt": "Angular",
+            "temAlt": true,
+            "arquivo": "angular.png",
+            "exibida": 137,
+            "intrinseca": 2172,
+            "folgaRetina": 1898
+          },
+          {
+            "alt": "Java",
+            "temAlt": true,
+            "arquivo": "java.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": "React",
+            "temAlt": true,
+            "arquivo": "react.png",
+            "exibida": 122,
+            "intrinseca": 2048,
+            "folgaRetina": 1804
+          },
+          {
+            "alt": "MongoDB",
+            "temAlt": true,
+            "arquivo": "mongodb.png",
+            "exibida": 137,
+            "intrinseca": 2172,
+            "folgaRetina": 1898
+          },
+          {
+            "alt": "Redis",
+            "temAlt": true,
+            "arquivo": "redis.png",
+            "exibida": 53,
+            "intrinseca": 1347,
+            "folgaRetina": 1241
+          },
+          {
+            "alt": "Python",
+            "temAlt": true,
+            "arquivo": "python.png",
+            "exibida": 123,
+            "intrinseca": 2062,
+            "folgaRetina": 1816
+          },
+          {
+            "alt": "Angular",
+            "temAlt": true,
+            "arquivo": "angular.png",
+            "exibida": 137,
+            "intrinseca": 2172,
+            "folgaRetina": 1898
+          },
+          {
+            "alt": "Java",
+            "temAlt": true,
+            "arquivo": "java.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": "React",
+            "temAlt": true,
+            "arquivo": "react.png",
+            "exibida": 122,
+            "intrinseca": 2048,
+            "folgaRetina": 1804
+          },
+          {
+            "alt": "MongoDB",
+            "temAlt": true,
+            "arquivo": "mongodb.png",
+            "exibida": 137,
+            "intrinseca": 2172,
+            "folgaRetina": 1898
+          },
+          {
+            "alt": "Redis",
+            "temAlt": true,
+            "arquivo": "redis.png",
+            "exibida": 53,
+            "intrinseca": 1347,
+            "folgaRetina": 1241
+          },
+          {
+            "alt": "Python",
+            "temAlt": true,
+            "arquivo": "python.png",
+            "exibida": 123,
+            "intrinseca": 2062,
+            "folgaRetina": 1816
+          },
+          {
+            "alt": "Angular",
+            "temAlt": true,
+            "arquivo": "angular.png",
+            "exibida": 137,
+            "intrinseca": 2172,
+            "folgaRetina": 1898
+          },
+          {
+            "alt": "Java",
+            "temAlt": true,
+            "arquivo": "java.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": "React",
+            "temAlt": true,
+            "arquivo": "react.png",
+            "exibida": 122,
+            "intrinseca": 2048,
+            "folgaRetina": 1804
+          },
+          {
+            "alt": "MongoDB",
+            "temAlt": true,
+            "arquivo": "mongodb.png",
+            "exibida": 137,
+            "intrinseca": 2172,
+            "folgaRetina": 1898
+          },
+          {
+            "alt": "Redis",
+            "temAlt": true,
+            "arquivo": "redis.png",
+            "exibida": 53,
+            "intrinseca": 1347,
+            "folgaRetina": 1241
+          },
+          {
+            "alt": "Python",
+            "temAlt": true,
+            "arquivo": "python.png",
+            "exibida": 123,
+            "intrinseca": 2062,
+            "folgaRetina": 1816
+          },
+          {
+            "alt": "Angular",
+            "temAlt": true,
+            "arquivo": "angular.png",
+            "exibida": 137,
+            "intrinseca": 2172,
+            "folgaRetina": 1898
+          },
+          {
+            "alt": "Java",
+            "temAlt": true,
+            "arquivo": "java.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": "Pega",
+            "temAlt": true,
+            "arquivo": "pega-oficial.png",
+            "exibida": 187,
+            "intrinseca": 2172,
+            "folgaRetina": 1798
+          },
+          {
+            "alt": "Amazon Web Services",
+            "temAlt": true,
+            "arquivo": "aws.png",
+            "exibida": 156,
+            "intrinseca": 600,
+            "folgaRetina": 288
+          },
+          {
+            "alt": "Salesforce",
+            "temAlt": true,
+            "arquivo": "salesforce.png",
+            "exibida": 100,
+            "intrinseca": 149,
+            "folgaRetina": -51
+          },
+          {
+            "alt": "REST API",
+            "temAlt": true,
+            "arquivo": "rest-api.png",
+            "exibida": 137,
+            "intrinseca": 2160,
+            "folgaRetina": 1886
+          },
+          {
+            "alt": "Spring Boot",
+            "temAlt": true,
+            "arquivo": "spring-boot.png",
+            "exibida": 109,
+            "intrinseca": 1938,
+            "folgaRetina": 1720
+          },
+          {
+            "alt": "Node.js",
+            "temAlt": true,
+            "arquivo": "nodejs.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": ".NET",
+            "temAlt": true,
+            "arquivo": "dotnet.png",
+            "exibida": 47,
+            "intrinseca": 1274,
+            "folgaRetina": 1180
+          },
+          {
+            "alt": "Inteligência Artificial",
+            "temAlt": true,
+            "arquivo": "ai-ml-ds.png",
+            "exibida": 67,
+            "intrinseca": 154,
+            "folgaRetina": 20
+          },
+          {
+            "alt": "REST API",
+            "temAlt": true,
+            "arquivo": "rest-api.png",
+            "exibida": 137,
+            "intrinseca": 2160,
+            "folgaRetina": 1886
+          },
+          {
+            "alt": "Spring Boot",
+            "temAlt": true,
+            "arquivo": "spring-boot.png",
+            "exibida": 109,
+            "intrinseca": 1938,
+            "folgaRetina": 1720
+          },
+          {
+            "alt": "Node.js",
+            "temAlt": true,
+            "arquivo": "nodejs.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": ".NET",
+            "temAlt": true,
+            "arquivo": "dotnet.png",
+            "exibida": 47,
+            "intrinseca": 1274,
+            "folgaRetina": 1180
+          },
+          {
+            "alt": "Inteligência Artificial",
+            "temAlt": true,
+            "arquivo": "ai-ml-ds.png",
+            "exibida": 67,
+            "intrinseca": 154,
+            "folgaRetina": 20
+          },
+          {
+            "alt": "REST API",
+            "temAlt": true,
+            "arquivo": "rest-api.png",
+            "exibida": 137,
+            "intrinseca": 2160,
+            "folgaRetina": 1886
+          },
+          {
+            "alt": "Spring Boot",
+            "temAlt": true,
+            "arquivo": "spring-boot.png",
+            "exibida": 109,
+            "intrinseca": 1938,
+            "folgaRetina": 1720
+          },
+          {
+            "alt": "Node.js",
+            "temAlt": true,
+            "arquivo": "nodejs.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": ".NET",
+            "temAlt": true,
+            "arquivo": "dotnet.png",
+            "exibida": 47,
+            "intrinseca": 1274,
+            "folgaRetina": 1180
+          },
+          {
+            "alt": "Inteligência Artificial",
+            "temAlt": true,
+            "arquivo": "ai-ml-ds.png",
+            "exibida": 67,
+            "intrinseca": 154,
+            "folgaRetina": 20
+          },
+          {
+            "alt": "REST API",
+            "temAlt": true,
+            "arquivo": "rest-api.png",
+            "exibida": 137,
+            "intrinseca": 2160,
+            "folgaRetina": 1886
+          },
+          {
+            "alt": "Spring Boot",
+            "temAlt": true,
+            "arquivo": "spring-boot.png",
+            "exibida": 109,
+            "intrinseca": 1938,
+            "folgaRetina": 1720
+          },
+          {
+            "alt": "Node.js",
+            "temAlt": true,
+            "arquivo": "nodejs.png",
+            "exibida": 68,
+            "intrinseca": 1536,
+            "folgaRetina": 1400
+          },
+          {
+            "alt": ".NET",
+            "temAlt": true,
+            "arquivo": "dotnet.png",
+            "exibida": 47,
+            "intrinseca": 1274,
+            "folgaRetina": 1180
+          },
+          {
+            "alt": "Inteligência Artificial",
+            "temAlt": true,
+            "arquivo": "ai-ml-ds.png",
+            "exibida": 67,
+            "intrinseca": 154,
+            "folgaRetina": 20
+          }
+        ],
+        "logosInterpoladas": [
+          "salesforce.png"
+        ],
+        "semAlt": [],
+        "faixas": [
+          {
+            "sentido": "esquerda",
+            "rotulo": "Linguagens e bancos de dados",
+            "larguraDaFita": 5114,
+            "metadeDaFita": 2557,
+            "larguraDoGrupo": 2557,
+            "erroDaEmenda": 0,
+            "vao": "25.92px",
+            "paddingDireitoDoGrupo": "25.92px",
+            "grupoMaisLargoQueAJanela": true,
+            "capsulas": 24,
+            "clonesEscondidos": 1,
+            "animacao": "tec-para-esquerda",
+            "duracao": "31s",
+            "estado": "running",
+            "mascara": "linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, ",
+            "alturaDaCapsula": 78,
+            "raioDaCapsula": "20px"
+          },
+          {
+            "sentido": "direita",
+            "rotulo": "Integração, frameworks e inteligência artificial",
+            "larguraDaFita": 4262,
+            "metadeDaFita": 2131,
+            "larguraDoGrupo": 2131,
+            "erroDaEmenda": 0,
+            "vao": "25.92px",
+            "paddingDireitoDoGrupo": "25.92px",
+            "grupoMaisLargoQueAJanela": true,
+            "capsulas": 20,
+            "clonesEscondidos": 1,
+            "animacao": "tec-para-direita",
+            "duracao": "35s",
+            "estado": "running",
+            "mascara": "linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 10%, rgb(0, 0, 0) 90%, ",
+            "alturaDaCapsula": 78,
+            "raioDaCapsula": "20px"
+          }
+        ],
+        "destaque": [
+          {
+            "categoria": "Automação & Processos",
+            "pos": "-1",
+            "largura": 293,
+            "altura": 184,
+            "raio": "24px",
+            "borda": "2px rgba(114, 214, 246, 0.72)",
+            "opacidade": "0.511238",
+            "duracaoDaTransicao": "0.65s, 0.65s, 0.65s, 0.65s, 0.65s",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1), cubic-be"
+          },
+          {
+            "categoria": "Cloud & Infraestrutura",
+            "pos": "0",
+            "largura": 378,
+            "altura": 237,
+            "raio": "24px",
+            "borda": "2px rgba(76, 206, 245, 0.827)",
+            "opacidade": "0.938762",
+            "duracaoDaTransicao": "0.65s, 0.65s, 0.65s, 0.65s, 0.65s",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1), cubic-be"
+          },
+          {
+            "categoria": "CRM & Relacionamento",
+            "pos": "1",
+            "largura": 281,
+            "altura": 176,
+            "raio": "24px",
+            "borda": "2px rgba(205, 231, 248, 0.55)",
+            "opacidade": "0.45",
+            "duracaoDaTransicao": "0.65s, 0.65s, 0.65s, 0.65s, 0.65s",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1), cubic-be"
+          }
+        ]
+      },
+      "fundo": {
+        "pontos": [
+          {
+            "x": 58,
+            "y": 173,
+            "rgb": [
+              245,
+              251,
+              255
+            ],
+            "luminancia": 0.9563,
+            "sobreConteudo": "Carimbo Sistran Tecnologias"
+          },
+          {
+            "x": 58,
+            "y": 814,
+            "rgb": [
+              230,
+              244,
+              255
+            ],
+            "luminancia": 0.8874,
+            "sobreConteudo": null
+          },
+          {
+            "x": 432,
+            "y": 173,
+            "rgb": [
+              224,
+              241,
+              250
+            ],
+            "luminancia": 0.8566,
+            "sobreConteudo": "tec-carimbo"
+          },
+          {
+            "x": 432,
+            "y": 814,
+            "rgb": [
+              221,
+              241,
+              253
+            ],
+            "luminancia": 0.8537,
+            "sobreConteudo": null
+          },
+          {
+            "x": 720,
+            "y": 173,
+            "rgb": [
+              215,
+              234,
+              247
+            ],
+            "luminancia": 0.8001,
+            "sobreConteudo": null
+          },
+          {
+            "x": 720,
+            "y": 814,
+            "rgb": [
+              217,
+              239,
+              254
+            ],
+            "luminancia": 0.8364,
+            "sobreConteudo": null
+          },
+          {
+            "x": 1008,
+            "y": 173,
+            "rgb": [
+              224,
+              241,
+              250
+            ],
+            "luminancia": 0.8566,
+            "sobreConteudo": null
+          },
+          {
+            "x": 1008,
+            "y": 814,
+            "rgb": [
+              221,
+              241,
+              253
+            ],
+            "luminancia": 0.8537,
+            "sobreConteudo": null
+          },
+          {
+            "x": 1382,
+            "y": 173,
+            "rgb": [
+              229,
+              244,
+              252
+            ],
+            "luminancia": 0.8839,
+            "sobreConteudo": null
+          },
+          {
+            "x": 1382,
+            "y": 814,
+            "rgb": [
+              230,
+              244,
+              255
+            ],
+            "luminancia": 0.8874,
+            "sobreConteudo": null
+          }
+        ],
+        "pontosDeFundo": 8,
+        "luminanciaMinima": 0.8001,
+        "todosClaros": true
+      },
+      "movimento": {
+        "antes": {
+          "superior": -993.94,
+          "inferior": -1397.31
+        },
+        "depois": {
+          "superior": -1066.8,
+          "inferior": -1343.53
+        },
+        "deltaSuperior": -72.86,
+        "deltaInferior": 53.78,
+        "sentidosOpostos": true
+      },
+      "respostas400": [],
+      "errosDeConsole": []
+    }
+  },
+  "reduce": {
+    "sistema": {
+      "faixas": [
+        {
+          "animacao": "none",
+          "transform": "none",
+          "overflowX": "auto",
+          "rolavel": true,
+          "cloneFora": true,
+          "capsulasComCaixa": 12,
+          "mascara": "none"
+        },
+        {
+          "animacao": "none",
+          "transform": "none",
+          "overflowX": "auto",
+          "rolavel": true,
+          "cloneFora": true,
+          "capsulasComCaixa": 10,
+          "mascara": "none"
+        }
+      ],
+      "destaque": [
+        {
+          "pos": "0",
+          "transform": "matrix(1, 0, 0, 1, -195, -122.5)",
+          "opacidade": "1",
+          "transicao": "opacity",
+          "duracao": "0.4s",
+          "visivel": true
+        },
+        {
+          "pos": "1",
+          "transform": "matrix(1, 0, 0, 1, -195, -122.5)",
+          "opacidade": "0",
+          "transicao": "opacity",
+          "duracao": "0.4s",
+          "visivel": true
+        },
+        {
+          "pos": "-1",
+          "transform": "matrix(1, 0, 0, 1, -195, -122.5)",
+          "opacidade": "0",
+          "transicao": "opacity",
+          "duracao": "0.4s",
+          "visivel": true
+        }
+      ],
+      "ativoVisivel": true,
+      "semDeslocamentoLateral": true,
+      "todasAsLogosComCaixa": 26,
+      "totalDeLogos": 48
+    },
+    "chave": {
+      "faixas": [
+        {
+          "animacao": "none",
+          "transform": "none",
+          "overflowX": "auto",
+          "rolavel": true,
+          "cloneFora": true,
+          "capsulasComCaixa": 12,
+          "mascara": "none"
+        },
+        {
+          "animacao": "none",
+          "transform": "none",
+          "overflowX": "auto",
+          "rolavel": true,
+          "cloneFora": true,
+          "capsulasComCaixa": 10,
+          "mascara": "none"
+        }
+      ],
+      "destaque": [
+        {
+          "pos": "1",
+          "transform": "matrix(1, 0, 0, 1, -195, -122.5)",
+          "opacidade": "0",
+          "transicao": "opacity",
+          "duracao": "0.4s",
+          "visivel": true
+        },
+        {
+          "pos": "-1",
+          "transform": "matrix(1, 0, 0, 1, -195, -122.5)",
+          "opacidade": "0",
+          "transicao": "opacity",
+          "duracao": "0.4s",
+          "visivel": true
+        },
+        {
+          "pos": "0",
+          "transform": "matrix(1, 0, 0, 1, -195, -122.5)",
+          "opacidade": "1",
+          "transicao": "opacity",
+          "duracao": "0.4s",
+          "visivel": true
+        }
+      ],
+      "ativoVisivel": true,
+      "semDeslocamentoLateral": true,
+      "todasAsLogosComCaixa": 26,
+      "totalDeLogos": 48
+    }
+  },
+  "trocaAutomatica": {
+    "sequencia": [
+      "Automação & Processos",
+      "Automação & Processos",
+      "Cloud & Infraestrutura",
+      "Cloud & Infraestrutura",
+      "Cloud & Infraestrutura",
+      "CRM & Relacionamento",
+      "CRM & Relacionamento",
+      "Automação & Processos",
+      "Automação & Processos",
+      "Automação & Processos",
+      "Cloud & Infraestrutura",
+      "Cloud & Infraestrutura",
+      "CRM & Relacionamento",
+      "CRM & Relacionamento"
+    ],
+    "ordemObservada": [
+      "Automação & Processos",
+      "Cloud & Infraestrutura",
+      "CRM & Relacionamento",
+      "Automação & Processos",
+      "Cloud & Infraestrutura",
+      "CRM & Relacionamento"
+    ],
+    "trocas": 5,
+    "hover": {
+      "antes": "Automação & Processos",
+      "durante": "Automação & Processos",
+      "pausou": true
+    },
+    "retomou": true,
+    "depoisDeSair": "Cloud & Infraestrutura"
+  }
+}

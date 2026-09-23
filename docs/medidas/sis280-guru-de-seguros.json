@@ -1,0 +1,1994 @@
+{
+  "esperado": {
+    "PARAGRAFOS_DO_DADO": [
+      "Inicialmente implantamos uma base, em parceria com a ENS (Escola de Negócios e Seguros) e a CNseg (Confederação Nacional das Seguradoras), que disponibiliza conteúdo educativo através de perguntas e respostas, para alunos e associados, assim como à sociedade de forma geral, expandindo a educação e cultura do seguro. Além de conjuntos de perguntas e respostas, também oferecemos notícias sobre Seguros e quiz de Seguros.",
+      "Estamos trabalhando em aplicações transacionais, integrando legados e permitindo soluções como Cotação de Seguros, Contratação de Seguro, apoio a Avisos de Sinistro.",
+      "Logo, você poderá perguntar: “Alexa, qual o status do meu sinistro?” E ela responderá, informando eventuais documentos e ações pendentes e a previsão de conclusão.",
+      "Ou ainda: “Alexa, qual a diferença básica do Seguro de Vida resgatável?” E ela informará as diferenças, para que o corretor possa explicar ao cliente. Também será possível perguntar questões relevantes sobre a apólice do seu cliente e questionamentos sobre cálculos, emissões e comissionamento, através de acessos aos sistemas legados das seguradoras.",
+      "Alexa trará aos corretores e seguradoras a imagem de modernidade, agregando agilidade e flexibilidade às comunicações e relacionamento."
+    ],
+    "ANCORAS_ESPERADAS": [
+      "como-funciona",
+      "de-onde-pode-ser-acessada"
+    ],
+    "TITULOS_DERIVADOS": [
+      "Relacionamento por voz",
+      "Logo, você poderá perguntar"
+    ]
+  },
+  "w390": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "relacionamento-por-voz",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Relacionamento por voz",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "como-funciona",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Como funciona?",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "logo-voce-podera-perguntar",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Logo, você poderá perguntar",
+        "cards": 5,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "de-onde-pode-ser-acessada",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "De onde pode ser acessada?",
+        "cards": 9,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Conheça também",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "identidade": {
+      "nosMatchai": 0,
+      "nosSmartminer": 0,
+      "nosQaintegrado": 0,
+      "nosGuru": 92,
+      "letreiro": {
+        "temImagem": true,
+        "alt": "Guru de Seguros",
+        "src": "/images/logos/Guru-de-Seguros-letra-clara-2.png",
+        "largura": 240,
+        "textoSolto": ""
+      },
+      "carimbos": 0,
+      "capaDoHero": "/images/solucoes/guru-de-seguros-hero.webp",
+      "arcos": 16,
+      "barras": 28,
+      "selos": 3,
+      "halos": 3,
+      "placas": 3,
+      "ondasDeFio": 2,
+      "citacoes": 2,
+      "artesDosCards": [
+        "/images/solucoes/capa-card/guru-de-seguros-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/guru-de-seguros-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/guru-de-seguros-realista-componentes-v3.webp"
+      ]
+    },
+    "escrita": {
+      "lead": "É uma assistente conversacional acessada através da Alexa",
+      "subtituloDoHero": "É uma assistente conversacional acessada através da Alexa",
+      "cards": [
+        "Inicialmente implantamos uma base, em parceria com a ENS (Escola de Negócios e Seguros) e a CNseg (Confederação Nacional das Seguradoras), que disponibiliza conteúdo educativo através de perguntas e respostas, para alunos e associados, assim como à sociedade de forma geral, expandindo a educação e cultura do seguro. Além de conjuntos de perguntas e respostas, também oferecemos notícias sobre Seguros e quiz de Seguros.",
+        "Estamos trabalhando em aplicações transacionais, integrando legados e permitindo soluções como Cotação de Seguros, Contratação de Seguro, apoio a Avisos de Sinistro.",
+        "Alexa trará aos corretores e seguradoras a imagem de modernidade, agregando agilidade e flexibilidade às comunicações e relacionamento."
+      ],
+      "citacoes": [
+        "Logo, você poderá perguntar: “Alexa, qual o status do meu sinistro?” E ela responderá, informando eventuais documentos e ações pendentes e a previsão de conclusão.",
+        "Ou ainda: “Alexa, qual a diferença básica do Seguro de Vida resgatável?” E ela informará as diferenças, para que o corretor possa explicar ao cliente. Também será possível perguntar questões relevantes sobre a apólice do seu cliente e questionamentos sobre cálculos, emissões e comissionamento, através de acessos aos sistemas legados das seguradoras."
+      ],
+      "titulos": [
+        "",
+        "Relacionamento por voz",
+        "Como funciona?",
+        "Logo, você poderá perguntar",
+        "Linguagem natural",
+        "Informações úteis ao seguro",
+        "Sistemas legados",
+        "De onde pode ser acessada?",
+        "Conheça também",
+        "Fale com a Gente!"
+      ],
+      "idsDosTitulos": [
+        {
+          "id": "relacionamento-por-voz",
+          "texto": "Relacionamento por voz"
+        },
+        {
+          "id": "como-funciona",
+          "texto": "Como funciona?"
+        },
+        {
+          "id": "logo-voce-podera-perguntar",
+          "texto": "Logo, você poderá perguntar"
+        },
+        {
+          "id": "de-onde-pode-ser-acessada",
+          "texto": "De onde pode ser acessada?"
+        },
+        {
+          "id": "conheca-tambem",
+          "texto": "Conheça também"
+        }
+      ],
+      "passos": [
+        "Linguagem natural",
+        "Informações úteis ao seguro",
+        "Sistemas legados"
+      ],
+      "pastilhas": [
+        "Echo Dots",
+        "Windows",
+        "Android",
+        "iOS",
+        "LG",
+        "Samsung",
+        "BMW",
+        "Mini",
+        "Jeep Commander"
+      ],
+      "paragrafoDeAcesso": "Em qualquer lugar: além dos Echo Dots da Amazon, ou outros dispositivos, que em conjunto já atendem mais de 1 milhão de contas no Brasil, a Amazon disponibiliza Alexa de forma independente do sistema operacional (Windows, Android, iOS). Por exemplo, televisões LG e Samsung já vêm com Alexa instalada, assim como laptops e também veículos no Brasil (BMW, Mini e o mais recente lançamento, Jeep Commander); também é possível acionar a Alexa em qualquer celular.",
+      "particaoBate": true,
+      "cardsSaoOsNaoFalados": true,
+      "citacoesSaoAsFaladas": true,
+      "subtituloEhPrefixoDoLead": true,
+      "pastilhasNoTexto": true,
+      "ancorasBatem": true,
+      "derivadosNaoColidem": true,
+      "idsDuplicados": []
+    },
+    "tomDasParadas": [
+      {
+        "id": "como-funciona",
+        "existe": true,
+        "clara": true,
+        "corDeFundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "de-onde-pode-ser-acessada",
+        "existe": true,
+        "clara": true,
+        "corDeFundo": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "movimento": {
+      "arco": {
+        "nos": [
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          }
+        ],
+        "visiveis": 0,
+        "moveramDosVisiveis": 0
+      },
+      "barra": {
+        "nos": [
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "none",
+            "quadroA": "none",
+            "quadroB": "none",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          }
+        ],
+        "visiveis": 0,
+        "moveramDosVisiveis": 0
+      },
+      "halo": {
+        "nos": [
+          {
+            "animacao": "gurudeseguros-halo-abre",
+            "quadroA": "1.6",
+            "quadroB": "1.05763",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-halo-abre",
+            "quadroA": "1.52758",
+            "quadroB": "1.59523",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-halo-abre",
+            "quadroA": "1.14796",
+            "quadroB": "1.32679",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          }
+        ],
+        "visiveis": 3,
+        "moveramDosVisiveis": 3
+      },
+      "ondaDoFio": {
+        "nos": [
+          {
+            "animacao": "gurudeseguros-onda-marcha",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "gurudeseguros-onda-marcha",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          }
+        ],
+        "visiveis": 0,
+        "moveramDosVisiveis": 0
+      },
+      "fala": {
+        "nos": [
+          {
+            "animacao": "gurudeseguros-fala-corre",
+            "quadroA": "calc(0% + 7.99391px)",
+            "quadroB": "calc(0% + 1.38291px)",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-fala-corre",
+            "quadroA": "calc(0% + 6.60491px)",
+            "quadroB": "calc(0% + 7.99357px)",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          }
+        ],
+        "visiveis": 2,
+        "moveramDosVisiveis": 2
+      }
+    },
+    "contrastes": [
+      {
+        "alvo": "H1",
+        "tinta": "rgb(248, 250, 252)",
+        "fundoComposto": "rgb(0, 29, 66)",
+        "contraste": 16
+      },
+      {
+        "alvo": "Fale com um especialista",
+        "tinta": "rgb(4, 33, 43)",
+        "fundoComposto": "rgb(14, 216, 246)",
+        "contraste": 9.679
+      },
+      {
+        "alvo": "Relacionamento por voz",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(234, 245, 253)",
+        "contraste": 14.684
+      },
+      {
+        "alvo": "Como funciona?",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(232, 240, 249)",
+        "contraste": 14.131
+      },
+      {
+        "alvo": "Logo, você poderá perguntar",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(0, 27, 63)",
+        "contraste": 17.093
+      },
+      {
+        "alvo": "De onde pode ser acessada?",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(233, 241, 249)",
+        "contraste": 14.249
+      },
+      {
+        "alvo": "Conheça também",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(232, 240, 249)",
+        "contraste": 14.131
+      },
+      {
+        "alvo": "Fale com a Gente!",
+        "tinta": "rgb(6, 39, 95)",
+        "fundoComposto": "rgb(157, 232, 247)",
+        "contraste": 10.47
+      },
+      {
+        "alvo": "Fale com a SISTRAN",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(6, 41, 98)",
+        "contraste": 13.988
+      }
+    ],
+    "subtituloContraste": {
+      "tinta": "rgba(255, 255, 255, 0.85)",
+      "fundoComposto": "rgb(0, 26, 61)",
+      "contraste": 17.282
+    },
+    "residuoDoLetreiro": {
+      "motivo": "nenhuma candidata nesta largura: titulo e citacao ocupam a largura toda, nao ha vao de fundo para amostrar"
+    },
+    "erros": []
+  },
+  "w1440": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "relacionamento-por-voz",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Relacionamento por voz",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "como-funciona",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Como funciona?",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "logo-voce-podera-perguntar",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Logo, você poderá perguntar",
+        "cards": 5,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "de-onde-pode-ser-acessada",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "De onde pode ser acessada?",
+        "cards": 9,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Conheça também",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "identidade": {
+      "nosMatchai": 0,
+      "nosSmartminer": 0,
+      "nosQaintegrado": 0,
+      "nosGuru": 92,
+      "letreiro": {
+        "temImagem": true,
+        "alt": "Guru de Seguros",
+        "src": "/images/logos/Guru-de-Seguros-letra-clara-2.png",
+        "largura": 416,
+        "textoSolto": ""
+      },
+      "carimbos": 0,
+      "capaDoHero": "/images/solucoes/guru-de-seguros-hero.webp",
+      "arcos": 16,
+      "barras": 28,
+      "selos": 3,
+      "halos": 3,
+      "placas": 3,
+      "ondasDeFio": 2,
+      "citacoes": 2,
+      "artesDosCards": [
+        "/images/solucoes/capa-card/guru-de-seguros-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/guru-de-seguros-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/guru-de-seguros-realista-componentes-v3.webp"
+      ]
+    },
+    "escrita": {
+      "lead": "É uma assistente conversacional acessada através da Alexa",
+      "subtituloDoHero": "É uma assistente conversacional acessada através da Alexa",
+      "cards": [
+        "Inicialmente implantamos uma base, em parceria com a ENS (Escola de Negócios e Seguros) e a CNseg (Confederação Nacional das Seguradoras), que disponibiliza conteúdo educativo através de perguntas e respostas, para alunos e associados, assim como à sociedade de forma geral, expandindo a educação e cultura do seguro. Além de conjuntos de perguntas e respostas, também oferecemos notícias sobre Seguros e quiz de Seguros.",
+        "Estamos trabalhando em aplicações transacionais, integrando legados e permitindo soluções como Cotação de Seguros, Contratação de Seguro, apoio a Avisos de Sinistro.",
+        "Alexa trará aos corretores e seguradoras a imagem de modernidade, agregando agilidade e flexibilidade às comunicações e relacionamento."
+      ],
+      "citacoes": [
+        "Logo, você poderá perguntar: “Alexa, qual o status do meu sinistro?” E ela responderá, informando eventuais documentos e ações pendentes e a previsão de conclusão.",
+        "Ou ainda: “Alexa, qual a diferença básica do Seguro de Vida resgatável?” E ela informará as diferenças, para que o corretor possa explicar ao cliente. Também será possível perguntar questões relevantes sobre a apólice do seu cliente e questionamentos sobre cálculos, emissões e comissionamento, através de acessos aos sistemas legados das seguradoras."
+      ],
+      "titulos": [
+        "",
+        "Relacionamento por voz",
+        "Como funciona?",
+        "Logo, você poderá perguntar",
+        "Linguagem natural",
+        "Informações úteis ao seguro",
+        "Sistemas legados",
+        "De onde pode ser acessada?",
+        "Conheça também",
+        "Fale com a Gente!"
+      ],
+      "idsDosTitulos": [
+        {
+          "id": "relacionamento-por-voz",
+          "texto": "Relacionamento por voz"
+        },
+        {
+          "id": "como-funciona",
+          "texto": "Como funciona?"
+        },
+        {
+          "id": "logo-voce-podera-perguntar",
+          "texto": "Logo, você poderá perguntar"
+        },
+        {
+          "id": "de-onde-pode-ser-acessada",
+          "texto": "De onde pode ser acessada?"
+        },
+        {
+          "id": "conheca-tambem",
+          "texto": "Conheça também"
+        }
+      ],
+      "passos": [
+        "Linguagem natural",
+        "Informações úteis ao seguro",
+        "Sistemas legados"
+      ],
+      "pastilhas": [
+        "Echo Dots",
+        "Windows",
+        "Android",
+        "iOS",
+        "LG",
+        "Samsung",
+        "BMW",
+        "Mini",
+        "Jeep Commander"
+      ],
+      "paragrafoDeAcesso": "Em qualquer lugar: além dos Echo Dots da Amazon, ou outros dispositivos, que em conjunto já atendem mais de 1 milhão de contas no Brasil, a Amazon disponibiliza Alexa de forma independente do sistema operacional (Windows, Android, iOS). Por exemplo, televisões LG e Samsung já vêm com Alexa instalada, assim como laptops e também veículos no Brasil (BMW, Mini e o mais recente lançamento, Jeep Commander); também é possível acionar a Alexa em qualquer celular.",
+      "particaoBate": true,
+      "cardsSaoOsNaoFalados": true,
+      "citacoesSaoAsFaladas": true,
+      "subtituloEhPrefixoDoLead": true,
+      "pastilhasNoTexto": true,
+      "ancorasBatem": true,
+      "derivadosNaoColidem": true,
+      "idsDuplicados": []
+    },
+    "tomDasParadas": [
+      {
+        "id": "como-funciona",
+        "existe": true,
+        "clara": true,
+        "corDeFundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "de-onde-pode-ser-acessada",
+        "existe": true,
+        "clara": true,
+        "corDeFundo": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "movimento": {
+      "arco": {
+        "nos": [
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0px",
+            "quadroB": "0.812411px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0.0777026px",
+            "quadroB": "0.000435358px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0px",
+            "quadroB": "0.972083px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0.164771px",
+            "quadroB": "0.0292789px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": false
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0.292407px",
+            "quadroB": "0.0999623px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": false
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0.434711px",
+            "quadroB": "0.194154px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": false
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0.57344px",
+            "quadroB": "0.310279px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": false
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0.725426px",
+            "quadroB": "0.434772px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": false
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0.877565px",
+            "quadroB": "0.562403px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0.00767326px",
+            "quadroB": "0px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-arco-abre",
+            "quadroA": "0px",
+            "quadroB": "0.725572px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          }
+        ],
+        "visiveis": 16,
+        "moveramDosVisiveis": 11
+      },
+      "barra": {
+        "nos": [
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.994686",
+            "quadroB": "1 0.560672",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.889431",
+            "quadroB": "1 0.907434",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.542566",
+            "quadroB": "1 0.984177",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.455675",
+            "quadroB": "1 0.74636",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.681363",
+            "quadroB": "1 0.480342",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.969604",
+            "quadroB": "1 0.528998",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.934977",
+            "quadroB": "1 0.854906",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.989863",
+            "quadroB": "1 0.726371",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.701045",
+            "quadroB": "1 0.984908",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.465092",
+            "quadroB": "1 0.920914",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.544396",
+            "quadroB": "1 0.576225",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.855022",
+            "quadroB": "1 0.450681",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.999319",
+            "quadroB": "1 0.659587",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.852328",
+            "quadroB": "1 0.936736",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.920826",
+            "quadroB": "1 0.855137",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.576116",
+            "quadroB": "1 0.999312",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.452597",
+            "quadroB": "1 0.811648",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.659848",
+            "quadroB": "1 0.500833",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.936815",
+            "quadroB": "1 0.481608",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.976846",
+            "quadroB": "1 0.7937",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.67827",
+            "quadroB": "1 0.997799",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.790021",
+            "quadroB": "1 0.949237",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.500693",
+            "quadroB": "1 0.958443",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.49162",
+            "quadroB": "1 0.65604",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.749494",
+            "quadroB": "1 0.452187",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.997813",
+            "quadroB": "1 0.579209",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.905126",
+            "quadroB": "1 0.891809",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-barra-pulsa",
+            "quadroA": "1 0.558089",
+            "quadroB": "1 0.989679",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          }
+        ],
+        "visiveis": 28,
+        "moveramDosVisiveis": 28
+      },
+      "halo": {
+        "nos": [
+          {
+            "animacao": "gurudeseguros-halo-abre",
+            "quadroA": "1.6",
+            "quadroB": "1.00778",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-halo-abre",
+            "quadroA": "1.50754",
+            "quadroB": "1.584",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-halo-abre",
+            "quadroA": "1.1021",
+            "quadroB": "1.29494",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          }
+        ],
+        "visiveis": 3,
+        "moveramDosVisiveis": 3
+      },
+      "ondaDoFio": {
+        "nos": [
+          {
+            "animacao": "gurudeseguros-onda-marcha",
+            "quadroA": "-0.255862px",
+            "quadroB": "-0.0490322px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-onda-marcha",
+            "quadroA": "-0.0903959px",
+            "quadroB": "-0.13963px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          }
+        ],
+        "visiveis": 2,
+        "moveramDosVisiveis": 2
+      },
+      "fala": {
+        "nos": [
+          {
+            "animacao": "gurudeseguros-fala-corre",
+            "quadroA": "calc(0% + 7.88296px)",
+            "quadroB": "calc(0% + 1.27163px)",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "gurudeseguros-fala-corre",
+            "quadroA": "calc(0% + 6.38263px)",
+            "quadroB": "calc(0% + 7.82696px)",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          }
+        ],
+        "visiveis": 2,
+        "moveramDosVisiveis": 2
+      }
+    },
+    "contrastes": [
+      {
+        "alvo": "H1",
+        "tinta": "rgb(248, 250, 252)",
+        "fundoComposto": "rgb(0, 23, 55)",
+        "contraste": 17.042
+      },
+      {
+        "alvo": "Fale com um especialista",
+        "tinta": "rgb(4, 33, 43)",
+        "fundoComposto": "rgb(14, 216, 246)",
+        "contraste": 9.679
+      },
+      {
+        "alvo": "Relacionamento por voz",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(229, 242, 251)",
+        "contraste": 14.257
+      },
+      {
+        "alvo": "Como funciona?",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(238, 244, 251)",
+        "contraste": 14.677
+      },
+      {
+        "alvo": "Logo, você poderá perguntar",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(1, 26, 61)",
+        "contraste": 17.264
+      },
+      {
+        "alvo": "De onde pode ser acessada?",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(239, 245, 251)",
+        "contraste": 14.798
+      },
+      {
+        "alvo": "Conheça também",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(237, 243, 250)",
+        "contraste": 14.548
+      },
+      {
+        "alvo": "Fale com a Gente!",
+        "tinta": "rgb(6, 39, 95)",
+        "fundoComposto": "rgb(162, 228, 245)",
+        "contraste": 10.219
+      },
+      {
+        "alvo": "Fale com a SISTRAN",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(255, 255, 255)",
+        "contraste": 16.249
+      }
+    ],
+    "subtituloContraste": {
+      "tinta": "rgba(255, 255, 255, 0.85)",
+      "fundoComposto": "rgb(94, 104, 128)",
+      "contraste": 5.574
+    },
+    "residuoDoLetreiro": {
+      "janela": {
+        "onde": "abaixo-da-trilha",
+        "x": 24,
+        "y": 764,
+        "largura": 240,
+        "altura": 70,
+        "faixa": "logo-voce-podera-perguntar",
+        "contaminada": false,
+        "grafismoProprio": false
+      },
+      "minLuma": 22.21,
+      "maxLuma": 52.49,
+      "mediaLuma": 23.34,
+      "amplitude": 30.27,
+      "atribuicao": {
+        "semGrade": {
+          "minLuma": 22.21,
+          "maxLuma": 24,
+          "mediaLuma": 22.97,
+          "amplitude": 1.79
+        },
+        "semGradeNemCapa": {
+          "minLuma": 23,
+          "maxLuma": 23.79,
+          "mediaLuma": 23.2,
+          "amplitude": 0.79
+        },
+        "amplitudeDaCapa": 1,
+        "amplitudeDaGrade": 28.48
+      }
+    },
+    "erros": []
+  },
+  "irma-match-ai": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "matchai-campanha",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Ofertas inteligentes. Conversas mais relevan",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "o-que-o-match-ai-faz",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "O que o Match AI faz?",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "da-base-a-oferta-mais-relevante",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Da base à oferta mais relevante",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 1
+        }
+      },
+      {
+        "id": "posicionamento",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Posicionamento",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Conheça também",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "vazamentoDaqui": 0
+  },
+  "irma-smart-miner": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "o-que-e-o-smart-miner",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "O que é o Smart Miner?",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "onde-usar-o-smart-miner",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Onde usar o Smart Miner?",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "como-usar-o-smart-miner",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Como usar o Smart Miner?",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Conheça também",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "vazamentoDaqui": 0
+  },
+  "irma-qa-integrado": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "QA Integrado",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "qualidade-nao-e-uma-etapa-final",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Qualidade não é uma etapa final",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "nossos-servicos-de-qa-integrado-incluem",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Nossos serviços de QA Integrado incluem",
+        "cards": 5,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "uma-abordagem-colaborativa",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Uma abordagem colaborativa",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": null,
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Conheça também",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "vazamentoDaqui": 0
+  },
+  "genericaIntacta": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Lumina AI",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "desafios-no-desenvolvimento-de-software",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Desafios no desenvolvimento de software",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "beneficios",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Benefícios",
+        "cards": 7,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "integracao-versatil",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Integração Versátil",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": null,
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "outras-solucoes",
+        "tag": "NAV",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Outras soluções",
+        "cards": 7,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "temTopo": true,
+    "corposProprios": 0,
+    "erros": []
+  },
+  "indicador": {
+    "indicadorAqui": {
+      "nos": 4,
+      "rotulos": [
+        "Início",
+        "Como funciona?",
+        "Acesso"
+      ],
+      "destinos": [
+        "#topo",
+        "#como-funciona",
+        "#de-onde-pode-ser-acessada"
+      ]
+    },
+    "indicadorNoControle": {
+      "nos": 5,
+      "rotulos": [
+        "Início",
+        "O que faz",
+        "Da base à oferta",
+        "Posicionamento"
+      ],
+      "destinos": [
+        "#topo",
+        "#o-que-o-match-ai-faz",
+        "#da-base-a-oferta-mais-relevante",
+        "#posicionamento"
+      ]
+    }
+  },
+  "reduce-media": {
+    "atributoNoHtml": "reduce",
+    "animacoesVivas": {
+      "arco": 0,
+      "barra": 0,
+      "halo": 0,
+      "onda": 0,
+      "cartao": 0
+    },
+    "arcosDesenhados": 16,
+    "totalDeArcos": 16,
+    "ondasDesenhadas": 2,
+    "ondasContinuas": true,
+    "barrasCheias": true,
+    "halosEmRepouso": true,
+    "placas": 3,
+    "onda": [
+      {
+        "animacao": "none",
+        "opacidade": "1",
+        "traco": "0px",
+        "tracejado": "none",
+        "escala": "none",
+        "display": "inline",
+        "contorno": "rgba(14, 216, 246, 0.5)"
+      },
+      {
+        "animacao": "none",
+        "opacidade": "1",
+        "traco": "0px",
+        "tracejado": "none",
+        "escala": "none",
+        "display": "inline",
+        "contorno": "rgba(14, 216, 246, 0.5)"
+      }
+    ],
+    "erros": []
+  },
+  "reduce-preferencia": {
+    "atributoNoHtml": "reduce",
+    "animacoesVivas": {
+      "arco": 0,
+      "barra": 0,
+      "halo": 0,
+      "onda": 0,
+      "cartao": 0
+    },
+    "arcosDesenhados": 16,
+    "totalDeArcos": 16,
+    "ondasDesenhadas": 2,
+    "ondasContinuas": true,
+    "barrasCheias": true,
+    "halosEmRepouso": true,
+    "placas": 3,
+    "onda": [
+      {
+        "animacao": "none",
+        "opacidade": "1",
+        "traco": "0px",
+        "tracejado": "none",
+        "escala": "none",
+        "display": "inline",
+        "contorno": "rgba(14, 216, 246, 0.5)"
+      },
+      {
+        "animacao": "none",
+        "opacidade": "1",
+        "traco": "0px",
+        "tracejado": "none",
+        "escala": "none",
+        "display": "inline",
+        "contorno": "rgba(14, 216, 246, 0.5)"
+      }
+    ],
+    "erros": []
+  }
+}

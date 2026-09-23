@@ -1,0 +1,301 @@
+{
+  "nota": "gerado por scripts/medir-carimbos-montados-sis279.mjs",
+  "rotas": {
+    "/solucoes/fast": {
+      "existe": true,
+      "classes": "carimbo-batida fast-carimbo",
+      "src": "/images/solucoes/carimbo-fast-ticket-outline-ffffff.png",
+      "carregou": true,
+      "naturais": [
+        612,
+        279
+      ],
+      "caixa": [
+        150.5,
+        68.6
+      ],
+      "renderizada": [
+        150.5,
+        68.6
+      ],
+      "razaoArquivo": 2.194,
+      "razaoNaTela": 2.194,
+      "altVazio": true,
+      "antesDoH1": true,
+      "opacidade": 1,
+      "styleInline": "--carimbo-batida-ar: 612 / 279; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);",
+      "animacoesCorrendo": 0,
+      "fundoReal": "rgb(0, 26, 61)",
+      "contrasteTintaBranca": 17.28,
+      "tagTextualNoTexto": false,
+      "tagTextualNoHTML": false,
+      "tagTextualEmMarcacao": false,
+      "arteEsperada": "carimbo-fast-ticket",
+      "arteCorreta": true
+    },
+    "/solucoes/qa-integrado": {
+      "existe": true,
+      "classes": "carimbo-batida qaintegrado-carimbo",
+      "src": "/images/solucoes/carimbo-qa-integrado-ticket-outline-ffffff.png",
+      "carregou": true,
+      "naturais": [
+        855,
+        291
+      ],
+      "caixa": [
+        201.6,
+        68.6
+      ],
+      "renderizada": [
+        201.6,
+        68.6
+      ],
+      "razaoArquivo": 2.938,
+      "razaoNaTela": 2.938,
+      "altVazio": true,
+      "antesDoH1": true,
+      "opacidade": 1,
+      "styleInline": "--carimbo-batida-ar: 855 / 291; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);",
+      "animacoesCorrendo": 0,
+      "fundoReal": "rgb(18, 115, 188)",
+      "contrasteTintaBranca": 5,
+      "tagTextualNoTexto": false,
+      "tagTextualNoHTML": false,
+      "tagTextualEmMarcacao": false,
+      "arteEsperada": "carimbo-qa-integrado-ticket",
+      "arteCorreta": true
+    },
+    "/solucoes/connect-api": {
+      "existe": true,
+      "classes": "carimbo-batida connectapi-carimbo",
+      "src": "/images/solucoes/carimbo-connect-api-ticket-outline-ffffff.png",
+      "carregou": true,
+      "naturais": [
+        828,
+        291
+      ],
+      "caixa": [
+        195.1,
+        68.6
+      ],
+      "renderizada": [
+        195.1,
+        68.6
+      ],
+      "razaoArquivo": 2.845,
+      "razaoNaTela": 2.846,
+      "altVazio": true,
+      "antesDoH1": true,
+      "opacidade": 1,
+      "styleInline": "--carimbo-batida-ar: 828 / 291; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);",
+      "animacoesCorrendo": 0,
+      "fundoReal": "rgb(18, 115, 188)",
+      "contrasteTintaBranca": 5,
+      "tagTextualNoTexto": false,
+      "tagTextualNoHTML": true,
+      "tagTextualEmMarcacao": false,
+      "arteEsperada": "carimbo-connect-api-ticket",
+      "arteCorreta": true
+    },
+    "/solucoes/smart-miner": {
+      "existe": true,
+      "classes": "carimbo-batida smartminer-carimbo",
+      "src": "/images/solucoes/carimbo-smart-miner-ticket-outline-ffffff.png",
+      "carregou": true,
+      "naturais": [
+        825,
+        291
+      ],
+      "caixa": [
+        194.4,
+        68.6
+      ],
+      "renderizada": [
+        194.4,
+        68.6
+      ],
+      "razaoArquivo": 2.835,
+      "razaoNaTela": 2.835,
+      "altVazio": true,
+      "antesDoH1": true,
+      "opacidade": 1,
+      "styleInline": "--carimbo-batida-ar: 825 / 291; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);",
+      "animacoesCorrendo": 0,
+      "fundoReal": "rgb(18, 115, 188)",
+      "contrasteTintaBranca": 5,
+      "tagTextualNoTexto": false,
+      "tagTextualNoHTML": false,
+      "tagTextualEmMarcacao": false,
+      "arteEsperada": "carimbo-smart-miner-ticket",
+      "arteCorreta": true
+    },
+    "/solucoes/match-ai": {
+      "existe": true,
+      "classes": "carimbo-batida matchai-carimbo",
+      "src": "/images/solucoes/carimbo-match-ai-ticket-outline-ffffff.png",
+      "carregou": true,
+      "naturais": [
+        720,
+        309
+      ],
+      "caixa": [
+        158.4,
+        68
+      ],
+      "renderizada": [
+        158.4,
+        68
+      ],
+      "razaoArquivo": 2.33,
+      "razaoNaTela": 2.33,
+      "altVazio": true,
+      "antesDoH1": true,
+      "opacidade": 1,
+      "styleInline": "--carimbo-batida-ar: 720 / 309; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);",
+      "animacoesCorrendo": 0,
+      "fundoReal": "rgb(18, 115, 188)",
+      "contrasteTintaBranca": 5,
+      "tagTextualNoTexto": false,
+      "tagTextualNoHTML": false,
+      "tagTextualEmMarcacao": false,
+      "arteEsperada": "carimbo-match-ai-ticket",
+      "arteCorreta": true
+    }
+  },
+  "luminaAi": {
+    "capsulas": 0,
+    "tagTextual": true,
+    "tagTextualVisivel": true
+  },
+  "alturasDeCaixa": {
+    "/solucoes/fast": 68.6,
+    "/solucoes/qa-integrado": 68.6,
+    "/solucoes/connect-api": 68.6,
+    "/solucoes/smart-miner": 68.6,
+    "/solucoes/match-ai": 68
+  },
+  "transbordo": {
+    "/solucoes/fast": {
+      "390": {
+        "px": 0,
+        "capsula": {
+          "caixa": [
+            130.4,
+            59.4
+          ],
+          "vazaADireita": 0
+        }
+      },
+      "1440": {
+        "px": 0,
+        "capsula": {
+          "caixa": [
+            150.5,
+            68.6
+          ],
+          "vazaADireita": 0
+        }
+      }
+    },
+    "/solucoes/qa-integrado": {
+      "390": {
+        "px": 0,
+        "capsula": {
+          "caixa": [
+            174.4,
+            59.3
+          ],
+          "vazaADireita": 0
+        }
+      },
+      "1440": {
+        "px": 0,
+        "capsula": {
+          "caixa": [
+            201.6,
+            68.6
+          ],
+          "vazaADireita": 0
+        }
+      }
+    },
+    "/solucoes/connect-api": {
+      "390": {
+        "px": 0,
+        "capsula": {
+          "caixa": [
+            168.8,
+            59.3
+          ],
+          "vazaADireita": 0
+        }
+      },
+      "1440": {
+        "px": 0,
+        "capsula": {
+          "caixa": [
+            195.1,
+            68.6
+          ],
+          "vazaADireita": 0
+        }
+      }
+    }
+  },
+  "reduce": {
+    "/solucoes/fast": {
+      "porSistema": {
+        "atributoMotion": "reduce",
+        "existe": true,
+        "opacidade": 1,
+        "styleInline": "--carimbo-batida-ar:612 / 279",
+        "transformComputado": "none",
+        "animacoesCorrendo": 0
+      },
+      "porAtributo": {
+        "atributoMotion": "reduce",
+        "existe": true,
+        "opacidade": 1,
+        "styleInline": "--carimbo-batida-ar:612 / 279",
+        "transformComputado": "none",
+        "animacoesCorrendo": 0
+      }
+    },
+    "/solucoes/qa-integrado": {
+      "porSistema": {
+        "atributoMotion": "reduce",
+        "existe": true,
+        "opacidade": 1,
+        "styleInline": "--carimbo-batida-ar:855 / 291",
+        "transformComputado": "none",
+        "animacoesCorrendo": 0
+      },
+      "porAtributo": {
+        "atributoMotion": "reduce",
+        "existe": true,
+        "opacidade": 1,
+        "styleInline": "--carimbo-batida-ar:855 / 291",
+        "transformComputado": "none",
+        "animacoesCorrendo": 0
+      }
+    },
+    "/solucoes/connect-api": {
+      "porSistema": {
+        "atributoMotion": "reduce",
+        "existe": true,
+        "opacidade": 1,
+        "styleInline": "--carimbo-batida-ar:828 / 291",
+        "transformComputado": "none",
+        "animacoesCorrendo": 0
+      },
+      "porAtributo": {
+        "atributoMotion": "reduce",
+        "existe": true,
+        "opacidade": 1,
+        "styleInline": "--carimbo-batida-ar:828 / 291",
+        "transformComputado": "none",
+        "animacoesCorrendo": 0
+      }
+    }
+  }
+}

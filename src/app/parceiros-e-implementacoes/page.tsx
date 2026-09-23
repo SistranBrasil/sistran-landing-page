@@ -247,8 +247,8 @@ export default function Page() {
           das duas rotas. O que a SIS-202 proibia e CONTINUA proibido é a copy —
           nenhuma linha de Método Luminna ou de etapa do método entra nos cards;
           os textos seguem vindo de `partnersTrailStops`/`TIMELINE_EVENTS`. Como
-          o padrão de `RoadmapTrail` já é `/imagens/luminna-latam.png`, basta não
-          passar `traveler`.
+          o padrão de `RoadmapTrail` já é a arte canônica
+          `/images/solucoes/luminnadoisnn.png`, basta não passar `traveler`.
 
           Montada FORA da `<section id="implementacoes">`, e não no lugar exato da
           trilha antiga: `RoadmapTrail` é ela própria uma `<section>` de fundo

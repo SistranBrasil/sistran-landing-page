@@ -4,21 +4,55 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { ACCELERATORS, type Accelerator } from '@/data/accelerators';
+/* SIS-280 — o carimbo que substitui a tag «Tecnologia Disruptiva» é o COMPONENTE
+   GENÉRICO da casa (SIS-277), o mesmo de `/parceiros-e-implementacoes` e
+   `/sistran-labs`: batida por `fromTo`, reduce nascendo no estado final, razão de
+   aspecto vinda das dimensões do arquivo. Nada de GSAP ad hoc aqui. */
+import CarimboBatida from '@/components/CarimboBatida';
 import { vGrid, vCard, vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '@/lib/motion';
-import { useTilt } from '@/lib/useTilt';
+/* SIS-216 — `useTilt` SAIU DAQUI, e não por gosto: ele escreve o `transform` do
+   card em `style` inline, a cada quadro de `mousemove`. O hover que esta issue
+   pede é `translateY(-6px)`, e um transform inline vence qualquer regra de folha
+   por origem — os −6px simplesmente não apareceriam, ou apareceriam só no
+   intervalo em que o ponteiro está parado. Tirar o tilt é o item 4 da issue («a
+   reduzir/retirar tilt 3D se conflitar com −6px»), com a razão registrada.
+   A linha era:
+
+       import { useTilt } from '@/lib/useTilt';
+
+   `useTilt` continua em uso por outros cartões do site; nada foi apagado de lá. */
 import './accelerators.css';
 
-function AccelCard({ a, index }: { a: Accelerator; index: number }) {
-  const rm = useReducedMotion();
-  const { hover, mouse, handlers, tiltTransform } = useTilt(!rm);
-  const pos = { x: mouse.x * 100, y: mouse.y * 100 };
+/** Quem ocupa o card de largura total, em primeira posição visual. */
+/* SIS-280 — dois n, acompanhando o `id` em `ACCELERATORS`. Não é cosmética: este
+   valor é comparado com `a.id`, e a grafia velha faria `ORDEM_VISUAL` não achar
+   destaque nenhum — o card de largura total sumiria sem erro. */
+const ID_DESTAQUE = 'luminna-ai';
 
+/* A ORDEM DE EXIBIÇÃO É DERIVADA, NÃO UMA SEGUNDA LISTA: o destaque vem primeiro
+   e os outros seis seguem na ordem de `ACCELERATORS`. O resultado casa exatamente
+   com a proposta (Lumina, Match, Fast, QA, Connect, Smart Miner, Guru) — o que é
+   sorte de arranjo, não coincidência a manter: se a ordem da proposta e a do dado
+   divergirem um dia, o certo é discutir o dado, não fixar aqui uma cópia que
+   passa a divergir em silêncio.
+   `ACCELERATORS` NÃO foi reordenado de propósito: a vitrine de `/sistran-labs`
+   consome a mesma lista, e mexer nela mudaria uma rota fora do escopo desta
+   issue. */
+const ORDEM_VISUAL = [
+  ...ACCELERATORS.filter((a) => a.id === ID_DESTAQUE),
+  ...ACCELERATORS.filter((a) => a.id !== ID_DESTAQUE),
+];
+
+function AccelCard({ a, destaque }: { a: Accelerator; destaque: boolean }) {
   return (
-    /* Camada externa: entrada via variants (motion controla o transform).
-       Camada interna: tilt 3D. Ver nota em useTilt. */
-    <motion.div variants={vCard} className="h-full [perspective:1000px]">
+    /* A camada externa é a do `motion` (entrada por variants: ela controla o
+       `transform` do reveal). O hover vive na camada de DENTRO, em CSS — as duas
+       não podem disputar a mesma propriedade no mesmo nó. */
+    <motion.div
+      variants={vCard}
+      className={['accel-item', destaque ? 'accel-item--destaque' : ''].filter(Boolean).join(' ')}
+    >
     <article
-      {...handlers}
       /* SIS-93 — `on-dark` é obrigatório aqui, não decorativo: a seção passou a
          ser `.section-light`, e os overrides dessa classe pintam h3/p/span de
          navy. Sem `on-dark` o texto do card ficaria navy sobre o navy do próprio
@@ -27,57 +61,50 @@ function AccelCard({ a, index }: { a: Accelerator; index: number }) {
       /* SIS-217 — `accel-card` é o gancho de `accelerators.css`: a reação da
          logo no hover e no foco de teclado é escrita lá, e não em utilitárias
          `group-hover:`, porque ela precisa ser desligada pelos dois canais de
-         movimento reduzido (ver o cabeçalho daquele arquivo). O `group` fica:
-         quem ainda o usa são as camadas decorativas logo abaixo. */
-      className="accel-card on-dark group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/12 p-7 backdrop-blur-xl"
-      style={{
-        // Navy escuro: o card precisa contrastar com o fundo da seção — antes o
-        // azul médio da página, agora o azul claro de `.section-light-blue`. Nos
-        // dois casos é o card mais escuro que carrega o contraste, então o
-        // gradiente não muda; o que muda é a sombra abaixo.
-        background:
-          'linear-gradient(135deg, rgba(8,49,86,0.94), rgba(6,38,69,0.90) 55%, rgba(4,29,55,0.94))',
-        transform: tiltTransform({ lift: 8, deg: 7 }),
-        transformStyle: 'preserve-3d',
-        transition: hover
-          ? 'box-shadow .25s ease, border-color .2s ease'
-          : 'transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s ease',
-        willChange: 'transform',
-        // Sombra em camadas + halo do tone: da volume real ao card.
-        // SIS-93 — a sombra passou de navy quase opaco para o azul da marca em
-        // opacidade menor: sobre fundo claro, `rgba(3,26,52,0.5)` lê como uma
-        // mancha suja em volta do card em vez de profundidade.
-        boxShadow: hover
-          ? `0 2px 6px rgba(0,121,203,0.14), 0 20px 40px -16px rgba(0,121,203,0.26), 0 44px 80px -32px rgba(0,121,203,0.30), 0 0 60px -18px ${a.tone}55, inset 0 1px 0 rgba(255,255,255,0.22)`
-          : `0 1px 3px rgba(0,121,203,0.12), 0 12px 26px -14px rgba(0,121,203,0.20), 0 30px 60px -30px rgba(0,121,203,0.24), inset 0 1px 0 rgba(255,255,255,0.16)`,
-      }}
+         movimento reduzido (ver o cabeçalho daquele arquivo). SIS-216 estendeu
+         isso ao card inteiro — capa, véu, borda e botão —, e a classe `group`
+         saiu junto com as três camadas decorativas que a usavam (o filete de
+         borda mascarado, o brilho que seguia o ponteiro e o orbe do canto): a
+         capa fotográfica ocupa o lugar visual das três, e nenhuma utilitária
+         `group-hover:` sobrou para ancorar. */
+      className="accel-card on-dark"
     >
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 rounded-[inherit] opacity-40 transition-opacity duration-500 group-hover:opacity-100"
-        style={{
-          padding: 1,
-          background: `linear-gradient(135deg, ${a.tone}, transparent 60%)`,
-          WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
-          WebkitMaskComposite: 'xor',
-          maskComposite: 'exclude',
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{ background: `radial-gradient(300px circle at ${pos.x}% ${pos.y}%, ${a.tone}22, transparent 55%)` }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full opacity-20 blur-3xl transition-opacity duration-500 group-hover:opacity-40"
-        style={{ background: a.tone }}
-      />
+      {/* A CAPA, e ela é DECORAÇÃO: `alt=""` + `aria-hidden`. A informação do
+          card está toda em texto ao lado (nome no `<h3>`, descrição no `<p>`), e
+          os rótulos desenhados dentro da arte — «Auto / Residencial / Vida»,
+          «Sinistro #45871», os checks de Build/Testes/Qualidade/Deploy — são
+          ilustração de produto, não conteúdo a publicar. Descrevê-los no `alt`
+          criaria texto que ninguém revisou e que não existe na fonte do site.
 
-      <div
-        className="relative flex items-start justify-between gap-3"
-        style={{ transform: 'translateZ(34px)' }}
-      >
+          `fill` e não `width`/`height`: a caixa do card tem proporção de 4,5:1
+          (destaque) e ~2,5:1 (os seis), e a arte é 16:9 — quem decide o
+          enquadramento é o `object-fit: cover` da folha, não o layout.
+
+          `sizes` casado com as duas caixas reais do arranjo (1116px no destaque,
+          548px na coluna). RESSALVA DE SEMPRE (`docs/images-unoptimized.md`): com
+          `images: { unoptimized: true }` o `next/image` não emite `srcset`, então
+          hoje isto não produz efeito — fica correto para quando `unoptimized`
+          sair. O que de fato economiza banda é a derivada WebP em tamanho de uso
+          (`scripts/otimizar-capas-card-sis216.mjs`): 12,0 MB → 356 kB nos sete.
+
+          `loading="lazy"`: a seção começa a ~1.900px do topo do documento nesta
+          rota, muito abaixo da dobra. */}
+      <Image
+        src={a.capaCard}
+        alt=""
+        aria-hidden
+        fill
+        sizes={destaque ? '(min-width: 1180px) 1116px, 100vw' : '(min-width: 640px) 548px, 100vw'}
+        loading="lazy"
+        className="accel-card__foto"
+      />
+      {/* O DEGRADÊ DE LEITURA, separado da foto: ele precisa continuar parado
+          enquanto a foto faz o zoom do hover. Se fosse `background` do mesmo nó,
+          o `scale` levaria o degradê junto e a coluna de texto perderia o apoio
+          justamente no estado em que o card está em destaque. */}
+      <span aria-hidden className="accel-card__veu" />
+
+      <div className="accel-card__corpo">
         {/* SIS-217 — a placa do produto no lugar do glifo Lucide.
 
             `alt=""` + `aria-hidden` nas duas imagens: o `<h3>` logo abaixo
@@ -89,73 +116,108 @@ function AccelCard({ a, index }: { a: Accelerator; index: number }) {
             decoração pura pelo mesmo motivo, mais uma vez.
 
             A caixa não é 1:1: as sete logos são horizontais e vão de 1,8:1 a
-            6,7:1 — a geometria está em `.accel-logo`, no CSS ao lado. O que
-            fica aqui é o que varia por item, o `tone` da marca.
+            6,7:1 — a geometria está em `.accel-logo`, no CSS ao lado.
 
-            Tinta MEDIDA contra este navy por
-            `scripts/medir-logos-aceleradores-sis217.mjs`: a pior das sete
-            (Guru de Seguros) dá 4,08:1 e a melhor (Lumina AI) 10,43:1, todas
-            acima dos 3:1 que a WCAG 1.4.11 pede de gráfico essencial. Por isso
-            a placa continua navy e translúcida, sem o chip branco que a
+            Tinta MEDIDA por `scripts/medir-logos-aceleradores-sis217.mjs`
+            contra o navy chapado do card de então: a pior das sete (Guru de
+            Seguros) dava 4,08:1 e a melhor (Lumina AI) 10,43:1, todas acima dos
+            3:1 que a WCAG 1.4.11 pede de gráfico essencial. SIS-216 trocou o
+            fundo por foto + véu, então aquele número não vale por herança e foi
+            REMEDIDO no composto (`scripts/medir-cards-solucoes-sis216.mjs`, com
+            o resultado no comentário da issue). Continua sem o chip branco que a
             SIS-201 precisou dar a quatro parceiros. */}
-        <div
-          className="accel-logo"
-          style={{
-            background: `linear-gradient(135deg, ${a.tone}33, ${a.tone}10)`,
-            border: `1px solid ${a.tone}66`,
-            boxShadow: `0 8px 24px -12px ${a.tone}99`,
-          }}
-        >
-          {/* `sizes` casado com o TETO da caixa: a placa para em 18rem de
-              `max-width` e gasta 1rem de padding de cada lado, então 256px é o
-              maior que a logo chega a medir — subestimar é o lado ruim, que
-              serviria candidato menor que a caixa. (Era 196px enquanto o teto
-              era 14rem; o número acompanha `.accel-logo` e não vive sozinho.)
+        {/* SIS-216 — A PLACA PERDEU O ACABAMENTO e ficou só caixa de geometria: a
+            proposta põe a logo DIRETO sobre a foto escurecida, sem cápsula. O
+            `style` inline era:
+
+                background: `linear-gradient(135deg, ${a.tone}33, ${a.tone}10)`,
+                border: `1px solid ${a.tone}66`,
+                boxShadow: `0 8px 24px -12px ${a.tone}99`,
+
+            …o que fazia sentido sobre o navy chapado do card antigo, onde a
+            cápsula era o que separava a logo do fundo. Sobre a capa esse papel é
+            do véu (`.accel-card__veu`), que é contínuo e cobre a coluna inteira —
+            duas camadas de separação empilhadas leem como moldura solta.
+
+            Com isto o `tone` deixa de ser lido por este componente — o eco da
+            logo acendia com o ciano e o azul FIXOS da marca, não com a cor do
+            item (e desde 21/09 nem eco existe: ver o bloco logo abaixo). A
+            conclusão não muda, só ficou mais forte. O campo fica no dado
+            porque `/sistran-labs` o consome; apagá-lo dali seria mexer numa rota
+            fora do escopo. O que saiu daqui foi acabamento, não informação. */}
+        <div className="accel-logo">
+          {/* `sizes` casado com o TETO da caixa, que a SIS-216 mudou: a placa
+              deixou de ter largura máxima própria e passou a ser limitada pela
+              coluna de texto — 48% dos 1116px do destaque (536px) e 60% dos 548px
+              da coluna dos seis (329px). Era `256px`, de quando o teto era
+              `min(18rem, 76%)` menos 1rem de padding de cada lado. O número
+              acompanha `.accel-logo` e não vive sozinho.
 
               RESSALVA DE SEMPRE (SIS-139 / `docs/images-unoptimized.md`): com
               `images: { unoptimized: true }` no `next.config.mjs` o `next/image`
               não emite `srcset`, então este `sizes` hoje não produz efeito
               nenhum. Ele fica correto para o dia em que `unoptimized` sair, e
               ninguém deve lê-lo como otimização ativa. */}
-          <span className="accel-logo__eco" aria-hidden>
-            <Image
-              src={a.logo}
-              alt=""
-              width={a.logoWidth}
-              height={a.logoHeight}
-              sizes="256px"
-              className="accel-logo__eco-img"
-            />
-          </span>
+          {/* SIS-216 — O ECO SAIU DO DOM, por pedido literal da issue: a segunda
+              cópia da logo acendia no hover e o que se quer é a MESMA logo vindo
+              para frente, sem duplicata. O hover agora escala e sobe
+              `.accel-logo__img` (números e derivação no CSS, ao lado da regra).
+
+              Foi removido o NÓ, e não só a regra de CSS: como é o mesmo `src` da
+              logo da frente, deixá-lo escondido manteria um `<Image>` que o
+              navegador baixa e decodifica duas vezes para nada — e uma regra de
+              ocultação é o que o próximo a passar por aqui apaga «porque não faz
+              nada», trazendo a duplicata de volta. Nada de acessibilidade se
+              perde: era `aria-hidden` sobre arte que já é `alt=""`.
+              O markup, na íntegra, para o caso de o efeito voltar em outro lugar:
+
+              <span className="accel-logo__eco" aria-hidden>
+                <Image
+                  src={a.logo}
+                  alt=""
+                  width={a.logoWidth}
+                  height={a.logoHeight}
+                  sizes="(min-width: 1180px) 536px, 329px"
+                  className="accel-logo__eco-img"
+                />
+              </span>
+          */}
           <Image
             src={a.logo}
             alt=""
             aria-hidden
             width={a.logoWidth}
             height={a.logoHeight}
-            sizes="256px"
+            sizes="(min-width: 1180px) 536px, 329px"
             className="accel-logo__img"
           />
         </div>
-        <span
-          aria-hidden
-          /* SIS-155 — ordinal é METADADO: `font-display` → `font-mono`. */
-          /* SIS-155 — `font-semibold` NÃO é ênfase: a utilitária `font-mono` só troca a
-             família, e sem peso declarado este nó pedia 400 — peso que o único corte
-             carregado da Geist Mono (600) não tem. O navegador servia o 600 e o código
-             dizia 400: se um dia entrar um corte 400 na Mono, oito pontos como este
-             mudariam de aparência calados. Medido em 600 computado pela sonda. */
-          className="font-mono font-semibold text-3xl leading-none"
-          style={{
-            // Branco translucido: o tone em opacity 15% desaparecia no fundo azul.
-            color: 'rgba(255,255,255,0.30)',
-            fontVariantNumeric: 'tabular-nums',
-            fontFeatureSettings: '"tnum" 1',
-          }}
-        >
-          {String(index + 1).padStart(2, '0')}
-        </span>
-      </div>
+      {/* SIS-216 — O ORDINAL «01…07» SAIU, por pedido explícito da issue
+          («remoção completa das numerações»), e com ele foi o
+          `justify-between` da linha: a placa da logo era a única outra coisa
+          nesta faixa. O nó era este, na íntegra:
+
+              <span
+                aria-hidden
+                className="font-mono font-semibold text-3xl leading-none"
+                style={{
+                  color: 'rgba(255,255,255,0.30)',
+                  fontVariantNumeric: 'tabular-nums',
+                  fontFeatureSettings: '"tnum" 1',
+                }}
+              >
+                {String(index + 1).padStart(2, '0')}
+              </span>
+
+          …com as duas notas da SIS-155 que o acompanhavam (ordinal é metadado,
+          logo `font-mono`; e `font-semibold` explícito porque é o único corte da
+          Geist Mono carregado). As duas continuam valendo para qualquer ordinal
+          que volte a existir em outro lugar — por isso ficam escritas aqui e não
+          se perdem com o nó. A prop `index` do componente saiu junto: ela servia
+          só a este número.
+
+          O 76% de `max-width` da placa em `accelerators.css` era «o que o ordinal
+          permite»; sem ordinal aquele teto mudou, e a nota de lá foi reescrita. */}
 
       {/* 11/09 — O TÍTULO SAIU DA TELA, NÃO DO DOCUMENTO. A usuária pediu o card
           só com a logo; o `<h3>` fica em `sr-only`, e é isso que separa esconder
@@ -172,36 +234,37 @@ function AccelCard({ a, index }: { a: Accelerator; index: number }) {
           o nome ao leitor de tela, mas custa o cabeçalho, e card sem título vira
           bloco anônimo no sumário do documento. */}
       <h3 className="sr-only">{a.name}</h3>
-      {/* Filete no lugar do subtitulo: o site nao escreve tagline nenhuma para
-          os aceleradores, então nao ha texto a exibir aqui.
-          `mt-6` no lugar do `mt-3`: aquele media a distância até o TÍTULO, que
-          agora não ocupa altura nenhuma (`sr-only` sai do fluxo). Sem a troca o
-          filete saltaria de 40px para 12px da placa. */}
-      <span
-        aria-hidden
-        className="relative mt-6 block h-px w-10 rounded-full"
-        style={{ background: a.tone, transform: 'translateZ(18px)' }}
-      />
-      <p
-        className="relative mt-4 text-sm leading-relaxed text-white/85"
-        style={{ transform: 'translateZ(12px)' }}
-      >
-        {a.description}
-      </p>
-      {/* No site cada card leva a pagina do produto; o rotulo do link nao existe
-          na origem (o card inteiro é clicavel), então usa o nome do produto. */}
-      <Link
-        href={`/solucoes/${a.id}`}
-        className="relative mt-5 inline-flex items-center gap-2 text-sm font-semibold underline-offset-4 hover:underline"
-        /* A cor vem por `style`, não por utility: `.section-light .on-dark a`
-           usa `!important` e atropelaria `text-[#A5F0FF]`, deixando o link com a
-           mesma cor do corpo do card. O `:not([style*="color"])` daquela regra
-           existe justamente para quem declara cor própria aqui. */
-        style={{ transform: 'translateZ(12px)', color: '#A5F0FF' }}
-      >
-        Conheça o {a.name}
+      {/* SIS-216 — O FILETE SAIU. Ele era um substituto gráfico para a tagline
+          que o site não escreve, e existia num card que era só placa + texto. A
+          proposta desta issue não o tem, e sobre a foto ele lê como risco solto.
+          O nó era:
+
+              <span
+                aria-hidden
+                className="relative mt-6 block h-px w-10 rounded-full"
+                style={{ background: a.tone, transform: 'translateZ(18px)' }}
+              />
+
+          `translateZ` — dele e dos dois nós seguintes — foi embora pelo mesmo
+          motivo do tilt: sem `perspective` no pai, profundidade em Z não tem para
+          onde projetar. */}
+      <p className="accel-card__texto">{a.description}</p>
+      {/* SIS-216 — O RÓTULO PASSOU A SER «Conheça a solução», alinhado à proposta.
+          Era `Conheça o {a.name}`, escolhido quando o card não tinha CTA na
+          origem. A frase não é invenção desta issue: ela já é copy do site, no
+          card de `/sistran-labs` (`copy-lock.json` → `src/app/sistran-labs/page.tsx:10`).
+          O lock foi regravado de propósito, não contornado — ver o comentário da
+          issue.
+
+          O NOME DO PRODUTO CONTINUA NO LINK, em `sr-only`: sete links com o mesmo
+          texto visível são sete destinos indistinguíveis para quem navega pela
+          lista de links (WCAG 2.4.4). `aria-label` resolveria, mas substituiria o
+          rótulo inteiro e desacoplaria o que se lê do que se ouve. */}
+      <Link href={`/solucoes/${a.id}`} className="accel-card__cta">
+        Conheça a solução<span className="sr-only"> {a.name}</span>
         <span aria-hidden>&rarr;</span>
       </Link>
+      </div>
     </article>
     </motion.div>
   );
@@ -236,18 +299,69 @@ export default function Accelerators() {
           viewport={VP}
           className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between"
         >
-          <div className="max-w-2xl">
+          <div className="accel-cabeca max-w-2xl">
             {/* Sobretitulo e titulo como no site: "Tecnologia Disruptiva" /
-                "Soluções". O paragrafo é verbatim. */}
-            <motion.span variants={vSubtitle} className="tag-section">
-              Tecnologia Disruptiva
-            </motion.span>
-            <motion.h2
-              variants={vTitle}
-              className="mt-3 font-display text-section text-ink"
-            >
-              Soluções
-            </motion.h2>
+                "Soluções". O paragrafo é verbatim.
+
+                SIS-280 — A TAG TEXTUAL SAIU E ENTROU O CARIMBO, que é o padrão das
+                outras rotas (`/parceiros-e-implementacoes`, `/sistran-labs`). A linha
+                anterior, para reverter:
+
+                    <motion.span variants={vSubtitle} className="tag-section">
+                      Tecnologia Disruptiva
+                    </motion.span>
+
+                O `motion.span` do sobretítulo desapareceu junto porque o carimbo TEM a
+                própria entrada em cena — a batida do `CarimboBatida` — e embrulhá-lo no
+                `vSubtitle` do cabeçalho faria duas animações disputarem o mesmo
+                `transform`, que é o defeito que a SIS-216 nomeou nos cards.
+
+                A ARTE É A GENÉRICA DA SISTRAN, indicada pela dona do conteúdo:
+                `public/images/carimbo-disruptiva-ticket-outline-0757c7.png` (723x273).
+                NÃO é cápsula de produto — reusar a de Match AI ou Guru marcaria esta
+                seção, que é a vitrine dos sete aceleradores, com o nome de um deles.
+
+                `gatilho="viewport"` e não `"rota"`: esta seção vive muito abaixo da
+                dobra de `/solucoes`, e bater na montagem significaria assentar o
+                carimbo fora de quadro — quem rolasse até aqui nunca veria a batida. É a
+                mesma razão medida no item 2 da SIS-188.
+
+                `alt` vazio porque o `h2` ao lado já diz o assunto da seção e o texto do
+                carimbo («Tecnologia Disruptiva») é a etiqueta que ele substitui, não
+                informação nova: lido, viraria repetição para quem usa leitor de tela. */}
+            {/* O CARIMBO À ESQUERDA E O `h2` AO LADO, na mesma linha — antes eles
+                eram irmãos diretos de `.accel-cabeca` e a manchete caía EMBAIXO da
+                arte. O invólucro é uma linha flex (`.accel-cabeca-linha`, na folha
+                do componente), e não `float` nem grade: são duas peças, uma de
+                largura fixa e uma que ocupa o resto.
+
+                A largura do carimbo NÃO se mexe: `--carimbo-batida-w` continua
+                declarada em `.accel-cabeca .accel-cabeca-carimbo`, e o seletor
+                segue valendo porque o invólucro é DESCENDENTE de `.accel-cabeca`,
+                não um novo escopo. */}
+            <div className="accel-cabeca-linha">
+              <CarimboBatida
+                src="/images/carimbo-disruptiva-ticket-outline-0757c7.png"
+                alt=""
+                larguraIntrinseca={723}
+                alturaIntrinseca={273}
+                className="accel-cabeca-carimbo"
+                gatilho="viewport"
+              />
+              {/* SIS-280 — `font-bold` ENTROU. A linha anterior era:
+                    className="mt-3 font-display text-section text-ink"
+                A manchete pedia negrito por escrito no item 3 da issue, e o peso
+                resolvido era 400 (a `text-section` não traz peso). É o mesmo degrau que
+                `/sistran-labs` recebeu na SIS-216 — as manchetes da casa engrossam
+                  juntas, senão uma em 700 e a outra em 400 lê como descuido.
+
+                  O `mt-3` SAIU: ele era o respiro entre a arte EMPILHADA e a
+                  manchete, e agora as duas estão lado a lado — a folga passou a ser
+                  o `gap` da linha flex. */}
+              <motion.h2 variants={vTitle} className="font-display font-bold text-section text-ink">
+                Soluções
+              </motion.h2>
+            </div>
             <motion.p variants={vSubtitle} className="mt-4 text-lg leading-relaxed text-ink-muted">
               Desenvolvemos aceleradores para entregar os melhores resultados,
               &ldquo;ouvimos seu desafio&rdquo;, fazendo Discovery para seu negócio, desenhando uma
@@ -260,11 +374,21 @@ export default function Accelerators() {
               Conheça nossos aceleradores:
             </motion.p>
           </div>
-          {/* Mesmo selo da Consultoria: sobre azul claro, borda e texto brancos
-              sumiriam. */}
-          <span className="inline-flex h-fit items-center gap-2 rounded-full border border-[#0079CB]/22 bg-white/70 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0060a8]">
-            {ACCELERATORS.length} aceleradores
-          </span>
+          {/* SIS-280 — O SELO DE CONTAGEM SAIU. Ele era, verbatim:
+
+                {/* Mesmo selo da Consultoria: sobre azul claro, borda e texto brancos
+                    sumiriam. *\/}
+                <span className="inline-flex h-fit items-center gap-2 rounded-full border border-[#0079CB]/22 bg-white/70 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0060a8]">
+                  {ACCELERATORS.length} aceleradores
+                </span>
+
+              O item 2 da issue pede «tirar N aceleradores», e o número saía de
+              `ACCELERATORS.length` — ou seja lia «7 aceleradores» hoje e mudaria sozinho
+              amanhã. `ACCELERATORS` continua importado: `ORDEM_VISUAL` é montado a
+              partir dele logo no topo do arquivo.
+              O `md:justify-between` do cabeçalho fica onde está: sem o segundo filho ele
+              não faz nada, e removê-lo é mexer no arranjo que esta issue põe fora de
+              escopo. */}
         </motion.div>
 
         <motion.div
@@ -272,10 +396,18 @@ export default function Accelerators() {
           initial={rm ? false : 'hidden'}
           whileInView="visible"
           viewport={VP}
-          className="grid auto-rows-[minmax(300px,1fr)] grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          /* SIS-216 — DUAS COLUNAS, e não três, com a Lumina AI ocupando a linha
+             inteira (`.accel-item--destaque` faz o `grid-column: 1 / -1` na
+             folha). Era `auto-rows-[minmax(300px,1fr)] … lg:grid-cols-3`: a altura
+             mínima saiu porque o card deixou de ser uma coluna de texto alta e
+             passou a ser uma faixa larga — a altura agora vem de
+             `.accel-card` e é diferente no destaque e nos seis. O `1fr` das
+             linhas também saiu: com o destaque ocupando uma linha própria, igualar
+             as alturas de TODAS as linhas esticaria os seis à altura dele. */
+          className="accel-grade grid grid-cols-1 gap-5 sm:grid-cols-2"
         >
-          {ACCELERATORS.map((a, i) => (
-            <AccelCard key={a.id} a={a} index={i} />
+          {ORDEM_VISUAL.map((a) => (
+            <AccelCard key={a.id} a={a} destaque={a.id === ID_DESTAQUE} />
           ))}
         </motion.div>
       </div>

@@ -33,6 +33,15 @@ type Props = {
   /** Tag semantica do no animado; o elemento certo depende do contexto (li em
       lista, article em cartao autonomo), e trocar a tag nao muda a animacao. */
   as?: keyof typeof TAGS;
+  /** Cortina (`clip-path`) na entrada. 23/09 — passou a ser desligável, e não por
+      gosto: `clip-path` recorta TAMBÉM a sombra projetada do elemento, e
+      `inset(0% 0% 0% 0%)`, o estado final, continua recortando na borda da caixa.
+      Num cartão de canto reto isso não se vê; num cartão com sombra atrás (os
+      Diferenciais de `/quem-somos`) a sombra simplesmente não existe, com o CSS
+      dela intacto no computado — foi medido. Desligada, a entrada continua por
+      opacidade, deslocamento e escala; o que sai é só a revelação de cima para
+      baixo. Por padrão fica LIGADA, para nenhum consumidor existente mudar. */
+  cortina?: boolean;
   className?: string;
   style?: CSSProperties;
 };
@@ -49,11 +58,17 @@ export default function ScrollReveal({
   indice = 0,
   distancia = 22,
   as = 'div',
+  cortina = true,
   className,
   style,
 }: Props) {
   const reduzido = useReducedMotion();
   const Tag = TAGS[as];
+
+  /* Sem cortina a propriedade nem entra nas variantes — declarar
+     `clipPath: 'none'` deixaria o recorte ativo em `inset(0%)` durante a
+     interpolacao e o problema da sombra voltaria no meio da entrada. */
+  const fim = { opacity: 1, y: 0, scale: 1, ...(cortina ? { clipPath: 'inset(0% 0% 0% 0%)' } : {}) };
 
   return (
     <Tag
@@ -61,7 +76,7 @@ export default function ScrollReveal({
       style={style}
       initial={
         reduzido
-          ? { opacity: 1, y: 0, scale: 1, clipPath: 'inset(0% 0% 0% 0%)' }
+          ? fim
           : {
               opacity: 0,
               y: distancia,
@@ -69,10 +84,10 @@ export default function ScrollReveal({
               /* Cortina: o cartao é revelado de cima para baixo. Mesmo tipo de
                  forma no inicio e no fim (`inset`), senao a interpolacao nao
                  acontece. */
-              clipPath: 'inset(0% 0% 32% 0%)',
+              ...(cortina ? { clipPath: 'inset(0% 0% 32% 0%)' } : {}),
             }
       }
-      whileInView={{ opacity: 1, y: 0, scale: 1, clipPath: 'inset(0% 0% 0% 0%)' }}
+      whileInView={fim}
       /* SIS-71: viewport proprio, e nao o `VP` de `motion.ts`, de proposito. `VP`
          usa `margin: '-80px'` e nenhum `amount`, o que serve a um bloco unico
          entrando em cena. Aqui cada item se observa sozinho para escalonar a

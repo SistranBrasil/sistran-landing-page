@@ -1,0 +1,44 @@
+{
+  "rota": {
+    "h1": "Luminna AI",
+    "titulo": "Luminna AI · Sistran",
+    "textoVisivel": {
+      "erradas": 0,
+      "certas": 4
+    },
+    "tituloDoDocumento": {
+      "erradas": 0,
+      "certas": 1
+    },
+    "atributos": {
+      "erradas": 0,
+      "certas": 0
+    },
+    "temBlocoIntegracaoVersatil": true,
+    "rasteresComUmN": [],
+    "frases": {
+      "intro": true,
+      "fechamento": true
+    }
+  },
+  "vitrine": {
+    "achouCartao": true,
+    "tag": "A",
+    "cartao": {
+      "erradas": 0,
+      "certas": 1
+    },
+    "textoDoCartao": "Conheça a solução\nLuminna AI\n→"
+  },
+  "vitrinePaginaInteira": {
+    "erradas": 0,
+    "certas": 2
+  },
+  "vitrineRasteresComUmN": [
+    {
+      "src": "/images/logos/Lumina-AI-horizontal-branca.png",
+      "largura": 198,
+      "altura": 64
+    }
+  ]
+}

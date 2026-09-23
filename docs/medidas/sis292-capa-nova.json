@@ -1,0 +1,894 @@
+{
+  "w390": {
+    "estrutura": {
+      "hero": {
+        "alturaDaFaixa": 424,
+        "overflow": "visible",
+        "banner": {
+          "src": "/images/solucoes/possivelcapanovamatch.png",
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "fetchPriority": null,
+          "largura": 390,
+          "altura": 536,
+          "cobreAFaixa": false,
+          "recorte": "cover",
+          "alt": ""
+        },
+        "h1": {
+          "texto": "",
+          "logo": {
+            "src": "/images/logos/MatchAIlogo.png",
+            "alt": "Match AI",
+            "naturalWidth": 2338,
+            "naturalHeight": 350,
+            "largura": 256,
+            "altura": 38,
+            "razaoRenderizada": 6.682,
+            "razaoDoArquivo": 6.68,
+            "opacidade": "1"
+          },
+          "recuoContraOContainer": {
+            "bordaDoContainer": 20,
+            "bordaDaManchete": 20,
+            "larguraDoContainer": 390,
+            "encostado": true
+          }
+        },
+        "carimbo": {
+          "src": "/images/solucoes/carimbo-match-ai-ticket-outline-ffffff.png",
+          "alt": "",
+          "pintou": true,
+          "largura": 136,
+          "altura": 58,
+          "razaoRenderizada": 2.33,
+          "razaoDoArquivo": 2.33,
+          "larguraComoManchete": 240,
+          "menorQueComoManchete": true,
+          "dentroDoH1": false,
+          "acimaDaMarca": true,
+          "vaoAteAMarca": 16
+        },
+        "lead": "Permite à seguradora capacitar o corretor para oferecer propostas personalizadas com discurso adaptado.",
+        "cta": {
+          "tag": "BUTTON",
+          "type": "button",
+          "texto": "Fale com um especialista",
+          "fundo": "rgb(14, 216, 246)",
+          "tinta": "rgb(3, 32, 51)",
+          "linksParaContatoNoHero": 0
+        },
+        "arte": {
+          "bordaDaArte": 0,
+          "bordaDaSecao": 112,
+          "subiuAlemDaSecao": 112,
+          "ptDoPageShell": 112,
+          "cobreAtrasDoNavbar": true,
+          "sombra": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 12, 30, 0.55) 0px 18px 44px -18px",
+          "sombraSoParaBaixo": true,
+          "filtro": "none"
+        },
+        "grafismosNoHero": {
+          "malha": 0,
+          "circuito": 0
+        },
+        "grafismosNasOutrasFaixas": {
+          "malha": 1,
+          "circuito": 4
+        },
+        "fundoDaRota": {
+          "main": "rgba(0, 0, 0, 0)",
+          "body": "rgb(18, 115, 188)"
+        },
+        "pontoAtrasDoNavbar": {
+          "x": 384,
+          "y": 10
+        }
+      },
+      "marcadosForaDoHero": 0,
+      "faixas": [
+        {
+          "id": "topo",
+          "clara": false,
+          "overflow": "visible",
+          "malhaAncora": null,
+          "temAcentos": false,
+          "temCircuito": false
+        },
+        {
+          "id": "matchai-campanha",
+          "clara": true,
+          "overflow": "clip",
+          "malhaAncora": null,
+          "temAcentos": true,
+          "temCircuito": true
+        },
+        {
+          "id": "o-que-o-match-ai-faz",
+          "clara": true,
+          "overflow": "clip",
+          "malhaAncora": null,
+          "temAcentos": true,
+          "temCircuito": true
+        },
+        {
+          "id": "da-base-a-oferta-mais-relevante",
+          "clara": false,
+          "overflow": "clip",
+          "malhaAncora": "fixed, fixed",
+          "temAcentos": false,
+          "temCircuito": true
+        },
+        {
+          "id": "posicionamento",
+          "clara": true,
+          "overflow": "clip",
+          "malhaAncora": null,
+          "temAcentos": true,
+          "temCircuito": true
+        },
+        {
+          "id": "conheca-tambem",
+          "clara": true,
+          "overflow": "clip",
+          "malhaAncora": null,
+          "temAcentos": true,
+          "temCircuito": false
+        },
+        {
+          "id": "SECTION",
+          "clara": false,
+          "overflow": "hidden",
+          "malhaAncora": null,
+          "temAcentos": false,
+          "temCircuito": false
+        }
+      ],
+      "faixaDaCampanha": {
+        "clara": true,
+        "overflow": "clip",
+        "tituloNomeado": "Ofertas inteligentes. Conversas mais relevantes.",
+        "pesoDoTitulo": "700",
+        "fichas": 2,
+        "fotoMarcada": false
+      }
+    },
+    "contrastesDoHero": [
+      {
+        "rotulo": "letreiro Match AI · nucleo branco",
+        "ponto": {
+          "x": 292,
+          "y": 270
+        },
+        "tinta": "rgb(254, 254, 254)",
+        "fundoComposto": "rgb(26, 53, 86)",
+        "contraste": 12.34,
+        "passa": true
+      },
+      {
+        "rotulo": "letreiro Match AI · ombro cinza (p05)",
+        "ponto": {
+          "x": 292,
+          "y": 270
+        },
+        "tinta": "rgb(189, 191, 193)",
+        "fundoComposto": "rgb(26, 53, 86)",
+        "contraste": 6.75,
+        "passa": true
+      },
+      {
+        "rotulo": "carimbo (etiqueta, traço #ffffff)",
+        "ponto": {
+          "x": 172,
+          "y": 205
+        },
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(14, 35, 65)",
+        "contraste": 15.73,
+        "passa": true
+      },
+      {
+        "rotulo": "lead curta",
+        "ponto": {
+          "x": 386,
+          "y": 353
+        },
+        "tinta": "rgba(255, 255, 255, 0.85)",
+        "fundoComposto": "rgb(64, 78, 101)",
+        "contraste": 8.41,
+        "passa": true
+      },
+      {
+        "rotulo": "pilula do CTA",
+        "ponto": {
+          "x": 26,
+          "y": 450
+        },
+        "tinta": "rgb(3, 32, 51)",
+        "fundoComposto": "rgb(14, 216, 246)",
+        "contraste": 9.67,
+        "passa": true
+      }
+    ],
+    "faixaAzul": {
+      "ponto": {
+        "x": 384,
+        "y": 10
+      },
+      "pixelAtrasDoNavbar": "rgb(3, 31, 66)",
+      "pixelAbaixoDoNavbar": "rgb(1, 24, 57)",
+      "fundoDaRota": {
+        "main": "rgba(0, 0, 0, 0)",
+        "body": "rgb(18, 115, 188)"
+      },
+      "naoEFundoChapado": true
+    },
+    "modal": {
+      "urlAntes": "http://localhost:3000/solucoes/match-ai",
+      "abriu": true,
+      "rotulo": "SEDE · SÃO PAULO\nR. Dr. Geraldo Campos Moreira, 240 - 2º andar | Cidade Monções | São Paulo - SP | CEP 04571-020",
+      "titulo": "Entre em contato conosco",
+      "temFormulario": true,
+      "campos": 4,
+      "aindaAberto": false,
+      "focoNoGatilho": true,
+      "rota": "/solucoes/match-ai"
+    },
+    "faixaClara": {
+      "dataIn": "true",
+      "filhosComPreset": 3,
+      "marca": {
+        "texto": "PERSONALIZAÇÃO",
+        "fundo": "rgb(0, 96, 168)",
+        "tinta": "rgb(255, 255, 255)",
+        "contraste": 6.48,
+        "passa": true
+      },
+      "fluxo": {
+        "animacao": "none",
+        "quadroA": "0px",
+        "quadroB": "0px",
+        "moveu": false
+      },
+      "quadradoAceso": {
+        "dentro": {
+          "x": 0,
+          "y": 0
+        },
+        "fora": {
+          "x": 2,
+          "y": 0
+        },
+        "naTela": false,
+        "scroll": 391
+      },
+      "invisiveisNaTela": []
+    },
+    "erros": []
+  },
+  "w768": {
+    "estrutura": {
+      "hero": {
+        "alturaDaFaixa": 459,
+        "overflow": "visible",
+        "banner": {
+          "src": "/images/solucoes/possivelcapanovamatch.png",
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "fetchPriority": null,
+          "largura": 768,
+          "altura": 603,
+          "cobreAFaixa": false,
+          "recorte": "cover",
+          "alt": ""
+        },
+        "h1": {
+          "texto": "",
+          "logo": {
+            "src": "/images/logos/MatchAIlogo.png",
+            "alt": "Match AI",
+            "naturalWidth": 2338,
+            "naturalHeight": 350,
+            "largura": 256,
+            "altura": 38,
+            "razaoRenderizada": 6.682,
+            "razaoDoArquivo": 6.68,
+            "opacidade": "1"
+          },
+          "recuoContraOContainer": {
+            "bordaDoContainer": 24,
+            "bordaDaManchete": 24,
+            "larguraDoContainer": 768,
+            "encostado": true
+          }
+        },
+        "carimbo": {
+          "src": "/images/solucoes/carimbo-match-ai-ticket-outline-ffffff.png",
+          "alt": "",
+          "pintou": true,
+          "largura": 136,
+          "altura": 58,
+          "razaoRenderizada": 2.33,
+          "razaoDoArquivo": 2.33,
+          "larguraComoManchete": 240,
+          "menorQueComoManchete": true,
+          "dentroDoH1": false,
+          "acimaDaMarca": true,
+          "vaoAteAMarca": 16
+        },
+        "lead": "Permite à seguradora capacitar o corretor para oferecer propostas personalizadas com discurso adaptado.",
+        "cta": {
+          "tag": "BUTTON",
+          "type": "button",
+          "texto": "Fale com um especialista",
+          "fundo": "rgb(14, 216, 246)",
+          "tinta": "rgb(3, 32, 51)",
+          "linksParaContatoNoHero": 0
+        },
+        "arte": {
+          "bordaDaArte": 0,
+          "bordaDaSecao": 144,
+          "subiuAlemDaSecao": 144,
+          "ptDoPageShell": 144,
+          "cobreAtrasDoNavbar": true,
+          "sombra": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 12, 30, 0.55) 0px 18px 44px -18px",
+          "sombraSoParaBaixo": true,
+          "filtro": "none"
+        },
+        "grafismosNoHero": {
+          "malha": 0,
+          "circuito": 0
+        },
+        "grafismosNasOutrasFaixas": {
+          "malha": 1,
+          "circuito": 4
+        },
+        "fundoDaRota": {
+          "main": "rgba(0, 0, 0, 0)",
+          "body": "rgb(18, 115, 188)"
+        },
+        "pontoAtrasDoNavbar": {
+          "x": 762,
+          "y": 10
+        }
+      },
+      "marcadosForaDoHero": 0,
+      "faixas": [
+        {
+          "id": "topo",
+          "clara": false,
+          "overflow": "visible",
+          "malhaAncora": null,
+          "temAcentos": false,
+          "temCircuito": false
+        },
+        {
+          "id": "matchai-campanha",
+          "clara": true,
+          "overflow": "clip",
+          "malhaAncora": null,
+          "temAcentos": true,
+          "temCircuito": true
+        },
+        {
+          "id": "o-que-o-match-ai-faz",
+          "clara": true,
+          "overflow": "clip",
+          "malhaAncora": null,
+          "temAcentos": true,
+          "temCircuito": true
+        },
+        {
+          "id": "da-base-a-oferta-mais-relevante",
+          "clara": false,
+          "overflow": "clip",
+          "malhaAncora": "fixed, fixed",
+          "temAcentos": false,
+          "temCircuito": true
+        },
+        {
+          "id": "posicionamento",
+          "clara": true,
+          "overflow": "clip",
+          "malhaAncora": null,
+          "temAcentos": true,
+          "temCircuito": true
+        },
+        {
+          "id": "conheca-tambem",
+          "clara": true,
+          "overflow": "clip",
+          "malhaAncora": null,
+          "temAcentos": true,
+          "temCircuito": false
+        },
+        {
+          "id": "SECTION",
+          "clara": false,
+          "overflow": "hidden",
+          "malhaAncora": null,
+          "temAcentos": false,
+          "temCircuito": false
+        }
+      ],
+      "faixaDaCampanha": {
+        "clara": true,
+        "overflow": "clip",
+        "tituloNomeado": "Ofertas inteligentes. Conversas mais relevantes.",
+        "pesoDoTitulo": "700",
+        "fichas": 2,
+        "fotoMarcada": false
+      }
+    },
+    "contrastesDoHero": [
+      {
+        "rotulo": "letreiro Match AI · nucleo branco",
+        "ponto": {
+          "x": 296,
+          "y": 334
+        },
+        "tinta": "rgb(254, 254, 254)",
+        "fundoComposto": "rgb(0, 23, 54)",
+        "contraste": 17.71,
+        "passa": true
+      },
+      {
+        "rotulo": "letreiro Match AI · ombro cinza (p05)",
+        "ponto": {
+          "x": 296,
+          "y": 334
+        },
+        "tinta": "rgb(189, 191, 193)",
+        "fundoComposto": "rgb(0, 23, 54)",
+        "contraste": 9.68,
+        "passa": true
+      },
+      {
+        "rotulo": "carimbo (etiqueta, traço #ffffff)",
+        "ponto": {
+          "x": 176,
+          "y": 269
+        },
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(5, 33, 68)",
+        "contraste": 16.06,
+        "passa": true
+      },
+      {
+        "rotulo": "lead curta",
+        "ponto": {
+          "x": 589,
+          "y": 402
+        },
+        "tinta": "rgba(255, 255, 255, 0.85)",
+        "fundoComposto": "rgb(5, 21, 45)",
+        "contraste": 18.24,
+        "passa": true
+      },
+      {
+        "rotulo": "pilula do CTA",
+        "ponto": {
+          "x": 30,
+          "y": 485
+        },
+        "tinta": "rgb(3, 32, 51)",
+        "fundoComposto": "rgb(14, 216, 246)",
+        "contraste": 9.67,
+        "passa": true
+      }
+    ],
+    "faixaAzul": {
+      "ponto": {
+        "x": 762,
+        "y": 10
+      },
+      "pixelAtrasDoNavbar": "rgb(4, 31, 66)",
+      "pixelAbaixoDoNavbar": "rgb(11, 41, 77)",
+      "fundoDaRota": {
+        "main": "rgba(0, 0, 0, 0)",
+        "body": "rgb(18, 115, 188)"
+      },
+      "naoEFundoChapado": true
+    },
+    "modal": {
+      "urlAntes": "http://localhost:3000/solucoes/match-ai",
+      "abriu": true,
+      "rotulo": "SEDE · SÃO PAULO\nR. Dr. Geraldo Campos Moreira, 240 - 2º andar | Cidade Monções | São Paulo - SP | CEP 04571-020",
+      "titulo": "Entre em contato conosco",
+      "temFormulario": true,
+      "campos": 4,
+      "aindaAberto": false,
+      "focoNoGatilho": true,
+      "rota": "/solucoes/match-ai"
+    },
+    "faixaClara": {
+      "dataIn": "true",
+      "filhosComPreset": 3,
+      "marca": {
+        "texto": "PERSONALIZAÇÃO",
+        "fundo": "rgb(0, 96, 168)",
+        "tinta": "rgb(255, 255, 255)",
+        "contraste": 6.48,
+        "passa": true
+      },
+      "fluxo": {
+        "animacao": "none",
+        "quadroA": "0px",
+        "quadroB": "0px",
+        "moveu": false
+      },
+      "quadradoAceso": {
+        "dentro": {
+          "x": 0,
+          "y": 0
+        },
+        "fora": {
+          "x": 2,
+          "y": 0
+        },
+        "naTela": false,
+        "scroll": 469
+      },
+      "invisiveisNaTela": []
+    },
+    "erros": []
+  },
+  "w1440": {
+    "estrutura": {
+      "hero": {
+        "alturaDaFaixa": 528,
+        "overflow": "visible",
+        "banner": {
+          "src": "/images/solucoes/possivelcapanovamatch.png",
+          "naturalWidth": 1672,
+          "naturalHeight": 941,
+          "fetchPriority": null,
+          "largura": 1440,
+          "altura": 672,
+          "cobreAFaixa": false,
+          "recorte": "cover",
+          "alt": ""
+        },
+        "h1": {
+          "texto": "",
+          "logo": {
+            "src": "/images/logos/MatchAIlogo.png",
+            "alt": "Match AI",
+            "naturalWidth": 2338,
+            "naturalHeight": 350,
+            "largura": 448,
+            "altura": 67,
+            "razaoRenderizada": 6.68,
+            "razaoDoArquivo": 6.68,
+            "opacidade": "1"
+          },
+          "recuoContraOContainer": {
+            "bordaDoContainer": 162,
+            "bordaDaManchete": 162,
+            "larguraDoContainer": 1180,
+            "encostado": true
+          }
+        },
+        "carimbo": {
+          "src": "/images/solucoes/carimbo-match-ai-ticket-outline-ffffff.png",
+          "alt": "",
+          "pintou": true,
+          "largura": 158,
+          "altura": 68,
+          "razaoRenderizada": 2.33,
+          "razaoDoArquivo": 2.33,
+          "larguraComoManchete": 320,
+          "menorQueComoManchete": true,
+          "dentroDoH1": false,
+          "acimaDaMarca": true,
+          "vaoAteAMarca": 16
+        },
+        "lead": "Permite à seguradora capacitar o corretor para oferecer propostas personalizadas com discurso adaptado.",
+        "cta": {
+          "tag": "BUTTON",
+          "type": "button",
+          "texto": "Fale com um especialista",
+          "fundo": "rgb(14, 216, 246)",
+          "tinta": "rgb(3, 32, 51)",
+          "linksParaContatoNoHero": 0
+        },
+        "arte": {
+          "bordaDaArte": 0,
+          "bordaDaSecao": 144,
+          "subiuAlemDaSecao": 144,
+          "ptDoPageShell": 144,
+          "cobreAtrasDoNavbar": true,
+          "sombra": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 12, 30, 0.55) 0px 18px 44px -18px",
+          "sombraSoParaBaixo": true,
+          "filtro": "none"
+        },
+        "grafismosNoHero": {
+          "malha": 0,
+          "circuito": 0
+        },
+        "grafismosNasOutrasFaixas": {
+          "malha": 1,
+          "circuito": 4
+        },
+        "fundoDaRota": {
+          "main": "rgba(0, 0, 0, 0)",
+          "body": "rgb(18, 115, 188)"
+        },
+        "pontoAtrasDoNavbar": {
+          "x": 1434,
+          "y": 10
+        }
+      },
+      "marcadosForaDoHero": 0,
+      "faixas": [
+        {
+          "id": "topo",
+          "clara": false,
+          "overflow": "visible",
+          "malhaAncora": null,
+          "temAcentos": false,
+          "temCircuito": false
+        },
+        {
+          "id": "matchai-campanha",
+          "clara": true,
+          "overflow": "clip",
+          "malhaAncora": null,
+          "temAcentos": true,
+          "temCircuito": true
+        },
+        {
+          "id": "o-que-o-match-ai-faz",
+          "clara": true,
+          "overflow": "clip",
+          "malhaAncora": null,
+          "temAcentos": true,
+          "temCircuito": true
+        },
+        {
+          "id": "da-base-a-oferta-mais-relevante",
+          "clara": false,
+          "overflow": "clip",
+          "malhaAncora": "fixed, fixed",
+          "temAcentos": false,
+          "temCircuito": true
+        },
+        {
+          "id": "posicionamento",
+          "clara": true,
+          "overflow": "clip",
+          "malhaAncora": null,
+          "temAcentos": true,
+          "temCircuito": true
+        },
+        {
+          "id": "conheca-tambem",
+          "clara": true,
+          "overflow": "clip",
+          "malhaAncora": null,
+          "temAcentos": true,
+          "temCircuito": false
+        },
+        {
+          "id": "SECTION",
+          "clara": false,
+          "overflow": "hidden",
+          "malhaAncora": null,
+          "temAcentos": false,
+          "temCircuito": false
+        }
+      ],
+      "faixaDaCampanha": {
+        "clara": true,
+        "overflow": "clip",
+        "tituloNomeado": "Ofertas inteligentes. Conversas mais relevantes.",
+        "pesoDoTitulo": "700",
+        "fichas": 2,
+        "fotoMarcada": false
+      }
+    },
+    "contrastesDoHero": [
+      {
+        "rotulo": "letreiro Match AI · nucleo branco",
+        "ponto": {
+          "x": 626,
+          "y": 373
+        },
+        "tinta": "rgb(254, 254, 254)",
+        "fundoComposto": "rgb(2, 35, 76)",
+        "contraste": 15.45,
+        "passa": true
+      },
+      {
+        "rotulo": "letreiro Match AI · ombro cinza (p05)",
+        "ponto": {
+          "x": 626,
+          "y": 373
+        },
+        "tinta": "rgb(189, 191, 193)",
+        "fundoComposto": "rgb(2, 35, 76)",
+        "contraste": 8.45,
+        "passa": true
+      },
+      {
+        "rotulo": "carimbo (etiqueta, traço #ffffff)",
+        "ponto": {
+          "x": 336,
+          "y": 289
+        },
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(0, 26, 61)",
+        "contraste": 17.28,
+        "passa": true
+      },
+      {
+        "rotulo": "lead curta",
+        "ponto": {
+          "x": 799,
+          "y": 456
+        },
+        "tinta": "rgba(255, 255, 255, 0.85)",
+        "fundoComposto": "rgb(15, 35, 60)",
+        "contraste": 15.84,
+        "passa": true
+      },
+      {
+        "rotulo": "pilula do CTA",
+        "ponto": {
+          "x": 168,
+          "y": 539
+        },
+        "tinta": "rgb(3, 32, 51)",
+        "fundoComposto": "rgb(14, 216, 246)",
+        "contraste": 9.67,
+        "passa": true
+      }
+    ],
+    "faixaAzul": {
+      "ponto": {
+        "x": 1434,
+        "y": 10
+      },
+      "pixelAtrasDoNavbar": "rgb(77, 87, 102)",
+      "pixelAbaixoDoNavbar": "rgb(122, 162, 147)",
+      "fundoDaRota": {
+        "main": "rgba(0, 0, 0, 0)",
+        "body": "rgb(18, 115, 188)"
+      },
+      "naoEFundoChapado": true
+    },
+    "modal": {
+      "urlAntes": "http://localhost:3000/solucoes/match-ai",
+      "abriu": true,
+      "rotulo": "SEDE · SÃO PAULO\nR. Dr. Geraldo Campos Moreira, 240 - 2º andar | Cidade Monções | São Paulo - SP | CEP 04571-020",
+      "titulo": "Entre em contato conosco",
+      "temFormulario": true,
+      "campos": 4,
+      "aindaAberto": false,
+      "focoNoGatilho": true,
+      "rota": "/solucoes/match-ai"
+    },
+    "faixaClara": {
+      "dataIn": "true",
+      "filhosComPreset": 3,
+      "marca": {
+        "texto": "PERSONALIZAÇÃO",
+        "fundo": "rgb(0, 96, 168)",
+        "tinta": "rgb(255, 255, 255)",
+        "contraste": 6.48,
+        "passa": true
+      },
+      "fluxo": {
+        "animacao": "matchai-circuito-fluxo",
+        "quadroA": "0.416723px",
+        "quadroB": "0.321485px",
+        "moveu": true
+      },
+      "quadradoAceso": {
+        "dentro": {
+          "x": 1144,
+          "y": 245
+        },
+        "fora": {
+          "x": 1096,
+          "y": 245
+        },
+        "naTela": true,
+        "scroll": 470,
+        "pixelDoQuadrado": "rgb(200, 226, 244)",
+        "pixelDoFundo": "rgb(229, 242, 252)",
+        "pintou": true
+      },
+      "invisiveisNaTela": []
+    },
+    "erros": []
+  },
+  "referenciaEsg": {
+    "w390": {
+      "alturaDaFaixa": 414,
+      "bordaDaManchete": 20,
+      "confronto": {
+        "alturaMatchAi": 424,
+        "alturaEsg": 414,
+        "bordaMatchAi": 20,
+        "bordaEsg": 20
+      }
+    },
+    "w768": {
+      "alturaDaFaixa": 414,
+      "bordaDaManchete": 38,
+      "confronto": {
+        "alturaMatchAi": 459,
+        "alturaEsg": 414,
+        "bordaMatchAi": 24,
+        "bordaEsg": 38
+      }
+    },
+    "w1440": {
+      "alturaDaFaixa": 528,
+      "bordaDaManchete": 160,
+      "confronto": {
+        "alturaMatchAi": 528,
+        "alturaEsg": 528,
+        "bordaMatchAi": 162,
+        "bordaEsg": 160
+      }
+    }
+  },
+  "reduce-media": {
+    "atributoNoHtml": "reduce",
+    "fichasEmLaco": 0,
+    "totalDeFichas": 2,
+    "tracosEmLaco": 0,
+    "tracosApagados": 2,
+    "acesoOpaco": true,
+    "escopoDaCampanha": "true",
+    "banner": {
+      "opacidade": "1",
+      "pintou": true
+    },
+    "logo": {
+      "opacidade": "1",
+      "transform": "none",
+      "pintou": true,
+      "alt": ""
+    },
+    "marca": {
+      "opacidadeDoH1": "1",
+      "transformDoH1": "none",
+      "opacidadeDaArte": "1",
+      "pintou": true,
+      "alt": "Match AI",
+      "dataIn": "true"
+    },
+    "erros": []
+  },
+  "reduce-preferencia": {
+    "atributoNoHtml": "reduce",
+    "fichasEmLaco": 0,
+    "totalDeFichas": 2,
+    "tracosEmLaco": 0,
+    "tracosApagados": 2,
+    "acesoOpaco": true,
+    "escopoDaCampanha": "true",
+    "banner": {
+      "opacidade": "1",
+      "pintou": true
+    },
+    "logo": {
+      "opacidade": "1",
+      "transform": "none",
+      "pintou": true,
+      "alt": ""
+    },
+    "marca": {
+      "opacidadeDoH1": "1",
+      "transformDoH1": "none",
+      "opacidadeDaArte": "1",
+      "pintou": true,
+      "alt": "Match AI",
+      "dataIn": "true"
+    },
+    "erros": []
+  }
+}

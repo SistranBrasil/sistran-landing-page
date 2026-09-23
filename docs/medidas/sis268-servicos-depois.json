@@ -1,0 +1,1666 @@
+{
+  "390": {
+    "existe": true,
+    "caixa": {
+      "x": 0,
+      "y": 3915,
+      "largura": 390,
+      "altura": 2104.3
+    },
+    "janela": {
+      "largura": 390,
+      "altura": 900
+    },
+    "sangraNaJanela": true,
+    "classesDaSecao": "relative overflow-x-clip solucoes-palco-servicos",
+    "posicao": "relative",
+    "recorte": "clip visible",
+    "isolamento": "isolate",
+    "gradeTecnica": false,
+    "video": {
+      "src": "/videos/jornada.mp4",
+      "autoPlay": true,
+      "muted": true,
+      "loop": true,
+      "playsInline": true,
+      "controls": false,
+      "preload": "metadata",
+      "encaixe": "cover",
+      "posicaoCss": "absolute",
+      "inset": "0px 0px 0px 0px",
+      "caixa": {
+        "x": 0,
+        "y": 3915,
+        "largura": 390,
+        "altura": 2104.3
+      },
+      "cobreASecao": true,
+      "pronto": 4,
+      "tocando": true
+    },
+    "playerUi": {
+      "comControls": 0,
+      "quantosVideos": 1
+    },
+    "carimbo": {
+      "src": "/images/carimbo-diferenciais-ticket-outline-ffffff.png",
+      "alt": "Diferenciais",
+      "caixa": {
+        "x": 20,
+        "y": 3995,
+        "largura": 190,
+        "altura": 67.6
+      },
+      "transformDoInvolucro": "none"
+    },
+    "tagTextual": null,
+    "titulo": {
+      "fonte": "46.8px",
+      "peso": "800",
+      "entrelinha": "44.46px",
+      "cor": "rgb(255, 255, 255)",
+      "larguraMaxima": "none",
+      "texto": "Serviços"
+    },
+    "leads": [
+      {
+        "fonte": "17px",
+        "peso": "400",
+        "entrelinha": "27.2px",
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "larguraMaxima": "none",
+        "texto": "Dedicada ao mercado segurador, com experiência em todos os ramos, a Sistran atua como inte"
+      },
+      {
+        "fonte": "17px",
+        "peso": "400",
+        "entrelinha": "27.2px",
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "larguraMaxima": "none",
+        "texto": "Somos uma empresa de TI 100% focada no segmento de Seguros no Brasil, com experiência acum"
+      }
+    ],
+    "indicadores": [
+      "30+",
+      "implementações",
+      "100%",
+      "Seguros"
+    ],
+    "colunas": {
+      "miolo": 350,
+      "esquerda": {
+        "x": 20,
+        "y": 3971,
+        "largura": 350,
+        "altura": 456
+      },
+      "direita": {
+        "x": 20,
+        "y": 4459,
+        "largura": 350,
+        "altura": 1340.3
+      },
+      "fracaoEsquerda": 100,
+      "fracaoDireita": 100,
+      "razaoEsquerda": 50,
+      "sobraADireitaPx": 0,
+      "empilhadas": true
+    },
+    "corredorDoIndicador": {
+      "navMontado": false,
+      "folgaPx": null
+    },
+    "colunaEsquerda": {
+      "x": 20,
+      "y": 3971,
+      "largura": 350,
+      "altura": 1828.3
+    },
+    "colunaDireitaPrimeiroCard": {
+      "x": 20,
+      "y": 4483,
+      "largura": 350,
+      "altura": 345.1
+    },
+    "cards": [
+      {
+        "classes": "svc-card svc-card--destaque",
+        "caixa": {
+          "x": 20,
+          "y": 4483,
+          "largura": 350,
+          "altura": 345.1
+        },
+        "corDeFundo": "rgb(248, 251, 255)",
+        "raio": "24px",
+        "borda": "1px rgba(14, 216, 246, 0.7)",
+        "sombra": "rgba(4, 29, 55, 0.45) 0px 18px 40px -22px, rgba(14, 216, 246, 0.25) 0px 0px 0px 1px, rgba(14, 216, 246, 0.35) 0px 0px 26",
+        "recorte": "hidden",
+        "foto": {
+          "src": "/images/solucoes/1.png",
+          "alt": "Profissional apresentando um quadro coberto de post-its para três colegas sentados à mesa de reunião com notebooks",
+          "encaixe": "cover",
+          "posicao": "50% 50%",
+          "caixa": {
+            "x": 21,
+            "y": 4484,
+            "largura": 348,
+            "altura": 179.4
+          }
+        },
+        "fracaoDaFoto": 52,
+        "selo": {
+          "caixa": {
+            "x": 37,
+            "y": 4632,
+            "largura": 64,
+            "altura": 64
+          },
+          "corDeFundo": "rgb(255, 255, 255)",
+          "borda": "rgba(203, 225, 247, 0.95)",
+          "traco": "1.75px",
+          "corDoIcone": "rgb(14, 216, 246)"
+        },
+        "titulo": {
+          "fonte": "18px",
+          "peso": "700",
+          "entrelinha": "21.6px",
+          "cor": "rgb(6, 42, 78)",
+          "larguraMaxima": "none",
+          "texto": "APIs, Projetos, Desenvolvimento, Sustentação e Migrações"
+        },
+        "descricao": {
+          "fonte": "15px",
+          "peso": "400",
+          "entrelinha": "23.25px",
+          "cor": "rgb(71, 99, 127)",
+          "larguraMaxima": "none",
+          "texto": "Produção confiável, entregas de qualidade e ótima relação custo-benefício."
+        },
+        "proibidos": {
+          "ordinais": 0,
+          "links": 0,
+          "botoes": 0,
+          "textoCortadoPx": 0
+        }
+      },
+      {
+        "classes": "svc-card",
+        "caixa": {
+          "x": 20,
+          "y": 4844,
+          "largura": 350,
+          "altura": 323.5
+        },
+        "corDeFundo": "rgb(248, 251, 255)",
+        "raio": "24px",
+        "borda": "1px rgba(203, 225, 247, 0.9)",
+        "sombra": "rgba(4, 29, 55, 0.45) 0px 18px 40px -22px",
+        "recorte": "hidden",
+        "foto": {
+          "src": "/images/solucoes/2.png",
+          "alt": "Três profissionais em volta de uma mesa de madeira coberta de fichas de papel, uma delas anotando ao lado de um notebook",
+          "encaixe": "cover",
+          "posicao": "50% 50%",
+          "caixa": {
+            "x": 21,
+            "y": 4845,
+            "largura": 348,
+            "altura": 179.4
+          }
+        },
+        "fracaoDaFoto": 55.5,
+        "selo": {
+          "caixa": {
+            "x": 37,
+            "y": 4993,
+            "largura": 64,
+            "altura": 64
+          },
+          "corDeFundo": "rgb(255, 255, 255)",
+          "borda": "rgba(203, 225, 247, 0.95)",
+          "traco": "1.75px",
+          "corDoIcone": "rgb(14, 216, 246)"
+        },
+        "titulo": {
+          "fonte": "18px",
+          "peso": "700",
+          "entrelinha": "21.6px",
+          "cor": "rgb(6, 42, 78)",
+          "larguraMaxima": "none",
+          "texto": "Serviços e Processos"
+        },
+        "descricao": {
+          "fonte": "15px",
+          "peso": "400",
+          "entrelinha": "23.25px",
+          "cor": "rgb(71, 99, 127)",
+          "larguraMaxima": "none",
+          "texto": "Domínio de negócios e processos de seguros em todos os ramos."
+        },
+        "proibidos": {
+          "ordinais": 0,
+          "links": 0,
+          "botoes": 0,
+          "textoCortadoPx": 0
+        }
+      },
+      {
+        "classes": "svc-card",
+        "caixa": {
+          "x": 20,
+          "y": 5184,
+          "largura": 350,
+          "altura": 323.5
+        },
+        "corDeFundo": "rgb(248, 251, 255)",
+        "raio": "24px",
+        "borda": "1px rgba(203, 225, 247, 0.9)",
+        "sombra": "rgba(4, 29, 55, 0.45) 0px 18px 40px -22px",
+        "recorte": "hidden",
+        "foto": {
+          "src": "/images/solucoes/3.png",
+          "alt": "Profissional mais experiente apontando para um monitor enquanto dois colegas acompanham, em escritório aberto",
+          "encaixe": "cover",
+          "posicao": "50% 50%",
+          "caixa": {
+            "x": 21,
+            "y": 5185,
+            "largura": 348,
+            "altura": 179.4
+          }
+        },
+        "fracaoDaFoto": 55.5,
+        "selo": {
+          "caixa": {
+            "x": 37,
+            "y": 5332,
+            "largura": 64,
+            "altura": 64
+          },
+          "corDeFundo": "rgb(255, 255, 255)",
+          "borda": "rgba(203, 225, 247, 0.95)",
+          "traco": "1.75px",
+          "corDoIcone": "rgb(14, 216, 246)"
+        },
+        "titulo": {
+          "fonte": "18px",
+          "peso": "700",
+          "entrelinha": "21.6px",
+          "cor": "rgb(6, 42, 78)",
+          "larguraMaxima": "none",
+          "texto": "Tipos de Serviço"
+        },
+        "descricao": {
+          "fonte": "15px",
+          "peso": "400",
+          "entrelinha": "23.25px",
+          "cor": "rgb(71, 99, 127)",
+          "larguraMaxima": "none",
+          "texto": "Squads, vilas, Managed Services, alocações e projetos fechados."
+        },
+        "proibidos": {
+          "ordinais": 0,
+          "links": 0,
+          "botoes": 0,
+          "textoCortadoPx": 0
+        }
+      },
+      {
+        "classes": "svc-card",
+        "caixa": {
+          "x": 20,
+          "y": 5523,
+          "largura": 350,
+          "altura": 300.2
+        },
+        "corDeFundo": "rgb(248, 251, 255)",
+        "raio": "24px",
+        "borda": "1px rgba(203, 225, 247, 0.9)",
+        "sombra": "rgba(4, 29, 55, 0.45) 0px 18px 40px -22px",
+        "recorte": "hidden",
+        "foto": {
+          "src": "/images/solucoes/4.png",
+          "alt": "Dupla de profissionais diante de um monitor com um diagrama de fluxo, um deles apontando para a tela",
+          "encaixe": "cover",
+          "posicao": "50% 50%",
+          "caixa": {
+            "x": 21,
+            "y": 5524,
+            "largura": 348,
+            "altura": 179.4
+          }
+        },
+        "fracaoDaFoto": 59.8,
+        "selo": {
+          "caixa": {
+            "x": 37,
+            "y": 5672,
+            "largura": 64,
+            "altura": 64
+          },
+          "corDeFundo": "rgb(255, 255, 255)",
+          "borda": "rgba(203, 225, 247, 0.95)",
+          "traco": "1.75px",
+          "corDoIcone": "rgb(14, 216, 246)"
+        },
+        "titulo": {
+          "fonte": "18px",
+          "peso": "700",
+          "entrelinha": "21.6px",
+          "cor": "rgb(6, 42, 78)",
+          "larguraMaxima": "none",
+          "texto": "Staff Augmentation"
+        },
+        "descricao": {
+          "fonte": "15px",
+          "peso": "400",
+          "entrelinha": "23.25px",
+          "cor": "rgb(71, 99, 127)",
+          "larguraMaxima": "none",
+          "texto": "Especialistas integrados ao seu delivery."
+        },
+        "proibidos": {
+          "ordinais": 0,
+          "links": 0,
+          "botoes": 0,
+          "textoCortadoPx": 0
+        }
+      }
+    ],
+    "desvioDeAlturaPx": 44.9,
+    "cta": {
+      "texto": "Quero um serviço exclusivo",
+      "caixa": {
+        "x": 20,
+        "y": 5920,
+        "largura": 231.7,
+        "altura": 44
+      }
+    },
+    "pagina": {
+      "alturaDoDocumento": 9997,
+      "transbordoPx": 0,
+      "faixas": [
+        {
+          "tag": "div",
+          "id": null,
+          "classes": "solucoes-atmosfera",
+          "topo": 0,
+          "altura": 900
+        },
+        {
+          "tag": "div",
+          "id": null,
+          "classes": "hero-backdrop",
+          "topo": 112,
+          "altura": 541
+        },
+        {
+          "tag": "section",
+          "id": "beyond-technology",
+          "classes": "section-light section-light-blue section-py",
+          "topo": 677,
+          "altura": 601
+        },
+        {
+          "tag": "section",
+          "id": "tecnologia-disruptiva",
+          "classes": "section-light section-light-blue section-py relative overflow-hidden",
+          "topo": 1278,
+          "altura": 2637
+        },
+        {
+          "tag": "section",
+          "id": "servicos-diferenciais",
+          "classes": "relative overflow-x-clip solucoes-palco-servicos",
+          "topo": 3915,
+          "altura": 2104
+        },
+        {
+          "tag": "section",
+          "id": "consultoria",
+          "classes": "Consulting-module__YOqDHW__section",
+          "topo": 6020,
+          "altura": 2113
+        },
+        {
+          "tag": "section",
+          "id": null,
+          "classes": "cta-ref section-py relative overflow-hidden",
+          "topo": 8133,
+          "altura": 749
+        }
+      ]
+    },
+    "rolagem": 3915,
+    "captura": "docs/capturas/sis268-servicos-390-depois.png",
+    "rolagemTopo": 3835,
+    "capturaTopo": "docs/capturas/sis268-servicos-topo-390-depois.png",
+    "corredorDoIndicadorNaSecao": {
+      "navMontado": false,
+      "folgaPx": null
+    },
+    "tintas": {
+      "titulo": {
+        "cor": "rgb(255, 255, 255)",
+        "fonte": "46.8px",
+        "retanguloNaTela": [
+          20,
+          224,
+          195,
+          44
+        ]
+      },
+      "lead": {
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fonte": "17px",
+        "retanguloNaTela": [
+          20,
+          288,
+          350,
+          109
+        ]
+      },
+      "indicador": {
+        "cor": "rgb(255, 255, 255)",
+        "fonte": "28px",
+        "retanguloNaTela": [
+          60,
+          544,
+          113,
+          29
+        ]
+      },
+      "card-titulo": {
+        "cor": "rgb(6, 42, 78)",
+        "fonte": "18px",
+        "retanguloNaTela": [
+          37,
+          851,
+          316,
+          43
+        ]
+      },
+      "card-descricao": {
+        "cor": "rgb(71, 99, 127)",
+        "fonte": "15px",
+        "retanguloNaTela": [
+          37,
+          902,
+          316,
+          47
+        ]
+      }
+    },
+    "contraste": {
+      "titulo": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(4, 28, 54)",
+        "amostraEm": [
+          11,
+          244
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-390-depois.png",
+        "contraste": 17.15
+      },
+      "lead": {
+        "tinta": "rgba(255, 255, 255, 0.88)",
+        "fundo": "rgb(4, 29, 56)",
+        "amostraEm": [
+          11,
+          341
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-390-depois.png",
+        "contraste": 16.96
+      },
+      "indicador": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(14, 43, 72)",
+        "amostraEm": [
+          51,
+          557
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-390-depois.png",
+        "contraste": 14.41
+      },
+      "card-titulo": {
+        "tinta": "rgb(6, 42, 78)",
+        "fundo": "rgb(248, 251, 255)",
+        "amostraEm": [
+          28,
+          871
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-390-depois.png",
+        "contraste": 13.96
+      },
+      "card-descricao": {
+        "tinta": "rgb(71, 99, 127)",
+        "fundo": "rgb(248, 251, 255)",
+        "amostraEm": [
+          28,
+          924
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-390-depois.png",
+        "contraste": 6.02
+      }
+    }
+  },
+  "1024": {
+    "existe": true,
+    "caixa": {
+      "x": 0,
+      "y": 3071,
+      "largura": 1024,
+      "altura": 1080
+    },
+    "janela": {
+      "largura": 1024,
+      "altura": 900
+    },
+    "sangraNaJanela": true,
+    "classesDaSecao": "relative overflow-x-clip solucoes-palco-servicos",
+    "posicao": "relative",
+    "recorte": "clip visible",
+    "isolamento": "isolate",
+    "gradeTecnica": false,
+    "video": {
+      "src": "/videos/jornada.mp4",
+      "autoPlay": true,
+      "muted": true,
+      "loop": true,
+      "playsInline": true,
+      "controls": false,
+      "preload": "metadata",
+      "encaixe": "cover",
+      "posicaoCss": "absolute",
+      "inset": "0px 0px 0px 0px",
+      "caixa": {
+        "x": 0,
+        "y": 3071,
+        "largura": 1024,
+        "altura": 1080
+      },
+      "cobreASecao": true,
+      "pronto": 4,
+      "tocando": true
+    },
+    "playerUi": {
+      "comControls": 0,
+      "quantosVideos": 1
+    },
+    "carimbo": {
+      "src": "/images/carimbo-diferenciais-ticket-outline-ffffff.png",
+      "alt": "Diferenciais",
+      "caixa": {
+        "x": 41,
+        "y": 3314,
+        "largura": 190,
+        "altura": 67.6
+      },
+      "transformDoInvolucro": "none"
+    },
+    "tagTextual": null,
+    "titulo": {
+      "fonte": "51.2px",
+      "peso": "800",
+      "entrelinha": "48.64px",
+      "cor": "rgb(255, 255, 255)",
+      "larguraMaxima": "none",
+      "texto": "Serviços"
+    },
+    "leads": [
+      {
+        "fonte": "17px",
+        "peso": "400",
+        "entrelinha": "27.2px",
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "larguraMaxima": "none",
+        "texto": "Dedicada ao mercado segurador, com experiência em todos os ramos, a Sistran atua como inte"
+      },
+      {
+        "fonte": "17px",
+        "peso": "400",
+        "entrelinha": "27.2px",
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "larguraMaxima": "none",
+        "texto": "Somos uma empresa de TI 100% focada no segmento de Seguros no Brasil, com experiência acum"
+      }
+    ],
+    "indicadores": [
+      "30+",
+      "implementações",
+      "100%",
+      "Seguros"
+    ],
+    "colunas": {
+      "miolo": 942.1,
+      "esquerda": {
+        "x": 41,
+        "y": 3290,
+        "largura": 378.5,
+        "altura": 461.6
+      },
+      "direita": {
+        "x": 460,
+        "y": 3173,
+        "largura": 522.7,
+        "altura": 696.4
+      },
+      "fracaoEsquerda": 40.2,
+      "fracaoDireita": 55.5,
+      "razaoEsquerda": 42,
+      "sobraADireitaPx": 0,
+      "empilhadas": false
+    },
+    "corredorDoIndicador": {
+      "navMontado": false,
+      "folgaPx": null
+    },
+    "colunaEsquerda": {
+      "x": 41,
+      "y": 3173,
+      "largura": 942.1,
+      "altura": 696.4
+    },
+    "colunaDireitaPrimeiroCard": {
+      "x": 460,
+      "y": 3197,
+      "largura": 253.1,
+      "altura": 340
+    },
+    "cards": [
+      {
+        "classes": "svc-card svc-card--destaque",
+        "caixa": {
+          "x": 460,
+          "y": 3197,
+          "largura": 253.1,
+          "altura": 340
+        },
+        "corDeFundo": "rgb(248, 251, 255)",
+        "raio": "24px",
+        "borda": "1px rgba(14, 216, 246, 0.7)",
+        "sombra": "rgba(4, 29, 55, 0.45) 0px 18px 40px -22px, rgba(14, 216, 246, 0.25) 0px 0px 0px 1px, rgba(14, 216, 246, 0.35) 0px 0px 26",
+        "recorte": "hidden",
+        "foto": {
+          "src": "/images/solucoes/1.png",
+          "alt": "Profissional apresentando um quadro coberto de post-its para três colegas sentados à mesa de reunião com notebooks",
+          "encaixe": "cover",
+          "posicao": "50% 50%",
+          "caixa": {
+            "x": 461,
+            "y": 3198,
+            "largura": 251.1,
+            "altura": 142
+          }
+        },
+        "fracaoDaFoto": 41.8,
+        "selo": {
+          "caixa": {
+            "x": 477,
+            "y": 3308,
+            "largura": 64,
+            "altura": 54.7
+          },
+          "corDeFundo": "rgb(255, 255, 255)",
+          "borda": "rgba(203, 225, 247, 0.95)",
+          "traco": "1.75px",
+          "corDoIcone": "rgb(14, 216, 246)"
+        },
+        "titulo": {
+          "fonte": "18px",
+          "peso": "700",
+          "entrelinha": "21.6px",
+          "cor": "rgb(6, 42, 78)",
+          "larguraMaxima": "none",
+          "texto": "APIs, Projetos, Desenvolvimento, Sustentação e Migrações"
+        },
+        "descricao": {
+          "fonte": "15px",
+          "peso": "400",
+          "entrelinha": "23.25px",
+          "cor": "rgb(71, 99, 127)",
+          "larguraMaxima": "none",
+          "texto": "Produção confiável, entregas de qualidade e ótima relação custo-benefício."
+        },
+        "proibidos": {
+          "ordinais": 0,
+          "links": 0,
+          "botoes": 0,
+          "textoCortadoPx": 3
+        }
+      },
+      {
+        "classes": "svc-card",
+        "caixa": {
+          "x": 730,
+          "y": 3197,
+          "largura": 253.2,
+          "altura": 340
+        },
+        "corDeFundo": "rgb(248, 251, 255)",
+        "raio": "24px",
+        "borda": "1px rgba(203, 225, 247, 0.9)",
+        "sombra": "rgba(4, 29, 55, 0.45) 0px 18px 40px -22px",
+        "recorte": "hidden",
+        "foto": {
+          "src": "/images/solucoes/2.png",
+          "alt": "Três profissionais em volta de uma mesa de madeira coberta de fichas de papel, uma delas anotando ao lado de um notebook",
+          "encaixe": "cover",
+          "posicao": "50% 50%",
+          "caixa": {
+            "x": 731,
+            "y": 3198,
+            "largura": 251.2,
+            "altura": 142
+          }
+        },
+        "fracaoDaFoto": 41.8,
+        "selo": {
+          "caixa": {
+            "x": 747,
+            "y": 3308,
+            "largura": 64,
+            "altura": 64
+          },
+          "corDeFundo": "rgb(255, 255, 255)",
+          "borda": "rgba(203, 225, 247, 0.95)",
+          "traco": "1.75px",
+          "corDoIcone": "rgb(14, 216, 246)"
+        },
+        "titulo": {
+          "fonte": "18px",
+          "peso": "700",
+          "entrelinha": "21.6px",
+          "cor": "rgb(6, 42, 78)",
+          "larguraMaxima": "none",
+          "texto": "Serviços e Processos"
+        },
+        "descricao": {
+          "fonte": "15px",
+          "peso": "400",
+          "entrelinha": "23.25px",
+          "cor": "rgb(71, 99, 127)",
+          "larguraMaxima": "none",
+          "texto": "Domínio de negócios e processos de seguros em todos os ramos."
+        },
+        "proibidos": {
+          "ordinais": 0,
+          "links": 0,
+          "botoes": 0,
+          "textoCortadoPx": 0
+        }
+      },
+      {
+        "classes": "svc-card",
+        "caixa": {
+          "x": 460,
+          "y": 3553,
+          "largura": 253.1,
+          "altura": 340
+        },
+        "corDeFundo": "rgb(248, 251, 255)",
+        "raio": "24px",
+        "borda": "1px rgba(203, 225, 247, 0.9)",
+        "sombra": "rgba(4, 29, 55, 0.45) 0px 18px 40px -22px",
+        "recorte": "hidden",
+        "foto": {
+          "src": "/images/solucoes/3.png",
+          "alt": "Profissional mais experiente apontando para um monitor enquanto dois colegas acompanham, em escritório aberto",
+          "encaixe": "cover",
+          "posicao": "50% 50%",
+          "caixa": {
+            "x": 461,
+            "y": 3554,
+            "largura": 251.1,
+            "altura": 142
+          }
+        },
+        "fracaoDaFoto": 41.8,
+        "selo": {
+          "caixa": {
+            "x": 477,
+            "y": 3664,
+            "largura": 64,
+            "altura": 64
+          },
+          "corDeFundo": "rgb(255, 255, 255)",
+          "borda": "rgba(203, 225, 247, 0.95)",
+          "traco": "1.75px",
+          "corDoIcone": "rgb(14, 216, 246)"
+        },
+        "titulo": {
+          "fonte": "18px",
+          "peso": "700",
+          "entrelinha": "21.6px",
+          "cor": "rgb(6, 42, 78)",
+          "larguraMaxima": "none",
+          "texto": "Tipos de Serviço"
+        },
+        "descricao": {
+          "fonte": "15px",
+          "peso": "400",
+          "entrelinha": "23.25px",
+          "cor": "rgb(71, 99, 127)",
+          "larguraMaxima": "none",
+          "texto": "Squads, vilas, Managed Services, alocações e projetos fechados."
+        },
+        "proibidos": {
+          "ordinais": 0,
+          "links": 0,
+          "botoes": 0,
+          "textoCortadoPx": 0
+        }
+      },
+      {
+        "classes": "svc-card",
+        "caixa": {
+          "x": 730,
+          "y": 3553,
+          "largura": 253.2,
+          "altura": 340
+        },
+        "corDeFundo": "rgb(248, 251, 255)",
+        "raio": "24px",
+        "borda": "1px rgba(203, 225, 247, 0.9)",
+        "sombra": "rgba(4, 29, 55, 0.45) 0px 18px 40px -22px",
+        "recorte": "hidden",
+        "foto": {
+          "src": "/images/solucoes/4.png",
+          "alt": "Dupla de profissionais diante de um monitor com um diagrama de fluxo, um deles apontando para a tela",
+          "encaixe": "cover",
+          "posicao": "50% 50%",
+          "caixa": {
+            "x": 731,
+            "y": 3554,
+            "largura": 251.2,
+            "altura": 142
+          }
+        },
+        "fracaoDaFoto": 41.8,
+        "selo": {
+          "caixa": {
+            "x": 747,
+            "y": 3664,
+            "largura": 64,
+            "altura": 64
+          },
+          "corDeFundo": "rgb(255, 255, 255)",
+          "borda": "rgba(203, 225, 247, 0.95)",
+          "traco": "1.75px",
+          "corDoIcone": "rgb(14, 216, 246)"
+        },
+        "titulo": {
+          "fonte": "18px",
+          "peso": "700",
+          "entrelinha": "21.6px",
+          "cor": "rgb(6, 42, 78)",
+          "larguraMaxima": "none",
+          "texto": "Staff Augmentation"
+        },
+        "descricao": {
+          "fonte": "15px",
+          "peso": "400",
+          "entrelinha": "23.25px",
+          "cor": "rgb(71, 99, 127)",
+          "larguraMaxima": "none",
+          "texto": "Especialistas integrados ao seu delivery."
+        },
+        "proibidos": {
+          "ordinais": 0,
+          "links": 0,
+          "botoes": 0,
+          "textoCortadoPx": 0
+        }
+      }
+    ],
+    "desvioDeAlturaPx": 0,
+    "cta": {
+      "texto": "Quero um serviço exclusivo",
+      "caixa": {
+        "x": 32,
+        "y": 4035,
+        "largura": 231.7,
+        "altura": 44
+      }
+    },
+    "pagina": {
+      "alturaDoDocumento": 6516,
+      "transbordoPx": 0,
+      "faixas": [
+        {
+          "tag": "div",
+          "id": null,
+          "classes": "solucoes-atmosfera",
+          "topo": 0,
+          "altura": 900
+        },
+        {
+          "tag": "div",
+          "id": null,
+          "classes": "hero-backdrop",
+          "topo": 144,
+          "altura": 568
+        },
+        {
+          "tag": "section",
+          "id": "beyond-technology",
+          "classes": "section-light section-light-blue section-py",
+          "topo": 736,
+          "altura": 510
+        },
+        {
+          "tag": "section",
+          "id": "tecnologia-disruptiva",
+          "classes": "section-light section-light-blue section-py relative overflow-hidden",
+          "topo": 1246,
+          "altura": 1825
+        },
+        {
+          "tag": "section",
+          "id": "servicos-diferenciais",
+          "classes": "relative overflow-x-clip solucoes-palco-servicos",
+          "topo": 3071,
+          "altura": 1080
+        },
+        {
+          "tag": "section",
+          "id": "consultoria",
+          "classes": "Consulting-module__YOqDHW__section",
+          "topo": 4151,
+          "altura": 1339
+        },
+        {
+          "tag": "section",
+          "id": null,
+          "classes": "cta-ref section-py relative overflow-hidden",
+          "topo": 5490,
+          "altura": 565
+        }
+      ]
+    },
+    "rolagem": 3071,
+    "captura": "docs/capturas/sis268-servicos-1024-depois.png",
+    "rolagemTopo": 2991,
+    "capturaTopo": "docs/capturas/sis268-servicos-topo-1024-depois.png",
+    "corredorDoIndicadorNaSecao": {
+      "navMontado": false,
+      "folgaPx": null
+    },
+    "tintas": {
+      "titulo": {
+        "cor": "rgb(255, 255, 255)",
+        "fonte": "51.2px",
+        "retanguloNaTela": [
+          41,
+          387,
+          213,
+          49
+        ]
+      },
+      "lead": {
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fonte": "17px",
+        "retanguloNaTela": [
+          41,
+          457,
+          378,
+          109
+        ]
+      },
+      "indicador": {
+        "cor": "rgb(255, 255, 255)",
+        "fonte": "28px",
+        "retanguloNaTela": [
+          81,
+          712,
+          113,
+          29
+        ]
+      },
+      "card-titulo": {
+        "cor": "rgb(6, 42, 78)",
+        "fonte": "18px",
+        "retanguloNaTela": [
+          477,
+          362,
+          219,
+          86
+        ]
+      },
+      "card-descricao": {
+        "cor": "rgb(71, 99, 127)",
+        "fonte": "15px",
+        "retanguloNaTela": [
+          477,
+          456,
+          219,
+          70
+        ]
+      }
+    },
+    "contraste": {
+      "titulo": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(4, 29, 55)",
+        "amostraEm": [
+          32,
+          410
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1024-depois.png",
+        "contraste": 16.99
+      },
+      "lead": {
+        "tinta": "rgba(255, 255, 255, 0.88)",
+        "fundo": "rgb(4, 30, 59)",
+        "amostraEm": [
+          32,
+          510
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1024-depois.png",
+        "contraste": 16.75
+      },
+      "indicador": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(5, 37, 68)",
+        "amostraEm": [
+          72,
+          725
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1024-depois.png",
+        "contraste": 15.5
+      },
+      "card-titulo": {
+        "tinta": "rgb(6, 42, 78)",
+        "fundo": "rgb(248, 251, 255)",
+        "amostraEm": [
+          468,
+          403
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1024-depois.png",
+        "contraste": 13.96
+      },
+      "card-descricao": {
+        "tinta": "rgb(71, 99, 127)",
+        "fundo": "rgb(248, 251, 255)",
+        "amostraEm": [
+          468,
+          489
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1024-depois.png",
+        "contraste": 6.02
+      }
+    }
+  },
+  "1440": {
+    "existe": true,
+    "caixa": {
+      "x": 0,
+      "y": 3044,
+      "largura": 1440,
+      "altura": 1153.4
+    },
+    "janela": {
+      "largura": 1440,
+      "altura": 900
+    },
+    "sangraNaJanela": true,
+    "classesDaSecao": "relative overflow-x-clip solucoes-palco-servicos",
+    "posicao": "relative",
+    "recorte": "clip visible",
+    "isolamento": "isolate",
+    "gradeTecnica": false,
+    "video": {
+      "src": "/videos/jornada.mp4",
+      "autoPlay": true,
+      "muted": true,
+      "loop": true,
+      "playsInline": true,
+      "controls": false,
+      "preload": "metadata",
+      "encaixe": "cover",
+      "posicaoCss": "absolute",
+      "inset": "0px 0px 0px 0px",
+      "caixa": {
+        "x": 0,
+        "y": 3044,
+        "largura": 1440,
+        "altura": 1153.4
+      },
+      "cobreASecao": true,
+      "pronto": 4,
+      "tocando": true
+    },
+    "playerUi": {
+      "comControls": 0,
+      "quantosVideos": 1
+    },
+    "carimbo": {
+      "src": "/images/carimbo-diferenciais-ticket-outline-ffffff.png",
+      "alt": "Diferenciais",
+      "caixa": {
+        "x": 190,
+        "y": 3313,
+        "largura": 259.2,
+        "altura": 92.2
+      },
+      "transformDoInvolucro": "none"
+    },
+    "tagTextual": null,
+    "titulo": {
+      "fonte": "72px",
+      "peso": "800",
+      "entrelinha": "68.4px",
+      "cor": "rgb(255, 255, 255)",
+      "larguraMaxima": "none",
+      "texto": "Serviços"
+    },
+    "leads": [
+      {
+        "fonte": "17px",
+        "peso": "400",
+        "entrelinha": "27.2px",
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "larguraMaxima": "none",
+        "texto": "Dedicada ao mercado segurador, com experiência em todos os ramos, a Sistran atua como inte"
+      },
+      {
+        "fonte": "17px",
+        "peso": "400",
+        "entrelinha": "27.2px",
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "larguraMaxima": "none",
+        "texto": "Somos uma empresa de TI 100% focada no segmento de Seguros no Brasil, com experiência acum"
+      }
+    ],
+    "indicadores": [
+      "30+",
+      "implementações",
+      "100%",
+      "Seguros"
+    ],
+    "colunas": {
+      "miolo": 1194,
+      "esquerda": {
+        "x": 190,
+        "y": 3289,
+        "largura": 477.3,
+        "altura": 483.5
+      },
+      "direita": {
+        "x": 725,
+        "y": 3145,
+        "largura": 659.1,
+        "altura": 771.8
+      },
+      "fracaoEsquerda": 40,
+      "fracaoDireita": 55.2,
+      "razaoEsquerda": 42,
+      "sobraADireitaPx": 0,
+      "empilhadas": false
+    },
+    "corredorDoIndicador": {
+      "navMontado": true,
+      "ativo": "Início",
+      "tintaAteX": 126.8,
+      "pecaMaisADireita": "Início",
+      "mioloComecaEmX": 190,
+      "folgaPx": 63.2
+    },
+    "colunaEsquerda": {
+      "x": 190,
+      "y": 3145,
+      "largura": 1194,
+      "altura": 771.8
+    },
+    "colunaDireitaPrimeiroCard": {
+      "x": 725,
+      "y": 3169,
+      "largura": 318,
+      "altura": 374.4
+    },
+    "cards": [
+      {
+        "classes": "svc-card svc-card--destaque",
+        "caixa": {
+          "x": 725,
+          "y": 3169,
+          "largura": 318,
+          "altura": 374.4
+        },
+        "corDeFundo": "rgb(248, 251, 255)",
+        "raio": "24px",
+        "borda": "1px rgba(14, 216, 246, 0.7)",
+        "sombra": "rgba(4, 29, 55, 0.45) 0px 18px 40px -22px, rgba(14, 216, 246, 0.25) 0px 0px 0px 1px, rgba(14, 216, 246, 0.35) 0px 0px 26",
+        "recorte": "hidden",
+        "foto": {
+          "src": "/images/solucoes/1.png",
+          "alt": "Profissional apresentando um quadro coberto de post-its para três colegas sentados à mesa de reunião com notebooks",
+          "encaixe": "cover",
+          "posicao": "50% 50%",
+          "caixa": {
+            "x": 726,
+            "y": 3170,
+            "largura": 316,
+            "altura": 156.4
+          }
+        },
+        "fracaoDaFoto": 41.8,
+        "selo": {
+          "caixa": {
+            "x": 746,
+            "y": 3295,
+            "largura": 64,
+            "altura": 64
+          },
+          "corDeFundo": "rgb(255, 255, 255)",
+          "borda": "rgba(203, 225, 247, 0.95)",
+          "traco": "1.75px",
+          "corDoIcone": "rgb(14, 216, 246)"
+        },
+        "titulo": {
+          "fonte": "18px",
+          "peso": "700",
+          "entrelinha": "21.6px",
+          "cor": "rgb(6, 42, 78)",
+          "larguraMaxima": "none",
+          "texto": "APIs, Projetos, Desenvolvimento, Sustentação e Migrações"
+        },
+        "descricao": {
+          "fonte": "15.12px",
+          "peso": "400",
+          "entrelinha": "23.436px",
+          "cor": "rgb(71, 99, 127)",
+          "larguraMaxima": "none",
+          "texto": "Produção confiável, entregas de qualidade e ótima relação custo-benefício."
+        },
+        "proibidos": {
+          "ordinais": 0,
+          "links": 0,
+          "botoes": 0,
+          "textoCortadoPx": 0
+        }
+      },
+      {
+        "classes": "svc-card",
+        "caixa": {
+          "x": 1066,
+          "y": 3169,
+          "largura": 318,
+          "altura": 374.4
+        },
+        "corDeFundo": "rgb(248, 251, 255)",
+        "raio": "24px",
+        "borda": "1px rgba(203, 225, 247, 0.9)",
+        "sombra": "rgba(4, 29, 55, 0.45) 0px 18px 40px -22px",
+        "recorte": "hidden",
+        "foto": {
+          "src": "/images/solucoes/2.png",
+          "alt": "Três profissionais em volta de uma mesa de madeira coberta de fichas de papel, uma delas anotando ao lado de um notebook",
+          "encaixe": "cover",
+          "posicao": "50% 50%",
+          "caixa": {
+            "x": 1067,
+            "y": 3170,
+            "largura": 316,
+            "altura": 156.4
+          }
+        },
+        "fracaoDaFoto": 41.8,
+        "selo": {
+          "caixa": {
+            "x": 1087,
+            "y": 3295,
+            "largura": 64,
+            "altura": 64
+          },
+          "corDeFundo": "rgb(255, 255, 255)",
+          "borda": "rgba(203, 225, 247, 0.95)",
+          "traco": "1.75px",
+          "corDoIcone": "rgb(14, 216, 246)"
+        },
+        "titulo": {
+          "fonte": "18px",
+          "peso": "700",
+          "entrelinha": "21.6px",
+          "cor": "rgb(6, 42, 78)",
+          "larguraMaxima": "none",
+          "texto": "Serviços e Processos"
+        },
+        "descricao": {
+          "fonte": "15.12px",
+          "peso": "400",
+          "entrelinha": "23.436px",
+          "cor": "rgb(71, 99, 127)",
+          "larguraMaxima": "none",
+          "texto": "Domínio de negócios e processos de seguros em todos os ramos."
+        },
+        "proibidos": {
+          "ordinais": 0,
+          "links": 0,
+          "botoes": 0,
+          "textoCortadoPx": 0
+        }
+      },
+      {
+        "classes": "svc-card",
+        "caixa": {
+          "x": 725,
+          "y": 3567,
+          "largura": 318,
+          "altura": 374.4
+        },
+        "corDeFundo": "rgb(248, 251, 255)",
+        "raio": "24px",
+        "borda": "1px rgba(203, 225, 247, 0.9)",
+        "sombra": "rgba(4, 29, 55, 0.45) 0px 18px 40px -22px",
+        "recorte": "hidden",
+        "foto": {
+          "src": "/images/solucoes/3.png",
+          "alt": "Profissional mais experiente apontando para um monitor enquanto dois colegas acompanham, em escritório aberto",
+          "encaixe": "cover",
+          "posicao": "50% 50%",
+          "caixa": {
+            "x": 726,
+            "y": 3568,
+            "largura": 316,
+            "altura": 156.4
+          }
+        },
+        "fracaoDaFoto": 41.8,
+        "selo": {
+          "caixa": {
+            "x": 746,
+            "y": 3692,
+            "largura": 64,
+            "altura": 64
+          },
+          "corDeFundo": "rgb(255, 255, 255)",
+          "borda": "rgba(203, 225, 247, 0.95)",
+          "traco": "1.75px",
+          "corDoIcone": "rgb(14, 216, 246)"
+        },
+        "titulo": {
+          "fonte": "18px",
+          "peso": "700",
+          "entrelinha": "21.6px",
+          "cor": "rgb(6, 42, 78)",
+          "larguraMaxima": "none",
+          "texto": "Tipos de Serviço"
+        },
+        "descricao": {
+          "fonte": "15.12px",
+          "peso": "400",
+          "entrelinha": "23.436px",
+          "cor": "rgb(71, 99, 127)",
+          "larguraMaxima": "none",
+          "texto": "Squads, vilas, Managed Services, alocações e projetos fechados."
+        },
+        "proibidos": {
+          "ordinais": 0,
+          "links": 0,
+          "botoes": 0,
+          "textoCortadoPx": 0
+        }
+      },
+      {
+        "classes": "svc-card",
+        "caixa": {
+          "x": 1066,
+          "y": 3567,
+          "largura": 318,
+          "altura": 374.4
+        },
+        "corDeFundo": "rgb(248, 251, 255)",
+        "raio": "24px",
+        "borda": "1px rgba(203, 225, 247, 0.9)",
+        "sombra": "rgba(4, 29, 55, 0.45) 0px 18px 40px -22px",
+        "recorte": "hidden",
+        "foto": {
+          "src": "/images/solucoes/4.png",
+          "alt": "Dupla de profissionais diante de um monitor com um diagrama de fluxo, um deles apontando para a tela",
+          "encaixe": "cover",
+          "posicao": "50% 50%",
+          "caixa": {
+            "x": 1067,
+            "y": 3568,
+            "largura": 316,
+            "altura": 156.4
+          }
+        },
+        "fracaoDaFoto": 41.8,
+        "selo": {
+          "caixa": {
+            "x": 1087,
+            "y": 3692,
+            "largura": 64,
+            "altura": 64
+          },
+          "corDeFundo": "rgb(255, 255, 255)",
+          "borda": "rgba(203, 225, 247, 0.95)",
+          "traco": "1.75px",
+          "corDoIcone": "rgb(14, 216, 246)"
+        },
+        "titulo": {
+          "fonte": "18px",
+          "peso": "700",
+          "entrelinha": "21.6px",
+          "cor": "rgb(6, 42, 78)",
+          "larguraMaxima": "none",
+          "texto": "Staff Augmentation"
+        },
+        "descricao": {
+          "fonte": "15.12px",
+          "peso": "400",
+          "entrelinha": "23.436px",
+          "cor": "rgb(71, 99, 127)",
+          "larguraMaxima": "none",
+          "texto": "Especialistas integrados ao seu delivery."
+        },
+        "proibidos": {
+          "ordinais": 0,
+          "links": 0,
+          "botoes": 0,
+          "textoCortadoPx": 0
+        }
+      }
+    ],
+    "desvioDeAlturaPx": 0,
+    "cta": {
+      "texto": "Quero um serviço exclusivo",
+      "caixa": {
+        "x": 162,
+        "y": 4082,
+        "largura": 231.7,
+        "altura": 44
+      }
+    },
+    "pagina": {
+      "alturaDoDocumento": 6295,
+      "transbordoPx": 0,
+      "faixas": [
+        {
+          "tag": "div",
+          "id": null,
+          "classes": "solucoes-atmosfera",
+          "topo": 0,
+          "altura": 900
+        },
+        {
+          "tag": "div",
+          "id": null,
+          "classes": "hero-backdrop",
+          "topo": 144,
+          "altura": 522
+        },
+        {
+          "tag": "section",
+          "id": "beyond-technology",
+          "classes": "section-light section-light-blue section-py",
+          "topo": 666,
+          "altura": 554
+        },
+        {
+          "tag": "section",
+          "id": "tecnologia-disruptiva",
+          "classes": "section-light section-light-blue section-py relative overflow-hidden",
+          "topo": 1220,
+          "altura": 1824
+        },
+        {
+          "tag": "section",
+          "id": "servicos-diferenciais",
+          "classes": "relative overflow-x-clip solucoes-palco-servicos",
+          "topo": 3044,
+          "altura": 1153
+        },
+        {
+          "tag": "section",
+          "id": "consultoria",
+          "classes": "Consulting-module__YOqDHW__section",
+          "topo": 4198,
+          "altura": 1113
+        },
+        {
+          "tag": "section",
+          "id": null,
+          "classes": "cta-ref section-py relative overflow-hidden",
+          "topo": 5311,
+          "altura": 542
+        }
+      ]
+    },
+    "rolagem": 3044,
+    "captura": "docs/capturas/sis268-servicos-1440-depois.png",
+    "rolagemTopo": 2964,
+    "capturaTopo": "docs/capturas/sis268-servicos-topo-1440-depois.png",
+    "corredorDoIndicadorNaSecao": {
+      "navMontado": true,
+      "ativo": "Serviços",
+      "tintaAteX": 126.8,
+      "pecaMaisADireita": "Início",
+      "mioloComecaEmX": 190,
+      "folgaPx": 63.2
+    },
+    "tintas": {
+      "titulo": {
+        "cor": "rgb(255, 255, 255)",
+        "fonte": "72px",
+        "retanguloNaTela": [
+          190,
+          446,
+          300,
+          68
+        ]
+      },
+      "lead": {
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fonte": "17px",
+        "retanguloNaTela": [
+          190,
+          544,
+          477,
+          82
+        ]
+      },
+      "indicador": {
+        "cor": "rgb(255, 255, 255)",
+        "fonte": "34.56px",
+        "retanguloNaTela": [
+          230,
+          753,
+          113,
+          36
+        ]
+      },
+      "card-titulo": {
+        "cor": "rgb(6, 42, 78)",
+        "fonte": "18px",
+        "retanguloNaTela": [
+          746,
+          385,
+          276,
+          65
+        ]
+      },
+      "card-descricao": {
+        "cor": "rgb(71, 99, 127)",
+        "fonte": "15.12px",
+        "retanguloNaTela": [
+          746,
+          457,
+          276,
+          70
+        ]
+      }
+    },
+    "contraste": {
+      "titulo": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(4, 30, 58)",
+        "amostraEm": [
+          181,
+          478
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1440-depois.png",
+        "contraste": 16.77
+      },
+      "lead": {
+        "tinta": "rgba(255, 255, 255, 0.88)",
+        "fundo": "rgb(4, 31, 60)",
+        "amostraEm": [
+          181,
+          583
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1440-depois.png",
+        "contraste": 16.58
+      },
+      "indicador": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(5, 34, 65)",
+        "amostraEm": [
+          221,
+          769
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1440-depois.png",
+        "contraste": 16.01
+      },
+      "card-titulo": {
+        "tinta": "rgb(6, 42, 78)",
+        "fundo": "rgb(248, 251, 255)",
+        "amostraEm": [
+          737,
+          416
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1440-depois.png",
+        "contraste": 13.96
+      },
+      "card-descricao": {
+        "tinta": "rgb(71, 99, 127)",
+        "fundo": "rgb(248, 251, 255)",
+        "amostraEm": [
+          737,
+          490
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1440-depois.png",
+        "contraste": 6.02
+      }
+    }
+  },
+  "nota": "gerado por scripts/medir-servicos-sis268.mjs (depois)",
+  "reducePorSistema": {
+    "atributoMotion": "reduce",
+    "existeVideo": true,
+    "pausado": true,
+    "tempo": 0,
+    "animacoesNaSecao": 0
+  },
+  "reducePorAtributo": {
+    "atributoMotion": "reduce",
+    "existeVideo": true,
+    "pausado": true,
+    "tempo": 0,
+    "animacoesNaSecao": 0
+  }
+}

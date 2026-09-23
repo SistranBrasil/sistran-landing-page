@@ -2,6 +2,11 @@
    verbatim; as unicas mudancas estao comentadas.
    Fonte: .claude/conteudo-site/01-a-sistran.md */
 
+/* Só de tipo: é o `satisfies` de `DIFERENCIAIS_6` que usa, para um item novo sem
+   ícone (ou com nome fora do registro) reprovar no `tsc` em vez de chegar à tela
+   sem selo. Nenhum ícone é importado aqui — este módulo continua só conteúdo. */
+import type { IconName } from '@/lib/icons';
+
 /** Secao 2 — Escritórios BRASIL. A cena mostra Sao Paulo e Pato Branco; o Rio de
     Janeiro saiu dela por ora e segue no rodape e na pagina de contato. */
 export const OFFICES = [
@@ -30,15 +35,36 @@ export const OFFICES = [
   },
 ] as const;
 
-/** Secao 4 — Diferenciais: no site sao 6 itens, so titulo, sem descricao. */
+/** Secao 4 — Diferenciais: no site sao 6 itens, so titulo, sem descricao.
+ *
+ * 23/09 — A LISTA DEIXOU DE SER DE STRINGS e passou a ter `icon` por item, a
+ * pedido («deve ser colocado os icones em cada cards»). As seis frases estao
+ * aqui palavra por palavra como estavam — nenhuma foi reescrita, e é por isso
+ * que o `copy-lock.json` nao perde nada nesta mudanca; o que mudou é a forma do
+ * registro, nao o texto.
+ *
+ * O ICONE MORA NO DADO, e nao no componente, pelo motivo de sempre nesta casa
+ * (`consulting.ts`, `accelerators.css`, `tecnologias.ts`): quem edita a lista
+ * edita um lugar só, e um item novo sem icone falha no tipo em vez de aparecer
+ * sem selo na tela. Os nomes sao chaves de `src/lib/icons.ts`.
+ *
+ * A escolha de cada um segue o mock da captura de 23/09, um a um: escudo com
+ * visto para a especializacao, globo para o atendimento global, predio para a
+ * estrutura perene, grafico de setor para a fatia de 1/3 dos premios, documento
+ * conferido para a regulacao da Susep, e o no de fluxo para metodologias e
+ * frameworks. Nao é decoracao trocavel: cada um repete o desenho que o mock
+ * coloca naquele cartao. */
 export const DIFERENCIAIS_6 = [
-  'Especialização em Seguradoras',
-  'Atendimento de nível global, custo local',
-  'Estrutura sólida e perene: mais de 45 anos de vida',
-  'Clientes Sistran processam 1/3 dos prêmios de Seguro de Vida no Brasil',
-  'Conhecimento de regulações da Susep',
-  'Metodologias e frameworks mundiais',
-] as const;
+  { texto: 'Especialização em Seguradoras', icon: 'ShieldCheck' },
+  { texto: 'Atendimento de nível global, custo local', icon: 'Globe' },
+  { texto: 'Estrutura sólida e perene: mais de 45 anos de vida', icon: 'Building2' },
+  {
+    texto: 'Clientes Sistran processam 1/3 dos prêmios de Seguro de Vida no Brasil',
+    icon: 'PieChart',
+  },
+  { texto: 'Conhecimento de regulações da Susep', icon: 'FileCheck2' },
+  { texto: 'Metodologias e frameworks mundiais', icon: 'Workflow' },
+] as const satisfies readonly { texto: string; icon: IconName }[];
 
 /** Secao 7 — Pilares. */
 export const PILARES = [

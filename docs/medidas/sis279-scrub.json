@@ -1,0 +1,341 @@
+{
+  "390": {
+    "percepcao": {
+      "escopo": "malha-lista-eventos",
+      "percursoY": [
+        0,
+        1400
+      ],
+      "visivelY": [
+        100,
+        900
+      ],
+      "amostrasVisiveis": 9,
+      "amostrasVisiveisComPercurso": 9,
+      "derivaPxPor100pxVisivel": 4.68,
+      "derivaMin": -24.5196,
+      "derivaMax": 42,
+      "cursoMedido": 66.5
+    },
+    "reversibilidade": [
+      {
+        "y": 0,
+        "descendo": -24.5196,
+        "subindo": -24.5196,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 255,
+        "descendo": -12.6,
+        "subindo": -12.6,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 510,
+        "descendo": -0.6804,
+        "subindo": -0.6804,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 765,
+        "descendo": 11.2392,
+        "subindo": 11.2392,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 1020,
+        "descendo": 23.1588,
+        "subindo": 23.1588,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 1275,
+        "descendo": 35.0784,
+        "subindo": 35.0784,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 1530,
+        "descendo": 42,
+        "subindo": 42,
+        "volta": true,
+        "dirSubindo": "baixo"
+      },
+      {
+        "y": 1785,
+        "descendo": 42,
+        "subindo": 42,
+        "volta": true,
+        "dirSubindo": "baixo"
+      },
+      {
+        "y": 2040,
+        "descendo": 42,
+        "subindo": 42,
+        "volta": true,
+        "dirSubindo": "baixo"
+      },
+      {
+        "y": 2295,
+        "descendo": 42,
+        "subindo": 42,
+        "volta": true,
+        "dirSubindo": "baixo"
+      },
+      {
+        "y": 2550,
+        "descendo": 42,
+        "subindo": 42,
+        "volta": true,
+        "dirSubindo": "baixo"
+      },
+      {
+        "y": 2805,
+        "descendo": 42,
+        "subindo": 42,
+        "volta": true,
+        "dirSubindo": "baixo"
+      }
+    ],
+    "acusouCima": true,
+    "falhasDeVolta": 0,
+    "reveal": {
+      "total": 4,
+      "totalNaVersaoVisivel": 2,
+      "acenderamTodos": true,
+      "nenhumInvisivel": true,
+      "piorOpacidade": 1,
+      "escondidosPorVersao": 2,
+      "semRevealNoTopo": true,
+      "semRevealNoSocial": true
+    },
+    "spotlight": {
+      "palcoSticky": false,
+      "zEscopo": "0",
+      "zPalco": "auto",
+      "destaqueAtual": "Web Summit AI · Ofertas Personalizadas d",
+      "trocaComARolagem": {
+        "primeiro": "Web Summit AI · Ofertas Personalizadas de Seguros",
+        "segundo": "Web Summit AI · Ofertas Personalizadas de Seguros",
+        "mudou": false
+      }
+    },
+    "capturas": [
+      {
+        "arquivo": "sis279-390-descendo.png",
+        "y": 300,
+        "escopo": "malha-lista-eventos",
+        "p": 0.3751,
+        "ativo": true,
+        "dir": "cima",
+        "bg": "0px -10.4916px, 0px -10.4916px, 0px -4.40647px",
+        "opacidade": 1,
+        "visivel": 0.7518126045733408
+      },
+      {
+        "arquivo": "sis279-390-subindo.png",
+        "y": 700,
+        "escopo": "malha-lista-eventos",
+        "p": 0.5977,
+        "ativo": true,
+        "dir": "baixo",
+        "bg": "0px 8.2068px, 0px 8.2068px, 0px 3.44686px",
+        "opacidade": 1,
+        "visivel": 0.8059118795315114
+      }
+    ],
+    "transbordo": {
+      "transbordoComAMalha": 1315,
+      "transbordoSemAMalha": 1315,
+      "malhaAcrescentou": 0,
+      "alturaDocumento": 3705,
+      "escoposVivos": [
+        "malha-lista-eventos"
+      ]
+    }
+  },
+  "1440": {
+    "percepcao": {
+      "escopo": "malha-cena-eventos",
+      "percursoY": [
+        0,
+        8600
+      ],
+      "visivelY": [
+        200,
+        8200
+      ],
+      "amostrasVisiveis": 81,
+      "amostrasVisiveisComPercurso": 81,
+      "derivaPxPor100pxVisivel": 6.22,
+      "derivaMin": -258.72,
+      "derivaMax": 280,
+      "cursoMedido": 538.7
+    },
+    "reversibilidade": [
+      {
+        "y": 0,
+        "descendo": -258.72,
+        "subindo": -258.72,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 820,
+        "descendo": -207.704,
+        "subindo": -207.704,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 1639,
+        "descendo": -156.744,
+        "subindo": -156.744,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 2459,
+        "descendo": -105.728,
+        "subindo": -105.728,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 3279,
+        "descendo": -54.712,
+        "subindo": -54.712,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 4098,
+        "descendo": -3.752,
+        "subindo": -3.752,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 4918,
+        "descendo": 47.264,
+        "subindo": 47.264,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 5737,
+        "descendo": 98.224,
+        "subindo": 98.224,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 6557,
+        "descendo": 149.296,
+        "subindo": 149.296,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 7377,
+        "descendo": 200.312,
+        "subindo": 200.312,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 8196,
+        "descendo": 251.272,
+        "subindo": 251.272,
+        "volta": true,
+        "dirSubindo": "cima"
+      },
+      {
+        "y": 9016,
+        "descendo": 280,
+        "subindo": 280,
+        "volta": true,
+        "dirSubindo": "baixo"
+      }
+    ],
+    "acusouCima": true,
+    "falhasDeVolta": 0,
+    "reveal": {
+      "total": 4,
+      "totalNaVersaoVisivel": 2,
+      "acenderamTodos": true,
+      "nenhumInvisivel": true,
+      "piorOpacidade": 1,
+      "escondidosPorVersao": 2,
+      "semRevealNoTopo": true,
+      "semRevealNoSocial": true
+    },
+    "spotlight": {
+      "palcoSticky": true,
+      "zEscopo": "0",
+      "zPalco": "2",
+      "destaqueAtual": "AWS Summit São Paulo",
+      "trocaComARolagem": {
+        "primeiro": "Insurtech Brasil",
+        "segundo": "São Paulo Innovation Week · SPIW",
+        "mudou": true
+      }
+    },
+    "capturas": [
+      {
+        "arquivo": "sis279-1440-descendo.png",
+        "y": 400,
+        "escopo": "malha-cena-eventos",
+        "p": 0.0824,
+        "ativo": true,
+        "dir": "cima",
+        "bg": "0px -233.856px, 0px -233.856px, 0px -98.2195px",
+        "opacidade": 1,
+        "visivel": 0.8244444444444444
+      },
+      {
+        "arquivo": "sis279-1440-subindo.png",
+        "y": 8000,
+        "escopo": "malha-cena-eventos",
+        "p": 0.9269,
+        "ativo": true,
+        "dir": "baixo",
+        "bg": "0px 239.064px, 0px 239.064px, 0px 100.407px",
+        "opacidade": 1,
+        "visivel": 0.7311111111111112
+      }
+    ],
+    "transbordo": {
+      "transbordoComAMalha": 0,
+      "transbordoSemAMalha": 0,
+      "malhaAcrescentou": 0,
+      "alturaDocumento": 9916,
+      "escoposVivos": [
+        "malha-cena-eventos"
+      ]
+    }
+  },
+  "nota": "gerado por scripts/medir-scrub-eventos-sis279.mjs",
+  "reduceSistema": {
+    "atributoMotion": null,
+    "bg": "0px 0px, 0px 0px, 0px 0px",
+    "semDeriva": true,
+    "malhaVisivel": true,
+    "publicou": true,
+    "piorRevealOpacidade": 1
+  },
+  "reduceAtributo": {
+    "atributoMotion": "reduce",
+    "bg": "0px 0px, 0px 0px, 0px 0px",
+    "semDeriva": true,
+    "malhaVisivel": true,
+    "publicou": true,
+    "piorRevealOpacidade": 1
+  }
+}

@@ -1,0 +1,524 @@
+/* SIS-268 — a superfície da seção **Serviços** de `/solucoes` (`ServicosPalco.tsx`).
+
+   POR QUE EM CSS E NÃO EM UTILITÁRIAS TAILWIND
+   O mesmo motivo de `accelerators.css`: o hover pede `transform` no card (−4px) e
+   `transform` na foto (`scale(1.03)`), e os dois precisam ser desligados pelos DOIS
+   canais de movimento reduzido da casa (a media query do sistema e o
+   `html[data-motion='reduce']` que o script inline do `layout.tsx` grava). Utilitária
+   `hover:` e seletor de atributo empatam em especificidade e o desempate por ordem de
+   arquivo é frágil — aqui os dois canais desligam no mesmo lugar, com o mesmo par de
+   regras.
+
+   AS MEDIDAS VÊM DE `docs/servicos.md`, que a issue declara como fonte:
+   · colunas 42% / 58% no desktop;
+   · contêiner entre 1440px e 1520px → `--svc-miolo: 1480px` (o meio da faixa);
+   · título `clamp(3rem, 5vw, 5rem)`, line-height ~0.95;
+   · lead 17–20px, line-height 1.5–1.65, `max-width` ~560px;
+   · carimbo ~260px no desktop, 190–220px no mobile;
+   · card: raio 22–26px, foto ~42% da altura, selo ~64×64;
+   · título do card 18–24px / lh 1.15–1.25; descrição 15–18px / lh 1.45–1.6;
+   · hover: subir no máximo 4px, foto até `scale(1.03)`, 250–350ms.
+
+   A DEPARTIDA DO `.container-lp` ESTÁ DECLARADA, não escondida: o contêiner da casa
+   satura em 1180px, e o doc pede 1440–1520. Esta é a única faixa full-bleed da rota e
+   a classe não é usada por mais ninguém — as seções irmãs continuam nos 1180. */
+
+.svc-palco {
+  --svc-miolo: 1480px;
+  --svc-navy: #06325c;
+  --svc-navy-escuro: #041d37;
+  --svc-ciano: #0ed8f6;
+  --svc-ciano-claro: #a5f0ff;
+  /* SEM `position: relative`, e isto é medido: com ele o bloco da mídia (`inset: 0`)
+     passava a ter ESTE bloco como contêiner, e o palco é mais curto que a `<section>`
+     — o CTA que fecha a seção (fora do escopo desta issue, mantido) ficava numa faixa
+     sem take. Medido a 1440: vídeo de 1005,7px contra uma seção de 1185,7px.
+     Sem ele o contêiner passa a ser a própria `<section>`, que já é `relative`, e o
+     vídeo cobre a faixa inteira — que é o que o doc pede. */
+  isolation: isolate;
+  /* «Seção de tela cheia» do doc. `min-height`, e nunca `height`: com altura fixa o
+     conteúdo do mobile (carimbo + título + dois parágrafos + indicadores + quatro
+     cards empilhados) transbordaria a caixa. */
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  /* O padding é DAQUI, e não do `section-py` da página: a mídia é `inset: 0` sobre
+     este bloco, então se a respiração vertical viesse da seção o vídeo pararia na
+     borda interna do padding e sobraria uma faixa sem take em cima e embaixo. */
+  padding: clamp(4rem, 7vw, 7.5rem) clamp(1.25rem, 4vw, 3.5rem);
+}
+
+/* O CORREDOR DO INDICADOR DE SEÇÃO, e este é o preço de ser full-bleed.
+   O `ScrollSpy` é `position: fixed` na JANELA (`left-3`, `2xl:left-5`), e de 1440px
+   para cima o rótulo do item ATIVO se pinta em repouso — a conta está no bloco
+   SIS-170 de `globals.css`: 12 (`left-3`) + 24 (traço `w-6`) + 12 (`ml-3`) = 48 de
+   origem, mais 127,08px do rótulo mais largo na Geist → a tinta termina em ~175px;
+   em `2xl` (`left-5`) em ~183px. As seções irmãs escapam porque o `.container-lp`
+   as começa em 162px a 1440 (e a própria SIS-170 registrou que ali ainda sobram
+   10px de colisão); esta seção, sendo a única da rota que sangra na janela, começava
+   o conteúdo em 56px — e a captura mostrou o traço ciano e o rótulo «SERVIÇOS»
+   impressos POR CIMA do `h2` de 72px.
+   Então o recuo da esquerda passa a ser um piso de 190px na faixa em que o rótulo
+   existe, e só a ESQUERDA: o corredor é de um lado só. O custo é o miolo cair de
+   1328px para 1194px a 1440 — o `max-width` de 1480px do doc continua valendo e é
+   alcançado a partir de ~1726px, onde a margem automática já mantém a folga. */
+@media (min-width: 1440px) {
+  .svc-palco {
+    padding-left: 190px;
+  }
+}
+
+/* ── O VÍDEO DE FUNDO ─────────────────────────────────────────────────────────── */
+
+.svc-palco-midia {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  /* A base navy é o que se vê enquanto o arquivo não chega — e é o quadro parado do
+     movimento reduzido — em vez do retângulo preto que um `<video>` sem quadro
+     pinta. Mesmo papel da base do `hero-backdrop-midia`. */
+  background:
+    radial-gradient(ellipse 90% 70% at 70% 35%, rgb(4 32 66 / 45%), transparent 62%),
+    linear-gradient(165deg, var(--svc-navy-escuro) 0%, var(--svc-navy) 55%, #0a3e70 100%);
+  pointer-events: none;
+}
+
+.svc-palco-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* O véu navy chapado devolve a COR do palco escuro que esta faixa já era, e o
+   degradê por cima reforça o fundo atrás da coluna de texto (que é onde o branco
+   assenta) sem apagar o take. */
+.svc-palco-veu {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(100deg, rgb(4 29 55 / 88%) 0%, rgb(5 40 74 / 74%) 46%, rgb(6 50 92 / 58%) 100%),
+    linear-gradient(180deg, rgb(4 29 55 / 42%), rgb(4 29 55 / 30%));
+  pointer-events: none;
+}
+
+/* Vinheta discreta nas bordas: fecha a faixa sem escurecer o miolo. */
+.svc-palco-vinheta {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(ellipse 120% 110% at 50% 50%, transparent 52%, rgb(2 18 36 / 55%) 100%);
+  pointer-events: none;
+}
+
+/* ── A GRADE 42 / 58 ─────────────────────────────────────────────────────────── */
+
+.svc-palco-miolo {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: var(--svc-miolo);
+  margin-inline: auto;
+}
+
+.svc-palco-grade {
+  display: grid;
+  gap: clamp(2rem, 4vw, 4rem);
+}
+
+@media (min-width: 1024px) {
+  .svc-palco-grade {
+    /* `42fr 58fr`, e NÃO `42% 58%`: a razão pedida pelo doc é a mesma nos dois, mas
+       porcentagem se mede contra o contêiner e IGNORA o `gap` — as duas colunas
+       somavam 100% e o vão de 57,6px entrava por cima, estourando o miolo em
+       exatamente um vão. Medido a 1440 antes da troca: colunas em 190 e 749, a
+       segunda com 692,5px, terminando em 1441,5 contra um miolo que acaba em 1384 —
+       a borda direita do segundo card de cada fileira ficava recortada pelo
+       `overflow-x-clip` da seção (por isso o transbordo do documento seguia zero e o
+       defeito só aparecia na captura). Com `fr` o vão sai da trilha antes do rateio e
+       a razão 42:58 se mantém. */
+    grid-template-columns: 42fr 58fr;
+    align-items: center;
+  }
+}
+
+/* ── COLUNA ESQUERDA ─────────────────────────────────────────────────────────── */
+
+.svc-palco-abertura {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(1.25rem, 2vw, 2rem);
+  /* A coluna de 42% chega a 621px no miolo de 1480; o lead do doc para em 560px,
+     então a medida de leitura é a do doc e a coluna sobra de propósito. */
+  min-width: 0;
+}
+
+/* O tombo de −3deg que o doc pede JÁ ESTÁ NA ARTE (medido: −3,01° no próprio PNG),
+   então aqui não há `rotate` nenhum — declarar um segundo tombo somaria com o do
+   arquivo. Sem cápsula, sem fundo, sem borda: o carimbo é a arte e mais nada. */
+.svc-palco-carimbo {
+  display: block;
+}
+
+/* ~260px no desktop, 190–220px no mobile (os dois intervalos do doc). A variável é
+   sobrescrita NA PRÓPRIA `.carimbo-batida` — ela é declarada lá dentro com o `clamp`
+   de `/parceiros`, e declaração do elemento vence herança do pai. */
+.svc-palco-carimbo-arte {
+  --carimbo-batida-w: clamp(190px, 18vw, 260px);
+}
+
+.svc-palco-titulo {
+  color: #fff;
+  font-weight: 800;
+  font-size: clamp(3rem, 5vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.svc-palco-lead {
+  display: flex;
+  flex-direction: column;
+  /* «Dois parágrafos visualmente separados» — o vão é a separação, não uma linha. */
+  gap: 1.1rem;
+  max-width: 560px;
+}
+
+.svc-palco-lead p {
+  margin: 0;
+  color: rgb(255 255 255 / 88%);
+  font-size: clamp(1.0625rem, 1.15vw, 1.25rem); /* 17px → 20px */
+  line-height: 1.6;
+}
+
+.svc-palco-indicadores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.5rem, 3vw, 2.75rem);
+  margin: 0;
+}
+
+.svc-palco-indicador {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.svc-palco-indicador-icone {
+  width: 28px;
+  height: 28px;
+  color: var(--svc-ciano);
+  flex: none;
+}
+
+.svc-palco-indicador-valor {
+  color: #fff;
+  font-weight: 800;
+  font-size: clamp(1.75rem, 2.4vw, 2.5rem);
+  line-height: 1.05;
+}
+
+.svc-palco-indicador-legenda {
+  margin: 0;
+  color: var(--svc-ciano-claro);
+  font-size: 0.9375rem;
+  line-height: 1.3;
+}
+
+/* ── COLUNA DIREITA: A GRADE 2×2 DE CARDS CLAROS ─────────────────────────────── */
+
+.svc-palco-lista {
+  display: grid;
+  gap: clamp(1rem, 1.6vw, 1.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .svc-palco-lista {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* ALTURA DE LINHA DEFINIDA, e é ela que torna possíveis as duas medidas do doc
+       ao mesmo tempo: «imagem ocupando aproximadamente 42% da altura» e «alturas
+       equivalentes entre os quatro cards». Uma altura vinda do conteúdo é
+       INDEFINIDA, e contra ela `height: 42%` na foto não resolve (cai em `auto`) —
+       foi o que a primeira medição mostrou: 57,9% na primeira fileira, 61,2% na
+       segunda, e 21,6px de desvio entre as duas.
+       O valor sai do conteúdo mais alto: o card em destaque tem o título de três
+       linhas a 18px, e 58% de 340px ainda sobram 197px para selo (32) + padding
+       (38) + título (~65) + descrição (~47).
+
+       ── A ALTURA ENCURTOU, e o número é medido ───────────────────────────────
+       Pedido em chat: «na sessão Serviços, diminua a altura desses cards está
+       sobrando muito espaço embaixo». Era `clamp(340px, 26vw, 420px)`, ou seja
+       374px a 1440 — e ali a caixa de texto dava 184px enquanto três dos quatro
+       cards precisavam de 114. Sobravam **70px** em cada um deles, que é o vazio
+       da captura.
+
+       A conta que manda é `0,58 × linha ≥ texto do card mais alto`, e NÃO «a foto
+       é grande»: a foto é 42% da linha, então encurtar a linha encurta a foto na
+       mesma proporção e não devolve espaço nenhum ao texto. O texto mais alto é
+       o título de três linhas mais a descrição de duas: 180px medidos a 1440,
+       177px a 1280 e ~182px projetados a 1920 (onde as duas fontes saturam o
+       `clamp` em 22px/17px). Dividido por 0,58 → a linha precisa de 310px a
+       1280, 305 a 1440 e 314 a 1920.
+
+       — mas a conta acima estava ERRADA num termo, e a medição pegou: o texto não
+       recebe 58% da linha, recebe `linha − foto − 32`. O selo tem 64px de altura
+       e sobe metade com `margin-top: -32px`, então 32px dele CONTAM no fluxo da
+       coluna. Com o termo certo, `linha ≥ foto + 32 + texto`, e com a foto em 42%
+       isso dá `linha ≥ (texto + 32) / 0,58` → 366px a 1440, não 305.
+
+       Ou seja: os 374px de antes NÃO eram gordura do card de título longo, eram o
+       mínimo dele — e a 1280 a linha antiga de 340px já era 9px CURTA (medido:
+       caixa de texto 168 contra 177 necessários, comprimindo o `padding-bottom`).
+
+       Com altura de linha única e conteúdos desiguais, sobra nos cards curtos é
+       inevitável: o título de três linhas pede 180px de texto e os outros pedem
+       114. O que muda é QUEM FICA COM A SOBRA — ver `.svc-card-foto` e
+       `.svc-card-texto` abaixo: o texto passa a levar só o que precisa e a foto
+       absorve o restante, em vez de deixá-lo vazio embaixo do parágrafo.
+
+       Com isso a linha só precisa caber `foto mínima + 32 + texto mais alto`:
+       130 + 32 + 180 = 342 a 1440. O intervalo abaixo dá 330px a 1280, 338 a 1440
+       e 350 de 1490 para cima — 36px menos que antes a 1440 e 70px menos nas
+       telas largas, onde o `clamp` antigo saturava em 420. */
+    grid-auto-rows: clamp(330px, 23.5vw, 350px);
+  }
+}
+
+.svc-card {
+  display: flex;
+  flex-direction: column;
+  /* `overflow: hidden` é do doc, e é ele que recorta a foto no raio. O selo não é
+     vítima disso porque está NO FLUXO do card, entre a figura e o texto. */
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid rgb(203 225 247 / 90%);
+  background: #f8fbff;
+  box-shadow: 0 18px 40px -22px rgb(4 29 55 / 45%);
+  /* Alturas equivalentes entre os quatro: o item de grade estica, e o texto empurra
+     a caixa mais alta — o `1fr` da linha iguala as duas da mesma fileira. */
+  height: 100%;
+  transition:
+    transform 300ms ease,
+    box-shadow 300ms ease,
+    border-color 300ms ease;
+}
+
+/* O card de maior destaque: borda ciano e glow MUITO discreto, «sem aumentar
+   excessivamente seu tamanho» — então nada de `scale` nem de `grid-column`, só
+   pintura. */
+.svc-card--destaque {
+  border-color: rgb(14 216 246 / 70%);
+  box-shadow:
+    0 18px 40px -22px rgb(4 29 55 / 45%),
+    0 0 0 1px rgb(14 216 246 / 25%),
+    0 0 26px -6px rgb(14 216 246 / 35%);
+}
+
+.svc-card-foto {
+  /* `fill` do `next/image` exige pai posicionado e com caixa própria. A altura é os
+     42% do doc, em percentual e não em proporção da largura: proporção mudaria a
+     fração junto com a coluna, e a fração é justamente o que está especificado. Ela
+     resolve porque a linha da grade tem altura definida (ver `.svc-palco-lista`).
+
+     A FOTO É QUEM ABSORVE A SOBRA, e era o contrário: ela tinha `height: 42%` com
+     `flex: none` e o texto tinha `flex: 1 1 auto`, então o vão entre conteúdos de
+     tamanhos diferentes virava espaço vazio DEBAIXO do parágrafo — os 70px que o
+     pedido em chat aponta na captura. Agora os 42% são o PISO (`flex-basis`) e o
+     crescimento vem para cá: num card de texto curto a foto fica mais alta, e
+     nenhum card tem vazio no pé.
+
+     O piso em `min-height` além do `flex-basis` percentual: se um texto crescer
+     muito (tradução, fonte de reserva mais larga), `flex-shrink` comeria a foto até
+     sumir, e uma faixa de foto de 20px é pior do que um card mais alto. */
+  position: relative;
+  width: 100%;
+  flex: 1 1 42%;
+  min-height: 120px;
+  background: #e8f1fb;
+}
+
+/* O texto leva EXATAMENTE o que precisa (`flex: none`): era `1 1 auto`, que é o que
+   fazia a caixa dele esticar e guardar a sobra da linha como vazio. `min-height: 0`
+   fica porque continua sendo o que permite encolher em vez de estourar o card. */
+.svc-card-texto {
+  flex: none;
+  min-height: 0;
+}
+
+.svc-card-imagem {
+  object-fit: cover;
+  object-position: center;
+  transition: transform 300ms ease;
+}
+
+.svc-card-selo {
+  /* Cavalga a divisão entre a foto e o conteúdo: meia altura para cima com margem
+     negativa, e é por isso que ele é irmão dos dois e não filho da figura. */
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 clamp(1rem, 1.4vw, 1.5rem);
+  border-radius: 999px;
+  border: 1px solid rgb(203 225 247 / 95%);
+  background: #fff;
+  box-shadow: 0 8px 18px -10px rgb(4 29 55 / 40%);
+  transition: box-shadow 300ms ease;
+}
+
+.svc-card-selo-icone {
+  width: 28px;
+  height: 28px;
+  color: var(--svc-ciano);
+}
+
+.svc-card-texto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.875rem clamp(1rem, 1.4vw, 1.5rem) clamp(1.25rem, 1.6vw, 1.75rem);
+}
+
+.svc-card-titulo {
+  margin: 0;
+  color: #062a4e;
+  font-weight: 700;
+  font-size: clamp(1.125rem, 1.25vw, 1.375rem); /* 18px → 22px */
+  line-height: 1.2;
+}
+
+.svc-card-descricao {
+  margin: 0;
+  color: #47637f;
+  font-size: clamp(0.9375rem, 1.05vw, 1.0625rem); /* 15px → 17px */
+  line-height: 1.55;
+}
+
+/* ── HOVER: 4px, `scale(1.03)`, 300ms — os números do doc ─────────────────────── */
+
+@media (hover: hover) {
+  .svc-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 26px 52px -24px rgb(4 29 55 / 55%);
+  }
+
+  .svc-card:hover .svc-card-imagem {
+    transform: scale(1.03);
+  }
+
+  .svc-card:hover .svc-card-selo {
+    box-shadow:
+      0 8px 18px -10px rgb(4 29 55 / 40%),
+      0 0 16px -2px rgb(14 216 246 / 55%);
+  }
+}
+
+/* OS DOIS CANAIS DE MOVIMENTO REDUZIDO, no mesmo lugar e com o mesmo par de regras.
+   O que morre é só o gesto: o estado de repouso do card já é o estado legível, então
+   nada fica preso invisível. */
+@media (prefers-reduced-motion: reduce) {
+  .svc-card,
+  .svc-card-imagem,
+  .svc-card-selo {
+    transition: none !important;
+  }
+
+  .svc-card:hover {
+    transform: none !important;
+  }
+
+  .svc-card:hover .svc-card-imagem {
+    transform: none !important;
+  }
+}
+
+html[data-motion='reduce'] .svc-card,
+html[data-motion='reduce'] .svc-card-imagem,
+html[data-motion='reduce'] .svc-card-selo {
+  transition: none !important;
+}
+
+html[data-motion='reduce'] .svc-card:hover,
+html[data-motion='reduce'] .svc-card:hover .svc-card-imagem {
+  transform: none !important;
+}
+
+/* ── TABLET E MOBILE ─────────────────────────────────────────────────────────── */
+
+/* Tablet (o doc): «manter duas colunas onde houver espaço; a área de texto pode
+   ocupar a largura inteira acima dos cards, e a grade de cards CONTINUA em duas
+   colunas». Abaixo de 1024 a grade externa vira uma coluna (o `grid-template-columns`
+   está em `min-width: 1024px`) e a `.svc-palco-lista` mantém as duas até 768. */
+
+@media (max-width: 1023px) {
+  .svc-palco-lead {
+    max-width: 68ch;
+  }
+}
+
+@media (max-width: 767px) {
+  .svc-palco {
+    /* Véu mais escuro no mobile: o take ocupa uma faixa proporcionalmente maior
+       atrás do texto, que ali é a largura inteira. */
+    padding-block: clamp(3.5rem, 12vw, 5rem);
+  }
+
+  .svc-palco-veu {
+    background:
+      linear-gradient(180deg, rgb(4 29 55 / 92%) 0%, rgb(5 40 74 / 88%) 100%);
+  }
+
+  .svc-palco-titulo {
+    /* 44px → 56px, o intervalo do doc. */
+    font-size: clamp(2.75rem, 12vw, 3.5rem);
+  }
+
+  .svc-card {
+    width: 100%;
+  }
+
+  .svc-card-foto {
+    /* 150–190px de altura no mobile, o intervalo do doc. Aqui a foto deixa de ser
+       fração e passa a ser altura em px: na coluna única a linha da grade volta a
+       ser dimensionada pelo conteúdo, e contra altura indefinida o percentual não
+       resolve.
+       `flex: none` desfaz aqui o `flex: 1 1 42%` do desktop pelo mesmo motivo: sem
+       linha de altura definida não há sobra para distribuir, e um `flex-basis`
+       percentual contra altura indefinida resolveria em `auto` — o que deixaria a
+       altura em px abaixo brigando com o crescimento. Nesta faixa a foto é medida
+       fixa e o card cresce com o texto. */
+    flex: none;
+    height: clamp(150px, 46vw, 190px);
+  }
+}
+
+/* ── O CTA, LOGO ABAIXO DOS INDICADORES ───────────────────────────────────────
+   Pedido em chat: «o botão Quero um serviço exclusivo logo abaixo dos números
+   30+ implementações 100% Seguros pois está muito abaixo». Ele vivia numa faixa
+   própria depois do palco, e o palco é `min-height: 100vh` com
+   `align-items: center` — entre o fim dos números e o fim da seção havia a metade
+   de baixo do palco mais o `padding` dele. Agora é o último item da coluna.
+
+   SEM `margin-top` própria: o vão é o `gap` de `.svc-palco-abertura`
+   (`clamp(1.25rem, 2vw, 2rem)`), o MESMO que separa carimbo, título, lead e
+   indicadores. Uma margem aqui somaria com ele e recriaria em pequeno o defeito
+   que esta mudança corrige.
+
+   Este é o nó que carrega o `data-reveal`, e ele existe justamente para que o
+   `.btn-primary` NÃO carregue: o botão levanta 2px no hover com `transform`, e
+   `[data-in='true'] [data-reveal] { transform: none }` é regra sem camada — o
+   botão marcado perderia o hover para sempre (SIS-271). */
+.svc-palco-rodape {
+  display: block;
+}

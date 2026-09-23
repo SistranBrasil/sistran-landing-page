@@ -1,0 +1,2258 @@
+{
+  "issue": "SIS-286",
+  "capas": {
+    "smart-miner": {
+      "rota": "/solucoes/smart-miner",
+      "a1440": {
+        "montou": true,
+        "img": {
+          "src": "/images/solucoes/smart-miner-hero.webp",
+          "currentSrc": "/images/solucoes/smart-miner-hero.webp",
+          "natural": [
+            1672,
+            941
+          ],
+          "objectFit": "cover",
+          "objectPosition": "50% 15%",
+          "fetchPriority": "auto",
+          "alt": "",
+          "decorativa": true,
+          "caixa": {
+            "x": 0,
+            "y": 0,
+            "w": 1440,
+            "h": 666
+          }
+        },
+        "veu": {
+          "background": "linear-gradient(100deg, rgba(4, 27, 61, 0.82) 0%, rgba(4, 27, 61, 0.74) 48%, rgba(4, 27, 61, 0.34) 72%, rgba(4, 27, 61, 0.08) 90%), linear-gradient(rgba(3, 17, 38, 0.5) 0%, rgba(4, 27, 61, 0.18) 46%, rgba(4, 27, 61, 0.86) 100%), none"
+        },
+        "h1": {
+          "caixa": {
+            "x": 162,
+            "y": 376,
+            "w": 1116,
+            "h": 86
+          },
+          "texto": "Smart Miner"
+        },
+        "lead": {
+          "caixa": {
+            "x": 162,
+            "y": 482,
+            "w": 672,
+            "h": 88
+          }
+        },
+        "recorte": {
+          "escala": 0.861,
+          "visivel": {
+            "w": 1672,
+            "h": 773
+          },
+          "sobra": {
+            "x": 0,
+            "y": 168
+          },
+          "janela": {
+            "x0": 0,
+            "y0": 25,
+            "x1": 1672,
+            "y1": 798
+          }
+        },
+        "preservar": [
+          {
+            "nome": "lockup «Smart Miner»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          }
+        ],
+        "contraste": {
+          "h1": {
+            "piorCorpo": {
+              "razao": 8.64,
+              "fundo": [
+                45,
+                78,
+                111
+              ],
+              "cobertura": 0.79,
+              "em": {
+                "x": 551,
+                "y": 404
+              }
+            },
+            "piorTudo": {
+              "razao": 8.62,
+              "fundo": [
+                45,
+                78,
+                112
+              ],
+              "cobertura": 0.03,
+              "em": {
+                "x": 555,
+                "y": 406
+              }
+            },
+            "pixels": 19461,
+            "pixelsCorpo": 9842
+          },
+          "lead": {
+            "piorCorpo": {
+              "razao": 9.57,
+              "fundo": [
+                22,
+                52,
+                87
+              ],
+              "cobertura": 0.7,
+              "em": {
+                "x": 629,
+                "y": 496
+              }
+            },
+            "piorTudo": {
+              "razao": 9.57,
+              "fundo": [
+                22,
+                52,
+                87
+              ],
+              "cobertura": 0.7,
+              "em": {
+                "x": 629,
+                "y": 496
+              }
+            },
+            "pixels": 9637,
+            "pixelsCorpo": 6185
+          }
+        },
+        "rede": [
+          {
+            "url": "/images/loading/logo-sistran-portao.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 11154
+          },
+          {
+            "url": "/images/solucoes/smart-miner-hero.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 97418
+          },
+          {
+            "url": "/images/sistran-corp-logo.png",
+            "status": 200,
+            "tipo": "image/png",
+            "bytes": 194068
+          },
+          {
+            "url": "/images/esg/logo-sistran-cta.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 27794
+          }
+        ]
+      },
+      "a390": {
+        "montou": true,
+        "img": {
+          "src": "/images/solucoes/smart-miner-hero.webp",
+          "currentSrc": "/images/solucoes/smart-miner-hero.webp",
+          "natural": [
+            1672,
+            941
+          ],
+          "objectFit": "cover",
+          "objectPosition": "0% 15%",
+          "fetchPriority": "auto",
+          "alt": "",
+          "decorativa": true,
+          "caixa": {
+            "x": 0,
+            "y": 0,
+            "w": 390,
+            "h": 500
+          }
+        },
+        "veu": {
+          "background": "linear-gradient(rgba(3, 17, 38, 0.8) 0%, rgba(4, 27, 61, 0.7) 48%, rgba(4, 27, 61, 0.88) 100%), none"
+        },
+        "h1": {
+          "caixa": {
+            "x": 20,
+            "y": 230,
+            "w": 350,
+            "h": 40
+          },
+          "texto": "Smart Miner"
+        },
+        "lead": {
+          "caixa": {
+            "x": 20,
+            "y": 290,
+            "w": 350,
+            "h": 146
+          }
+        },
+        "recorte": {
+          "escala": 0.531,
+          "visivel": {
+            "w": 734,
+            "h": 941
+          },
+          "sobra": {
+            "x": 938,
+            "y": 0
+          },
+          "janela": {
+            "x0": 0,
+            "y0": 0,
+            "x1": 734,
+            "y1": 941
+          }
+        },
+        "preservar": [
+          {
+            "nome": "lockup «Smart Miner»",
+            "fracaoVisivel": 0,
+            "toleraCorte": null,
+            "veredito": "fora do quadro"
+          }
+        ],
+        "contraste": {
+          "h1": {
+            "piorCorpo": {
+              "razao": 6.18,
+              "fundo": [
+                54,
+                102,
+                133
+              ],
+              "cobertura": 0.93,
+              "em": {
+                "x": 211,
+                "y": 244
+              }
+            },
+            "piorTudo": {
+              "razao": 6.18,
+              "fundo": [
+                54,
+                102,
+                133
+              ],
+              "cobertura": 0.93,
+              "em": {
+                "x": 211,
+                "y": 244
+              }
+            },
+            "pixels": 5068,
+            "pixelsCorpo": 2152
+          },
+          "lead": {
+            "piorCorpo": {
+              "razao": 5.72,
+              "fundo": [
+                45,
+                92,
+                122
+              ],
+              "cobertura": 0.94,
+              "em": {
+                "x": 141,
+                "y": 303
+              }
+            },
+            "piorTudo": {
+              "razao": 5.72,
+              "fundo": [
+                45,
+                92,
+                122
+              ],
+              "cobertura": 0.94,
+              "em": {
+                "x": 141,
+                "y": 303
+              }
+            },
+            "pixels": 9652,
+            "pixelsCorpo": 6181
+          }
+        },
+        "rede": [
+          {
+            "url": "/images/loading/logo-sistran-portao.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 11154
+          },
+          {
+            "url": "/images/sistran-corp-logo.png",
+            "status": 200,
+            "tipo": "image/png",
+            "bytes": 194068
+          },
+          {
+            "url": "/images/solucoes/smart-miner-hero.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 97418
+          },
+          {
+            "url": "/images/esg/logo-sistran-cta.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 27794
+          }
+        ]
+      }
+    },
+    "qa-integrado": {
+      "rota": "/solucoes/qa-integrado",
+      "a1440": {
+        "montou": true,
+        "img": {
+          "src": "/images/solucoes/qa-integrado-hero.webp",
+          "currentSrc": "/images/solucoes/qa-integrado-hero.webp",
+          "natural": [
+            1672,
+            941
+          ],
+          "objectFit": "cover",
+          "objectPosition": "50% 35%",
+          "fetchPriority": "auto",
+          "alt": "",
+          "decorativa": true,
+          "caixa": {
+            "x": 0,
+            "y": 0,
+            "w": 1440,
+            "h": 666
+          }
+        },
+        "veu": {
+          "background": "linear-gradient(100deg, rgba(4, 27, 61, 0.82) 0%, rgba(4, 27, 61, 0.72) 44%, rgba(4, 27, 61, 0.34) 72%, rgba(4, 27, 61, 0.08) 90%), linear-gradient(rgba(3, 17, 38, 0.5) 0%, rgba(4, 27, 61, 0.18) 46%, rgba(4, 27, 61, 0.86) 100%), none"
+        },
+        "h1": {
+          "caixa": {
+            "x": 162,
+            "y": 435,
+            "w": 1116,
+            "h": 86
+          },
+          "texto": "QA Integrado"
+        },
+        "lead": {
+          "caixa": {
+            "x": 162,
+            "y": 541,
+            "w": 672,
+            "h": 29
+          }
+        },
+        "recorte": {
+          "escala": 0.861,
+          "visivel": {
+            "w": 1672,
+            "h": 773
+          },
+          "sobra": {
+            "x": 0,
+            "y": 168
+          },
+          "janela": {
+            "x0": 0,
+            "y0": 59,
+            "x1": 1672,
+            "y1": 832
+          }
+        },
+        "preservar": [
+          {
+            "nome": "selo «QA Integrado»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          }
+        ],
+        "contraste": {
+          "h1": {
+            "piorCorpo": {
+              "razao": 12.28,
+              "fundo": [
+                21,
+                54,
+                91
+              ],
+              "cobertura": 1,
+              "em": {
+                "x": 661,
+                "y": 506
+              }
+            },
+            "piorTudo": {
+              "razao": 12.19,
+              "fundo": [
+                22,
+                54,
+                94
+              ],
+              "cobertura": 0.41,
+              "em": {
+                "x": 663,
+                "y": 506
+              }
+            },
+            "pixels": 19223,
+            "pixelsCorpo": 11066
+          },
+          "lead": {
+            "piorCorpo": {
+              "razao": 11.37,
+              "fundo": [
+                10,
+                37,
+                72
+              ],
+              "cobertura": 0.71,
+              "em": {
+                "x": 571,
+                "y": 552
+              }
+            },
+            "piorTudo": {
+              "razao": 11.37,
+              "fundo": [
+                10,
+                37,
+                72
+              ],
+              "cobertura": 0.71,
+              "em": {
+                "x": 571,
+                "y": 552
+              }
+            },
+            "pixels": 2996,
+            "pixelsCorpo": 1930
+          }
+        },
+        "rede": [
+          {
+            "url": "/images/loading/logo-sistran-portao.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 11154
+          },
+          {
+            "url": "/images/solucoes/qa-integrado-hero.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 104888
+          },
+          {
+            "url": "/images/sistran-corp-logo.png",
+            "status": 200,
+            "tipo": "image/png",
+            "bytes": 194068
+          },
+          {
+            "url": "/images/esg/logo-sistran-cta.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 27794
+          }
+        ]
+      },
+      "a390": {
+        "montou": true,
+        "img": {
+          "src": "/images/solucoes/qa-integrado-hero.webp",
+          "currentSrc": "/images/solucoes/qa-integrado-hero.webp",
+          "natural": [
+            1672,
+            941
+          ],
+          "objectFit": "cover",
+          "objectPosition": "70% 35%",
+          "fetchPriority": "auto",
+          "alt": "",
+          "decorativa": true,
+          "caixa": {
+            "x": 0,
+            "y": 0,
+            "w": 390,
+            "h": 500
+          }
+        },
+        "veu": {
+          "background": "linear-gradient(rgba(3, 17, 38, 0.86) 0%, rgba(4, 27, 61, 0.78) 48%, rgba(4, 27, 61, 0.9) 100%), none"
+        },
+        "h1": {
+          "caixa": {
+            "x": 20,
+            "y": 318,
+            "w": 350,
+            "h": 40
+          },
+          "texto": "QA Integrado"
+        },
+        "lead": {
+          "caixa": {
+            "x": 20,
+            "y": 378,
+            "w": 350,
+            "h": 59
+          }
+        },
+        "recorte": {
+          "escala": 0.531,
+          "visivel": {
+            "w": 734,
+            "h": 941
+          },
+          "sobra": {
+            "x": 938,
+            "y": 0
+          },
+          "janela": {
+            "x0": 657,
+            "y0": 0,
+            "x1": 1391,
+            "y1": 941
+          }
+        },
+        "preservar": [
+          {
+            "nome": "selo «QA Integrado»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          }
+        ],
+        "contraste": {
+          "h1": {
+            "piorCorpo": {
+              "razao": 8.28,
+              "fundo": [
+                19,
+                83,
+                120
+              ],
+              "cobertura": 1,
+              "em": {
+                "x": 214,
+                "y": 343
+              }
+            },
+            "piorTudo": {
+              "razao": 8.28,
+              "fundo": [
+                19,
+                83,
+                120
+              ],
+              "cobertura": 1,
+              "em": {
+                "x": 214,
+                "y": 343
+              }
+            },
+            "pixels": 5408,
+            "pixelsCorpo": 2452
+          },
+          "lead": {
+            "piorCorpo": {
+              "razao": 6.64,
+              "fundo": [
+                32,
+                81,
+                114
+              ],
+              "cobertura": 0.99,
+              "em": {
+                "x": 212,
+                "y": 391
+              }
+            },
+            "piorTudo": {
+              "razao": 6.6,
+              "fundo": [
+                27,
+                82,
+                114
+              ],
+              "cobertura": 0.51,
+              "em": {
+                "x": 221,
+                "y": 392
+              }
+            },
+            "pixels": 2994,
+            "pixelsCorpo": 1926
+          }
+        },
+        "rede": [
+          {
+            "url": "/images/loading/logo-sistran-portao.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 11154
+          },
+          {
+            "url": "/images/sistran-corp-logo.png",
+            "status": 200,
+            "tipo": "image/png",
+            "bytes": 194068
+          },
+          {
+            "url": "/images/solucoes/qa-integrado-hero.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 104888
+          },
+          {
+            "url": "/images/esg/logo-sistran-cta.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 27794
+          }
+        ]
+      }
+    },
+    "connect-api": {
+      "rota": "/solucoes/connect-api",
+      "a1440": {
+        "montou": true,
+        "img": {
+          "src": "/images/solucoes/connect-api-hero.webp",
+          "currentSrc": "/images/solucoes/connect-api-hero.webp",
+          "natural": [
+            1672,
+            941
+          ],
+          "objectFit": "cover",
+          "objectPosition": "50% 15%",
+          "fetchPriority": "auto",
+          "alt": "",
+          "decorativa": true,
+          "caixa": {
+            "x": 0,
+            "y": 0,
+            "w": 1440,
+            "h": 666
+          }
+        },
+        "veu": {
+          "background": "linear-gradient(100deg, rgba(4, 27, 61, 0.84) 0%, rgba(4, 27, 61, 0.76) 48%, rgba(4, 27, 61, 0.36) 72%, rgba(4, 27, 61, 0.08) 90%), linear-gradient(rgba(3, 17, 38, 0.52) 0%, rgba(4, 27, 61, 0.2) 46%, rgba(4, 27, 61, 0.86) 100%), none"
+        },
+        "h1": {
+          "caixa": {
+            "x": 162,
+            "y": 435,
+            "w": 1116,
+            "h": 86
+          },
+          "texto": "Connect API"
+        },
+        "lead": {
+          "caixa": {
+            "x": 162,
+            "y": 541,
+            "w": 672,
+            "h": 29
+          }
+        },
+        "recorte": {
+          "escala": 0.861,
+          "visivel": {
+            "w": 1672,
+            "h": 773
+          },
+          "sobra": {
+            "x": 0,
+            "y": 168
+          },
+          "janela": {
+            "x0": 0,
+            "y0": 25,
+            "x1": 1672,
+            "y1": 798
+          }
+        },
+        "preservar": [
+          {
+            "nome": "hub «Connect API»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          }
+        ],
+        "contraste": {
+          "h1": {
+            "piorCorpo": {
+              "razao": 12.06,
+              "fundo": [
+                23,
+                55,
+                93
+              ],
+              "cobertura": 1,
+              "em": {
+                "x": 579,
+                "y": 482
+              }
+            },
+            "piorTudo": {
+              "razao": 12.06,
+              "fundo": [
+                23,
+                55,
+                93
+              ],
+              "cobertura": 1,
+              "em": {
+                "x": 579,
+                "y": 482
+              }
+            },
+            "pixels": 15995,
+            "pixelsCorpo": 9482
+          },
+          "lead": {
+            "piorCorpo": {
+              "razao": 11.14,
+              "fundo": [
+                10,
+                39,
+                74
+              ],
+              "cobertura": 0.94,
+              "em": {
+                "x": 543,
+                "y": 552
+              }
+            },
+            "piorTudo": {
+              "razao": 11.14,
+              "fundo": [
+                10,
+                39,
+                74
+              ],
+              "cobertura": 0.51,
+              "em": {
+                "x": 535,
+                "y": 552
+              }
+            },
+            "pixels": 3189,
+            "pixelsCorpo": 2065
+          }
+        },
+        "rede": [
+          {
+            "url": "/images/loading/logo-sistran-portao.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 11154
+          },
+          {
+            "url": "/images/sistran-corp-logo.png",
+            "status": 200,
+            "tipo": "image/png",
+            "bytes": 194068
+          },
+          {
+            "url": "/images/solucoes/connect-api-hero.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 125512
+          },
+          {
+            "url": "/images/esg/logo-sistran-cta.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 27794
+          }
+        ]
+      },
+      "a390": {
+        "montou": true,
+        "img": {
+          "src": "/images/solucoes/connect-api-hero.webp",
+          "currentSrc": "/images/solucoes/connect-api-hero.webp",
+          "natural": [
+            1672,
+            941
+          ],
+          "objectFit": "cover",
+          "objectPosition": "80% 15%",
+          "fetchPriority": "auto",
+          "alt": "",
+          "decorativa": true,
+          "caixa": {
+            "x": 0,
+            "y": 0,
+            "w": 390,
+            "h": 500
+          }
+        },
+        "veu": {
+          "background": "linear-gradient(rgba(3, 17, 38, 0.86) 0%, rgba(4, 27, 61, 0.78) 48%, rgba(4, 27, 61, 0.9) 100%), none"
+        },
+        "h1": {
+          "caixa": {
+            "x": 20,
+            "y": 318,
+            "w": 350,
+            "h": 40
+          },
+          "texto": "Connect API"
+        },
+        "lead": {
+          "caixa": {
+            "x": 20,
+            "y": 378,
+            "w": 350,
+            "h": 59
+          }
+        },
+        "recorte": {
+          "escala": 0.531,
+          "visivel": {
+            "w": 734,
+            "h": 941
+          },
+          "sobra": {
+            "x": 938,
+            "y": 0
+          },
+          "janela": {
+            "x0": 750,
+            "y0": 0,
+            "x1": 1484,
+            "y1": 941
+          }
+        },
+        "preservar": [
+          {
+            "nome": "hub «Connect API»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          }
+        ],
+        "contraste": {
+          "h1": {
+            "piorCorpo": {
+              "razao": 7.85,
+              "fundo": [
+                37,
+                86,
+                119
+              ],
+              "cobertura": 0.81,
+              "em": {
+                "x": 197,
+                "y": 322
+              }
+            },
+            "piorTudo": {
+              "razao": 7.85,
+              "fundo": [
+                37,
+                86,
+                119
+              ],
+              "cobertura": 0.81,
+              "em": {
+                "x": 197,
+                "y": 322
+              }
+            },
+            "pixels": 4797,
+            "pixelsCorpo": 2057
+          },
+          "lead": {
+            "piorCorpo": {
+              "razao": 6.7,
+              "fundo": [
+                31,
+                80,
+                116
+              ],
+              "cobertura": 0.9,
+              "em": {
+                "x": 279,
+                "y": 386
+              }
+            },
+            "piorTudo": {
+              "razao": 6.7,
+              "fundo": [
+                31,
+                80,
+                116
+              ],
+              "cobertura": 0.9,
+              "em": {
+                "x": 279,
+                "y": 386
+              }
+            },
+            "pixels": 3189,
+            "pixelsCorpo": 2066
+          }
+        },
+        "rede": [
+          {
+            "url": "/images/loading/logo-sistran-portao.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 11154
+          },
+          {
+            "url": "/images/sistran-corp-logo.png",
+            "status": 200,
+            "tipo": "image/png",
+            "bytes": 194068
+          },
+          {
+            "url": "/images/solucoes/connect-api-hero.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 125512
+          },
+          {
+            "url": "/images/esg/logo-sistran-cta.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 27794
+          }
+        ]
+      }
+    },
+    "guru-de-seguros": {
+      "rota": "/solucoes/guru-de-seguros",
+      "a1440": {
+        "montou": true,
+        "img": {
+          "src": "/images/solucoes/guru-de-seguros-hero.webp",
+          "currentSrc": "/images/solucoes/guru-de-seguros-hero.webp",
+          "natural": [
+            1672,
+            941
+          ],
+          "objectFit": "cover",
+          "objectPosition": "50% 15%",
+          "fetchPriority": "auto",
+          "alt": "",
+          "decorativa": true,
+          "caixa": {
+            "x": 0,
+            "y": 0,
+            "w": 1440,
+            "h": 666
+          }
+        },
+        "veu": {
+          "background": "linear-gradient(100deg, rgba(4, 27, 61, 0.82) 0%, rgba(4, 27, 61, 0.74) 46%, rgba(4, 27, 61, 0.36) 70%, rgba(4, 27, 61, 0.06) 88%), linear-gradient(rgba(3, 17, 38, 0.5) 0%, rgba(4, 27, 61, 0.18) 46%, rgba(4, 27, 61, 0.86) 100%), none"
+        },
+        "h1": {
+          "caixa": {
+            "x": 162,
+            "y": 289,
+            "w": 1116,
+            "h": 86
+          },
+          "texto": "Guru de Seguros"
+        },
+        "lead": {
+          "caixa": {
+            "x": 162,
+            "y": 395,
+            "w": 672,
+            "h": 176
+          }
+        },
+        "recorte": {
+          "escala": 0.861,
+          "visivel": {
+            "w": 1672,
+            "h": 773
+          },
+          "sobra": {
+            "x": 0,
+            "y": 168
+          },
+          "janela": {
+            "x0": 0,
+            "y0": 25,
+            "x1": 1672,
+            "y1": 798
+          }
+        },
+        "preservar": [
+          {
+            "nome": "turbante aceso",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "letreiro «Guru de Seguros»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "Echo",
+            "fracaoVisivel": 0.921,
+            "toleraCorte": "pé do aparelho: a arte é 4 linhas mais alta que a janela (ver CSS)",
+            "veredito": "CORTADO"
+          }
+        ],
+        "contraste": {
+          "h1": {
+            "piorCorpo": {
+              "razao": 6.18,
+              "fundo": [
+                70,
+                100,
+                129
+              ],
+              "cobertura": 0.98,
+              "em": {
+                "x": 757,
+                "y": 318
+              }
+            },
+            "piorTudo": {
+              "razao": 6.18,
+              "fundo": [
+                70,
+                100,
+                129
+              ],
+              "cobertura": 0.98,
+              "em": {
+                "x": 757,
+                "y": 318
+              }
+            },
+            "pixels": 27254,
+            "pixelsCorpo": 12955
+          },
+          "lead": {
+            "piorCorpo": {
+              "razao": 5.79,
+              "fundo": [
+                54,
+                90,
+                120
+              ],
+              "cobertura": 0.84,
+              "em": {
+                "x": 817,
+                "y": 403
+              }
+            },
+            "piorTudo": {
+              "razao": 5.78,
+              "fundo": [
+                55,
+                90,
+                120
+              ],
+              "cobertura": 0.24,
+              "em": {
+                "x": 816,
+                "y": 403
+              }
+            },
+            "pixels": 24921,
+            "pixelsCorpo": 15967
+          }
+        },
+        "rede": [
+          {
+            "url": "/images/loading/logo-sistran-portao.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 11154
+          },
+          {
+            "url": "/images/sistran-corp-logo.png",
+            "status": 200,
+            "tipo": "image/png",
+            "bytes": 194068
+          },
+          {
+            "url": "/images/solucoes/guru-de-seguros-hero.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 119626
+          },
+          {
+            "url": "/images/esg/logo-sistran-cta.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 27794
+          }
+        ]
+      },
+      "a390": {
+        "montou": true,
+        "img": {
+          "src": "/images/solucoes/guru-de-seguros-hero.webp",
+          "currentSrc": "/images/solucoes/guru-de-seguros-hero.webp",
+          "natural": [
+            1672,
+            941
+          ],
+          "objectFit": "cover",
+          "objectPosition": "56% 15%",
+          "fetchPriority": "auto",
+          "alt": "",
+          "decorativa": true,
+          "caixa": {
+            "x": 0,
+            "y": 0,
+            "w": 390,
+            "h": 691
+          }
+        },
+        "veu": {
+          "background": "linear-gradient(rgba(3, 17, 38, 0.86) 0%, rgba(4, 27, 61, 0.78) 48%, rgba(4, 27, 61, 0.9) 100%), none"
+        },
+        "h1": {
+          "caixa": {
+            "x": 20,
+            "y": 216,
+            "w": 350,
+            "h": 40
+          },
+          "texto": "Guru de Seguros"
+        },
+        "lead": {
+          "caixa": {
+            "x": 20,
+            "y": 276,
+            "w": 350,
+            "h": 351
+          }
+        },
+        "recorte": {
+          "escala": 0.734,
+          "visivel": {
+            "w": 531,
+            "h": 941
+          },
+          "sobra": {
+            "x": 1141,
+            "y": 0
+          },
+          "janela": {
+            "x0": 639,
+            "y0": 0,
+            "x1": 1170,
+            "y1": 941
+          }
+        },
+        "preservar": [
+          {
+            "nome": "turbante aceso",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "letreiro «Guru de Seguros»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "Echo",
+            "fracaoVisivel": 0,
+            "toleraCorte": "pé do aparelho: a arte é 4 linhas mais alta que a janela (ver CSS)",
+            "veredito": "fora do quadro"
+          }
+        ],
+        "contraste": {
+          "h1": {
+            "piorCorpo": {
+              "razao": 8.17,
+              "fundo": [
+                45,
+                82,
+                116
+              ],
+              "cobertura": 1,
+              "em": {
+                "x": 294,
+                "y": 247
+              }
+            },
+            "piorTudo": {
+              "razao": 8.17,
+              "fundo": [
+                45,
+                82,
+                116
+              ],
+              "cobertura": 1,
+              "em": {
+                "x": 294,
+                "y": 247
+              }
+            },
+            "pixels": 6197,
+            "pixelsCorpo": 2950
+          },
+          "lead": {
+            "piorCorpo": {
+              "razao": 6.21,
+              "fundo": [
+                45,
+                85,
+                118
+              ],
+              "cobertura": 0.94,
+              "em": {
+                "x": 293,
+                "y": 322
+              }
+            },
+            "piorTudo": {
+              "razao": 6.2,
+              "fundo": [
+                45,
+                85,
+                119
+              ],
+              "cobertura": 0.58,
+              "em": {
+                "x": 287,
+                "y": 324
+              }
+            },
+            "pixels": 24990,
+            "pixelsCorpo": 15942
+          }
+        },
+        "rede": [
+          {
+            "url": "/images/loading/logo-sistran-portao.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 11154
+          },
+          {
+            "url": "/images/solucoes/guru-de-seguros-hero.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 119626
+          },
+          {
+            "url": "/images/sistran-corp-logo.png",
+            "status": 200,
+            "tipo": "image/png",
+            "bytes": 194068
+          },
+          {
+            "url": "/images/esg/logo-sistran-cta.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 27794
+          }
+        ]
+      }
+    },
+    "match-ai": {
+      "rota": "/solucoes/match-ai",
+      "a1440": {
+        "montou": true,
+        "img": {
+          "src": "/images/solucoes/match-ai-hero.webp",
+          "currentSrc": "/images/solucoes/match-ai-hero.webp",
+          "natural": [
+            1672,
+            941
+          ],
+          "objectFit": "cover",
+          "objectPosition": "50% 55%",
+          "fetchPriority": "auto",
+          "alt": "",
+          "decorativa": true,
+          "caixa": {
+            "x": 0,
+            "y": 0,
+            "w": 1440,
+            "h": 666
+          }
+        },
+        "veu": {
+          "background": "linear-gradient(100deg, rgba(4, 27, 61, 0.84) 0%, rgba(4, 27, 61, 0.76) 48%, rgba(4, 27, 61, 0.36) 72%, rgba(4, 27, 61, 0.08) 90%), linear-gradient(rgba(3, 17, 38, 0.52) 0%, rgba(4, 27, 61, 0.2) 46%, rgba(4, 27, 61, 0.86) 100%), none"
+        },
+        "h1": {
+          "caixa": {
+            "x": 162,
+            "y": 406,
+            "w": 1116,
+            "h": 86
+          },
+          "texto": "Match AI"
+        },
+        "lead": {
+          "caixa": {
+            "x": 162,
+            "y": 512,
+            "w": 672,
+            "h": 59
+          }
+        },
+        "recorte": {
+          "escala": 0.861,
+          "visivel": {
+            "w": 1672,
+            "h": 773
+          },
+          "sobra": {
+            "x": 0,
+            "y": 168
+          },
+          "janela": {
+            "x0": 0,
+            "y0": 92,
+            "x1": 1672,
+            "y1": 866
+          }
+        },
+        "preservar": [
+          {
+            "nome": "prisma central",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "placa «MATCH AI»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "tablet",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "pessoa com a pilha de perfis",
+            "fracaoVisivel": 1,
+            "toleraCorte": "borda esquerda a 390: pessoa e tablet distam 38 colunas mais do que cabe (ver CSS)",
+            "veredito": "inteiro"
+          }
+        ],
+        "contraste": {
+          "h1": {
+            "piorCorpo": {
+              "razao": 13.39,
+              "fundo": [
+                17,
+                47,
+                87
+              ],
+              "cobertura": 1,
+              "em": {
+                "x": 493,
+                "y": 434
+              }
+            },
+            "piorTudo": {
+              "razao": 13.39,
+              "fundo": [
+                17,
+                47,
+                87
+              ],
+              "cobertura": 1,
+              "em": {
+                "x": 493,
+                "y": 434
+              }
+            },
+            "pixels": 11466,
+            "pixelsCorpo": 7335
+          },
+          "lead": {
+            "piorCorpo": {
+              "razao": 9.13,
+              "fundo": [
+                34,
+                56,
+                82
+              ],
+              "cobertura": 0.87,
+              "em": {
+                "x": 824,
+                "y": 531
+              }
+            },
+            "piorTudo": {
+              "razao": 8.88,
+              "fundo": [
+                36,
+                58,
+                84
+              ],
+              "cobertura": 0.36,
+              "em": {
+                "x": 824,
+                "y": 532
+              }
+            },
+            "pixels": 6239,
+            "pixelsCorpo": 3979
+          }
+        },
+        "rede": [
+          {
+            "url": "/images/loading/logo-sistran-portao.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 11154
+          },
+          {
+            "url": "/images/solucoes/match-ai-hero.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 156566
+          },
+          {
+            "url": "/images/sistran-corp-logo.png",
+            "status": 200,
+            "tipo": "image/png",
+            "bytes": 194068
+          },
+          {
+            "url": "/images/esg/logo-sistran-cta.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 27794
+          }
+        ]
+      },
+      "a390": {
+        "montou": true,
+        "img": {
+          "src": "/images/solucoes/match-ai-hero.webp",
+          "currentSrc": "/images/solucoes/match-ai-hero.webp",
+          "natural": [
+            1672,
+            941
+          ],
+          "objectFit": "cover",
+          "objectPosition": "74% 55%",
+          "fetchPriority": "auto",
+          "alt": "",
+          "decorativa": true,
+          "caixa": {
+            "x": 0,
+            "y": 0,
+            "w": 390,
+            "h": 500
+          }
+        },
+        "veu": {
+          "background": "linear-gradient(rgba(3, 17, 38, 0.86) 0%, rgba(4, 27, 61, 0.78) 48%, rgba(4, 27, 61, 0.9) 100%), none"
+        },
+        "h1": {
+          "caixa": {
+            "x": 20,
+            "y": 289,
+            "w": 350,
+            "h": 40
+          },
+          "texto": "Match AI"
+        },
+        "lead": {
+          "caixa": {
+            "x": 20,
+            "y": 348,
+            "w": 350,
+            "h": 88
+          }
+        },
+        "recorte": {
+          "escala": 0.531,
+          "visivel": {
+            "w": 734,
+            "h": 941
+          },
+          "sobra": {
+            "x": 938,
+            "y": 0
+          },
+          "janela": {
+            "x0": 694,
+            "y0": 0,
+            "x1": 1428,
+            "y1": 941
+          }
+        },
+        "preservar": [
+          {
+            "nome": "prisma central",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "placa «MATCH AI»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "tablet",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "pessoa com a pilha de perfis",
+            "fracaoVisivel": 0.542,
+            "toleraCorte": "borda esquerda a 390: pessoa e tablet distam 38 colunas mais do que cabe (ver CSS)",
+            "veredito": "CORTADO"
+          }
+        ],
+        "contraste": {
+          "h1": {
+            "piorCorpo": {
+              "razao": 8.08,
+              "fundo": [
+                36,
+                84,
+                117
+              ],
+              "cobertura": 0.95,
+              "em": {
+                "x": 161,
+                "y": 311
+              }
+            },
+            "piorTudo": {
+              "razao": 8.07,
+              "fundo": [
+                38,
+                84,
+                116
+              ],
+              "cobertura": 0.04,
+              "em": {
+                "x": 177,
+                "y": 310
+              }
+            },
+            "pixels": 3441,
+            "pixelsCorpo": 1634
+          },
+          "lead": {
+            "piorCorpo": {
+              "razao": 6.55,
+              "fundo": [
+                34,
+                82,
+                114
+              ],
+              "cobertura": 0.94,
+              "em": {
+                "x": 241,
+                "y": 362
+              }
+            },
+            "piorTudo": {
+              "razao": 6.48,
+              "fundo": [
+                34,
+                83,
+                114
+              ],
+              "cobertura": 0.11,
+              "em": {
+                "x": 243,
+                "y": 369
+              }
+            },
+            "pixels": 6233,
+            "pixelsCorpo": 3980
+          }
+        },
+        "rede": [
+          {
+            "url": "/images/loading/logo-sistran-portao.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 11154
+          },
+          {
+            "url": "/images/sistran-corp-logo.png",
+            "status": 200,
+            "tipo": "image/png",
+            "bytes": 194068
+          },
+          {
+            "url": "/images/solucoes/match-ai-hero.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 156566
+          },
+          {
+            "url": "/images/esg/logo-sistran-cta.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 27794
+          }
+        ]
+      }
+    },
+    "fast": {
+      "rota": "/solucoes/fast",
+      "a1440": {
+        "montou": true,
+        "img": {
+          "src": "/images/solucoes/fast-hero.webp",
+          "currentSrc": "/images/solucoes/fast-hero.webp",
+          "natural": [
+            1672,
+            941
+          ],
+          "objectFit": "cover",
+          "objectPosition": "50% 72%",
+          "fetchPriority": "auto",
+          "alt": "",
+          "decorativa": true,
+          "caixa": {
+            "x": 0,
+            "y": 0,
+            "w": 1440,
+            "h": 666
+          }
+        },
+        "veu": {
+          "background": "linear-gradient(100deg, rgba(4, 27, 61, 0.84) 0%, rgba(4, 27, 61, 0.76) 48%, rgba(4, 27, 61, 0.36) 72%, rgba(4, 27, 61, 0.08) 90%), linear-gradient(rgba(3, 17, 38, 0.52) 0%, rgba(4, 27, 61, 0.2) 46%, rgba(4, 27, 61, 0.86) 100%), none"
+        },
+        "h1": {
+          "caixa": {
+            "x": 162,
+            "y": 435,
+            "w": 1116,
+            "h": 86
+          },
+          "texto": "Fast"
+        },
+        "lead": {
+          "caixa": {
+            "x": 162,
+            "y": 541,
+            "w": 672,
+            "h": 29
+          }
+        },
+        "recorte": {
+          "escala": 0.861,
+          "visivel": {
+            "w": 1672,
+            "h": 773
+          },
+          "sobra": {
+            "x": 0,
+            "y": 168
+          },
+          "janela": {
+            "x0": 0,
+            "y0": 121,
+            "x1": 1672,
+            "y1": 894
+          }
+        },
+        "preservar": [
+          {
+            "nome": "cápsula «FAST»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "letras «FAST»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "tablet",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          }
+        ],
+        "contraste": {
+          "h1": {
+            "piorCorpo": {
+              "razao": 16.08,
+              "fundo": [
+                6,
+                33,
+                67
+              ],
+              "cobertura": 1,
+              "em": {
+                "x": 327,
+                "y": 468
+              }
+            },
+            "piorTudo": {
+              "razao": 16.08,
+              "fundo": [
+                6,
+                33,
+                67
+              ],
+              "cobertura": 0.03,
+              "em": {
+                "x": 329,
+                "y": 470
+              }
+            },
+            "pixels": 5338,
+            "pixelsCorpo": 3731
+          },
+          "lead": {
+            "piorCorpo": {
+              "razao": 10.13,
+              "fundo": [
+                32,
+                47,
+                73
+              ],
+              "cobertura": 1,
+              "em": {
+                "x": 786,
+                "y": 561
+              }
+            },
+            "piorTudo": {
+              "razao": 10.13,
+              "fundo": [
+                32,
+                47,
+                73
+              ],
+              "cobertura": 1,
+              "em": {
+                "x": 786,
+                "y": 561
+              }
+            },
+            "pixels": 4535,
+            "pixelsCorpo": 2909
+          }
+        },
+        "rede": [
+          {
+            "url": "/images/loading/logo-sistran-portao.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 11154
+          },
+          {
+            "url": "/images/sistran-corp-logo.png",
+            "status": 200,
+            "tipo": "image/png",
+            "bytes": 194068
+          },
+          {
+            "url": "/images/solucoes/fast-hero.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 169238
+          },
+          {
+            "url": "/images/esg/logo-sistran-cta.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 27794
+          }
+        ]
+      },
+      "a390": {
+        "montou": true,
+        "img": {
+          "src": "/images/solucoes/fast-hero.webp",
+          "currentSrc": "/images/solucoes/fast-hero.webp",
+          "natural": [
+            1672,
+            941
+          ],
+          "objectFit": "cover",
+          "objectPosition": "75% 72%",
+          "fetchPriority": "auto",
+          "alt": "",
+          "decorativa": true,
+          "caixa": {
+            "x": 0,
+            "y": 0,
+            "w": 390,
+            "h": 500
+          }
+        },
+        "veu": {
+          "background": "linear-gradient(rgba(3, 17, 38, 0.86) 0%, rgba(4, 27, 61, 0.78) 48%, rgba(4, 27, 61, 0.9) 100%), none"
+        },
+        "h1": {
+          "caixa": {
+            "x": 20,
+            "y": 318,
+            "w": 350,
+            "h": 40
+          },
+          "texto": "Fast"
+        },
+        "lead": {
+          "caixa": {
+            "x": 20,
+            "y": 378,
+            "w": 350,
+            "h": 59
+          }
+        },
+        "recorte": {
+          "escala": 0.531,
+          "visivel": {
+            "w": 734,
+            "h": 941
+          },
+          "sobra": {
+            "x": 938,
+            "y": 0
+          },
+          "janela": {
+            "x0": 704,
+            "y0": 0,
+            "x1": 1437,
+            "y1": 941
+          }
+        },
+        "preservar": [
+          {
+            "nome": "cápsula «FAST»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "letras «FAST»",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          },
+          {
+            "nome": "tablet",
+            "fracaoVisivel": 1,
+            "toleraCorte": null,
+            "veredito": "inteiro"
+          }
+        ],
+        "contraste": {
+          "h1": {
+            "piorCorpo": {
+              "razao": 9.49,
+              "fundo": [
+                34,
+                73,
+                102
+              ],
+              "cobertura": 0.89,
+              "em": {
+                "x": 92,
+                "y": 325
+              }
+            },
+            "piorTudo": {
+              "razao": 9.15,
+              "fundo": [
+                35,
+                75,
+                108
+              ],
+              "cobertura": 0.28,
+              "em": {
+                "x": 89,
+                "y": 324
+              }
+            },
+            "pixels": 1619,
+            "pixelsCorpo": 807
+          },
+          "lead": {
+            "piorCorpo": {
+              "razao": 6.63,
+              "fundo": [
+                31,
+                81,
+                115
+              ],
+              "cobertura": 0.83,
+              "em": {
+                "x": 229,
+                "y": 391
+              }
+            },
+            "piorTudo": {
+              "razao": 6.63,
+              "fundo": [
+                31,
+                81,
+                115
+              ],
+              "cobertura": 0.83,
+              "em": {
+                "x": 229,
+                "y": 391
+              }
+            },
+            "pixels": 4523,
+            "pixelsCorpo": 2909
+          }
+        },
+        "rede": [
+          {
+            "url": "/images/loading/logo-sistran-portao.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 11154
+          },
+          {
+            "url": "/images/sistran-corp-logo.png",
+            "status": 200,
+            "tipo": "image/png",
+            "bytes": 194068
+          },
+          {
+            "url": "/images/solucoes/fast-hero.webp",
+            "status": 200,
+            "tipo": "image/webp",
+            "bytes": 169238
+          }
+        ]
+      }
+    }
+  },
+  "capturas": [
+    "docs/capturas/sis286-smart-miner-1440.png",
+    "docs/capturas/sis286-smart-miner-390.png",
+    "docs/capturas/sis286-qa-integrado-1440.png",
+    "docs/capturas/sis286-qa-integrado-390.png",
+    "docs/capturas/sis286-connect-api-1440.png",
+    "docs/capturas/sis286-connect-api-390.png",
+    "docs/capturas/sis286-guru-de-seguros-1440.png",
+    "docs/capturas/sis286-guru-de-seguros-390.png",
+    "docs/capturas/sis286-match-ai-1440.png",
+    "docs/capturas/sis286-match-ai-390.png",
+    "docs/capturas/sis286-fast-1440.png",
+    "docs/capturas/sis286-fast-390.png"
+  ],
+  "semCapa": {
+    "lumina-ai": {
+      "heroBackdrop": 0,
+      "imagensNaAbertura": 1,
+      "h1": "Lumina AI"
+    }
+  },
+  "semCapaIntactas": true,
+  "veredito": {
+    "pisoContraste": 4.5,
+    "porRota": {
+      "smart-miner": {
+        "a1440": {
+          "h1": 8.64,
+          "lead": 9.57,
+          "preservar": [
+            {
+              "nome": "lockup «Smart Miner»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            }
+          ],
+          "objectPosition": "50% 15%",
+          "servido": "/images/solucoes/smart-miner-hero.webp"
+        },
+        "a390": {
+          "h1": 6.18,
+          "lead": 5.72,
+          "preservar": [
+            {
+              "nome": "lockup «Smart Miner»",
+              "fracaoVisivel": 0,
+              "toleraCorte": null,
+              "veredito": "fora do quadro"
+            }
+          ],
+          "objectPosition": "0% 15%",
+          "servido": "/images/solucoes/smart-miner-hero.webp"
+        }
+      },
+      "qa-integrado": {
+        "a1440": {
+          "h1": 12.28,
+          "lead": 11.37,
+          "preservar": [
+            {
+              "nome": "selo «QA Integrado»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            }
+          ],
+          "objectPosition": "50% 35%",
+          "servido": "/images/solucoes/qa-integrado-hero.webp"
+        },
+        "a390": {
+          "h1": 8.28,
+          "lead": 6.64,
+          "preservar": [
+            {
+              "nome": "selo «QA Integrado»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            }
+          ],
+          "objectPosition": "70% 35%",
+          "servido": "/images/solucoes/qa-integrado-hero.webp"
+        }
+      },
+      "connect-api": {
+        "a1440": {
+          "h1": 12.06,
+          "lead": 11.14,
+          "preservar": [
+            {
+              "nome": "hub «Connect API»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            }
+          ],
+          "objectPosition": "50% 15%",
+          "servido": "/images/solucoes/connect-api-hero.webp"
+        },
+        "a390": {
+          "h1": 7.85,
+          "lead": 6.7,
+          "preservar": [
+            {
+              "nome": "hub «Connect API»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            }
+          ],
+          "objectPosition": "80% 15%",
+          "servido": "/images/solucoes/connect-api-hero.webp"
+        }
+      },
+      "guru-de-seguros": {
+        "a1440": {
+          "h1": 6.18,
+          "lead": 5.79,
+          "preservar": [
+            {
+              "nome": "turbante aceso",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "letreiro «Guru de Seguros»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "Echo",
+              "fracaoVisivel": 0.921,
+              "toleraCorte": "pé do aparelho: a arte é 4 linhas mais alta que a janela (ver CSS)",
+              "veredito": "CORTADO"
+            }
+          ],
+          "objectPosition": "50% 15%",
+          "servido": "/images/solucoes/guru-de-seguros-hero.webp"
+        },
+        "a390": {
+          "h1": 8.17,
+          "lead": 6.21,
+          "preservar": [
+            {
+              "nome": "turbante aceso",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "letreiro «Guru de Seguros»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "Echo",
+              "fracaoVisivel": 0,
+              "toleraCorte": "pé do aparelho: a arte é 4 linhas mais alta que a janela (ver CSS)",
+              "veredito": "fora do quadro"
+            }
+          ],
+          "objectPosition": "56% 15%",
+          "servido": "/images/solucoes/guru-de-seguros-hero.webp"
+        }
+      },
+      "match-ai": {
+        "a1440": {
+          "h1": 13.39,
+          "lead": 9.13,
+          "preservar": [
+            {
+              "nome": "prisma central",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "placa «MATCH AI»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "tablet",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "pessoa com a pilha de perfis",
+              "fracaoVisivel": 1,
+              "toleraCorte": "borda esquerda a 390: pessoa e tablet distam 38 colunas mais do que cabe (ver CSS)",
+              "veredito": "inteiro"
+            }
+          ],
+          "objectPosition": "50% 55%",
+          "servido": "/images/solucoes/match-ai-hero.webp"
+        },
+        "a390": {
+          "h1": 8.08,
+          "lead": 6.55,
+          "preservar": [
+            {
+              "nome": "prisma central",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "placa «MATCH AI»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "tablet",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "pessoa com a pilha de perfis",
+              "fracaoVisivel": 0.542,
+              "toleraCorte": "borda esquerda a 390: pessoa e tablet distam 38 colunas mais do que cabe (ver CSS)",
+              "veredito": "CORTADO"
+            }
+          ],
+          "objectPosition": "74% 55%",
+          "servido": "/images/solucoes/match-ai-hero.webp"
+        }
+      },
+      "fast": {
+        "a1440": {
+          "h1": 16.08,
+          "lead": 10.13,
+          "preservar": [
+            {
+              "nome": "cápsula «FAST»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "letras «FAST»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "tablet",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            }
+          ],
+          "objectPosition": "50% 72%",
+          "servido": "/images/solucoes/fast-hero.webp"
+        },
+        "a390": {
+          "h1": 9.49,
+          "lead": 6.63,
+          "preservar": [
+            {
+              "nome": "cápsula «FAST»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "letras «FAST»",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            },
+            {
+              "nome": "tablet",
+              "fracaoVisivel": 1,
+              "toleraCorte": null,
+              "veredito": "inteiro"
+            }
+          ],
+          "objectPosition": "75% 72%",
+          "servido": "/images/solucoes/fast-hero.webp"
+        }
+      }
+    },
+    "semCapaIntactas": true,
+    "cortesTolerados": [
+      "Echo: 0.921 — pé do aparelho: a arte é 4 linhas mais alta que a janela (ver CSS)",
+      "pessoa com a pilha de perfis: 0.542 — borda esquerda a 390: pessoa e tablet distam 38 colunas mais do que cabe (ver CSS)"
+    ],
+    "tudoAcimaDoPiso": true
+  }
+}

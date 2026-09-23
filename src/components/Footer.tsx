@@ -13,7 +13,8 @@ import RodapeNav from '@/components/layout/RodapeNav';
 /* O rodape do site tem: logo, os 3 escritorios (Sao Paulo com endereco e
    telefone; Pato Branco e Rio de Janeiro apenas com o nome), o menu, "Conheça
    nossas redes: Linkedin · Youtube", a barra legal (Privacidade · Relatório de
-   Transparência Salarial) e o copyright de 2025. A frase institucional que
+   Transparência Salarial) e o copyright, hoje de 2026 (SIS-290; era 2025, e a
+   troca é do ano corrente, não uma correção de conteúdo). A frase institucional que
    existia aqui ("Tecnologia, serviços e consultoria... Beyond Technology") e a
    linha "Especialistas em tecnologia para seguros desde 1988" sairam: nao estao
    escritas no rodape do site.
@@ -21,6 +22,36 @@ import RodapeNav from '@/components/layout/RodapeNav';
 export default function Footer() {
   return (
     <footer className="lp-rodape relative border-t border-white/10 bg-[#1273BC]/85 py-14">
+      {/* SIS-290 · item 5 — A MALHA QUE PASSA NO FUNDO.
+          Duas camadas, e as duas são o pedido literal («quadradinhos e linhas
+          que ficam passando»): a grade de FIOS desliza na diagonal e os
+          QUADRINHOS cheios sobem por cima dela, em velocidades diferentes. Uma
+          camada só não entregaria as duas coisas — grade sozinha lê como textura
+          parada demais, quadrinhos sozinhos como poeira sem direção.
+
+          Vem ANTES do `brand-line` no DOM de propósito. As três camadas são
+          `absolute` sem `z-index`, então quem pinta em cima é quem vem depois: o
+          fio de marca de 1px no topo tem de sobreviver à malha, e o conteúdo
+          (`container-lp relative`) tem de sobreviver às duas.
+
+          NENHUM `z-index` NEGATIVO aqui, e isso é deliberado: o `<footer>` tem
+          fundo próprio (`bg-[#1273BC]/85`) e não cria contexto de empilhamento por
+          `position: relative` sozinho — um filho negativo desceria para trás do
+          fundo do próprio rodapé e a malha ficaria invisível. É exatamente o
+          defeito que a faixa escura da SIS-292 pagou.
+
+          `aria-hidden` + `pointer-events-none`: é decoração sem conteúdo, e ela
+          cobre a área inteira do rodapé, onde há links em toda parte.
+          Os seis quadrinhos são nós vazios porque cada um precisa de fase e
+          velocidade próprias; gerá-los por `map` sobre um array de números
+          esconderia isso atrás de um índice sem economizar linha nenhuma. */}
+      <span aria-hidden className="lp-rodape-malha pointer-events-none absolute inset-0 overflow-hidden">
+        <span className="lp-rodape-malha-grade" />
+        <span className="lp-rodape-malha-quadros">
+          <i /><i /><i /><i /><i /><i />
+        </span>
+      </span>
+
       <span aria-hidden className="brand-line pointer-events-none absolute inset-x-0 top-0" />
 
       <div className="container-lp relative grid grid-cols-1 gap-10 md:grid-cols-4">
@@ -36,7 +67,12 @@ export default function Footer() {
             /* Foi apontada como LCP pelo aviso do next/image: carrega sem lazy
                para nao atrasar a maior pintura. */
             loading="eager"
-            className="lp-rodape-logo h-20 w-auto md:h-24"
+            /* SIS-290 · item 4 — A LOGO CRESCEU: era `h-20 ... md:h-24`. Os dois
+               degraus subiram na mesma proporção (+20%) para a razão entre mobile e
+               desktop não mudar — quem cresce é a marca, não o salto entre as duas
+               larguras. `w-auto` mantém a proporção do arquivo (560×374), então
+               nenhum número de largura precisou ser tocado. */
+            className="lp-rodape-logo h-24 w-auto md:h-28"
           />
           <h4 className="lp-rodape-titulo mt-6 text-xs font-semibold uppercase tracking-[0.18em] text-[#0ed8f6]">
             Conheça nossas redes
@@ -47,9 +83,20 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Linkedin da Sistran"
-              className="lp-rodape-rede inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors duration-300 hover:border-[#0ed8f6]/60 hover:bg-white/10"
+              /* SIS-290 · itens 2 e 3 — O BOTÃO CRESCEU (era `h-11 w-11`, ícone
+                 `h-4 w-4`) e o HOVER MUDOU DE NATUREZA.
+                 As cores de hover NÃO estão aqui, e sim em `.lp-rodape-rede` no
+                 `globals.css`: o pedido é «fundo claro + ícone escuro», e o ícone
+                 escuro depende de `currentColor` mudar no mesmo gesto. Escrito em
+                 utilitárias isso viraria `hover:bg-... hover:text-...` repetidos nos
+                 dois botões, e o `:focus-visible` — que tem de acender igual, senão o
+                 teclado não vê o estado — ficaria de fora ou repetido uma terceira
+                 vez. O que sobrou de utilitária aqui é só a geometria de repouso.
+                 O `transition-colors` saiu junto: a transição agora cobre também
+                 `color` e `box-shadow`, e está declarada ao lado das cores. */
+              className="lp-rodape-rede inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white"
             >
-              <Linkedin className="h-4 w-4" strokeWidth={1.8} />
+              <Linkedin className="h-5 w-5" strokeWidth={1.8} />
               {/* Nome da rede, que hoje só existia no `aria-label`. `aria-hidden`
                   porque o nome acessível já vem do `aria-label` — sem isso o
                   leitor de tela leria "Linkedin da Sistran Linkedin". */}
@@ -64,9 +111,11 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Youtube da Sistran"
-              className="lp-rodape-rede inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white transition-colors duration-300 hover:border-[#0ed8f6]/60 hover:bg-white/10"
+              /* Mesma geometria e mesmo hover do botão acima — o motivo de as cores
+                 morarem no CSS está escrito lá. */
+              className="lp-rodape-rede inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white"
             >
-              <Youtube className="h-4 w-4" strokeWidth={1.8} />
+              <Youtube className="h-5 w-5" strokeWidth={1.8} />
               <span aria-hidden className="lp-rodape-rede-nome">
                 Youtube
               </span>
@@ -181,7 +230,7 @@ export default function Footer() {
       </div>
 
       <div className="container-lp mt-10 flex flex-col gap-2 border-t border-white/8 pt-6 md:flex-row md:items-center md:justify-between">
-        <p className="text-xs text-ink-faint">2025 ©SISTRAN. Todos os direitos reservados.</p>
+        <p className="text-xs text-ink-faint">2026 ©SISTRAN. Todos os direitos reservados.</p>
         {/* Caminho de volta permanente para a escolha feita na primeira visita. */}
         <MotionPreferenceTrigger className="text-xs text-ink-faint underline underline-offset-4 transition-colors hover:text-white" />
       </div>

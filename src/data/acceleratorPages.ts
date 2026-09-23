@@ -54,22 +54,72 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
           'Uso da IA para gerar acurácia em ofertas inteligentes maximizando a PERSONALIZAÇÃO da proposta (suitability) e empoderando o corretor/agente na venda individualizada.',
         ],
       },
+      /* SIS-292 — OS QUATRO ITENS VIRARAM `term` + `text`, e o corte NÃO é
+         invenção: `public/imagensexemplo/exemplodoquezer.png` desenha cada card
+         com título curto em cima e uma linha de apoio embaixo, e o corte dela cai
+         exatamente onde a frase do site se dobra. O caso mais claro é o item 2 —
+         o site escreve "Define personas e o melhor match com produtos e coberturas
+         disponíveis com base no canal de venda"; a mock põe "Define personas e o
+         melhor match com produtos" no título e "Com base no canal de venda e
+         coberturas disponíveis." no apoio. Mesma informação, mesma ordem de
+         ideias, sem uma palavra nova.
+         Os itens 1 e 4 é que ganham escrita da mock no apoio, porque o site não
+         tem segunda linha para eles ("Com base no perfil, necessidades e contexto
+         de cada segurado." e "Simulando cenários e identificando oportunidades no
+         portfólio."). É o que a issue autoriza: copy da mock ONDE ela completa o
+         que já está nos dados.
+         Os quatro `text` de antes, na íntegra, porque é a escrita literal do site
+         e ninguém deve ter de reabrir a mock para reconstituí-la:
+
+             { text: 'Gera ofertas hiperpersonalizadas' },
+             { text: 'Define personas e o melhor match com produtos e coberturas disponíveis com base no canal de venda' },
+             { text: 'Aumenta as vendas na carteira corrente com a geração de novas ofertas para segurados da base' },
+             { text: 'Valida ofertas já vigentes e testes de novas coberturas a serem lançadas' },
+      */
       {
         kind: 'list',
         heading: 'O que o Match AI faz?',
         navLabel: 'O que faz',
         ordered: true,
         items: [
-          { text: 'Gera ofertas hiperpersonalizadas' },
           {
-            text: 'Define personas e o melhor match com produtos e coberturas disponíveis com base no canal de venda',
+            term: 'Gera ofertas hiperpersonalizadas',
+            text: 'Com base no perfil, necessidades e contexto de cada segurado.',
           },
           {
-            text: 'Aumenta as vendas na carteira corrente com a geração de novas ofertas para segurados da base',
+            term: 'Define personas e o melhor match com produtos',
+            text: 'Com base no canal de venda e coberturas disponíveis.',
+          },
+          {
+            term: 'Aumenta as vendas na carteira corrente',
+            text: 'Com a geração de novas ofertas para segurados da base.',
           },
           /* Site escreve "Valida Ofertas já vigentes e testes de novas coberturas
              a serem lançadas" — maiuscula no meio corrigida. */
-          { text: 'Valida ofertas já vigentes e testes de novas coberturas a serem lançadas' },
+          {
+            term: 'Valida ofertas já vigentes e testa novas coberturas',
+            text: 'Simulando cenários e identificando oportunidades no portfólio.',
+          },
+        ],
+      },
+      /* SIS-292 — SEÇÃO NOVA, e ela é da mock de ponta a ponta: título, subtítulo
+         e os três passos ("Dados do segurado", "Persona e contexto", "Oferta
+         personalizada"). Entra COMO BLOCO e não como constante dentro do
+         componente por uma razão mecânica, não de gosto: `src/data/pageSections.ts`
+         deriva as paradas do indicador lateral dos blocos COM título, então uma
+         seção que existisse só no JSX viraria uma faixa da página que a navegação
+         lateral não conhece — o defeito que aquele arquivo já registra.
+         `navLabel` existe porque o título inteiro não cabe na coluna do indicador
+         (a régua está no cabeçalho de `pageSections.ts`). */
+      {
+        kind: 'list',
+        heading: 'Da base à oferta mais relevante',
+        navLabel: 'Da base à oferta',
+        intro: 'Inteligência que transforma dados em oportunidades reais de negócio.',
+        items: [
+          { term: 'Dados do segurado', text: 'Informações, histórico e comportamento.' },
+          { term: 'Persona e contexto', text: 'Análise de perfil e necessidades.' },
+          { term: 'Oferta personalizada', text: 'Proposta ideal no momento certo.' },
         ],
       },
       {
@@ -83,14 +133,46 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
           'Match AI é uma solução desenvolvida pelo Sistran Labs, o laboratório de inovações da Sistran, onde as ideias se transformam em soluções assertivas que impulsionam o crescimento das Seguradoras.',
         ],
       },
+      /* SIS-292 — AS TRÊS COLUNAS DO "Posicionamento", SEM TÍTULO PRÓPRIO.
+         Bloco separado porque o tipo `AccelBlock` é uma união — um bloco é
+         parágrafos OU lista, e a mock tem as duas coisas debaixo do mesmo título.
+         Sem `heading` ele não vira parada do indicador lateral nem ganha `id`, que
+         é o comportamento certo: visualmente isto está DENTRO de "Posicionamento",
+         e uma segunda parada com o mesmo nome seria uma âncora duplicada.
+         Cada coluna é a condensação de um dos três parágrafos acima, como a mock
+         faz — não há claim novo: ecossistema/APIs, ISG Provider Lens e Sistran
+         Labs, na mesma ordem. */
+      {
+        kind: 'list',
+        items: [
+          {
+            term: 'Complementa o ecossistema',
+            text: 'Integra inteligência e APIs às iniciativas existentes.',
+          },
+          {
+            term: 'Reconhecimento ISG',
+            text: 'A Sistran possui reconhecimento da ISG Provider Lens em transformação digital.',
+          },
+          {
+            term: 'Inovação Sistran Labs',
+            text: 'Ideias transformadas em soluções assertivas para o crescimento das seguradoras.',
+          },
+        ],
+      },
     ],
   },
 
   {
-    id: 'lumina-ai',
-    name: 'Lumina AI',
-    /* Nome unificado como "Lumina AI": o site alterna Lumina AI / LuminaAI /
-       LuminaA I na mesma pagina. */
+    /* SIS-280 — dois n no `id` também aqui, pelo mesmo motivo do gêmeo em
+       `accelerators.ts`: é o `id` que o `[slug]/page.tsx` casa com o parâmetro da
+       rota, e os dois arquivos têm de concordar ou a rota deixa de resolver.
+       Linha anterior: id: 'lumina-ai', */
+    id: 'luminna-ai',
+    name: 'Luminna AI',
+    /* Nome unificado como "Luminna AI" (dois n): o site alterna Lumina AI /
+       LuminaAI / LuminaA I na mesma pagina, e a grafia correta da marca — a que
+       home, legado e "Metodo Luminna" ja usam — e Luminna.
+       Linha anterior: name: 'Lumina AI', */
     lead: 'Uma solução integrada de IA generativa que orquestra todo o Ciclo de Vida de Desenvolvimento de Software (SDLC), agilizando processos e integrando ferramentas líderes de mercado.',
     blocks: [
       {
@@ -133,7 +215,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'list',
         heading: 'Integração Versátil',
-        intro: 'O Lumina AI foi desenvolvido para ser facilmente integrável, oferecendo compatibilidade com uma ampla variedade de soluções de software de terceiros.',
+        intro: 'O Luminna AI foi desenvolvido para ser facilmente integrável, oferecendo compatibilidade com uma ampla variedade de soluções de software de terceiros.',
         /* No site cada categoria lista logos sem alt; sem texto, ficam so os
            titulos das categorias. */
         items: [
@@ -146,7 +228,7 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       {
         kind: 'paragraphs',
         paragraphs: [
-          'O Lumina AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez.',
+          'O Luminna AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez.',
           'Com sua integração versátil e ferramentas avançadas, é a solução ideal para empresas que buscam se destacar no mercado competitivo atual.',
         ],
       },

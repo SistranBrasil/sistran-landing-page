@@ -20,7 +20,8 @@ const ROTAS = [
   'quem-somos',
   'solucoes',
   'solucoes/match-ai',
-  'transformacao-legado',
+  // SIS-279 — `transformacao-legado` saiu: a rota foi apagada e capturar um 404
+  // não mede nada.
   'parceiros-e-implementacoes',
   'sistran-labs',
   'sistran-university',

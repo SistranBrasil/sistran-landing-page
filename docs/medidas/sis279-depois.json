@@ -1,0 +1,121 @@
+{
+  "issue": "SIS-279",
+  "leituras": {
+    "/": {
+      "status": 200,
+      "hrefsMortosNoHeader": [],
+      "hrefsMortosNoRodape": [],
+      "solucoes": {
+        "tag": "a",
+        "href": "/solucoes",
+        "corRealce": "rgba(255, 255, 255, 0.68)",
+        "ariaCurrent": null
+      },
+      "gatilhosDeSubmenu": [
+        "Abrir submenu de Quem somos",
+        "Fale com a gente"
+      ],
+      "rotulosDePrimeiroNivel": [
+        "Quem somos",
+        "Soluções, Serviços e Consultoria",
+        "Parceiros e Implementações",
+        "Eventos & Inovação",
+        "ESG",
+        "Trabalhe conosco",
+        "Contato",
+        "Quem somos",
+        "A Sistran",
+        "Sistran Labs",
+        "Sistran University",
+        "Sistran Latam",
+        "Soluções, Serviços e Consultoria",
+        "Parceiros e Implementações",
+        "Eventos & Inovação",
+        "ESG",
+        "Trabalhe conosco",
+        "Contato"
+      ]
+    },
+    "/solucoes": {
+      "status": 200,
+      "hrefsMortosNoHeader": [],
+      "hrefsMortosNoRodape": [],
+      "solucoes": {
+        "tag": "a",
+        "href": "/solucoes",
+        "corRealce": "rgb(255, 255, 255)",
+        "ariaCurrent": "page"
+      },
+      "gatilhosDeSubmenu": [
+        "Abrir submenu de Quem somos",
+        "Fale com a gente"
+      ],
+      "rotulosDePrimeiroNivel": [
+        "Quem somos",
+        "Soluções, Serviços e Consultoria",
+        "Parceiros e Implementações",
+        "Eventos & Inovação",
+        "ESG",
+        "Trabalhe conosco",
+        "Contato",
+        "Quem somos",
+        "A Sistran",
+        "Sistran Labs",
+        "Sistran University",
+        "Sistran Latam",
+        "Soluções, Serviços e Consultoria",
+        "Parceiros e Implementações",
+        "Eventos & Inovação",
+        "ESG",
+        "Trabalhe conosco",
+        "Contato"
+      ]
+    },
+    "/solucoes/match-ai": {
+      "status": 200,
+      "hrefsMortosNoHeader": [],
+      "hrefsMortosNoRodape": [],
+      "solucoes": {
+        "tag": "a",
+        "href": "/solucoes",
+        "corRealce": "rgb(255, 255, 255)",
+        "ariaCurrent": "page"
+      },
+      "gatilhosDeSubmenu": [
+        "Abrir submenu de Quem somos",
+        "Fale com a gente"
+      ],
+      "rotulosDePrimeiroNivel": [
+        "Quem somos",
+        "Soluções, Serviços e Consultoria",
+        "Parceiros e Implementações",
+        "Eventos & Inovação",
+        "ESG",
+        "Trabalhe conosco",
+        "Contato",
+        "Quem somos",
+        "A Sistran",
+        "Sistran Labs",
+        "Sistran University",
+        "Sistran Latam",
+        "Soluções, Serviços e Consultoria",
+        "Parceiros e Implementações",
+        "Eventos & Inovação",
+        "ESG",
+        "Trabalhe conosco",
+        "Contato"
+      ]
+    }
+  },
+  "submenuQuemSomos": [
+    "A Sistran",
+    "Sistran Labs",
+    "Sistran University",
+    "Sistran Latam"
+  ],
+  "rotaMorta": {
+    "status": 404,
+    "titulo": "Sistran · Beyond Technology",
+    "textoVisivel": "Pular para o conteúdo 404 This page could not be found."
+  }
+}

@@ -1,0 +1,1142 @@
+{
+  "esperado": {
+    "ITENS_DO_DADO": [
+      "Planejamento e design (cases) de testes desde a concepção do projeto",
+      "Testes de funcionalidade, desempenho e segurança",
+      "Melhoria contínua dos processos de QA integrado à gestão de ambiente técnico",
+      "Automação de testes para garantir eficiência e velocidade",
+      "Feedback contínuo e colaboração direta com desenvolvedores"
+    ],
+    "FECHO_DO_DADO": "Com o QA Integrado da Sistran, qualidade e agilidade caminham juntas, garantindo entregas mais rápidas e seguras.",
+    "TITULO_DA_LISTA": "Nossos serviços de QA Integrado incluem",
+    "ANCORA_ESPERADA": "nossos-servicos-de-qa-integrado-incluem"
+  },
+  "w390": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "QA Integrado",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "qualidade-nao-e-uma-etapa-final",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Qualidade não é uma etapa final",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "nossos-servicos-de-qa-integrado-incluem",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Nossos serviços de QA Integrado incluem",
+        "cards": 5,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "uma-abordagem-colaborativa",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "titulo": "Uma abordagem colaborativa",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": null,
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Conheça também",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "identidade": {
+      "nosMatchai": 0,
+      "nosSmartminer": 0,
+      "nosQaintegrado": 96,
+      "manchete": {
+        "texto": "QA Integrado",
+        "peso": "700",
+        "temImagem": false
+      },
+      "carimbos": 0,
+      "capaDoHero": "/images/solucoes/qa-integrado-hero.webp",
+      "selos": 3,
+      "aneis": 3,
+      "fios": 2,
+      "vistos": 12,
+      "casos": 36,
+      "artesDosCards": [
+        "/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp"
+      ]
+    },
+    "escrita": {
+      "tituloDaLista": "Nossos serviços de QA Integrado incluem",
+      "ancoraDaLista": "nossos-servicos-de-qa-integrado-incluem",
+      "itens": [
+        "Planejamento e design (cases) de testes desde a concepção do projeto",
+        "Testes de funcionalidade, desempenho e segurança",
+        "Melhoria contínua dos processos de QA integrado à gestão de ambiente técnico",
+        "Automação de testes para garantir eficiência e velocidade",
+        "Feedback contínuo e colaboração direta com desenvolvedores"
+      ],
+      "ordinais": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "titulos": [
+        "QA Integrado",
+        "Qualidade não é uma etapa final",
+        "Nossos serviços de QA Integrado incluem",
+        "Uma abordagem colaborativa",
+        "Desenvolvedores",
+        "Analistas de negócios",
+        "Outros stakeholders",
+        "Conheça também",
+        "Fale com a Gente!"
+      ],
+      "ocorrenciasDoNomeEmTexto": 5,
+      "ocorrenciasNaDobra": 1,
+      "fecho": "Com o QA Integrado da Sistran, qualidade e agilidade caminham juntas, garantindo entregas mais rápidas e seguras.",
+      "itensBatem": true,
+      "fechoBate": true,
+      "ancoraBate": true
+    },
+    "movimento": {
+      "visto": [
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "1px",
+          "quadroB": "1px",
+          "display": "inline",
+          "visivel": false,
+          "moveu": false,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0.00819786px",
+          "quadroB": "0.00819786px",
+          "display": "inline",
+          "visivel": false,
+          "moveu": false,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "-0.0489002px",
+          "quadroB": "-0.0489002px",
+          "display": "inline",
+          "visivel": false,
+          "moveu": false,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "1px",
+          "quadroB": "1px",
+          "display": "inline",
+          "visivel": false,
+          "moveu": false,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0.00819786px",
+          "quadroB": "0.00819786px",
+          "display": "inline",
+          "visivel": false,
+          "moveu": false,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "-0.0489002px",
+          "quadroB": "-0.0489002px",
+          "display": "inline",
+          "visivel": false,
+          "moveu": false,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "1px",
+          "quadroB": "1px",
+          "display": "inline",
+          "visivel": false,
+          "moveu": false,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0.00819786px",
+          "quadroB": "0.00819786px",
+          "display": "inline",
+          "visivel": false,
+          "moveu": false,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "-0.0489002px",
+          "quadroB": "-0.0489002px",
+          "display": "inline",
+          "visivel": false,
+          "moveu": false,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "1px",
+          "quadroB": "1px",
+          "display": "inline",
+          "visivel": false,
+          "moveu": false,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0.00819786px",
+          "quadroB": "0.00819786px",
+          "display": "inline",
+          "visivel": false,
+          "moveu": false,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "-0.0489002px",
+          "quadroB": "-0.0489002px",
+          "display": "inline",
+          "visivel": false,
+          "moveu": false,
+          "tracejado": "1px"
+        }
+      ],
+      "fio": [
+        {
+          "animacao": "qaintegrado-conta-corre",
+          "quadroA": "0%",
+          "quadroB": "0%",
+          "display": "none",
+          "visivel": false,
+          "moveu": false,
+          "fundoBase": "rgba(124, 203, 243, 0.35)"
+        },
+        {
+          "animacao": "qaintegrado-conta-corre",
+          "quadroA": "0%",
+          "quadroB": "0%",
+          "display": "none",
+          "visivel": false,
+          "moveu": false,
+          "fundoBase": "rgba(124, 203, 243, 0.35)"
+        }
+      ],
+      "anel": [
+        {
+          "animacao": "qaintegrado-anel-gira",
+          "quadroA": "2.63772deg",
+          "quadroB": "19.3057deg",
+          "display": "block",
+          "visivel": true,
+          "moveu": true
+        },
+        {
+          "animacao": "qaintegrado-anel-gira",
+          "quadroA": "153.97deg",
+          "quadroB": "170.634deg",
+          "display": "block",
+          "visivel": true,
+          "moveu": true
+        },
+        {
+          "animacao": "qaintegrado-anel-gira",
+          "quadroA": "304.638deg",
+          "quadroB": "321.97deg",
+          "display": "block",
+          "visivel": true,
+          "moveu": true
+        }
+      ]
+    },
+    "contrastes": [
+      {
+        "alvo": "QA Integrado",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(2, 28, 63)",
+        "contraste": 16.929
+      },
+      {
+        "alvo": "Fale com um especialista",
+        "tinta": "rgb(3, 32, 51)",
+        "fundoComposto": "rgb(124, 203, 243)",
+        "contraste": 9.293
+      },
+      {
+        "alvo": "Qualidade não é uma etapa final",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(233, 241, 249)",
+        "contraste": 14.249
+      },
+      {
+        "alvo": "Nossos serviços de QA Integrado in",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(235, 245, 252)",
+        "contraste": 14.701
+      },
+      {
+        "alvo": "Uma abordagem colaborativa",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(2, 28, 62)",
+        "contraste": 16.96
+      },
+      {
+        "alvo": "Fale com um especialista",
+        "tinta": "rgb(3, 32, 51)",
+        "fundoComposto": "rgb(124, 203, 243)",
+        "contraste": 9.293
+      },
+      {
+        "alvo": "Conheça também",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(232, 240, 249)",
+        "contraste": 14.131
+      },
+      {
+        "alvo": "Fale com a Gente!",
+        "tinta": "rgb(6, 39, 95)",
+        "fundoComposto": "rgb(157, 232, 247)",
+        "contraste": 10.47
+      },
+      {
+        "alvo": "Fale com a SISTRAN",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(6, 41, 98)",
+        "contraste": 13.988
+      }
+    ],
+    "subtituloContraste": {
+      "tinta": "rgba(255, 255, 255, 0.85)",
+      "fundoComposto": "rgb(0, 24, 58)",
+      "contraste": 17.621
+    },
+    "residuoDaPlaca": {
+      "janela": {
+        "x": 8,
+        "y": 387,
+        "largura": 240,
+        "altura": 70,
+        "faixa": null,
+        "cabeADireita": false,
+        "contaminada": false
+      },
+      "motivo": "sem vao livre a direita do paragrafo nesta largura: a janela cairia sobre selo/anel/icone do trilho, que sao tinta clara de grafismo e nao residuo da placa"
+    },
+    "erros": []
+  },
+  "w1440": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "QA Integrado",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "qualidade-nao-e-uma-etapa-final",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Qualidade não é uma etapa final",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "nossos-servicos-de-qa-integrado-incluem",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Nossos serviços de QA Integrado incluem",
+        "cards": 5,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "uma-abordagem-colaborativa",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "titulo": "Uma abordagem colaborativa",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": null,
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Conheça também",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "identidade": {
+      "nosMatchai": 0,
+      "nosSmartminer": 0,
+      "nosQaintegrado": 96,
+      "manchete": {
+        "texto": "QA Integrado",
+        "peso": "700",
+        "temImagem": false
+      },
+      "carimbos": 0,
+      "capaDoHero": "/images/solucoes/qa-integrado-hero.webp",
+      "selos": 3,
+      "aneis": 3,
+      "fios": 2,
+      "vistos": 12,
+      "casos": 36,
+      "artesDosCards": [
+        "/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp"
+      ]
+    },
+    "escrita": {
+      "tituloDaLista": "Nossos serviços de QA Integrado incluem",
+      "ancoraDaLista": "nossos-servicos-de-qa-integrado-incluem",
+      "itens": [
+        "Planejamento e design (cases) de testes desde a concepção do projeto",
+        "Testes de funcionalidade, desempenho e segurança",
+        "Melhoria contínua dos processos de QA integrado à gestão de ambiente técnico",
+        "Automação de testes para garantir eficiência e velocidade",
+        "Feedback contínuo e colaboração direta com desenvolvedores"
+      ],
+      "ordinais": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "titulos": [
+        "QA Integrado",
+        "Qualidade não é uma etapa final",
+        "Nossos serviços de QA Integrado incluem",
+        "Uma abordagem colaborativa",
+        "Desenvolvedores",
+        "Analistas de negócios",
+        "Outros stakeholders",
+        "Conheça também",
+        "Fale com a Gente!"
+      ],
+      "ocorrenciasDoNomeEmTexto": 5,
+      "ocorrenciasNaDobra": 1,
+      "fecho": "Com o QA Integrado da Sistran, qualidade e agilidade caminham juntas, garantindo entregas mais rápidas e seguras.",
+      "itensBatem": true,
+      "fechoBate": true,
+      "ancoraBate": true
+    },
+    "movimento": {
+      "visto": [
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0.144599px",
+          "quadroB": "0.00177645px",
+          "display": "inline",
+          "visivel": true,
+          "moveu": true,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "-0.288414px",
+          "quadroB": "-0.649774px",
+          "display": "inline",
+          "visivel": true,
+          "moveu": true,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0.393162px",
+          "quadroB": "0.0923453px",
+          "display": "inline",
+          "visivel": true,
+          "moveu": true,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "-0.130115px",
+          "quadroB": "-0.443797px",
+          "display": "inline",
+          "visivel": true,
+          "moveu": true,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0.570916px",
+          "quadroB": "0.232032px",
+          "display": "inline",
+          "visivel": true,
+          "moveu": true,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "-0.0118012px",
+          "quadroB": "-0.190952px",
+          "display": "inline",
+          "visivel": true,
+          "moveu": true,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0.774549px",
+          "quadroB": "0.407823px",
+          "display": "inline",
+          "visivel": true,
+          "moveu": true,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0px",
+          "quadroB": "-0.0669184px",
+          "display": "inline",
+          "visivel": true,
+          "moveu": true,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0.951274px",
+          "quadroB": "0.698518px",
+          "display": "inline",
+          "visivel": true,
+          "moveu": true,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0px",
+          "quadroB": "-0.00705555px",
+          "display": "inline",
+          "visivel": true,
+          "moveu": true,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0.997739px",
+          "quadroB": "0.860615px",
+          "display": "inline",
+          "visivel": true,
+          "moveu": true,
+          "tracejado": "1px"
+        },
+        {
+          "animacao": "qaintegrado-visto-desenha",
+          "quadroA": "0px",
+          "quadroB": "0px",
+          "display": "inline",
+          "visivel": true,
+          "moveu": false,
+          "tracejado": "1px"
+        }
+      ],
+      "fio": [
+        {
+          "animacao": "qaintegrado-conta-corre",
+          "quadroA": "calc(59.8743% + 3.94972px)",
+          "quadroB": "calc(72.8931% + 9.15722px)",
+          "display": "block",
+          "visivel": true,
+          "moveu": true,
+          "fundoBase": "rgba(124, 203, 243, 0.35)"
+        },
+        {
+          "animacao": "qaintegrado-conta-corre",
+          "quadroA": "calc(84.3524% + 13.741px)",
+          "quadroB": "calc(97.3743% + 18.9497px)",
+          "display": "block",
+          "visivel": true,
+          "moveu": true,
+          "fundoBase": "rgba(124, 203, 243, 0.35)"
+        }
+      ],
+      "anel": [
+        {
+          "animacao": "qaintegrado-anel-gira",
+          "quadroA": "355.303deg",
+          "quadroB": "12.6351deg",
+          "display": "block",
+          "visivel": true,
+          "moveu": true
+        },
+        {
+          "animacao": "qaintegrado-anel-gira",
+          "quadroA": "146.635deg",
+          "quadroB": "162.635deg",
+          "display": "block",
+          "visivel": true,
+          "moveu": true
+        },
+        {
+          "animacao": "qaintegrado-anel-gira",
+          "quadroA": "297.971deg",
+          "quadroB": "314.635deg",
+          "display": "block",
+          "visivel": true,
+          "moveu": true
+        }
+      ]
+    },
+    "contrastes": [
+      {
+        "alvo": "QA Integrado",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(13, 107, 119)",
+        "contraste": 6.201
+      },
+      {
+        "alvo": "Fale com um especialista",
+        "tinta": "rgb(3, 32, 51)",
+        "fundoComposto": "rgb(124, 203, 243)",
+        "contraste": 9.293
+      },
+      {
+        "alvo": "Qualidade não é uma etapa final",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(250, 252, 253)",
+        "contraste": 15.791
+      },
+      {
+        "alvo": "Nossos serviços de QA Integrado in",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(211, 233, 248)",
+        "contraste": 12.985
+      },
+      {
+        "alvo": "Uma abordagem colaborativa",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(2, 28, 62)",
+        "contraste": 16.96
+      },
+      {
+        "alvo": "Fale com um especialista",
+        "tinta": "rgb(3, 32, 51)",
+        "fundoComposto": "rgb(124, 203, 243)",
+        "contraste": 9.293
+      },
+      {
+        "alvo": "Conheça também",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(215, 232, 245)",
+        "contraste": 12.961
+      },
+      {
+        "alvo": "Fale com a Gente!",
+        "tinta": "rgb(6, 39, 95)",
+        "fundoComposto": "rgb(161, 227, 244)",
+        "contraste": 10.121
+      },
+      {
+        "alvo": "Fale com a SISTRAN",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(255, 255, 255)",
+        "contraste": 16.249
+      }
+    ],
+    "subtituloContraste": {
+      "tinta": "rgba(255, 255, 255, 0.85)",
+      "fundoComposto": "rgb(8, 62, 108)",
+      "contraste": 10.961
+    },
+    "residuoDaPlaca": {
+      "janela": {
+        "x": 954,
+        "y": 395,
+        "largura": 240,
+        "altura": 70,
+        "faixa": null,
+        "cabeADireita": true,
+        "contaminada": false
+      },
+      "minLuma": 22.21,
+      "maxLuma": 46.4,
+      "mediaLuma": 23.72,
+      "amplitude": 24.19
+    },
+    "erros": []
+  },
+  "irma-match-ai": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "matchai-campanha",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Ofertas inteligentes. Conversas mais relevan",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "o-que-o-match-ai-faz",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "O que o Match AI faz?",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "da-base-a-oferta-mais-relevante",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "titulo": "Da base à oferta mais relevante",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 1
+        }
+      },
+      {
+        "id": "posicionamento",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Posicionamento",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Conheça também",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "vazamentoDaqui": 0
+  },
+  "irma-smart-miner": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "o-que-e-o-smart-miner",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "O que é o Smart Miner?",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "onde-usar-o-smart-miner",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Onde usar o Smart Miner?",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "como-usar-o-smart-miner",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "titulo": "Como usar o Smart Miner?",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Conheça também",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "vazamentoDaqui": 0
+  },
+  "genericaIntacta": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "titulo": "Lumina AI",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "desafios-no-desenvolvimento-de-software",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "Desafios no desenvolvimento de software",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "beneficios",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "Benefícios",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "integracao-versatil",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "Integração Versátil",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": null,
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "outras-solucoes",
+        "tag": "NAV",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "Outras soluções",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "temTopo": true,
+    "corposProprios": 0,
+    "erros": []
+  },
+  "indicador": {
+    "indicadorAqui": 0,
+    "indicadorNoControle": 5
+  },
+  "reduce-media": {
+    "atributoNoHtml": "reduce",
+    "animacoesVivas": {
+      "visto": 0,
+      "fio": 0,
+      "cartao": 0,
+      "selo": 0,
+      "anel": 0
+    },
+    "vistosDesenhados": 12,
+    "totalDeVistos": 12,
+    "vistosVisiveis": true,
+    "casosVisiveis": true,
+    "fioSemConta": true,
+    "fioComLinha": true,
+    "fio": [
+      {
+        "animacao": "none",
+        "opacidade": "1",
+        "traco": "0px",
+        "fundo": "none",
+        "corDeFundo": "rgba(124, 203, 243, 0.35)",
+        "display": "block"
+      },
+      {
+        "animacao": "none",
+        "opacidade": "1",
+        "traco": "0px",
+        "fundo": "none",
+        "corDeFundo": "rgba(124, 203, 243, 0.35)",
+        "display": "block"
+      }
+    ],
+    "aneisVisiveis": true,
+    "erros": []
+  },
+  "reduce-preferencia": {
+    "atributoNoHtml": "reduce",
+    "animacoesVivas": {
+      "visto": 0,
+      "fio": 0,
+      "cartao": 0,
+      "selo": 0,
+      "anel": 0
+    },
+    "vistosDesenhados": 12,
+    "totalDeVistos": 12,
+    "vistosVisiveis": true,
+    "casosVisiveis": true,
+    "fioSemConta": true,
+    "fioComLinha": true,
+    "fio": [
+      {
+        "animacao": "none",
+        "opacidade": "1",
+        "traco": "0px",
+        "fundo": "none",
+        "corDeFundo": "rgba(124, 203, 243, 0.35)",
+        "display": "block"
+      },
+      {
+        "animacao": "none",
+        "opacidade": "1",
+        "traco": "0px",
+        "fundo": "none",
+        "corDeFundo": "rgba(124, 203, 243, 0.35)",
+        "display": "block"
+      }
+    ],
+    "aneisVisiveis": true,
+    "erros": []
+  }
+}

@@ -1,0 +1,1379 @@
+{
+  "390": {
+    "alturaDoDocumento": 8589,
+    "transbordoPx": 0,
+    "larguraDaJanela": 390,
+    "corDoBody": "rgb(18, 115, 188)",
+    "classesDoMain": "pt-28 md:pt-36 solucoes-canvas",
+    "faixas": [
+      {
+        "nivel": 1,
+        "tag": "div",
+        "id": null,
+        "classes": "solucoes-atmosfera",
+        "topoNoDocumento": 0,
+        "altura": 900,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "-1",
+        "posicao": "fixed"
+      },
+      {
+        "nivel": 1,
+        "tag": "div",
+        "id": null,
+        "classes": "hero-backdrop",
+        "topoNoDocumento": 112,
+        "altura": 620,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "auto",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "hero-backdrop-midia",
+        "topoNoDocumento": 0,
+        "altura": 732,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "sim",
+        "zIndex": "0",
+        "posicao": "absolute"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "hero-backdrop-veu",
+        "topoNoDocumento": 0,
+        "altura": 732,
+        "corDeFundo": "rgba(4, 27, 61, 0.16)",
+        "imagemDeFundo": "sim",
+        "zIndex": "1",
+        "posicao": "absolute"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "hero-backdrop-conteudo",
+        "topoNoDocumento": 112,
+        "altura": 620,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "2",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 1,
+        "tag": "section",
+        "id": "tecnologia-disruptiva",
+        "classes": "section-light section-light-blue section-py relative overflow-hidden",
+        "topoNoDocumento": 756,
+        "altura": 2637,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "auto",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "pointer-events-none absolute inset-0 z-0",
+        "topoNoDocumento": 756,
+        "altura": 2637,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "0",
+        "posicao": "absolute"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "container-lp relative z-10",
+        "topoNoDocumento": 836,
+        "altura": 2477,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "10",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 1,
+        "tag": "section",
+        "id": "servicos-diferenciais",
+        "classes": "section-py relative overflow-x-clip solucoes-palco-servicos",
+        "topoNoDocumento": 3393,
+        "altura": 1581,
+        "corDeFundo": "rgb(18, 115, 188)",
+        "imagemDeFundo": "sim",
+        "zIndex": "auto",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 1,
+        "tag": "section",
+        "id": "consultoria",
+        "classes": "section-light section-light-blue section-py relative overflow-hidden",
+        "topoNoDocumento": 4974,
+        "altura": 1751,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "auto",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "pointer-events-none absolute inset-0 z-0",
+        "topoNoDocumento": 4974,
+        "altura": 1751,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "0",
+        "posicao": "absolute"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "container-lp relative z-10 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-14",
+        "topoNoDocumento": 5054,
+        "altura": 1591,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "10",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 1,
+        "tag": "section",
+        "id": null,
+        "classes": "cta-ref section-py relative overflow-hidden",
+        "topoNoDocumento": 6725,
+        "altura": 749,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "sim",
+        "zIndex": "auto",
+        "posicao": "relative"
+      }
+    ],
+    "tintas": {
+      "hero-h1": {
+        "seletor": "#topo h1, main h1",
+        "cor": "rgb(255, 255, 255)",
+        "tamanho": "32px",
+        "peso": "400",
+        "retangulo": [
+          20,
+          216,
+          350,
+          276
+        ]
+      },
+      "hero-lead": {
+        "seletor": "main h1 ~ p, #topo p",
+        "cor": "rgb(165, 240, 255)",
+        "tamanho": "18px",
+        "peso": "400",
+        "retangulo": [
+          20,
+          512,
+          350,
+          29
+        ]
+      },
+      "aceleradores-h2": {
+        "seletor": "#tecnologia-disruptiva h2",
+        "cor": "rgb(10, 31, 68)",
+        "tamanho": "35.2px",
+        "peso": "400",
+        "retangulo": [
+          20,
+          913,
+          350,
+          34
+        ]
+      },
+      "aceleradores-p": {
+        "seletor": "#tecnologia-disruptiva p",
+        "cor": "rgb(61, 90, 128)",
+        "tamanho": "18px",
+        "peso": "400",
+        "retangulo": [
+          20,
+          962,
+          350,
+          176
+        ]
+      },
+      "servicos-h2": {
+        "seletor": "#servicos-diferenciais h2",
+        "cor": "rgb(255, 255, 255)",
+        "tamanho": "30.4px",
+        "peso": "400",
+        "retangulo": [
+          20,
+          3884,
+          112,
+          32
+        ]
+      },
+      "servicos-p": {
+        "seletor": "#servicos-diferenciais p",
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "tamanho": "15.2px",
+        "peso": "400",
+        "retangulo": [
+          20,
+          3928,
+          350,
+          97
+        ]
+      },
+      "servicos-cta": {
+        "seletor": "#servicos-diferenciais .btn-primary",
+        "cor": "rgb(255, 255, 255)",
+        "tamanho": "14px",
+        "peso": "600",
+        "retangulo": [
+          20,
+          4874,
+          232,
+          44
+        ]
+      },
+      "consultoria-h2": {
+        "seletor": "#consultoria h2",
+        "cor": "rgb(10, 31, 68)",
+        "tamanho": "35.2px",
+        "peso": "400",
+        "retangulo": [
+          20,
+          5131,
+          350,
+          34
+        ]
+      },
+      "consultoria-p": {
+        "seletor": "#consultoria p",
+        "cor": "rgb(61, 90, 128)",
+        "tamanho": "16px",
+        "peso": "400",
+        "retangulo": [
+          20,
+          5180,
+          350,
+          78
+        ]
+      }
+    },
+    "cards": {
+      "quantos": 12,
+      "amostra": [
+        {
+          "classes": "accel-card on-dark",
+          "caixa": [
+            350,
+            299
+          ],
+          "corDeFundo": "rgb(4, 26, 48)",
+          "raio": "28px",
+          "borda": "rgba(18, 115, 188, 0.38)"
+        },
+        {
+          "classes": "accel-card__foto",
+          "caixa": [
+            348,
+            297
+          ],
+          "corDeFundo": "rgba(0, 0, 0, 0)",
+          "raio": "0px",
+          "borda": "rgb(229, 231, 235)"
+        },
+        {
+          "classes": "accel-card__veu",
+          "caixa": [
+            348,
+            297
+          ],
+          "corDeFundo": "rgba(0, 0, 0, 0)",
+          "raio": "0px",
+          "borda": "rgb(229, 231, 235)"
+        },
+        {
+          "classes": "accel-card__corpo",
+          "caixa": [
+            348,
+            297
+          ],
+          "corDeFundo": "rgba(0, 0, 0, 0)",
+          "raio": "0px",
+          "borda": "rgb(229, 231, 235)"
+        },
+        {
+          "classes": "accel-card__texto",
+          "caixa": [
+            300,
+            115
+          ],
+          "corDeFundo": "rgba(0, 0, 0, 0)",
+          "raio": "0px",
+          "borda": "rgb(229, 231, 235)"
+        },
+        {
+          "classes": "accel-card__cta",
+          "caixa": [
+            177,
+            38
+          ],
+          "corDeFundo": "rgba(4, 26, 48, 0.55)",
+          "raio": "999px",
+          "borda": "rgba(18, 115, 188, 0.55)"
+        }
+      ]
+    },
+    "capturaPorFaixa": {
+      "div-solucoes-atmosfera": {
+        "arquivo": "docs/capturas/sis204-div-solucoes-atmosfera-390-depois.png",
+        "faixa": "solucoes-atmosfera",
+        "topoNoDocumento": 0,
+        "altura": 900,
+        "rolagem": 0
+      },
+      "div-hero-backdrop": {
+        "arquivo": "docs/capturas/sis204-div-hero-backdrop-390-depois.png",
+        "faixa": "hero-backdrop",
+        "topoNoDocumento": 112,
+        "altura": 620,
+        "rolagem": 0
+      },
+      "tecnologia-disruptiva": {
+        "arquivo": "docs/capturas/sis204-tecnologia-disruptiva-390-depois.png",
+        "faixa": "tecnologia-disruptiva",
+        "topoNoDocumento": 756,
+        "altura": 2637,
+        "rolagem": 1625
+      },
+      "servicos-diferenciais": {
+        "arquivo": "docs/capturas/sis204-servicos-diferenciais-390-depois.png",
+        "faixa": "servicos-diferenciais",
+        "topoNoDocumento": 3393,
+        "altura": 1581,
+        "rolagem": 3734
+      },
+      "consultoria": {
+        "arquivo": "docs/capturas/sis204-consultoria-390-depois.png",
+        "faixa": "consultoria",
+        "topoNoDocumento": 4974,
+        "altura": 1751,
+        "rolagem": 5400
+      },
+      "section-cta-ref": {
+        "arquivo": "docs/capturas/sis204-section-cta-ref-390-depois.png",
+        "faixa": "cta-ref section-py relative overflow-hidden",
+        "topoNoDocumento": 6725,
+        "altura": 749,
+        "rolagem": 6650
+      }
+    },
+    "tintaNaJanela": {
+      "hero-h1": {
+        "arquivo": "docs/capturas/sis204-tinta-hero-h1-390-depois.png",
+        "retangulo": [
+          20,
+          216,
+          350,
+          276
+        ],
+        "cor": "rgb(255, 255, 255)"
+      },
+      "hero-lead": {
+        "arquivo": "docs/capturas/sis204-tinta-hero-lead-390-depois.png",
+        "retangulo": [
+          20,
+          450,
+          350,
+          29
+        ],
+        "cor": "rgb(165, 240, 255)"
+      },
+      "aceleradores-h2": {
+        "arquivo": "docs/capturas/sis204-tinta-aceleradores-h2-390-depois.png",
+        "retangulo": [
+          20,
+          416,
+          350,
+          34
+        ],
+        "cor": "rgb(10, 31, 68)"
+      },
+      "aceleradores-p": {
+        "arquivo": "docs/capturas/sis204-tinta-aceleradores-p-390-depois.png",
+        "retangulo": [
+          20,
+          416,
+          350,
+          176
+        ],
+        "cor": "rgb(61, 90, 128)"
+      },
+      "servicos-h2": {
+        "arquivo": "docs/capturas/sis204-tinta-servicos-h2-390-depois.png",
+        "retangulo": [
+          20,
+          426,
+          112,
+          32
+        ],
+        "cor": "rgb(255, 255, 255)"
+      },
+      "servicos-p": {
+        "arquivo": "docs/capturas/sis204-tinta-servicos-p-390-depois.png",
+        "retangulo": [
+          20,
+          426,
+          350,
+          97
+        ],
+        "cor": "rgba(255, 255, 255, 0.85)"
+      },
+      "servicos-cta": {
+        "arquivo": "docs/capturas/sis204-tinta-servicos-cta-390-depois.png",
+        "retangulo": [
+          20,
+          426,
+          232,
+          44
+        ],
+        "cor": "rgb(255, 255, 255)"
+      },
+      "consultoria-h2": {
+        "arquivo": "docs/capturas/sis204-tinta-consultoria-h2-390-depois.png",
+        "retangulo": [
+          20,
+          416,
+          350,
+          34
+        ],
+        "cor": "rgb(10, 31, 68)"
+      },
+      "consultoria-p": {
+        "arquivo": "docs/capturas/sis204-tinta-consultoria-p-390-depois.png",
+        "retangulo": [
+          20,
+          416,
+          350,
+          78
+        ],
+        "cor": "rgb(61, 90, 128)"
+      }
+    },
+    "capturaDoTopo": "docs/capturas/sis204-solucoes-390-depois-topo.png",
+    "pixelPorFaixa": [
+      {
+        "faixa": "solucoes-atmosfera",
+        "arquivo": "docs/capturas/sis204-div-solucoes-atmosfera-390-depois.png",
+        "topoNoDocumento": 0,
+        "altura": 900,
+        "rolagem": 0,
+        "calhaX": 6,
+        "fracoesAmostradas": [
+          0.2,
+          0.5,
+          0.8
+        ],
+        "pixels": [
+          "rgb(17, 46, 76)",
+          "rgb(10, 41, 70)",
+          "rgb(28, 48, 76)"
+        ],
+        "pareceAzulDoBody": false,
+        "nome": "div-solucoes-atmosfera"
+      },
+      {
+        "faixa": "hero-backdrop",
+        "arquivo": "docs/capturas/sis204-div-hero-backdrop-390-depois.png",
+        "topoNoDocumento": 112,
+        "altura": 620,
+        "rolagem": 0,
+        "calhaX": 6,
+        "fracoesAmostradas": [
+          0.2,
+          0.5,
+          0.8
+        ],
+        "pixels": [
+          "rgb(11, 34, 63)",
+          "rgb(11, 41, 71)",
+          "rgb(5, 26, 55)"
+        ],
+        "pareceAzulDoBody": false,
+        "nome": "div-hero-backdrop"
+      },
+      {
+        "faixa": "tecnologia-disruptiva",
+        "arquivo": "docs/capturas/sis204-tecnologia-disruptiva-390-depois.png",
+        "topoNoDocumento": 756,
+        "altura": 2637,
+        "rolagem": 1625,
+        "calhaX": 6,
+        "fracoesAmostradas": [
+          0.5
+        ],
+        "pixels": [
+          "rgb(218, 235, 248)"
+        ],
+        "pareceAzulDoBody": false,
+        "nome": "tecnologia-disruptiva"
+      },
+      {
+        "faixa": "servicos-diferenciais",
+        "arquivo": "docs/capturas/sis204-servicos-diferenciais-390-depois.png",
+        "topoNoDocumento": 3393,
+        "altura": 1581,
+        "rolagem": 3734,
+        "calhaX": 6,
+        "fracoesAmostradas": [
+          0.5
+        ],
+        "pixels": [
+          "rgb(20, 118, 186)"
+        ],
+        "pareceAzulDoBody": true,
+        "nome": "servicos-diferenciais"
+      },
+      {
+        "faixa": "consultoria",
+        "arquivo": "docs/capturas/sis204-consultoria-390-depois.png",
+        "topoNoDocumento": 4974,
+        "altura": 1751,
+        "rolagem": 5400,
+        "calhaX": 6,
+        "fracoesAmostradas": [
+          0.5
+        ],
+        "pixels": [
+          "rgb(227, 241, 251)"
+        ],
+        "pareceAzulDoBody": false,
+        "nome": "consultoria"
+      },
+      {
+        "faixa": "cta-ref section-py relative overflow-hidden",
+        "arquivo": "docs/capturas/sis204-section-cta-ref-390-depois.png",
+        "topoNoDocumento": 6725,
+        "altura": 749,
+        "rolagem": 6650,
+        "calhaX": 6,
+        "fracoesAmostradas": [
+          0.2,
+          0.5,
+          0.8
+        ],
+        "pixels": [
+          "rgb(237, 244, 250)",
+          "rgb(225, 237, 246)",
+          "rgb(234, 242, 248)"
+        ],
+        "pareceAzulDoBody": false,
+        "nome": "section-cta-ref"
+      }
+    ],
+    "contrasteDasTintas": {
+      "hero-h1": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(12, 41, 71)",
+        "amostraEm": [
+          10,
+          351
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-hero-h1-390-depois.png",
+        "contraste": 14.75
+      },
+      "hero-lead": {
+        "tinta": "rgb(165, 240, 255)",
+        "fundo": "rgb(9, 41, 73)",
+        "amostraEm": [
+          10,
+          462
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-hero-lead-390-depois.png",
+        "contraste": 11.58
+      },
+      "aceleradores-h2": {
+        "tinta": "rgb(10, 31, 68)",
+        "fundo": "rgb(228, 242, 251)",
+        "amostraEm": [
+          10,
+          430
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-aceleradores-h2-390-depois.png",
+        "contraste": 14.23
+      },
+      "aceleradores-p": {
+        "tinta": "rgb(61, 90, 128)",
+        "fundo": "rgb(226, 240, 251)",
+        "amostraEm": [
+          10,
+          501
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-aceleradores-p-390-depois.png",
+        "contraste": 6.09
+      },
+      "servicos-h2": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(22, 124, 196)",
+        "amostraEm": [
+          10,
+          439
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-servicos-h2-390-depois.png",
+        "contraste": 4.45
+      },
+      "servicos-p": {
+        "tinta": "rgba(255, 255, 255, 0.85)",
+        "fundo": "rgb(23, 127, 198)",
+        "amostraEm": [
+          10,
+          472
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-servicos-p-390-depois.png",
+        "contraste": 4.3
+      },
+      "servicos-cta": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(21, 124, 196)",
+        "amostraEm": [
+          10,
+          445
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-servicos-cta-390-depois.png",
+        "contraste": 4.46
+      },
+      "consultoria-h2": {
+        "tinta": "rgb(10, 31, 68)",
+        "fundo": "rgb(224, 236, 250)",
+        "amostraEm": [
+          10,
+          430
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-consultoria-h2-390-depois.png",
+        "contraste": 13.58
+      },
+      "consultoria-p": {
+        "tinta": "rgb(61, 90, 128)",
+        "fundo": "rgb(224, 234, 250)",
+        "amostraEm": [
+          10,
+          452
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-consultoria-p-390-depois.png",
+        "contraste": 5.83
+      }
+    }
+  },
+  "1440": {
+    "alturaDoDocumento": 7683,
+    "transbordoPx": 0,
+    "larguraDaJanela": 1440,
+    "corDoBody": "rgb(18, 115, 188)",
+    "classesDoMain": "pt-28 md:pt-36 solucoes-canvas",
+    "faixas": [
+      {
+        "nivel": 1,
+        "tag": "div",
+        "id": null,
+        "classes": "solucoes-atmosfera",
+        "topoNoDocumento": 0,
+        "altura": 900,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "-1",
+        "posicao": "fixed"
+      },
+      {
+        "nivel": 1,
+        "tag": "div",
+        "id": null,
+        "classes": "hero-backdrop",
+        "topoNoDocumento": 144,
+        "altura": 522,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "auto",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "hero-backdrop-midia",
+        "topoNoDocumento": 0,
+        "altura": 666,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "sim",
+        "zIndex": "0",
+        "posicao": "absolute"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "hero-backdrop-veu",
+        "topoNoDocumento": 0,
+        "altura": 666,
+        "corDeFundo": "rgba(4, 27, 61, 0.16)",
+        "imagemDeFundo": "sim",
+        "zIndex": "1",
+        "posicao": "absolute"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "hero-backdrop-conteudo",
+        "topoNoDocumento": 144,
+        "altura": 522,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "2",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 1,
+        "tag": "section",
+        "id": "tecnologia-disruptiva",
+        "classes": "section-light section-light-blue section-py relative overflow-hidden",
+        "topoNoDocumento": 666,
+        "altura": 1757,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "auto",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "pointer-events-none absolute inset-0 z-0",
+        "topoNoDocumento": 666,
+        "altura": 1757,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "0",
+        "posicao": "absolute"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "container-lp relative z-10",
+        "topoNoDocumento": 794,
+        "altura": 1501,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "10",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 1,
+        "tag": "section",
+        "id": "servicos-diferenciais",
+        "classes": "section-py relative overflow-x-clip solucoes-palco-servicos",
+        "topoNoDocumento": 2423,
+        "altura": 3047,
+        "corDeFundo": "rgb(18, 115, 188)",
+        "imagemDeFundo": "sim",
+        "zIndex": "auto",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 1,
+        "tag": "section",
+        "id": "consultoria",
+        "classes": "section-light section-light-blue section-py relative overflow-hidden",
+        "topoNoDocumento": 5470,
+        "altura": 1229,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "auto",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "pointer-events-none absolute inset-0 z-0",
+        "topoNoDocumento": 5470,
+        "altura": 1229,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "0",
+        "posicao": "absolute"
+      },
+      {
+        "nivel": 2,
+        "tag": "div",
+        "id": null,
+        "classes": "container-lp relative z-10 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,20rem)_minmax(0,1fr)] lg:gap-14",
+        "topoNoDocumento": 5598,
+        "altura": 973,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "none",
+        "zIndex": "10",
+        "posicao": "relative"
+      },
+      {
+        "nivel": 1,
+        "tag": "section",
+        "id": null,
+        "classes": "cta-ref section-py relative overflow-hidden",
+        "topoNoDocumento": 6699,
+        "altura": 542,
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "imagemDeFundo": "sim",
+        "zIndex": "auto",
+        "posicao": "relative"
+      }
+    ],
+    "tintas": {
+      "hero-h1": {
+        "seletor": "#topo h1, main h1",
+        "cor": "rgb(255, 255, 255)",
+        "tamanho": "51.2px",
+        "peso": "400",
+        "retangulo": [
+          162,
+          355,
+          1116,
+          166
+        ]
+      },
+      "hero-lead": {
+        "seletor": "main h1 ~ p, #topo p",
+        "cor": "rgb(165, 240, 255)",
+        "tamanho": "18px",
+        "peso": "400",
+        "retangulo": [
+          162,
+          541,
+          672,
+          29
+        ]
+      },
+      "aceleradores-h2": {
+        "seletor": "#tecnologia-disruptiva h2",
+        "cor": "rgb(10, 31, 68)",
+        "tamanho": "65.6px",
+        "peso": "400",
+        "retangulo": [
+          162,
+          837,
+          672,
+          63
+        ]
+      },
+      "aceleradores-p": {
+        "seletor": "#tecnologia-disruptiva p",
+        "cor": "rgb(61, 90, 128)",
+        "tamanho": "18px",
+        "peso": "400",
+        "retangulo": [
+          162,
+          915,
+          672,
+          88
+        ]
+      },
+      "servicos-h2": {
+        "seletor": "#servicos-diferenciais h2",
+        "cor": "rgb(255, 255, 255)",
+        "tamanho": "46.08px",
+        "peso": "400",
+        "retangulo": [
+          840,
+          2617,
+          170,
+          49
+        ]
+      },
+      "servicos-p": {
+        "seletor": "#servicos-diferenciais p",
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "tamanho": "15.2px",
+        "peso": "400",
+        "retangulo": [
+          840,
+          2678,
+          438,
+          73
+        ]
+      },
+      "servicos-cta": {
+        "seletor": "#servicos-diferenciais .btn-primary",
+        "cor": "rgb(255, 255, 255)",
+        "tamanho": "14px",
+        "peso": "600",
+        "retangulo": [
+          162,
+          5322,
+          232,
+          44
+        ]
+      },
+      "consultoria-h2": {
+        "seletor": "#consultoria h2",
+        "cor": "rgb(10, 31, 68)",
+        "tamanho": "65.6px",
+        "peso": "400",
+        "retangulo": [
+          162,
+          5786,
+          320,
+          63
+        ]
+      },
+      "consultoria-p": {
+        "seletor": "#consultoria p",
+        "cor": "rgb(61, 90, 128)",
+        "tamanho": "16px",
+        "peso": "400",
+        "retangulo": [
+          162,
+          5865,
+          320,
+          78
+        ]
+      }
+    },
+    "cards": {
+      "quantos": 12,
+      "amostra": [
+        {
+          "classes": "accel-card on-dark",
+          "caixa": [
+            1116,
+            292
+          ],
+          "corDeFundo": "rgb(4, 26, 48)",
+          "raio": "28px",
+          "borda": "rgba(18, 115, 188, 0.38)"
+        },
+        {
+          "classes": "accel-card__foto",
+          "caixa": [
+            1114,
+            290
+          ],
+          "corDeFundo": "rgba(0, 0, 0, 0)",
+          "raio": "0px",
+          "borda": "rgb(229, 231, 235)"
+        },
+        {
+          "classes": "accel-card__veu",
+          "caixa": [
+            1114,
+            290
+          ],
+          "corDeFundo": "rgba(0, 0, 0, 0)",
+          "raio": "0px",
+          "borda": "rgb(229, 231, 235)"
+        },
+        {
+          "classes": "accel-card__corpo",
+          "caixa": [
+            535,
+            290
+          ],
+          "corDeFundo": "rgba(0, 0, 0, 0)",
+          "raio": "0px",
+          "borda": "rgb(229, 231, 235)"
+        },
+        {
+          "classes": "accel-card__texto",
+          "caixa": [
+            463,
+            92
+          ],
+          "corDeFundo": "rgba(0, 0, 0, 0)",
+          "raio": "0px",
+          "borda": "rgb(229, 231, 235)"
+        },
+        {
+          "classes": "accel-card__cta",
+          "caixa": [
+            177,
+            38
+          ],
+          "corDeFundo": "rgba(4, 26, 48, 0.55)",
+          "raio": "999px",
+          "borda": "rgba(18, 115, 188, 0.55)"
+        }
+      ]
+    },
+    "capturaPorFaixa": {
+      "div-solucoes-atmosfera": {
+        "arquivo": "docs/capturas/sis204-div-solucoes-atmosfera-1440-depois.png",
+        "faixa": "solucoes-atmosfera",
+        "topoNoDocumento": 0,
+        "altura": 900,
+        "rolagem": 0
+      },
+      "div-hero-backdrop": {
+        "arquivo": "docs/capturas/sis204-div-hero-backdrop-1440-depois.png",
+        "faixa": "hero-backdrop",
+        "topoNoDocumento": 144,
+        "altura": 522,
+        "rolagem": 0
+      },
+      "tecnologia-disruptiva": {
+        "arquivo": "docs/capturas/sis204-tecnologia-disruptiva-1440-depois.png",
+        "faixa": "tecnologia-disruptiva",
+        "topoNoDocumento": 666,
+        "altura": 1757,
+        "rolagem": 1095
+      },
+      "servicos-diferenciais": {
+        "arquivo": "docs/capturas/sis204-servicos-diferenciais-1440-depois.png",
+        "faixa": "servicos-diferenciais",
+        "topoNoDocumento": 2423,
+        "altura": 3047,
+        "rolagem": 3497
+      },
+      "consultoria": {
+        "arquivo": "docs/capturas/sis204-consultoria-1440-depois.png",
+        "faixa": "consultoria",
+        "topoNoDocumento": 5470,
+        "altura": 1229,
+        "rolagem": 5635
+      },
+      "section-cta-ref": {
+        "arquivo": "docs/capturas/sis204-section-cta-ref-1440-depois.png",
+        "faixa": "cta-ref section-py relative overflow-hidden",
+        "topoNoDocumento": 6699,
+        "altura": 542,
+        "rolagem": 6520
+      }
+    },
+    "tintaNaJanela": {
+      "hero-h1": {
+        "arquivo": "docs/capturas/sis204-tinta-hero-h1-1440-depois.png",
+        "retangulo": [
+          162,
+          355,
+          1116,
+          166
+        ],
+        "cor": "rgb(255, 255, 255)"
+      },
+      "hero-lead": {
+        "arquivo": "docs/capturas/sis204-tinta-hero-lead-1440-depois.png",
+        "retangulo": [
+          162,
+          450,
+          672,
+          29
+        ],
+        "cor": "rgb(165, 240, 255)"
+      },
+      "aceleradores-h2": {
+        "arquivo": "docs/capturas/sis204-tinta-aceleradores-h2-1440-depois.png",
+        "retangulo": [
+          162,
+          450,
+          672,
+          63
+        ],
+        "cor": "rgb(10, 31, 68)"
+      },
+      "aceleradores-p": {
+        "arquivo": "docs/capturas/sis204-tinta-aceleradores-p-1440-depois.png",
+        "retangulo": [
+          162,
+          450,
+          672,
+          88
+        ],
+        "cor": "rgb(61, 90, 128)"
+      },
+      "servicos-h2": {
+        "arquivo": "docs/capturas/sis204-tinta-servicos-h2-1440-depois.png",
+        "retangulo": [
+          840,
+          426,
+          170,
+          49
+        ],
+        "cor": "rgb(255, 255, 255)"
+      },
+      "servicos-p": {
+        "arquivo": "docs/capturas/sis204-tinta-servicos-p-1440-depois.png",
+        "retangulo": [
+          840,
+          426,
+          438,
+          73
+        ],
+        "cor": "rgba(255, 255, 255, 0.85)"
+      },
+      "servicos-cta": {
+        "arquivo": "docs/capturas/sis204-tinta-servicos-cta-1440-depois.png",
+        "retangulo": [
+          162,
+          426,
+          232,
+          44
+        ],
+        "cor": "rgb(255, 255, 255)"
+      },
+      "consultoria-h2": {
+        "arquivo": "docs/capturas/sis204-tinta-consultoria-h2-1440-depois.png",
+        "retangulo": [
+          162,
+          416,
+          320,
+          63
+        ],
+        "cor": "rgb(10, 31, 68)"
+      },
+      "consultoria-p": {
+        "arquivo": "docs/capturas/sis204-tinta-consultoria-p-1440-depois.png",
+        "retangulo": [
+          162,
+          416,
+          320,
+          78
+        ],
+        "cor": "rgb(61, 90, 128)"
+      }
+    },
+    "capturaDoTopo": "docs/capturas/sis204-solucoes-1440-depois-topo.png",
+    "pixelPorFaixa": [
+      {
+        "faixa": "solucoes-atmosfera",
+        "arquivo": "docs/capturas/sis204-div-solucoes-atmosfera-1440-depois.png",
+        "topoNoDocumento": 0,
+        "altura": 900,
+        "rolagem": 0,
+        "calhaX": 40,
+        "fracoesAmostradas": [
+          0.2,
+          0.5,
+          0.8
+        ],
+        "pixels": [
+          "rgb(5, 22, 48)",
+          "rgb(6, 22, 45)",
+          "rgb(224, 240, 251)"
+        ],
+        "pareceAzulDoBody": false,
+        "nome": "div-solucoes-atmosfera"
+      },
+      {
+        "faixa": "hero-backdrop",
+        "arquivo": "docs/capturas/sis204-div-hero-backdrop-1440-depois.png",
+        "topoNoDocumento": 144,
+        "altura": 522,
+        "rolagem": 0,
+        "calhaX": 40,
+        "fracoesAmostradas": [
+          0.2,
+          0.5,
+          0.8
+        ],
+        "pixels": [
+          "rgb(6, 19, 40)",
+          "rgb(5, 21, 44)",
+          "rgb(5, 23, 48)"
+        ],
+        "pareceAzulDoBody": false,
+        "nome": "div-hero-backdrop"
+      },
+      {
+        "faixa": "tecnologia-disruptiva",
+        "arquivo": "docs/capturas/sis204-tecnologia-disruptiva-1440-depois.png",
+        "topoNoDocumento": 666,
+        "altura": 1757,
+        "rolagem": 1095,
+        "calhaX": 40,
+        "fracoesAmostradas": [
+          0.5
+        ],
+        "pixels": [
+          "rgb(231, 243, 251)"
+        ],
+        "pareceAzulDoBody": false,
+        "nome": "tecnologia-disruptiva"
+      },
+      {
+        "faixa": "servicos-diferenciais",
+        "arquivo": "docs/capturas/sis204-servicos-diferenciais-1440-depois.png",
+        "topoNoDocumento": 2423,
+        "altura": 3047,
+        "rolagem": 3497,
+        "calhaX": 40,
+        "fracoesAmostradas": [
+          0.5
+        ],
+        "pixels": [
+          "rgb(22, 125, 197)"
+        ],
+        "pareceAzulDoBody": true,
+        "nome": "servicos-diferenciais"
+      },
+      {
+        "faixa": "consultoria",
+        "arquivo": "docs/capturas/sis204-consultoria-1440-depois.png",
+        "topoNoDocumento": 5470,
+        "altura": 1229,
+        "rolagem": 5635,
+        "calhaX": 40,
+        "fracoesAmostradas": [
+          0.2,
+          0.5,
+          0.8
+        ],
+        "pixels": [
+          "rgb(216, 235, 248)",
+          "rgb(231, 243, 251)",
+          "rgb(222, 239, 250)"
+        ],
+        "pareceAzulDoBody": false,
+        "nome": "consultoria"
+      },
+      {
+        "faixa": "cta-ref section-py relative overflow-hidden",
+        "arquivo": "docs/capturas/sis204-section-cta-ref-1440-depois.png",
+        "topoNoDocumento": 6699,
+        "altura": 542,
+        "rolagem": 6520,
+        "calhaX": 40,
+        "fracoesAmostradas": [
+          0.2,
+          0.5,
+          0.8
+        ],
+        "pixels": [
+          "rgb(246, 250, 254)",
+          "rgb(239, 247, 253)",
+          "rgb(247, 251, 254)"
+        ],
+        "pareceAzulDoBody": false,
+        "nome": "section-cta-ref"
+      }
+    ],
+    "contrasteDasTintas": {
+      "hero-h1": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(4, 23, 50)",
+        "amostraEm": [
+          152,
+          435
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-hero-h1-1440-depois.png",
+        "contraste": 17.89
+      },
+      "hero-lead": {
+        "tinta": "rgb(165, 240, 255)",
+        "fundo": "rgb(3, 24, 52)",
+        "amostraEm": [
+          152,
+          462
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-hero-lead-1440-depois.png",
+        "contraste": 13.94
+      },
+      "aceleradores-h2": {
+        "tinta": "rgb(10, 31, 68)",
+        "fundo": "rgb(234, 244, 251)",
+        "amostraEm": [
+          152,
+          479
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-aceleradores-h2-1440-depois.png",
+        "contraste": 14.57
+      },
+      "aceleradores-p": {
+        "tinta": "rgb(61, 90, 128)",
+        "fundo": "rgb(229, 242, 251)",
+        "amostraEm": [
+          152,
+          491
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-aceleradores-p-1440-depois.png",
+        "contraste": 6.2
+      },
+      "servicos-h2": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(26, 128, 205)",
+        "amostraEm": [
+          830,
+          448
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-servicos-h2-1440-depois.png",
+        "contraste": 4.19
+      },
+      "servicos-p": {
+        "tinta": "rgba(255, 255, 255, 0.85)",
+        "fundo": "rgb(27, 128, 206)",
+        "amostraEm": [
+          830,
+          460
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-servicos-p-1440-depois.png",
+        "contraste": 4.18
+      },
+      "servicos-cta": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(21, 123, 195)",
+        "amostraEm": [
+          152,
+          445
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-servicos-cta-1440-depois.png",
+        "contraste": 4.51
+      },
+      "consultoria-h2": {
+        "tinta": "rgb(10, 31, 68)",
+        "fundo": "rgb(235, 245, 252)",
+        "amostraEm": [
+          152,
+          445
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-consultoria-h2-1440-depois.png",
+        "contraste": 14.7
+      },
+      "consultoria-p": {
+        "tinta": "rgb(61, 90, 128)",
+        "fundo": "rgb(235, 245, 252)",
+        "amostraEm": [
+          152,
+          452
+        ],
+        "arquivo": "docs/capturas/sis204-tinta-consultoria-p-1440-depois.png",
+        "contraste": 6.39
+      }
+    }
+  },
+  "nota": "gerado por scripts/medir-fundo-solucoes-sis204.mjs (depois)",
+  "reducePorSistema": {
+    "atributoMotion": "reduce",
+    "existe": true,
+    "opacidade": 1,
+    "animacoesCorrendo": 0,
+    "animacoesNaPagina": 0
+  },
+  "reducePorAtributo": {
+    "atributoMotion": "reduce",
+    "existe": true,
+    "opacidade": 1,
+    "animacoesCorrendo": 0,
+    "animacoesNaPagina": 0
+  }
+}

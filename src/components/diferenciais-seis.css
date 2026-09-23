@@ -1,0 +1,147 @@
+/* Diferenciais de `/quem-somos` — companheiro de `DiferenciaisSeis.tsx`.
+   Pedido de 23/09: ícone em cada cartão, cantos arredondados com sombra atrás, e
+   o fundo «exatamente igual ao da parte de tecnologia, para ser continuação».
+
+   ── O FUNDO, E POR QUE ELE NÃO É A CÓPIA LITERAL DO DE TECNOLOGIAS ───────────
+   `.tec-secao` declara `linear-gradient(180deg, #f8fcff 0%, #eef8ff 52%,
+   #e5f4ff 100%)`: ela nasce quase branca no topo e termina no azul-gelo mais
+   fundo. Copiar essa linha para cá daria um degradê que RECOMEÇA em `#f8fcff`
+   logo abaixo de onde o outro acabou em `#e5f4ff` — a emenda viraria um salto de
+   ~19 de ΔRGB. É o mesmo achado da SIS-42: em degradê, «mesma declaração» e
+   «continuação» são coisas diferentes, porque a rampa é resolvida contra a caixa
+   de cada um.
+
+   Então aqui são os MESMOS TRÊS TONS na ordem que continua a rampa: esta seção
+   começa em `#e5f4ff`, exatamente o tom em que Tecnologias termina, e sobe de
+   volta ao branco-azulado. A junta fica sem salto (medida, ver abaixo) e a
+   paleta é a mesma do doc de Tecnologias — nenhum tom novo entrou no site.
+
+   A emenda foi medida pixel a pixel, sete colunas por largura, 3px acima e 3px
+   abaixo da fronteira, em 1440/768/390. Os números estão no relatório da
+   entrega. */
+.dif-secao {
+  position: relative;
+  /* `isolate` pela razão documentada em `globals.css` (bloco da
+     `.fundo-contato-cena`): a grade decorativa aqui vive em `z-index: 0` dentro
+     de um contexto próprio, e sem o contexto uma camada baixa sobe para o
+     ancestral e se perde sob o fundo opaco dele. */
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(180deg, #e5f4ff 0%, #eef8ff 52%, #f8fcff 100%);
+}
+
+/* A GRADE. Receita idêntica à `.tec-fundo__grade` (`tecnologias.css`): dois
+   gradientes repetidos de 1px em ciano a 7%, módulo de 72px. Copiada valor por
+   valor e não importada — `tecnologias.css` é da SIS-280, e um seletor meu dentro
+   do arquivo dela faria a próxima passada lá mexer nesta seção sem saber.
+   A MÁSCARA FOI MEDIDA DUAS VEZES, e a primeira estava errada. Ela começava
+   opaca no topo, pelo raciocínio de que «a grade tem de chegar inteira na emenda
+   para haver continuação». O contrário: a máscara de `.tec-fundo__grade` é uma
+   elipse a `50% 48%` que chega TRANSPARENTE na base dela, ou seja, a grade de
+   Tecnologias já não existe na borda de baixo. Grade cheia começando aqui
+   aparecia do nada na junta — a sonda leu ΔRGB de 14 em quatro das sete colunas,
+   e os pixels acusaram a culpada: `rgb(214 240 254)` é exatamente o azul-gelo com
+   o fio de ciano a 7% por cima. As duas colunas onde a máscara de Tecnologias
+   ainda cobria algo deram Δ0.
+   Então a grade entra desvanecida e some antes do fim, como faz a `.grade-tecnica`
+   da casa: nas duas bordas o que existe é só o degradê, e é o degradê que faz a
+   emenda. */
+.dif-grade {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgb(33 198 244 / 7%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(33 198 244 / 7%) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 26%, #000 74%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 26%,
+    #000 74%,
+    transparent 100%
+  );
+}
+
+.dif-miolo {
+  position: relative;
+  z-index: 1;
+}
+
+.dif-grade-cartoes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.875rem, 1.6vw, 1.5rem);
+  margin-top: 2.5rem;
+}
+@media (min-width: 48rem) {
+  .dif-grade-cartoes {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 64rem) {
+  .dif-grade-cartoes {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── O CARTÃO ─────────────────────────────────────────────────────────────────
+   O que saiu, e por quê: `glass-card` (vidro escuro — degradê navy a 88%, borda
+   e relevo desenhados para viver sobre fundo escuro) e `notch-card` (canto
+   chanfrado por `clip-path`). O chanfro saiu porque o pedido é explícito — «as
+   pontas devem ser arredondadas» — e ele e o raio são mutuamente exclusivos: o
+   `clip-path` recorta o retângulo DEPOIS do `border-radius`, então os dois juntos
+   dão canto reto com a sombra vazando pelo corte. A regra `.notch-card` continua
+   inteira em `globals.css` e em uso nas outras seções; o que mudou é esta seção
+   não pedir mais por ela.
+   A SOMBRA é o «com sombra atrás» do pedido: duas camadas, uma larga e baixa que
+   assenta o cartão no azul-gelo e uma curta que dá a borda de contato. Em azul
+   (`rgb(9 86 150 / …)`) e não em preto, porque preto sobre azul-gelo lê como
+   sujeira — é o mesmo ajuste que o cartão claro de `/trabalhe-conosco` recebeu. */
+.dif-cartao {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.875rem, 1.4vw, 1.25rem);
+  padding: clamp(1.125rem, 1.7vw, 1.5rem);
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgb(255 255 255 / 92%) 0%, rgb(246 252 255 / 88%) 100%);
+  border: 1px solid rgb(255 255 255 / 90%);
+  box-shadow:
+    0 18px 38px -20px rgb(9 86 150 / 30%),
+    0 2px 6px -3px rgb(9 86 150 / 18%);
+}
+
+/* O SELO DO ÍCONE. Redondo e do tamanho do mock; o tom é o mesmo ciano da casa a
+   10%, que é o que deixa o selo visível sobre cartão quase branco sem virar um
+   segundo foco de cor ao lado da frase. `flex: none` porque sem ele o selo
+   encolhe quando a frase tem três linhas — foi o que a captura a 390 mostrou. */
+.dif-selo {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(3rem, 4vw, 3.5rem);
+  height: clamp(3rem, 4vw, 3.5rem);
+  border-radius: 9999px;
+  background: rgb(33 198 244 / 10%);
+  border: 1px solid rgb(33 198 244 / 22%);
+}
+.dif-selo > svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  /* O navy da casa, o mesmo `--tec-navy` que Tecnologias usa para o traço dos
+     rótulos — o traço fino do ícone em ciano sobre branco não alcançava 3:1. */
+  color: #06325c;
+}
+
+.dif-frase {
+  margin: 0;
+  font-weight: 600;
+  line-height: 1.35;
+  font-size: clamp(0.95rem, 1.05vw, 1.0625rem);
+  /* Navy institucional; o contraste sobre o cartão foi medido pixel a pixel na
+     captura, com média e pior pixel. */
+  color: #0b2d52;
+}

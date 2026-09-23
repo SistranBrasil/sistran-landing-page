@@ -36,28 +36,23 @@ export const NAV_ITEMS: readonly NavItem[] = [
       { label: 'Sistran Latam', href: 'https://www.sistran.com/latam/' },
     ],
   },
-  /* SIS-119 · item 2 — `/transformacao-legado` entra no menu como FILHA de
-     "Soluções, Serviços e Consultoria", e não como oitavo item de primeiro nível.
-     Duas razões, nesta ordem:
-     • É de facto uma sub-página de Soluções: o único link de entrada que existe
-       hoje é o botão no fim da seção "Transformação de Legado" DAQUELA página
-       (`src/app/solucoes/page.tsx`), e quem não rola até lá nunca soube que a
-       rota existia — que é o defeito relatado.
-     • Oitavo item de primeiro nível empurraria a largura do header, e a própria
-       issue avisa disso. Submenu não custa largura nenhuma.
-     O padrão é o mesmo já estabelecido em "Quem somos" acima: o pai continua
-     sendo LINK para `/solucoes` (quem clica espera a página, não uma lista), e o
-     primeiro filho repete essa rota com o nome que o site dá a ela — destino
-     igual é intencional, e sem ele a página do pai ficaria inalcançável pelo
-     teclado em quem abre o submenu. */
-  {
-    label: 'Soluções, Serviços e Consultoria',
-    href: '/solucoes',
-    children: [
-      { label: 'Soluções, Serviços e Consultoria', href: '/solucoes' },
-      { label: 'Transformação de Legado', href: '/transformacao-legado' },
-    ],
-  },
+  /* SIS-279 — «Soluções, Serviços e Consultoria» volta a ser item SIMPLES, sem
+     submenu, e isto é consequência direta de apagar `/transformacao-legado`.
+
+     O submenu era da SIS-119, e existia por uma razão só: a rota do legado não
+     tinha porta de entrada além de um botão no fim de uma seção de `/solucoes`,
+     então ela foi declarada FILHA aqui em vez de virar oitavo item de primeiro
+     nível (oitavo item empurraria a largura do header; submenu não custa
+     largura). O primeiro filho repetia o próprio `/solucoes` para que a página
+     do pai continuasse alcançável pelo teclado com o submenu aberto.
+
+     Apagada a rota, o que sobraria é um submenu de UM item que só repete o pai:
+     duas maneiras de clicar no mesmo lugar, mais um chevron que promete lista e
+     não entrega. Então o submenu inteiro sai, e o pai fica sendo o link que
+     sempre foi. `ramoAtivo` em `src/lib/navAtivo.ts` já trata `children`
+     ausente (`item.children ?? []`), e `/solucoes/[slug]` continua acendendo
+     por prefixo em `matchActive`. */
+  { label: 'Soluções, Serviços e Consultoria', href: '/solucoes' },
   { label: 'Parceiros e Implementações', href: '/parceiros-e-implementacoes' },
   { label: 'Eventos & Inovação', href: '/eventos-inovacao' },
   { label: 'ESG', href: '/esg' },

@@ -1,0 +1,371 @@
+{
+  "issue": "SIS-268",
+  "rota": "/quem-somos",
+  "marca": "antes",
+  "larguras": {
+    "390": {
+      "desenho": {
+        "temCtaRef": false,
+        "blocosFaleComAGente": 1,
+        "cartaoNavyForaDaRef": 1,
+        "pecas": {
+          "vidro": false,
+          "fio": false,
+          "no": false,
+          "blob": false,
+          "selo": false,
+          "botaoCirculo": false,
+          "ondas": false,
+          "rotuloMobile": false
+        },
+        "nosComDataReveal": null
+      },
+      "escrita": {
+        "titulo": "Fale com a Gente!",
+        "paragrafo": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+        "botao": "Fale com a SISTRAN"
+      },
+      "botao": {
+        "tag": "a",
+        "href": "/#contato",
+        "tipo": null
+      },
+      "dialogosNoDocumento": 0,
+      "vazamento": {
+        "fonteClasses": "vaza-fonte section-py section-light section-light-blue",
+        "fontePaddingBottom": "80px",
+        "fonteZIndex": "auto",
+        "cartoesMarginBottom": "0px",
+        "receptorTag": "div",
+        "receptorPaddingTop": "0px",
+        "caixaCartoes": {
+          "topo": 21850,
+          "base": 22234,
+          "esq": 20,
+          "dir": 370,
+          "alt": 385,
+          "larg": 350
+        },
+        "caixaCartaoEsq": {
+          "topo": 21850,
+          "base": 22044,
+          "esq": 20,
+          "dir": 370,
+          "alt": 194,
+          "larg": 350
+        },
+        "caixaCartaoDir": {
+          "topo": 22068,
+          "base": 22234,
+          "esq": 20,
+          "dir": 370,
+          "alt": 166,
+          "larg": 350
+        }
+      },
+      "junta": {
+        "notchFill": "#cfe7f7",
+        "caixaNotch": {
+          "topo": 22313,
+          "base": 22341,
+          "esq": 0,
+          "dir": 390,
+          "alt": 28,
+          "larg": 390
+        },
+        "corAcimaDoNotch": null,
+        "corAbaixoDoNotch": null,
+        "corNoCantoDoNotch": null
+      },
+      "fecho": {
+        "tag": "section",
+        "classe": "section-py relative overflow-hidden",
+        "caixa": {
+          "topo": 22340,
+          "base": 22842,
+          "esq": 0,
+          "dir": 390,
+          "alt": 502,
+          "larg": 390
+        },
+        "fundo": "none",
+        "sombra": "none"
+      },
+      "pecasDoFecho": {
+        "vidro": null,
+        "rotulo": null,
+        "titulo": null,
+        "botao": null,
+        "arte": null
+      },
+      "overflow": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "vazaNaHorizontal": false
+      },
+      "saliencia": {
+        "descePraDentroDoFechoPx": -106,
+        "colisoes": {
+          "vidro": null,
+          "rotulo": null,
+          "titulo": null,
+          "botao": null,
+          "arte": null
+        }
+      },
+      "escritaIgualAoPadrao": {
+        "titulo": true,
+        "paragrafo": true,
+        "botao": true
+      }
+    },
+    "768": {
+      "desenho": {
+        "temCtaRef": false,
+        "blocosFaleComAGente": 1,
+        "cartaoNavyForaDaRef": 1,
+        "pecas": {
+          "vidro": false,
+          "fio": false,
+          "no": false,
+          "blob": false,
+          "selo": false,
+          "botaoCirculo": false,
+          "ondas": false,
+          "rotuloMobile": false
+        },
+        "nosComDataReveal": null
+      },
+      "escrita": {
+        "titulo": "Fale com a Gente!",
+        "paragrafo": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+        "botao": "Fale com a SISTRAN"
+      },
+      "botao": {
+        "tag": "a",
+        "href": "/#contato",
+        "tipo": null
+      },
+      "dialogosNoDocumento": 0,
+      "vazamento": {
+        "fonteClasses": "vaza-fonte section-py section-light section-light-blue",
+        "fontePaddingBottom": "112px",
+        "fonteZIndex": "auto",
+        "cartoesMarginBottom": "0px",
+        "receptorTag": "div",
+        "receptorPaddingTop": "0px",
+        "caixaCartoes": {
+          "topo": 18454,
+          "base": 18649,
+          "esq": 24,
+          "dir": 744,
+          "alt": 194,
+          "larg": 720
+        },
+        "caixaCartaoEsq": {
+          "topo": 18454,
+          "base": 18649,
+          "esq": 24,
+          "dir": 372,
+          "alt": 194,
+          "larg": 348
+        },
+        "caixaCartaoDir": {
+          "topo": 18454,
+          "base": 18649,
+          "esq": 396,
+          "dir": 744,
+          "alt": 194,
+          "larg": 348
+        }
+      },
+      "junta": {
+        "notchFill": "#cfe7f7",
+        "caixaNotch": {
+          "topo": 18760,
+          "base": 18788,
+          "esq": 0,
+          "dir": 768,
+          "alt": 28,
+          "larg": 768
+        },
+        "corAcimaDoNotch": null,
+        "corAbaixoDoNotch": null,
+        "corNoCantoDoNotch": null
+      },
+      "fecho": {
+        "tag": "section",
+        "classe": "section-py relative overflow-hidden",
+        "caixa": {
+          "topo": 18787,
+          "base": 19267,
+          "esq": 0,
+          "dir": 768,
+          "alt": 480,
+          "larg": 768
+        },
+        "fundo": "none",
+        "sombra": "none"
+      },
+      "pecasDoFecho": {
+        "vidro": null,
+        "rotulo": null,
+        "titulo": null,
+        "botao": null,
+        "arte": null
+      },
+      "overflow": {
+        "scrollWidth": 768,
+        "innerWidth": 768,
+        "vazaNaHorizontal": false
+      },
+      "saliencia": {
+        "descePraDentroDoFechoPx": -138,
+        "colisoes": {
+          "vidro": null,
+          "rotulo": null,
+          "titulo": null,
+          "botao": null,
+          "arte": null
+        }
+      },
+      "escritaIgualAoPadrao": {
+        "titulo": true,
+        "paragrafo": true,
+        "botao": true
+      }
+    },
+    "1440": {
+      "desenho": {
+        "temCtaRef": false,
+        "blocosFaleComAGente": 1,
+        "cartaoNavyForaDaRef": 1,
+        "pecas": {
+          "vidro": false,
+          "fio": false,
+          "no": false,
+          "blob": false,
+          "selo": false,
+          "botaoCirculo": false,
+          "ondas": false,
+          "rotuloMobile": false
+        },
+        "nosComDataReveal": null
+      },
+      "escrita": {
+        "titulo": "Fale com a Gente!",
+        "paragrafo": "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.",
+        "botao": "Fale com a SISTRAN"
+      },
+      "botao": {
+        "tag": "a",
+        "href": "/#contato",
+        "tipo": null
+      },
+      "dialogosNoDocumento": 0,
+      "vazamento": {
+        "fonteClasses": "vaza-fonte section-py section-light section-light-blue",
+        "fontePaddingBottom": "0px",
+        "fonteZIndex": "1",
+        "cartoesMarginBottom": "-80px",
+        "receptorTag": "div",
+        "receptorPaddingTop": "80px",
+        "caixaCartoes": {
+          "topo": 19218,
+          "base": 19362,
+          "esq": 162,
+          "dir": 1278,
+          "alt": 144,
+          "larg": 1116
+        },
+        "caixaCartaoEsq": {
+          "topo": 19218,
+          "base": 19362,
+          "esq": 162,
+          "dir": 708,
+          "alt": 144,
+          "larg": 546
+        },
+        "caixaCartaoDir": {
+          "topo": 19218,
+          "base": 19362,
+          "esq": 732,
+          "dir": 1278,
+          "alt": 144,
+          "larg": 546
+        }
+      },
+      "junta": {
+        "notchFill": "#cfe7f7",
+        "caixaNotch": {
+          "topo": 19282,
+          "base": 19330,
+          "esq": 0,
+          "dir": 1440,
+          "alt": 48,
+          "larg": 1440
+        },
+        "corAcimaDoNotch": null,
+        "corAbaixoDoNotch": null,
+        "corNoCantoDoNotch": null
+      },
+      "fecho": {
+        "tag": "section",
+        "classe": "section-py relative overflow-hidden",
+        "caixa": {
+          "topo": 19409,
+          "base": 19895,
+          "esq": 0,
+          "dir": 1440,
+          "alt": 486,
+          "larg": 1440
+        },
+        "fundo": "none",
+        "sombra": "none"
+      },
+      "pecasDoFecho": {
+        "vidro": null,
+        "rotulo": null,
+        "titulo": null,
+        "botao": null,
+        "arte": null
+      },
+      "overflow": {
+        "scrollWidth": 1440,
+        "innerWidth": 1440,
+        "vazaNaHorizontal": false
+      },
+      "saliencia": {
+        "descePraDentroDoFechoPx": -47,
+        "colisoes": {
+          "vidro": null,
+          "rotulo": null,
+          "titulo": null,
+          "botao": null,
+          "arte": null
+        }
+      },
+      "escritaIgualAoPadrao": {
+        "titulo": true,
+        "paragrafo": true,
+        "botao": true
+      }
+    }
+  },
+  "capturas": [
+    "docs/capturas/sis268-quem-somos-antes-390.png",
+    "docs/capturas/sis268-quem-somos-antes-junta-390.png",
+    "docs/capturas/sis268-quem-somos-antes-768.png",
+    "docs/capturas/sis268-quem-somos-antes-junta-768.png",
+    "docs/capturas/sis268-quem-somos-antes-1440.png",
+    "docs/capturas/sis268-quem-somos-antes-junta-1440.png",
+    "docs/capturas/sis268-quem-somos-antes-modal.png"
+  ],
+  "modal": {
+    "urlAntes": "http://localhost:3000/quem-somos",
+    "urlDepoisDoClique": "http://localhost:3000/#contato",
+    "navegou": true,
+    "aberto": null,
+    "fechouComEsc": true
+  }
+}

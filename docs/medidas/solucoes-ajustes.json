@@ -1,0 +1,311 @@
+{
+  "rota": "http://localhost:3000/solucoes",
+  "quando": "2026-09-23T00:01:29.726Z",
+  "larguras": {
+    "390": {
+      "item1Capa": {
+        "texto": "Soluções, Serviços e Consultoria",
+        "textoEsperado": "Soluções, Serviços e Consultoria",
+        "textoIntacto": true,
+        "peso": "700",
+        "tamanho": 35.2,
+        "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+        "linhasVisuais": 3,
+        "topoDasLinhas": [
+          351,
+          387,
+          422
+        ],
+        "linhasEscritas": [
+          "Soluções,",
+          "Serviços",
+          "e Consultoria"
+        ],
+        "quebras": 2
+      },
+      "item2Emenda": {
+        "introPaddingBaixo": 32,
+        "cardsPaddingTopo": 32,
+        "somaDaEmenda": 64,
+        "vaoMedidoEntreTintas": 64
+      },
+      "item3CabecaAccel": {
+        "carimbo": {
+          "x": 20,
+          "y": 232,
+          "w": 236,
+          "h": 89
+        },
+        "h2": {
+          "x": 20,
+          "y": 337,
+          "w": 149,
+          "h": 34
+        },
+        "tituloADireita": false,
+        "mesmaLinha": false,
+        "sobreposicao": -0.474,
+        "vaoHorizontal": -236,
+        "mesmoPai": true,
+        "larguraDaLinha": 350,
+        "h2Peso": "700"
+      },
+      "item4Cta": {
+        "indicadores": {
+          "y": 564,
+          "base": 612
+        },
+        "botao": {
+          "x": 20,
+          "y": 632,
+          "w": 232
+        },
+        "vaoAbaixoDosNumeros": 20,
+        "naColunaDaAbertura": true,
+        "dentroDoEscopoDeReveal": "servicos-abertura",
+        "revealNoBotao": false,
+        "revealNoInvolucro": true,
+        "faixaAntigaAindaExiste": false
+      },
+      "item6Navegador": "coluna não monta abaixo de 1280px",
+      "respostas400": [],
+      "errosDeConsole": []
+    },
+    "1440": {
+      "item1Capa": {
+        "texto": "Soluções, Serviços e Consultoria",
+        "textoEsperado": "Soluções, Serviços e Consultoria",
+        "textoIntacto": true,
+        "peso": "700",
+        "tamanho": 70.4,
+        "familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+        "linhasVisuais": 3,
+        "topoDasLinhas": [
+          348,
+          418,
+          489
+        ],
+        "linhasEscritas": [
+          "Soluções,",
+          "Serviços",
+          "e Consultoria"
+        ],
+        "quebras": 2
+      },
+      "item2Emenda": {
+        "introPaddingBaixo": 50,
+        "cardsPaddingTopo": 50,
+        "somaDaEmenda": 100,
+        "vaoMedidoEntreTintas": 101
+      },
+      "item3CabecaAccel": {
+        "carimbo": {
+          "x": 162,
+          "y": 250,
+          "w": 259,
+          "h": 98
+        },
+        "h2": {
+          "x": 449,
+          "y": 268,
+          "w": 278,
+          "h": 63
+        },
+        "tituloADireita": true,
+        "mesmaLinha": true,
+        "sobreposicao": 1,
+        "vaoHorizontal": 28,
+        "mesmoPai": true,
+        "larguraDaLinha": 672,
+        "h2Peso": "700"
+      },
+      "item4Cta": {
+        "indicadores": {
+          "y": 701,
+          "base": 756
+        },
+        "botao": {
+          "x": 190,
+          "y": 785,
+          "w": 232
+        },
+        "vaoAbaixoDosNumeros": 29,
+        "naColunaDaAbertura": true,
+        "dentroDoEscopoDeReveal": "servicos-abertura",
+        "revealNoBotao": false,
+        "revealNoInvolucro": true,
+        "faixaAntigaAindaExiste": false
+      },
+      "item6Navegador": [
+        {
+          "secao": "topo",
+          "destino": "#topo",
+          "rotulo": "Início",
+          "cor": "rgb(255, 255, 255)",
+          "opacidade": "1",
+          "corDoTraco": "rgb(14, 216, 246)",
+          "caixa": {
+            "x": 48,
+            "y": 358,
+            "w": 44,
+            "h": 17
+          },
+          "fundoNaMargem": [
+            11,
+            27,
+            50
+          ],
+          "contrasteDeclarado": 17.25,
+          "tintaRasterizada": [
+            7,
+            30,
+            58
+          ],
+          "contrasteRasterizado": 1.03
+        },
+        {
+          "secao": "tecnologia-disruptiva",
+          "destino": "#tecnologia-disruptiva",
+          "rotulo": "Tecnologia",
+          "cor": "rgb(10, 31, 68)",
+          "opacidade": "1",
+          "corDoTraco": "rgb(0, 121, 203)",
+          "caixa": {
+            "x": 48,
+            "y": 414,
+            "w": 88,
+            "h": 17
+          },
+          "fundoNaMargem": [
+            231,
+            242,
+            251
+          ],
+          "contrasteDeclarado": 14.31,
+          "tintaRasterizada": [
+            231,
+            243,
+            252
+          ],
+          "contrasteRasterizado": 1.01
+        },
+        {
+          "secao": "servicos-diferenciais",
+          "destino": "#servicos-diferenciais",
+          "rotulo": "Serviços",
+          "cor": "rgb(255, 255, 255)",
+          "opacidade": "1",
+          "corDoTraco": "rgb(14, 216, 246)",
+          "caixa": {
+            "x": 48,
+            "y": 470,
+            "w": 70,
+            "h": 17
+          },
+          "fundoNaMargem": [
+            27,
+            54,
+            79
+          ],
+          "contrasteDeclarado": 12.45,
+          "tintaRasterizada": [
+            16,
+            54,
+            79
+          ],
+          "contrasteRasterizado": 1.01
+        },
+        {
+          "secao": "consultoria",
+          "destino": "#consultoria",
+          "rotulo": "Consultoria",
+          "cor": "rgb(10, 31, 68)",
+          "opacidade": "1",
+          "corDoTraco": "rgb(0, 121, 203)",
+          "caixa": {
+            "x": 48,
+            "y": 526,
+            "w": 97,
+            "h": 17
+          },
+          "fundoNaMargem": [
+            114,
+            183,
+            239
+          ],
+          "contrasteDeclarado": 7.53,
+          "tintaRasterizada": [
+            162,
+            175,
+            191
+          ],
+          "contrasteRasterizado": 1.03
+        }
+      ],
+      "respostas400": [],
+      "errosDeConsole": []
+    }
+  },
+  "reduce": {
+    "sistema": {
+      "seloAnimacao": "none",
+      "seloTransform": "none",
+      "seloOpacidade": "1",
+      "seloVisivel": true,
+      "seloTexto": "Estratégia sob medida",
+      "botaoVisivel": true,
+      "botaoOpacidade": "1",
+      "h1Linhas": 3
+    },
+    "chave": {
+      "seloAnimacao": "none",
+      "seloTransform": "none",
+      "seloOpacidade": "1",
+      "seloVisivel": true,
+      "seloTexto": "Estratégia sob medida",
+      "botaoVisivel": true,
+      "botaoOpacidade": "1",
+      "h1Linhas": 3
+    }
+  },
+  "item5Flutuacao": {
+    "1440": {
+      "amostras": [
+        {
+          "transform": "matrix(1, 0, 0, 1, 0, 2.96397)",
+          "animacao": "Consulting-module__YOqDHW__badgeFlutua",
+          "duracao": "4.2s",
+          "iteracoes": "infinite",
+          "topo": 551.7,
+          "texto": "Estratégia sob medida"
+        },
+        {
+          "transform": "matrix(1, 0, 0, 1, 0, 2.63004)",
+          "animacao": "Consulting-module__YOqDHW__badgeFlutua",
+          "duracao": "4.2s",
+          "iteracoes": "infinite",
+          "topo": 551.36,
+          "texto": "Estratégia sob medida"
+        },
+        {
+          "transform": "matrix(1, 0, 0, 1, 0, 0.247083)",
+          "animacao": "Consulting-module__YOqDHW__badgeFlutua",
+          "duracao": "4.2s",
+          "iteracoes": "infinite",
+          "topo": 548.98,
+          "texto": "Estratégia sob medida"
+        },
+        {
+          "transform": "matrix(1, 0, 0, 1, 0, -2.55607)",
+          "animacao": "Consulting-module__YOqDHW__badgeFlutua",
+          "duracao": "4.2s",
+          "iteracoes": "infinite",
+          "topo": 546.18,
+          "texto": "Estratégia sob medida"
+        }
+      ],
+      "transformsDistintos": 4,
+      "amplitudeMedida": 5.52
+    }
+  }
+}

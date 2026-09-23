@@ -1,0 +1,250 @@
+{
+  "rodape_1440": {
+    "copyright": "2026 ©SISTRAN. Todos os direitos reservados.",
+    "logo": {
+      "w": 168,
+      "h": 112
+    },
+    "botaoRede": {
+      "w": 48,
+      "h": 48
+    },
+    "iconeRede": {
+      "w": 20,
+      "h": 20
+    },
+    "qtdRedes": 2,
+    "redeRepouso": {
+      "fundo": "rgba(255, 255, 255, 0.05)",
+      "tinta": "rgb(255, 255, 255)",
+      "borda": "rgba(255, 255, 255, 0.1)"
+    },
+    "fundoRodape": "rgba(18, 115, 188, 0.85)",
+    "malha": {
+      "camada": true,
+      "grade": true,
+      "quadros": 6,
+      "gradeAnimacao": "rodape-malha-desliza",
+      "gradeLadrilho": "64px 64px, 64px 64px",
+      "ariaHidden": "true",
+      "ordemDomMalhaAntesDoFio": true,
+      "zIndexNegativo": false
+    },
+    "transbordo": 0
+  },
+  "rodape_390": {
+    "copyright": "2026 ©SISTRAN. Todos os direitos reservados.",
+    "logo": {
+      "w": 144,
+      "h": 96
+    },
+    "botaoRede": {
+      "w": 48,
+      "h": 48
+    },
+    "iconeRede": {
+      "w": 20,
+      "h": 20
+    },
+    "qtdRedes": 2,
+    "redeRepouso": {
+      "fundo": "rgba(255, 255, 255, 0.05)",
+      "tinta": "rgb(255, 255, 255)",
+      "borda": "rgba(255, 255, 255, 0.1)"
+    },
+    "fundoRodape": "rgba(18, 115, 188, 0.85)",
+    "malha": {
+      "camada": true,
+      "grade": true,
+      "quadros": 6,
+      "gradeAnimacao": "rodape-malha-desliza",
+      "gradeLadrilho": "64px 64px, 64px 64px",
+      "ariaHidden": "true",
+      "ordemDomMalhaAntesDoFio": true,
+      "zIndexNegativo": false
+    },
+    "transbordo": 0
+  },
+  "hoverRede": {
+    "casaHover": true,
+    "fundo": "rgb(234, 246, 255)",
+    "borda": "rgb(234, 246, 255)",
+    "tinta": "rgb(3, 32, 51)",
+    "tintaIcone": "rgb(3, 32, 51)",
+    "strokeIcone": "rgb(3, 32, 51)",
+    "transicao": "background-color, border-color, color, box-shadow",
+    "razaoIconeSobreDisco": 15.2,
+    "razaoDiscoSobreRodape": 4.55
+  },
+  "focoRede": {
+    "casaFocusVisible": true,
+    "fundo": "rgb(234, 246, 255)",
+    "tinta": "rgb(3, 32, 51)",
+    "anel": "rgba(14, 216, 246, 0.55) 0px 0px 0px 3px"
+  },
+  "contraste": {
+    "copyright": {
+      "tinta": "rgb(188, 216, 238)",
+      "caixa": {
+        "dx": 0,
+        "dy": 0,
+        "w": 255,
+        "h": 16
+      },
+      "piorFundoComMalha": [
+        17,
+        116,
+        189
+      ],
+      "razaoComMalha": 3.33,
+      "piorFundoSemMalha": [
+        17,
+        116,
+        189
+      ],
+      "razaoSemMalha": 3.33,
+      "semRegressao": true
+    },
+    "tituloColuna": {
+      "tinta": "rgb(14, 216, 246)",
+      "caixa": {
+        "dx": 0,
+        "dy": 0,
+        "w": 197,
+        "h": 16
+      },
+      "piorFundoComMalha": [
+        18,
+        117,
+        190
+      ],
+      "razaoComMalha": 2.82,
+      "piorFundoSemMalha": [
+        18,
+        117,
+        190
+      ],
+      "razaoSemMalha": 2.82,
+      "semRegressao": true
+    },
+    "cidade": {
+      "tinta": "rgb(255, 255, 255)",
+      "caixa": {
+        "dx": 0,
+        "dy": 0,
+        "w": 84,
+        "h": 16
+      },
+      "piorFundoComMalha": [
+        20,
+        117,
+        191
+      ],
+      "razaoComMalha": 4.85,
+      "piorFundoSemMalha": [
+        20,
+        117,
+        191
+      ],
+      "razaoSemMalha": 4.85,
+      "semRegressao": true
+    },
+    "dadoUnidade": {
+      "tinta": "rgb(226, 239, 250)",
+      "caixa": {
+        "dx": 0,
+        "dy": 2,
+        "w": 239,
+        "h": 41
+      },
+      "piorFundoComMalha": [
+        19,
+        117,
+        191
+      ],
+      "razaoComMalha": 4.15,
+      "piorFundoSemMalha": [
+        19,
+        117,
+        191
+      ],
+      "razaoSemMalha": 4.15,
+      "semRegressao": true
+    },
+    "linkNav": {
+      "tinta": "rgb(226, 239, 250)",
+      "caixa": {
+        "dx": 18,
+        "dy": 1,
+        "w": 84,
+        "h": 18
+      },
+      "piorFundoComMalha": [
+        19,
+        117,
+        191
+      ],
+      "razaoComMalha": 4.15,
+      "piorFundoSemMalha": [
+        19,
+        117,
+        191
+      ],
+      "razaoSemMalha": 4.15,
+      "semRegressao": true
+    }
+  },
+  "reduceSistema": {
+    "grade": {
+      "animationName": "none",
+      "playState": "running",
+      "translate": "none",
+      "opacity": "1",
+      "transitionProperty": "all",
+      "visivel": true
+    },
+    "quadro": {
+      "animationName": "none",
+      "playState": "running",
+      "translate": "none",
+      "opacity": "1",
+      "transitionProperty": "all",
+      "visivel": true
+    },
+    "rede": {
+      "animationName": "none",
+      "playState": "running",
+      "translate": "none",
+      "opacity": "1",
+      "transitionProperty": "none",
+      "visivel": true
+    }
+  },
+  "reduceAtributo": {
+    "atributo": "reduce",
+    "grade": {
+      "animationName": "none",
+      "playState": "running",
+      "translate": "none",
+      "opacity": "1",
+      "transitionProperty": "all",
+      "visivel": true
+    },
+    "quadro": {
+      "animationName": "none",
+      "playState": "running",
+      "translate": "none",
+      "opacity": "1",
+      "transitionProperty": "all",
+      "visivel": true
+    },
+    "rede": {
+      "animationName": "none",
+      "playState": "running",
+      "translate": "none",
+      "opacity": "1",
+      "transitionProperty": "none",
+      "visivel": true
+    }
+  }
+}

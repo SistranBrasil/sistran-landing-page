@@ -37,11 +37,14 @@ export default function RodapeNav() {
       {NAV_ITEMS.map((n) => {
         /* Duas perguntas diferentes, e é por isso que são duas chamadas:
            - `ativo` (ramo) é o que RECEBE O REALCE — inclui estar numa filha, como
+             `/sistran-labs` acendendo "Quem somos" (o exemplo desta nota era
              `/transformacao-legado` acendendo "Soluções, Serviços e Consultoria";
+             a SIS-279 apagou a rota e o submenu de Soluções junto, então o
+             mecanismo continua, só mudou o caso que o ilustra);
            - `atual` (rota exata) é o que recebe `aria-current="page"`, porque
              `page` significa literalmente "este link aponta para a página em que
-             você está". Dizer isso num link para `/solucoes` estando em
-             `/transformacao-legado` seria informação falsa para o leitor de tela.
+             você está". Dizer isso num link para `/quem-somos` estando em
+             `/sistran-labs` seria informação falsa para o leitor de tela.
            É a mesma separação que o header já faz (`ramoAtivo` para a cor,
            `matchActive` para o `aria-current`). */
         const ativo = ramoAtivo(n, pathname, '');

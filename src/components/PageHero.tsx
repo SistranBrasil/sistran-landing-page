@@ -53,6 +53,31 @@ type Props = {
    */
   tituloForte?: boolean;
   /**
+   * QUEBRAS DE LINHA PEDIDAS pela rota, por ÍNDICE DE PALAVRA (1-based): o valor
+   * `[1, 2]` põe um fim de linha depois da 1ª e da 2ª palavra.
+   *
+   * Opt-in e NUMÉRICA, e as duas coisas por motivo:
+   *
+   * · opt-in, como `tituloForte`, `eyebrowArte` e `cinematografico`, porque são
+   *   quatorze rotas montando este componente — quebrar o título aqui dentro sem
+   *   porta mudaria quatorze páginas escondido numa de uma;
+   *
+   * · numérica, e não um array de strings, por causa do `copy-lock`. `title` está
+   *   em `PROPS_DE_TEXTO`, então o valor da prop É a cópia travada; trocar uma
+   *   string por três removeria um valor do lock e acrescentaria três, ou seja
+   *   DERIVA de cópia para fazer uma mudança de layout. Com índices, o título
+   *   continua sendo UMA string — a mesma — e as linhas são derivadas dela.
+   *
+   * O texto renderizado também não muda para quem lê por leitor de tela nem para
+   * o extrator: o `<br>` está em `TAGS_EM_LINHA` e `textoJsx` o costura como
+   * espaço, então «Soluções, Serviços e Consultoria» quebrado em três linhas
+   * extrai exatamente a mesma frase de antes.
+   *
+   * Índice fora da faixa é ignorado em silêncio de propósito: a prop é um pedido
+   * de apresentação, e um título que encurtar não deve derrubar a página.
+   */
+  quebrasDoTitulo?: number[];
+  /**
    * Partida cinematográfica: a entrada recua enquanto sai de cena e acende um fio
    * ciano na borda inferior, que a seção seguinte recebe como trilho.
    *
@@ -91,6 +116,38 @@ function escalaDoTitulo(comprimento: number) {
   return { fonte: 'text-pagehero-longo', medida: 'max-w-[46ch]' };
 }
 
+/**
+ * Recorta o título em linhas nos índices de palavra pedidos.
+ *
+ * Divide por `/\s+/` e não por `' '`: título com espaço duplo ou quebra de linha
+ * no fonte geraria pedaço vazio e uma linha em branco no meio da manchete.
+ *
+ * Devolve `null` quando não há pedido — quem chama renderiza a string crua nesse
+ * caso, e é isso que mantém as treze outras rotas com o MESMO DOM de antes (um
+ * único nó de texto dentro do `h1`, sem `<span>` nem `<br>` novos).
+ */
+function linhasDoTitulo(titulo: string, quebras?: number[]) {
+  if (!quebras || quebras.length === 0) return null;
+  const palavras = titulo.split(/\s+/).filter(Boolean);
+  /* Cortes válidos, ordenados e sem repetição: um índice repetido daria linha
+     vazia, e um fora de ordem embaralharia o `slice`. */
+  const cortes = [...new Set(quebras)]
+    .filter((n) => Number.isInteger(n) && n > 0 && n < palavras.length)
+    .sort((a, b) => a - b);
+  if (cortes.length === 0) return null;
+  const limites = [0, ...cortes, palavras.length];
+  return limites.slice(0, -1).map((inicio, i) => {
+    const linha = palavras.slice(inicio, limites[i + 1]).join(' ');
+    /* O ESPAÇO NO FIM DE CADA LINHA menos a última, e ele é medido: sem ele o
+       `textContent` do `h1` vinha «Soluções,Serviçose Consultoria» — um `<br>` não
+       separa palavras no texto do nó, e o cálculo de nome acessível de alguns
+       motores herda isso. Visualmente não custa nada: espaço no FIM de uma linha é
+       colapsado por `white-space: normal`, então a tinta não se move (medido: os
+       mesmos três topos de linha, 348/418/489 a 1440). */
+    return i === limites.length - 2 ? linha : `${linha} `;
+  });
+}
+
 export default function PageHero({
   eyebrow,
   eyebrowArte,
@@ -98,6 +155,7 @@ export default function PageHero({
   highlight,
   description,
   tituloForte = false,
+  quebrasDoTitulo,
   cinematografico = false,
 }: Props) {
   const rm = useReducedMotion();
@@ -111,6 +169,10 @@ export default function PageHero({
      classificaria `/blog` ("Os melhores conteúdos." = 22) como nome curto,
      quando o texto real na tela tem 62 caracteres. */
   const escala = escalaDoTitulo(title.length + (highlight ? highlight.length + 1 : 0));
+  /* As quebras NÃO entram na escala: `escalaDoTitulo` classifica pelo texto, e o
+     texto é o mesmo — quem pede quebra está decidindo o desenho das linhas, não
+     encurtando a manchete. */
+  const linhas = linhasDoTitulo(title, quebrasDoTitulo);
   return (
     /* `pagehero-entrada` normaliza a ALTURA da entrada; as medidas mostraram a
        mesma seção ocupando de 31% (`/eventos-inovacao`) a 104% (`/sistran-labs`)
@@ -180,7 +242,19 @@ export default function PageHero({
               tituloForte && 'font-bold',
             )}
           >
-            {title}
+            {/* Era `{title}` cru. Com `quebrasDoTitulo` as linhas vêm do MESMO
+                valor, recortado — ver `linhasDoTitulo`. O `<br>` é o fim de
+                linha, e não `display: block` num `<span>`, porque `<br>` está em
+                `TAGS_EM_LINHA` do extrator de cópia: o texto travado continua
+                sendo a frase inteira, costurada com espaço. */}
+            {linhas
+              ? linhas.map((linha, i) => (
+                  <span key={linha}>
+                    {i > 0 && <br />}
+                    {linha}
+                  </span>
+                ))
+              : title}
             {highlight && <span className="text-[#A5F0FF]"> {highlight}</span>}
           </motion.h1>
           {description && (

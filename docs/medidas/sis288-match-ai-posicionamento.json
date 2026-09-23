@@ -1,0 +1,279 @@
+{
+  "issue": "SIS-288",
+  "rota": "/solucoes/match-ai",
+  "http": 200,
+  "erros": [],
+  "slotPosicionamento": {
+    "src": "http://localhost:3000/images/solucoes/match.png",
+    "alt": "",
+    "ariaHidden": "true",
+    "loading": "lazy",
+    "sizes": null,
+    "naturalWidth": 1672,
+    "naturalHeight": 941,
+    "className": "matchai-midia-arte object-cover"
+  },
+  "balaoExiste": true,
+  "revealNome": "matchai-posicionamento",
+  "prova": {
+    "slotUsaMatchPng": true,
+    "naturalWidth": 1672,
+    "matchPngForaDoPosicionamento": [],
+    "capaAindaNoPosicionamento": [],
+    "altVazio": true,
+    "loadingLazy": true,
+    "sizesPreservado": false
+  },
+  "inventarioImgs": [
+    {
+      "secao": null,
+      "src": "http://localhost:3000/images/sistran-corp-logo.png",
+      "alt": "Sistran",
+      "ariaHidden": null,
+      "loading": null,
+      "sizes": null,
+      "naturalWidth": 560,
+      "naturalHeight": 374
+    },
+    {
+      "secao": "topo",
+      "src": "http://localhost:3000/images/solucoes/possivelcapanovamatch.png",
+      "alt": "",
+      "ariaHidden": null,
+      "loading": null,
+      "sizes": null,
+      "naturalWidth": 1672,
+      "naturalHeight": 941
+    },
+    {
+      "secao": "topo",
+      "src": "http://localhost:3000/images/solucoes/carimbo-match-ai-ticket-outline-ffffff.png",
+      "alt": "",
+      "ariaHidden": null,
+      "loading": null,
+      "sizes": null,
+      "naturalWidth": 720,
+      "naturalHeight": 309
+    },
+    {
+      "secao": "topo",
+      "src": "http://localhost:3000/images/logos/MatchAIlogo.png",
+      "alt": "Match AI",
+      "ariaHidden": null,
+      "loading": null,
+      "sizes": null,
+      "naturalWidth": 2338,
+      "naturalHeight": 350
+    },
+    {
+      "secao": "matchai-campanha",
+      "src": "http://localhost:3000/images/solucoes/match-ai-hero.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1672,
+      "naturalHeight": 941
+    },
+    {
+      "secao": "o-que-o-match-ai-faz",
+      "src": "http://localhost:3000/images/solucoes/geraoferta.png",
+      "alt": "",
+      "ariaHidden": "true",
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1254,
+      "naturalHeight": 1254
+    },
+    {
+      "secao": "o-que-o-match-ai-faz",
+      "src": "http://localhost:3000/images/solucoes/definepersonas.png",
+      "alt": "",
+      "ariaHidden": "true",
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1254,
+      "naturalHeight": 1254
+    },
+    {
+      "secao": "o-que-o-match-ai-faz",
+      "src": "http://localhost:3000/images/solucoes/aumentavenda.png",
+      "alt": "",
+      "ariaHidden": "true",
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1254,
+      "naturalHeight": 1254
+    },
+    {
+      "secao": "o-que-o-match-ai-faz",
+      "src": "http://localhost:3000/images/solucoes/validaoferta.png",
+      "alt": "",
+      "ariaHidden": "true",
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1254,
+      "naturalHeight": 1254
+    },
+    {
+      "secao": "da-base-a-oferta-mais-relevante",
+      "src": "http://localhost:3000/images/solucoes/match-ai-hero.webp",
+      "alt": "",
+      "ariaHidden": null,
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1672,
+      "naturalHeight": 941
+    },
+    {
+      "secao": "posicionamento",
+      "src": "http://localhost:3000/images/solucoes/match.png",
+      "alt": "",
+      "ariaHidden": "true",
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1672,
+      "naturalHeight": 941
+    },
+    {
+      "secao": "conheca-tambem",
+      "src": "http://localhost:3000/images/solucoes/capa-card/luminna-ai-realista-componentes-v3.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1672,
+      "naturalHeight": 941
+    },
+    {
+      "secao": "conheca-tambem",
+      "src": "http://localhost:3000/images/solucoes/luminnadoisnn.png",
+      "alt": "Luminna AI",
+      "ariaHidden": null,
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 2172,
+      "naturalHeight": 724
+    },
+    {
+      "secao": "conheca-tambem",
+      "src": "http://localhost:3000/images/solucoes/capa-card/fast-realista-componentes-v3.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1100,
+      "naturalHeight": 619
+    },
+    {
+      "secao": "conheca-tambem",
+      "src": "http://localhost:3000/images/logos/Fastlogo.png",
+      "alt": "Fast",
+      "ariaHidden": null,
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 2000,
+      "naturalHeight": 688
+    },
+    {
+      "secao": "conheca-tambem",
+      "src": "http://localhost:3000/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1100,
+      "naturalHeight": 619
+    },
+    {
+      "secao": "conheca-tambem",
+      "src": "http://localhost:3000/images/logos/QA-2-logo.png",
+      "alt": "QA Integrado",
+      "ariaHidden": null,
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1567,
+      "naturalHeight": 396
+    },
+    {
+      "secao": "conheca-tambem",
+      "src": "http://localhost:3000/images/solucoes/capa-card/connect-api-realista-componentes-v3.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1100,
+      "naturalHeight": 619
+    },
+    {
+      "secao": "conheca-tambem",
+      "src": "http://localhost:3000/images/logos/logoConnectAPI.png",
+      "alt": "Connect API",
+      "ariaHidden": null,
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 635,
+      "naturalHeight": 350
+    },
+    {
+      "secao": "conheca-tambem",
+      "src": "http://localhost:3000/images/solucoes/capa-card/smart-miner-realista-componentes-v3.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1100,
+      "naturalHeight": 619
+    },
+    {
+      "secao": "conheca-tambem",
+      "src": "http://localhost:3000/images/logos/Logo-Smart-Miner-1.png",
+      "alt": "Smart Miner",
+      "ariaHidden": null,
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 2996,
+      "naturalHeight": 816
+    },
+    {
+      "secao": "conheca-tambem",
+      "src": "http://localhost:3000/images/solucoes/capa-card/guru-de-seguros-realista-componentes-v3.webp",
+      "alt": "",
+      "ariaHidden": "true",
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1100,
+      "naturalHeight": 619
+    },
+    {
+      "secao": "conheca-tambem",
+      "src": "http://localhost:3000/images/logos/Guru-de-Seguros-letra-clara-2.png",
+      "alt": "Guru de Seguros",
+      "ariaHidden": null,
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 1405,
+      "naturalHeight": 717
+    },
+    {
+      "secao": null,
+      "src": "http://localhost:3000/images/esg/logo-sistran-cta.webp",
+      "alt": "",
+      "ariaHidden": null,
+      "loading": "lazy",
+      "sizes": null,
+      "naturalWidth": 640,
+      "naturalHeight": 640
+    },
+    {
+      "secao": null,
+      "src": "http://localhost:3000/images/sistran-corp-logo.png",
+      "alt": "Sistran",
+      "ariaHidden": null,
+      "loading": "eager",
+      "sizes": null,
+      "naturalWidth": 560,
+      "naturalHeight": 374
+    }
+  ]
+}

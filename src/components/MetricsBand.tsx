@@ -142,6 +142,9 @@ import type { CSSProperties } from 'react';
 import { METRICS } from '@/data/metrics';
 import { CountUp } from '@/components/primitives/CountUp';
 import RevealScope from '@/components/motion/RevealScope';
+/* SIS-216 — o irmão bidirecional do `RevealScope`; o porquê de ele publicar uma
+   custom property em vez de animar está no docblock do componente. */
+import ScrubScope from '@/components/motion/ScrubScope';
 import {
   AFINACAO_INDICADORES,
   LIMIAR_REVEAL,
@@ -228,6 +231,23 @@ export default function MetricsBand() {
               A identificação nunca dependeu dele: a lista tem nome pelo
               `aria-label` do `<section>` e cada item é anunciado como par
               número/rótulo. */}
+          {/* SIS-216 · trecho 1 de 2 — O RELÓGIO BIDIRECIONAL DA FAIXA.
+              `ScrubScope` não anima: publica `--scrub-p` (0..1) conforme a faixa
+              cruza a janela, e quem move é `.contato-indicadores-scrub` no
+              `globals.css`, num contra-deslocamento do `<ul>`.
+              O ALVO É O `<ul>`, e essa escolha é a regra do §6 de
+              `docs/scroll.md` aplicada («não misture os dois no mesmo
+              elemento»): o `<li>` já tem DOIS donos — o `@keyframes`
+              `contato-indicador-onda`, que é dono do `transform`, e o
+              `data-reveal="fade"`, dono da `opacity`. Mexer nele por GSAP era
+              disputar propriedade com o laço da onda. O `<ul>` não tem dono
+              nenhum (nem `transform`, nem `animation`, nem `transition`), então
+              o deslocamento dele COMPÕE com a onda dos filhos em vez de
+              competir, e o reveal dos sete cartões continua exatamente o que a
+              SIS-263/269 calibrou — nada nesta faixa deixa de acender.
+              Um escopo de cliente a mais NÃO torna a faixa cliente: como o
+              `RevealScope` acima, ele recebe os cartões prontos do servidor. */}
+          <ScrubScope className="contato-indicadores-scrub" nome="faixa-indicadores">
           <ul className="contato-indicadores-grade">
             {METRICS.map((m, i) => (
               /* `--ind-fase` é o ATRASO da onda deste cartão (a animação está em
@@ -310,6 +330,7 @@ export default function MetricsBand() {
               </li>
             ))}
           </ul>
+          </ScrubScope>
         </RevealScope>
       {/* </PercursoIndicadores> */}
     </section>

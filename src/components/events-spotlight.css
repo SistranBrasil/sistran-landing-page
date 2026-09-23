@@ -2120,3 +2120,125 @@ html[data-motion="reduce"] .eventos-lista-dica {
 html[data-motion="reduce"] .eventos-lista-seta {
   transition: none;
 }
+
+/* ═══ SIS-279 · A MALHA QUE DERIVA COM A ROLAGEM (os dois sentidos) ═══════════
+   Consumidores de `--scrub-p`, publicado por `ScrubScope` (ver a nota longa em
+   `EventsSpotlight.tsx`, onde está o porquê de o trecho ser decoração de fundo e
+   não um bloco de conteúdo). O componente não anima nada: quem move é este CSS.
+
+   POR QUE ESTE ARQUIVO, e não `globals.css`: as duas classes são desta rota. Em
+   `/contato` os consumidores ficaram no `globals.css` porque quem se movia era a
+   `.grade-tecnica`, que é compartilhada — aqui não há nada compartilhado.
+
+   OS DOIS ESCOPOS SÃO A MOLDURA, a malha é o que se move. Separados porque a
+   moldura é idêntica nas duas versões e o CURSO não é. */
+.eventos-cena-scrub,
+.eventos-faixa-scrub {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.eventos-malha-deriva {
+  position: absolute;
+  inset: 0;
+
+  /* O MÓDULO do padrão. Ele é o que torna a deriva ilimitada: um padrão que se
+     repete a cada 72px é indistinguível de si mesmo deslocado por 72px, então o
+     curso pode ser qualquer múltiplo sem nada "sair de lugar" — que é o teto que
+     mataria a taxa num percurso de 9.000px. */
+  --evt-malha-modulo: 72px;
+
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      rgba(4, 27, 61, 0.075) 0 1px,
+      transparent 1px var(--evt-malha-modulo)
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgba(4, 27, 61, 0.055) 0 1px,
+      transparent 1px var(--evt-malha-modulo)
+    ),
+    /* A TERCEIRA camada é a que dá profundidade: traço ciano mais largo, módulo
+       3,5× maior e taxa 0,42 da das outras (no bloco da guarda). O olho lê
+       movimento RELATIVO entre camadas muito melhor que deslocamento absoluto de
+       uma — foi a lição da SIS-216, onde uma opacidade de fundo sozinha passou em
+       todos os portões e ninguém viu. */
+      repeating-linear-gradient(
+        90deg,
+        rgba(14, 216, 246, 0.1) 0 2px,
+        transparent 2px calc(var(--evt-malha-modulo) * 3.5)
+      );
+  /* `fixed` ancora o padrão na JANELA, não na caixa. É o que faz a malha se ler
+     por baixo do palco `sticky` durante a cena inteira — e é por isso que o canal
+     tem de ser `background-position`: transladar a caixa não moveria um padrão
+     ancorado na janela (armadilha registrada na SIS-216). */
+  background-attachment: fixed;
+  background-position:
+    0 0,
+    0 0,
+    0 0;
+
+  /* As pontas entram e saem por máscara: sem ela a malha encosta chapada na
+     emenda de cor da seção seguinte. */
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 10%,
+    #000 84%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 10%,
+    #000 84%,
+    transparent 100%
+  );
+}
+
+/* O CURSO de cada versão. Fora da guarda porque variável sem consumidor não move
+   nada — e mantê-los aqui deixa as duas contas lado a lado.
+   A conta é a mesma nas duas: curso ÷ percurso da seção × 100 = px por 100px de
+   roda. O alvo é ~6px/100px, que é o que a SIS-216 mediu como "se lê como
+   parallax" (2,3px/100px foi o que fez aquela issue voltar). */
+.eventos-cena-scrub .eventos-malha-deriva {
+  /* Cena a 1440: seção de 8.100px + janela de 900 = 9.000px de percurso.
+     560 / 9000 × 100 = 6,2px por 100px de roda. */
+  --evt-malha-curso: 560px;
+}
+
+.eventos-faixa-scrub .eventos-malha-deriva {
+  /* Lista estreita a 390: percurso MEDIDO de 1.400px
+     (`percursoY: [0, 1400]` em `docs/medidas/sis279-scrub.json`).
+     84 / 1400 × 100 = 6,0px por 100px de roda — a MESMA taxa, curso menor.
+
+     CALIBRE ANTERIOR: `--evt-malha-curso: 210px`, escrito supondo a seção com
+     ~2.500px de altura. A suposição estava errada por um motivo que vale
+     registrar: a faixa dos quinze é um carrossel HORIZONTAL, então a seção tem
+     ~500px de altura, não a soma dos cartões. Medido, dava 11,69px por 100px de
+     roda — o dobro do alvo, e no sentido que o olho lê como tremor, não como
+     parallax. O número não veio de estimativa nenhuma desta vez. */
+  --evt-malha-curso: 84px;
+}
+
+/* GUARDA POSITIVA, e não o reset global: o que se move aqui é POSIÇÃO em função
+   do scroll, não duração. Zerar `transition-duration` (que é o que o reset de
+   `globals.css` faz por `prefers-reduced-motion`) não impediria nada — a posição
+   seria escrita instantaneamente a cada quadro. Então a regra só EXISTE quando as
+   duas vias pedem movimento, e o `var(--scrub-p, 0.5)` de reserva é o estado de
+   repouso (deriva zero, malha visível). Mesmo arranjo da SIS-216.
+   `html:not([data-motion='reduce'])` é a via do interruptor da interface; o
+   `@media` é a do sistema operacional. Uma só não basta — os blocos acima neste
+   arquivo existem justamente porque o reset global não cobre o atributo. */
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="reduce"]) .eventos-cena-scrub .eventos-malha-deriva,
+  html:not([data-motion="reduce"]) .eventos-faixa-scrub .eventos-malha-deriva {
+    background-position:
+      0 calc((var(--scrub-p, 0.5) - 0.5) * var(--evt-malha-curso)),
+      0 calc((var(--scrub-p, 0.5) - 0.5) * var(--evt-malha-curso)),
+      0 calc((var(--scrub-p, 0.5) - 0.5) * var(--evt-malha-curso) * 0.42);
+  }
+}

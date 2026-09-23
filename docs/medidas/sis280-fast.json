@@ -1,0 +1,276 @@
+{
+  "nota": "gerado por scripts/medir-fast-sis280.mjs",
+  "fast": {
+    "inventario": {
+      "escoposReveal": 6,
+      "nomesDeEscopo": [
+        "fast-hero",
+        "fast-oferece",
+        "fast-integracao",
+        "fast-beneficios",
+        "fast-monitore",
+        "fast-outras"
+      ],
+      "nosReveal": 32,
+      "presets": [
+        "fade-up",
+        "scale-soft"
+      ],
+      "grade": 2,
+      "acentos": 4,
+      "circuitos": 5,
+      "cartoes": 4,
+      "halos": 4,
+      "fichas": 1,
+      "colunas": 3,
+      "midias": 8,
+      "sectionLightComOverflowHidden": 0,
+      "gradeAtrasDoFundo": 0,
+      "secoes": 6,
+      "titulosDeSecao": [
+        {
+          "texto": "O que é o Fast?",
+          "negrito": "700"
+        },
+        {
+          "texto": "O que o Fast oferece?",
+          "negrito": "700"
+        },
+        {
+          "texto": "Integração sem Fronteiras",
+          "negrito": "700"
+        },
+        {
+          "texto": "Benefícios",
+          "negrito": "700"
+        },
+        {
+          "texto": "Monitore e Aprimore seus Processos",
+          "negrito": "700"
+        },
+        {
+          "texto": "Outras soluções",
+          "negrito": "700"
+        },
+        {
+          "texto": "Fale com a Gente!",
+          "negrito": "700"
+        }
+      ]
+    },
+    "arteIntegracao": {
+      "existe": true,
+      "src": "/integracaosemfronteira.webp",
+      "carregou": true,
+      "naturais": [
+        1873,
+        840
+      ],
+      "renderizada": [
+        1116,
+        501
+      ],
+      "decorativa": true,
+      "naSecaoDaIntegracao": true,
+      "paragrafosAcima": 2,
+      "fundoDaSecao": "rgb(0, 26, 61)"
+    },
+    "diagramaAntigo": {
+      "rotulosAlcancaveis": [],
+      "rotulosNoHTML": []
+    },
+    "contagem": [
+      {
+        "estado": "fim",
+        "valor": "95%"
+      },
+      {
+        "estado": "fim",
+        "valor": "0%"
+      },
+      {
+        "estado": "fim",
+        "valor": "450"
+      }
+    ],
+    "contraste": [
+      {
+        "nome": "pilula-dashboard",
+        "texto": "Conheça o dashboard — fale com a gen",
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fundo": "rgb(0, 96, 168)",
+        "razao": 6.48
+      },
+      {
+        "nome": "titulo-integracao",
+        "texto": "Integração sem Fronteiras",
+        "cor": "rgb(255, 255, 255)",
+        "fundo": "rgb(0, 26, 61)",
+        "razao": 17.28
+      },
+      {
+        "nome": "texto-integracao",
+        "texto": "O Fast se integra com os sistemas ex",
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "fundo": "rgb(0, 26, 61)",
+        "razao": 17.28
+      },
+      {
+        "nome": "link-saiba-mais",
+        "texto": "Saiba mais sobre o Fast",
+        "cor": "rgb(165, 240, 255)",
+        "fundo": "rgb(0, 26, 61)",
+        "razao": 13.59
+      }
+    ],
+    "reveal": {
+      "total": 32,
+      "vivos": 32,
+      "todosEmEscopo": true,
+      "acenderamTodos": true,
+      "nenhumInvisivel": true,
+      "piorOpacidade": 1,
+      "comEstiloInlineDeMovimento": 0,
+      "inlineTransform": 0
+    },
+    "semJs": {
+      "titulos": [
+        "O que é o Fast?",
+        "O que o Fast oferece?",
+        "Integração sem Fronteiras",
+        "Benefícios",
+        "Monitore e Aprimore seus Processos",
+        "Outras soluções",
+        "Fale com a Gente!"
+      ],
+      "arteNoHtml": true,
+      "nenhumInvisivel": true,
+      "metricas": [],
+      "metricasSemJs": [
+        "95%",
+        "0%",
+        "450"
+      ]
+    }
+  },
+  "matchai": {
+    "inventario": {
+      "escoposReveal": 6,
+      "nomesDeEscopo": [
+        "matchai-hero",
+        "matchai-campanha",
+        "matchai-o-que-faz",
+        "matchai-trilho",
+        "matchai-posicionamento",
+        "matchai-conheca"
+      ],
+      "nosReveal": 33,
+      "presets": [
+        "fade-up",
+        "scale-soft"
+      ],
+      "grade": 1,
+      "acentos": 4,
+      "circuitos": 4,
+      "cartoes": 4,
+      "halos": 4,
+      "fichas": 2,
+      "colunas": 3,
+      "midias": 11,
+      "sectionLightComOverflowHidden": 0,
+      "gradeAtrasDoFundo": 0,
+      "secoes": 6,
+      "titulosDeSecao": [
+        {
+          "texto": "",
+          "negrito": "400"
+        },
+        {
+          "texto": "Ofertas inteligentes. Conversas mais relevantes.",
+          "negrito": "700"
+        },
+        {
+          "texto": "O que o Match AI faz?",
+          "negrito": "700"
+        },
+        {
+          "texto": "Da base à oferta mais relevante",
+          "negrito": "700"
+        },
+        {
+          "texto": "Posicionamento",
+          "negrito": "700"
+        },
+        {
+          "texto": "Conheça também",
+          "negrito": "700"
+        },
+        {
+          "texto": "Fale com a Gente!",
+          "negrito": "700"
+        }
+      ]
+    }
+  },
+  "transbordo": {
+    "390": {
+      "px": 0,
+      "culpados": [
+        "DIV.absolute -top-40 -left-32 h-[620px] w-[6",
+        "DIV.absolute top-1/3 -right-40 h-[720px] w-[",
+        "DIV.absolute bottom-[-10%] left-1/4 h-[560px",
+        "DIV.absolute -top-32 left-1/4 h-[480px] w-[4",
+        "path.[object SVGAnimatedString]",
+        "path.[object SVGAnimatedString]"
+      ]
+    },
+    "1440": {
+      "px": 0,
+      "culpados": [
+        "DIV.absolute top-1/3 -right-40 h-[720px] w-[",
+        "path.[object SVGAnimatedString]",
+        "path.[object SVGAnimatedString]",
+        "path.[object SVGAnimatedString]",
+        "SPAN.lp-rodape-malha-grade"
+      ]
+    }
+  },
+  "reduceSistema": {
+    "atributoMotion": null,
+    "piorRevealOpacidade": 1,
+    "metricas": [
+      {
+        "estado": "fim",
+        "valor": "95%"
+      },
+      {
+        "estado": "fim",
+        "valor": "0%"
+      },
+      {
+        "estado": "fim",
+        "valor": "450"
+      }
+    ],
+    "animacoesVivas": 0
+  },
+  "reduceAtributo": {
+    "atributoMotion": "reduce",
+    "piorRevealOpacidade": 1,
+    "metricas": [
+      {
+        "estado": "fim",
+        "valor": "95%"
+      },
+      {
+        "estado": "fim",
+        "valor": "0%"
+      },
+      {
+        "estado": "fim",
+        "valor": "450"
+      }
+    ],
+    "animacoesVivas": 0
+  }
+}

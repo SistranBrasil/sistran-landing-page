@@ -1,0 +1,712 @@
+/* SIS-280 — a seção «Sobre nós / A Sistran» de `/quem-somos` (`About.tsx`).
+
+   FONTE: `docs/sobrenos.md` mais a mock `public/imagensexemplo/sobrenos.png`. O
+   documento é a especificação e TERMINA no bloco do carimbo (conferido: o arquivo
+   tem 155 linhas e a última é o segundo marcador da lista do carimbo) — então a
+   copy, a faixa de métricas, os acentos verticais e o degrau da aresta saem da
+   mock, que é o que a própria issue manda fazer.
+
+   POR QUE EM CSS E NÃO EM UTILITÁRIAS TAILWIND
+   Mesmo motivo de `servicos-palco.css` e `accelerators.css`: o recorte da foto é um
+   `clip-path` de seis vértices com `calc()`, o fundo é um empilhamento de quatro
+   camadas (degradê + duas linhas de grade) e o degrau da aresta é outro `clip-path`.
+   Nada disso tem utilitária, e escrever em `style={{}}` espalharia os números do
+   documento por dentro do JSX, onde a próxima issue não os encontra.
+
+   OS CAMINHOS DOS ASSETS SÃO OS DA ISSUE, NÃO OS DO DOCUMENTO
+   O doc nomeia `/public/images/sobre-nos-equipe.webp` e
+   `/public/images/carimbo-sobre-nos.png`; nenhum dos dois existe no repositório
+   (conferido). A issue manda usar `public/sobre.png` (1536×1024) e
+   `public/carimbo-sobre-nos-capsule-outline-0757c7.png` (873×327), e diz por
+   escrito para «não usar esses se não existirem». Os arquivos da issue prevalecem.
+
+   O MAPA DA AMÉRICA DO SUL DA MOCK NÃO FOI RECRIADO, e isto é declaração e não
+   esquecimento: ele é uma marca-d'água quase invisível no canto direito, não existe
+   asset de mapa continental no `public/` (conferido) e desenhar um contorno de
+   continente à mão seria arte inventada por mim — exatamente o que o documento
+   proíbe quando manda não recriar o carimbo em HTML. O fundo declarado no documento
+   é o degradê azul-gelo mais a grade técnica, e é ele que está aqui; os acentos
+   verticais e os pontos ciano da mock estão implementados. */
+
+.sobre-secao {
+  position: relative;
+  /* `overflow-x: clip` e nunca `overflow: hidden`: o carimbo pousa em `left: -20px`
+     sobre a caixa da foto (e não da seção), mas os acentos verticais e o degrau da
+     aresta encostam nas bordas — `hidden` criaria contexto de rolagem e mataria
+     qualquer `position: sticky` de ancestral. */
+  overflow-x: clip;
+  isolation: isolate;
+  /* Os números são os do documento, na ordem em que ele os escreve. */
+  background:
+    linear-gradient(rgb(7 87 199 / 3.5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(7 87 199 / 3.5%) 1px, transparent 1px),
+    linear-gradient(135deg, #f7fcff 0%, #edf8fe 56%, #e4f4fc 100%);
+  background-size:
+    40px 40px,
+    40px 40px,
+    auto;
+}
+
+/* ── O CONTÊINER SUPERIOR ─────────────────────────────────────────────────────
+   `max-width`, `margin`, `padding`, `grid-template-columns`, `gap` e
+   `align-items` são copiados do documento sem arredondar. As colunas em
+   `minmax(0, 1.08fr)` / `minmax(0, 0.92fr)` dão 54% / 46% do vão útil, que é o
+   «imagem ≈52% e texto ≈48%» do documento depois de o `gap` sair da conta — a
+   lição de `fr` contra `%` está escrita em `servicos-palco.css` e vale aqui:
+   percentual somaria 100% e o vão de 48px entraria por cima, estourando a caixa. */
+.sobre-conteudo {
+  position: relative;
+  z-index: 1;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 72px 48px 26px;
+  display: grid;
+  gap: 48px;
+  align-items: center;
+}
+
+@media (min-width: 62rem) {
+  .sobre-conteudo {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  }
+}
+
+/* O CORREDOR DO INDICADOR DE SEÇÃO — o mesmo preço que `servicos-palco.css` paga,
+   pela mesma causa, e aqui ele é PIOR porque a peça encostada na margem esquerda é
+   o carimbo. `ScrollSpy` é `position: fixed` na JANELA e de 1440px para cima pinta
+   o rótulo do item ATIVO em repouso: 12 (`left-3`) + 24 (traço) + 12 (`ml-3`) = 48
+   de origem mais 127,08px do rótulo mais largo na Geist → a tinta termina em
+   ~175px, e em `2xl` (`left-5`) em ~183px. As seções irmãs desta rota escapam
+   porque o `.container-lp` as começa em 162px a 1440; esta, que sangra na janela,
+   começaria em 48px — o rótulo «SOBRE NÓS» cairia por cima do carimbo.
+   O piso NÃO é 190px, e a diferença foi medida: 190 era a conta do corredor contra
+   o começo do CONTEÚDO, e nesta seção a peça mais à esquerda não é o conteúdo — é o
+   carimbo, que o documento pousa em `left: -20px`. Com 190 de recuo a cápsula
+   começava em 168,41px e a sonda leu folga de 9,88px contra a tinta do rótulo: um
+   corredor de dez pixels, que é a mesma sobra residual de dez pixels que a SIS-170
+   registrou como defeito nas seções de `.container-lp`. O piso é 216px, que devolve
+   o carimbo a 196px e deixa ~21px de folga contra os ~175px de tinta do rótulo mais
+   largo. A folga remedida está no comentário da issue.
+   E só a ESQUERDA: o corredor é de um lado só.
+   O `padding-right` também cresce nessa faixa, mas por outro motivo: é onde os
+   acentos verticais da mock aparecem, e eles pousam na borda direita. */
+@media (min-width: 90rem) {
+  .sobre-conteudo {
+    padding-left: 216px;
+    padding-right: 136px;
+  }
+}
+
+/* ── A FOTOGRAFIA E O CARIMBO ─────────────────────────────────────────────────
+   O tombo do carimbo vive NO PAI, e não no `<span>` do `CarimboBatida`: aquele nó
+   é do GSAP durante a batida, e o CSSPlugin escreve `rotate: none` no `style` junto
+   do `transform` — foi o que obrigou a SIS-235 a duplicar o mesmo ângulo no CSS e
+   no tween. Com o tombo um nível acima não há valor para duplicar nem para
+   divergir, e o `clearProps: 'all'` do desmonte não tem o que apagar aqui.
+
+   E O ÂNGULO É MEDIDO, não o do documento copiado cru: a borda superior da cápsula
+   em `carimbo-sobre-nos-capsule-outline-0757c7.png` cai de y=33 em x=150 para y=17
+   em x=750, ou seja a ARTE JÁ VEM TOMBADA em −1,53°. O documento pede −3°; um
+   `rotate: -3deg` aqui somaria com o do arquivo e daria −4,5°. Falta −1,47°, e é
+   esse o número declarado abaixo. */
+.sobre-visual {
+  position: relative;
+  min-width: 0;
+}
+
+.sobre-carimbo-caixa {
+  position: absolute;
+  /* `left` e `width` são os valores do documento. `top` era −38px, também dele, e
+     SUBIU A PEDIDO (SIS-280, 2ª passada): −78px.
+
+     O limite não é estético, é o portão da própria issue — «carimbo sobrepondo
+     parcialmente a parte superior esquerda da fotografia» —, então a cápsula não
+     pode subir até descolar. A arte é 873×327 (razão 0,3746), e a 1440 ela entra
+     com 330px de largura, ou seja ~124px de altura: com `top: -78px` sobram ~46px
+     de cápsula sobre a foto, e a interseção medida continua acima de zero. Por
+     isso a mudança vem acompanhada de valor próprio no degrau de telefone, mais
+     abaixo: lá a cápsula tem ~86px de altura e este mesmo −78 a deixaria
+     praticamente fora da imagem. */
+  top: -78px;
+  left: -20px;
+  z-index: 3;
+  width: clamp(230px, 24vw, 330px);
+  rotate: -1.47deg;
+  transform-origin: left center;
+  /* A arte não recebe clique e não pode tapar o alt-text da foto embaixo. */
+  pointer-events: none;
+}
+
+/* O DEGRAU DO MEIO, que a subida do carimbo obrigou a existir. Entre 62rem e 75rem
+   a largura da cápsula é governada pelos 24vw (245,76px a 1024), ou seja ~92px de
+   altura — e os −78px de cima deixariam só 14px sobre a fotografia. Medido: a
+   interseção caía para 3 183px², contra 14 195px² a 1440. O portão não reprovava
+   (continua > 0), mas 14px de sobreposição não é «sobrepondo parcialmente», é
+   tangenciando. −56px devolve ~36px de cápsula sobre a imagem. */
+@media (min-width: 62rem) and (max-width: 74.99rem) {
+  .sobre-carimbo-caixa {
+    top: -56px;
+  }
+}
+
+/* `CarimboBatida` declara `--carimbo-batida-w` dentro de `.carimbo-batida`, e
+   declaração do elemento vence herança do pai — então a largura do documento tem
+   de ser escrita NA classe que vai para a prop `className` do componente. */
+.sobre-carimbo {
+  --carimbo-batida-w: 100%;
+  display: block;
+}
+
+/* «Recorte arquitetônico»: canto superior esquerdo em 64px, inferior esquerdo
+   praticamente reto, inferior direito ~90px, superior direito chanfrado. O
+   `border-radius` faz os três raios e o `clip-path` faz os dois chanfros — os dois
+   juntos, porque `clip-path: polygon()` não arredonda e `border-radius` não chanfra.
+   O polígono é o do documento, vértice por vértice. */
+.sobre-foto {
+  position: relative;
+  /* `fill` do `next/image` exige pai posicionado e com caixa própria; a proporção é
+     a do documento. O arquivo é 1536×1024 (1,5), então `object-fit: cover` corta
+     nas laterais — que é o enquadramento da mock, com a mesa inteira em quadro. */
+  aspect-ratio: 1.16 / 1;
+  overflow: hidden;
+  border-radius: 64px 0 90px 4px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 76px) 0,
+    100% 76px,
+    100% calc(100% - 82px),
+    calc(100% - 82px) 100%,
+    0 100%
+  );
+  /* Base enquanto o arquivo não chega, no lugar do retângulo transparente que
+     deixaria a grade técnica aparecer por dentro do recorte. */
+  background: #dceaf7;
+}
+
+/* «Não aplique filtro azul ou escurecimento forte», «não coloque textos, filtros,
+   gradientes ou interfaces sobre a fotografia» — então aqui só há enquadramento. */
+.sobre-foto-arte {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* ── A COLUNA DE TEXTO ──────────────────────────────────────────────────────────
+
+   POR QUE TODA REGRA DE COR AQUI VEM PREFIXADA POR `.sobre-secao`, e isto é medido
+   e não estilístico: a rota monta esta seção DENTRO de uma `div.section-light`
+   (conferido na sonda), e os overrides de texto sobre fundo claro de
+   `globals.css:1099` pintam `h2`, `p` e `span` de `#0a1f44` com seletores do tipo
+   `.section-light p` — que somam (0,1,1) e portanto VENCEM qualquer declaração de
+   uma classe só. Medido antes da correção: `.sobre-titulo`, `.sobre-lead`,
+   `.sobre-paragrafo`, `.sobre-acento-palavra` e os dois textos da faixa navy saíam
+   todos em `#0a1f44` — e na faixa navy isso é texto navy sobre navy, 1,07:1, ou
+   seja invisível. Com o prefixo cada regra soma (0,2,0) e passa a valer.
+   O caso do `span` é pior e tem tratamento próprio, anotado na régua dos acentos. */
+
+.sobre-copy {
+  min-width: 0;
+}
+
+/* O `h2` da mock: «A» em navy e «Sistran» no degradê da marca. O gradiente vem da
+   `.text-gradient-brand` que a página já usava — o que muda é só a escala.
+
+   SIS-280, 2ª passada: A REGRA SAIU DE USO, e fica comentada. O `h2` desta seção
+   virou `sr-only` a pedido (o motivo está em `About.tsx`, no nó dele) porque a capa
+   da rota já diz «A Sistran» em manchete. Não apaguei os números: são eles que
+   voltam se o título voltar a pintar, e redescobrir a escala e o `-0.03em` custaria
+   a medição toda de novo.
+.sobre-secao .sobre-titulo {
+  margin: 0;
+  font-weight: 800;
+  font-size: clamp(2.75rem, 5.2vw, 4.75rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #0b2a4a;
+}
+*/
+
+/* `margin-top` ZERO, e é consequência direta da saída do título: o lead é agora o
+   primeiro nó que pinta na coluna, e 1,5rem de margem no topo dele somariam ao
+   recuo do container, jogando a prosa abaixo do topo da fotografia ao lado. Os
+   1,5rem originais existiam para separar o lead do `h2` — sem o `h2`, não há o que
+   separar. */
+.sobre-secao .sobre-lead {
+  margin: 0 0 0;
+  font-weight: 700;
+  font-size: clamp(1.125rem, 1.45vw, 1.4375rem);
+  line-height: 1.35;
+  letter-spacing: -0.011em;
+  color: #0b2a4a;
+}
+
+.sobre-secao .sobre-paragrafo {
+  margin: 1.25rem 0 0;
+  font-size: clamp(1rem, 1.1vw, 1.0625rem);
+  line-height: 1.6;
+  color: #3d5a80;
+}
+
+/* A citação da mock: barra ciano à esquerda e nada mais — sem card, sem fundo, sem
+   borda em volta, porque a issue proíbe cards nesta seção. */
+.sobre-citacao {
+  margin: 1.75rem 0 0;
+  padding: 0.25rem 0 0.25rem 1.5rem;
+  border-left: 3px solid #16bfe8;
+}
+
+.sobre-secao .sobre-citacao p {
+  margin: 0;
+  font-size: clamp(1rem, 1.1vw, 1.0625rem);
+  line-height: 1.6;
+  color: #3d5a80;
+}
+
+/* ── «CONHECEMOS SEGUROS.», seguindo `docs/fonte2.md` à risca ──────────────────
+   A grafia desta frase é o que o pedido em chat nomeia, e o documento que ele
+   aponta é o MESMO que a `.luminna-frase` e a `.solucoes-lema` já consomem: Kalam
+   com Caveat e `cursive` de reserva, peso 400, cor `#123B5D`, `line-height: 0.95`,
+   `font-size: clamp(30px, 3vw, 50px)`, rotação `-4deg`, e um traço ciano `#16BFE8`
+   de ~45px desenhado da esquerda para a direita abaixo da última linha. Os números
+   são os três iguais nos três consumidores — uma família, uma cor, um tombo.
+
+   SEM A PLACA ENVIDRAÇADA da `.luminna-frase`, e a diferença tem a mesma razão que
+   a `.solucoes-lema` registra: lá a frase pousa sobre FOTO velada em navy, onde
+   `#123B5D` reprovaria no piso de contraste, e a placa é o que torna a cor do
+   documento cumprível. Aqui o fundo é o azul-gelo `#edf8fe` da própria seção,
+   contra o qual `#123B5D` passa com folga (número medido no comentário da issue).
+   Uma placa aqui seria vidro sobre vidro e daria à frase a silhueta de card que a
+   issue proíbe nesta seção.
+
+   POR QUE ELA SAI DA LINHA DO PARÁGRAFO: na mock a frase é negrito azul EM LINHA,
+   dentro da citação. Manuscrita com `clamp(30px, 3vw, 50px)`, `line-height: 0.95`,
+   tombo de −4° e um traço por baixo, ela não cabe em linha — o tombo cortaria o
+   ascendente na linha de cima e o traço cairia sobre a linha de baixo. Então
+   «Aqui, realmente» termina a prosa e a assinatura vem em bloco, logo abaixo, que
+   é o arranjo pedido pelo documento («posicionada sobre área clara, sem cobrir
+   títulos, botões ou componentes»).
+
+   `rotate` e NÃO `transform`: `data-reveal` é o dono do `transform` deste nó, e
+   duas mãos na mesma propriedade fazem uma apagar a outra. `transform-origin` à
+   esquerda para a inclinação não empurrar o «C» para dentro da barra ciano.
+
+   TRÊS CLASSES NO SELETOR, e cada uma paga uma dívida medida: `.sobre-assinatura`
+   sozinha soma (0,1,0) e perdia DUAS vezes — para `.section-light p` de
+   `globals.css` (a cor) e para a regra de prosa da própria citação (o corpo). A
+   sonda pegou a frase manuscrita saindo em 16px e `#3d5a80` em vez dos 43,2px e do
+   `#123B5D` de `docs/fonte2.md`: a família e o tombo entravam, o tamanho e a cor
+   não, que é o modo de falha mais silencioso que existe — a frase parecia apenas
+   «um parágrafo em fonte estranha». Com (0,3,0) ela vence as duas. */
+.sobre-secao .sobre-citacao .sobre-assinatura {
+  margin-top: 1rem;
+  font-family: var(--font-kalam), 'Caveat', cursive;
+  font-weight: 400;
+  font-size: clamp(30px, 3vw, 50px);
+  line-height: 0.95;
+  color: #123b5d;
+  rotate: -4deg;
+  transform-origin: left center;
+  /* A caixa se ajusta à linha mais larga e nunca é ela que reparte a frase — quem
+     reparte são as duas linhas declaradas abaixo. */
+  width: max-content;
+  max-width: 100%;
+}
+
+/* AS DUAS LINHAS. `display: block` num `span`, e não `<br>` nem dois parágrafos:
+   continua UMA frase para leitor de tela, e a quebra não depende de largura, de
+   zoom nem de tradução. O documento pede a frase repartida em linhas; com duas
+   palavras, são duas. */
+.sobre-assinatura-linha {
+  display: block;
+}
+
+.sobre-assinatura-traco {
+  display: block;
+  width: 45px;
+  height: 8px;
+  margin-top: 0.3rem;
+  /* A ponta arredondada do traço passa da caixa do `viewBox`. */
+  overflow: visible;
+}
+
+/* O RISCO NASCE POR DESENHAR e só parte quando o escopo acende. `pathLength="1"`
+   normaliza o comprimento, então o traço entra puxando `stroke-dashoffset` de 1 a 0
+   — o mecanismo de traço da casa, da esquerda para a direita.
+   O gatilho é o `data-in='true'` do reveal e não a montagem: esta seção nasce
+   abaixo da dobra, e uma animação de montagem terminaria antes de alguém chegar
+   aqui (a lição da SIS-188). `forwards` porque o traço tem de FICAR desenhado — sem
+   isso a frase termina sublinhada por nada. */
+.sobre-assinatura-risco {
+  fill: none;
+  stroke: #16bfe8;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+[data-in='true'] .sobre-assinatura-risco {
+  animation: sobre-risco-desenha 0.9s ease-out 0.35s forwards;
+}
+
+@keyframes sobre-risco-desenha {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* OS DOIS CANAIS DE MOVIMENTO REDUZIDO DA CASA, no mesmo lugar e com o mesmo par de
+   regras: a media query do sistema e o `html[data-motion='reduce']` que o script
+   inline do `layout.tsx` grava. O traço não pode simplesmente parar — parado ele
+   nasce em `stroke-dashoffset: 1`, ou seja INVISÍVEL para sempre, que é o modo de
+   falha descrito na skill `reduced-motion-conteudo`. Então ele nasce DESENHADO. */
+@media (prefers-reduced-motion: reduce) {
+  .sobre-assinatura-risco {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+}
+
+html[data-motion='reduce'] .sobre-assinatura-risco {
+  animation: none !important;
+  stroke-dashoffset: 0 !important;
+}
+
+/* ── OS ACENTOS VERTICAIS DA BORDA DIREITA ────────────────────────────────────
+   Quatro palavras empilhadas com entreletra larga, régua ciano, e mais quatro
+   embaixo — é o que a mock tem no canto direito. São DECORAÇÃO tipográfica
+   (`aria-hidden` no JSX): as oito palavras já são ditas na prosa ao lado, e um
+   leitor de tela que as lesse anunciaria oito fragmentos sem frase.
+   Só aparecem de 1440px para cima, que é a faixa em que o `padding-right` de 136px
+   do contêiner reserva o corredor para elas. Abaixo disso não há largura para
+   gastar sem comer a coluna de texto, e decoração não disputa com leitura. */
+.sobre-acentos {
+  display: none;
+}
+
+@media (min-width: 90rem) {
+  .sobre-acentos {
+    position: absolute;
+    top: 48px;
+    right: 40px;
+    bottom: 48px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    text-align: right;
+    pointer-events: none;
+  }
+}
+
+.sobre-acento-grupo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+}
+
+.sobre-acento-palavra {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  /* `#5a86ad` e não o `#9cc3e0` da mock: contra `#e4f4fc` a tinta clara da
+     referência dá 1,9:1, e 11px é justamente o tamanho em que a franja de
+     antialiasing engana a medição por pixel. Este tom é o piso que passa em texto
+     decorativo pequeno sem virar chumbo — número medido no comentário da issue.
+
+     `!important` AQUI E EM NENHUM OUTRO LUGAR DESTE ARQUIVO. O override de span de
+     `globals.css:1122` é
+     `.section-light span:not([class*="badge"]):not([class*="pill"]):not([class*="eyebrow"]):not([class*="tag-section"])`,
+     que soma (0,5,1) — quatro `:not()` de atributo contam cada um como atributo. Não
+     há prefixo de classe razoável que o vença (seriam seis classes num seletor de
+     decoração), e a alternativa seria pendurar um `badge`/`pill` mentiroso na
+     palavra só para cair no `:not`. O próprio `globals.css` já registra em
+     `:9367` que nesse empate o caminho é `!important`. Medido: sem isto a palavra
+     saía em `#0a1f44`, o navy de manchete, em 11px de entreletra larga.
+
+     E O TOM NÃO É `#5a86ad`, que era o meu primeiro palpite: contra o pixel REAL
+     amostrado naquele canto na captura ele deu 2,36:1 — abaixo mesmo do piso de 3:1
+     de texto decorativo. `#2f5678` passa contra o fundo medido ali e continua mais
+     claro que a prosa ao lado, o que mantém o acento em segundo plano. Os dois
+     números (média do bloco e pior pixel, como manda a régua de texto de 11px) estão
+     no comentário da issue. */
+  color: #2f5678 !important;
+  text-transform: uppercase;
+}
+
+.sobre-acento-regua {
+  display: block;
+  width: 56px;
+  height: 2px;
+  margin-top: 0.5rem;
+  background: linear-gradient(90deg, rgb(22 191 232 / 20%), #16bfe8);
+}
+
+/* ── A FAIXA INSTITUCIONAL NAVY ───────────────────────────────────────────────
+   O segundo dos dois blocos que o documento manda («área editorial superior clara»
+   e «faixa institucional azul-marinho com os três indicadores»). Sangra na janela
+   inteira, como na mock.
+
+   O DEGRAU DA ARESTA: na mock o topo da faixa é mais ALTO à esquerda, sob a
+   fotografia, e desce num corte diagonal pouco depois da borda direita dela. É
+   `clip-path`, não `border`: o degrau tem 22px de altura e ~30px de rampa, e
+   nenhuma borda faz isso. As porcentagens do polígono acompanham a coluna da foto
+   (54% do vão útil), então o corte cai logo depois dela em qualquer largura.
+   Abaixo de 62rem a grade vira uma coluna e a foto deixa de mandar na posição do
+   corte — ali a aresta é reta, e a regra do degrau está presa a `min-width`. */
+.sobre-metricas {
+  position: relative;
+  z-index: 1;
+  margin-top: 56px;
+  padding: clamp(2.5rem, 4vw, 3.5rem) 0 clamp(2.75rem, 4.5vw, 4rem);
+  background:
+    radial-gradient(ellipse 70% 120% at 12% 0%, rgb(9 58 112 / 85%), transparent 60%),
+    /* SIS-42, 2ª passada — ERA `105deg`, e o ângulo é a única coisa que mudou aqui.
+       A seção do «Perfil & posicionamento» abaixo tem de ser CONTINUAÇÃO desta
+       faixa (pedido de 22/09), e copiar as três paradas não bastou: um degradê
+       inclinado tem componente vertical, então o mesmo valor pintado em duas
+       caixas de ALTURAS diferentes chega na junta em paradas diferentes. Medido:
+       ΔRGB de 10 a 1440 e de 37 a 390 — costura visível, pior justamente onde a
+       caixa de baixo é mais alta em relação à largura.
+       Em `90deg` a cor passa a depender só de `x / largura`. As duas caixas são
+       full-bleed e têm a MESMA largura, então a última linha desta faixa e a
+       primeira da seção seguinte são idênticas em qualquer viewport — não é um
+       valor calibrado, é geometria. O que se perde é uma inclinação de 4,5% no
+       eixo do degradê, invisível na faixa; o que se ganha é a emenda. */
+      linear-gradient(90deg, #041d37 0%, #06325c 46%, #0a3e70 100%);
+}
+
+@media (min-width: 62rem) {
+  .sobre-metricas {
+    clip-path: polygon(0 0, 36% 0, 38% 22px, 100% 22px, 100% 100%, 0 100%);
+    padding-top: calc(clamp(2.5rem, 4vw, 3.5rem) + 22px);
+  }
+}
+
+/* A LINHA CIANO SOBRE A ARESTA, com os pontos da mock. `preserveAspectRatio: none`
+   esticaria o traço na horizontal, e é `vector-effect: non-scaling-stroke` que
+   mantém 1px de espessura real nos dois eixos (o mesmo cuidado do arranjo de
+   integrações da `/solucoes/luminna-ai`). Os pontos são nós de CSS e não círculos
+   de SVG justamente porque círculo dentro de `viewBox` esticado sai elipse. */
+.sobre-metricas-aresta {
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  height: 24px;
+  display: none;
+}
+
+@media (min-width: 62rem) {
+  .sobre-metricas-aresta {
+    display: block;
+  }
+}
+
+.sobre-metricas-aresta path {
+  fill: none;
+  stroke: rgb(22 191 232 / 70%);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.sobre-metricas-ponto {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #16bfe8;
+  box-shadow: 0 0 10px rgb(22 191 232 / 80%);
+}
+
+/* ── QUADRADOS E LINHAS DINÂMICOS ATRÁS DOS NÚMEROS ───────────────────────────
+   Pedido em chat para esta faixa. O porquê de ser peça própria e não a
+   `AtmosferaQuadrados` de `/solucoes` está no nó, em `About.tsx`.
+
+   `overflow: hidden` E `inset: 0` no lugar de sangrar: a faixa tem `clip-path` de
+   62rem para cima, e uma camada que passasse dela apareceria fora do degrau.
+
+   `z-index: 0` aqui e `z-index: 1` na grade de indicadores: é isso que cumpre «que
+   não atrapalhe a escrita». Sem os dois números a camada seria irmã posterior da
+   lista e pintaria POR CIMA dos glifos — que é precisamente o defeito pedido para
+   não acontecer. `pointer-events: none` fecha a outra metade: nada de capturar
+   clique nem seleção de texto. */
+.sobre-atmosfera {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sobre-atmosfera svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* O «dinâmico» do pedido: DERIVA, não animação de entrada. Translação lenta e em
+   laço alternado — 34s e 46s, primos o suficiente para os dois grupos não voltarem
+   a coincidir a cada volta e a camada não ler como um bloco só escorregando. Só
+   `transform`, que é composto na GPU e não força reflow, e amplitude de poucos
+   pixels: é atmosfera, e tem de perder a disputa de atenção com o contador. */
+@keyframes sobre-atmosfera-a {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-18px, -10px, 0);
+  }
+}
+
+@keyframes sobre-atmosfera-b {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(14px, 8px, 0);
+  }
+}
+
+.sobre-atmosfera-deriva-a {
+  animation: sobre-atmosfera-a 34s ease-in-out infinite alternate;
+}
+
+.sobre-atmosfera-deriva-b {
+  animation: sobre-atmosfera-b 46s ease-in-out infinite alternate;
+}
+
+/* OS DOIS CANAIS, como no traço da assinatura. Aqui a decisão é simples e o
+   contrário da do marquee: este movimento é DECORAÇÃO — parar não esconde nada,
+   porque os quadrados estão desenhados no estado inicial e continuam visíveis. Por
+   isso `animation: none` é seguro, e é o certo. */
+@media (prefers-reduced-motion: reduce) {
+  .sobre-atmosfera-deriva-a,
+  .sobre-atmosfera-deriva-b {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+html[data-motion='reduce'] .sobre-atmosfera-deriva-a,
+html[data-motion='reduce'] .sobre-atmosfera-deriva-b {
+  animation: none !important;
+  transform: none !important;
+}
+
+/* ── OS TRÊS INDICADORES ──────────────────────────────────────────────────────
+   «Sem cards individuais»: o que separa um do outro é uma RÉGUA de 1px, que é o que
+   a mock mostra. Daí `border-left` no 2º e no 3º e nada de caixa, fundo ou sombra.
+   O contêiner repete o piso de 190px do corredor do `ScrollSpy` pelo mesmo motivo
+   da área clara: a faixa também sangra na janela. */
+.sobre-metricas-grade {
+  position: relative;
+  /* O par do `z-index: 0` da atmosfera: a escrita fica ACIMA dos quadrados. */
+  z-index: 1;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 48px;
+  display: grid;
+  gap: clamp(2rem, 3vw, 3rem);
+  list-style: none;
+}
+
+@media (min-width: 48rem) {
+  .sobre-metricas-grade {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+  }
+}
+
+/* O MESMO 216px da área clara, e por alinhamento além do corredor: o primeiro
+   indicador tem de nascer na mesma abscissa da fotografia acima dele (medido: as
+   duas caixas em x=216 a 1440). Um piso de 190 aqui e 216 lá deixaria a régua da
+   faixa 26px fora do prumo da foto. */
+@media (min-width: 90rem) {
+  .sobre-metricas-grade {
+    padding-left: 216px;
+    padding-right: 136px;
+  }
+}
+
+.sobre-metrica {
+  padding: 0;
+}
+
+@media (min-width: 48rem) {
+  .sobre-metrica {
+    padding: 0.25rem clamp(1.5rem, 2.4vw, 2.5rem);
+  }
+
+  .sobre-metrica + .sobre-metrica {
+    border-left: 1px solid rgb(165 240 255 / 22%);
+  }
+
+  .sobre-metrica:first-child {
+    padding-left: 0;
+  }
+}
+
+.sobre-metrica-topo {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.4vw, 1.25rem);
+}
+
+.sobre-metrica-icone {
+  width: clamp(38px, 3.4vw, 52px);
+  height: clamp(38px, 3.4vw, 52px);
+  flex: none;
+  color: #57b7ee;
+}
+
+/* A COR DESTES DOIS TEXTOS NÃO SE DECIDE AQUI, e é de propósito: o `on-dark` no
+   contêiner da faixa (ver `About.tsx`) pinta `p` de `rgb(255 255 255 / 88%)` com
+   `!important`, porque é a única força que vence o override navy de `.section-light`.
+   O `#fff` abaixo é o valor para quando esta faixa não estiver dentro de uma seção
+   clara — ele é o fallback, não o vencedor. Os dois números de contraste medidos
+   estão no comentário da issue. */
+.sobre-metrica-rotulo {
+  margin: 0.75rem 0 0;
+  font-size: clamp(0.875rem, 1vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.sobre-metrica-detalhe {
+  margin: 0.5rem 0 0;
+  max-width: 34ch;
+  font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+  line-height: 1.5;
+  color: rgb(214 236 252 / 92%);
+}
+
+/* ── TABLET E TELEFONE ───────────────────────────────────────────────────────── */
+
+@media (max-width: 61.99rem) {
+  .sobre-conteudo {
+    padding: 56px 24px 24px;
+  }
+
+  /* O carimbo encolhe junto com a coluna: em uma coluna a foto ocupa a largura
+     inteira, e os 24vw do documento dariam uma cápsula maior que o título. */
+  .sobre-carimbo-caixa {
+    /* Subiu junto com o de desktop, na mesma proporção e não no mesmo número: aqui
+       a cápsula tem ~86px de altura (260px de largura no teto), então −78px a
+       deixaria com 8px sobre a foto — o portão da interseção passaria raspando e o
+       desenho leria como cápsula solta acima da imagem. −52px guarda ~34px. */
+    top: -52px;
+    left: -8px;
+    width: clamp(190px, 46vw, 260px);
+  }
+
+  .sobre-metricas {
+    margin-top: 40px;
+  }
+
+  .sobre-metricas-grade {
+    padding: 0 24px;
+  }
+}

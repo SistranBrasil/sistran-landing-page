@@ -1,6 +1,10 @@
 import type { CSSProperties } from 'react';
 import { UserPlus } from 'lucide-react';
 import RevealScope from '@/components/motion/RevealScope';
+/* SIS-216 — o scrub bidirecional dos dois trechos desta rota. Não substitui o
+   `RevealScope`: cobre o que o §6 de `docs/scroll.md` diz que o reveal por CSS
+   não alcança (animação presa à posição da barra, que volta ao rolar pra cima). */
+import ScrubScope from '@/components/motion/ScrubScope';
 import { AFINACAO_REVEAL, LIMIAR_REVEAL, MARGEM_REVEAL } from './reveal-calibre';
 import PageShell from '@/components/PageShell';
 import PalcoReativo from '@/components/ui/PalcoReativo';
@@ -287,7 +291,44 @@ export default function Page() {
           <div className="fundo-contato-laje fundo-contato-laje--longe" />
           <div className="fundo-contato-laje fundo-contato-laje--perto" />
         </div>
-        <div aria-hidden className="grade-tecnica" />
+        {/* SIS-216 · trecho 2 de 2 — A MALHA TÉCNICA RESPIRA COM A ROLAGEM, nos
+            dois sentidos. O `ScrubScope` publica `--scrub-p` e
+            `.contato-cena-scrub .grade-tecnica` converte isso em opacidade no
+            `globals.css`: a malha entra conforme a seção sobe, chega ao ponto
+            cheio no meio do percurso e volta a recuar na saída — rolando para
+            CIMA ela desfaz o mesmo caminho, que é o critério da issue.
+            POR QUE ESTE NÓ, entre todos os da rota: é o único sem dono de
+            movimento. O hero tem variantes do `motion/react` (e é o LCP), o
+            painel e as manchetes têm reveal por CSS, o mapa tem a cascata
+            `gsap.from` da SIS-245, o `CartaoDuasFaces` tem `whileInView`, o
+            `#timeSISTRAN` já tem relógio de rolagem próprio (`--sp`, rAF em
+            `PalcoReativo`) e as lajes de `.fundo-contato` têm
+            `animation-timeline: view()`. Somar um scrub em qualquer um deles
+            seria a segunda animação no mesmo elemento que o §6 proíbe.
+            POR QUE OPACIDADE, e não deslocamento: `.grade-tecnica` é
+            `background-attachment: fixed` — o ladrilho se alinha à janela, não à
+            caixa —, então transladar o nó moveria só a máscara e deixaria a
+            grade parada. Tocar no `background-attachment` para permitir
+            translação mudaria o repouso de uma regra usada por outras rotas.
+            `gatilho="pai"` porque o percurso é o da SEÇÃO: a caixa deste escopo
+            é `absolute inset-0` — certa para pintar, inútil para medir rolagem.
+            O envelope repete o `absolute inset-0` do nó que embrulha, então a
+            malha continua a mesma camada, na mesma caixa e na mesma posição do
+            DOM (depois de `.fundo-contato`, antes do conteúdo) — inclusive no
+            empilhamento: o envelope não declara `z-index`, logo não cria
+            contexto novo e o `z-index: 0` da malha continua valendo na seção,
+            que é o portão da SIS-292 registrado acima. Para leitor de tela nada
+            muda porque o `aria-hidden` segue no nó da malha e o envelope não tem
+            outro conteúdo; `pointer-events-none` repetido aqui porque agora há
+            uma segunda camada cobrindo a seção inteira, onde há campos de
+            formulário. */}
+        <ScrubScope
+          gatilho="pai"
+          nome="malha-cena-contato"
+          className="contato-cena-scrub pointer-events-none absolute inset-0"
+        >
+          <div aria-hidden className="grade-tecnica" />
+        </ScrubScope>
         {/* SIS-259 — A RAMPA DA EMENDA DE CLARO SAIU DE CENA, e o nó fica
             comentado em vez de apagado porque a razão de ele existir aqui (e não
             como `::after` de `.fundo-contato`) é conhecimento medido que se perde

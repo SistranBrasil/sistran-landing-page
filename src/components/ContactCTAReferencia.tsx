@@ -263,6 +263,25 @@ export default function ContactCTAReferencia({
                 <circle ref={pontoRef} className="cta-ref-fio-ponto" cx="1000" cy="105" r="11" />
               </svg>
             </div>
+            {/* SIS-290 — O RÓTULO «CONTATO» É DO MOBILE, e está no markup porque
+                `display: none` fora de `< 768` é a única forma de cumprir «apenas no
+                mobile (não inventar no desktop)» sem duplicar a árvore: um nó que só
+                existisse abaixo de 768 teria de ser condicionado em JS, e a largura da
+                janela não é conhecida no servidor — daria divergência de hidratação.
+                A mock mobile (`public/imagensexemplo/falecomagentemobile.png`) traz
+                este rótulo em caixa alta ciana sobre o título; a mock de desktop
+                (`falecomagente.png`) NÃO traz, e o desktop é fora de escopo.
+                `aria-hidden` NÃO entra: é texto, é lido, e diz a categoria da seção —
+                o mesmo papel das `eyebrow` das outras rotas.
+                O `copy-lock` NÃO registra este texto, e isso foi conferido e não
+                suposto: `node scripts/copy-lock.mjs --check` segue verde com ele na
+                árvore (1213 textos, nada mudou). A razão é o `pareceCodigo()` do
+                extrator, que descarta um único token em caixa alta — para ele
+                «CONTATO» tem a forma de uma chave técnica. Está registrado aqui porque
+                a conclusão prática é o contrário do que se espera: quem trocar este
+                rótulo por uma frase VAI mexer no lock, e aí a atualização é
+                deliberada. */}
+            <span className="cta-ref-rotulo">CONTATO</span>
             <h2 className="cta-ref-titulo font-display text-3xl leading-tight md:text-4xl">
               {title}
             </h2>

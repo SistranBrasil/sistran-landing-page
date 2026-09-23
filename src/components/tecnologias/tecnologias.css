@@ -1,0 +1,628 @@
+/* SIS-280 — a vitrine de Tecnologias de `/quem-somos`, reconstruída contra
+   `docs/tecnologia.md` e o mock `public/imagensexemplo/tecnologia.png`.
+
+   POR QUE EM CSS E NÃO EM UTILITÁRIAS
+   Mesmo motivo de `servicos-palco.css` e `accelerators.css`: as duas faixas são
+   `@keyframes` em `transform` e o destaque troca por `data-pos`, e TODOS eles
+   precisam ser desligados pelos DOIS canais de movimento reduzido da casa (a
+   media query do sistema e o `html[data-motion='reduce']` que o script inline do
+   `layout.tsx` grava). Com utilitária `motion-reduce:` só o primeiro canal existe.
+
+   O QUE ESTA FOLHA SUBSTITUI
+   `technology-showcase.css` pintava o próprio fundo AZUL-MARINHO
+   (`--palco-marca` a 52%) e sangrava na largura inteira. O doc proíbe:
+   «Não usar fundo azul-marinho ou áreas escuras», «fundo claro, predominantemente
+   branco e azul-gelo». O arquivo antigo continua no repositório, sem consumidor —
+   o mesmo tratamento que `BuildingShowcase` já recebe em `quem-somos/page.tsx`.
+
+   ── AS MEDIDAS SÃO DO DOC, uma a uma ────────────────────────────────────────
+   · degradê `#F8FCFF` → `#EEF8FF` → `#E5F4FF` (item 1);
+   · grade técnica «extremamente discreta» + círculos/órbitas/linhas em azul-claro
+     de baixa opacidade + brilho radial atrás da tecnologia central (item 1);
+   · ~850px de altura no desktop (item 1);
+   · carimbo 370px desktop / 300px tablet / 230–260px mobile (item 2);
+   · cápsula 78px de altura, raio 18–22px, sombra azul muito suave, borda
+     «praticamente imperceptível», logo centralizada, nenhum texto (item 3);
+   · máscaras de transparência nas duas extremidades (item 3);
+   · painel 390×245, branco com leve transparência, borda ciano de 2px, raio
+     ~24px, sombra azul-ciano, linha ciano abaixo da logo, categoria abaixo da
+     linha (item 4);
+   · laterais menores, menor opacidade, suavizadas, SEM borda ciano ativa (item 4);
+   · troca de 550–750ms com `cubic-bezier(0.22, 1, 0.36, 1)` (item 5);
+   · ciclo 28–34s na faixa de cima e 32–38s na de baixo (item 6) → 31s e 35s;
+   · contêiner 1440–1520px (item 8) → 1480px, o mesmo `--svc-miolo` de Serviços;
+   · painel a ~82% da largura no mobile (item 8).
+
+   ── ZERO CONTROLES, e isto é estrutural ─────────────────────────────────────
+   Não existe `.tec-botao`, `.tec-progresso` nem `.tec-bolinha` nesta folha. A
+   ausência é o critério de aceite («Não existir barra de progresso, contador,
+   setas ou botão de pausa») — não há nada para esconder com `display: none`, que
+   voltaria a aparecer ao primeiro override. */
+
+.tec-secao {
+  --tec-miolo: 1480px;
+  --tec-ciano: #21c6f4;
+  --tec-ciano-forte: #0aa8d8;
+  --tec-navy: #06325c;
+  --tec-texto: #3f5c79;
+  /* A largura da cápsula é uma variável porque a conta da emenda depende dela —
+     ver `.tec-faixa__grupo`. */
+  --tec-capsula-w: clamp(150px, 13vw, 190px);
+  --tec-capsula-h: 78px;
+  --tec-vao: clamp(18px, 1.8vw, 32px);
+
+  position: relative;
+  /* `isolation: isolate` para que os planos decorativos (`z-index` baixos) não
+     disputem com o resto da página, e `overflow: hidden` porque as faixas são
+     mais largas que a janela de propósito — é ele que garante o critério «não
+     houver rolagem horizontal indesejada». */
+  isolation: isolate;
+  overflow: hidden;
+  /* Os ~850px do doc como PISO, nunca como `height`: no mobile o conteúdo
+     empilhado (carimbo + faixa + painel + faixa) precisa crescer. */
+  min-height: 850px;
+  display: flex;
+  align-items: center;
+  /* A respiração é daqui, e não do `section-py` da página: os planos decorativos
+     são `inset: 0` sobre este bloco — se o padding viesse da seção, o degradê
+     pararia na borda interna e sobraria faixa sem tinta. */
+  padding-block: clamp(64px, 7vw, 104px);
+  /* O DEGRADÊ DO ITEM 1, os três tons na ordem escrita. */
+  background: linear-gradient(180deg, #f8fcff 0%, #eef8ff 52%, #e5f4ff 100%);
+}
+
+/* ── OS PLANOS DECORATIVOS ─────────────────────────────────────────────────────
+   Três camadas separadas porque cada uma tem um papel diferente do item 1, e
+   separadas também para que o movimento reduzido possa parar a órbita sem apagar
+   a grade. Todas `aria-hidden` no TSX e `pointer-events: none` aqui. */
+
+.tec-fundo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* A grade técnica «extremamente discreta»: dois gradientes repetidos de 1px em
+   azul a 4% — no limite do perceptível, que é o que o doc pede. Sem imagem e sem
+   SVG: é tinta de fundo, não custa requisição nem nó. */
+.tec-fundo__grade {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgb(33 198 244 / 7%) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(33 198 244 / 7%) 1px, transparent 1px);
+  background-size: 72px 72px;
+  /* A grade morre nas bordas em vez de bater na emenda com as seções vizinhas. */
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 48%, #000 35%, transparent 100%);
+}
+
+/* O brilho radial azul atrás da tecnologia central (item 1). Centrado em 50%/50%
+   porque é ali que o painel do destaque assenta. */
+.tec-fundo__brilho {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle 420px at 50% 50%, rgb(33 198 244 / 16%), transparent 70%),
+    radial-gradient(circle 700px at 50% 50%, rgb(0 121 203 / 7%), transparent 72%);
+}
+
+/* Círculos, órbitas e linhas técnicas. As órbitas são `border` de elipses
+   concêntricas; as linhas são dois filetes horizontais na altura das faixas. */
+.tec-fundo__orbita {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 1px solid rgb(33 198 244 / 14%);
+  border-radius: 50%;
+  translate: -50% -50%;
+}
+
+.tec-fundo__orbita:nth-of-type(1) {
+  width: 560px;
+  height: 560px;
+}
+
+.tec-fundo__orbita:nth-of-type(2) {
+  width: 880px;
+  height: 880px;
+  border-color: rgb(33 198 244 / 9%);
+}
+
+.tec-fundo__orbita:nth-of-type(3) {
+  width: 1240px;
+  height: 1240px;
+  border-color: rgb(33 198 244 / 6%);
+}
+
+/* Os pontinhos azuis que o mock mostra espalhados. `box-shadow` múltipla num nó
+   só: catorze pontos, zero nós extras. */
+.tec-fundo__pontos {
+  position: absolute;
+  top: 18%;
+  left: 12%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgb(33 198 244 / 45%);
+  box-shadow:
+    120px 210px 0 -1px rgb(33 198 244 / 35%),
+    620px 90px 0 -2px rgb(0 121 203 / 30%),
+    980px 320px 0 -1px rgb(33 198 244 / 30%),
+    1180px 120px 0 -2px rgb(33 198 244 / 34%),
+    260px 520px 0 -2px rgb(0 121 203 / 24%),
+    840px 610px 0 -1px rgb(33 198 244 / 28%),
+    1320px 520px 0 -2px rgb(33 198 244 / 24%);
+}
+
+.tec-miolo {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--tec-miolo);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3.4vw, 52px);
+}
+
+/* ── A LINHA DE CIMA: CARIMBO + PRIMEIRA FAIXA ────────────────────────────────
+   Pedido da usuária depois de ver a seção montada: «quero que a linha de cima das
+   logos fique passando ao lado direito do carimbo». Antes carimbo e faixa superior
+   eram dois filhos empilhados de `.tec-miolo`; agora dividem uma linha.
+
+   `align-items: center` para a faixa cruzar na ALTURA DO MEIO do carimbo, que é
+   onde a imagem 43 a mostra passando. O carimbo é `flex: none` — ele não pode
+   encolher, porque sua largura é a medida do doc (370px) e a proporção é critério
+   de aceite. A faixa fica com o resto: `flex: 1` e `min-width: 0`, este último
+   obrigatório porque a fita interna é `width: max-content` e sem ele o mínimo
+   automático do flex seria a largura dos dois grupos (~2,5 mil px), o que estouraria
+   a página na horizontal. A faixa continua com `overflow: hidden` e com a máscara
+   das duas pontas — ela não é recortada, só nasce mais à direita. */
+.tec-topo {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.6vw, 28px);
+}
+
+.tec-topo > .tec-faixa {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── O CARIMBO ─────────────────────────────────────────────────────────────────
+   «Alinhar o carimbo ao mesmo container horizontal das tecnologias» (item 2): ele
+   é o primeiro filho de `.tec-miolo`, então compartilha a margem por construção —
+   não por um `padding-left` repetido que sairia de sincronia na primeira mudança.
+
+   O padding lateral é DESTE bloco e não da seção, porque as faixas têm de sangrar
+   além das bordas («faixas horizontais continuando além das bordas da tela»). */
+.tec-carimbo {
+  padding-inline: clamp(20px, 4vw, 56px);
+}
+
+/* Os 370px do doc. A variável é declarada DENTRO de `.carimbo-batida` (com o
+   `clamp` de `/parceiros`), e declaração no elemento vence herança do pai — por
+   isso a classe vai no próprio nó da arte, como em `.svc-palco-carimbo-arte`. */
+.tec-carimbo__arte {
+  --carimbo-batida-w: 370px;
+}
+
+/* ── AS FAIXAS ────────────────────────────────────────────────────────────────
+   A RECEITA DA EMENDA SEM SALTO, que já é a da casa e está medida:
+   a fita anda de `0` a `-50%`, existem DOIS grupos idênticos, e cada grupo carrega
+   `padding-right` igual ao PRÓPRIO `gap`. Sem esse padding, «metade da fita» não é
+   «um grupo» — falta meio vão por volta, e o salto aparece a cada ciclo.
+
+   E cada grupo precisa ser MAIS LARGO QUE A JANELA, senão a emenda passa no meio
+   da tela em vez de fora dela. Medido com as repetições do TSX (`repeticoes={2}`):
+   faixa de cima 12 cápsulas × (190 + 32) = 2664px; faixa de baixo 10 × 222 =
+   2220px. As duas acima dos 1920px da tela mais larga que medimos. */
+
+.tec-faixa {
+  position: relative;
+  /* As máscaras de transparência nas duas extremidades (item 3). `mask-image`
+     sozinho, sem o prefixo: o projeto já usa esta forma em
+     `technology-showcase.css` e o alvo de navegadores é o mesmo. */
+  mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  overflow: hidden;
+}
+
+.tec-faixa__fita {
+  display: flex;
+  width: max-content;
+  /* `will-change` só nos dois nós que realmente animam por quadro. */
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.tec-faixa__grupo {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--tec-vao);
+  /* O vão da emenda — ver o bloco acima. Igual ao `gap`, sempre. */
+  padding-right: var(--tec-vao);
+}
+
+@keyframes tec-para-esquerda {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* A de baixo anda para a DIREITA: mesma animação lida ao contrário. Começa em
+   `-50%` para que não haja vazio à esquerda no primeiro quadro. */
+@keyframes tec-para-direita {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* 31s e 35s: dentro dos intervalos 28–34 e 32–38 do item 6, e diferentes entre si
+   «para que o movimento pareça natural e não mecanicamente sincronizado». */
+.tec-faixa[data-sentido='esquerda'] .tec-faixa__fita {
+  animation: tec-para-esquerda 31s linear infinite;
+}
+
+.tec-faixa[data-sentido='direita'] .tec-faixa__fita {
+  animation: tec-para-direita 35s linear infinite;
+}
+
+/* PAUSA COM A ABA INATIVA (item 9). O atributo é escrito pela seção; aqui só a
+   consequência. `animation-play-state` congela sem recomeçar — quando a aba volta,
+   a fita retoma de onde parou, sem salto. */
+.tec-secao[data-aba='oculta'] .tec-faixa__fita {
+  animation-play-state: paused;
+}
+
+/* ── A CÁPSULA ───────────────────────────────────────────────────────────────── */
+
+.tec-capsula {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--tec-capsula-w);
+  height: var(--tec-capsula-h);
+  border-radius: 20px; /* o meio dos 18–22px do doc */
+  /* «Borda praticamente imperceptível» — azul a 55% de alfa sobre branco. */
+  border: 1px solid rgb(205 231 248 / 70%);
+  background: #fff;
+  /* «Sombra azul muito suave». */
+  box-shadow: 0 10px 24px -14px rgb(6 50 92 / 28%);
+}
+
+.tec-capsula__logo {
+  /* `max-width` em variável: é o `larguraMax` de `tecnologias.ts`, que aceita
+     fração OU medida absoluta (o caso da Salesforce). `object-fit: contain`
+     preserva a proporção original em qualquer um dos dois. */
+  max-width: var(--tec-logo-max, 72%);
+  max-height: 60%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ── O DESTAQUE CENTRAL ──────────────────────────────────────────────────────── */
+
+.tec-destaque {
+  position: relative;
+  /* Altura reservada para o painel de 245px mais a folga das laterais: sem ela a
+     troca de `data-pos` mudaria a altura da linha e provocaria reflow por
+     transição, que é justamente o que o item 9 manda evitar. */
+  height: 300px;
+  /* Palco de sobreposição: os três cards são `absolute` no centro e só o
+     `transform` os separa. É o que permite animar SÓ `transform` e `opacity`. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tec-destaque__item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  /* 390×245 no desktop (item 4). */
+  width: min(390px, 82vw);
+  height: 245px;
+  padding: 20px;
+  border-radius: 24px;
+  /* O estado de REPOUSO é o da lateral: branco translúcido, SEM borda ciano
+     («Não possuir borda ciano ativa»). A borda ativa é adicionada só em
+     `[data-pos='0']`. */
+  border: 2px solid rgb(205 231 248 / 55%);
+  background: rgb(255 255 255 / 62%);
+  box-shadow: 0 14px 34px -22px rgb(6 50 92 / 30%);
+  /* A transição do item 5: 650ms (o meio de 550–750) no easing pedido, e SÓ em
+     `transform`/`opacity`/`filter` mais as duas cores da borda e da sombra. */
+  transition:
+    transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 650ms ease,
+    box-shadow 650ms ease;
+  will-change: transform, opacity;
+}
+
+/* As três posições, e SÓ três: o doc fixa «três tecnologias visíveis na área
+   central». Não existe `[data-pos='2']` — com uma lista de três, ±1 já cobre
+   todas, e o anel de ±3 do componente antigo é parte do que a issue rejeita.
+
+   `translate(-50%, -50%)` é o que centra o `absolute`; o deslocamento horizontal
+   vem somado no mesmo `translate`, e a escala no `scale` — nunca em `width`. */
+.tec-destaque__item[data-pos='0'] {
+  z-index: 3;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  filter: none;
+  /* A borda ciano de 2px e a sombra azul-ciano do painel ativo. */
+  border-color: var(--tec-ciano);
+  background: rgb(255 255 255 / 88%);
+  box-shadow:
+    0 18px 44px -20px rgb(10 168 216 / 45%),
+    0 0 0 6px rgb(33 198 244 / 8%);
+}
+
+.tec-destaque__item[data-pos='-1'] {
+  z-index: 2;
+  transform: translate(calc(-50% - 268px), -50%) scale(0.72);
+  opacity: 0.45;
+  /* «Aparecer parcialmente suavizadas» — 1px, o suficiente para ler como prévia
+     sem virar borrão. */
+  filter: blur(1px);
+}
+
+.tec-destaque__item[data-pos='1'] {
+  z-index: 2;
+  transform: translate(calc(-50% + 268px), -50%) scale(0.72);
+  opacity: 0.45;
+  filter: blur(1px);
+}
+
+.tec-destaque__logo {
+  max-width: var(--tec-logo-max, 70%);
+  max-height: 96px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* A «pequena linha ciano abaixo da logo» (item 4). Nó próprio e não `border-top`
+   da legenda: o doc a descreve como elemento, e ela é decorativa — `aria-hidden`
+   no TSX. */
+.tec-destaque__linha {
+  width: 56px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--tec-ciano);
+}
+
+.tec-destaque__categoria {
+  margin: 0;
+  color: var(--tec-navy);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.3;
+  text-align: center;
+}
+
+/* Nas laterais a categoria some: o doc pede que elas sejam «indicação visual» da
+   anterior e da próxima, e duas legendas menores competindo com a do centro é
+   exatamente o ruído que o mock não tem. O texto continua no DOM (o leitor de
+   tela alcança as três) — só a tinta sai. */
+.tec-destaque__item:not([data-pos='0']) .tec-destaque__categoria,
+.tec-destaque__item:not([data-pos='0']) .tec-destaque__linha {
+  opacity: 0;
+}
+
+/* ── TABLET ──────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 1279px) {
+  .tec-fundo__orbita:nth-of-type(3) {
+    /* A terceira órbita ultrapassaria a caixa e só engordaria a tinta da borda. */
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .tec-secao {
+    /* «Diminuir o espaçamento entre as cápsulas» (item 8, tablet). */
+    --tec-vao: clamp(14px, 2vw, 22px);
+    min-height: 760px;
+  }
+
+  .tec-carimbo__arte {
+    /* Os 300px do doc para tablet. */
+    --carimbo-batida-w: 300px;
+  }
+
+  .tec-destaque {
+    height: 260px;
+  }
+
+  .tec-destaque__item {
+    /* «Reduzir proporcionalmente o painel central», mantendo a proporção
+       390:245 (≈1,59) — 330 × 207. */
+    width: min(330px, 76vw);
+    height: 207px;
+  }
+
+  /* As laterais continuam PARCIALMENTE VISÍVEIS, que é o pedido explícito: o
+     deslocamento cai junto com o painel para que elas não saiam da caixa. */
+  .tec-destaque__item[data-pos='-1'] {
+    transform: translate(calc(-50% - 214px), -50%) scale(0.7);
+  }
+
+  .tec-destaque__item[data-pos='1'] {
+    transform: translate(calc(-50% + 214px), -50%) scale(0.7);
+  }
+}
+
+/* ── MOBILE ──────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .tec-secao {
+    --tec-capsula-w: 128px;
+    --tec-capsula-h: 66px;
+    --tec-vao: 14px;
+    /* «Altura mínima confortável, sem sobreposição» — o conteúdo empilhado manda,
+       e os 850px do desktop deixariam um vazio enorme. */
+    min-height: 0;
+    padding-block: clamp(48px, 12vw, 72px);
+  }
+
+  /* A linha de cima volta a EMPILHAR no celular. Lado a lado, sobrariam ~100px de
+     largura para a faixa depois dos 245px do carimbo — as cápsulas de 128px
+     apareceriam uma por vez e, com a máscara de 10% nas pontas, praticamente
+     nenhuma ficaria legível. O pedido dela («ao lado direito do carimbo») é sobre a
+     seção no desktop, que foi o que ela viu; aqui a leitura de cima para baixo do
+     mock continua valendo. */
+  .tec-topo {
+    display: block;
+  }
+
+  .tec-topo > .tec-faixa {
+    margin-top: clamp(20px, 6vw, 32px);
+  }
+
+  .tec-carimbo__arte {
+    /* O meio dos 230–260px do doc. «Alinhado à esquerda, conforme o padrão
+       existente da página» — o `align-items: flex-start` de `.tec-miolo` já é o
+       padrão das outras seções da rota, então não há `margin-inline: auto`. */
+    --carimbo-batida-w: 245px;
+  }
+
+  .tec-fundo__orbita:nth-of-type(2) {
+    display: none;
+  }
+
+  .tec-destaque {
+    height: 230px;
+  }
+
+  .tec-destaque__item {
+    /* Os ~82% da largura do item 8. */
+    width: 82vw;
+    height: 182px;
+    gap: 10px;
+  }
+
+  .tec-destaque__logo {
+    max-height: 68px;
+  }
+
+  .tec-destaque__categoria {
+    font-size: 0.9375rem;
+  }
+
+  /* «Tecnologias laterais aparecendo apenas parcialmente»: o deslocamento é de
+     78vw contra um painel de 82vw, então sobra uma fatia de cada lado entrando
+     na tela — e nunca ultrapassa a caixa, porque a seção é `overflow: hidden`
+     (o critério «não criar rolagem horizontal na página»). */
+  .tec-destaque__item[data-pos='-1'] {
+    transform: translate(calc(-50% - 78vw), -50%) scale(0.68);
+  }
+
+  .tec-destaque__item[data-pos='1'] {
+    transform: translate(calc(-50% + 78vw), -50%) scale(0.68);
+  }
+}
+
+/* ── MOVIMENTO REDUZIDO, nos DOIS canais ─────────────────────────────────────── */
+
+/* O que o doc pede (item 9): «interromper o marquee contínuo; manter as
+   tecnologias visíveis; substituir a troca deslizante por um crossfade discreto».
+
+   O ponto delicado é o «manter visíveis»: parar a fita com `animation: none`
+   deixaria as cápsulas que estão fora da tela INALCANÇÁVEIS — não há seta, não há
+   scroll, o conteúdo simplesmente deixa de existir para quem liga a preferência.
+   É a regressão de acessibilidade causada por uma regra de acessibilidade.
+
+   Então a faixa TROCA DE MECANISMO em vez de só congelar: a janela passa a rolar
+   nativamente, a fita volta à largura natural, e a cópia `aria-hidden` sai de
+   cena (senão o usuário rolaria por catorze itens duplicados). Nada se move
+   sozinho E nada fica inacessível.
+
+   Os dois blocos abaixo são idênticos de propósito: um por canal, lado a lado,
+   para que uma alteração futura não conserte só metade. */
+
+@media (prefers-reduced-motion: reduce) {
+  .tec-faixa {
+    overflow-x: auto;
+    /* A máscara sai: com rolagem manual, apagar as pontas esconde justamente o
+       que a pessoa está tentando alcançar. */
+    mask-image: none;
+    scroll-snap-type: x proximity;
+  }
+
+  .tec-faixa__fita {
+    animation: none !important;
+    width: auto !important;
+    will-change: auto;
+  }
+
+  .tec-faixa__grupo[aria-hidden='true'] {
+    display: none;
+  }
+
+  .tec-capsula {
+    scroll-snap-align: center;
+  }
+
+  /* O CROSSFADE DISCRETO do doc: a opacidade continua, o deslocamento e a escala
+     morrem. As três posições passam a ocupar o mesmo lugar, então o `z-index` é
+     que decide quem se vê — e a ativa é a de cima. */
+  .tec-destaque__item {
+    transition: opacity 400ms ease !important;
+    transform: translate(-50%, -50%) !important;
+    filter: none !important;
+  }
+
+  .tec-destaque__item:not([data-pos='0']) {
+    opacity: 0;
+  }
+}
+
+html[data-motion='reduce'] .tec-faixa {
+  overflow-x: auto;
+  mask-image: none;
+  scroll-snap-type: x proximity;
+}
+
+html[data-motion='reduce'] .tec-faixa__fita {
+  animation: none !important;
+  width: auto !important;
+  will-change: auto;
+}
+
+html[data-motion='reduce'] .tec-faixa__grupo[aria-hidden='true'] {
+  display: none;
+}
+
+html[data-motion='reduce'] .tec-capsula {
+  scroll-snap-align: center;
+}
+
+html[data-motion='reduce'] .tec-destaque__item {
+  transition: opacity 400ms ease !important;
+  transform: translate(-50%, -50%) !important;
+  filter: none !important;
+}
+
+html[data-motion='reduce'] .tec-destaque__item:not([data-pos='0']) {
+  opacity: 0;
+}

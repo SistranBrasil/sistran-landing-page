@@ -1,0 +1,857 @@
+{
+  "390": {
+    "secaoMontada": true,
+    "contratos": {
+      "ariaLabelledby": "diferenciais-6",
+      "nomeResolvido": "Diferenciais",
+      "ancorasDuplicadas": 1,
+      "tagDaLista": "UL",
+      "itensSaoLi": true,
+      "secoesDifNaRota": 1,
+      "outraSecaoDiferenciaisIntacta": true
+    },
+    "empilhamento": {
+      "isolation": "isolate",
+      "position": "relative",
+      "overflow": "hidden",
+      "fundoDaSecao": "linear-gradient(rgb(229, 244, 255) 0%, rgb(238, 248, 255) 52%, rgb(248, 252, 255) 100%)",
+      "gradeZIndex": "0",
+      "gradeAriaHidden": true,
+      "gradeRecebePonteiro": false
+    },
+    "cartoes": {
+      "quantos": 6,
+      "comIcone": 6,
+      "iconesAriaHidden": 6,
+      "iconesDistintos": 6,
+      "detalhe": [
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 48,
+            "h": 48
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 350,
+            "h": 86
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 48,
+            "h": 48
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 350,
+            "h": 86
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 48,
+            "h": 48
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 350,
+            "h": 86
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 48,
+            "h": 48
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 350,
+            "h": 99.55
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 48,
+            "h": 48
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 350,
+            "h": 86
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 48,
+            "h": 48
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 350,
+            "h": 86
+          }
+        }
+      ]
+    },
+    "escritaPreservada": {
+      "esperadas": 6,
+      "encontradas": 6,
+      "faltando": []
+    },
+    "movimento": {
+      "nosAnimados": 0
+    },
+    "transbordoDocumentoPx": 0,
+    "contraste": {
+      "frase": {
+        "texto": "Especialização em Seguradoras",
+        "cor": "rgb(10, 31, 68)",
+        "fontSizePx": "15.2px",
+        "fontWeight": "600",
+        "x": 101,
+        "y": 212,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(251 254 255)",
+        "razao": 16.03,
+        "fundoPiorPixel": "rgb(250 253 254)",
+        "razaoPiorPixel": 15.9
+      },
+      "titulo": {
+        "texto": "Diferenciais",
+        "cor": "rgb(10, 31, 68)",
+        "fontSizePx": "35.2px",
+        "fontWeight": "400",
+        "x": 20,
+        "y": 90,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(207 228 243)",
+        "razao": 12.41,
+        "fundoPiorPixel": "rgb(205 226 242)",
+        "razaoPiorPixel": 12.19
+      }
+    },
+    "emenda": {
+      "mesmoPai": true,
+      "elementosEntre": [],
+      "degradeDeTecnologias": "linear-gradient(rgb(248, 252, 255) 0%, rgb(238, 248, 255) 52%, rgb(229, 244, 255) 100%)",
+      "degradeDaSecao": "linear-gradient(rgb(229, 244, 255) 0%, rgb(238, 248, 255) 52%, rgb(248, 252, 255) 100%)",
+      "declaracoesIdenticas": false,
+      "fronteiraYpx": 422,
+      "colunas": [
+        {
+          "x": 23,
+          "acima": "rgb(224 241 254)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 9
+        },
+        {
+          "x": 78,
+          "acima": "rgb(223 241 254)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 10
+        },
+        {
+          "x": 137,
+          "acima": "rgb(223 241 254)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 10
+        },
+        {
+          "x": 195,
+          "acima": "rgb(223 240 253)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 12
+        },
+        {
+          "x": 254,
+          "acima": "rgb(223 241 254)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 10
+        },
+        {
+          "x": 312,
+          "acima": "rgb(224 241 254)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 9
+        },
+        {
+          "x": 367,
+          "acima": "rgb(224 241 254)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 9
+        }
+      ],
+      "maiorDeltaRGB": 12,
+      "semDecoracao": {
+        "colunas": [
+          {
+            "x": 23,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 78,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 137,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 195,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 254,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 312,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 367,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          }
+        ],
+        "maiorDeltaRGB": 0
+      }
+    },
+    "gradePinta": {
+      "comparavel": true,
+      "pixeisDiferentes": 5147,
+      "fracaoDoQuadroPct": 1.56,
+      "maiorDeltaRGB": 113
+    }
+  },
+  "768": {
+    "secaoMontada": true,
+    "contratos": {
+      "ariaLabelledby": "diferenciais-6",
+      "nomeResolvido": "Diferenciais",
+      "ancorasDuplicadas": 1,
+      "tagDaLista": "UL",
+      "itensSaoLi": true,
+      "secoesDifNaRota": 1,
+      "outraSecaoDiferenciaisIntacta": true
+    },
+    "empilhamento": {
+      "isolation": "isolate",
+      "position": "relative",
+      "overflow": "hidden",
+      "fundoDaSecao": "linear-gradient(rgb(229, 244, 255) 0%, rgb(238, 248, 255) 52%, rgb(248, 252, 255) 100%)",
+      "gradeZIndex": "0",
+      "gradeAriaHidden": true,
+      "gradeRecebePonteiro": false
+    },
+    "cartoes": {
+      "quantos": 6,
+      "comIcone": 6,
+      "iconesAriaHidden": 6,
+      "iconesDistintos": 6,
+      "detalhe": [
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 48,
+            "h": 48
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 353,
+            "h": 86
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 48,
+            "h": 48
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 353,
+            "h": 86
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 48,
+            "h": 48
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 353,
+            "h": 99.55
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 48,
+            "h": 48
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 353,
+            "h": 99.55
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 48,
+            "h": 48
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 353,
+            "h": 86
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 48,
+            "h": 48
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 353,
+            "h": 86
+          }
+        }
+      ]
+    },
+    "escritaPreservada": {
+      "esperadas": 6,
+      "encontradas": 6,
+      "faltando": []
+    },
+    "movimento": {
+      "nosAnimados": 0
+    },
+    "transbordoDocumentoPx": 0,
+    "contraste": {
+      "frase": {
+        "texto": "Especialização em Seguradoras",
+        "cor": "rgb(10, 31, 68)",
+        "fontSizePx": "15.2px",
+        "fontWeight": "600",
+        "x": 105,
+        "y": 388,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(252 254 255)",
+        "razao": 16.06,
+        "fundoPiorPixel": "rgb(251 253 254)",
+        "razaoPiorPixel": 15.93
+      },
+      "titulo": {
+        "texto": "Diferenciais",
+        "cor": "rgb(10, 31, 68)",
+        "fontSizePx": "35.328px",
+        "fontWeight": "400",
+        "x": 24,
+        "y": 265,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(232 246 255)",
+        "razao": 14.75,
+        "fundoPiorPixel": "rgb(232 245 255)",
+        "razaoPiorPixel": 14.65
+      }
+    },
+    "emenda": {
+      "mesmoPai": true,
+      "elementosEntre": [],
+      "degradeDeTecnologias": "linear-gradient(rgb(248, 252, 255) 0%, rgb(238, 248, 255) 52%, rgb(229, 244, 255) 100%)",
+      "degradeDaSecao": "linear-gradient(rgb(229, 244, 255) 0%, rgb(238, 248, 255) 52%, rgb(248, 252, 255) 100%)",
+      "declaracoesIdenticas": false,
+      "fronteiraYpx": 450,
+      "colunas": [
+        {
+          "x": 46,
+          "acima": "rgb(229 244 255)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 0
+        },
+        {
+          "x": 154,
+          "acima": "rgb(227 242 254)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 5
+        },
+        {
+          "x": 269,
+          "acima": "rgb(226 242 255)",
+          "abaixo": "rgb(230 245 255)",
+          "deltaRGB": 7
+        },
+        {
+          "x": 384,
+          "acima": "rgb(225 241 254)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 8
+        },
+        {
+          "x": 499,
+          "acima": "rgb(226 243 255)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 4
+        },
+        {
+          "x": 614,
+          "acima": "rgb(227 243 254)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 4
+        },
+        {
+          "x": 722,
+          "acima": "rgb(229 244 255)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 0
+        }
+      ],
+      "maiorDeltaRGB": 8,
+      "semDecoracao": {
+        "colunas": [
+          {
+            "x": 46,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 154,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 269,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(230 245 255)",
+            "deltaRGB": 2
+          },
+          {
+            "x": 384,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 499,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 614,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 722,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          }
+        ],
+        "maiorDeltaRGB": 2
+      }
+    },
+    "gradePinta": {
+      "comparavel": true,
+      "pixeisDiferentes": 14871,
+      "fracaoDoQuadroPct": 2.15,
+      "maiorDeltaRGB": 192
+    }
+  },
+  "1440": {
+    "secaoMontada": true,
+    "contratos": {
+      "ariaLabelledby": "diferenciais-6",
+      "nomeResolvido": "Diferenciais",
+      "ancorasDuplicadas": 1,
+      "tagDaLista": "UL",
+      "itensSaoLi": true,
+      "secoesDifNaRota": 1,
+      "outraSecaoDiferenciaisIntacta": true
+    },
+    "empilhamento": {
+      "isolation": "isolate",
+      "position": "relative",
+      "overflow": "hidden",
+      "fundoDaSecao": "linear-gradient(rgb(229, 244, 255) 0%, rgb(238, 248, 255) 52%, rgb(248, 252, 255) 100%)",
+      "gradeZIndex": "0",
+      "gradeAriaHidden": true,
+      "gradeRecebePonteiro": false
+    },
+    "cartoes": {
+      "quantos": 6,
+      "comIcone": 6,
+      "iconesAriaHidden": 6,
+      "iconesDistintos": 6,
+      "detalhe": [
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 56,
+            "h": 56
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 356.64,
+            "h": 106
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 56,
+            "h": 56
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 356.64,
+            "h": 106
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 56,
+            "h": 56
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 356.66,
+            "h": 106
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 56,
+            "h": 56
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 356.64,
+            "h": 111.55
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 56,
+            "h": 56
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 356.64,
+            "h": 111.55
+          }
+        },
+        {
+          "raioPx": 20,
+          "temSombra": true,
+          "boxShadow": "rgba(9, 86, 150, 0.3) 0px 18px 38px -20px, rgba(9, 86, 150, 0.18) 0px 2px 6px -3px",
+          "clipPath": "none",
+          "chanfroVivo": false,
+          "seloRedondoPx": 9999,
+          "seloCaixa": {
+            "w": 56,
+            "h": 56
+          },
+          "seloAntesDaFrase": true,
+          "caixa": {
+            "w": 356.66,
+            "h": 111.55
+          }
+        }
+      ]
+    },
+    "escritaPreservada": {
+      "esperadas": 6,
+      "encontradas": 6,
+      "faltando": []
+    },
+    "movimento": {
+      "nosAnimados": 0
+    },
+    "transbordoDocumentoPx": 0,
+    "contraste": {
+      "frase": {
+        "texto": "Especialização em Seguradoras",
+        "cor": "rgb(10, 31, 68)",
+        "fontSizePx": "15.2px",
+        "fontWeight": "600",
+        "x": 263,
+        "y": 462,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(251 254 255)",
+        "razao": 16.03,
+        "fundoPiorPixel": "rgb(249 252 254)",
+        "razaoPiorPixel": 15.77
+      },
+      "titulo": {
+        "texto": "Diferenciais",
+        "cor": "rgb(10, 31, 68)",
+        "fontSizePx": "65.6px",
+        "fontWeight": "400",
+        "x": 162,
+        "y": 310,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(233 246 255)",
+        "razao": 14.77,
+        "fundoPiorPixel": "rgb(232 245 255)",
+        "razaoPiorPixel": 14.65
+      }
+    },
+    "emenda": {
+      "mesmoPai": true,
+      "elementosEntre": [],
+      "degradeDeTecnologias": "linear-gradient(rgb(248, 252, 255) 0%, rgb(238, 248, 255) 52%, rgb(229, 244, 255) 100%)",
+      "degradeDaSecao": "linear-gradient(rgb(229, 244, 255) 0%, rgb(238, 248, 255) 52%, rgb(248, 252, 255) 100%)",
+      "declaracoesIdenticas": false,
+      "fronteiraYpx": 480,
+      "colunas": [
+        {
+          "x": 86,
+          "acima": "rgb(229 244 255)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 0
+        },
+        {
+          "x": 288,
+          "acima": "rgb(224 243 255)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 6
+        },
+        {
+          "x": 504,
+          "acima": "rgb(221 241 254)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 12
+        },
+        {
+          "x": 720,
+          "acima": "rgb(218 240 253)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 17
+        },
+        {
+          "x": 936,
+          "acima": "rgb(221 241 254)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 12
+        },
+        {
+          "x": 1152,
+          "acima": "rgb(224 243 255)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 6
+        },
+        {
+          "x": 1354,
+          "acima": "rgb(229 244 255)",
+          "abaixo": "rgb(229 244 255)",
+          "deltaRGB": 0
+        }
+      ],
+      "maiorDeltaRGB": 17,
+      "semDecoracao": {
+        "colunas": [
+          {
+            "x": 86,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 288,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 504,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 720,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 936,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 1152,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 1354,
+            "acima": "rgb(229 244 255)",
+            "abaixo": "rgb(229 244 255)",
+            "deltaRGB": 0
+          }
+        ],
+        "maiorDeltaRGB": 0
+      }
+    },
+    "gradePinta": {
+      "comparavel": true,
+      "pixeisDiferentes": 41720,
+      "fracaoDoQuadroPct": 3.02,
+      "maiorDeltaRGB": 611
+    }
+  },
+  "peca": "Diferenciais /quem-somos",
+  "url": "http://localhost:3000/quem-somos",
+  "quando": "2026-09-23T13:24:09.120Z",
+  "movimentoReduzido": {
+    "media-query": {
+      "dataMotion": null,
+      "enquadramento": {
+        "topo": 172,
+        "base": 788,
+        "alturaDaJanela": 960,
+        "emQuadro": true
+      },
+      "nosAnimados": 0,
+      "cartoes": 6,
+      "cartoesVisiveis": 6,
+      "piorOpacidade": 1,
+      "iconesVisiveis": 6
+    },
+    "atributo": {
+      "dataMotion": "reduce",
+      "enquadramento": {
+        "topo": 172,
+        "base": 788,
+        "alturaDaJanela": 960,
+        "emQuadro": true
+      },
+      "nosAnimados": 0,
+      "cartoes": 6,
+      "cartoesVisiveis": 6,
+      "piorOpacidade": 1,
+      "iconesVisiveis": 6
+    }
+  }
+}

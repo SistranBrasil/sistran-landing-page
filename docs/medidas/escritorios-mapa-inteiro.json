@@ -1,0 +1,1285 @@
+{
+ "quando": "2026-09-23T12:54:06.065Z",
+ "rota": "/quem-somos",
+ "secao": "escritorios (SIS-191, 3a volta)",
+ "larguras": {
+  "1280x800": {
+   "pr": {
+    "modo": "scroll",
+    "ativa": "pr",
+    "camera": "matrix(1, 0, 0, 1, 19.56, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 632,
+    "svgAlt": 632,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 291,
+    "folgaCartao": -1003,
+    "folgaTorre": 266,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 17,
+      "baixo": 19.8,
+      "esq": 174.9,
+      "dir": 164.2
+     },
+     ".bm-latam-contorno": {
+      "cima": 17,
+      "baixo": 19.8,
+      "esq": 174.9,
+      "dir": 164.2
+     },
+     ".bm-latam-divisas": {
+      "cima": 42.9,
+      "baixo": 546.3,
+      "esq": 199.8,
+      "dir": 464.5
+     },
+     ".bm-pais": {
+      "cima": 73.1,
+      "baixo": 236.2,
+      "esq": 227.3,
+      "dir": 164.2
+     },
+     ".bm-divisas-br": {
+      "cima": 94.3,
+      "baixo": 271,
+      "esq": 228.7,
+      "dir": 164.5
+     },
+     ".bm-chamadas": {
+      "cima": 281.3,
+      "baixo": 285.8,
+      "esq": 380.7,
+      "dir": 149.4
+     },
+     ".bm-rotulo": {
+      "cima": 309.5,
+      "baixo": 272.3,
+      "esq": 416.1,
+      "dir": 170.6
+     },
+     ".bm-rota-base": {
+      "cima": 281.3,
+      "baixo": 297.7,
+      "esq": 377.9,
+      "dir": 248.3
+     }
+    },
+    "overflowDoc": 0
+   },
+   "sp": {
+    "modo": "scroll",
+    "ativa": "sp",
+    "camera": "matrix(0.36, 0, 0, 0.36, -371.64, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 632,
+    "svgAlt": 632,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 105,
+    "folgaCartao": 19,
+    "folgaTorre": 185,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 273.6,
+      "baixo": 123.7,
+      "esq": 93.9,
+      "dir": 456.2
+     },
+     ".bm-latam-contorno": {
+      "cima": 273.6,
+      "baixo": 123.7,
+      "esq": 93.9,
+      "dir": 456.2
+     },
+     ".bm-latam-divisas": {
+      "cima": 282.9,
+      "baixo": 313.2,
+      "esq": 102.9,
+      "dir": 564.3
+     },
+     ".bm-pais": {
+      "cima": 294.9,
+      "baixo": 200.4,
+      "esq": 112.8,
+      "dir": 456.2
+     },
+     ".bm-divisas-br": {
+      "cima": 302.6,
+      "baixo": 212.9,
+      "esq": 113.3,
+      "dir": 456.3
+     },
+     ".bm-chamadas": {
+      "cima": 369.9,
+      "baixo": 218.3,
+      "esq": 168,
+      "dir": 450.9
+     },
+     ".bm-rotulo": {
+      "cima": 380.6,
+      "baixo": 213.8,
+      "esq": 180.1,
+      "dir": 458.5
+     },
+     ".bm-rota-base": {
+      "cima": 369.9,
+      "baixo": 222.6,
+      "esq": 167,
+      "dir": 486.5
+     }
+    },
+    "overflowDoc": 0
+   },
+   "piorFolgaRecorte": {
+    "pr": 17,
+    "sp": 93.9
+   },
+   "erros": [],
+   "respostas": []
+  },
+  "1280x1000": {
+   "pr": {
+    "modo": "scroll",
+    "ativa": "pr",
+    "camera": "matrix(1, 0, 0, 1, 19.56, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 812,
+    "svgAlt": 812,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 374,
+    "folgaCartao": -1056,
+    "folgaTorre": 220,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 22.4,
+      "baixo": 24.8,
+      "esq": 129.2,
+      "dir": 115.4
+     },
+     ".bm-latam-contorno": {
+      "cima": 22.4,
+      "baixo": 24.8,
+      "esq": 129.2,
+      "dir": 115.4
+     },
+     ".bm-latam-divisas": {
+      "cima": 55.8,
+      "baixo": 702.3,
+      "esq": 161.3,
+      "dir": 501.8
+     },
+     ".bm-pais": {
+      "cima": 94,
+      "baixo": 303.9,
+      "esq": 196.6,
+      "dir": 115.4
+     },
+     ".bm-divisas-br": {
+      "cima": 121.3,
+      "baixo": 348.7,
+      "esq": 198.4,
+      "dir": 115.8
+     },
+     ".bm-chamadas": {
+      "cima": 361.9,
+      "baixo": 367.7,
+      "esq": 394,
+      "dir": 96.4
+     },
+     ".bm-rotulo": {
+      "cima": 398.2,
+      "baixo": 349.6,
+      "esq": 440.8,
+      "dir": 123.5
+     },
+     ".bm-rota-base": {
+      "cima": 361.9,
+      "baixo": 383.1,
+      "esq": 390.4,
+      "dir": 223.6
+     }
+    },
+    "overflowDoc": 0
+   },
+   "sp": {
+    "modo": "scroll",
+    "ativa": "sp",
+    "camera": "matrix(0.36, 0, 0, 0.36, -371.64, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 812,
+    "svgAlt": 812,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 135,
+    "folgaCartao": 52,
+    "folgaTorre": 116,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 352,
+      "baixo": 159.1,
+      "esq": 24.9,
+      "dir": 491.2
+     },
+     ".bm-latam-contorno": {
+      "cima": 352,
+      "baixo": 159.1,
+      "esq": 24.9,
+      "dir": 491.2
+     },
+     ".bm-latam-divisas": {
+      "cima": 364,
+      "baixo": 403,
+      "esq": 36.5,
+      "dir": 630.2
+     },
+     ".bm-pais": {
+      "cima": 379.5,
+      "baixo": 257.8,
+      "esq": 49.2,
+      "dir": 491.2
+     },
+     ".bm-divisas-br": {
+      "cima": 389.3,
+      "baixo": 274,
+      "esq": 49.9,
+      "dir": 491.3
+     },
+     ".bm-chamadas": {
+      "cima": 475.9,
+      "baixo": 280.8,
+      "esq": 120.3,
+      "dir": 484.3
+     },
+     ".bm-rotulo": {
+      "cima": 489.2,
+      "baixo": 274,
+      "esq": 136.1,
+      "dir": 493.8
+     },
+     ".bm-rota-base": {
+      "cima": 475.9,
+      "baixo": 286.4,
+      "esq": 119,
+      "dir": 530.1
+     }
+    },
+    "overflowDoc": 0
+   },
+   "piorFolgaRecorte": {
+    "pr": 22.4,
+    "sp": 24.9
+   },
+   "erros": [],
+   "respostas": []
+  },
+  "1366x800": {
+   "pr": {
+    "modo": "scroll",
+    "ativa": "pr",
+    "camera": "matrix(1, 0, 0, 1, 19.56, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 632,
+    "svgAlt": 632,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 291,
+    "folgaCartao": -1043,
+    "folgaTorre": 307,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 17,
+      "baixo": 19.7,
+      "esq": 211.9,
+      "dir": 201.2
+     },
+     ".bm-latam-contorno": {
+      "cima": 17,
+      "baixo": 19.7,
+      "esq": 211.9,
+      "dir": 201.2
+     },
+     ".bm-latam-divisas": {
+      "cima": 42.9,
+      "baixo": 546.3,
+      "esq": 236.8,
+      "dir": 501.5
+     },
+     ".bm-pais": {
+      "cima": 73.1,
+      "baixo": 236.2,
+      "esq": 264.3,
+      "dir": 201.2
+     },
+     ".bm-divisas-br": {
+      "cima": 94.3,
+      "baixo": 271,
+      "esq": 265.7,
+      "dir": 201.5
+     },
+     ".bm-chamadas": {
+      "cima": 281.3,
+      "baixo": 285.8,
+      "esq": 417.7,
+      "dir": 186.4
+     },
+     ".bm-rotulo": {
+      "cima": 309.5,
+      "baixo": 272.3,
+      "esq": 453.1,
+      "dir": 207.5
+     },
+     ".bm-rota-base": {
+      "cima": 281.3,
+      "baixo": 297.7,
+      "esq": 414.9,
+      "dir": 285.3
+     }
+    },
+    "overflowDoc": 0
+   },
+   "sp": {
+    "modo": "scroll",
+    "ativa": "sp",
+    "camera": "matrix(0.36, 0, 0, 0.36, -371.64, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 632,
+    "svgAlt": 632,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 105,
+    "folgaCartao": 56,
+    "folgaTorre": 225,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 273.6,
+      "baixo": 123.7,
+      "esq": 130.9,
+      "dir": 493.2
+     },
+     ".bm-latam-contorno": {
+      "cima": 273.6,
+      "baixo": 123.7,
+      "esq": 130.9,
+      "dir": 493.2
+     },
+     ".bm-latam-divisas": {
+      "cima": 282.9,
+      "baixo": 313.2,
+      "esq": 139.8,
+      "dir": 601.3
+     },
+     ".bm-pais": {
+      "cima": 294.9,
+      "baixo": 200.4,
+      "esq": 149.7,
+      "dir": 493.2
+     },
+     ".bm-divisas-br": {
+      "cima": 302.6,
+      "baixo": 212.9,
+      "esq": 150.2,
+      "dir": 493.3
+     },
+     ".bm-chamadas": {
+      "cima": 369.9,
+      "baixo": 218.3,
+      "esq": 205,
+      "dir": 487.9
+     },
+     ".bm-rotulo": {
+      "cima": 380.6,
+      "baixo": 213.8,
+      "esq": 217.1,
+      "dir": 495.5
+     },
+     ".bm-rota-base": {
+      "cima": 369.9,
+      "baixo": 222.6,
+      "esq": 203.9,
+      "dir": 523.5
+     }
+    },
+    "overflowDoc": 0
+   },
+   "piorFolgaRecorte": {
+    "pr": 17,
+    "sp": 123.7
+   },
+   "erros": [],
+   "respostas": []
+  },
+  "1366x1000": {
+   "pr": {
+    "modo": "scroll",
+    "ativa": "pr",
+    "camera": "matrix(1, 0, 0, 1, 19.56, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 812,
+    "svgAlt": 812,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 374,
+    "folgaCartao": -1096,
+    "folgaTorre": 261,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 22,
+      "baixo": 25.2,
+      "esq": 166.2,
+      "dir": 152.4
+     },
+     ".bm-latam-contorno": {
+      "cima": 22,
+      "baixo": 25.2,
+      "esq": 166.2,
+      "dir": 152.4
+     },
+     ".bm-latam-divisas": {
+      "cima": 55.4,
+      "baixo": 702.7,
+      "esq": 198.2,
+      "dir": 538.7
+     },
+     ".bm-pais": {
+      "cima": 94,
+      "baixo": 303.9,
+      "esq": 233.6,
+      "dir": 152.4
+     },
+     ".bm-divisas-br": {
+      "cima": 121.3,
+      "baixo": 348.7,
+      "esq": 235.4,
+      "dir": 152.8
+     },
+     ".bm-chamadas": {
+      "cima": 361.9,
+      "baixo": 367.7,
+      "esq": 431,
+      "dir": 133.4
+     },
+     ".bm-rotulo": {
+      "cima": 398.2,
+      "baixo": 349.6,
+      "esq": 477.8,
+      "dir": 160.5
+     },
+     ".bm-rota-base": {
+      "cima": 361.9,
+      "baixo": 383.1,
+      "esq": 427.4,
+      "dir": 260.6
+     }
+    },
+    "overflowDoc": 0
+   },
+   "sp": {
+    "modo": "scroll",
+    "ativa": "sp",
+    "camera": "matrix(0.36, 0, 0, 0.36, -371.64, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 812,
+    "svgAlt": 812,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 135,
+    "folgaCartao": 89,
+    "folgaTorre": 157,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 352,
+      "baixo": 159.1,
+      "esq": 61.9,
+      "dir": 528.1
+     },
+     ".bm-latam-contorno": {
+      "cima": 352,
+      "baixo": 159.1,
+      "esq": 61.9,
+      "dir": 528.1
+     },
+     ".bm-latam-divisas": {
+      "cima": 364,
+      "baixo": 403,
+      "esq": 73.5,
+      "dir": 667.2
+     },
+     ".bm-pais": {
+      "cima": 379.5,
+      "baixo": 257.8,
+      "esq": 86.2,
+      "dir": 528.1
+     },
+     ".bm-divisas-br": {
+      "cima": 389.3,
+      "baixo": 274,
+      "esq": 86.8,
+      "dir": 528.3
+     },
+     ".bm-chamadas": {
+      "cima": 475.9,
+      "baixo": 280.8,
+      "esq": 157.3,
+      "dir": 521.3
+     },
+     ".bm-rotulo": {
+      "cima": 489.2,
+      "baixo": 274,
+      "esq": 173.1,
+      "dir": 530.8
+     },
+     ".bm-rota-base": {
+      "cima": 475.9,
+      "baixo": 286.4,
+      "esq": 155.9,
+      "dir": 567.1
+     }
+    },
+    "overflowDoc": 0
+   },
+   "piorFolgaRecorte": {
+    "pr": 22,
+    "sp": 61.9
+   },
+   "erros": [],
+   "respostas": []
+  },
+  "1440x900": {
+   "pr": {
+    "modo": "scroll",
+    "ativa": "pr",
+    "camera": "matrix(1, 0, 0, 1, 19.56, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 722,
+    "svgAlt": 722,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 332,
+    "folgaCartao": -1060,
+    "folgaTorre": 274,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 18.9,
+      "baixo": 23.1,
+      "esq": 176.8,
+      "dir": 164.6
+     },
+     ".bm-latam-contorno": {
+      "cima": 18.9,
+      "baixo": 23.1,
+      "esq": 176.8,
+      "dir": 164.6
+     },
+     ".bm-latam-divisas": {
+      "cima": 48.5,
+      "baixo": 625.1,
+      "esq": 205.3,
+      "dir": 507.9
+     },
+     ".bm-pais": {
+      "cima": 83.6,
+      "baixo": 270,
+      "esq": 236.8,
+      "dir": 164.6
+     },
+     ".bm-divisas-br": {
+      "cima": 107.8,
+      "baixo": 309.9,
+      "esq": 238.3,
+      "dir": 164.9
+     },
+     ".bm-chamadas": {
+      "cima": 321.6,
+      "baixo": 326.8,
+      "esq": 412.2,
+      "dir": 147.7
+     },
+     ".bm-rotulo": {
+      "cima": 353.8,
+      "baixo": 311.5,
+      "esq": 453.8,
+      "dir": 171.8
+     },
+     ".bm-rota-base": {
+      "cima": 321.6,
+      "baixo": 340.4,
+      "esq": 408.9,
+      "dir": 260.7
+     }
+    },
+    "overflowDoc": 0
+   },
+   "sp": {
+    "modo": "scroll",
+    "ativa": "sp",
+    "camera": "matrix(0.36, 0, 0, 0.36, -371.64, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 722,
+    "svgAlt": 722,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 120,
+    "folgaCartao": 60,
+    "folgaTorre": 182,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 312.8,
+      "baixo": 141.4,
+      "esq": 84.2,
+      "dir": 498.5
+     },
+     ".bm-latam-contorno": {
+      "cima": 312.8,
+      "baixo": 141.4,
+      "esq": 84.2,
+      "dir": 498.5
+     },
+     ".bm-latam-divisas": {
+      "cima": 323.4,
+      "baixo": 358.1,
+      "esq": 94.5,
+      "dir": 622.1
+     },
+     ".bm-pais": {
+      "cima": 337.2,
+      "baixo": 229.1,
+      "esq": 105.8,
+      "dir": 498.5
+     },
+     ".bm-divisas-br": {
+      "cima": 345.9,
+      "baixo": 243.5,
+      "esq": 106.3,
+      "dir": 498.6
+     },
+     ".bm-chamadas": {
+      "cima": 422.9,
+      "baixo": 249.5,
+      "esq": 168.9,
+      "dir": 492.4
+     },
+     ".bm-rotulo": {
+      "cima": 434.4,
+      "baixo": 244.4,
+      "esq": 182.9,
+      "dir": 500.5
+     },
+     ".bm-rota-base": {
+      "cima": 422.9,
+      "baixo": 254.5,
+      "esq": 167.8,
+      "dir": 533.1
+     }
+    },
+    "overflowDoc": 0
+   },
+   "piorFolgaRecorte": {
+    "pr": 18.9,
+    "sp": 84.2
+   },
+   "erros": [],
+   "respostas": []
+  },
+  "1536x960": {
+   "pr": {
+    "modo": "scroll",
+    "ativa": "pr",
+    "camera": "matrix(1, 0, 0, 1, 19.56, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 776,
+    "svgAlt": 776,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 357,
+    "folgaCartao": -1124,
+    "folgaTorre": 308,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 22,
+      "baixo": 23.1,
+      "esq": 206.8,
+      "dir": 193.6
+     },
+     ".bm-latam-contorno": {
+      "cima": 22,
+      "baixo": 23.1,
+      "esq": 206.8,
+      "dir": 193.6
+     },
+     ".bm-latam-divisas": {
+      "cima": 53.9,
+      "baixo": 670.5,
+      "esq": 237.4,
+      "dir": 562.8
+     },
+     ".bm-pais": {
+      "cima": 89.8,
+      "baixo": 290.3,
+      "esq": 271.3,
+      "dir": 193.6
+     },
+     ".bm-divisas-br": {
+      "cima": 115.9,
+      "baixo": 333.2,
+      "esq": 272.9,
+      "dir": 194
+     },
+     ".bm-chamadas": {
+      "cima": 345.7,
+      "baixo": 351.3,
+      "esq": 459.9,
+      "dir": 175.5
+     },
+     ".bm-rotulo": {
+      "cima": 381.1,
+      "baixo": 335,
+      "esq": 504.6,
+      "dir": 201.4
+     },
+     ".bm-rota-base": {
+      "cima": 345.7,
+      "baixo": 366,
+      "esq": 456.4,
+      "dir": 297
+     }
+    },
+    "overflowDoc": 0
+   },
+   "sp": {
+    "modo": "scroll",
+    "ativa": "sp",
+    "camera": "matrix(0.36, 0, 0, 0.36, -371.64, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 776,
+    "svgAlt": 776,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 129,
+    "folgaCartao": 114,
+    "folgaTorre": 209,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 336.3,
+      "baixo": 152,
+      "esq": 107.2,
+      "dir": 552.7
+     },
+     ".bm-latam-contorno": {
+      "cima": 336.3,
+      "baixo": 152,
+      "esq": 107.2,
+      "dir": 552.7
+     },
+     ".bm-latam-divisas": {
+      "cima": 347.8,
+      "baixo": 385.1,
+      "esq": 118.2,
+      "dir": 685.5
+     },
+     ".bm-pais": {
+      "cima": 362.6,
+      "baixo": 246.3,
+      "esq": 130.4,
+      "dir": 552.7
+     },
+     ".bm-divisas-br": {
+      "cima": 371.9,
+      "baixo": 261.8,
+      "esq": 131,
+      "dir": 552.8
+     },
+     ".bm-chamadas": {
+      "cima": 454.7,
+      "baixo": 268.3,
+      "esq": 198.3,
+      "dir": 546.1
+     },
+     ".bm-rotulo": {
+      "cima": 467.3,
+      "baixo": 261.8,
+      "esq": 213.4,
+      "dir": 555.1
+     },
+     ".bm-rota-base": {
+      "cima": 454.7,
+      "baixo": 273.6,
+      "esq": 197,
+      "dir": 589.9
+     }
+    },
+    "overflowDoc": 0
+   },
+   "piorFolgaRecorte": {
+    "pr": 22,
+    "sp": 107.2
+   },
+   "erros": [],
+   "respostas": []
+  },
+  "1920x1080": {
+   "pr": {
+    "modo": "scroll",
+    "ativa": "pr",
+    "camera": "matrix(1, 0, 0, 1, 19.56, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 884,
+    "svgAlt": 884,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 407,
+    "folgaCartao": -1351,
+    "folgaTorre": 476,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 19.2,
+      "baixo": 32.3,
+      "esq": 364.5,
+      "dir": 349.5
+     },
+     ".bm-latam-contorno": {
+      "cima": 19.2,
+      "baixo": 32.3,
+      "esq": 364.5,
+      "dir": 349.5
+     },
+     ".bm-latam-divisas": {
+      "cima": 55.5,
+      "baixo": 770.2,
+      "esq": 399.4,
+      "dir": 770.3
+     },
+     ".bm-pais": {
+      "cima": 102.4,
+      "baixo": 330.9,
+      "esq": 438,
+      "dir": 349.5
+     },
+     ".bm-divisas-br": {
+      "cima": 132.1,
+      "baixo": 379.8,
+      "esq": 439.9,
+      "dir": 349.9
+     },
+     ".bm-chamadas": {
+      "cima": 394.1,
+      "baixo": 400.5,
+      "esq": 652.9,
+      "dir": 328.8
+     },
+     ".bm-rotulo": {
+      "cima": 433.5,
+      "baixo": 381,
+      "esq": 703.9,
+      "dir": 358.3
+     },
+     ".bm-rota-base": {
+      "cima": 394.1,
+      "baixo": 417.2,
+      "esq": 649,
+      "dir": 467.3
+     }
+    },
+    "overflowDoc": 0
+   },
+   "sp": {
+    "modo": "scroll",
+    "ativa": "sp",
+    "camera": "matrix(0.36, 0, 0, 0.36, -371.64, 0)",
+    "mascara": "none",
+    "tetoAltura": "100%",
+    "celulaAlt": 884,
+    "svgAlt": 884,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 147,
+    "folgaCartao": 319,
+    "folgaTorre": 363,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 383.3,
+      "baixo": 173.3,
+      "esq": 250.9,
+      "dir": 758.7
+     },
+     ".bm-latam-contorno": {
+      "cima": 383.3,
+      "baixo": 173.3,
+      "esq": 250.9,
+      "dir": 758.7
+     },
+     ".bm-latam-divisas": {
+      "cima": 396.4,
+      "baixo": 438.9,
+      "esq": 263.5,
+      "dir": 910.2
+     },
+     ".bm-pais": {
+      "cima": 413.3,
+      "baixo": 280.8,
+      "esq": 277.4,
+      "dir": 758.7
+     },
+     ".bm-divisas-br": {
+      "cima": 424,
+      "baixo": 298.4,
+      "esq": 278.1,
+      "dir": 758.9
+     },
+     ".bm-chamadas": {
+      "cima": 518.3,
+      "baixo": 305.9,
+      "esq": 354.8,
+      "dir": 751.3
+     },
+     ".bm-rotulo": {
+      "cima": 533.1,
+      "baixo": 298.5,
+      "esq": 372.1,
+      "dir": 761.9
+     },
+     ".bm-rota-base": {
+      "cima": 518.3,
+      "baixo": 311.9,
+      "esq": 353.4,
+      "dir": 801.1
+     }
+    },
+    "overflowDoc": 0
+   },
+   "piorFolgaRecorte": {
+    "pr": 19.2,
+    "sp": 173.3
+   },
+   "erros": [],
+   "respostas": []
+  },
+  "390x844": {
+   "pr": {
+    "modo": "lista",
+    "ativa": null,
+    "camera": "none",
+    "mascara": "none",
+    "tetoAltura": "480px",
+    "celulaAlt": 480,
+    "svgAlt": 480,
+    "arVazio": {
+     "acima": 14.3,
+     "abaixo": -14.3
+    },
+    "paisAltura": 221,
+    "folgaCartao": -307,
+    "folgaTorre": -305,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 16.4,
+      "baixo": 9.1,
+      "esq": 33.3,
+      "dir": 42.1
+     },
+     ".bm-latam-contorno": {
+      "cima": 16.4,
+      "baixo": 9.1,
+      "esq": 33.3,
+      "dir": 42.1
+     },
+     ".bm-latam-divisas": {
+      "cima": 36.1,
+      "baixo": 409.3,
+      "esq": 52.3,
+      "dir": 270.3
+     },
+     ".bm-pais": {
+      "cima": 55.5,
+      "baixo": 177.1,
+      "esq": 73.2,
+      "dir": 42.1
+     },
+     ".bm-divisas-br": {
+      "cima": 71.6,
+      "baixo": 203.6,
+      "esq": 74.2,
+      "dir": 42.3
+     },
+     ".bm-chamadas": {
+      "cima": 213.8,
+      "baixo": 214.9,
+      "esq": 189.8,
+      "dir": 30.9
+     },
+     ".bm-rotulo": {
+      "cima": 233.5,
+      "baixo": 204.4,
+      "esq": 216.4,
+      "dir": 31.5
+     },
+     ".bm-rota-base": {
+      "cima": 213.8,
+      "baixo": 223.9,
+      "esq": 187.6,
+      "dir": 106
+     }
+    },
+    "overflowDoc": 0
+   },
+   "sp": {
+    "modo": "lista",
+    "ativa": null,
+    "camera": "none",
+    "mascara": "none",
+    "tetoAltura": "480px",
+    "celulaAlt": 480,
+    "svgAlt": 480,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 221,
+    "folgaCartao": -307,
+    "folgaTorre": -305,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 16.4,
+      "baixo": 11.5,
+      "esq": 33.3,
+      "dir": 42.1
+     },
+     ".bm-latam-contorno": {
+      "cima": 16.4,
+      "baixo": 11.5,
+      "esq": 33.3,
+      "dir": 42.1
+     },
+     ".bm-latam-divisas": {
+      "cima": 36.1,
+      "baixo": 411.7,
+      "esq": 52.3,
+      "dir": 270.3
+     },
+     ".bm-pais": {
+      "cima": 55.5,
+      "baixo": 179.5,
+      "esq": 73.2,
+      "dir": 42.1
+     },
+     ".bm-divisas-br": {
+      "cima": 71.6,
+      "baixo": 206,
+      "esq": 74.2,
+      "dir": 42.3
+     },
+     ".bm-chamadas": {
+      "cima": 213.8,
+      "baixo": 217.2,
+      "esq": 189.8,
+      "dir": 30.9
+     },
+     ".bm-rotulo": {
+      "cima": 233.5,
+      "baixo": 206.7,
+      "esq": 216.4,
+      "dir": 31.5
+     },
+     ".bm-rota-base": {
+      "cima": 213.8,
+      "baixo": 226.3,
+      "esq": 187.6,
+      "dir": 106
+     }
+    },
+    "overflowDoc": 0
+   },
+   "piorFolgaRecorte": {
+    "pr": 9.1,
+    "sp": 11.5
+   },
+   "erros": [],
+   "respostas": []
+  },
+  "768x1024": {
+   "pr": {
+    "modo": "lista",
+    "ativa": null,
+    "camera": "none",
+    "mascara": "none",
+    "tetoAltura": "480px",
+    "celulaAlt": 480,
+    "svgAlt": 480,
+    "arVazio": {
+     "acima": 15.8,
+     "abaixo": -15.8
+    },
+    "paisAltura": 218,
+    "folgaCartao": -490,
+    "folgaTorre": -304,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 16.2,
+      "baixo": 10.9,
+      "esq": 216.9,
+      "dir": 225.5
+     },
+     ".bm-latam-contorno": {
+      "cima": 16.2,
+      "baixo": 10.9,
+      "esq": 216.9,
+      "dir": 225.5
+     },
+     ".bm-latam-divisas": {
+      "cima": 35.6,
+      "baixo": 405.2,
+      "esq": 235.5,
+      "dir": 450.4
+     },
+     ".bm-pais": {
+      "cima": 54.7,
+      "baixo": 176.4,
+      "esq": 256.1,
+      "dir": 225.5
+     },
+     ".bm-divisas-br": {
+      "cima": 70.6,
+      "baixo": 202.6,
+      "esq": 257.2,
+      "dir": 225.7
+     },
+     ".bm-chamadas": {
+      "cima": 210.6,
+      "baixo": 213.6,
+      "esq": 371,
+      "dir": 214.5
+     },
+     ".bm-rotulo": {
+      "cima": 232,
+      "baixo": 203.3,
+      "esq": 397.2,
+      "dir": 230.3
+     },
+     ".bm-rota-base": {
+      "cima": 210.6,
+      "baixo": 222.5,
+      "esq": 368.9,
+      "dir": 288.5
+     }
+    },
+    "overflowDoc": 0
+   },
+   "sp": {
+    "modo": "lista",
+    "ativa": null,
+    "camera": "none",
+    "mascara": "none",
+    "tetoAltura": "480px",
+    "celulaAlt": 480,
+    "svgAlt": 480,
+    "arVazio": {
+     "acima": 0,
+     "abaixo": 0
+    },
+    "paisAltura": 218,
+    "folgaCartao": -490,
+    "folgaTorre": -304,
+    "camadas": {
+     ".bm-latam-aura": {
+      "cima": 16.2,
+      "baixo": 11.3,
+      "esq": 216.9,
+      "dir": 225.5
+     },
+     ".bm-latam-contorno": {
+      "cima": 16.2,
+      "baixo": 11.3,
+      "esq": 216.9,
+      "dir": 225.5
+     },
+     ".bm-latam-divisas": {
+      "cima": 35.6,
+      "baixo": 405.6,
+      "esq": 235.5,
+      "dir": 450.4
+     },
+     ".bm-pais": {
+      "cima": 54.7,
+      "baixo": 176.8,
+      "esq": 256.1,
+      "dir": 225.5
+     },
+     ".bm-divisas-br": {
+      "cima": 70.6,
+      "baixo": 202.9,
+      "esq": 257.2,
+      "dir": 225.7
+     },
+     ".bm-chamadas": {
+      "cima": 210.6,
+      "baixo": 214,
+      "esq": 371,
+      "dir": 214.5
+     },
+     ".bm-rotulo": {
+      "cima": 232,
+      "baixo": 203.6,
+      "esq": 397.2,
+      "dir": 230.3
+     },
+     ".bm-rota-base": {
+      "cima": 210.6,
+      "baixo": 222.9,
+      "esq": 368.9,
+      "dir": 288.5
+     }
+    },
+    "overflowDoc": 0
+   },
+   "piorFolgaRecorte": {
+    "pr": 10.9,
+    "sp": 11.3
+   },
+   "erros": [],
+   "respostas": []
+  }
+ }
+}

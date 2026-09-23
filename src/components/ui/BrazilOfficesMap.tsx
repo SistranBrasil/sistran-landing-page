@@ -93,7 +93,32 @@ export default function BrazilOfficesMap() {
       </span>
       <svg
         className="bm-mapa"
-        viewBox="0 0 720 640"
+        /* O QUADRO PASSA A CABER O DESENHO INTEIRO — era `0 0 720 640`.
+           «porque o mapa esta ficando cortado? quero que apareça inteiro ... ele
+           esta cortado em cima e em baixo», dito olhando a seção montada.
+           Em `0 0 720 640` o corte era GEOMÉTRICO, não um `overflow` perdido: a
+           silhueta da América do Sul (`SOUTH_AMERICA_PATH`, as três camadas
+           `.bm-latam-*`) vai de y -45,9 a 945,4 e de x -10,3 a 570, e as linhas
+           de chamada chegam a x 596 — o viewport do SVG cortava 87px acima e
+           374px abaixo da caixa de conteúdo (medido a 1440). A SIS-191 tinha
+           respondido a isso com uma esmaecida de 0,75rem/1,75rem, que suaviza a
+           aresta mas não mostra o desenho; o pedido agora é o desenho inteiro,
+           então o quadro é que cede.
+           Os números são a união das caixas medidas mais margem para o traço de
+           8px e o `blur(8px)` da aura (que estouram a `getBBox`, que só conhece
+           geometria): x -36..616, y -72..972.
+           A MARGEM DE CIMA É MAIOR QUE A CONTA (84 e não 72), e os 12 a mais são
+           medidos, não folga por gosto: com 72 a sonda achou 6,9px de folga entre
+           a aura e a aresta de cima a 1280x800 — a pior das nove janelas, numa caixa
+           de 632px, ou seja 1%. Nessa margem qualquer arredondamento de layout corta
+           de novo. Lateralmente sobram 160..173px, então o alargamento é só no eixo
+           que aperta: y -84 e altura 1056 mantêm a folga de baixo como estava.
+           PREÇO, e está registrado porque é visível: o desenho inteiro é alto e
+           estreito (652x1056 contra 720x640), então ele entra pela ALTURA da
+           coluna e o Brasil fica menor do que ficava recortado. `aspect-ratio`
+           em `.bm-mapa` acompanha estes dois números — se um mudar, o outro muda
+           no mesmo commit, senão o mapa entra num tamanho arbitrário. */
+        viewBox="-36 -84 652 1056"
         role="img"
         aria-labelledby="bm-titulo bm-descricao"
       >

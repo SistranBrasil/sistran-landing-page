@@ -1,0 +1,100 @@
+{
+  "repouso": {
+    "card": {
+      "borderColor": "rgba(18, 115, 188, 0.38)",
+      "boxShadow": "rgba(18, 115, 188, 0.12) 0px 1px 3px 0px, rgba(18, 115, 188, 0.22) 0px 14px 30px -16px, rgba(18, 115, 188, 0.26) 0px 32px 62px -30px",
+      "transform": "none"
+    },
+    "cta": {
+      "borderColor": "rgba(18, 115, 188, 0.55)",
+      "background": "rgba(4, 26, 48, 0.55)",
+      "color": "rgb(165, 240, 255)"
+    },
+    "logo": {
+      "imgs": 1,
+      "transform": "none",
+      "placa": "none"
+    },
+    "item": "accel-flutua"
+  },
+  "hover": {
+    "card": {
+      "borderColor": "rgba(18, 115, 188, 0.95)",
+      "boxShadow": "rgba(18, 115, 188, 0.3) 0px 0px 0px 1px, rgba(18, 115, 188, 0.14) 0px 2px 6px 0px, rgba(18, 115, 188, 0.34) 0px 22px 46px -18px, rgba(18, 115, 188, 0.34) 0px 44px 84px -34px",
+      "transform": "matrix(1, 0, 0, 1, 0, -6)"
+    },
+    "cta": {
+      "borderColor": "rgb(18, 115, 188)",
+      "background": "rgb(18, 115, 188)",
+      "color": "rgb(255, 255, 255)"
+    },
+    "logo": {
+      "imgs": 1,
+      "transform": "matrix(1.12, 0, 0, 1.12, 0, -3)",
+      "placa": "matrix(1, 0, 0, 1, 0, -2)"
+    },
+    "item": "accel-flutua"
+  },
+  "cianoRemanescente": [],
+  "floatAmostras": {
+    "min": -4,
+    "max": 0,
+    "amostras": [
+      -2.15,
+      -1.55,
+      -1.05,
+      -0.59,
+      -0.26,
+      -0.08,
+      0,
+      -0.05,
+      -0.19,
+      -0.49,
+      -0.93,
+      -1.47,
+      -2.04,
+      -2.6,
+      -3.1,
+      -3.53,
+      -3.82,
+      -3.97,
+      -4,
+      -3.9,
+      -3.67,
+      -3.36,
+      -2.88,
+      -2.31
+    ]
+  },
+  "reduce_midia": {
+    "dataMotion": null,
+    "itemAnimation": "none",
+    "itemTransform": "none",
+    "cardTransform": "matrix(1, 0, 0, 1, 0, 0)",
+    "logoTransform": "none",
+    "ctaFundo": "rgb(18, 115, 188)"
+  },
+  "reduce_atributo": {
+    "dataMotion": "reduce",
+    "itemAnimation": "none",
+    "itemTransform": "none",
+    "cardTransform": "matrix(1, 0, 0, 1, 0, 0)",
+    "logoTransform": "none",
+    "ctaFundo": "rgb(18, 115, 188)"
+  },
+  "contrasteCtaHover": {
+    "caixa": {
+      "x": 218,
+      "y": 591,
+      "w": 118,
+      "h": 17
+    },
+    "tinta": "rgb(255, 255, 255)",
+    "piorFundo": [
+      18,
+      115,
+      188
+    ],
+    "razao": 5
+  }
+}

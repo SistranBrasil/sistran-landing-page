@@ -1,0 +1,694 @@
+{
+  "w390": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "o-que-e-o-smart-miner",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "O que é o Smart Miner?",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "esteira": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "onde-usar-o-smart-miner",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Onde usar o Smart Miner?",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "esteira": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "como-usar-o-smart-miner",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "titulo": "Como usar o Smart Miner?",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Conheça também",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "esteira": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "identidade": {
+      "nosMatchai": 0,
+      "nosSmartminer": 61,
+      "marcaDoHero": "/images/logos/Logo-Smart-Miner-1.png",
+      "altDaMarca": "Smart Miner",
+      "carimbo": 1,
+      "capsula": {
+        "src": "/images/solucoes/carimbo-smart-miner-ticket-outline-ffffff.png",
+        "alt": "",
+        "largura": 168,
+        "altura": 59,
+        "razao": 2.835,
+        "temAsDuasClasses": true,
+        "dentroDoH1": false,
+        "antesDoH1": true,
+        "repouso": "matrix(1, 0, 0, 1, 0, 0)",
+        "opacidade": "1"
+      },
+      "capaDoHero": "/images/solucoes/smart-miner-hero.webp",
+      "passos": 3,
+      "fios": 2,
+      "balao": 1
+    },
+    "movimento": {
+      "traco": [
+        {
+          "animacao": "smartminer-esteira-fluxo",
+          "quadroA": "0px",
+          "quadroB": "0px",
+          "moveu": false,
+          "tracejado": "0.16px, 0.84px"
+        },
+        {
+          "animacao": "smartminer-esteira-fluxo",
+          "quadroA": "-0.5px",
+          "quadroB": "-0.5px",
+          "moveu": false,
+          "tracejado": "0.16px, 0.84px"
+        },
+        {
+          "animacao": "smartminer-esteira-fluxo",
+          "quadroA": "0px",
+          "quadroB": "0px",
+          "moveu": false,
+          "tracejado": "0.16px, 0.84px"
+        },
+        {
+          "animacao": "smartminer-esteira-fluxo",
+          "quadroA": "-0.5px",
+          "quadroB": "-0.5px",
+          "moveu": false,
+          "tracejado": "0.16px, 0.84px"
+        },
+        {
+          "animacao": "smartminer-esteira-fluxo",
+          "quadroA": "0px",
+          "quadroB": "0px",
+          "moveu": false,
+          "tracejado": "0.16px, 0.84px"
+        },
+        {
+          "animacao": "smartminer-esteira-fluxo",
+          "quadroA": "-0.5px",
+          "quadroB": "-0.5px",
+          "moveu": false,
+          "tracejado": "0.16px, 0.84px"
+        }
+      ],
+      "fio": [
+        {
+          "animacao": "smartminer-marcha",
+          "quadroA": "0%",
+          "quadroB": "0%",
+          "moveu": false
+        },
+        {
+          "animacao": "smartminer-marcha",
+          "quadroA": "0%",
+          "quadroB": "0%",
+          "moveu": false
+        }
+      ]
+    },
+    "contrastes": [
+      {
+        "alvo": "Smart Miner",
+        "tinta": "rgb(248, 250, 252)",
+        "fundoComposto": "rgb(2, 29, 66)",
+        "contraste": 15.968
+      },
+      {
+        "alvo": "Fale com um especialista",
+        "tinta": "rgb(3, 32, 51)",
+        "fundoComposto": "rgb(110, 231, 183)",
+        "contraste": 10.949
+      },
+      {
+        "alvo": "O que é o Smart Miner?",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(238, 247, 253)",
+        "contraste": 14.979
+      },
+      {
+        "alvo": "Onde usar o Smart Miner?",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(233, 241, 249)",
+        "contraste": 14.249
+      },
+      {
+        "alvo": "Como usar o Smart Miner?",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(1, 28, 64)",
+        "contraste": 16.916
+      },
+      {
+        "alvo": "Conheça também",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(232, 240, 249)",
+        "contraste": 14.131
+      },
+      {
+        "alvo": "Fale com a Gente!",
+        "tinta": "rgb(6, 39, 95)",
+        "fundoComposto": "rgb(157, 232, 247)",
+        "contraste": 10.47
+      }
+    ],
+    "capsulaContraste": {
+      "ponto": {
+        "x": 104,
+        "y": 227
+      },
+      "tinta": "rgb(255, 255, 255)",
+      "fundoComposto": "rgb(84, 101, 126)",
+      "contraste": 5.933
+    },
+    "erros": []
+  },
+  "w1440": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "o-que-e-o-smart-miner",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "O que é o Smart Miner?",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "esteira": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "onde-usar-o-smart-miner",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Onde usar o Smart Miner?",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "esteira": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "como-usar-o-smart-miner",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "titulo": "Como usar o Smart Miner?",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "titulo": "Conheça também",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "esteira": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "identidade": {
+      "nosMatchai": 0,
+      "nosSmartminer": 61,
+      "marcaDoHero": "/images/logos/Logo-Smart-Miner-1.png",
+      "altDaMarca": "Smart Miner",
+      "carimbo": 1,
+      "capsula": {
+        "src": "/images/solucoes/carimbo-smart-miner-ticket-outline-ffffff.png",
+        "alt": "",
+        "largura": 194,
+        "altura": 69,
+        "razao": 2.835,
+        "temAsDuasClasses": true,
+        "dentroDoH1": false,
+        "antesDoH1": true,
+        "repouso": "matrix(1, 0, 0, 1, 0, 0)",
+        "opacidade": "1"
+      },
+      "capaDoHero": "/images/solucoes/smart-miner-hero.webp",
+      "passos": 3,
+      "fios": 2,
+      "balao": 1
+    },
+    "movimento": {
+      "traco": [
+        {
+          "animacao": "smartminer-esteira-fluxo",
+          "quadroA": "-0.575326px",
+          "quadroB": "-0.674517px",
+          "moveu": true,
+          "tracejado": "0.16px, 0.84px"
+        },
+        {
+          "animacao": "smartminer-esteira-fluxo",
+          "quadroA": "-0.257874px",
+          "quadroB": "-0.364993px",
+          "moveu": true,
+          "tracejado": "0.16px, 0.84px"
+        },
+        {
+          "animacao": "smartminer-esteira-fluxo",
+          "quadroA": "-0.948326px",
+          "quadroB": "-0.0435643px",
+          "moveu": true,
+          "tracejado": "0.16px, 0.84px"
+        },
+        {
+          "animacao": "smartminer-esteira-fluxo",
+          "quadroA": "-0.63085px",
+          "quadroB": "-0.738017px",
+          "moveu": true,
+          "tracejado": "0.16px, 0.84px"
+        },
+        {
+          "animacao": "smartminer-esteira-fluxo",
+          "quadroA": "-0.32135px",
+          "quadroB": "-0.424493px",
+          "moveu": true,
+          "tracejado": "0.16px, 0.84px"
+        },
+        {
+          "animacao": "smartminer-esteira-fluxo",
+          "quadroA": "-0.00387381px",
+          "quadroB": "-0.111017px",
+          "moveu": true,
+          "tracejado": "0.16px, 0.84px"
+        }
+      ],
+      "fio": [
+        {
+          "animacao": "smartminer-marcha",
+          "quadroA": "calc(0% + 8.02931px)",
+          "quadroB": "calc(0% + 0.769533px)",
+          "moveu": true
+        },
+        {
+          "animacao": "smartminer-marcha",
+          "quadroA": "calc(0% + 5.95576px)",
+          "quadroB": "calc(0% + 12.696px)",
+          "moveu": true
+        }
+      ]
+    },
+    "contrastes": [
+      {
+        "alvo": "Smart Miner",
+        "tinta": "rgb(248, 250, 252)",
+        "fundoComposto": "rgb(24, 108, 72)",
+        "contraste": 6.124
+      },
+      {
+        "alvo": "Fale com um especialista",
+        "tinta": "rgb(3, 32, 51)",
+        "fundoComposto": "rgb(110, 231, 183)",
+        "contraste": 10.949
+      },
+      {
+        "alvo": "O que é o Smart Miner?",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(216, 235, 249)",
+        "contraste": 13.286
+      },
+      {
+        "alvo": "Onde usar o Smart Miner?",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(251, 252, 254)",
+        "contraste": 15.829
+      },
+      {
+        "alvo": "Como usar o Smart Miner?",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(10, 34, 68)",
+        "contraste": 15.847
+      },
+      {
+        "alvo": "Conheça também",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(237, 244, 250)",
+        "contraste": 14.641
+      },
+      {
+        "alvo": "Fale com a Gente!",
+        "tinta": "rgb(6, 39, 95)",
+        "fundoComposto": "rgb(161, 227, 244)",
+        "contraste": 10.121
+      }
+    ],
+    "capsulaContraste": {
+      "ponto": {
+        "x": 259,
+        "y": 299
+      },
+      "tinta": "rgb(255, 255, 255)",
+      "fundoComposto": "rgb(38, 60, 89)",
+      "contraste": 11.212
+    },
+    "erros": []
+  },
+  "matchaiParaComparar": [
+    {
+      "id": "topo",
+      "tag": "SECTION",
+      "clara": false,
+      "overflow": "visible",
+      "titulo": "",
+      "cards": 0,
+      "grafismos": {
+        "acentos": 0,
+        "esteira": 0,
+        "malha": 0
+      }
+    },
+    {
+      "id": "matchai-campanha",
+      "tag": "SECTION",
+      "clara": true,
+      "overflow": "clip",
+      "titulo": "Ofertas inteligentes. Conversas mais rel",
+      "cards": 0,
+      "grafismos": {
+        "acentos": 0,
+        "esteira": 0,
+        "malha": 0
+      }
+    },
+    {
+      "id": "o-que-o-match-ai-faz",
+      "tag": "SECTION",
+      "clara": true,
+      "overflow": "clip",
+      "titulo": "O que o Match AI faz?",
+      "cards": 4,
+      "grafismos": {
+        "acentos": 0,
+        "esteira": 0,
+        "malha": 0
+      }
+    },
+    {
+      "id": "da-base-a-oferta-mais-relevante",
+      "tag": "SECTION",
+      "clara": false,
+      "overflow": "clip",
+      "titulo": "Da base à oferta mais relevante",
+      "cards": 3,
+      "grafismos": {
+        "acentos": 0,
+        "esteira": 0,
+        "malha": 1
+      }
+    },
+    {
+      "id": "posicionamento",
+      "tag": "SECTION",
+      "clara": true,
+      "overflow": "clip",
+      "titulo": "Posicionamento",
+      "cards": 0,
+      "grafismos": {
+        "acentos": 0,
+        "esteira": 0,
+        "malha": 0
+      }
+    },
+    {
+      "id": "conheca-tambem",
+      "tag": "NAV",
+      "clara": true,
+      "overflow": "clip",
+      "titulo": "Conheça também",
+      "cards": 0,
+      "grafismos": {
+        "acentos": 0,
+        "esteira": 0,
+        "malha": 0
+      }
+    },
+    {
+      "id": "SECTION",
+      "tag": "SECTION",
+      "clara": false,
+      "overflow": "hidden",
+      "titulo": "Fale com a Gente!",
+      "cards": 0,
+      "grafismos": {
+        "acentos": 0,
+        "esteira": 0,
+        "malha": 0
+      }
+    }
+  ],
+  "vazamentoNaIrma": 0,
+  "genericaIntacta": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "titulo": "Lumina AI",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "desafios-no-desenvolvimento-de-software",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "Desafios no desenvolvimento de software",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "beneficios",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "Benefícios",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "integracao-versatil",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "Integração Versátil",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": null,
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "outras-solucoes",
+        "tag": "NAV",
+        "clara": false,
+        "overflow": "visible",
+        "titulo": "Outras soluções",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "esteira": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "temPageHero": true,
+    "corposProprios": 0,
+    "erros": []
+  },
+  "reduce-media": {
+    "atributoNoHtml": "reduce",
+    "animacoesVivas": {
+      "traco": 0,
+      "fio": 0,
+      "cartao": 0,
+      "passo": 0,
+      "doc": 0
+    },
+    "capsulaVisivel": true,
+    "capsula": [
+      {
+        "opacidade": "1",
+        "transform": "none",
+        "largura": 194
+      }
+    ],
+    "tracosApagados": 6,
+    "totalDeTracos": 6,
+    "linhaBaseViva": true,
+    "docOpaco": true,
+    "fioSemTracejado": true,
+    "balaoVisivel": true,
+    "balao": [
+      {
+        "opacidade": "1",
+        "escopoDentro": "true"
+      }
+    ],
+    "erros": []
+  },
+  "reduce-preferencia": {
+    "atributoNoHtml": "reduce",
+    "animacoesVivas": {
+      "traco": 0,
+      "fio": 0,
+      "cartao": 0,
+      "passo": 0,
+      "doc": 0
+    },
+    "capsulaVisivel": true,
+    "capsula": [
+      {
+        "opacidade": "1",
+        "transform": "none",
+        "largura": 194
+      }
+    ],
+    "tracosApagados": 6,
+    "totalDeTracos": 6,
+    "linhaBaseViva": true,
+    "docOpaco": true,
+    "fioSemTracejado": true,
+    "balaoVisivel": true,
+    "balao": [
+      {
+        "opacidade": "1",
+        "escopoDentro": "true"
+      }
+    ],
+    "erros": []
+  }
+}

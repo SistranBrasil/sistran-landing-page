@@ -1,0 +1,591 @@
+{
+  "390": {
+    "secaoMontada": true,
+    "corredorDoIndicador": {
+      "navMontado": false
+    },
+    "colunas": {
+      "foto": {
+        "x": 24,
+        "y": -117.77,
+        "w": 342,
+        "h": 294.81,
+        "right": 366
+      },
+      "copy": {
+        "x": 24,
+        "y": 225.05,
+        "w": 342,
+        "h": 769.56,
+        "right": 366
+      },
+      "fracaoImagemPct": 50,
+      "razaoFoto": 1.16,
+      "sobraADireitaPx": 24
+    },
+    "carimbo": {
+      "caixa": {
+        "x": 15.09,
+        "y": -174.63,
+        "w": 191.76,
+        "h": 76.01,
+        "right": 206.85
+      },
+      "areaSobreAFotoPx2": 3500.58,
+      "rotateCSS": "-1.47deg",
+      "larguraFracaoDaFotoPct": 56.07
+    },
+    "faixaNavy": {
+      "caixa": {
+        "x": 0,
+        "y": 1058.61,
+        "w": 390,
+        "h": 526,
+        "right": 390
+      },
+      "sangraNaJanela": true,
+      "clipPath": false
+    },
+    "metricas": [
+      {
+        "valor": "1988",
+        "contador": "1900",
+        "rotulo": "Estabelecida no Brasil",
+        "detalheVisivel": 1,
+        "temIcone": true,
+        "caixa": {
+          "x": 24,
+          "y": 1098.61,
+          "w": 342,
+          "h": 126,
+          "right": 366
+        }
+      },
+      {
+        "valor": "150+",
+        "contador": "0+",
+        "rotulo": "Clientes",
+        "detalheVisivel": 1,
+        "temIcone": true,
+        "caixa": {
+          "x": 24,
+          "y": 1256.61,
+          "w": 342,
+          "h": 126,
+          "right": 366
+        }
+      },
+      {
+        "valor": "18",
+        "contador": "0",
+        "rotulo": "Países",
+        "detalheVisivel": 1,
+        "temIcone": true,
+        "caixa": {
+          "x": 24,
+          "y": 1414.61,
+          "w": 342,
+          "h": 126,
+          "right": 366
+        }
+      }
+    ],
+    "assinatura": {
+      "texto": "CONHECEMOSSEGUROS.",
+      "fontFamily": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+      "fontWeight": "400",
+      "fontSizePx": "30px",
+      "lineHeight": "28.5px",
+      "color": "rgb(18, 59, 93)",
+      "rotate": "-4deg",
+      "linhas": 2,
+      "tracoLarguraPx": 45.45,
+      "riscoStroke": "rgb(22, 191, 232)",
+      "riscoDashoffset": "0px",
+      "caixa": {
+        "x": 48.57,
+        "y": 907.79,
+        "w": 192.25,
+        "h": 82.73,
+        "right": 240.82
+      }
+    },
+    "cards": {
+      "glassCards": 0,
+      "orbes": 0
+    },
+    "acentos": {
+      "visiveis": 0,
+      "total": 8
+    },
+    "segundaPassada": {
+      "tituloTexto": "A Sistran",
+      "tituloPintado": false,
+      "tituloNoSumario": true,
+      "eyebrowDaCapa": "ausente",
+      "chanfrosNaRota": 7,
+      "atmosfera": {
+        "zIndex": "0",
+        "zIndexDaGrade": "1",
+        "recebePonteiro": false,
+        "overflow": "hidden",
+        "derivas": [
+          {
+            "animacao": "sobre-atmosfera-a",
+            "duracao": "34s",
+            "estado": "running"
+          },
+          {
+            "animacao": "sobre-atmosfera-b",
+            "duracao": "46s",
+            "estado": "running"
+          }
+        ],
+        "formas": 6,
+        "linhas": 4
+      }
+    },
+    "transbordoHorizontalPx": 0,
+    "contrastes": {
+      "assinatura": null,
+      "acento": null,
+      "paragrafo": {
+        "cor": "rgb(61, 90, 128)",
+        "fundoAmostrado": "rgb(242 250 254)",
+        "razao": 6.69,
+        "fundoPiorPixel": "rgb(242 250 254)",
+        "razaoPiorPixel": 6.69
+      },
+      "rotulo": {
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fundoAmostrado": "rgb(7 47 90)",
+        "razao": 13.43,
+        "fundoPiorPixel": "rgb(8 48 91)",
+        "razaoPiorPixel": 13.26
+      },
+      "detalhe": {
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fundoAmostrado": "rgb(6 46 87)",
+        "razao": 13.67,
+        "fundoPiorPixel": "rgb(7 46 88)",
+        "razaoPiorPixel": 13.63
+      }
+    }
+  },
+  "1024": {
+    "secaoMontada": true,
+    "corredorDoIndicador": {
+      "navMontado": false
+    },
+    "colunas": {
+      "foto": {
+        "x": 48,
+        "y": 268.23,
+        "w": 475.19,
+        "h": 409.64,
+        "right": 523.19
+      },
+      "copy": {
+        "x": 571.19,
+        "y": 126,
+        "w": 404.81,
+        "h": 694.13,
+        "right": 976
+      },
+      "fracaoImagemPct": 54,
+      "razaoFoto": 1.16,
+      "sobraADireitaPx": 48
+    },
+    "carimbo": {
+      "caixa": {
+        "x": 26.82,
+        "y": 205.95,
+        "w": 248.03,
+        "h": 98.32,
+        "right": 274.85
+      },
+      "areaSobreAFotoPx2": 8173.79,
+      "rotateCSS": "-1.47deg",
+      "larguraFracaoDaFotoPct": 52.2
+    },
+    "faixaNavy": {
+      "caixa": {
+        "x": 0,
+        "y": 902.13,
+        "w": 1024,
+        "h": 278.78,
+        "right": 1024
+      },
+      "sangraNaJanela": true,
+      "clipPath": true
+    },
+    "metricas": [
+      {
+        "valor": "1988",
+        "contador": "1900",
+        "rotulo": "Estabelecida no Brasil",
+        "detalheVisivel": 1,
+        "temIcone": true,
+        "caixa": {
+          "x": 48,
+          "y": 965.08,
+          "w": 309.33,
+          "h": 169.75,
+          "right": 357.33
+        }
+      },
+      {
+        "valor": "150+",
+        "contador": "0+",
+        "rotulo": "Clientes",
+        "detalheVisivel": 1,
+        "temIcone": true,
+        "caixa": {
+          "x": 357.33,
+          "y": 965.08,
+          "w": 309.33,
+          "h": 169.75,
+          "right": 666.66
+        }
+      },
+      {
+        "valor": "18",
+        "contador": "0",
+        "rotulo": "Países",
+        "detalheVisivel": 1,
+        "temIcone": true,
+        "caixa": {
+          "x": 666.66,
+          "y": 965.08,
+          "w": 309.34,
+          "h": 169.75,
+          "right": 976
+        }
+      }
+    ],
+    "assinatura": {
+      "texto": "CONHECEMOSSEGUROS.",
+      "fontFamily": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+      "fontWeight": "400",
+      "fontSizePx": "30.72px",
+      "lineHeight": "29.184px",
+      "color": "rgb(18, 59, 93)",
+      "rotate": "-4deg",
+      "linhas": 2,
+      "tracoLarguraPx": 45.45,
+      "riscoStroke": "rgb(22, 191, 232)",
+      "riscoDashoffset": "0px",
+      "caixa": {
+        "x": 595.71,
+        "y": 731.65,
+        "w": 196.84,
+        "h": 84.38,
+        "right": 792.54
+      }
+    },
+    "cards": {
+      "glassCards": 0,
+      "orbes": 0
+    },
+    "acentos": {
+      "visiveis": 0,
+      "total": 8
+    },
+    "segundaPassada": {
+      "tituloTexto": "A Sistran",
+      "tituloPintado": false,
+      "tituloNoSumario": true,
+      "eyebrowDaCapa": "ausente",
+      "chanfrosNaRota": 7,
+      "atmosfera": {
+        "zIndex": "0",
+        "zIndexDaGrade": "1",
+        "recebePonteiro": false,
+        "overflow": "hidden",
+        "derivas": [
+          {
+            "animacao": "sobre-atmosfera-a",
+            "duracao": "34s",
+            "estado": "running"
+          },
+          {
+            "animacao": "sobre-atmosfera-b",
+            "duracao": "46s",
+            "estado": "running"
+          }
+        ],
+        "formas": 6,
+        "linhas": 4
+      }
+    },
+    "transbordoHorizontalPx": 0,
+    "contrastes": {
+      "assinatura": {
+        "cor": "rgb(18, 59, 93)",
+        "fundoAmostrado": "rgb(235 246 253)",
+        "razao": 10.57,
+        "fundoPiorPixel": "rgb(228 241 251)",
+        "razaoPiorPixel": 10.1
+      },
+      "acento": null,
+      "paragrafo": {
+        "cor": "rgb(61, 90, 128)",
+        "fundoAmostrado": "rgb(239 248 254)",
+        "razao": 6.57,
+        "fundoPiorPixel": "rgb(232 243 252)",
+        "razaoPiorPixel": 6.28
+      },
+      "rotulo": {
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fundoAmostrado": "rgb(10 47 80)",
+        "razao": 13.68,
+        "fundoPiorPixel": "rgb(11 48 81)",
+        "razaoPiorPixel": 13.5
+      },
+      "detalhe": {
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fundoAmostrado": "rgb(5 34 64)",
+        "razao": 16.04,
+        "fundoPiorPixel": "rgb(6 35 65)",
+        "razaoPiorPixel": 15.86
+      }
+    }
+  },
+  "1440": {
+    "secaoMontada": true,
+    "corredorDoIndicador": {
+      "navMontado": true,
+      "ativo": "Início",
+      "tintaAteX": 158.53,
+      "pecaMaisADireita": "Início",
+      "conteudoComecaEmX": 194.41,
+      "folgaPx": 35.88
+    },
+    "colunas": {
+      "foto": {
+        "x": 216,
+        "y": 260.66,
+        "w": 561.59,
+        "h": 484.13,
+        "right": 777.59
+      },
+      "copy": {
+        "x": 825.59,
+        "y": 173.8,
+        "w": 478.41,
+        "h": 657.86,
+        "right": 1304
+      },
+      "fracaoImagemPct": 54,
+      "razaoFoto": 1.16,
+      "sobraADireitaPx": 136
+    },
+    "carimbo": {
+      "caixa": {
+        "x": 194.41,
+        "y": 174.21,
+        "w": 333.06,
+        "h": 132.02,
+        "right": 527.48
+      },
+      "areaSobreAFotoPx2": 14195.06,
+      "rotateCSS": "-1.47deg",
+      "larguraFracaoDaFotoPct": 59.31
+    },
+    "faixaNavy": {
+      "caixa": {
+        "x": 0,
+        "y": 913.66,
+        "w": 1440,
+        "h": 331.67,
+        "right": 1440
+      },
+      "sangraNaJanela": true,
+      "clipPath": true
+    },
+    "metricas": [
+      {
+        "valor": "1988",
+        "contador": "1900",
+        "rotulo": "Estabelecida no Brasil",
+        "detalheVisivel": 1,
+        "temIcone": true,
+        "caixa": {
+          "x": 216,
+          "y": 991.66,
+          "w": 362.66,
+          "h": 189.67,
+          "right": 578.66
+        }
+      },
+      {
+        "valor": "150+",
+        "contador": "0+",
+        "rotulo": "Clientes",
+        "detalheVisivel": 1,
+        "temIcone": true,
+        "caixa": {
+          "x": 578.66,
+          "y": 991.66,
+          "w": 362.67,
+          "h": 189.67,
+          "right": 941.33
+        }
+      },
+      {
+        "valor": "18",
+        "contador": "0",
+        "rotulo": "Países",
+        "detalheVisivel": 1,
+        "temIcone": true,
+        "caixa": {
+          "x": 941.33,
+          "y": 991.66,
+          "w": 362.66,
+          "h": 189.67,
+          "right": 1303.98
+        }
+      }
+    ],
+    "assinatura": {
+      "texto": "CONHECEMOSSEGUROS.",
+      "fontFamily": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+      "fontWeight": "400",
+      "fontSizePx": "43.2px",
+      "lineHeight": "41.04px",
+      "color": "rgb(18, 59, 93)",
+      "rotate": "-4deg",
+      "linhas": 2,
+      "tracoLarguraPx": 45.45,
+      "riscoStroke": "rgb(22, 191, 232)",
+      "riscoDashoffset": "0px",
+      "caixa": {
+        "x": 849.29,
+        "y": 714.04,
+        "w": 276.44,
+        "h": 113.5,
+        "right": 1125.73
+      }
+    },
+    "cards": {
+      "glassCards": 0,
+      "orbes": 0
+    },
+    "acentos": {
+      "visiveis": 8,
+      "total": 8
+    },
+    "segundaPassada": {
+      "tituloTexto": "A Sistran",
+      "tituloPintado": false,
+      "tituloNoSumario": true,
+      "eyebrowDaCapa": "ausente",
+      "chanfrosNaRota": 7,
+      "atmosfera": {
+        "zIndex": "0",
+        "zIndexDaGrade": "1",
+        "recebePonteiro": false,
+        "overflow": "hidden",
+        "derivas": [
+          {
+            "animacao": "sobre-atmosfera-a",
+            "duracao": "34s",
+            "estado": "running"
+          },
+          {
+            "animacao": "sobre-atmosfera-b",
+            "duracao": "46s",
+            "estado": "running"
+          }
+        ],
+        "formas": 6,
+        "linhas": 4
+      }
+    },
+    "transbordoHorizontalPx": 0,
+    "contrastes": {
+      "assinatura": {
+        "cor": "rgb(18, 59, 93)",
+        "fundoAmostrado": "rgb(235 246 253)",
+        "razao": 10.57,
+        "fundoPiorPixel": "rgb(228 241 251)",
+        "razaoPiorPixel": 10.1
+      },
+      "acento": {
+        "cor": "rgb(47, 86, 120)",
+        "fundoAmostrado": "rgb(225 240 249)",
+        "razao": 6.62,
+        "fundoPiorPixel": "rgb(224 238 248)",
+        "razaoPiorPixel": 6.52
+      },
+      "paragrafo": {
+        "cor": "rgb(61, 90, 128)",
+        "fundoAmostrado": "rgb(240 249 254)",
+        "razao": 6.62,
+        "fundoPiorPixel": "rgb(239 249 254)",
+        "razaoPiorPixel": 6.61
+      },
+      "rotulo": {
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fundoAmostrado": "rgb(6 41 78)",
+        "razao": 14.63,
+        "fundoPiorPixel": "rgb(6 43 79)",
+        "razaoPiorPixel": 14.32
+      },
+      "detalhe": {
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fundoAmostrado": "rgb(5 38 72)",
+        "razao": 15.25,
+        "fundoPiorPixel": "rgb(6 39 73)",
+        "razaoPiorPixel": 15.06
+      }
+    }
+  },
+  "fase": "depois",
+  "url": "http://localhost:3000/quem-somos",
+  "quando": "2026-09-23T01:11:32.971Z",
+  "movimentoReduzido": {
+    "media-query": {
+      "dataMotion": null,
+      "riscoDashoffset": "0px",
+      "riscoAnimacao": "none",
+      "carimboOpacidade": 1,
+      "contadores": [
+        "1900",
+        "0+",
+        "0"
+      ],
+      "atmosferaDerivas": [
+        {
+          "animacao": "none",
+          "formasVisiveis": 3
+        },
+        {
+          "animacao": "none",
+          "formasVisiveis": 3
+        }
+      ]
+    },
+    "atributo": {
+      "dataMotion": "reduce",
+      "riscoDashoffset": "0px",
+      "riscoAnimacao": "none",
+      "carimboOpacidade": 1,
+      "contadores": [
+        "1900",
+        "0+",
+        "0"
+      ],
+      "atmosferaDerivas": [
+        {
+          "animacao": "none",
+          "formasVisiveis": 3
+        },
+        {
+          "animacao": "none",
+          "formasVisiveis": 3
+        }
+      ]
+    }
+  }
+}

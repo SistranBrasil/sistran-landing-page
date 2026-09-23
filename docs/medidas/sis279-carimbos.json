@@ -1,0 +1,92 @@
+{
+  "fast": {
+    "largura": 612,
+    "altura": 279,
+    "razao": 2.194,
+    "colunaA": {
+      "x": 110,
+      "topoDaTinta": 33
+    },
+    "colunaB": {
+      "x": 502,
+      "topoDaTinta": 12
+    },
+    "grausDeTombo": -3.07,
+    "fundoTransparente": true,
+    "pixelsOpacos": 19823,
+    "tintaMedia": "rgb(255, 255, 255)",
+    "luminanciaDaTinta": 1
+  },
+  "qa-integrado": {
+    "largura": 855,
+    "altura": 291,
+    "razao": 2.938,
+    "colunaA": {
+      "x": 154,
+      "topoDaTinta": 43
+    },
+    "colunaB": {
+      "x": 701,
+      "topoDaTinta": 14
+    },
+    "grausDeTombo": -3.03,
+    "fundoTransparente": true,
+    "pixelsOpacos": 29594,
+    "tintaMedia": "rgb(255, 255, 255)",
+    "luminanciaDaTinta": 1
+  },
+  "connect-api": {
+    "largura": 828,
+    "altura": 291,
+    "razao": 2.845,
+    "colunaA": {
+      "x": 149,
+      "topoDaTinta": 42
+    },
+    "colunaB": {
+      "x": 679,
+      "topoDaTinta": 14
+    },
+    "grausDeTombo": -3.02,
+    "fundoTransparente": true,
+    "pixelsOpacos": 27922,
+    "tintaMedia": "rgb(255, 255, 255)",
+    "luminanciaDaTinta": 1
+  },
+  "smart-miner": {
+    "largura": 825,
+    "altura": 291,
+    "razao": 2.835,
+    "colunaA": {
+      "x": 149,
+      "topoDaTinta": 42
+    },
+    "colunaB": {
+      "x": 677,
+      "topoDaTinta": 14
+    },
+    "grausDeTombo": -3.04,
+    "fundoTransparente": true,
+    "pixelsOpacos": 28078,
+    "tintaMedia": "rgb(255, 255, 255)",
+    "luminanciaDaTinta": 1
+  },
+  "match-ai": {
+    "largura": 720,
+    "altura": 309,
+    "razao": 2.33,
+    "colunaA": {
+      "x": 130,
+      "topoDaTinta": 57
+    },
+    "colunaB": {
+      "x": 590,
+      "topoDaTinta": 17
+    },
+    "grausDeTombo": -4.97,
+    "fundoTransparente": true,
+    "pixelsOpacos": 24427,
+    "tintaMedia": "rgb(255, 255, 255)",
+    "luminanciaDaTinta": 1
+  }
+}

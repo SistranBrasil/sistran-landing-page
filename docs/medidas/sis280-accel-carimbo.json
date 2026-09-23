@@ -1,0 +1,119 @@
+{
+  "rota": "http://localhost:3000/solucoes",
+  "quando": "2026-09-22T22:43:58.882Z",
+  "larguras": {
+    "390": {
+      "estado": {
+        "tagTextualPresente": false,
+        "tagSectionNaSecao": 0,
+        "carimboMontado": true,
+        "arteEsperada": "/images/carimbo-disruptiva-ticket-outline-0757c7.png",
+        "arteServida": "/images/carimbo-disruptiva-ticket-outline-0757c7.png",
+        "arteCarregada": true,
+        "arteIntrinseca": [
+          723,
+          273
+        ],
+        "alt": "",
+        "carimboCaixa": {
+          "w": 236,
+          "h": 89
+        },
+        "carimboLarguraVar": "clamp(14.75rem, 18vw, 16.5rem)",
+        "carimboSombra": "none",
+        "fracaoDaColuna": 0.674,
+        "colunaDeTexto": 350,
+        "seloDeContagem": false,
+        "ocorrenciasDeAceleradores": 2,
+        "trechoDeTexto": "SoluçõesDesenvolvemos aceleradores para entregar os melhores resultados, “ouvimos seu desafio”, fazendo Discovery para seu negócio, desenhando uma solução perso",
+        "h2Presente": true,
+        "h2Peso": "700",
+        "h2Familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+        "h2Tamanho": 35.2,
+        "h2Sintese": "none"
+      },
+      "arte404": [],
+      "errosDeConsole": []
+    },
+    "1440": {
+      "estado": {
+        "tagTextualPresente": false,
+        "tagSectionNaSecao": 0,
+        "carimboMontado": true,
+        "arteEsperada": "/images/carimbo-disruptiva-ticket-outline-0757c7.png",
+        "arteServida": "/images/carimbo-disruptiva-ticket-outline-0757c7.png",
+        "arteCarregada": true,
+        "arteIntrinseca": [
+          723,
+          273
+        ],
+        "alt": "",
+        "carimboCaixa": {
+          "w": 259,
+          "h": 98
+        },
+        "carimboLarguraVar": "clamp(14.75rem, 18vw, 16.5rem)",
+        "carimboSombra": "none",
+        "fracaoDaColuna": 0.386,
+        "colunaDeTexto": 672,
+        "seloDeContagem": false,
+        "ocorrenciasDeAceleradores": 2,
+        "trechoDeTexto": "SoluçõesDesenvolvemos aceleradores para entregar os melhores resultados, “ouvimos seu desafio”, fazendo Discovery para seu negócio, desenhando uma solução perso",
+        "h2Presente": true,
+        "h2Peso": "700",
+        "h2Familia": "Geist, \"Geist Fallback\", \"Helvetica Neue\", Arial, sans-serif",
+        "h2Tamanho": 65.6,
+        "h2Sintese": "none"
+      },
+      "arte404": [],
+      "errosDeConsole": []
+    }
+  },
+  "reduce": {
+    "sistema": {
+      "transform": "none",
+      "opacidade": "1",
+      "visivel": true,
+      "caixa": {
+        "w": 259,
+        "h": 98
+      },
+      "arteCarregada": true
+    },
+    "chave": {
+      "transform": "none",
+      "opacidade": "1",
+      "visivel": true,
+      "caixa": {
+        "w": 259,
+        "h": 98
+      },
+      "arteCarregada": true
+    }
+  },
+  "batida": {
+    "1440": {
+      "amostras": [
+        {
+          "transform": "none",
+          "opacidade": "1"
+        },
+        {
+          "transform": "matrix(1.11305, -0.0181167, 0.0181167, 1.11305, 0, 0)",
+          "opacidade": "0.8668"
+        },
+        {
+          "transform": "matrix(0.947573, 0.00712978, -0.00712978, 0.947573, 0, 0)",
+          "opacidade": "1"
+        },
+        {
+          "transform": "matrix(1, 0, 0, 1, 0, 0)",
+          "opacidade": "1"
+        }
+      ],
+      "transformsDistintos": 4,
+      "assentou": true,
+      "opacidadeFinal": "1"
+    }
+  }
+}

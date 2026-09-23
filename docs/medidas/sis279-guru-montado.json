@@ -1,0 +1,324 @@
+{
+  "nota": "gerado por scripts/medir-carimbo-guru-montado-sis279.mjs",
+  "rotas": {
+    "/solucoes/guru-de-seguros": {
+      "existe": true,
+      "quantas": 1,
+      "classes": "carimbo-batida gurudeseguros-carimbo",
+      "src": "/images/solucoes/carimbo-guru-de-seguros-ticket-outline-ffffff.png",
+      "carregou": true,
+      "naturais": [
+        897,
+        342
+      ],
+      "caixa": [
+        179.8,
+        68.6
+      ],
+      "renderizada": [
+        179.8,
+        68.6
+      ],
+      "razaoArquivo": 2.623,
+      "razaoNaTela": 2.623,
+      "altVazio": true,
+      "antesDoH1": true,
+      "altDoLetreiro": "Guru de Seguros",
+      "dentroDoHero": true,
+      "opacidade": 1,
+      "styleInline": "--carimbo-batida-ar: 897 / 342; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);",
+      "animacoesCorrendo": 0,
+      "nomesDeIrmasNoHero": [],
+      "retangulo": [
+        162,
+        240,
+        180,
+        69
+      ],
+      "arteEsperada": "carimbo-guru-de-seguros-ticket",
+      "arteCorreta": true,
+      "classesGuru": 93
+    },
+    "/solucoes/match-ai": {
+      "existe": true,
+      "quantas": 1,
+      "classes": "carimbo-batida matchai-carimbo",
+      "src": "/images/solucoes/carimbo-match-ai-ticket-outline-ffffff.png",
+      "carregou": true,
+      "naturais": [
+        720,
+        309
+      ],
+      "caixa": [
+        158.4,
+        68
+      ],
+      "renderizada": [
+        158.4,
+        68
+      ],
+      "razaoArquivo": 2.33,
+      "razaoNaTela": 2.33,
+      "altVazio": true,
+      "antesDoH1": true,
+      "altDoLetreiro": "Match AI",
+      "dentroDoHero": true,
+      "opacidade": 1,
+      "styleInline": "--carimbo-batida-ar: 720 / 309; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);",
+      "animacoesCorrendo": 0,
+      "nomesDeIrmasNoHero": [],
+      "retangulo": [
+        162,
+        255,
+        158,
+        68
+      ],
+      "arteEsperada": "carimbo-match-ai-ticket",
+      "arteCorreta": true,
+      "classesGuru": 0
+    },
+    "/solucoes/smart-miner": {
+      "existe": true,
+      "quantas": 1,
+      "classes": "carimbo-batida smartminer-carimbo",
+      "src": "/images/solucoes/carimbo-smart-miner-ticket-outline-ffffff.png",
+      "carregou": true,
+      "naturais": [
+        825,
+        291
+      ],
+      "caixa": [
+        194.4,
+        68.6
+      ],
+      "renderizada": [
+        194.4,
+        68.6
+      ],
+      "razaoArquivo": 2.835,
+      "razaoNaTela": 2.835,
+      "altVazio": true,
+      "antesDoH1": true,
+      "altDoLetreiro": "Smart Miner",
+      "dentroDoHero": true,
+      "opacidade": 1,
+      "styleInline": "--carimbo-batida-ar: 825 / 291; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);",
+      "animacoesCorrendo": 0,
+      "nomesDeIrmasNoHero": [],
+      "retangulo": [
+        162,
+        240,
+        194,
+        69
+      ],
+      "arteEsperada": "carimbo-smart-miner-ticket",
+      "arteCorreta": true,
+      "classesGuru": 0
+    },
+    "/solucoes/fast": {
+      "existe": true,
+      "quantas": 1,
+      "classes": "carimbo-batida fast-carimbo",
+      "src": "/images/solucoes/carimbo-fast-ticket-outline-ffffff.png",
+      "carregou": true,
+      "naturais": [
+        612,
+        279
+      ],
+      "caixa": [
+        150.5,
+        68.6
+      ],
+      "renderizada": [
+        150.5,
+        68.6
+      ],
+      "razaoArquivo": 2.194,
+      "razaoNaTela": 2.194,
+      "altVazio": true,
+      "antesDoH1": true,
+      "altDoLetreiro": null,
+      "dentroDoHero": true,
+      "opacidade": 1,
+      "styleInline": "--carimbo-batida-ar: 612 / 279; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);",
+      "animacoesCorrendo": 0,
+      "nomesDeIrmasNoHero": [
+        "Fast"
+      ],
+      "retangulo": [
+        162,
+        257,
+        150,
+        69
+      ],
+      "arteEsperada": "carimbo-fast-ticket",
+      "arteCorreta": true,
+      "classesGuru": 0
+    },
+    "/solucoes/qa-integrado": {
+      "existe": true,
+      "quantas": 1,
+      "classes": "carimbo-batida qaintegrado-carimbo",
+      "src": "/images/solucoes/carimbo-qa-integrado-ticket-outline-ffffff.png",
+      "carregou": true,
+      "naturais": [
+        855,
+        291
+      ],
+      "caixa": [
+        201.6,
+        68.6
+      ],
+      "renderizada": [
+        201.6,
+        68.6
+      ],
+      "razaoArquivo": 2.938,
+      "razaoNaTela": 2.938,
+      "altVazio": true,
+      "antesDoH1": true,
+      "altDoLetreiro": null,
+      "dentroDoHero": true,
+      "opacidade": 1,
+      "styleInline": "--carimbo-batida-ar: 855 / 291; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);",
+      "animacoesCorrendo": 0,
+      "nomesDeIrmasNoHero": [
+        "QA Integrado"
+      ],
+      "retangulo": [
+        162,
+        266,
+        202,
+        69
+      ],
+      "arteEsperada": "carimbo-qa-integrado-ticket",
+      "arteCorreta": true,
+      "classesGuru": 0
+    },
+    "/solucoes/connect-api": {
+      "existe": true,
+      "quantas": 1,
+      "classes": "carimbo-batida connectapi-carimbo",
+      "src": "/images/solucoes/carimbo-connect-api-ticket-outline-ffffff.png",
+      "carregou": true,
+      "naturais": [
+        828,
+        291
+      ],
+      "caixa": [
+        195.1,
+        68.6
+      ],
+      "renderizada": [
+        195.1,
+        68.6
+      ],
+      "razaoArquivo": 2.845,
+      "razaoNaTela": 2.846,
+      "altVazio": true,
+      "antesDoH1": true,
+      "altDoLetreiro": "Connect API",
+      "dentroDoHero": true,
+      "opacidade": 1,
+      "styleInline": "--carimbo-batida-ar: 828 / 291; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);",
+      "animacoesCorrendo": 0,
+      "nomesDeIrmasNoHero": [
+        "Connect API"
+      ],
+      "retangulo": [
+        162,
+        240,
+        195,
+        69
+      ],
+      "arteEsperada": "carimbo-connect-api-ticket",
+      "arteCorreta": true,
+      "classesGuru": 0
+    }
+  },
+  "alturasDeCaixa": {
+    "/solucoes/guru-de-seguros": 68.6,
+    "/solucoes/match-ai": 68,
+    "/solucoes/smart-miner": 68.6,
+    "/solucoes/fast": 68.6,
+    "/solucoes/qa-integrado": 68.6,
+    "/solucoes/connect-api": 68.6
+  },
+  "transbordo": {
+    "390": {
+      "px": 0,
+      "caixa": [
+        155.4,
+        59.2
+      ],
+      "vazaADireita": 0
+    },
+    "1440": {
+      "px": 0,
+      "caixa": [
+        179.8,
+        68.6
+      ],
+      "vazaADireita": 0
+    }
+  },
+  "reducePorSistema": {
+    "atributoMotion": "reduce",
+    "existe": true,
+    "opacidade": 1,
+    "styleInline": "--carimbo-batida-ar:897 / 342",
+    "transformComputado": "none",
+    "animacoesCorrendo": 0,
+    "caixa": [
+      179.8,
+      68.6
+    ]
+  },
+  "reducePorAtributo": {
+    "atributoMotion": "reduce",
+    "existe": true,
+    "opacidade": 1,
+    "styleInline": "--carimbo-batida-ar:897 / 342",
+    "transformComputado": "none",
+    "animacoesCorrendo": 0,
+    "caixa": [
+      179.8,
+      68.6
+    ]
+  },
+  "contrastePixel": {
+    "arquivo": "docs/capturas/sis279-guru-1440-hero.png",
+    "caixaDaCapsula": [
+      162,
+      240,
+      180,
+      69
+    ],
+    "piso": 3,
+    "nota": "piso 3:1 — a cápsula é traço grosso (componente gráfico grande), não texto de corpo",
+    "pontos": [
+      {
+        "nome": "vao-esquerdo",
+        "px": 176,
+        "py": 275,
+        "fundo": "rgb(3, 28, 63)",
+        "contrasteTintaBranca": 16.91
+      },
+      {
+        "nome": "vao-central",
+        "px": 238,
+        "py": 294,
+        "fundo": "rgb(0, 26, 61)",
+        "contrasteTintaBranca": 17.28
+      },
+      {
+        "nome": "vao-direito",
+        "px": 324,
+        "py": 275,
+        "fundo": "rgb(4, 29, 64)",
+        "contrasteTintaBranca": 16.73
+      }
+    ],
+    "pior": 16.73
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "arquivo": {
+    "largura": 723,
+    "altura": 273
+  },
+  "janela": {
+    "x0": 376,
+    "x1": 448
+  },
+  "linhaMenor": {
+    "de": 80,
+    "a": 106,
+    "altura": 27
+  },
+  "linhaMaior": {
+    "de": 135,
+    "a": 174,
+    "altura": 40
+  },
+  "fracaoDaLinhaMenor": 0.0989010989010989,
+  "razao": 2.6483516483516483,
+  "escada": [
+    {
+      "larguraPx": 160,
+      "alturaPx": 60.4,
+      "letraMenorPx": 5.98
+    },
+    {
+      "larguraPx": 176,
+      "alturaPx": 66.5,
+      "letraMenorPx": 6.57
+    },
+    {
+      "larguraPx": 192,
+      "alturaPx": 72.5,
+      "letraMenorPx": 7.17
+    },
+    {
+      "larguraPx": 208,
+      "alturaPx": 78.5,
+      "letraMenorPx": 7.77
+    },
+    {
+      "larguraPx": 224,
+      "alturaPx": 84.6,
+      "letraMenorPx": 8.37
+    },
+    {
+      "larguraPx": 240,
+      "alturaPx": 90.6,
+      "letraMenorPx": 8.96
+    }
+  ]
+}

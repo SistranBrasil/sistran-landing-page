@@ -1,0 +1,379 @@
+{
+  "issue": "SIS-286",
+  "rota": "/solucoes/smart-miner",
+  "capturas": [
+    "docs/capturas/sis286-capa-1440.png",
+    "docs/capturas/sis286-capa-390.png"
+  ],
+  "a1440": {
+    "montou": true,
+    "img": {
+      "src": "/images/solucoes/smart-miner-hero.webp",
+      "currentSrc": "/images/solucoes/smart-miner-hero.webp",
+      "natural": [
+        1672,
+        941
+      ],
+      "objectFit": "cover",
+      "objectPosition": "50% 15%",
+      "fetchPriority": "auto",
+      "alt": "",
+      "decorativa": true,
+      "caixa": {
+        "x": 0,
+        "y": 0,
+        "w": 1440,
+        "h": 666
+      }
+    },
+    "veu": {
+      "background": "linear-gradient(100deg, rgba(4, 27, 61, 0.82) 0%, rgba(4, 27, 61, 0.74) 48%, rgba(4, 27, 61, 0.34) 72%, rgba(4, 27, 61, 0.08) 90%), linear-gradient(rgba(3, 17, 38, 0.5) 0%, rgba(4, 27, 61, 0.18) 46%, rgba(4, 27, 61, 0.86) 100%), none"
+    },
+    "h1": {
+      "caixa": {
+        "x": 162,
+        "y": 376,
+        "w": 1116,
+        "h": 86
+      },
+      "cor": "rgb(255, 255, 255)",
+      "px": 89.6,
+      "peso": "400",
+      "texto": "Smart Miner"
+    },
+    "lead": {
+      "caixa": {
+        "x": 162,
+        "y": 482,
+        "w": 672,
+        "h": 88
+      },
+      "cor": "rgba(255, 255, 255, 0.85)",
+      "px": 18,
+      "peso": "400"
+    },
+    "tituloNomeiaOProduto": true,
+    "recorte": {
+      "escala": 0.861,
+      "visivel": {
+        "w": 1672,
+        "h": 773
+      },
+      "sobra": {
+        "x": 0,
+        "y": 168
+      },
+      "janela": {
+        "x0": 0,
+        "y0": 25,
+        "x1": 1672,
+        "y1": 798
+      }
+    },
+    "lockup": {
+      "fracaoVisivel": 1,
+      "veredito": "inteiro"
+    },
+    "contraste": {
+      "h1": {
+        "piorCorpo": {
+          "razao": 8.64,
+          "fundo": [
+            45,
+            78,
+            111
+          ],
+          "cobertura": 0.79,
+          "em": {
+            "x": 551,
+            "y": 404
+          }
+        },
+        "piorTudo": {
+          "razao": 8.62,
+          "fundo": [
+            45,
+            78,
+            112
+          ],
+          "cobertura": 0.03,
+          "em": {
+            "x": 555,
+            "y": 406
+          }
+        },
+        "pixels": 19461,
+        "pixelsCorpo": 9842
+      },
+      "lead": {
+        "piorCorpo": {
+          "razao": 9.57,
+          "fundo": [
+            22,
+            52,
+            87
+          ],
+          "cobertura": 0.7,
+          "em": {
+            "x": 629,
+            "y": 496
+          }
+        },
+        "piorTudo": {
+          "razao": 9.57,
+          "fundo": [
+            22,
+            52,
+            87
+          ],
+          "cobertura": 0.7,
+          "em": {
+            "x": 629,
+            "y": 496
+          }
+        },
+        "pixels": 9637,
+        "pixelsCorpo": 6185
+      }
+    },
+    "rede": [
+      {
+        "url": "/images/loading/logo-sistran-portao.webp",
+        "status": 200,
+        "tipo": "image/webp",
+        "bytes": 11154
+      },
+      {
+        "url": "/images/solucoes/smart-miner-hero.webp",
+        "status": 200,
+        "tipo": "image/webp",
+        "bytes": 97418
+      },
+      {
+        "url": "/images/sistran-corp-logo.png",
+        "status": 200,
+        "tipo": "image/png",
+        "bytes": 194068
+      },
+      {
+        "url": "/solucoes/smart-miner",
+        "status": 200,
+        "tipo": "text/html; charset=utf-8",
+        "bytes": 82723
+      },
+      {
+        "url": "/images/esg/logo-sistran-cta.webp",
+        "status": 200,
+        "tipo": "image/webp",
+        "bytes": 27794
+      }
+    ]
+  },
+  "a390": {
+    "montou": true,
+    "img": {
+      "src": "/images/solucoes/smart-miner-hero.webp",
+      "currentSrc": "/images/solucoes/smart-miner-hero.webp",
+      "natural": [
+        1672,
+        941
+      ],
+      "objectFit": "cover",
+      "objectPosition": "0% 15%",
+      "fetchPriority": "auto",
+      "alt": "",
+      "decorativa": true,
+      "caixa": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 500
+      }
+    },
+    "veu": {
+      "background": "linear-gradient(rgba(3, 17, 38, 0.8) 0%, rgba(4, 27, 61, 0.7) 48%, rgba(4, 27, 61, 0.88) 100%), none"
+    },
+    "h1": {
+      "caixa": {
+        "x": 20,
+        "y": 230,
+        "w": 350,
+        "h": 40
+      },
+      "cor": "rgb(255, 255, 255)",
+      "px": 41.6,
+      "peso": "400",
+      "texto": "Smart Miner"
+    },
+    "lead": {
+      "caixa": {
+        "x": 20,
+        "y": 290,
+        "w": 350,
+        "h": 146
+      },
+      "cor": "rgba(255, 255, 255, 0.85)",
+      "px": 18,
+      "peso": "400"
+    },
+    "tituloNomeiaOProduto": true,
+    "recorte": {
+      "escala": 0.531,
+      "visivel": {
+        "w": 734,
+        "h": 941
+      },
+      "sobra": {
+        "x": 938,
+        "y": 0
+      },
+      "janela": {
+        "x0": 0,
+        "y0": 0,
+        "x1": 734,
+        "y1": 941
+      }
+    },
+    "lockup": {
+      "fracaoVisivel": 0,
+      "veredito": "fora do quadro"
+    },
+    "contraste": {
+      "h1": {
+        "piorCorpo": {
+          "razao": 6.18,
+          "fundo": [
+            54,
+            102,
+            133
+          ],
+          "cobertura": 0.93,
+          "em": {
+            "x": 211,
+            "y": 244
+          }
+        },
+        "piorTudo": {
+          "razao": 6.18,
+          "fundo": [
+            54,
+            102,
+            133
+          ],
+          "cobertura": 0.93,
+          "em": {
+            "x": 211,
+            "y": 244
+          }
+        },
+        "pixels": 5068,
+        "pixelsCorpo": 2152
+      },
+      "lead": {
+        "piorCorpo": {
+          "razao": 5.72,
+          "fundo": [
+            45,
+            92,
+            122
+          ],
+          "cobertura": 0.94,
+          "em": {
+            "x": 141,
+            "y": 303
+          }
+        },
+        "piorTudo": {
+          "razao": 5.72,
+          "fundo": [
+            45,
+            92,
+            122
+          ],
+          "cobertura": 0.94,
+          "em": {
+            "x": 141,
+            "y": 303
+          }
+        },
+        "pixels": 9652,
+        "pixelsCorpo": 6181
+      }
+    },
+    "rede": [
+      {
+        "url": "/solucoes/smart-miner",
+        "status": 200,
+        "tipo": "text/html; charset=utf-8",
+        "bytes": 82723
+      },
+      {
+        "url": "/images/loading/logo-sistran-portao.webp",
+        "status": 200,
+        "tipo": "image/webp",
+        "bytes": 11154
+      },
+      {
+        "url": "/images/sistran-corp-logo.png",
+        "status": 200,
+        "tipo": "image/png",
+        "bytes": 194068
+      },
+      {
+        "url": "/images/solucoes/smart-miner-hero.webp",
+        "status": 200,
+        "tipo": "image/webp",
+        "bytes": 97418
+      },
+      {
+        "url": "/images/esg/logo-sistran-cta.webp",
+        "status": 200,
+        "tipo": "image/webp",
+        "bytes": 27794
+      }
+    ]
+  },
+  "outrasSeis": {
+    "match-ai": {
+      "heroBackdrop": 0,
+      "imagensNaAbertura": 1,
+      "h1": "Match AI"
+    },
+    "lumina-ai": {
+      "heroBackdrop": 0,
+      "imagensNaAbertura": 1,
+      "h1": "Lumina AI"
+    },
+    "fast": {
+      "heroBackdrop": 0,
+      "imagensNaAbertura": 1,
+      "h1": "Fast"
+    },
+    "qa-integrado": {
+      "heroBackdrop": 0,
+      "imagensNaAbertura": 1,
+      "h1": "QA Integrado"
+    },
+    "connect-api": {
+      "heroBackdrop": 0,
+      "imagensNaAbertura": 1,
+      "h1": "Connect API"
+    },
+    "guru-de-seguros": {
+      "heroBackdrop": 0,
+      "imagensNaAbertura": 1,
+      "h1": "Guru de Seguros"
+    }
+  },
+  "outrasSeisIntactas": true,
+  "veredito": {
+    "pisoContraste": 4.5,
+    "h1_1440": 8.64,
+    "lead_1440": 9.57,
+    "h1_390": 6.18,
+    "lead_390": 5.72,
+    "lockup1440": "inteiro",
+    "lockup390": "fora do quadro",
+    "outrasSeisIntactas": true
+  }
+}

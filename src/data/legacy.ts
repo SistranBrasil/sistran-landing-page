@@ -191,10 +191,14 @@ export const mosaicIntro = {
    É campo próprio, e não uma troca no `mosaicIntro` acima, porque aquele objeto
    serve outros dois lugares onde a escrita antiga é a certa:
 
-   · `/transformacao-legado` monta a MESMA `StackScenes`, e ali
-     "Arquitetura | destino adequado ao contexto" é o cabeçalho correto da seção;
-   · `/solucoes` usa `mosaicIntro.text` como parágrafo do card "Transformação de
-     Legado" — texto com função descritiva, que explica o que é a página. Trocar
+   · `/transformacao-legado` montava a MESMA `StackScenes`, e ali
+     "Arquitetura | destino adequado ao contexto" era o cabeçalho correto da
+     seção. SIS-279 apagou aquela rota: `mosaicIntro` continua sendo lido por
+     `StackScenes` na variante `legado`, que hoje não está montada em rota
+     nenhuma (a chamada da home segue comentada desde a SIS-192). Fica porque o
+     componente fica — ver a nota do consumo em `src/app/page.tsx`;
+   · `/solucoes` usava `mosaicIntro.text` como parágrafo do card "Transformação de
+     Legado" (bloco retirado a pedido — SIS-231) — texto com função descritiva, que explica o que é a página. Trocar
      o campo poria "Empresas que aderem a tecnologia..." num card que precisa
      descrever legado.
 
@@ -403,7 +407,7 @@ export const roadmapStops: RoadmapStop[] = [
     id: "engenharia-agentica",
     client: "Método Luminna",
     monogram: "AG",
-    logo: "/imagens/luminna-logo.svg",
+    logo: "/images/solucoes/luminnadoisnn.png",
     title: "Engenharia apoiada por agentes",
     stage: "evolucao",
     text: "Agentes Luminna, Claude Code e Cursor apoiam histórias, backend, frontend, documentação e testes sobre o contexto reconstruído.",
@@ -516,7 +520,7 @@ export const roadmapStops: RoadmapStop[] = [
     id: "entrega-ampliada",
     client: "Método Luminna",
     monogram: "EV",
-    logo: "/imagens/luminna-logo.svg",
+    logo: "/images/solucoes/luminnadoisnn.png",
     title: "Do legado à evolução contínua",
     stage: "evolucao",
     text: "A entrega combina sistema modernizado, documentação viva, base de conhecimento, testes, pipeline, rastreabilidade e contexto preservado.",

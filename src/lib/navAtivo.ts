@@ -67,9 +67,12 @@ export function matchActive(href: string, pathname: string, activeHash: string) 
    FILHO. Sem isto, estar em `/sistran-labs` não marcaria nada no header: a rota
    não aparece na lista de primeiro nível, e o menu inteiro ficaria apagado numa
    página que ele acabou de servir.
-   É também o que faz `/transformacao-legado` acender "Soluções, Serviços e
-   Consultoria" — ela é filha declarada em `data/nav.ts`, não subcaminho de
-   `/solucoes`, então só o prefixo de `matchActive` não a pegaria. */
+   O outro exemplo desta nota era `/transformacao-legado` acendendo "Soluções,
+   Serviços e Consultoria": filha declarada em `data/nav.ts`, não subcaminho de
+   `/solucoes`, então só o prefixo de `matchActive` não a pegaria. A SIS-279
+   apagou aquela rota e o submenu de Soluções junto — o mecanismo aqui não muda
+   (`/sistran-labs` e `/sistran-university` seguem dependendo dele em "Quem
+   somos"), só deixou de ter aquele segundo caso. */
 export function ramoAtivo(item: NavItem, pathname: string, activeHash: string) {
   if (matchActive(item.href, pathname, activeHash)) return true;
   return (item.children ?? []).some((f) => matchActive(f.href, pathname, activeHash));

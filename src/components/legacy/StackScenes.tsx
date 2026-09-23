@@ -85,8 +85,15 @@ type Travel = { dx: number; dy: number; sx: number; sy: number }
  * SIS-68 — duas variantes do MESMO teatro.
  *
  * `legado` (padrão) é o que sempre existiu: kicker "Arquitetura", título
- * "destino adequado ao contexto". É o cabeçalho certo em
- * `/transformacao-legado`, onde a seção abre a página.
+ * "destino adequado ao contexto". Era o cabeçalho certo em
+ * `/transformacao-legado`, onde a seção abria a página.
+ *
+ * SIS-279 — aquela rota foi apagada e a chamada da home está comentada desde a
+ * SIS-192: HOJE ESTE COMPONENTE NÃO ESTÁ MONTADO EM ROTA NENHUMA. Ele fica
+ * porque a nota da home (`src/app/page.tsx`) é a pista de como religá-lo, e
+ * retirá-lo de vez é decisão de produto sobre a home — não era o pedido de
+ * apagar a página do legado. Quem for medir esta seção em execução não vai
+ * achá-la em lugar algum, e é por isso que este aviso está no topo do arquivo.
  *
  * `home` troca a abertura por "Entrega com Alta Performance e Comprometimento"
  * e acrescenta os quatro pilares. O padrão continua sendo `legado` de
@@ -359,9 +366,10 @@ export function StackScenes({ variante = "legado" }: { variante?: Variante } = {
         ref={stack}
         className="mosaic"
         /* SIS-90 — o atributo é o portão de TODA a mudança de layout desta issue.
-           `/transformacao-legado` monta o mesmo componente sem `variante`, não
-           recebe o atributo e continua com o texto centrado e o cartão dominante
-           no meio, exatamente como antes. */
+           `/transformacao-legado` montava o mesmo componente sem `variante`, não
+           recebia o atributo e ficava com o texto centrado e o cartão dominante
+           no meio, exatamente como antes. Aquela rota saiu na SIS-279; o ramo sem
+           `variante` continua no código porque é o padrão do componente. */
         data-variante={naHome ? "home" : undefined}
         aria-labelledby="sinais-title"
       >

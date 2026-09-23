@@ -43,8 +43,10 @@ import OptionalMorphIntro from '@/components/intro/OptionalMorphIntro';
 // import NotchDivider from '@/components/ui/NotchDivider';
 // SIS-192 — o mosaico saiu da HOME. Import comentado junto com o consumo (ver a
 // nota no lugar dele): deixá-lo ativo quebraria o lint por import não utilizado, e
-// removê-lo apagaria a pista de como religar. O componente continua montado em
-// `/transformacao-legado`, sem `variante`, e essa rota não foi tocada.
+// removê-lo apagaria a pista de como religar. SIS-279 apagou
+// `/transformacao-legado`, que era o outro lugar que montava o componente — hoje
+// ele não está em rota nenhuma (o porquê de continuar no repo está na nota do
+// consumo, abaixo).
 // import { StackScenes } from '@/components/legacy/StackScenes';
 // Import comentado junto com o consumo da faixa logo abaixo (ver o comentário em
 // volta de `<MetricsStrip />`): deixá-lo ativo quebraria o lint por import não
@@ -165,14 +167,23 @@ export default function Page() {
             de baixo) e por que o mosaico e o Método eram um componente só. A
             primeira parte continua valendo e mudou de dono: quem recebe o card
             do hero é a `<BrandGrid />` logo acima, com o `border-bottom` de
-            `--line` que ela já tem. A segunda virou história de
-            `/transformacao-legado`, que é onde o `StackScenes` continua vivo.
+            `--line` que ela já tem. A segunda era história de
+            `/transformacao-legado`, que era onde o `StackScenes` continuava vivo.
 
-            Comentado, e não removido: `legacy/StackScenes.tsx`, os tiles, o CSS
-            de `legacy/legacy.css` e os dados de `src/data/legacy.ts` continuam
-            intactos, e `/transformacao-legado` monta o mesmo componente SEM a
-            prop `variante` — aquela rota abre em "Arquitetura…" e não foi tocada.
-            Religar aqui é descomentar este bloco e o import no topo.
+            SIS-279 — AQUELA ROTA FOI APAGADA, e com ela o único lugar onde este
+            componente ainda chegava ao DOM: `StackScenes` passa a não estar
+            montado em nenhuma rota (esta chamada aqui está comentada desde a
+            SIS-192, e era a outra). Ele FICA no repositório, e não é descuido:
+            a issue que apagou a página manda remover só o que ficasse órfão POR
+            CAUSA dela, e este ficou órfão por duas — religar a home é
+            descomentar este bloco e o import no topo, que é exatamente a pista
+            que apagar o arquivo destruiria. Quem quiser retirá-lo de vez precisa
+            de uma decisão de produto sobre a home, não desta faxina.
+
+            Continuam intactos: `legacy/StackScenes.tsx`, os tiles, o CSS de
+            `legacy/legacy.css` e os dados de `src/data/legacy.ts` — este último
+            também alimenta o que a home e `/parceiros-e-implementacoes` ainda
+            montam.
         <div>
           <StackScenes variante="home" />
         </div>

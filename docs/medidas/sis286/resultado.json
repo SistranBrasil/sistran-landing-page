@@ -1,0 +1,36 @@
+{
+  "issue": "SIS-286",
+  "quando": "2026-09-22T16:24:20.917Z",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "descendo": {
+    "scrollY": 577,
+    "scrubP": 0.5499,
+    "direcao": "baixo",
+    "ativo": "1",
+    "transform": "matrix(0.999999, 0.0010451, -0.0010451, 0.999999, 0, -2.3952)",
+    "topoConsumidor": 224.94,
+    "stickySocial": "sticky",
+    "scrubContemStickySocial": false
+  },
+  "subindo": {
+    "scrollY": 577,
+    "scrubP": 0.5499,
+    "direcao": "cima",
+    "ativo": "1",
+    "transform": "matrix(0.999999, 0.0010451, -0.0010451, 0.999999, 0, -2.3952)",
+    "topoConsumidor": 224.94,
+    "stickySocial": "sticky",
+    "scrubContemStickySocial": false
+  },
+  "reducedMotionSistema": {
+    "mediaReduce": true,
+    "transform": "none"
+  },
+  "reducedMotionInterface": {
+    "atributoHtml": "reduce",
+    "transform": "none"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "guru-de-seguros": {
+    "largura": 897,
+    "altura": 342,
+    "razao": 2.623,
+    "colunaA": {
+      "x": 161,
+      "topoDaTinta": 45
+    },
+    "colunaB": {
+      "x": 736,
+      "topoDaTinta": 15
+    },
+    "grausDeTombo": -2.99,
+    "fundoTransparente": true,
+    "pixelsOpacos": 38757,
+    "tintaMedia": "rgb(255, 255, 255)",
+    "luminanciaDaTinta": 1
+  },
+  "smart-miner": {
+    "largura": 825,
+    "altura": 291,
+    "razao": 2.835,
+    "colunaA": {
+      "x": 149,
+      "topoDaTinta": 42
+    },
+    "colunaB": {
+      "x": 677,
+      "topoDaTinta": 14
+    },
+    "grausDeTombo": -3.04,
+    "fundoTransparente": true,
+    "pixelsOpacos": 28078,
+    "tintaMedia": "rgb(255, 255, 255)",
+    "luminanciaDaTinta": 1
+  },
+  "contaDaLargura": {
+    "razaoDeReferencia": 2.835,
+    "alturaDeCaixaRem": {
+      "teto": 4.409,
+      "piso": 3.704,
+      "meioVw": 4.762
+    },
+    "guruDeSeguros": {
+      "razao": 2.623,
+      "tetoRem": 11.57,
+      "pisoRem": 9.71,
+      "meioVw": 12.49
+    }
+  }
+}

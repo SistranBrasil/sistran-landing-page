@@ -35,7 +35,8 @@ const ROTAS = [
   // rota dinâmica: as sete compartilham o mesmo componente, então medir uma mede
   // as sete. `core-de-seguros` era um palpite e devolvia 404.
   '/solucoes/match-ai',
-  '/transformacao-legado',
+  // SIS-279 — `/transformacao-legado` saiu: a rota foi apagada e medir um 404
+  // poluiria a comparação antes/depois deste script.
   '/parceiros-e-implementacoes',
   '/sistran-labs',
   '/sistran-university',

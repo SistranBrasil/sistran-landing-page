@@ -12,6 +12,433 @@
    O que é dinâmico por item (o `tone` da marca: fundo, borda e sombra da placa)
    continua em `style` inline no TSX, porque é dado, não folha de estilo. */
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   SIS-216 — O CARD VIROU UMA FAIXA COM CAPA DE FOTO.
+
+   O que era um cartão navy de três colunas (logo + ordinal + descrição + link)
+   passou a ser uma faixa larga com a arte de `capa-card/` ao fundo, degradê de
+   leitura por cima e a coluna de texto à esquerda — a proposta
+   `public/imagensexemplo/exemplosoluções.png`. A Lumina AI ocupa a linha inteira;
+   os outros seis dividem duas colunas.
+
+   POR QUE ISTO É CSS E NÃO `style` INLINE NO TSX
+   O mesmo motivo do bloco da placa, logo abaixo, e agora com um caso a mais: o
+   hover pede `transform` no card (−6px) e `transform` na foto (zoom), e os dois
+   têm de ser desligados pelos DOIS canais de movimento reduzido. Transform
+   inline vence folha por origem — foi o que tirou o `useTilt` de cena (nota no
+   TSX).
+
+   ── AS TRÊS MEDIDAS QUE GOVERNAM O ARRANJO ──
+   O `.container-lp` satura em 1180px e gasta `lg:px-8`: 1116px úteis. Com o vão
+   de 20px (`gap-5`), a coluna dos seis mede 548px. Daí saem:
+   · a largura das derivadas WebP (ver `scripts/otimizar-capas-card-sis216.mjs`);
+   · o `sizes` das duas capas no TSX;
+   · as alturas mínimas abaixo, que vêm da proporção da proposta — 248px de altura
+     para 1185px de largura no destaque (4,8:1) e 215px para 578px nos seis
+     (2,7:1), medidos na própria arte da proposta.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.accel-item {
+  display: flex;
+  /* Sem isto um item de grade não encolhe abaixo do conteúdo dele: a descrição
+     mais longa (Lumina, 196 caracteres) estouraria a coluna de 548px. */
+  min-width: 0;
+}
+
+/* SIS-216 — A FLUTUAÇÃO IDLE, e ela mora AQUI, no `.accel-item`, e não no
+   `.accel-card`. Esta é a decisão que a issue manda reportar («hover −6px coerente
+   ou pausa o float no hover — reportar»), e ela não é preferência: é a única das
+   três que funciona.
+
+   `transform` é UMA propriedade. Se o float estivesse no mesmo elemento que o
+   hover, os dois disputariam esse valor e a animação ganharia sempre — declaração
+   de animação vence declaração normal, mesmo com `!important` do outro lado. Os
+   −6px de `--accel-erguida` simplesmente nunca apareceriam. Pausar o float no
+   hover (`animation-play-state: paused`) não resolve: uma animação pausada CONTINUA
+   aplicando o transform do quadro onde parou, então o hover seguiria sem efeito — e
+   ainda por cima o card pararia num deslocamento arbitrário, que depende de quando
+   o ponteiro chegou.
+   Com o float num elemento e o hover no filho, os dois transforms se COMPÕEM pela
+   árvore: o item respira ±4px e o card sobe os seus 6px por cima disso. Nenhum
+   número muda de lugar e `--accel-erguida` segue sendo a única fonte da subida.
+
+   4px de amplitude e 6s de volta: é «levemente», que é o adjetivo da issue. O
+   mesmo par já está em uso nos ícones do `/sistran-labs`, então a página não ganha
+   duas cadências diferentes de respiração.
+
+   O ATRASO POR ITEM é o que separa isto de uma prancha subindo e descendo inteira:
+   sem ele os sete cards andariam em bloco, o que lê como a página tremendo. Os
+   valores são primos entre si de propósito (0 / 0,8 / 1,6 …) para que o ciclo
+   aparente não se realinhe.
+   `nth-child` e não uma variável inline no TSX: é ritmo visual, e não dado do
+   acelerador — a mesma régua que manteve o `tone` no dado e tirou a cápsula do
+   `style`. */
+@keyframes accel-flutua {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -4px, 0);
+  }
+}
+
+.accel-item {
+  animation: accel-flutua 6s ease-in-out infinite;
+}
+
+.accel-item:nth-child(2) { animation-delay: -0.8s; }
+.accel-item:nth-child(3) { animation-delay: -1.6s; }
+.accel-item:nth-child(4) { animation-delay: -2.4s; }
+.accel-item:nth-child(5) { animation-delay: -3.2s; }
+.accel-item:nth-child(6) { animation-delay: -4s; }
+.accel-item:nth-child(7) { animation-delay: -4.8s; }
+
+/* Os dois canais da casa, e aqui a regra é «o movimento para» sem plano B: um card
+   parado no quadro 0 é o card no lugar exato onde a grade o põe, e nada de conteúdo
+   depende desta animação (o pedido da issue é literalmente «com reduce: sem
+   float»). `animation: none` e não `duration: 0` para que nem o primeiro quadro
+   seja calculado. */
+@media (prefers-reduced-motion: reduce) {
+  .accel-item {
+    animation: none;
+  }
+}
+
+html[data-motion='reduce'] .accel-item {
+  animation: none;
+}
+
+/* A LINHA INTEIRA PARA O DESTAQUE. `1 / -1` e não `span 2`: a grade é de uma
+   coluna abaixo de 640px, e `span 2` ali pediria uma segunda coluna que não
+   existe (o navegador criaria uma implícita). */
+.accel-item--destaque {
+  grid-column: 1 / -1;
+}
+
+.accel-card {
+  /* Quanto o card sobe no hover/foco — os −6px que a issue pede, num só lugar
+     porque o canal de movimento reduzido precisa zerar o MESMO número. */
+  --accel-erguida: 0.375rem;
+  --accel-veu: 3 22 42;
+  /* SIS-216 — O AZUL DESTA SEÇÃO, `#1273bc`, pedido da issue no lugar do ciano
+     `#0ed8f6` que estava em borda, botão e halos. Fica como canal RGB e não como
+     hex porque quase todo uso aqui é translúcido (`rgb(… / 38%)`), e um token em
+     hex obrigaria a repetir o número em cada alfa.
+     É LOCAL de propósito: o ciano `#0ed8f6` continua sendo a tinta da marca no
+     resto do site (o eco da SIS-201 em `partner-terminal-cards.css`, os
+     `--brand-*` do globals.css), e a issue delimita «só esta seção». Trocar o
+     valor global faria a mudança vazar para parceiros, hero e rodapé. */
+  --accel-azul: 18 115 188;
+  /* SIS-268 — O AZUL DA SOMBRA, agora separado do azul da BORDA. `#57b7ee`, que já
+     é a tinta clara da paleta em faixa escura no resto do site.
+     Por que um segundo canal em vez de clarear `--accel-azul`: esse token também
+     pinta a borda (38% em repouso, 95% no hover) e o preenchimento do botão, e o
+     escopo desta issue é a sombra — clarear tudo junto apagaria o contorno do card
+     e mudaria o botão, que a issue põe fora de escopo. A observação da SIS-216 («o
+     halo com uma tinta vizinha da borda deixava duas tintas brigando no contorno»)
+     continua valendo para o CONTORNO: quem o desenha é a borda, e a sombra agora é
+     explicitamente uma camada mais clara atrás dela, não uma segunda borda.
+     Os alfas SOBEM junto (repouso 12/22/26 → 20/42/48; hover 30/14/34/34 →
+     34/18/44/44), e não é enfeite: `#57b7ee` tem luminosidade ~64% contra ~40% do
+     `#1273bc`, então com os alfas antigos o halo sobre a faixa clara quase
+     desaparecia. Os do REPOUSO passaram por dois valores: com 16/30/34 o pixel
+     composto a 390px ficava 1 a 2 pontos de luminosidade abaixo da faixa, ou seja o
+     card deixava de ter contorno de sombra em telas pequenas (a 1440 o mesmo alfa
+     dava 6 a 15 — o fundo da faixa não é o mesmo nas duas larguras). 20/42/48 é o
+     par que devolve separação medível nas duas. O número por largura e por estado
+     está no comentário da issue. */
+  --accel-azul-sombra: 87 183 238;
+
+  position: relative;
+  /* `isolate` para a capa e o véu ficarem contidos: sem isto o `z-index` deles
+     disputaria com os orbs de fundo da seção, que são irmãos desta árvore. */
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  /* Empilhado em coluna única a faixa não existe: o card fica quase quadrado e a
+     altura vem do texto. O mínimo serve para a capa ter o que mostrar. */
+  min-height: 17rem;
+  overflow: hidden;
+  /* «Cantos bem arredondados» da issue. Era `rounded-3xl` (1.5rem) em utilitária;
+     1,75rem é o raio da proposta medido na arte (≈28px num card de 578px). */
+  /* SIS-216 — era `rgb(14 216 246 / 38%)` (ciano). O alfa NÃO muda: 38% foi
+     escolhido para a borda existir sem virar contorno, e o azul é mais escuro que
+     o ciano, então subir o alfa junto engrossaria a linha duas vezes. */
+  border: 1.5px solid rgb(var(--accel-azul) / 38%);
+  border-radius: 1.75rem;
+  /* O navy fica como piso da composição: a capa é `object-fit: cover` e não tem
+     folga, mas entre o primeiro quadro e a chegada do arquivo é este fundo que
+     sustenta o texto claro. */
+  background: #041a30;
+  /* SIS-216 — as três camadas eram `rgb(0 121 203 / …)`. O azul da issue entra
+     aqui também porque o pedido nomeia «sombras/halos»: com a borda em `#1273bc` e
+     a sombra num azul vizinho mas diferente, o halo ficava com duas tintas
+     brigando no mesmo contorno.
+     SIS-268 — as três passam de `--accel-azul` para `--accel-azul-sombra` (o azul
+     claro), com os alfas subidos; o porquê está na declaração do token. A linha
+     antiga, para quem precisar reverter:
+       0 1px 3px rgb(var(--accel-azul) / 12%),
+       0 14px 30px -16px rgb(var(--accel-azul) / 22%),
+       0 32px 62px -30px rgb(var(--accel-azul) / 26%); */
+  box-shadow:
+    0 1px 3px rgb(var(--accel-azul-sombra) / 20%),
+    0 14px 30px -16px rgb(var(--accel-azul-sombra) / 42%),
+    0 32px 62px -30px rgb(var(--accel-azul-sombra) / 48%);
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.45s ease,
+    box-shadow 0.5s ease;
+}
+
+@media (min-width: 40rem) {
+  .accel-card {
+    min-height: 13.5rem;
+  }
+
+  .accel-item--destaque .accel-card {
+    min-height: 15.5rem;
+  }
+}
+
+/* A CAPA. `next/image` com `fill` já escreve `position: absolute; inset: 0` —
+   aqui ficam só o recorte e o zoom.
+   `object-position: center`: a arte é 16:9 e a caixa vai a 4,8:1, então o
+   `cover` descarta ~60% da altura. O que importa da foto (as pessoas e os
+   painéis de UI) está na faixa central vertical das sete artes — conferido nas
+   capturas desta issue. */
+.accel-card__foto {
+  z-index: 0;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* O DEGRADÊ DE LEITURA.
+   Ele é forte à esquerda, onde mora o texto, e abre à direita para a arte
+   aparecer — é o que a proposta mostra. As paradas não são gosto: a coluna de
+   texto para em 60% da largura do card (48% no destaque, ver abaixo), e é até ali
+   que o véu se mantém em 0,90 de alfa ou mais. Acima de 60% ele cai, porque a
+   partir dali não há texto para proteger.
+   MEDIDO NO COMPOSTO por `scripts/medir-cards-solucoes-sis216.mjs` — ele amostra o
+   PIXEL JÁ PINTADO (recorte 1x1 do print), porque o véu é alfa sobre foto e a cor
+   declarada não diz o que o olho recebe. No card de destaque, que é o pior caso
+   (o véu começa a abrir em 48% da largura, mais cedo que os 60% dos seis):
+   · sob o começo do parágrafo  L = 0,0076  → 13,81:1
+   · na borda direita do texto  L = 0,0111 (1440) / 0,0142 (390) → 13,01:1 / 12,39:1
+   · na borda direita da logo   L = 0,0298 (1440) / 0,0420 (390) →  9,96:1 /  8,64:1
+   Tudo contra o branco 0,88 que `.section-light .on-dark p` pinta, e todos acima
+   dos 4,5:1 da WCAG 1.4.3 com folga de quase 3x. O número da logo é o que
+   REMEDIU, sobre a capa, o 4,08:1 que a SIS-217 tinha medido contra o navy
+   chapado: o pior ponto do fundo da logo ainda é mais escuro do que aquele navy. */
+.accel-card__veu {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  /* Em coluna única o texto usa a largura toda, então aqui o véu é quase
+     uniforme: a foto vira textura em vez de cena. Legibilidade antes de efeito. */
+  background: linear-gradient(
+    100deg,
+    rgb(var(--accel-veu) / 96%) 0%,
+    rgb(var(--accel-veu) / 90%) 100%
+  );
+  pointer-events: none;
+}
+
+@media (min-width: 40rem) {
+  .accel-card__veu {
+    background: linear-gradient(
+      96deg,
+      rgb(var(--accel-veu) / 95%) 0%,
+      rgb(var(--accel-veu) / 92%) 55%,
+      rgb(var(--accel-veu) / 45%) 80%,
+      rgb(var(--accel-veu) / 22%) 100%
+    );
+  }
+}
+
+.accel-card__corpo {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 1.5rem;
+}
+
+@media (min-width: 40rem) {
+  .accel-card__corpo {
+    /* Ver as paradas do véu: o texto termina onde o véu ainda é opaco. */
+    max-width: 60%;
+    padding: 1.75rem;
+  }
+
+  .accel-item--destaque .accel-card__corpo {
+    max-width: 48%;
+    padding: 2rem 2.25rem;
+  }
+}
+
+.accel-card__texto {
+  font-size: 0.875rem;
+  line-height: 1.65;
+  /* A cor NÃO é declarada aqui de propósito: `.section-light .on-dark p` já pinta
+     branco 0,88 com `!important` (globals.css ~1227), e repetir o valor criaria
+     duas fontes para a mesma tinta. */
+}
+
+/* O BOTÃO. Em repouso é cápsula vazada de tinta ciano; no hover/foco ele enche de
+   ciano com texto navy — o «botão mais destacado (como Guru na mock)» da issue.
+
+   ⚠️ O SELETOR DA COR É LONGO DE PROPÓSITO, e `!important` sozinho não bastava —
+   isto foi MEDIDO, não suposto: a primeira versão declarava só
+   `.accel-card__cta { color: … !important }` e a sonda leu
+   `rgba(255, 255, 255, 0.88)` no hover, ou seja branco sobre o ciano cheio (1,7:1,
+   reprovado). O culpado é `.section-light .on-dark a:not([style*="color"])` no
+   globals.css (~1227): ele TAMBÉM usa `!important`, e quando os dois lados são
+   `!important` o desempate volta a ser especificidade — 0,3,1 dele contra 0,1,0 da
+   minha regra. `.section-light .accel-card.on-dark .accel-card__cta` são quatro
+   classes (0,4,0) e passa à frente.
+   A saída antiga daquele override era declarar a cor em `style` inline (o que o
+   `:not()` justamente permite), mas cor inline não sabe mudar no hover sem
+   JavaScript — e é exatamente o hover que esta issue pede. */
+.accel-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  padding: 0.5rem 1.125rem;
+  /* SIS-216 — era `rgb(14 216 246 / 55%)`. */
+  border: 1px solid rgb(var(--accel-azul) / 55%);
+  border-radius: 999px;
+  background: rgb(4 26 48 / 55%);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease;
+}
+
+/* As DUAS tintas do botão, no seletor de quatro classes explicado acima. Ficam
+   juntas para que ninguém mexa numa e deixe a outra atrás do override. */
+.section-light .accel-card.on-dark .accel-card__cta {
+  color: #a5f0ff !important;
+}
+
+.section-light .accel-card.on-dark:hover .accel-card__cta,
+.section-light .accel-card.on-dark:focus-within .accel-card__cta {
+  /* SIS-216 — A TINTA DO HOVER INVERTEU COM O FUNDO, e isto é consequência medida
+     da troca de cor, não preferência. Era `#032033` (navy quase preto), que sobre
+     o CIANO `#0ed8f6` dava 8,9:1. Sobre o azul `#1273bc` da issue o mesmo navy cai
+     para 3,34:1 — REPROVADO nos 4,5:1 da WCAG 1.4.3, porque `#1273bc` tem
+     luminância 0,165 contra os 0,66 do ciano: o fundo deixou de ser claro.
+     Branco puro sobre `#1273bc` dá 4,88:1 e passa. Note que é `#ffffff` e NÃO o
+     branco 0,88 que o resto da seção usa: composto sobre este azul ele daria
+     4,21:1 e reprovaria por pouco — é o mesmo tipo de centésimo que a SIS-290
+     pagou no rótulo do botão de contato. Por isso a cor é escrita aqui e não
+     deixada para `.section-light .on-dark a`, que pinta 0,88.
+     Continua no seletor de quatro classes pela razão do comentário acima: os dois
+     lados são `!important` e o desempate é especificidade. */
+  color: #ffffff !important;
+}
+
+/* O HOVER, e só onde existe ponteiro fino: em toque `:hover` fica preso depois do
+   toque e o card ficaria erguido e com a borda acesa até o próximo toque em
+   outro lugar. `:focus-within` fica FORA da media query — o realce por teclado
+   tem de valer em qualquer dispositivo. */
+@media (hover: hover) and (pointer: fine) {
+  .accel-card:hover {
+    transform: translateY(calc(var(--accel-erguida) * -1));
+  }
+
+  .accel-card:hover .accel-card__foto {
+    /* 1,06 e não mais: a arte já é entregue em 2,01x a caixa da coluna (ver o
+       script de derivação), e acima disso o zoom passa a mostrar menos pixel
+       real do que a caixa pede. */
+    transform: scale(1.06);
+  }
+}
+
+.accel-card:hover,
+.accel-card:focus-within {
+  /* SIS-216 — as cinco tintas deste estado eram ciano `rgb(14 216 246 / …)`, e a
+     última `rgb(0 121 203 / 34%)`. Todas passam ao azul da issue; os alfas ficam,
+     pelo mesmo motivo da borda em repouso.
+     SIS-268 — a BORDA continua no `--accel-azul` (é ela que fecha o contorno), e as
+     QUATRO camadas de sombra vão para `--accel-azul-sombra`, inclusive o anel de
+     1px: ele é halo encostado na borda, não a borda, e deixá-lo no azul escuro
+     recriaria exatamente o contorno pesado que esta issue tira. As linhas antigas:
+       0 0 0 1px rgb(var(--accel-azul) / 30%),
+       0 2px 6px rgb(var(--accel-azul) / 14%),
+       0 22px 46px -18px rgb(var(--accel-azul) / 34%),
+       0 44px 84px -34px rgb(var(--accel-azul) / 34%); */
+  border-color: rgb(var(--accel-azul) / 95%);
+  box-shadow:
+    0 0 0 1px rgb(var(--accel-azul-sombra) / 34%),
+    0 2px 6px rgb(var(--accel-azul-sombra) / 18%),
+    0 22px 46px -18px rgb(var(--accel-azul-sombra) / 44%),
+    0 44px 84px -34px rgb(var(--accel-azul-sombra) / 44%);
+}
+
+.accel-card:hover .accel-card__cta,
+.accel-card:focus-within .accel-card__cta {
+  border-color: #1273bc;
+  background: #1273bc;
+  /* A tinta deste estado mora no bloco de quatro classes acima — aqui ela
+     perderia do override de `.section-light .on-dark a`. */
+}
+
+/* Foco visível próprio: o card inteiro reage por `:focus-within`, mas quem
+   navega por teclado precisa ver ONDE está — e o único alvo focável aqui é o
+   botão. `outline` e não `box-shadow`, para sobreviver ao modo de alto
+   contraste. */
+.accel-card__cta:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* MOVIMENTO REDUZIDO — os dois canais da casa, com o mesmo conteúdo.
+   A regra é «o movimento para; o realce fica»: caem os −6px e o zoom da capa, e
+   ficam a borda acesa, a sombra e o botão preenchido. Nada de conteúdo depende do
+   movimento, então não há o que reabilitar.
+   `--accel-erguida: 0` em vez de `transform: none` no bloco de hover: é o mesmo
+   número que o hover lê, e assim não há um segundo lugar para esquecer. */
+@media (prefers-reduced-motion: reduce) {
+  .accel-card {
+    --accel-erguida: 0px;
+
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .accel-card__foto {
+    transition: none;
+  }
+
+  .accel-card:hover .accel-card__foto {
+    transform: none;
+  }
+}
+
+html[data-motion='reduce'] .accel-card {
+  --accel-erguida: 0px;
+
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+html[data-motion='reduce'] .accel-card__foto {
+  transition: none;
+}
+
+html[data-motion='reduce'] .accel-card:hover .accel-card__foto {
+  transform: none;
+}
+
 /* 11/09 — A PLACA CRESCEU, e o espaço veio de onde o título estava.
    A usuária pediu a logo em destaque e sem o título visível; o `<h3>` foi para
    `sr-only` (ver a nota no TSX), o que devolveu ~40px de altura ao card. A logo
@@ -21,28 +448,26 @@
    `max-width: min(14rem, 68%)`, `min-height: 3.25rem`, `padding: 0.625rem
    0.875rem` e, na arte, `max-height: 1.75rem`.
 
-   O 76% É O QUE O ORDINAL PERMITE, e o número não é gosto: a placa divide esta
-   linha com o "01…07" (`justify-between`), que mede ~30px em `text-3xl` mono
-   mais 12px de vão. A coluna mais estreita do arranjo é a de três colunas a
-   1440 — 358px de card, 302px de conteúdo depois do `p-7` —, onde 76% dá 230px
-   e sobram 42px para ordinal e vão, justo o necessário. Subir daqui encosta a
-   logo no número.
-   ⚠️ `padding` e o `inset` do eco são o MESMO valor, em dois lugares: o eco é
-   posicionado por `inset` para ficar alinhado à arte da frente. Mexer num sem o
-   outro tira o halo de registro. */
+   SIS-216 — O TETO DE 76% CAIU, e com ele a razão de existir dele: aquele número
+   era «o que o ordinal permite», medido contra o "01…07" que dividia a linha com
+   a placa por `justify-between`. A issue removeu os ordinais, a linha ficou só
+   com a logo, e a caixa passou a ser limitada pelo que de fato a limita — a
+   coluna de texto do card (`max-width: 60%` do card, 48% no destaque, em
+   `.accel-card__corpo`). Nota antiga, para o caso de um ordinal voltar em algum
+   lugar: a coluna mais estreita era a de três colunas a 1440 (358px de card,
+   302px de conteúdo), onde 76% dava 230px e sobravam 42px para o número e o vão.
+
+   E A LOGO CRESCEU DE NOVO, agora porque a issue pede «logos maiores»: 2,75rem
+   → 3,25rem de altura de arte, e 4rem no card de destaque. A referência é a
+   proposta, onde a logo do destaque tem ~60px de altura num card de 248px (24%) e
+   as dos seis ~40px em 215px (19%) — 64px e 52px são esses mesmos 24% e 19%
+   aplicados às alturas mínimas reais deste arranjo (15,5rem e 13,5rem). */
 .accel-logo {
   position: relative;
   display: flex;
-  min-width: 4rem;
-  /* Teto de largura, não largura: a placa acompanha a proporção da logo, que vai
-     de 1,8:1 (Connect API) a 6,7:1 (Match AI). Forçar 1:1 — a caixa de 52px do
-     glifo que estava aqui — espremeria as horizontais a ~8px de altura. */
-  max-width: min(18rem, 76%);
-  min-height: 4.5rem;
+  max-width: 100%;
   align-items: center;
-  justify-content: center;
-  padding: 0.75rem 1rem;
-  border-radius: 1rem;
+  justify-content: flex-start;
   transition: transform 300ms var(--ease-out);
 }
 
@@ -51,72 +476,96 @@
   width: auto;
   max-width: 100%;
   height: auto;
-  max-height: 2.75rem;
+  max-height: 3.25rem;
   object-fit: contain;
   transition: transform 300ms var(--ease-out);
 }
 
-/* O ECO: a mesma logo, atrás da de cima, com o halo ciano da marca.
-
-   Mesma receita da SIS-201 (`.partner-terminal__eco`), com duas diferenças que
-   vêm do tamanho do palco. Aqui o card tem 300px de altura mínima e o título
-   começa logo abaixo desta linha, então o eco NÃO cresce até 1,45 — ele fica
-   dentro da placa (escala 1,12), e o que o torna perceptível é o halo, não o
-   tamanho. E o `filter` é estático: só `opacity` e `transform` animam, que é o
-   pedido da issue e o que mantém o efeito fora de layout e de paint. */
-.accel-logo__eco {
-  position: absolute;
-  z-index: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  inset: 0.75rem 1rem;
-  opacity: 0;
-  transform: scale(0.96);
-  transition:
-    opacity 260ms ease,
-    transform 340ms var(--ease-out);
-  pointer-events: none;
+/* SIS-216 — este seletor tinha um segundo lado, `.accel-item--destaque
+   .accel-logo__eco-img`, que saiu com o eco (motivo no bloco abaixo). */
+.accel-item--destaque .accel-logo__img {
+  max-height: 4rem;
 }
 
-.accel-logo__eco-img {
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  max-height: 2.75rem;
-  object-fit: contain;
-  /* Duas camadas, como no card de parceiro: a fechada acende a borda da tinta,
-     a aberta alcança o navy em volta. Ciano da marca (#0ed8f6) + azul (#096bad),
-     os mesmos dois tons do eco da SIS-201. */
-  filter: drop-shadow(0 0 0.75rem rgba(14, 216, 246, 0.85))
-    drop-shadow(0 0 2rem rgba(9, 107, 173, 0.7));
-}
+/* SIS-216 — O ECO FOI EMBORA, e o motivo é o pedido literal da issue: «hoje o
+   `.accel-logo__eco` acende uma segunda cópia; não quero duplicação — a MESMA logo
+   deve vir para frente no hover, sem eco visível».
+
+   Ele saiu do DOM, e não por `display: none`. Duas razões, nesta ordem: uma cópia
+   escondida por CSS continua sendo um `<Image>` que o navegador baixa e decodifica
+   para nada (mesma arte, mesma URL, segunda decodificação); e uma regra de
+   ocultação é justamente o que o próximo a mexer aqui apaga «porque não faz nada»,
+   trazendo a duplicata de volta. Sem nó, não há o que reacender por engano. O nó do
+   TSX está comentado lá, com este mesmo raciocínio.
+
+   Nada de conteúdo se perde: o eco era `aria-hidden` sobre uma logo que já é
+   `alt=""` — decoração de decoração. O nome do produto continua no `<h3>`
+   `sr-only`.
+
+   As regras que existiam, na íntegra, para o caso de o efeito ser pedido de volta
+   em outro lugar (a receita viva é `.partner-terminal__eco`, da SIS-201):
+
+   .accel-logo__eco {
+     position: absolute;
+     z-index: 0;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     inset: 0;                 (era `0.75rem 1rem`, o par do padding da cápsula)
+     opacity: 0;
+     transform: scale(0.96);
+     transition: opacity 260ms ease, transform 340ms var(--ease-out);
+     pointer-events: none;
+   }
+
+   .accel-logo__eco-img {
+     width: auto;
+     max-width: 100%;
+     height: auto;
+     max-height: 2.75rem;
+     object-fit: contain;
+     filter: drop-shadow(0 0 0.75rem rgba(14, 216, 246, 0.85))
+       drop-shadow(0 0 2rem rgba(9, 107, 173, 0.7));
+   }
+
+   .accel-card:hover .accel-logo__eco,
+   .accel-card:focus-within .accel-logo__eco { opacity: 0.55; transform: scale(1.12); }
+
+   …e, nos dois canais de movimento reduzido, `.accel-logo__eco { display: none }`.
+   Observe que aquele `filter` era o ÚNICO lugar desta seção onde o ciano
+   `#0ed8f6` ainda aparecia: com o eco fora, a seção não tem mais nenhuma tinta
+   ciano, que é o item 1 da issue cumprido por inteiro e não por substituição. */
 
 .accel-card:hover .accel-logo,
 .accel-card:focus-within .accel-logo {
   transform: translateY(-2px);
 }
 
+/* SIS-216 — É AQUI QUE A LOGO «VEM PARA FRENTE» agora que não há eco. Era
+   `scale(1.06)`, calibrado para ser discreto porque o eco atrás é que dava o
+   destaque; sem ele, 1,06 num logo de 52px muda ~3px e passa por nada.
+   1,12 é o MESMO número que o eco usava para crescer — o efeito que a issue
+   descreve é exatamente o do eco, mas aplicado à cópia da frente. O `translateY`
+   de −3px vem junto porque «vir para frente» sem eixo Z se lê por subida: a placa
+   inteira já sobe 2px (regra acima), e estes 3px fazem a arte destacar-se DELA.
+   Fica em `transform` (composto na GPU) e não em `width`/`top`, que dariam
+   reflow — a arte é `max-height`, então escalar não reserva layout novo. */
 .accel-card:hover .accel-logo__img,
 .accel-card:focus-within .accel-logo__img {
-  transform: scale(1.06);
-}
-
-.accel-card:hover .accel-logo__eco,
-.accel-card:focus-within .accel-logo__eco {
-  opacity: 0.55;
-  transform: scale(1.12);
+  transform: translateY(-3px) scale(1.12);
 }
 
 /* Movimento reduzido — os dois canais, com o mesmo conteúdo.
 
-   O eco sai de cena por `display: none`, e não por transição desligada: com a
-   transição morta ele APARECERIA de estalo no hover, que é o oposto do pedido
-   (mesmo raciocínio registrado em `partner-terminal-cards.css`). A logo perde a
-   escala e a placa perde o deslocamento: as duas ficam estáticas. Nada de
-   conteúdo se perde — a logo é decorativa, e o nome do produto continua em texto
-   no `<h3>` logo abaixo, que desde 11/09 é `sr-only`: some da tela, permanece no
-   documento e no leitor de tela. */
+   A logo perde a escala e a placa perde o deslocamento: as duas ficam estáticas.
+   Nada de conteúdo se perde — a logo é decorativa, e o nome do produto continua em
+   texto no `<h3>` logo abaixo, que desde 11/09 é `sr-only`: some da tela, permanece
+   no documento e no leitor de tela.
+
+   SIS-216 — as duas linhas do eco (`display: none` nos dois canais) SAÍRAM porque
+   o eco não existe mais em nenhum estado. O raciocínio que as justificava — matar
+   por `display` e não por transição, senão o efeito apareceria de estalo — está
+   preservado no bloco comentado do eco, acima, junto com o resto da receita. */
 @media (prefers-reduced-motion: reduce) {
   .accel-logo,
   .accel-logo__img {
@@ -128,10 +577,6 @@
   .accel-card:hover .accel-logo__img,
   .accel-card:focus-within .accel-logo__img {
     transform: none;
-  }
-
-  .accel-logo__eco {
-    display: none;
   }
 }
 
@@ -147,6 +592,81 @@ html[data-motion='reduce'] .accel-card:focus-within .accel-logo__img {
   transform: none;
 }
 
-html[data-motion='reduce'] .accel-logo__eco {
-  display: none;
+/* ═══════════════════════════════════════════════════════════════════════════
+   SIS-280 — TAMANHO DO CARIMBO desta seção (a arte que substituiu a tag textual
+   «Tecnologia Disruptiva»). Só a largura: a altura sai do `aspect-ratio` que o
+   `CarimboBatida` monta a partir das dimensões do arquivo (723x273 → 2,648).
+
+   ⚠️ MEDIDO, NÃO ESCOLHIDO, e quem decide é a LEGIBILIDADE DA LINHA MENOR — o
+   critério da SIS-277, reaplicado a ESTA arte e não herdado dos números dela.
+   A cap-height de «TECNOLOGIA» foi medida no alfa do PNG em janela estreita (para
+   a inclinação da cápsula não somar à altura da letra; sonda
+   `scripts/medir-arte-carimbo-sis280.mjs`, saída em
+   `docs/medidas/sis280-arte-carimbo.json`): linhas 80→106, **27px de 273**, ou
+   seja **9,89%** da altura de exibição. Daí a escada:
+
+       W = 192px → H = 72,5px → letra de 7,2px   (ilegível)
+       W = 236px → H = 89,1px → letra de 8,8px   (limite — é o PISO)
+       W = 264px → H = 99,7px → letra de 9,9px   (alvo da casa: ~10px)
+
+   O teto de 16,5rem (264px) é o alvo de 10px; o piso de 14,75rem (236px) é o
+   degrau «limite» que a casa já aceitou como piso em `/parceiros` (8,8px) e em
+   `/sistran-labs`. Ele governa de 1311px para baixo, onde 18vw ficaria menor — e
+   236px ainda cabem no `container-lp` de 390px com folga.
+
+   PROPORÇÃO CONTRA A MANCHETE, para «sem dominar o h2»: o «Soluções» desta seção é
+   estreito (uma palavra), então a referência é a COLUNA de texto, que satura em
+   672px (`max-w-2xl`): 264px são 39% dela. A tag que saiu de cena media 190x30 a
+   1440 — o carimbo é maior, e tem de ser: ela era uma palavra em 12px e ele é uma
+   arte com duas linhas de texto e um símbolo dentro.
+
+   ⚠️ DUAS CLASSES NO SELETOR, e não uma, pela lição medida na SIS-188: com a
+   classe sozinha o empate de especificidade (0,1,0) contra `.carimbo-batida` é
+   desempatado pela ORDEM da folha final, e `carimbo-batida.css` entra DEPOIS
+   porque é o próprio componente que a importa — a peça sairia com o tamanho de
+   `/parceiros`. `.accel-cabeca .accel-cabeca-carimbo` (0,2,0) ganha por regra da
+   linguagem, que é o que não depende do empacotador.
+
+   NENHUMA SOMBRA e nenhum `filter`, herdado da folha do componente: carimbo é
+   tinta NO papel, não peça sobre ele. E NENHUMA MARGEM: o `mt-3` do `h2` já dá o
+   respiro que o `.tag-section` trazia embutido, e a arte carrega a própria folga
+   transparente em volta da cápsula.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.accel-cabeca .accel-cabeca-carimbo {
+  --carimbo-batida-w: clamp(14.75rem, 18vw, 16.5rem);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   O CABEÇALHO EM LINHA: carimbo à ESQUERDA, `h2` «Soluções» À DIREITA, ao lado.
+   Pedido em chat, contra a captura em que a manchete caía embaixo da arte.
+
+   `align-items: center` e não `baseline`: o carimbo é uma imagem, e a linha de
+   base de um `<img>` é a borda INFERIOR dele — alinhar por base deixaria a
+   manchete pendurada no pé da cápsula em vez de no meio dela. E não `flex-end`
+   pelo mesmo motivo: a arte carrega folga transparente embaixo, então o «fundo»
+   dela não é o fundo da tinta.
+
+   `flex-wrap: wrap` é o plano B declarado, não descuido: a coluna satura em
+   672px (`max-w-2xl`) e o carimbo já toma até 264px; se a manchete crescer
+   (outra palavra, fonte maior, zoom de texto) a linha volta a empilhar em vez de
+   estourar a coluna. `min-width: 0` no `h2` é o par obrigatório disso — sem ele
+   o item de flex não encolhe abaixo da própria palavra e o wrap nunca dispara.
+
+   O carimbo não recebe `flex: none`: `--carimbo-batida-w` já lhe dá largura
+   própria, e `flex-shrink` sobre uma imagem com largura declarada é o que
+   permitiria a peça ser comprimida — daí o `flex: none` ficar, sim, explícito.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.accel-cabeca-linha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 1.75rem);
+}
+
+.accel-cabeca-linha .accel-cabeca-carimbo {
+  flex: none;
+}
+
+.accel-cabeca-linha h2 {
+  min-width: 0;
 }

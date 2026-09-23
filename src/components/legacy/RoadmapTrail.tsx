@@ -89,8 +89,8 @@ const NODE_REACH = STOP_SPACING / 2
  * O resumo do card não depende do modal: sem JS o texto essencial continua na
  * página, e o modal é o aprofundamento.
  *
- * SIS-202 — a seção é montada em DUAS rotas (`/transformacao-legado` e
- * `/parceiros-e-implementacoes`), e é o LAYOUT que as duas dividem: cada uma
+ * SIS-202 — a seção era montada em DUAS rotas (`/transformacao-legado` e
+ * `/parceiros-e-implementacoes`), e é o LAYOUT que as duas dividiam: cada uma
  * traz as suas próprias paradas e o seu próprio cabeçalho. A primeira versão
  * desta issue levou também o texto (intro + paradas do método Luminna) para
  * parceiros e foi reprovada — o pedido é casca compartilhada, conteúdo de cada
@@ -108,6 +108,9 @@ const NODE_REACH = STOP_SPACING / 2
  * restrição que a SIS-202 tinha posto em parceiros (lá o viajante entrava como
  * `null` e sobrava só o círculo aceso do CSS). O alvo agora é paridade visual
  * entre `/transformacao-legado#roadmap` e `/parceiros-e-implementacoes#linha-do-tempo`.
+ * SIS-279 apagou a rota do legado: das duas montagens sobrou a de parceiros, que
+ * é hoje a única — a paridade descrita acima já estava alcançada quando a outra
+ * saiu, e é dela que o desenho atual vem. O componente NÃO ficou órfão.
  * O `null` continua aceito pelo tipo para quem quiser o círculo vazio; o que
  * segue proibido em parceiros é a COPY do método, não a arte do marcador.
  */
@@ -115,7 +118,7 @@ export function RoadmapTrail({
   id = "roadmap",
   intro = roadmapIntro,
   stops = roadmapStops,
-  traveler: travelerArt = "/imagens/luminna-latam.png",
+  traveler: travelerArt = "/images/solucoes/luminnadoisnn.png",
 }: {
   id?: string
   intro?: TrailIntro | null

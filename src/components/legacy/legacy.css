@@ -1906,18 +1906,19 @@ html[data-motion="reduce"] {
   }
 }
 
-/* A marca percorre a rota: o JS só atualiza --x/--y a cada frame de scroll. */
+/* A marca percorre a rota: o JS só atualiza --x/--y a cada frame de scroll.
+   A caixa acompanha o lockup canônico 3:1 para preservar também a tagline. */
 .roadmap-traveler {
   position: absolute;
   z-index: 3;
   left: var(--x, 17.92%);
   top: var(--y, 4.67%);  /* primeira parada, antes do JS assumir */
-  width: clamp(4.6rem, 6.5vw, 6.6rem);
-  aspect-ratio: 1;
+  width: clamp(8.5rem, 12vw, 11rem);
+  aspect-ratio: 3 / 1;
   display: grid;
   place-items: center;
   border: 2px solid var(--signal);
-  border-radius: 50%;
+  border-radius: var(--pill);
   background: radial-gradient(circle, var(--ink) 62%, color-mix(in srgb, var(--ink) 70%, transparent));
   transform: translate(-50%, -50%);
   filter: drop-shadow(0 0 26px rgb(14 216 246 / 55%));
@@ -1925,7 +1926,7 @@ html[data-motion="reduce"] {
 }
 
 .roadmap-traveler img {
-  width: 78%;
+  width: 90%;
   height: auto;
 }
 

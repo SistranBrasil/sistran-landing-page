@@ -1,0 +1,286 @@
+{
+  "rota": "http://localhost:3000/solucoes/luminna-ai",
+  "quando": "2026-09-22T21:08:49.306Z",
+  "larguras": {
+    "390": {
+      "frase": {
+        "texto": "Grandes ideias constroem amanhã.",
+        "textoEsperado": "Grandes ideias constroem amanhã.",
+        "nosDeLinha": 4,
+        "linhasVisuais": 4,
+        "familia": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+        "peso": "400",
+        "cor": "rgb(18, 59, 93)",
+        "tamanho": 30,
+        "entrelinha": 28.5,
+        "rotacao": "-4deg",
+        "posicao": "relative",
+        "largura": 187,
+        "caixa": {
+          "x": 15,
+          "y": 462,
+          "w": 187,
+          "h": 172
+        },
+        "tracoLargura": 45,
+        "riscoCor": "rgb(22, 191, 232)",
+        "riscoOffset": 0,
+        "riscoAnimacao": "luminna-risco-desenha",
+        "riscoInclinado": true,
+        "colideLetreiro": false,
+        "colideBotao": false,
+        "colideSubtitulo": false
+      },
+      "contrasteDaFrase": 8.28,
+      "pixelDaPlaca": [
+        215,
+        218,
+        222
+      ],
+      "movimentoRisco": {
+        "amostras": [
+          1,
+          0.377063,
+          0.00248912,
+          0
+        ],
+        "distintos": 4,
+        "fechou": true
+      },
+      "arranjo": {
+        "hub": "Luminna AI",
+        "cartoes": 4,
+        "titulos": [
+          "Repositórios de código",
+          "Ferramentas de Análise de Código",
+          "Serviços de IA",
+          "Ferramentas de Gestão de Projetos"
+        ],
+        "chips": 9,
+        "chipsCarregados": 9,
+        "chipsSemAlt": 0,
+        "arquivos": [
+          "azure-logo-hd-transparente.png",
+          "bitbucket-logo-hd-transparente.png",
+          "fortify-logo-hd-transparente.png",
+          "sonarqube-logo-hd-transparente.png",
+          "aws-logo-hd-transparente.png",
+          "github-copilot-logo-hd-transparente.png",
+          "microsoft-copilot-logo-hd-transparente.png",
+          "azure-devops-logo-hd-transparente.png",
+          "jira-logo-hd-transparente.png"
+        ],
+        "arquivosEsperados": [
+          "azure-logo-hd-transparente.png",
+          "bitbucket-logo-hd-transparente.png",
+          "fortify-logo-hd-transparente.png",
+          "sonarqube-logo-hd-transparente.png",
+          "aws-logo-hd-transparente.png",
+          "github-copilot-logo-hd-transparente.png",
+          "microsoft-copilot-logo-hd-transparente.png",
+          "azure-devops-logo-hd-transparente.png",
+          "jira-logo-hd-transparente.png"
+        ],
+        "elosVisiveis": false,
+        "pontasVisiveis": 0,
+        "pulsos": 4,
+        "pulsoAnimacao": "luminna-elo-corre",
+        "pulsoOffsets": [
+          0.2,
+          -0.05,
+          -0.3,
+          -0.55
+        ],
+        "anelAnimacao": "luminna-arco-gira",
+        "colunasDaGrade": 1
+      },
+      "movimentoElos": {
+        "antes": [
+          0.2,
+          -0.05,
+          -0.3,
+          -0.55
+        ],
+        "depois": [
+          0.2,
+          -0.05,
+          -0.3,
+          -0.55
+        ],
+        "mudaram": 0,
+        "de": 4
+      },
+      "logos404": [],
+      "errosDeConsole": []
+    },
+    "1440": {
+      "frase": {
+        "texto": "Grandes ideias constroem amanhã.",
+        "textoEsperado": "Grandes ideias constroem amanhã.",
+        "nosDeLinha": 4,
+        "linhasVisuais": 4,
+        "familia": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+        "peso": "400",
+        "cor": "rgb(18, 59, 93)",
+        "tamanho": 43.2,
+        "entrelinha": 41.04,
+        "rotacao": "-4deg",
+        "posicao": "absolute",
+        "largura": 247,
+        "caixa": {
+          "x": 1070,
+          "y": 324,
+          "w": 247,
+          "h": 226
+        },
+        "tracoLargura": 45,
+        "riscoCor": "rgb(22, 191, 232)",
+        "riscoOffset": 0,
+        "riscoAnimacao": "luminna-risco-desenha",
+        "riscoInclinado": true,
+        "colideLetreiro": false,
+        "colideBotao": false,
+        "colideSubtitulo": false
+      },
+      "contrasteDaFrase": 10.34,
+      "pixelDaPlaca": [
+        239,
+        242,
+        246
+      ],
+      "movimentoRisco": {
+        "amostras": [
+          1,
+          0.535535,
+          0.0278441,
+          0
+        ],
+        "distintos": 4,
+        "fechou": true
+      },
+      "arranjo": {
+        "hub": "Luminna AI",
+        "cartoes": 4,
+        "titulos": [
+          "Repositórios de código",
+          "Ferramentas de Análise de Código",
+          "Serviços de IA",
+          "Ferramentas de Gestão de Projetos"
+        ],
+        "chips": 9,
+        "chipsCarregados": 9,
+        "chipsSemAlt": 0,
+        "arquivos": [
+          "azure-logo-hd-transparente.png",
+          "bitbucket-logo-hd-transparente.png",
+          "fortify-logo-hd-transparente.png",
+          "sonarqube-logo-hd-transparente.png",
+          "aws-logo-hd-transparente.png",
+          "github-copilot-logo-hd-transparente.png",
+          "microsoft-copilot-logo-hd-transparente.png",
+          "azure-devops-logo-hd-transparente.png",
+          "jira-logo-hd-transparente.png"
+        ],
+        "arquivosEsperados": [
+          "azure-logo-hd-transparente.png",
+          "bitbucket-logo-hd-transparente.png",
+          "fortify-logo-hd-transparente.png",
+          "sonarqube-logo-hd-transparente.png",
+          "aws-logo-hd-transparente.png",
+          "github-copilot-logo-hd-transparente.png",
+          "microsoft-copilot-logo-hd-transparente.png",
+          "azure-devops-logo-hd-transparente.png",
+          "jira-logo-hd-transparente.png"
+        ],
+        "elosVisiveis": true,
+        "pontasVisiveis": 4,
+        "pulsos": 4,
+        "pulsoAnimacao": "luminna-elo-corre",
+        "pulsoOffsets": [
+          -0.731093,
+          0.0189065,
+          -0.231093,
+          -0.481093
+        ],
+        "anelAnimacao": "luminna-arco-gira",
+        "colunasDaGrade": 3
+      },
+      "movimentoElos": {
+        "antes": [
+          -0.738311,
+          0.0116891,
+          -0.238311,
+          -0.488311
+        ],
+        "depois": [
+          0.0696457,
+          -0.180354,
+          -0.430354,
+          -0.680354
+        ],
+        "mudaram": 4,
+        "de": 4
+      },
+      "logos404": [],
+      "errosDeConsole": []
+    }
+  },
+  "reduce": {
+    "sistema": {
+      "riscoAnimacao": "none",
+      "riscoOffset": 0,
+      "pulsoAnimacao": "none",
+      "pulsoOffsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "anelAnimacao": "none",
+      "movimentoElos": {
+        "antes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "depois": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "mudaram": 0,
+        "de": 4
+      }
+    },
+    "chave": {
+      "riscoAnimacao": "none",
+      "riscoOffset": 0,
+      "pulsoAnimacao": "none",
+      "pulsoOffsets": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "anelAnimacao": "none",
+      "movimentoElos": {
+        "antes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "depois": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "mudaram": 0,
+        "de": 4
+      }
+    }
+  }
+}

@@ -1,0 +1,796 @@
+{
+  "/sistran-labs": {
+    "390": {
+      "janela": 390,
+      "documentoScrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "revelado": null,
+      "caixas": {
+        "secao": {
+          "x": 0,
+          "y": 60,
+          "w": 390,
+          "h": 749,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "palco": {
+          "x": 20,
+          "y": 140,
+          "w": 350,
+          "h": 589,
+          "display": "flex",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "cartao": {
+          "x": 50,
+          "y": 440,
+          "w": 290,
+          "h": 184,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "fio": {
+          "x": 50,
+          "y": 170,
+          "w": 290,
+          "h": 30,
+          "display": "block",
+          "position": "absolute",
+          "opacity": "1"
+        },
+        "botao": {
+          "x": 50,
+          "y": 643,
+          "w": 290,
+          "h": 56,
+          "display": "flex",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "arte": {
+          "x": 76,
+          "y": 214,
+          "w": 238,
+          "h": 194,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "rotulo": {
+          "x": 50,
+          "y": 441,
+          "w": 70,
+          "h": 16,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "titulo": {
+          "x": 50,
+          "y": 465,
+          "w": 245,
+          "h": 39,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "texto": {
+          "x": 50,
+          "y": 521,
+          "w": 279,
+          "h": 99,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        }
+      },
+      "scrollHorizontal": 0,
+      "sobreposicoesProibidas": {},
+      "sobreposicoesInformativas": {},
+      "corte": {},
+      "ordemVisual": "arte → cartao → botao",
+      "captura": "docs/capturas/sis181/depois-sistran-labs-390.png",
+      "capturaJanela": "docs/capturas/sis181/depois-sistran-labs-390-janela.png"
+    },
+    "768": {
+      "janela": 768,
+      "documentoScrollWidth": 768,
+      "bodyScrollWidth": 768,
+      "revelado": null,
+      "caixas": {
+        "secao": {
+          "x": 0,
+          "y": 60,
+          "w": 768,
+          "h": 792,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "palco": {
+          "x": 24,
+          "y": 172,
+          "w": 720,
+          "h": 568,
+          "display": "flex",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "cartao": {
+          "x": 54,
+          "y": 500,
+          "w": 660,
+          "h": 134,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "fio": {
+          "x": 54,
+          "y": 202,
+          "w": 660,
+          "h": 69,
+          "display": "block",
+          "position": "absolute",
+          "opacity": "1"
+        },
+        "botao": {
+          "x": 54,
+          "y": 654,
+          "w": 660,
+          "h": 56,
+          "display": "flex",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "arte": {
+          "x": 248,
+          "y": 246,
+          "w": 272,
+          "h": 222,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "rotulo": {
+          "x": 54,
+          "y": 501,
+          "w": 70,
+          "h": 16,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "titulo": {
+          "x": 54,
+          "y": 522,
+          "w": 294,
+          "h": 47,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "texto": {
+          "x": 54,
+          "y": 584,
+          "w": 535,
+          "h": 47,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        }
+      },
+      "scrollHorizontal": 0,
+      "sobreposicoesProibidas": {},
+      "sobreposicoesInformativas": {},
+      "corte": {},
+      "ordemVisual": "arte → cartao → botao",
+      "captura": "docs/capturas/sis181/depois-sistran-labs-768.png",
+      "capturaJanela": "docs/capturas/sis181/depois-sistran-labs-768-janela.png"
+    },
+    "1023": {
+      "janela": 1023,
+      "documentoScrollWidth": 1023,
+      "bodyScrollWidth": 1023,
+      "revelado": null,
+      "caixas": {
+        "secao": {
+          "x": 0,
+          "y": 60,
+          "w": 1023,
+          "h": 792,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "palco": {
+          "x": 24,
+          "y": 172,
+          "w": 975,
+          "h": 568,
+          "display": "flex",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "cartao": {
+          "x": 54,
+          "y": 500,
+          "w": 915,
+          "h": 134,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "fio": {
+          "x": 54,
+          "y": 202,
+          "w": 915,
+          "h": 96,
+          "display": "block",
+          "position": "absolute",
+          "opacity": "1"
+        },
+        "botao": {
+          "x": 54,
+          "y": 654,
+          "w": 915,
+          "h": 56,
+          "display": "flex",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "arte": {
+          "x": 376,
+          "y": 246,
+          "w": 272,
+          "h": 222,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "rotulo": {
+          "x": 54,
+          "y": 501,
+          "w": 70,
+          "h": 16,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "titulo": {
+          "x": 54,
+          "y": 522,
+          "w": 294,
+          "h": 47,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "texto": {
+          "x": 54,
+          "y": 584,
+          "w": 535,
+          "h": 47,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        }
+      },
+      "scrollHorizontal": 0,
+      "sobreposicoesProibidas": {},
+      "sobreposicoesInformativas": {},
+      "corte": {},
+      "ordemVisual": "arte → cartao → botao",
+      "captura": "docs/capturas/sis181/depois-sistran-labs-1023.png"
+    },
+    "1440": {
+      "janela": 1440,
+      "documentoScrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "revelado": null,
+      "caixas": {
+        "secao": {
+          "x": 0,
+          "y": 60,
+          "w": 1440,
+          "h": 542,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "palco": {
+          "x": 162,
+          "y": 188,
+          "w": 1116,
+          "h": 286,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "cartao": {
+          "x": 209,
+          "y": 188,
+          "w": 749,
+          "h": 286,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "fio": {
+          "x": 242,
+          "y": 268,
+          "w": 760,
+          "h": 80,
+          "display": "block",
+          "position": "absolute",
+          "opacity": "1"
+        },
+        "botao": {
+          "x": 792,
+          "y": 322,
+          "w": 240,
+          "h": 48,
+          "display": "flex",
+          "position": "absolute",
+          "opacity": "1"
+        },
+        "arte": {
+          "x": 868,
+          "y": 160,
+          "w": 418,
+          "h": 341,
+          "display": "block",
+          "position": "absolute",
+          "opacity": "1"
+        },
+        "rotulo": {
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0,
+          "display": "none",
+          "position": "static",
+          "opacity": "1"
+        },
+        "titulo": {
+          "x": 247,
+          "y": 296,
+          "w": 313,
+          "h": 50,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "texto": {
+          "x": 247,
+          "y": 360,
+          "w": 438,
+          "h": 73,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        }
+      },
+      "scrollHorizontal": 0,
+      "sobreposicoesProibidas": {},
+      "sobreposicoesInformativas": {
+        "botao×arte": {
+          "w": 164,
+          "h": 48
+        },
+        "botao×cartao": {
+          "w": 166,
+          "h": 48
+        },
+        "arte×cartao": {
+          "w": 90,
+          "h": 286
+        }
+      },
+      "corte": {},
+      "ordemVisual": "arte → cartao → botao",
+      "captura": "docs/capturas/sis181/depois-sistran-labs-1440.png"
+    }
+  },
+  "/solucoes/match-ai": {
+    "390": {
+      "janela": 390,
+      "documentoScrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "revelado": null,
+      "caixas": {
+        "secao": {
+          "x": 0,
+          "y": 60,
+          "w": 390,
+          "h": 749,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "palco": {
+          "x": 20,
+          "y": 140,
+          "w": 350,
+          "h": 589,
+          "display": "flex",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "cartao": {
+          "x": 50,
+          "y": 440,
+          "w": 290,
+          "h": 184,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "fio": {
+          "x": 50,
+          "y": 170,
+          "w": 290,
+          "h": 30,
+          "display": "block",
+          "position": "absolute",
+          "opacity": "1"
+        },
+        "botao": {
+          "x": 50,
+          "y": 643,
+          "w": 290,
+          "h": 56,
+          "display": "flex",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "arte": {
+          "x": 76,
+          "y": 214,
+          "w": 238,
+          "h": 194,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "rotulo": {
+          "x": 50,
+          "y": 441,
+          "w": 70,
+          "h": 16,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "titulo": {
+          "x": 50,
+          "y": 465,
+          "w": 245,
+          "h": 39,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "texto": {
+          "x": 50,
+          "y": 521,
+          "w": 279,
+          "h": 99,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        }
+      },
+      "scrollHorizontal": 0,
+      "sobreposicoesProibidas": {},
+      "sobreposicoesInformativas": {},
+      "corte": {},
+      "ordemVisual": "arte → cartao → botao",
+      "captura": "docs/capturas/sis181/depois-solucoesmatch-ai-390.png",
+      "capturaJanela": "docs/capturas/sis181/depois-solucoesmatch-ai-390-janela.png"
+    },
+    "768": {
+      "janela": 768,
+      "documentoScrollWidth": 768,
+      "bodyScrollWidth": 768,
+      "revelado": null,
+      "caixas": {
+        "secao": {
+          "x": 0,
+          "y": 60,
+          "w": 768,
+          "h": 792,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "palco": {
+          "x": 24,
+          "y": 172,
+          "w": 720,
+          "h": 568,
+          "display": "flex",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "cartao": {
+          "x": 54,
+          "y": 500,
+          "w": 660,
+          "h": 134,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "fio": {
+          "x": 54,
+          "y": 202,
+          "w": 660,
+          "h": 69,
+          "display": "block",
+          "position": "absolute",
+          "opacity": "1"
+        },
+        "botao": {
+          "x": 54,
+          "y": 654,
+          "w": 660,
+          "h": 56,
+          "display": "flex",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "arte": {
+          "x": 248,
+          "y": 246,
+          "w": 272,
+          "h": 222,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "rotulo": {
+          "x": 54,
+          "y": 501,
+          "w": 70,
+          "h": 16,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "titulo": {
+          "x": 54,
+          "y": 522,
+          "w": 294,
+          "h": 47,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "texto": {
+          "x": 54,
+          "y": 584,
+          "w": 535,
+          "h": 47,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        }
+      },
+      "scrollHorizontal": 0,
+      "sobreposicoesProibidas": {},
+      "sobreposicoesInformativas": {},
+      "corte": {},
+      "ordemVisual": "arte → cartao → botao",
+      "captura": "docs/capturas/sis181/depois-solucoesmatch-ai-768.png",
+      "capturaJanela": "docs/capturas/sis181/depois-solucoesmatch-ai-768-janela.png"
+    },
+    "1023": {
+      "janela": 1023,
+      "documentoScrollWidth": 1023,
+      "bodyScrollWidth": 1023,
+      "revelado": null,
+      "caixas": {
+        "secao": {
+          "x": 0,
+          "y": 60,
+          "w": 1023,
+          "h": 792,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "palco": {
+          "x": 24,
+          "y": 172,
+          "w": 975,
+          "h": 568,
+          "display": "flex",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "cartao": {
+          "x": 54,
+          "y": 500,
+          "w": 915,
+          "h": 134,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "fio": {
+          "x": 54,
+          "y": 202,
+          "w": 915,
+          "h": 96,
+          "display": "block",
+          "position": "absolute",
+          "opacity": "1"
+        },
+        "botao": {
+          "x": 54,
+          "y": 654,
+          "w": 915,
+          "h": 56,
+          "display": "flex",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "arte": {
+          "x": 376,
+          "y": 246,
+          "w": 272,
+          "h": 222,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "rotulo": {
+          "x": 54,
+          "y": 501,
+          "w": 70,
+          "h": 16,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "titulo": {
+          "x": 54,
+          "y": 522,
+          "w": 294,
+          "h": 47,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "texto": {
+          "x": 54,
+          "y": 584,
+          "w": 535,
+          "h": 47,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        }
+      },
+      "scrollHorizontal": 0,
+      "sobreposicoesProibidas": {},
+      "sobreposicoesInformativas": {},
+      "corte": {},
+      "ordemVisual": "arte → cartao → botao",
+      "captura": "docs/capturas/sis181/depois-solucoesmatch-ai-1023.png"
+    },
+    "1440": {
+      "janela": 1440,
+      "documentoScrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "revelado": null,
+      "caixas": {
+        "secao": {
+          "x": 0,
+          "y": 60,
+          "w": 1440,
+          "h": 542,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "palco": {
+          "x": 162,
+          "y": 188,
+          "w": 1116,
+          "h": 286,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "cartao": {
+          "x": 209,
+          "y": 188,
+          "w": 749,
+          "h": 286,
+          "display": "block",
+          "position": "relative",
+          "opacity": "1"
+        },
+        "fio": {
+          "x": 242,
+          "y": 268,
+          "w": 760,
+          "h": 80,
+          "display": "block",
+          "position": "absolute",
+          "opacity": "1"
+        },
+        "botao": {
+          "x": 792,
+          "y": 322,
+          "w": 240,
+          "h": 48,
+          "display": "flex",
+          "position": "absolute",
+          "opacity": "1"
+        },
+        "arte": {
+          "x": 868,
+          "y": 160,
+          "w": 418,
+          "h": 341,
+          "display": "block",
+          "position": "absolute",
+          "opacity": "1"
+        },
+        "rotulo": {
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0,
+          "display": "none",
+          "position": "static",
+          "opacity": "1"
+        },
+        "titulo": {
+          "x": 247,
+          "y": 296,
+          "w": 313,
+          "h": 50,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        },
+        "texto": {
+          "x": 247,
+          "y": 360,
+          "w": 438,
+          "h": 73,
+          "display": "block",
+          "position": "static",
+          "opacity": "1"
+        }
+      },
+      "scrollHorizontal": 0,
+      "sobreposicoesProibidas": {},
+      "sobreposicoesInformativas": {
+        "botao×arte": {
+          "w": 164,
+          "h": 48
+        },
+        "botao×cartao": {
+          "w": 166,
+          "h": 48
+        },
+        "arte×cartao": {
+          "w": 90,
+          "h": 286
+        }
+      },
+      "corte": {},
+      "ordemVisual": "arte → cartao → botao",
+      "captura": "docs/capturas/sis181/depois-solucoesmatch-ai-1440.png"
+    }
+  }
+}

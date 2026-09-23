@@ -1,0 +1,510 @@
+{
+  "390": {
+    "secaoMontada": true,
+    "contratos": {
+      "id": "posicionamento",
+      "ariaLabelledby": "posicionamento-titulo",
+      "nomeResolvido": "Onde seguros, negócio e tecnologia convergem",
+      "tagDoNome": "H2",
+      "ecossistemaAntigoNaRota": 0,
+      "ancorasDuplicadas": 1
+    },
+    "empilhamento": {
+      "isolation": "isolate",
+      "position": "relative",
+      "overflow": "hidden",
+      "zIndexDaGrade": "-1",
+      "zIndexDosRiscos": "-1",
+      "gradeRecebePonteiro": false,
+      "gradeAriaHidden": true,
+      "riscosAriaHidden": true,
+      "riscosFios": 6
+    },
+    "arte": {
+      "src": "http://localhost:3000/posicionamentoperfil.png",
+      "apontaParaArte": true,
+      "byteChegou": true,
+      "naturais": {
+        "w": 1672,
+        "h": 941
+      },
+      "caixa": {
+        "x": 33,
+        "y": 193.61,
+        "w": 760,
+        "h": 427.72,
+        "right": 793
+      },
+      "razaoPintada": 1.78,
+      "razaoNativa": 1.78,
+      "alt": "Diagrama institucional: três círculos sobrepostos — Seguros, Negócio e Tecnologia — com o símbolo da Sistran no centro, o trilho de Soluções acima e duas listas de capacidades abaixo. O conteúdo escrito do diagrama está transcrito nesta mesma seção para leitores de tela.",
+      "altTamanho": 271,
+      "loading": "lazy"
+    },
+    "casca": {
+      "caixa": {
+        "x": 20,
+        "y": 180.61,
+        "w": 350,
+        "h": 481.94,
+        "right": 370
+      },
+      "borderRadius": "24px",
+      "border": "1px solid rgba(255, 255, 255, 0.12)",
+      "overflow": "hidden",
+      "boxShadow": "rgba(0, 77, 138, 0.8) 0px 30px 80px -30px",
+      "temDegradeDiagonal": true,
+      "brilhoDeCanto": true,
+      "paddingTopPx": "12px"
+    },
+    "janela": {
+      "focalizavel": true,
+      "papel": "group",
+      "nome": "Diagrama Perfil & posicionamento — rolagem horizontal",
+      "rolaHorizontal": 436,
+      "overflowX": "auto"
+    },
+    "legibilidade": {
+      "larguraArtePx": 760,
+      "corpoDeTextoNaTelaPx": 9.09
+    },
+    "escritaPreservada": {
+      "esperadas": 27,
+      "encontradas": 27,
+      "faltando": [],
+      "caracteresNaTranscricao": 786,
+      "transcricaoInvisivel": true
+    },
+    "movimento": {
+      "nosAnimados": 0,
+      "nosComTransicaoDeLayout": 0
+    },
+    "transbordoDocumentoPx": 0,
+    "contrasteDaDica": {
+      "texto": "Arraste para ver o diagrama completo.",
+      "cor": "rgba(255, 255, 255, 0.72)",
+      "fontSizePx": "12.48px",
+      "x": 33,
+      "y": 641,
+      "alfaDoTexto": 0.72,
+      "corComposta": "rgb(184 207 223)",
+      "fundoAmostrado": "rgb(1 82 142)",
+      "razao": 5.01,
+      "fundoPiorPixel": "rgb(1 82 143)",
+      "razaoPiorPixel": 5.01
+    },
+    "emenda": {
+      "mesmoPai": false,
+      "elementosEntre": [
+        "(não são irmãs na mesma lista)"
+      ],
+      "degradeDaFaixa": "radial-gradient(70% 120% at 12% 0px, rgba(9, 58, 112, 0.85), rgba(0, 0, 0, 0) 60%), linear-gradient(90deg, rgb(4, 29, 55) 0%, rgb(6, 50, 92) 46%, rgb(10, 62, 112) 100%)",
+      "degradeDaSecao": "linear-gradient(90deg, rgb(4, 29, 55) 0%, rgb(6, 50, 92) 46%, rgb(10, 62, 112) 100%)",
+      "fronteiraYpx": 422,
+      "colunas": [
+        {
+          "x": 23,
+          "acima": "rgb(4 32 60)",
+          "abaixo": "rgb(5 32 60)",
+          "deltaRGB": 1
+        },
+        {
+          "x": 78,
+          "acima": "rgb(4 38 71)",
+          "abaixo": "rgb(5 38 71)",
+          "deltaRGB": 1
+        },
+        {
+          "x": 137,
+          "acima": "rgb(6 45 84)",
+          "abaixo": "rgb(6 45 84)",
+          "deltaRGB": 0
+        },
+        {
+          "x": 195,
+          "acima": "rgb(7 51 94)",
+          "abaixo": "rgb(7 51 94)",
+          "deltaRGB": 0
+        },
+        {
+          "x": 254,
+          "acima": "rgb(7 54 99)",
+          "abaixo": "rgb(7 54 99)",
+          "deltaRGB": 0
+        },
+        {
+          "x": 312,
+          "acima": "rgb(8 57 104)",
+          "abaixo": "rgb(8 57 104)",
+          "deltaRGB": 0
+        },
+        {
+          "x": 367,
+          "acima": "rgb(10 61 110)",
+          "abaixo": "rgb(10 61 110)",
+          "deltaRGB": 0
+        }
+      ],
+      "maiorDeltaRGB": 1
+    },
+    "chanfros": {
+      "naRota": 6,
+      "entrePosicionamentoEEscritorios": 0
+    },
+    "camadasPintam": {
+      "grade": {
+        "comparavel": true,
+        "pixeisDiferentes": 3432,
+        "fracaoDoQuadroPct": 1.04,
+        "maiorDeltaRGB": 74
+      },
+      "riscos": {
+        "comparavel": true,
+        "pixeisDiferentes": 1433,
+        "fracaoDoQuadroPct": 0.44,
+        "maiorDeltaRGB": 44
+      }
+    }
+  },
+  "768": {
+    "secaoMontada": true,
+    "contratos": {
+      "id": "posicionamento",
+      "ariaLabelledby": "posicionamento-titulo",
+      "nomeResolvido": "Onde seguros, negócio e tecnologia convergem",
+      "tagDoNome": "H2",
+      "ecossistemaAntigoNaRota": 0,
+      "ancorasDuplicadas": 1
+    },
+    "empilhamento": {
+      "isolation": "isolate",
+      "position": "relative",
+      "overflow": "hidden",
+      "zIndexDaGrade": "-1",
+      "zIndexDosRiscos": "-1",
+      "gradeRecebePonteiro": false,
+      "gradeAriaHidden": true,
+      "riscosAriaHidden": true,
+      "riscosFios": 6
+    },
+    "arte": {
+      "src": "http://localhost:3000/posicionamentoperfil.png",
+      "apontaParaArte": true,
+      "byteChegou": true,
+      "naturais": {
+        "w": 1672,
+        "h": 941
+      },
+      "caixa": {
+        "x": 40.36,
+        "y": 222.08,
+        "w": 760,
+        "h": 427.72,
+        "right": 800.36
+      },
+      "razaoPintada": 1.78,
+      "razaoNativa": 1.78,
+      "alt": "Diagrama institucional: três círculos sobrepostos — Seguros, Negócio e Tecnologia — com o símbolo da Sistran no centro, o trilho de Soluções acima e duas listas de capacidades abaixo. O conteúdo escrito do diagrama está transcrito nesta mesma seção para leitores de tela.",
+      "altTamanho": 271,
+      "loading": "lazy"
+    },
+    "casca": {
+      "caixa": {
+        "x": 24,
+        "y": 205.72,
+        "w": 720,
+        "h": 488.66,
+        "right": 744
+      },
+      "borderRadius": "24px",
+      "border": "1px solid rgba(255, 255, 255, 0.12)",
+      "overflow": "hidden",
+      "boxShadow": "rgba(0, 77, 138, 0.8) 0px 30px 80px -30px",
+      "temDegradeDiagonal": true,
+      "brilhoDeCanto": true,
+      "paddingTopPx": "15.36px"
+    },
+    "janela": {
+      "focalizavel": true,
+      "papel": "group",
+      "nome": "Diagrama Perfil & posicionamento — rolagem horizontal",
+      "rolaHorizontal": 73,
+      "overflowX": "auto"
+    },
+    "legibilidade": {
+      "larguraArtePx": 760,
+      "corpoDeTextoNaTelaPx": 9.09
+    },
+    "escritaPreservada": {
+      "esperadas": 27,
+      "encontradas": 27,
+      "faltando": [],
+      "caracteresNaTranscricao": 786,
+      "transcricaoInvisivel": true
+    },
+    "movimento": {
+      "nosAnimados": 0,
+      "nosComTransicaoDeLayout": 0
+    },
+    "transbordoDocumentoPx": 0,
+    "contrasteDaDica": {
+      "texto": "Arraste para ver o diagrama completo.",
+      "cor": "rgba(255, 255, 255, 0.72)",
+      "fontSizePx": "12.48px",
+      "x": 40,
+      "y": 670,
+      "alfaDoTexto": 0.72,
+      "corComposta": "rgb(184 205 223)",
+      "fundoAmostrado": "rgb(0 77 139)",
+      "razao": 5.27,
+      "fundoPiorPixel": "rgb(0 79 140)",
+      "razaoPiorPixel": 5.18
+    },
+    "emenda": {
+      "mesmoPai": false,
+      "elementosEntre": [
+        "(não são irmãs na mesma lista)"
+      ],
+      "degradeDaFaixa": "radial-gradient(70% 120% at 12% 0px, rgba(9, 58, 112, 0.85), rgba(0, 0, 0, 0) 60%), linear-gradient(90deg, rgb(4, 29, 55) 0%, rgb(6, 50, 92) 46%, rgb(10, 62, 112) 100%)",
+      "degradeDaSecao": "linear-gradient(90deg, rgb(4, 29, 55) 0%, rgb(6, 50, 92) 46%, rgb(10, 62, 112) 100%)",
+      "fronteiraYpx": 450,
+      "colunas": [
+        {
+          "x": 46,
+          "acima": "rgb(4 32 60)",
+          "abaixo": "rgb(4 31 60)",
+          "deltaRGB": 1
+        },
+        {
+          "x": 154,
+          "acima": "rgb(8 44 77)",
+          "abaixo": "rgb(5 38 71)",
+          "deltaRGB": 15
+        },
+        {
+          "x": 269,
+          "acima": "rgb(6 46 84)",
+          "abaixo": "rgb(6 45 84)",
+          "deltaRGB": 1
+        },
+        {
+          "x": 384,
+          "acima": "rgb(6 51 93)",
+          "abaixo": "rgb(5 51 93)",
+          "deltaRGB": 1
+        },
+        {
+          "x": 499,
+          "acima": "rgb(8 55 99)",
+          "abaixo": "rgb(8 55 99)",
+          "deltaRGB": 0
+        },
+        {
+          "x": 614,
+          "acima": "rgb(8 57 104)",
+          "abaixo": "rgb(8 57 104)",
+          "deltaRGB": 0
+        },
+        {
+          "x": 722,
+          "acima": "rgb(9 60 110)",
+          "abaixo": "rgb(9 60 110)",
+          "deltaRGB": 0
+        }
+      ],
+      "maiorDeltaRGB": 15
+    },
+    "chanfros": {
+      "naRota": 6,
+      "entrePosicionamentoEEscritorios": 0
+    },
+    "camadasPintam": {
+      "grade": {
+        "comparavel": true,
+        "pixeisDiferentes": 7286,
+        "fracaoDoQuadroPct": 1.05,
+        "maiorDeltaRGB": 81
+      },
+      "riscos": {
+        "comparavel": true,
+        "pixeisDiferentes": 3135,
+        "fracaoDoQuadroPct": 0.45,
+        "maiorDeltaRGB": 29
+      }
+    }
+  },
+  "1440": {
+    "secaoMontada": true,
+    "contratos": {
+      "id": "posicionamento",
+      "ariaLabelledby": "posicionamento-titulo",
+      "nomeResolvido": "Onde seguros, negócio e tecnologia convergem",
+      "tagDoNome": "H2",
+      "ecossistemaAntigoNaRota": 0,
+      "ancorasDuplicadas": 1
+    },
+    "empilhamento": {
+      "isolation": "isolate",
+      "position": "relative",
+      "overflow": "hidden",
+      "zIndexDaGrade": "-1",
+      "zIndexDosRiscos": "-1",
+      "gradeRecebePonteiro": false,
+      "gradeAriaHidden": true,
+      "riscosAriaHidden": true,
+      "riscosFios": 6
+    },
+    "arte": {
+      "src": "http://localhost:3000/posicionamentoperfil.png",
+      "apontaParaArte": true,
+      "byteChegou": true,
+      "naturais": {
+        "w": 1672,
+        "h": 941
+      },
+      "caixa": {
+        "x": 191,
+        "y": 182.33,
+        "w": 1058,
+        "h": 595.44,
+        "right": 1249
+      },
+      "razaoPintada": 1.78,
+      "razaoNativa": 1.78,
+      "alt": "Diagrama institucional: três círculos sobrepostos — Seguros, Negócio e Tecnologia — com o símbolo da Sistran no centro, o trilho de Soluções acima e duas listas de capacidades abaixo. O conteúdo escrito do diagrama está transcrito nesta mesma seção para leitores de tela.",
+      "altTamanho": 271,
+      "loading": "lazy"
+    },
+    "casca": {
+      "caixa": {
+        "x": 162,
+        "y": 153.33,
+        "w": 1116,
+        "h": 653.44,
+        "right": 1278
+      },
+      "borderRadius": "24px",
+      "border": "1px solid rgba(255, 255, 255, 0.12)",
+      "overflow": "hidden",
+      "boxShadow": "rgba(0, 77, 138, 0.8) 0px 30px 80px -30px",
+      "temDegradeDiagonal": true,
+      "brilhoDeCanto": true,
+      "paddingTopPx": "28px"
+    },
+    "janela": {
+      "focalizavel": true,
+      "papel": "group",
+      "nome": "Diagrama Perfil & posicionamento — rolagem horizontal",
+      "rolaHorizontal": 0,
+      "overflowX": "auto"
+    },
+    "legibilidade": {
+      "larguraArtePx": 1058,
+      "corpoDeTextoNaTelaPx": 12.66
+    },
+    "escritaPreservada": {
+      "esperadas": 27,
+      "encontradas": 27,
+      "faltando": [],
+      "caracteresNaTranscricao": 786,
+      "transcricaoInvisivel": true
+    },
+    "movimento": {
+      "nosAnimados": 0,
+      "nosComTransicaoDeLayout": 0
+    },
+    "transbordoDocumentoPx": 0,
+    "contrasteDaDica": null,
+    "emenda": {
+      "mesmoPai": false,
+      "elementosEntre": [
+        "(não são irmãs na mesma lista)"
+      ],
+      "degradeDaFaixa": "radial-gradient(70% 120% at 12% 0px, rgba(9, 58, 112, 0.85), rgba(0, 0, 0, 0) 60%), linear-gradient(90deg, rgb(4, 29, 55) 0%, rgb(6, 50, 92) 46%, rgb(10, 62, 112) 100%)",
+      "degradeDaSecao": "linear-gradient(90deg, rgb(4, 29, 55) 0%, rgb(6, 50, 92) 46%, rgb(10, 62, 112) 100%)",
+      "fronteiraYpx": 480,
+      "colunas": [
+        {
+          "x": 86,
+          "acima": "rgb(4 32 60)",
+          "abaixo": "rgb(4 32 60)",
+          "deltaRGB": 0
+        },
+        {
+          "x": 288,
+          "acima": "rgb(5 38 71)",
+          "abaixo": "rgb(4 38 71)",
+          "deltaRGB": 1
+        },
+        {
+          "x": 504,
+          "acima": "rgb(6 45 83)",
+          "abaixo": "rgb(6 45 83)",
+          "deltaRGB": 0
+        },
+        {
+          "x": 720,
+          "acima": "rgb(6 51 94)",
+          "abaixo": "rgb(6 51 94)",
+          "deltaRGB": 0
+        },
+        {
+          "x": 936,
+          "acima": "rgb(7 54 99)",
+          "abaixo": "rgb(8 54 99)",
+          "deltaRGB": 1
+        },
+        {
+          "x": 1152,
+          "acima": "rgb(9 58 105)",
+          "abaixo": "rgb(8 58 105)",
+          "deltaRGB": 1
+        },
+        {
+          "x": 1354,
+          "acima": "rgb(15 68 116)",
+          "abaixo": "rgb(10 61 110)",
+          "deltaRGB": 18
+        }
+      ],
+      "maiorDeltaRGB": 18
+    },
+    "chanfros": {
+      "naRota": 6,
+      "entrePosicionamentoEEscritorios": 0
+    },
+    "camadasPintam": {
+      "grade": {
+        "comparavel": true,
+        "pixeisDiferentes": 13864,
+        "fracaoDoQuadroPct": 1,
+        "maiorDeltaRGB": 82
+      },
+      "riscos": {
+        "comparavel": true,
+        "pixeisDiferentes": 6716,
+        "fracaoDoQuadroPct": 0.49,
+        "maiorDeltaRGB": 87
+      }
+    }
+  },
+  "issue": "SIS-42",
+  "url": "http://localhost:3000/quem-somos",
+  "quando": "2026-09-23T02:02:23.220Z",
+  "movimentoReduzido": {
+    "media-query": {
+      "dataMotion": null,
+      "nosAnimados": 0,
+      "arteVisivel": true,
+      "arteOpacidade": 1,
+      "transcricaoNoDOM": 786
+    },
+    "atributo": {
+      "dataMotion": "reduce",
+      "nosAnimados": 0,
+      "arteVisivel": true,
+      "arteOpacidade": 1,
+      "transcricaoNoDOM": 786
+    }
+  }
+}

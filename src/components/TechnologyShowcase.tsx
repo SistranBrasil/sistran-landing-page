@@ -26,10 +26,23 @@ import Image from 'next/image';
 import { motion } from 'motion/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { easeExpo, useReducedMotion } from '@/lib/motion';
+/* SIS-280 — ESTE COMPONENTE ESTÁ DORMENTE: `/quem-somos` passou a montar
+   `@/components/tecnologias/TechnologiesSection`, que é a composição de
+   `docs/tecnologia.md` e do mock (fundo azul-gelo, carimbo no lugar do título,
+   três plataformas no centro, nenhum controle visível). Ele continua no
+   repositório sem consumidor, como `BuildingShowcase` — o precedente está
+   comentado na própria página.
+
+   As três listas de `@/data/tecnologias` foram renomeadas e reconteúdas junto com
+   a issue (`..._TRILHO_SUPERIOR` → `..._FAIXA_SUPERIOR`, `..._PALCO` →
+   `..._DESTAQUE`, com três itens em vez de sete). O alias abaixo existe apenas
+   para que o arquivo continue compilando enquanto dorme; ele NÃO reproduz o
+   conteúdo antigo, que está registrado por extenso no cabeçalho do módulo de
+   dados. Religar este componente exige rever as listas, não só a importação. */
 import {
-  TECNOLOGIAS_PALCO,
-  TECNOLOGIAS_TRILHO_INFERIOR,
-  TECNOLOGIAS_TRILHO_SUPERIOR,
+  TECNOLOGIAS_DESTAQUE as TECNOLOGIAS_PALCO,
+  TECNOLOGIAS_FAIXA_INFERIOR as TECNOLOGIAS_TRILHO_INFERIOR,
+  TECNOLOGIAS_FAIXA_SUPERIOR as TECNOLOGIAS_TRILHO_SUPERIOR,
   TECNOLOGIA_INICIAL,
   type Tecnologia,
 } from '@/data/tecnologias';

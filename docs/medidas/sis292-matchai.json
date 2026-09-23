@@ -1,0 +1,641 @@
+{
+  "referenciaFast": {
+    "largura": 536,
+    "altura": 402
+  },
+  "w390": {
+    "antesDaEntrada": {
+      "escopos": [
+        {
+          "nome": "matchai-hero",
+          "dataIn": "true"
+        },
+        {
+          "nome": "matchai-o-que-faz",
+          "dataIn": "false"
+        },
+        {
+          "nome": "matchai-trilho",
+          "dataIn": "false"
+        },
+        {
+          "nome": "matchai-posicionamento",
+          "dataIn": "false"
+        },
+        {
+          "nome": "matchai-conheca",
+          "dataIn": "false"
+        }
+      ],
+      "balao": {
+        "translate": "0px 24px",
+        "scale": "0.86",
+        "opacidade": "0",
+        "sombra": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 30, 70, 0.35) 0px 10px 18px -12px, rgba(0, 30, 70, 0.55) 0px 30px 60px -26px"
+      }
+    },
+    "fio": {
+      "animacao": "matchai-fluxo",
+      "duracao": "2.8s",
+      "posicaoA": "0% 0%",
+      "posicaoB": "0% 0%",
+      "moveu": false,
+      "visivel": false,
+      "passos": [
+        {
+          "animacao": "matchai-pulso",
+          "atraso": "0s",
+          "duracao": "2.6s"
+        },
+        {
+          "animacao": "matchai-pulso",
+          "atraso": "0.65s",
+          "duracao": "2.6s"
+        },
+        {
+          "animacao": "matchai-pulso",
+          "atraso": "1.3s",
+          "duracao": "2.6s"
+        }
+      ]
+    },
+    "carimbo": {
+      "largura": 136,
+      "altura": 64,
+      "alt": "",
+      "caixa": {
+        "x": 20,
+        "y": -5697
+      }
+    },
+    "tagAntigaAindaNaPagina": false,
+    "nomeDoProduto": {
+      "texto": "Match AI",
+      "peso": "700",
+      "tinta": "rgb(255, 255, 255)"
+    },
+    "fotoDoHero": {
+      "largura": 348,
+      "altura": 261
+    },
+    "artesDosCards": [
+      {
+        "src": "/images/solucoes/geraoferta.png",
+        "largura": 0,
+        "altura": 0,
+        "alt": "",
+        "recorte": "cover"
+      },
+      {
+        "src": "/images/solucoes/definepersonas.png",
+        "largura": 0,
+        "altura": 0,
+        "alt": "",
+        "recorte": "cover"
+      },
+      {
+        "src": "/images/solucoes/aumentavenda.png",
+        "largura": 0,
+        "altura": 0,
+        "alt": "",
+        "recorte": "cover"
+      },
+      {
+        "src": "/images/solucoes/validaoferta.png",
+        "largura": 0,
+        "altura": 0,
+        "alt": "",
+        "recorte": "cover"
+      }
+    ],
+    "artesDistintas": 4,
+    "escopos": [
+      {
+        "nome": "matchai-hero",
+        "dataIn": "true",
+        "filhosComPreset": 3
+      },
+      {
+        "nome": "matchai-o-que-faz",
+        "dataIn": "true",
+        "filhosComPreset": 5
+      },
+      {
+        "nome": "matchai-trilho",
+        "dataIn": "true",
+        "filhosComPreset": 5
+      },
+      {
+        "nome": "matchai-posicionamento",
+        "dataIn": "true",
+        "filhosComPreset": 7
+      },
+      {
+        "nome": "matchai-conheca",
+        "dataIn": "true",
+        "filhosComPreset": 10
+      }
+    ],
+    "invisiveisNaTela": [],
+    "negritos": [
+      {
+        "texto": "Ofertas inteligentes.",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "O que o Match AI faz?",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Gera ofertas hiperpersonalizadas",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Define personas",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Aumenta as vendas",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Valida ofertas",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Da base à oferta mais relevante",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Posicionamento",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Complementa o ecossistema",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Reconhecimento ISG",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Inovação Sistran Labs",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Conheça também",
+        "achado": true,
+        "peso": "700"
+      }
+    ],
+    "cartoesConheca": [
+      {
+        "altura": 106,
+        "largura": 169,
+        "textoVisivel": "",
+        "logoAlt": "Lumina AI",
+        "href": "/solucoes/lumina-ai"
+      },
+      {
+        "altura": 106,
+        "largura": 169,
+        "textoVisivel": "",
+        "logoAlt": "Fast",
+        "href": "/solucoes/fast"
+      },
+      {
+        "altura": 106,
+        "largura": 169,
+        "textoVisivel": "",
+        "logoAlt": "QA Integrado",
+        "href": "/solucoes/qa-integrado"
+      },
+      {
+        "altura": 106,
+        "largura": 169,
+        "textoVisivel": "",
+        "logoAlt": "Connect API",
+        "href": "/solucoes/connect-api"
+      },
+      {
+        "altura": 106,
+        "largura": 169,
+        "textoVisivel": "",
+        "logoAlt": "Smart Miner",
+        "href": "/solucoes/smart-miner"
+      },
+      {
+        "altura": 106,
+        "largura": 169,
+        "textoVisivel": "",
+        "logoAlt": "Guru de Seguros",
+        "href": "/solucoes/guru-de-seguros"
+      }
+    ],
+    "colunasPosicionamento": [
+      {
+        "animacao": "university-numeros-flutua",
+        "atraso": "0s",
+        "escala": "none"
+      },
+      {
+        "animacao": "university-numeros-flutua",
+        "atraso": "-2s",
+        "escala": "none"
+      },
+      {
+        "animacao": "university-numeros-flutua",
+        "atraso": "-4s",
+        "escala": "none"
+      }
+    ],
+    "balaoDepois": {
+      "translate": "none",
+      "scale": "none",
+      "opacidade": "1",
+      "sombra": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 30, 70, 0.35) 0px 10px 18px -12px, rgba(0, 30, 70, 0.55) 0px 30px 60px -26px"
+    },
+    "fichas": [
+      {
+        "animacao": "university-numeros-flutua",
+        "atraso": "0s",
+        "ponteiro": "auto",
+        "escala": "none"
+      },
+      {
+        "animacao": "university-numeros-flutua",
+        "atraso": "-2.75s",
+        "ponteiro": "auto",
+        "escala": "none"
+      }
+    ],
+    "tintaDoNome": {
+      "fundoComposto": "rgb(20, 125, 199)",
+      "tinta": "rgb(255, 255, 255)",
+      "contraste": 4.39
+    },
+    "amostrasDoCarimbo": {
+      "total": 27,
+      "distintas": 26,
+      "claras": 3,
+      "amostras": [
+        "rgb(18, 108, 176)",
+        "rgb(31, 116, 180)",
+        "rgb(18, 109, 177)",
+        "rgb(19, 109, 177)",
+        "rgb(19, 109, 178)",
+        "rgb(154, 193, 222)",
+        "rgb(19, 110, 179)",
+        "rgb(81, 148, 199)"
+      ]
+    },
+    "hover": null,
+    "erros": []
+  },
+  "w1440": {
+    "antesDaEntrada": {
+      "escopos": [
+        {
+          "nome": "matchai-hero",
+          "dataIn": "true"
+        },
+        {
+          "nome": "matchai-o-que-faz",
+          "dataIn": "false"
+        },
+        {
+          "nome": "matchai-trilho",
+          "dataIn": "false"
+        },
+        {
+          "nome": "matchai-posicionamento",
+          "dataIn": "false"
+        },
+        {
+          "nome": "matchai-conheca",
+          "dataIn": "false"
+        }
+      ],
+      "balao": {
+        "translate": "0px 24px",
+        "scale": "0.86",
+        "opacidade": "0",
+        "sombra": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 30, 70, 0.35) 0px 10px 18px -12px, rgba(0, 30, 70, 0.55) 0px 30px 60px -26px"
+      }
+    },
+    "fio": {
+      "animacao": "matchai-fluxo",
+      "duracao": "2.8s",
+      "posicaoA": "-34.5134% 0px",
+      "posicaoB": "-59.5134% 0px",
+      "moveu": true,
+      "visivel": true,
+      "passos": [
+        {
+          "animacao": "matchai-pulso",
+          "atraso": "0s",
+          "duracao": "2.6s"
+        },
+        {
+          "animacao": "matchai-pulso",
+          "atraso": "0.65s",
+          "duracao": "2.6s"
+        },
+        {
+          "animacao": "matchai-pulso",
+          "atraso": "1.3s",
+          "duracao": "2.6s"
+        }
+      ]
+    },
+    "carimbo": {
+      "largura": 158,
+      "altura": 75,
+      "alt": "",
+      "caixa": {
+        "x": 162,
+        "y": -3161
+      }
+    },
+    "tagAntigaAindaNaPagina": false,
+    "nomeDoProduto": {
+      "texto": "Match AI",
+      "peso": "700",
+      "tinta": "rgb(255, 255, 255)"
+    },
+    "fotoDoHero": {
+      "largura": 455,
+      "altura": 341
+    },
+    "artesDosCards": [
+      {
+        "src": "/images/solucoes/geraoferta.png",
+        "largura": 1254,
+        "altura": 1254,
+        "alt": "",
+        "recorte": "cover"
+      },
+      {
+        "src": "/images/solucoes/definepersonas.png",
+        "largura": 1254,
+        "altura": 1254,
+        "alt": "",
+        "recorte": "cover"
+      },
+      {
+        "src": "/images/solucoes/aumentavenda.png",
+        "largura": 1254,
+        "altura": 1254,
+        "alt": "",
+        "recorte": "cover"
+      },
+      {
+        "src": "/images/solucoes/validaoferta.png",
+        "largura": 1254,
+        "altura": 1254,
+        "alt": "",
+        "recorte": "cover"
+      }
+    ],
+    "artesDistintas": 4,
+    "escopos": [
+      {
+        "nome": "matchai-hero",
+        "dataIn": "true",
+        "filhosComPreset": 3
+      },
+      {
+        "nome": "matchai-o-que-faz",
+        "dataIn": "true",
+        "filhosComPreset": 5
+      },
+      {
+        "nome": "matchai-trilho",
+        "dataIn": "true",
+        "filhosComPreset": 5
+      },
+      {
+        "nome": "matchai-posicionamento",
+        "dataIn": "true",
+        "filhosComPreset": 7
+      },
+      {
+        "nome": "matchai-conheca",
+        "dataIn": "true",
+        "filhosComPreset": 10
+      }
+    ],
+    "invisiveisNaTela": [],
+    "negritos": [
+      {
+        "texto": "Ofertas inteligentes.",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "O que o Match AI faz?",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Gera ofertas hiperpersonalizadas",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Define personas",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Aumenta as vendas",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Valida ofertas",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Da base à oferta mais relevante",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Posicionamento",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Complementa o ecossistema",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Reconhecimento ISG",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Inovação Sistran Labs",
+        "achado": true,
+        "peso": "700"
+      },
+      {
+        "texto": "Conheça também",
+        "achado": true,
+        "peso": "700"
+      }
+    ],
+    "cartoesConheca": [
+      {
+        "altura": 110,
+        "largura": 176,
+        "textoVisivel": "",
+        "logoAlt": "Lumina AI",
+        "href": "/solucoes/lumina-ai"
+      },
+      {
+        "altura": 110,
+        "largura": 176,
+        "textoVisivel": "",
+        "logoAlt": "Fast",
+        "href": "/solucoes/fast"
+      },
+      {
+        "altura": 110,
+        "largura": 176,
+        "textoVisivel": "",
+        "logoAlt": "QA Integrado",
+        "href": "/solucoes/qa-integrado"
+      },
+      {
+        "altura": 110,
+        "largura": 176,
+        "textoVisivel": "",
+        "logoAlt": "Connect API",
+        "href": "/solucoes/connect-api"
+      },
+      {
+        "altura": 110,
+        "largura": 176,
+        "textoVisivel": "",
+        "logoAlt": "Smart Miner",
+        "href": "/solucoes/smart-miner"
+      },
+      {
+        "altura": 110,
+        "largura": 176,
+        "textoVisivel": "",
+        "logoAlt": "Guru de Seguros",
+        "href": "/solucoes/guru-de-seguros"
+      }
+    ],
+    "colunasPosicionamento": [
+      {
+        "animacao": "university-numeros-flutua",
+        "atraso": "0s",
+        "escala": "none"
+      },
+      {
+        "animacao": "university-numeros-flutua",
+        "atraso": "-2s",
+        "escala": "none"
+      },
+      {
+        "animacao": "university-numeros-flutua",
+        "atraso": "-4s",
+        "escala": "none"
+      }
+    ],
+    "balaoDepois": {
+      "translate": "none",
+      "scale": "none",
+      "opacidade": "1",
+      "sombra": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 30, 70, 0.35) 0px 10px 18px -12px, rgba(0, 30, 70, 0.55) 0px 30px 60px -26px"
+    },
+    "fichas": [
+      {
+        "animacao": "university-numeros-flutua",
+        "atraso": "0s",
+        "ponteiro": "auto",
+        "escala": "none"
+      },
+      {
+        "animacao": "university-numeros-flutua",
+        "atraso": "-2.75s",
+        "ponteiro": "auto",
+        "escala": "none"
+      }
+    ],
+    "tintaDoNome": {
+      "fundoComposto": "rgb(22, 117, 186)",
+      "tinta": "rgb(255, 255, 255)",
+      "contraste": 4.9
+    },
+    "amostrasDoCarimbo": {
+      "total": 27,
+      "distintas": 21,
+      "claras": 4,
+      "amostras": [
+        "rgb(19, 111, 180)",
+        "rgb(37, 123, 187)",
+        "rgb(20, 114, 183)",
+        "rgb(19, 111, 181)",
+        "rgb(19, 112, 182)",
+        "rgb(255, 255, 255)",
+        "rgb(20, 113, 182)",
+        "rgb(226, 238, 246)"
+      ]
+    },
+    "hover": {
+      "coluna": {
+        "antes": "none",
+        "depois": "1.03",
+        "mudou": true
+      },
+      "ficha": {
+        "antes": "none",
+        "depois": "1.045",
+        "mudou": true
+      }
+    },
+    "erros": []
+  },
+  "reduce-media": {
+    "atributoNoHtml": "reduce",
+    "lacosComAnimacao": [],
+    "totalDeLacos": 14,
+    "balao": {
+      "translate": "none",
+      "scale": "none",
+      "opacidade": "1"
+    },
+    "invisiveisNaTela": [],
+    "erros": []
+  },
+  "reduce-preferencia": {
+    "atributoNoHtml": "reduce",
+    "lacosComAnimacao": [],
+    "totalDeLacos": 14,
+    "balao": {
+      "translate": "none",
+      "scale": "none",
+      "opacidade": "1"
+    },
+    "invisiveisNaTela": [],
+    "erros": []
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "smart-miner": {
+    "largura": 825,
+    "altura": 291,
+    "razao": 2.835,
+    "colunaA": {
+      "x": 149,
+      "topoDaTinta": 42
+    },
+    "colunaB": {
+      "x": 677,
+      "topoDaTinta": 14
+    },
+    "grausDeTombo": -3.04,
+    "fundoTransparente": true,
+    "pixelsOpacos": 28078,
+    "tintaMedia": "rgb(255, 255, 255)",
+    "luminanciaDaTinta": 1
+  },
+  "match-ai": {
+    "largura": 720,
+    "altura": 309,
+    "razao": 2.33,
+    "colunaA": {
+      "x": 130,
+      "topoDaTinta": 57
+    },
+    "colunaB": {
+      "x": 590,
+      "topoDaTinta": 17
+    },
+    "grausDeTombo": -4.97,
+    "fundoTransparente": true,
+    "pixelsOpacos": 24427,
+    "tintaMedia": "rgb(255, 255, 255)",
+    "luminanciaDaTinta": 1
+  }
+}

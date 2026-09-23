@@ -18,7 +18,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/latam',
     '/solucoes',
     ...ACCELERATOR_PAGES.map((p) => `/solucoes/${p.id}`),
-    '/transformacao-legado',
+    /* SIS-279 — `/transformacao-legado` saiu: a rota foi apagada e um sitemap
+       que a anuncia manda o buscador a um 404. */
     '/parceiros-e-implementacoes',
     '/eventos-inovacao',
     '/esg',

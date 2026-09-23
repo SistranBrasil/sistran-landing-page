@@ -81,11 +81,36 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
        `.section-light` durante a sobreposição. */
     { id: 'mais-quem-somos', label: 'Conheça também', tom: 'medio' },
   ],
+  /* Pedido em chat: «deve ser verificado os Início / Tecnologia / Serviços /
+     Consultoria … que deve ter os nomes da seção e a cor contrária da seção para
+     que seja possível visualizar». Medi as quatro paradas na margem esquerda
+     (pixel COMPOSTO, porque nesta rota o fundo é o plano da `<main>` e
+     `backgroundColor` devolve `transparent` — SIS-204), a 1440px:
+
+       topo                   fundo rgb(12 36 60)    branco   → 15,75:1  ok
+       tecnologia-disruptiva  fundo rgb(231 242 251)  navy     → 14,31:1  ok
+       servicos-diferenciais  fundo rgb(21 53 77)     branco   → 12,74:1  ok
+       consultoria            fundo rgb(244 250 255)  BRANCO   →  1,05:1  ILEGÍVEL
+
+     A falha era só a última, e a causa é o atalho: sem `tom`, o ScrollSpy cai em
+     `closest('.section-light')`, e a seção de Consultoria não tem essa classe —
+       a cor dela (`#eff8fe`) vem de `consultoria.css`. Então ela era lida
+     como escura e o rótulo saía branco sobre quase-branco.
+
+     `tecnologia-disruptiva` ganha o tom EXPLÍCITO mesmo já estando legível: ela
+     acerta por acaso, via o mesmo `closest` que a SIS-204 esvaziou (a classe
+     `.section-light` continua no nó, mas não pinta mais nada nesta rota) — e
+     tom explícito sempre vence o atalho (SIS-181). Confiar no fallback aqui é
+     deixar a legibilidade dependendo de uma classe que já não significa cor.
+
+     `topo` e `servicos-diferenciais` seguem SEM chave, que é o valor certo: as
+     duas são escuras de verdade na margem e o branco padrão é o contraste alto
+     medido acima. */
   '/solucoes': [
     { id: 'topo', label: 'Início' },
-    { id: 'tecnologia-disruptiva', label: 'Tecnologia' },
+    { id: 'tecnologia-disruptiva', label: 'Tecnologia', tom: 'claro' },
     { id: 'servicos-diferenciais', label: 'Serviços' },
-    { id: 'consultoria', label: 'Consultoria' },
+    { id: 'consultoria', label: 'Consultoria', tom: 'claro' },
   ],
   '/parceiros-e-implementacoes': [
     { id: 'topo', label: 'Início' },
@@ -96,8 +121,11 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
     /* SIS-202 — era `tom: 'medio'` porque a trilha antiga ficava DENTRO da seção
        escura. A seção agora é a mesma `.lp-section--cream` de
        `/transformacao-legado`, ou seja `--cream` (#e2effa) na margem esquerda e
-       sem `.section-light` — exatamente a leitura registrada logo abaixo para
-       `#roadmap`, então o tom passa a ser o mesmo: 'claro'.
+       sem `.section-light` — a mesma leitura que a SIS-181 tinha registrado para
+       o `#roadmap` daquela rota, então o tom passa a ser o mesmo: 'claro'.
+       (SIS-279 apagou a rota `/transformacao-legado`; a MEDIÇÃO continua valendo
+       porque é da classe `.lp-section--cream`, que este arquivo ainda usa — só o
+       apontador «logo abaixo» é que morreu com a chave.)
        O `label` fica: 'Linha do tempo' continua sendo o nome desta seção — na
        correção da issue (opção 2) só o LAYOUT vem do legado, e o cabeçalho é o
        desta rota, com este mesmo rótulo como título. A âncora `#linha-do-tempo`
@@ -172,34 +200,22 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
     { id: 'university-unidep', label: 'Unidep', tom: 'medio' },
     { id: 'university-numeros', label: 'Números' },
   ],
-  /* SIS-119 · itens 1 e 3 — a rota ENTRA, e a exclusão que estava escrita no
-     cabeçalho deste arquivo ("ficam de fora /transformacao-legado, arquitetura +
-     roadmap") saiu junto, porque a contagem que a justificava deixou de valer: a
-     página tinha duas seções e passou a ter quatro, com a abertura que a SIS-119
-     acrescentou. Com o critério dos 3 satisfeito, o motivo da exclusão
-     desapareceu — e esta é a página em que orientar mais rende, porque as duas
-     seções longas prendem o texto com `position: sticky` e a rolagem passa muito
-     tempo sem trocar de assunto.
-     Os dois ids de conteúdo NÃO são novos: `#sinais` já existia em
-     `legacy/StackScenes.tsx` e `#roadmap` em `legacy/RoadmapTrail.tsx`, cada um
-     carregando o `aria-labelledby` da sua seção. Nenhuma âncora publicada muda de
-     destino.
-     `#sistema` ("Método") está FORA de propósito, e vale registrar porque parece
-     um esquecimento: aquela seção existe no código de `StackScenes` mas está
-     inteira dentro de um comentário, retirada a pedido — ela não chega ao DOM
-     (conferido em execução). Listá-la daria exatamente o defeito que o cabeçalho
-     deste arquivo descreve: um item que nunca acende e cujo clique não vai a
-     lugar nenhum. Quando o bloco for religado, esta é a linha a acrescentar:
-     | { id: 'sistema', label: 'Método' }, */
-  '/transformacao-legado': [
-    { id: 'topo', label: 'Início' },
-    /* SIS-181 — `.mosaic` é `--paper` (#ffffff) na margem esquerda, sem
-       `.section-light`. */
-    { id: 'sinais', label: 'Arquitetura', tom: 'claro' },
-    /* SIS-181 — `.lp-section--cream` é `--cream` (#e2effa) na margem esquerda,
-       sem `.section-light`. */
-    { id: 'roadmap', label: 'Roadmap', tom: 'claro' },
-  ],
+  /* SIS-279 (slot reaproveitado 18/09) — a chave `/transformacao-legado` saiu
+     porque a ROTA foi apagada, e a issue proíbe deixar rastro comentado no lugar
+     dela. Com a chave presente e a página fora do ar, o ScrollSpy anunciaria
+     seções de uma rota que devolve 404. O que morreu aqui foi a lista de itens
+     («Início», «Arquitetura», «Roadmap») e a nota da SIS-119 que a justificava —
+     a íntegra está no histórico do git, que é o lugar dela agora.
+
+     Os DOIS ids de conteúdo continuam existindo: `#sinais` em
+     `legacy/StackScenes.tsx` e `#roadmap` em `legacy/RoadmapTrail.tsx`. Eles
+     seguem sendo montados em `/parceiros-e-implementacoes` e na home — o que
+     acabou foi a rota que os listava aqui, não os componentes.
+
+     Nota que ainda vale para quem religar algo do legado: a seção «Método»
+     (`#sistema`) segue inteira dentro de um comentário em `StackScenes`, retirada
+     a pedido, e não chega ao DOM. Listá-la em qualquer rota daria um item que
+     nunca acende. */
   '/eventos-inovacao': [
     { id: 'topo', label: 'Início' },
     { id: 'eventos', label: 'Eventos' },
@@ -269,10 +285,82 @@ const VAZIO: readonly PageSection[] = [];
    guru/de-onde-pode-ser-acessada: rgb(22 127 199). */
 const TOM_MEDIO_DE_ACELERADOR: Readonly<Record<string, ReadonlySet<string>>> = {
   'match-ai': new Set(['o-que-o-match-ai-faz']),
-  'lumina-ai': new Set(['beneficios']),
-  fast: new Set(['o-que-o-fast-oferece', 'beneficios']),
-  'smart-miner': new Set(['onde-usar-o-smart-miner']),
-  'guru-de-seguros': new Set(['de-onde-pode-ser-acessada']),
+  /* SIS-280 — o `lumina-ai` SAIU DESTE MAPA, pelo mesmo motivo que o `fast`
+     (SIS-286), o `smart-miner` (SIS-279) e o `guru-de-seguros` (SIS-280) saíram,
+     e com uma mudança a mais: a chave também trocou de grafia. A linha era:
+
+       'lumina-ai': new Set(['beneficios']),
+
+     Duas coisas aconteceram de uma vez. A slug passou a ser `luminna-ai` (dois n),
+     então a chave velha não casaria com `p.id` nenhum e o tom seria ignorado em
+     silêncio. E «Benefícios» deixou de ser o azul médio do raster genérico
+     (rgb(21 125 196), medido na SIS-181 e ainda citado no comentário acima): no
+     corpo próprio da slug (`components/solucoes/LuminnaAiPagina.tsx`) essa faixa é
+     ESCURA, e escuro é a AUSÊNCIA de chave neste par de mapas. As duas paradas
+     claras da slug estão no mapa de baixo. */
+  /* SIS-286 — o `fast` SAIU DESTE MAPA e foi para o de baixo. A linha era:
+
+       fast: new Set(['o-que-o-fast-oferece', 'beneficios']),
+
+     e o motivo de sair é que o fundo daquelas duas paradas MUDOU: elas eram o
+     azul médio da rota (o raster rgb(21 125 196) / rgb(22 129 201) que a SIS-181
+     mediu) e hoje são `.section-light` no corpo próprio da slug
+     (`components/solucoes/FastPagina.tsx`). Manter `medio` deixaria o rótulo do
+     indicador na tinta de fundo médio sobre faixa clara. Remedido — os números
+     estão no comentário da issue. */
+  /* SIS-279 — o `smart-miner` SAIU DESTE MAPA e foi para o de baixo, pelo mesmo
+     motivo que o `fast` saiu na SIS-286. A linha era:
+
+       'smart-miner': new Set(['onde-usar-o-smart-miner']),
+
+     Aquela parada era o azul médio da rota (o raster rgb(21 125 196) que a SIS-181
+     mediu e que o comentário acima ainda cita) e hoje é `.section-light` no corpo
+     próprio da slug (`components/solucoes/SmartMinerPagina.tsx`) — e ela não está
+     só: «O que é o Smart Miner?» virou clara também, então a slug entra no mapa de
+     baixo com DUAS paradas. Manter `medio` deixaria o rótulo do indicador na tinta
+     de fundo médio sobre faixa clara. Remedido — os números estão no comentário da
+     issue. */
+  /* SIS-280 — o `guru-de-seguros` SAIU DESTE MAPA e foi para o de baixo, pelo mesmo
+     motivo que o `fast` (SIS-286) e o `smart-miner` (SIS-279) saíram. A linha era:
+
+       'guru-de-seguros': new Set(['de-onde-pode-ser-acessada']),
+
+     Aquela parada era o azul médio da rota (o raster rgb(22 127 199) que a SIS-181
+     mediu e que o comentário acima ainda cita) e hoje é `.section-light` no corpo
+     próprio da slug (`components/solucoes/GuruDeSegurosPagina.tsx`) — e ela não está
+     só: «Como funciona?» é clara também, então a slug entra no mapa de baixo com as
+     DUAS paradas que tem. Manter `medio` deixaria o rótulo do indicador na tinta de
+     fundo médio sobre faixa clara. Remedido — os números estão no comentário da
+     issue. */
+};
+
+/* SIS-286 — TOM CLARO por slug, irmão do mapa acima e pelo mesmo contrato: não
+   duplica id nem rótulo, só acrescenta o tom medido na margem esquerda. Existe
+   porque o `fast` passou a ter faixas `.section-light` de verdade — as três
+   paradas abaixo —, e `claro` é o valor que o indicador já tem para isso (é o que
+   `/quem-somos` usa na parada «top»). As paradas escuras seguem sem chave. */
+const TOM_CLARO_DE_ACELERADOR: Readonly<Record<string, ReadonlySet<string>>> = {
+  fast: new Set([
+    'o-que-o-fast-oferece',
+    'beneficios',
+    'monitore-e-aprimore-seus-processos',
+  ]),
+  /* SIS-279 — as DUAS primeiras paradas do `smart-miner`. «Como usar o Smart
+     Miner?» é a faixa ESCURA do corpo próprio e por isso fica sem chave, que é o
+     contrato deste par de mapas (escuro = ausência). */
+  'smart-miner': new Set(['o-que-e-o-smart-miner', 'onde-usar-o-smart-miner']),
+  /* SIS-280 — as DUAS paradas do `guru-de-seguros`, que são TODAS as que a slug tem
+     (o dado só traz dois `heading`). As duas faixas que elas ancoram são
+     `.section-light` no corpo próprio; a faixa escura da rota é a das falas da Alexa,
+     cujo título é DERIVADO e não `heading` de bloco — logo ela não é parada, e não há
+     o que ficar sem chave aqui. */
+  'guru-de-seguros': new Set(['como-funciona', 'de-onde-pode-ser-acessada']),
+  /* SIS-280 — as paradas CLARAS do `luminna-ai`. A slug tem três `heading` (logo
+     quatro paradas com o «topo», e o indicador monta), mas só estas duas ancoram
+     faixa `.section-light` no corpo próprio; «Benefícios» é a faixa escura e por
+     isso não aparece em mapa nenhum. A chave tem dois n porque a slug tem — ver o
+     bloco SIS-280 no mapa de cima. */
+  'luminna-ai': new Set(['desafios-no-desenvolvimento-de-software', 'integracao-versatil']),
 };
 
 const SECOES_DE_ACELERADOR: Readonly<Record<string, readonly PageSection[]>> = Object.fromEntries(
@@ -286,7 +374,11 @@ const SECOES_DE_ACELERADOR: Readonly<Record<string, readonly PageSection[]>> = O
           return {
             id,
             label: b.navLabel ?? b.heading!,
-            ...(TOM_MEDIO_DE_ACELERADOR[p.id]?.has(id) ? { tom: 'medio' } : {}),
+            /* Médio primeiro e claro depois é indiferente aqui porque nenhum id
+               está nos dois mapas; a ordem só importaria se estivesse, e aí o
+               erro seria o mapa, não a leitura. */
+            ...(TOM_MEDIO_DE_ACELERADOR[p.id]?.has(id) ? { tom: 'medio' as const } : {}),
+            ...(TOM_CLARO_DE_ACELERADOR[p.id]?.has(id) ? { tom: 'claro' as const } : {}),
           };
         }),
     ];

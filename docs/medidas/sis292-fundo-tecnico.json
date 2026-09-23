@@ -1,0 +1,474 @@
+{
+  "w390": {
+    "inventario": [
+      {
+        "id": "topo",
+        "clara": false,
+        "overflow": "clip",
+        "malha": {
+          "zIndex": "0",
+          "ancora": "fixed, fixed",
+          "modulo": "96px 96px, 96px 96px"
+        },
+        "acentos": null,
+        "circuito": {
+          "exibe": "none",
+          "zIndex": "auto",
+          "largura": 0,
+          "altura": 0,
+          "quadrado": true
+        },
+        "zIndexDoMiolo": "10"
+      },
+      {
+        "id": "o-que-o-match-ai-faz",
+        "clara": true,
+        "overflow": "clip",
+        "malha": null,
+        "acentos": {
+          "exibe": "none",
+          "zIndex": "auto"
+        },
+        "circuito": {
+          "exibe": "none",
+          "zIndex": "auto",
+          "largura": 0,
+          "altura": 0,
+          "quadrado": true
+        },
+        "zIndexDoMiolo": "10"
+      },
+      {
+        "id": "da-base-a-oferta-mais-relevante",
+        "clara": false,
+        "overflow": "clip",
+        "malha": {
+          "zIndex": "0",
+          "ancora": "fixed, fixed",
+          "modulo": "96px 96px, 96px 96px"
+        },
+        "acentos": null,
+        "circuito": {
+          "exibe": "none",
+          "zIndex": "auto",
+          "largura": 0,
+          "altura": 0,
+          "quadrado": true
+        },
+        "zIndexDoMiolo": "10"
+      },
+      {
+        "id": "posicionamento",
+        "clara": true,
+        "overflow": "clip",
+        "malha": null,
+        "acentos": {
+          "exibe": "none",
+          "zIndex": "auto"
+        },
+        "circuito": {
+          "exibe": "none",
+          "zIndex": "auto",
+          "largura": 0,
+          "altura": 0,
+          "quadrado": true
+        },
+        "zIndexDoMiolo": "10"
+      },
+      {
+        "id": "conheca-tambem",
+        "clara": true,
+        "overflow": "clip",
+        "malha": null,
+        "acentos": {
+          "exibe": "none",
+          "zIndex": "auto"
+        },
+        "circuito": null,
+        "zIndexDoMiolo": "10"
+      },
+      {
+        "id": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "malha": null,
+        "acentos": null,
+        "circuito": null,
+        "zIndexDoMiolo": null
+      }
+    ],
+    "fluxo": [
+      {
+        "animacao": "none",
+        "duracao": "0s",
+        "atraso": "0s",
+        "tracejado": "none",
+        "quadroA": "0px",
+        "quadroB": "0px",
+        "moveu": false,
+        "traco": "none"
+      },
+      {
+        "animacao": "none",
+        "duracao": "0s",
+        "atraso": "0s",
+        "tracejado": "none",
+        "quadroA": "0px",
+        "quadroB": "0px",
+        "moveu": false,
+        "traco": "none"
+      },
+      {
+        "animacao": "none",
+        "duracao": "0s",
+        "atraso": "0s",
+        "tracejado": "none",
+        "quadroA": "0px",
+        "quadroB": "0px",
+        "moveu": false,
+        "traco": "none"
+      },
+      {
+        "animacao": "none",
+        "duracao": "0s",
+        "atraso": "0s",
+        "tracejado": "none",
+        "quadroA": "0px",
+        "quadroB": "0px",
+        "moveu": false,
+        "traco": "none"
+      },
+      {
+        "animacao": "none",
+        "duracao": "0s",
+        "atraso": "0s",
+        "tracejado": "none",
+        "quadroA": "0px",
+        "quadroB": "0px",
+        "moveu": false,
+        "traco": "none"
+      },
+      {
+        "animacao": "none",
+        "duracao": "0s",
+        "atraso": "0s",
+        "tracejado": "none",
+        "quadroA": "0px",
+        "quadroB": "0px",
+        "moveu": false,
+        "traco": "none"
+      },
+      {
+        "animacao": "none",
+        "duracao": "0s",
+        "atraso": "0s",
+        "tracejado": "none",
+        "quadroA": "0px",
+        "quadroB": "0px",
+        "moveu": false,
+        "traco": "none"
+      },
+      {
+        "animacao": "none",
+        "duracao": "0s",
+        "atraso": "0s",
+        "tracejado": "none",
+        "quadroA": "0px",
+        "quadroB": "0px",
+        "moveu": false,
+        "traco": "none"
+      }
+    ],
+    "quadrados": [],
+    "contrastes": [
+      {
+        "texto": "O que o Match AI faz?",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(235, 245, 253)",
+        "contraste": 14.711
+      },
+      {
+        "texto": "Da base à oferta mais relevante",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(6, 30, 64)",
+        "contraste": 16.568
+      },
+      {
+        "texto": "Posicionamento",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(232, 240, 248)",
+        "contraste": 14.122
+      },
+      {
+        "texto": "Conheça também",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(232, 240, 248)",
+        "contraste": 14.122
+      },
+      {
+        "texto": "Fale com a Gente!",
+        "tinta": "rgb(6, 39, 95)",
+        "fundoComposto": "rgb(157, 232, 247)",
+        "contraste": 10.47
+      }
+    ],
+    "erros": []
+  },
+  "w1440": {
+    "inventario": [
+      {
+        "id": "topo",
+        "clara": false,
+        "overflow": "clip",
+        "malha": {
+          "zIndex": "0",
+          "ancora": "fixed, fixed",
+          "modulo": "96px 96px, 96px 96px"
+        },
+        "acentos": null,
+        "circuito": {
+          "exibe": "block",
+          "zIndex": "0",
+          "largura": 346,
+          "altura": 346,
+          "quadrado": true
+        },
+        "zIndexDoMiolo": "10"
+      },
+      {
+        "id": "o-que-o-match-ai-faz",
+        "clara": true,
+        "overflow": "clip",
+        "malha": null,
+        "acentos": {
+          "exibe": "block",
+          "zIndex": "0"
+        },
+        "circuito": {
+          "exibe": "block",
+          "zIndex": "0",
+          "largura": 346,
+          "altura": 346,
+          "quadrado": true
+        },
+        "zIndexDoMiolo": "10"
+      },
+      {
+        "id": "da-base-a-oferta-mais-relevante",
+        "clara": false,
+        "overflow": "clip",
+        "malha": {
+          "zIndex": "0",
+          "ancora": "fixed, fixed",
+          "modulo": "96px 96px, 96px 96px"
+        },
+        "acentos": null,
+        "circuito": {
+          "exibe": "block",
+          "zIndex": "0",
+          "largura": 346,
+          "altura": 346,
+          "quadrado": true
+        },
+        "zIndexDoMiolo": "10"
+      },
+      {
+        "id": "posicionamento",
+        "clara": true,
+        "overflow": "clip",
+        "malha": null,
+        "acentos": {
+          "exibe": "block",
+          "zIndex": "0"
+        },
+        "circuito": {
+          "exibe": "block",
+          "zIndex": "0",
+          "largura": 346,
+          "altura": 346,
+          "quadrado": true
+        },
+        "zIndexDoMiolo": "10"
+      },
+      {
+        "id": "conheca-tambem",
+        "clara": true,
+        "overflow": "clip",
+        "malha": null,
+        "acentos": {
+          "exibe": "block",
+          "zIndex": "0"
+        },
+        "circuito": null,
+        "zIndexDoMiolo": "10"
+      },
+      {
+        "id": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "malha": null,
+        "acentos": null,
+        "circuito": null,
+        "zIndexDoMiolo": null
+      }
+    ],
+    "fluxo": [
+      {
+        "animacao": "matchai-circuito-fluxo",
+        "duracao": "4.2s",
+        "atraso": "0s",
+        "tracejado": "0.18px, 0.82px",
+        "quadroA": "0.595339px",
+        "quadroB": "0.512006px",
+        "moveu": true,
+        "traco": "rgba(165, 240, 255, 0.85)"
+      },
+      {
+        "animacao": "matchai-circuito-fluxo",
+        "duracao": "4.2s",
+        "atraso": "-2.1s",
+        "tracejado": "0.18px, 0.82px",
+        "quadroA": "0.92472px",
+        "quadroB": "0.821553px",
+        "moveu": true,
+        "traco": "rgba(165, 240, 255, 0.85)"
+      },
+      {
+        "animacao": "matchai-circuito-fluxo",
+        "duracao": "4.2s",
+        "atraso": "0s",
+        "tracejado": "0.18px, 0.82px",
+        "quadroA": "0.23822px",
+        "quadroB": "0.142958px",
+        "moveu": true,
+        "traco": "rgba(0, 121, 203, 0.85)"
+      },
+      {
+        "animacao": "matchai-circuito-fluxo",
+        "duracao": "4.2s",
+        "atraso": "-2.1s",
+        "tracejado": "0.18px, 0.82px",
+        "quadroA": "0.55172px",
+        "quadroB": "0.456482px",
+        "moveu": true,
+        "traco": "rgba(0, 121, 203, 0.85)"
+      },
+      {
+        "animacao": "matchai-circuito-fluxo",
+        "duracao": "4.2s",
+        "atraso": "0s",
+        "tracejado": "0.18px, 0.82px",
+        "quadroA": "0.873149px",
+        "quadroB": "0.785839px",
+        "moveu": true,
+        "traco": "rgba(165, 240, 255, 0.85)"
+      },
+      {
+        "animacao": "matchai-circuito-fluxo",
+        "duracao": "4.2s",
+        "atraso": "-2.1s",
+        "tracejado": "0.18px, 0.82px",
+        "quadroA": "0.194577px",
+        "quadroB": "0.0953867px",
+        "moveu": true,
+        "traco": "rgba(165, 240, 255, 0.85)"
+      },
+      {
+        "animacao": "matchai-circuito-fluxo",
+        "duracao": "4.2s",
+        "atraso": "0s",
+        "tracejado": "0.18px, 0.82px",
+        "quadroA": "0.523958px",
+        "quadroB": "0.424744px",
+        "moveu": true,
+        "traco": "rgba(0, 121, 203, 0.85)"
+      },
+      {
+        "animacao": "matchai-circuito-fluxo",
+        "duracao": "4.2s",
+        "atraso": "-2.1s",
+        "tracejado": "0.18px, 0.82px",
+        "quadroA": "0.837434px",
+        "quadroB": "0.738244px",
+        "moveu": true,
+        "traco": "rgba(0, 121, 203, 0.85)"
+      }
+    ],
+    "quadrados": [
+      {
+        "secao": "topo",
+        "pixelDoQuadrado": "rgb(15, 132, 201)",
+        "pixelDoFundo": "rgb(16, 121, 195)",
+        "pintou": true,
+        "contraste": 1.136
+      },
+      {
+        "secao": "sem-id",
+        "pixelDoQuadrado": "rgb(198, 224, 243)",
+        "pixelDoFundo": "rgb(228, 240, 250)",
+        "pintou": true,
+        "contraste": 1.181
+      },
+      {
+        "secao": "sem-id",
+        "pixelDoQuadrado": "rgb(6, 53, 87)",
+        "pixelDoFundo": "rgb(4, 28, 61)",
+        "pintou": true,
+        "contraste": 1.336
+      }
+    ],
+    "contrastes": [
+      {
+        "texto": "O que o Match AI faz?",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(192, 223, 243)",
+        "contraste": 11.677
+      },
+      {
+        "texto": "Da base à oferta mais relevante",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(11, 64, 100)",
+        "contraste": 10.872
+      },
+      {
+        "texto": "Posicionamento",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(244, 248, 252)",
+        "contraste": 15.227
+      },
+      {
+        "texto": "Conheça também",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(237, 243, 250)",
+        "contraste": 14.548
+      },
+      {
+        "texto": "Fale com a Gente!",
+        "tinta": "rgb(6, 39, 95)",
+        "fundoComposto": "rgb(162, 228, 245)",
+        "contraste": 10.219
+      }
+    ],
+    "erros": []
+  },
+  "reduce-media": {
+    "atributoNoHtml": "reduce",
+    "tracosAnimando": 0,
+    "tracosApagados": 8,
+    "totalDeTracos": 8,
+    "linhaBaseViva": true,
+    "acesoAnimando": 0,
+    "acesoOpaco": true,
+    "erros": []
+  },
+  "reduce-preferencia": {
+    "atributoNoHtml": "reduce",
+    "tracosAnimando": 0,
+    "tracosApagados": 8,
+    "totalDeTracos": 8,
+    "linhaBaseViva": true,
+    "acesoAnimando": 0,
+    "acesoOpaco": true,
+    "erros": []
+  }
+}

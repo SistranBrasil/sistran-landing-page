@@ -1,0 +1,647 @@
+{
+  "nota": "gerado por scripts/medir-scrub-carreira-sis292.mjs",
+  "rota": "http://localhost:3000/trabalhe-conosco",
+  "percursos": {
+    "maxY": 1070,
+    "beneficios": {
+      "topo": 583,
+      "altura": 55,
+      "inicio": -317,
+      "fim": 638,
+      "quartis": [
+        0,
+        0,
+        161,
+        399,
+        638
+      ]
+    },
+    "slogan": {
+      "topo": 677,
+      "altura": 18,
+      "inicio": -223,
+      "fim": 695,
+      "quartis": [
+        0,
+        7,
+        236,
+        466,
+        695
+      ]
+    }
+  },
+  "descida": [
+    {
+      "y": 0,
+      "beneficios": {
+        "p": 0.3386,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, 6.456)",
+        "y": 6.46
+      },
+      "slogan": {
+        "p": 0.2495,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, 6.012)",
+        "y": 6.01
+      }
+    },
+    {
+      "y": 7,
+      "beneficios": {
+        "p": 0.3459,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, 6.164)",
+        "y": 6.16
+      },
+      "slogan": {
+        "p": 0.2571,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, 5.8296)",
+        "y": 5.83
+      }
+    },
+    {
+      "y": 161,
+      "beneficios": {
+        "p": 0.5073,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -0.292)",
+        "y": -0.29
+      },
+      "slogan": {
+        "p": 0.4248,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, 1.8048)",
+        "y": 1.8
+      }
+    },
+    {
+      "y": 236,
+      "beneficios": {
+        "p": 0.586,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -3.44)",
+        "y": -3.44
+      },
+      "slogan": {
+        "p": 0.5065,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -0.156)",
+        "y": -0.16
+      }
+    },
+    {
+      "y": 399,
+      "beneficios": {
+        "p": 0.7568,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -10.272)",
+        "y": -10.27
+      },
+      "slogan": {
+        "p": 0.6841,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -4.4184)",
+        "y": -4.42
+      }
+    },
+    {
+      "y": 466,
+      "beneficios": {
+        "p": 0.827,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -13.08)",
+        "y": -13.08
+      },
+      "slogan": {
+        "p": 0.7571,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -6.1704)",
+        "y": -6.17
+      }
+    },
+    {
+      "y": 638,
+      "beneficios": {
+        "p": 1,
+        "ativo": false,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -20)",
+        "y": -20
+      },
+      "slogan": {
+        "p": 0.9444,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -10.6656)",
+        "y": -10.67
+      }
+    },
+    {
+      "y": 695,
+      "beneficios": {
+        "p": 1,
+        "ativo": false,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -20)",
+        "y": -20
+      },
+      "slogan": {
+        "p": 1,
+        "ativo": false,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -12)",
+        "y": -12
+      }
+    }
+  ],
+  "subida": [
+    {
+      "y": 695,
+      "beneficios": {
+        "p": 1,
+        "ativo": false,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -20)",
+        "y": -20
+      },
+      "slogan": {
+        "p": 1,
+        "ativo": false,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -12)",
+        "y": -12
+      }
+    },
+    {
+      "y": 638,
+      "beneficios": {
+        "p": 1,
+        "ativo": false,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -20)",
+        "y": -20
+      },
+      "slogan": {
+        "p": 0.9444,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, -10.6656)",
+        "y": -10.67
+      }
+    },
+    {
+      "y": 466,
+      "beneficios": {
+        "p": 0.827,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, -13.08)",
+        "y": -13.08
+      },
+      "slogan": {
+        "p": 0.7571,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, -6.1704)",
+        "y": -6.17
+      }
+    },
+    {
+      "y": 399,
+      "beneficios": {
+        "p": 0.7568,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, -10.272)",
+        "y": -10.27
+      },
+      "slogan": {
+        "p": 0.6841,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, -4.4184)",
+        "y": -4.42
+      }
+    },
+    {
+      "y": 236,
+      "beneficios": {
+        "p": 0.586,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, -3.44)",
+        "y": -3.44
+      },
+      "slogan": {
+        "p": 0.5065,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, -0.156)",
+        "y": -0.16
+      }
+    },
+    {
+      "y": 161,
+      "beneficios": {
+        "p": 0.5073,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, -0.292)",
+        "y": -0.29
+      },
+      "slogan": {
+        "p": 0.4248,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, 1.8048)",
+        "y": 1.8
+      }
+    },
+    {
+      "y": 7,
+      "beneficios": {
+        "p": 0.3459,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, 6.164)",
+        "y": 6.16
+      },
+      "slogan": {
+        "p": 0.2571,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, 5.8296)",
+        "y": 5.83
+      }
+    },
+    {
+      "y": 0,
+      "beneficios": {
+        "p": 0.3386,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, 6.456)",
+        "y": 6.46
+      },
+      "slogan": {
+        "p": 0.2495,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, 6.012)",
+        "y": 6.01
+      }
+    }
+  ],
+  "reversibilidade": [
+    {
+      "scrollY": 0,
+      "beneficios": {
+        "descendo": 6.46,
+        "subindo": 6.46,
+        "volta": true,
+        "pDescendo": 0.3386,
+        "pSubindo": 0.3386
+      },
+      "slogan": {
+        "descendo": 6.01,
+        "subindo": 6.01,
+        "volta": true,
+        "pDescendo": 0.2495,
+        "pSubindo": 0.2495
+      },
+      "dirSubindo": {
+        "beneficios": "cima",
+        "slogan": "cima"
+      }
+    },
+    {
+      "scrollY": 7,
+      "beneficios": {
+        "descendo": 6.16,
+        "subindo": 6.16,
+        "volta": true,
+        "pDescendo": 0.3459,
+        "pSubindo": 0.3459
+      },
+      "slogan": {
+        "descendo": 5.83,
+        "subindo": 5.83,
+        "volta": true,
+        "pDescendo": 0.2571,
+        "pSubindo": 0.2571
+      },
+      "dirSubindo": {
+        "beneficios": "cima",
+        "slogan": "cima"
+      }
+    },
+    {
+      "scrollY": 161,
+      "beneficios": {
+        "descendo": -0.29,
+        "subindo": -0.29,
+        "volta": true,
+        "pDescendo": 0.5073,
+        "pSubindo": 0.5073
+      },
+      "slogan": {
+        "descendo": 1.8,
+        "subindo": 1.8,
+        "volta": true,
+        "pDescendo": 0.4248,
+        "pSubindo": 0.4248
+      },
+      "dirSubindo": {
+        "beneficios": "cima",
+        "slogan": "cima"
+      }
+    },
+    {
+      "scrollY": 236,
+      "beneficios": {
+        "descendo": -3.44,
+        "subindo": -3.44,
+        "volta": true,
+        "pDescendo": 0.586,
+        "pSubindo": 0.586
+      },
+      "slogan": {
+        "descendo": -0.16,
+        "subindo": -0.16,
+        "volta": true,
+        "pDescendo": 0.5065,
+        "pSubindo": 0.5065
+      },
+      "dirSubindo": {
+        "beneficios": "cima",
+        "slogan": "cima"
+      }
+    },
+    {
+      "scrollY": 399,
+      "beneficios": {
+        "descendo": -10.27,
+        "subindo": -10.27,
+        "volta": true,
+        "pDescendo": 0.7568,
+        "pSubindo": 0.7568
+      },
+      "slogan": {
+        "descendo": -4.42,
+        "subindo": -4.42,
+        "volta": true,
+        "pDescendo": 0.6841,
+        "pSubindo": 0.6841
+      },
+      "dirSubindo": {
+        "beneficios": "cima",
+        "slogan": "cima"
+      }
+    },
+    {
+      "scrollY": 466,
+      "beneficios": {
+        "descendo": -13.08,
+        "subindo": -13.08,
+        "volta": true,
+        "pDescendo": 0.827,
+        "pSubindo": 0.827
+      },
+      "slogan": {
+        "descendo": -6.17,
+        "subindo": -6.17,
+        "volta": true,
+        "pDescendo": 0.7571,
+        "pSubindo": 0.7571
+      },
+      "dirSubindo": {
+        "beneficios": "cima",
+        "slogan": "cima"
+      }
+    },
+    {
+      "scrollY": 638,
+      "beneficios": {
+        "descendo": -20,
+        "subindo": -20,
+        "volta": true,
+        "pDescendo": 1,
+        "pSubindo": 1
+      },
+      "slogan": {
+        "descendo": -10.67,
+        "subindo": -10.67,
+        "volta": true,
+        "pDescendo": 0.9444,
+        "pSubindo": 0.9444
+      },
+      "dirSubindo": {
+        "beneficios": "baixo",
+        "slogan": "cima"
+      }
+    },
+    {
+      "scrollY": 695,
+      "beneficios": {
+        "descendo": -20,
+        "subindo": -20,
+        "volta": true,
+        "pDescendo": 1,
+        "pSubindo": 1
+      },
+      "slogan": {
+        "descendo": -12,
+        "subindo": -12,
+        "volta": true,
+        "pDescendo": 1,
+        "pSubindo": 1
+      },
+      "dirSubindo": {
+        "beneficios": "baixo",
+        "slogan": "baixo"
+      }
+    }
+  ],
+  "amplitude": {
+    "beneficios": {
+      "min": -20,
+      "max": 6.46,
+      "curso": 26.5
+    },
+    "slogan": {
+      "min": -12,
+      "max": 6.01,
+      "curso": 18
+    },
+    "acusouCima": true,
+    "acusouBaixo": true
+  },
+  "outrosDonos": {
+    "curriculoExiste": true,
+    "curriculoDentroDeScrub": false,
+    "curriculoOpacidade": 1,
+    "curriculoClipPath": "none",
+    "formularioVisivel": true,
+    "socialExiste": true,
+    "socialDentroDeScrub": false,
+    "socialTituloOpacidade": 1,
+    "escoposScrub": [
+      {
+        "nome": "beneficios-carreira",
+        "contemCurriculo": false,
+        "contemSocial": false
+      },
+      {
+        "nome": "slogan-carreira",
+        "contemCurriculo": false,
+        "contemSocial": false
+      }
+    ]
+  },
+  "reveal": {
+    "total": 5,
+    "acenderamTodos": true,
+    "nenhumInvisivel": true,
+    "piorOpacidade": 1,
+    "algumMisturado": false,
+    "presets": [
+      "fade-up",
+      "fade-up",
+      "fade-up",
+      "fade-up",
+      "line-up"
+    ]
+  },
+  "capturas": [
+    {
+      "arquivo": "sis292-carreira-descendo-q1.png",
+      "sentido": "descendo",
+      "y": 0,
+      "beneficios": {
+        "p": 0.3386,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, 6.456)",
+        "y": 6.46
+      },
+      "slogan": {
+        "p": 0.2495,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, 6.012)",
+        "y": 6.01
+      }
+    },
+    {
+      "arquivo": "sis292-carreira-descendo-q3.png",
+      "sentido": "descendo",
+      "y": 399,
+      "beneficios": {
+        "p": 0.7568,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -10.272)",
+        "y": -10.27
+      },
+      "slogan": {
+        "p": 0.6841,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -4.4184)",
+        "y": -4.42
+      }
+    },
+    {
+      "arquivo": "sis292-carreira-subindo-q3.png",
+      "sentido": "subindo",
+      "y": 399,
+      "beneficios": {
+        "p": 0.7568,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -10.272)",
+        "y": -10.27
+      },
+      "slogan": {
+        "p": 0.6841,
+        "ativo": true,
+        "dir": "baixo",
+        "transform": "matrix(1, 0, 0, 1, 0, -4.4184)",
+        "y": -4.42
+      }
+    },
+    {
+      "arquivo": "sis292-carreira-subindo-q1.png",
+      "sentido": "subindo",
+      "y": 0,
+      "beneficios": {
+        "p": 0.3386,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, 6.456)",
+        "y": 6.46
+      },
+      "slogan": {
+        "p": 0.2495,
+        "ativo": true,
+        "dir": "cima",
+        "transform": "matrix(1, 0, 0, 1, 0, 6.012)",
+        "y": 6.01
+      }
+    }
+  ],
+  "reduceSistema": {
+    "atributoMotion": null,
+    "beneficiosTransform": "none",
+    "beneficiosSemScrub": true,
+    "beneficiosVisivel": true,
+    "sloganTransform": "none",
+    "sloganSemScrub": true,
+    "sloganVisivel": true,
+    "publicou": true,
+    "piorRevealOpacidade": 1
+  },
+  "reduceAtributo": {
+    "atributoMotion": "reduce",
+    "beneficiosTransform": "none",
+    "beneficiosSemScrub": true,
+    "beneficiosVisivel": true,
+    "sloganTransform": "none",
+    "sloganSemScrub": true,
+    "sloganVisivel": true,
+    "publicou": true,
+    "piorRevealOpacidade": 1
+  },
+  "transbordo": {
+    "390": {
+      "transbordo": 22,
+      "alturaDocumento": 3565,
+      "escoposScrub": [
+        "beneficios-carreira",
+        "slogan-carreira"
+      ]
+    },
+    "1440": {
+      "transbordo": 0,
+      "alturaDocumento": 1970,
+      "escoposScrub": [
+        "beneficios-carreira",
+        "slogan-carreira"
+      ]
+    }
+  }
+}

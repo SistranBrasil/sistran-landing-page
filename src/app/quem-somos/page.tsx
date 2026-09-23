@@ -3,12 +3,17 @@ import PageShell from '@/components/PageShell';
 import PageHero from '@/components/PageHero';
 import HeroVideoBackdrop from '@/components/ui/HeroVideoBackdrop';
 import About from '@/components/About';
-import PositioningEcosystem from '@/components/PositioningEcosystem';
+// SIS-42: o ecossistema navegável saiu de cena em favor da arte
+// `posicionamentoperfil.png` numa casca (o motivo inteiro está na nota que ocupa
+// o lugar do mount, mais abaixo). O import fica comentado porque ativo ele
+// quebraria o lint por import não utilizado — e apagado levaria a pista de volta.
+// import PositioningEcosystem from '@/components/PositioningEcosystem';
+import PerfilPosicionamentoArte from '@/components/PerfilPosicionamentoArte';
 import RecognitionTheater from '@/components/RecognitionTheater';
 import Differentials from '@/components/Differentials';
 import Metrics from '@/components/Metrics';
 import ContactCTA from '@/components/ContactCTA';
-import TechnologyShowcase from '@/components/TechnologyShowcase';
+import TechnologiesSection from '@/components/tecnologias/TechnologiesSection';
 import EssenceAccordion from '@/components/EssenceAccordion';
 import CircularEngagementModel from '@/components/CircularEngagementModel';
 /* SIS-69: `BuildingShowcase` saiu da pagina — o import volta junto com o bloco,
@@ -21,9 +26,14 @@ import TituloAceso from '@/components/ui/TituloAceso';
 // lint por import não utilizado, e removê-lo apagaria a pista de como religar.
 // import ProgressoLateral from '@/components/ui/ProgressoLateral';
 import NotchDivider from '@/components/ui/NotchDivider';
+import DiferenciaisSeis from '@/components/DiferenciaisSeis';
 import {
   COMO_AGIMOS,
-  DIFERENCIAIS_6,
+  /* 23/09 — `DIFERENCIAIS_6` deixou de ser lido AQUI: quem percorre a lista agora
+     é `DiferenciaisSeis`. Fica comentado e não apagado porque o bloco que a
+     consumia está registrado mais abaixo, e ativo o import quebraria o lint por
+     não utilizado.
+  DIFERENCIAIS_6, */
   ISG,
   POR_QUE_SISTRAN,
   PREMIACOES_NOTAS,
@@ -88,7 +98,13 @@ export default function Page() {
         src="/videos/quem-somos-hero-loop.mp4"
         poster="/videos/quem-somos-hero-loop-poster.webp"
       >
-        <PageHero eyebrow="Sobre nós" title="A" highlight="Sistran" />
+        {/* SIS-280 (2ª passada, a pedido): o `eyebrow="Sobre nós"` SAIU. A capa
+            fica com a manchete «A Sistran» sozinha — e ela é agora o ÚNICO lugar
+            da rota que diz esse nome, porque o `h2` homônimo da seção abaixo saiu
+            na mesma passada. A tag dizia o que o próprio menu «Quem somos» e a
+            URL já dizem, e com o `h2` fora ela passaria a ser a terceira repetição
+            numa página só. Para religar: `eyebrow="Sobre nós"`. */}
+        <PageHero title="A" highlight="Sistran" />
       </HeroVideoBackdrop>
 
       {/* Fronteiras claro/escuro em chanfro: o separador fica FORA do bloco
@@ -96,10 +112,30 @@ export default function Page() {
           proprio degrade sobre ele. A cor é a do bloco que avanca. */}
       {/* ── SIS-75 · mapa de fronteiras desta pagina ───────────────────────────
           Contagem, e nao impressao: os 10 `NotchDivider` desta pagina se dividem
-          em 8 fronteiras claro↔escuro e 2 claro↔claro. Fronteira escuro↔escuro:
-          ZERO aqui — o padrao real da pagina é escuro → claro alternando, porque
+          em 8 fronteiras claro↔escuro e 2 claro↔claro.
+          SIS-268 — SÃO NOVE AGORA, 7 claro↔escuro e as mesmas 2 claro↔claro: o
+          chanfro de "Conheça também" → "Fale com a Gente!" saiu quando o fecho
+          virou o desenho claro da referência (o motivo está no lugar dele, no fim
+          do arquivo). A contagem acima fica porque é ela que a SIS-75 mediu.
+          SIS-280 — SÃO OITO AGORA, 6 claro↔escuro e as mesmas 2 claro↔claro: o
+          chanfro de "Sobre nós" → "Posicionamento" saiu porque a seção passou a
+          terminar na faixa navy e a fronteira virou escuro↔escuro (o motivo está no
+          lugar dele, comentado na linha do próprio separador).
+          SIS-280, 2ª passada — SÃO SETE, 5 claro↔escuro e as mesmas 2 claro↔claro:
+          o chanfro de "hero navy" → "Sobre nós" saiu a pedido, por decisão de arte e
+          não por premissa caducada (o motivo está comentado na linha dele). As DUAS
+          fronteiras da seção «Sobre nós» são agora juntas retas.
+          SIS-42, 2ª passada — SÃO SEIS, 4 claro↔escuro e as mesmas 2 claro↔claro: o
+          chanfro de "Posicionamento" → "Escritórios" saiu a pedido. E a fronteira
+          escuro↔escuro que a nota abaixo conta virou algo mais forte que uma junta
+          seca: as duas seções pintam agora o MESMO degradê (o de `.sobre-metricas`),
+          então não há junta nenhuma para tratar — é um campo só, medido na emenda.
+          Fronteira escuro↔escuro:
+          ZERO CHANFRADA — a página ganhou UMA (About → Posicionamento, pela faixa
+          navy da SIS-280), e ela é junta seca, sem separador. O padrao real do resto
+          da pagina segue escuro → claro alternando, porque
           entre "Como Agimos" e "Por que SISTRAN?" existem Metrics,
-          RecognitionTheater e o bloco claro do ISG. (A unica escuro↔escuro do
+          RecognitionTheater e o bloco claro do ISG. (A outra escuro↔escuro do
           site esta na home, `page.tsx:179`.)
 
           Decisao por tipo:
@@ -118,8 +154,20 @@ export default function Page() {
           As duas linhas marcadas abaixo com "SIS-75: candidata a Modelo A" sao o
           escopo de implementacao; todas as outras estao marcadas "SIS-75: chanfro
           mantido por decisao" para nao serem removidas na proxima passada. */}
-      {/* SIS-75: chanfro mantido por decisao — claro↔escuro (hero navy → About). */}
-      <NotchDivider cor="#ffffff" invertido />
+      {/* SIS-75: chanfro mantido por decisao — claro↔escuro (hero navy → About).
+          SIS-280: a cor deixou de ser `#ffffff`. O chanfro é da cor do bloco que
+          AVANÇA, e o bloco que avança aqui é a área clara de «Sobre nós», que
+          passou a pintar o próprio degradê azul-gelo do `docs/sobrenos.md` — a
+          primeira parada dele é `#f7fcff`. Branco puro imprimiria uma seta 3 tons
+          mais clara que a seção que ela anuncia.
+          SIS-280 (2ª passada, a pedido): O CHANFRO SAIU — fica comentado, não
+          apagado. Era a peça da captura do chat: uma cunha azul-clara de 48px com
+          duas abas nos cantos, entre o fim do vídeo do hero e o começo da área
+          clara. Com a capa agora terminando em navy chapado e a área clara abrindo
+          direto, a junta é reta e de contraste alto — que é a fronteira que o
+          desenho da marca já sabe fazer sem peça intermediária. Para religar:
+          descomentar a linha.
+          <NotchDivider cor="#f7fcff" invertido /> */}
 
       <div className="section-light">
         <About />
@@ -127,15 +175,63 @@ export default function Page() {
 
       {/* Perfil & Posicionamento vem logo depois de "Sobre nós": é a leitura
           natural — primeiro quem a Sistran é, depois onde ela se posiciona. O
-          bloco claro fecha aqui porque a secao é azul-marinho profundo, e as duas
-          fronteiras recebem o chanfro de sempre (a cor é a do bloco que avanca). */}
-      {/* SIS-75: chanfro mantido por decisao — claro↔escuro (About → Posicionamento). */}
-      <NotchDivider cor="#e4edf7" />
+          bloco claro fecha aqui porque a secao é azul-marinho profundo.
+          SIS-280: só a fronteira DE CIMA recebe chanfro. A de baixo não tem mais
+          contraste para anunciar — o motivo está logo abaixo. */}
+      {/* SIS-75: chanfro mantido por decisao — claro↔escuro (About → Posicionamento).
+          SIS-280: A PREMISSA CADUCOU e o chanfro SAIU — fica comentado, não apagado.
+          A seção «Sobre nós» não termina mais em bloco claro: ela termina na FAIXA
+          INSTITUCIONAL NAVY (`.sobre-metricas` fecha em `#0a3e70`), e o
+          `PositioningEcosystem` abaixo abre no escuro da marca
+          (`positioning-ecosystem.css:16`, `--palco-fundo`/`--palco-marca`). Ou seja,
+          esta fronteira virou escuro↔escuro — o tipo que o mapa acima registrava
+          como inexistente nesta página, e que a amenda da SIS-280 lá já anota.
+          E aqui o `NotchDivider` não «muda de cor»: ele pinta UM `<path fill>`
+          dentro de um SVG transparente (`ui/NotchDivider.tsx`), então o que sobra em
+          volta da seta mostra o fundo da PÁGINA. Medido na captura
+          `sis280-sobrenos-depois-1440-navy.png`: uma faixa clara de 48px cruzando
+          dois campos navy — exatamente o «remendo visível pior que o corte que ele
+          tapa» que a nota de `globals.css:7793` proíbe. Sem contraste entre os dois
+          lados não há corte a anunciar, então a junta certa é junta nenhuma.
+          Para religar: basta descomentar — mas antes devolver um bloco claro ao fim
+          de «Sobre nós», senão o defeito volta com ele.
+          <NotchDivider cor="#e4edf7" /> */}
 
-      <PositioningEcosystem />
+      {/* SIS-42 — a revisão de 22/09 cancelou o escopo anterior desta seção: o
+          «Perfil & posicionamento» deixa de ser remontado peça por peça em HTML
+          (cabeçalho, trilhos, Venn de três círculos, ícones e as duas listagens)
+          e passa a ser a ARTE `public/posicionamentoperfil.png` dentro de uma
+          casca arredondada, na linguagem do «Fale com a Gente!» da home.
 
-      {/* SIS-75: chanfro mantido por decisao — escuro↔claro (Posicionamento → Escritorios). */}
-      <NotchDivider cor="#ffffff" invertido />
+          `PositioningEcosystem` NÃO foi apagado — o arquivo dele e o
+          `positioning-ecosystem.css` continuam inteiros, e o mount é este
+          comentário. Para voltar ao ecossistema navegável: trocar a linha de
+          baixo por `<PositioningEcosystem />` e recomentar esta nota. O import lá
+          no topo também está comentado, por causa do lint de import não usado.
+          O que a peça nova preserva de propósito: o `id="posicionamento"` (âncora
+          do `ScrollSpy` e do menu lateral), o nome acessível pelo mesmo
+          `posicionamento-titulo`, o navy de `--palco-fundo`/`--palco-marca` (as
+          duas fronteiras vizinhas foram decididas contra ELE, acima nesta nota e
+          no chanfro logo abaixo) e TODA a escrita de `src/data/posicionamento.ts`,
+          agora como transcrição `sr-only` do que a arte desenha.
+          <PositioningEcosystem /> */}
+      <PerfilPosicionamentoArte />
+
+      {/* SIS-42, 2ª passada — o chanfro daqui SAIU a pedido: «retire isso que tem
+          entre essa sessão e os escritórios». Era `<NotchDivider cor="#ffffff"
+          invertido />`, a fronteira escuro↔claro (Posicionamento → Escritórios),
+          e a SIS-75 o mantinha «por decisão».
+
+          Não é premissa caducada, é decisão de arte nova: com a seção do Perfil
+          agora pintando o MESMO navy da faixa dos indicadores, a página desce em
+          um único campo escuro contínuo desde «Sobre nós», e a seta branca de 48px
+          cortava esse campo uma tela antes do bloco claro realmente começar —
+          anunciava uma junta que o olho já lia como uma só descida.
+
+          A junta virou reta: navy → `.section-light`, sem separador. Para religar:
+          descomentar a linha abaixo. O mapa de fronteiras no topo deste arquivo foi
+          emendado junto (são SEIS chanfros agora, não sete).
+          <NotchDivider cor="#ffffff" invertido /> */}
 
       <div className="section-light">
         {/* Escritórios BRASIL */}
@@ -174,11 +270,21 @@ export default function Page() {
           <OfficesScene />
         </section>
 
-        {/* Tecnologias. Pinta o proprio fundo azul-marinho e sangra na largura
-            inteira, entao entra sem `container-lp` e sem NotchDivider — este
-            ultimo nao pode viver dentro de `.section-light`, que tem
-            `isolation: isolate`. */}
-        <TechnologyShowcase />
+        {/* Tecnologias. Pinta o proprio fundo (agora CLARO: o degrade azul-gelo
+            `#F8FCFF` → `#EEF8FF` → `#E5F4FF` que `docs/tecnologia.md` exige, no
+            lugar do azul-marinho que a SIS-280 apontou como divergencia do mock)
+            e sangra na largura inteira, entao entra sem `container-lp` e sem
+            NotchDivider — este ultimo nao pode viver dentro de `.section-light`,
+            que tem `isolation: isolate`.
+
+            SIS-280 — o componente montado aqui deixou de ser
+            `TechnologyShowcase` e passou a ser `TechnologiesSection`
+            (`src/components/tecnologias/`). O anterior continua no repositorio
+            sem consumidor, como o `BuildingShowcase` logo abaixo: religar seria
+            trocar a linha de volta, mas ele carrega justamente o que a issue
+            rejeita (fundo navy, titulo textual "Tecnologias", palco de sete
+            itens, setas e barra de progresso). */}
+        <TechnologiesSection />
 
         {/* SIS-69: o explorador 3D 360° (cartao azul com "01 Torre River Park" /
             "02 Complexo Modular", bussola de vistas, "35+ Anos de mercado") saiu
@@ -217,28 +323,36 @@ export default function Page() {
             e `BuildingShowcase` seguem os dois intactos e sem ninguem que os
             importe. Vale registrar porque a frase acima — "sem NENHUM consumidor"
             — parece contradita por quem ve a torre na pagina, e nao esta. */}
-        {/* Diferenciais — os 6 itens, so titulo, como no site */}
-        <section aria-labelledby="diferenciais-6" className="section-py">
-          <div className="container-lp">
-            <TituloAceso
-              id="diferenciais-6"
-              texto="Diferenciais"
-              className="font-display text-section text-ink"
-            />
-            <ul className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {DIFERENCIAIS_6.map((d, i) => (
-                <ScrollReveal
-                  as="li"
-                  indice={i}
-                  key={d}
-                  className="glass-card notch-card barra-sinal p-6 font-display text-base leading-snug text-ink"
-                >
-                  {d}
-                </ScrollReveal>
-              ))}
-            </ul>
-          </div>
-        </section>
+        {/* Diferenciais — os 6 itens, so titulo, como no site.
+            23/09 — A SEÇÃO SAIU DESTE ARQUIVO e virou `DiferenciaisSeis`. Mudou de
+            casa porque passou a ter fundo próprio: o pedido é que ela continue o
+            azul-gelo de Tecnologias, logo acima, e continuidade de degradê é coisa
+            que se mede na emenda — não cabe inline. O JSX que estava aqui, e o que
+            cada peça dele virou, ficam registrados:
+
+              <section aria-labelledby="diferenciais-6" className="section-py">
+                <div className="container-lp">
+                  <TituloAceso id="diferenciais-6" texto="Diferenciais"
+                    className="font-display text-section text-ink" />
+                  <ul className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                    {DIFERENCIAIS_6.map((d, i) => (
+                      <ScrollReveal as="li" indice={i} key={d}
+                        className="glass-card notch-card barra-sinal p-6 font-display text-base leading-snug text-ink">
+                        {d}
+                      </ScrollReveal>
+                    ))}
+                  </ul>
+                </div>
+              </section>
+
+            O título, a lista `ul`/`li`, o `aria-labelledby`, o `id` e a cascata do
+            `ScrollReveal` são os MESMOS no componente — nada de semântica mudou.
+            O que mudou é o cartão: chanfro e vidro escuro saíram para dar lugar ao
+            canto arredondado com sombra e ao selo do ícone que o pedido descreve
+            (o porquê de cada remoção está no docblock de `DiferenciaisSeis.tsx`).
+            Note o `key={d}` acima: a lista deixou de ser de strings, então lá ele
+            é `key={d.texto}`. */}
+        <DiferenciaisSeis />
 
       </div>
 
@@ -429,9 +543,13 @@ export default function Page() {
 
       {/* Caminho para as outras duas paginas do submenu "Quem somos". */}
       {/* SIS-77 — 2ª e última fronteira com sobreposição: os dois cartões de
-          "Conheça também" descem para dentro do cartão azul de "Fale com a
-          Gente!". Aqui a grade É o último item da seção, que é o que a técnica
-          exige (ver a nota do bloco `.vaza-*` no `globals.css`). */}
+          "Conheça também" descem para dentro do bloco de "Fale com a Gente!".
+          Aqui a grade É o último item da seção, que é o que a técnica exige (ver a
+          nota do bloco `.vaza-*` no `globals.css`).
+          SIS-268 — «para dentro do CARTÃO AZUL» era a frase, e ela caducou: o fecho
+          virou o desenho da referência, que é um campo CLARO com painel de vidro, e
+          a saliência agora cai no `padding-top` desse campo. A técnica é a mesma e
+          estas duas classes não foram tocadas; o que mudou é o que está embaixo. */}
       <section
         aria-labelledby="mais-quem-somos"
         className="vaza-fonte section-py section-light section-light-blue"
@@ -473,17 +591,48 @@ export default function Page() {
         </div>
       </section>
 
-      {/* SIS-75: chanfro mantido por decisao — claro↔escuro (Conheca tambem → ContactCTA). */}
-      <NotchDivider cor="#cfe7f7" />
+      {/* SIS-268 — O CHANFRO E O `<div className="recebe-vazamento">` SAÍRAM DAQUI, e
+          os dois pelo mesmo fato: o fecho deixou de ser escuro. As linhas anteriores
+          eram, na ordem:
 
-      {/* SIS-77 — a compensação do vazamento entra num `<div>` em volta, e não
-          dentro do `ContactCTA`: o componente fecha outras nove páginas, e nelas
-          não há cartão descendo para dentro dele. O `<div>` é transparente e o
-          `ContactCTA` não pinta fundo próprio (o navy é o da página), então a
-          faixa de folga não cria banda de cor nenhuma. */}
-      <div className="recebe-vazamento">
-        <ContactCTA />
-      </div>
+            NotchDivider cor="#cfe7f7"           (marcado «SIS-75: chanfro mantido
+                                                  por decisao — claro↔escuro»)
+            div.recebe-vazamento  >  ContactCTA   (sem props)
+
+          O CHANFRO: ele existe para cortar claro contra escuro, e a cor que recebe é
+          a do bloco que AVANÇA. Com `layoutReferencia` o bloco de baixo é `.cta-ref`,
+          que pinta o próprio campo claro (`#f3f9fe → #e4f1fb → #cfe7f7`) contra o
+          `section-light section-light-blue` de cima. Claro contra claro, e nas duas
+          pontas a MESMA família de azul-gelo — é exatamente a fronteira de
+          `/solucoes`, onde `Consulting` encosta neste bloco sem separador nenhum. O
+          que costura é o `box-shadow: 0 0 54px 18px` que `.cta-ref` já traz (a emenda
+          da SIS-93). Manter o chanfro aqui seria imprimir uma seta de `#cfe7f7`
+          atravessando dois campos que já são dessa cor: não separa nada e o
+          comentário que o acompanhava («claro↔escuro») passou a ser falso.
+
+          O `<div>` RECEPTOR: ele reservava 5rem para a saliência dos cartões de
+          «Conheça também» não pousar no conteúdo do CTA, e podia ser transparente
+          porque o CTA de antes NÃO pintava fundo (o navy era o da página) — está
+          escrito assim na nota que ele carregava. Essa premissa caiu: `.cta-ref` pinta
+          o fundo DELA, então os 5rem do `<div>` viravam uma faixa de navy exposto
+          entre dois blocos claros. A conta é a de `docs/medidas/sis268-quem-somos-
+          antes.json`, a 1440: a base dos cartões que vazam cai em y=19362 e o topo
+          do bloco de baixo em y=19409 — a geometria acima da junta não muda com a
+          troca de props, então seriam 47px de navy à mostra de ponta a ponta da
+          janela, com o chanfro claro por cima da metade de cima deles. Foi assim que
+          a primeira passada desta issue saiu, e foi por isso que o `<div>` caiu.
+          Sem ele, a saliência é absorvida pelo `padding-top` do próprio `.cta-ref`
+          (8rem a partir de 1024px): medido em
+          `docs/medidas/sis268-quem-somos-depois.json`, sobram 48px da base dos
+          cartões até o painel de vidro e 21px até a caixa da arte — nenhuma
+          sobreposição, e a faixa de navy deixou de existir.
+
+          O VAZAMENTO EM SI FICA: `vaza-fonte`/`vaza-cartoes` continuam na seção acima,
+          intocados. Os cartões seguem descendo os mesmos 5rem — agora sobre o campo
+          claro da referência em vez de sobre o navy. As regras `div.recebe-vazamento`
+          e `section.recebe-vazamento` do `globals.css` não foram tocadas; a primeira
+          ficou sem consumidor e a nota de lá registra isso. */}
+      <ContactCTA layoutReferencia contatoNoModal />
     </PageShell>
   );
 }

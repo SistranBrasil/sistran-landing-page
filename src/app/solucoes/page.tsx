@@ -1,11 +1,21 @@
 import Link from 'next/link';
+/* SIS-279 — a imagem da seção de introdução. `next/image` pela caixa reservada
+   (`width`/`height`), que é o que evita o salto de layout; com
+   `images.unoptimized` (SIS-154) o arquivo em si é servido como está. */
+import Image from 'next/image';
 import PageShell from '@/components/PageShell';
 import PageHero from '@/components/PageHero';
 import HeroVideoBackdrop from '@/components/ui/HeroVideoBackdrop';
 import Accelerators from '@/components/Accelerators';
 import Consulting from '@/components/Consulting';
 import ContactCTA from '@/components/ContactCTA';
-import ServicesJourneyStage from '@/components/ui/ServicesJourneyStage';
+/* SIS-268 — o import da pilha sticky sai junto com o mount (o motivo está lá
+   embaixo, na seção de Serviços); um import sem uso é erro de lint, então ele não
+   pode ficar comentado ao lado do novo:
+
+       import ServicesJourneyStage from '@/components/ui/ServicesJourneyStage';   */
+import ServicosPalco from '@/components/ui/ServicosPalco';
+import AtmosferaQuadrados from '@/components/ui/AtmosferaQuadrados';
 import RevealScope from '@/components/motion/RevealScope';
 import { LIMIAR_REVEAL, MARGEM_REVEAL } from './reveal-calibre';
 
@@ -17,8 +27,21 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <PageShell>
-      {/* SIS-94 — o vídeo cobre a abertura INTEIRA: o hero e a barra "NESTA
+    /* SIS-204 — o plano de fundo da rota inteira vive no `<main>` (`solucoes-canvas`,
+       `globals.css`): claro ancorado na janela + malha de pontos e linhas finas no
+       `::before`. É a mecânica da `home-canvas` (SIS-199), e o comentário do bloco no
+       CSS traz as medidas de antes faixa por faixa e a lista do que continua com
+       superfície própria (hero, Serviços, fecho) com o motivo de cada um. */
+    <PageShell classeDoMain="solucoes-canvas">
+      {/* A terceira camada do fundo: quadrados arredondados translúcidos e o arco
+          azul, que gradiente não desenha. Primeiro nó do `<main>` porque é fundo —
+          e `position: fixed` com `z-index: -1`, então a posição na árvore não muda o
+          que se vê; o que ela faz é deixar a leitura do arquivo na mesma ordem das
+          camadas. ⚠️ O print 3 da conversa NÃO está no repositório: o desenho saiu da
+          descrição escrita na issue, e isso está declarado na nota do componente. */}
+      <AtmosferaQuadrados />
+
+      {/* SIS-94— o vídeo cobre a abertura INTEIRA: o hero e a barra "NESTA
           PÁGINA". Elas são irmãs, e um vídeo dentro do `PageHero` deixaria a
           barra abrindo já sobre o navy, com uma emenda no meio da abertura. */}
       {/* O arquivo é o `-loop`, e nao o `-scroll`: aquele foi cortado para ser
@@ -30,13 +53,41 @@ export default function Page() {
         src="/videos/solucoes-hero-loop.mp4"
         poster="/videos/solucoes-hero-loop-poster.webp"
       >
-      {/* Abertura verbatim do site (que ali é texto puro, sem heading). */}
-      <PageHero
-        eyebrow="Soluções, Serviços e Consultoria"
-        title="Oferecemos SOLUÇÕES, SERVIÇOS e CONSULTORIA sob medida para modernização e otimização do desempenho da sua"
-        highlight="Seguradora."
-        description={<p className="text-[#A5F0FF]">Beyond Technology: é o nosso lema!</p>}
-      />
+      {/* SIS-279 — A CAPA FICA SÓ COM O TÍTULO.
+          Antes, verbatim, era a abertura inteira do site empilhada no hero:
+
+          | <PageHero
+          |   eyebrow="Soluções, Serviços e Consultoria"
+          |   title="Oferecemos SOLUÇÕES, SERVIÇOS e CONSULTORIA sob medida para modernização e otimização do desempenho da sua"
+          |   highlight="Seguradora."
+          |   description={<p className="text-[#A5F0FF]">Beyond Technology: é o nosso lema!</p>}
+          | />
+
+          A frase, o `highlight` e o lema NÃO foram apagados: eles descem para a
+          seção de introdução logo abaixo da abertura, com imagem ao lado, e o lema
+          ganha lá o tratamento manuscrito de `docs/fonte2.md`. O que muda aqui é
+          QUEM é o título — e o `eyebrow` sai porque ele já dizia exatamente a frase
+          que agora é o `title`: mantidos os dois, a mesma linha apareceria duas
+          vezes, uma em caixa alta pequena e outra como manchete.
+
+          A escala do `h1` acompanha sozinha, e isso é consequência do contrato do
+          componente e não coincidência: `escalaDoTitulo` classifica por
+          COMPRIMENTO, e o título passa de 118 caracteres (degrau da sentença,
+          `text-pagehero-longo`) para 32 (degrau da frase curta,
+          `text-pagehero-medio`) — a manchete cresce porque encurtou. */}
+      {/* A manchete em NEGRITO e em TRÊS LINHAS, exatamente na divisão pedida:
+          «Soluções,» / «Serviços» / «e Consultoria».
+
+          `quebrasDoTitulo={[1, 2]}` e não três strings: o título continua sendo
+          UMA string — a mesma de antes — e as linhas são derivadas dela por
+          índice de palavra. Trocá-la por um array removeria um valor do
+          `copy-lock` e acrescentaria três, ou seja deriva de CÓPIA para fazer
+          mudança de LAYOUT. Ver a prop em `PageHero.tsx`.
+
+          «e Consultoria» fica junto na terceira linha porque é a leitura que ela
+          descreveu («na terceira e Consultoria»): a conjunção abre a linha, não
+          fecha a segunda. */}
+      <PageHero title="Soluções, Serviços e Consultoria" tituloForte quebrasDoTitulo={[1, 2]} />
 
       {/* Anchor nav abaixo do hero.
           Era um bloco quase invisivel (bg branco a 3%, borda a 10%, texto a 80%)
@@ -113,6 +164,118 @@ export default function Page() {
       </RevealScope>
       </HeroVideoBackdrop>
 
+      {/* SIS-279 — A SEÇÃO DE INTRODUÇÃO, entre a abertura e os cards.
+          Ela recebe a escrita que saiu do hero (a frase, «Seguradora.» e o lema),
+          e existe como seção própria porque o pedido é justamente o que o hero não
+          conseguia dar: a frase ao LADO de uma imagem. Dentro da capa não havia
+          onde pôr a imagem sem disputar o vídeo de fundo.
+
+          `section-light section-light-blue`, as mesmas classes das outras duas
+          faixas claras da rota, e não uma faixa nova: nesta rota a regra
+          `.solucoes-canvas .section-light` (SIS-204) já zera o fundo dessas classes
+          e apaga a malha do `::before`, então o que a seção mostra é o PLANO do
+          `<main>` — nenhuma cor nova entra na página, e o fundo da rota continua
+          fora de escopo, como a issue manda. O que as classes trazem de fato é a
+          família de overrides de texto para navy, que é o que a escrita precisa
+          para ser legível sobre o plano claro.
+
+          `RevealScope`: é o QUARTO escopo da rota, e a calibragem é a mesma dos
+          outros três (`LIMIAR_REVEAL`/`MARGEM_REVEAL`, SIS-273). Sem ele o risco
+          ciano do lema — animação CSS — se desenharia na montagem da página, longe
+          dos olhos: a seção nasce ABAIXO da dobra (o hero tem `pagehero-entrada`,
+          com altura mínima de janela), então a pessoa chegaria aqui e encontraria o
+          gesto já terminado. É a lição da SIS-188, aqui por CSS em vez de GSAP: o
+          traço só parte quando o escopo acende (`[data-in='true']`).
+          Por isso também NÃO leva `esperarRota`: quem espera a cortina é só o
+          escopo que nasce dentro da dobra (a barra de âncoras). */}
+      <section id="beyond-technology" className="section-light section-light-blue section-py">
+        <div className="container-lp">
+          <RevealScope
+            className="solucoes-intro"
+            limiar={LIMIAR_REVEAL}
+            margem={MARGEM_REVEAL}
+            data-reveal-nome="intro-beyond-technology"
+          >
+            <div className="solucoes-intro-texto">
+              {/* As duas frases chegam com o MESMO valor que tinham no hero
+                  (`title` e `highlight`), em dois nós, para que a troca seja de
+                  POSIÇÃO e não de escrita: o lock (`scripts/copy-lock.mjs`) compara
+                  o conjunto por valor, e juntar as duas num nó só apagaria duas
+                  entradas para criar uma terceira. */}
+              <p data-reveal="fade-up" className="solucoes-intro-frase">
+                Oferecemos SOLUÇÕES, SERVIÇOS e CONSULTORIA sob medida para
+                modernização e otimização do desempenho da sua{' '}
+                <strong className="solucoes-intro-destaque">Seguradora.</strong>
+              </p>
+
+              {/* O LEMA com o tratamento de `docs/fonte2.md`, pelos mesmos números
+                  que a `.luminna-frase` já usa (Kalam com Caveat de reserva, peso
+                  400, `line-height: 0.95`, `clamp(30px, 3vw, 50px)`, `-4deg` e o
+                  risco ciano de ~45px desenhado da esquerda para a direita).
+                  A frase manuscrita é só «Beyond Technology», como a issue pede; o
+                  fecho «é o nosso lema!» fica em parágrafo normal ao lado, porque
+                  ele é prosa e não assinatura.
+                  SEM `<span>` em volta da frase, e isto é a armadilha desta rota:
+                  `.section-light span:not(...)` pinta QUALQUER span de #0a1f44 com
+                  especificidade (0,5,1) — um span aqui levaria a cor errada e a
+                  única saída seria `!important`. Com a cor no próprio `<p>`, basta
+                  vencer `.section-light p`, e é o que `.solucoes-canvas` faz.
+                  A ROTAÇÃO é `rotate` e não `transform` pelo mesmo motivo da
+                  `.luminna-frase`: `data-reveal` é o dono do `transform` deste nó. */}
+              <p
+                data-reveal="fade-up"
+                style={{ '--reveal-i': 1 } as React.CSSProperties}
+                className="solucoes-lema"
+              >
+                Beyond Technology
+                <svg aria-hidden className="solucoes-lema-traco" viewBox="0 0 45 8">
+                  <line
+                    className="solucoes-lema-risco"
+                    pathLength="1"
+                    x1="1.5"
+                    y1="6.4"
+                    x2="43.5"
+                    y2="1.6"
+                  />
+                </svg>
+              </p>
+              <p
+                data-reveal="fade-up"
+                style={{ '--reveal-i': 2 } as React.CSSProperties}
+                className="solucoes-lema-fecho"
+              >
+                é o nosso lema!
+              </p>
+            </div>
+
+            {/* A IMAGEM AO LADO, em arranjo próprio e não em card: a arte é uma
+                placa inclinada com uma moldura ciano deslocada por trás, que é o
+                oposto do cartão genérico (caixa branca, borda fina, sombra igual à
+                dos vizinhos) — e a inclinação conversa com o `-4deg` do manuscrito.
+                `/images/consultoria.png` é a arte declarada: já estava no
+                repositório, não tinha nenhum consumidor em `src/` (conferido) e não
+                traz texto embutido — nada para legendar errado nem para traduzir.
+                `width`/`height` são as dimensões INTRÍNSECAS do arquivo (1672×941);
+                com `images.unoptimized` (SIS-154) elas só reservam a caixa e evitam
+                o salto de layout, o arquivo é servido como está. */}
+            <figure
+              data-reveal="fade-up"
+              style={{ '--reveal-i': 1 } as React.CSSProperties}
+              className="solucoes-intro-arte"
+            >
+              <Image
+                src="/images/consultoria.png"
+                alt="Executivo apoiando um laço infinito de vidro com uma malha de dados em azul, sobre uma mesa de escritório clara."
+                width={1672}
+                height={941}
+                sizes="(min-width: 64rem) 46vw, 92vw"
+                className="solucoes-intro-arte-img"
+              />
+            </figure>
+          </RevealScope>
+        </div>
+      </section>
+
       {/* 1. Tecnologia Disruptiva — SIS-93: passou a usar o mesmo fundo azul
              claro da Consultoria (`section-light section-light-blue`). A
              alternância da página deixou de ser escuro→escuro→claro→escuro e
@@ -132,59 +295,149 @@ export default function Page() {
           prender a ele em vez de à janela, o que na prática o desliga. `clip`
           num eixo só recorta sem criar esse contêiner, e continua contendo a
           `.grade-tecnica`, que é o motivo do recorte. */}
-      <section id="servicos-diferenciais" className="section-py relative overflow-x-clip">
-        <div aria-hidden className="grade-tecnica" />
-        <div className="container-lp">
-          {/* Os quatro serviços saíram da grade `sm:grid-cols-2` e passaram a ser
-              a pilha com vídeo preso ao lado — layout portado da seção
-              "Transição visual | do sinal ao entendimento" da apresentação de
-              Transformação de Legado. O vídeo é `/videos/jornada.mp4`, o mesmo
-              arquivo da origem.
+      {/* SIS-204 — `solucoes-palco-servicos`: esta é a ÚNICA faixa da rota que não
+          pintava nada e mostrava o azul do `body`. Com o plano claro no `<main>`, o
+          que ela via por baixo virou claro — e o texto daqui é branco (h2 a 4,19:1
+          medido na janela — baixo, e assim já era: o palco declarado devolve o mesmo
+          pixel do emprestado, e re-tingir a seção é conteúdo, fora de escopo). Então ela passa a DECLARAR o palco escuro que tomava emprestado,
+          com o mesmo valor e o mesmo ancoramento na janela. A classe também traz o
+          `isolation: isolate` de que a `.grade-tecnica` abaixo depende para não cair
+          atrás do fundo novo — o porquê está no bloco do CSS. */}
+      {/* SIS-268 — A SEÇÃO PASSOU A SER A MOCK `public/imagensexemplo/imagemserviços.png`,
+          seguindo `docs/servicos.md`: vídeo de fundo full-bleed, carimbo no lugar da
+          tag textual, colunas 42/58 e grade 2×2 de cards claros com as fotos
+          `/images/solucoes/1.png`–`4.png`. Tudo o que é superfície vive em
+          `src/components/ui/servicos-palco.css`.
 
-              A abertura (`Diferenciais` / `Serviços` / os dois parágrafos) entra
-              DENTRO do componente, como na origem: ela é presa no topo da coluna
-              dos cards, ao lado do vídeo, e acompanha a pilha inteira. Solta no
-              fluxo acima do grid, o título ficava atrás do header fixo e os
-              parágrafos ocupavam a largura toda, desligados da pilha.
+          O `section-py` SAIU DA SEÇÃO e virou `padding` do `.svc-palco`: a mídia do
+          vídeo é `inset: 0` sobre o palco, então respiração vertical na seção
+          deixaria uma faixa sem take em cima e embaixo do vídeo.
 
-              A escrita continua morando aqui, e não no componente: é escrita da
-              página. O lock (`scripts/copy-lock.mjs`) compara por valor, então
-              passá-la por prop não mexe no conteúdo travado. */}
-          <ServicesJourneyStage
-            eyebrow="Diferenciais"
-            title="Serviços"
-            paragraphs={[
-              'Dedicada ao mercado segurador, com experiência em todos os ramos, a Sistran atua como integradora de sistemas para clientes com grandes carteiras.',
-              'Somos uma empresa de TI 100% focada no segmento de Seguros no Brasil, acumulamos experiências e lições aprendidas em mais de 30 implementações de ERP bem-sucedidas.',
-            ]}
-          />
+          A `.grade-tecnica` SAIU, e o motivo é de empilhamento, não de gosto — a
+          linha era:
 
-          {/* No site cada card leva a uma pagina de servico com Lorem Ipsum em
-              ingles; nenhuma delas foi recriada. O botao aponta para o contato,
-              que é o destino real da intencao. */}
-          {/* SIS-273 — escopo 3 de 3: o CTA que fecha a seção de Serviços.
-              O preset NÃO vai no `.btn-primary`, e isto é a lição da SIS-271: o
-              botão tem `:hover { transform: translateY(-2px) }` escrito em
-              `@layer components`, e `[data-in='true'] [data-reveal] { transform:
-              none }` está FORA de qualquer layer — regra sem camada vence regra
-              em camada seja qual for a especificidade, então o botão marcado
-              perderia o levantar do hover para sempre. O invólucro leva a marca,
-              o botão fica intacto.
-              O `mt-10` mudou de nó junto com o invólucro (era do `Link`): a
-              margem tem de sair do MESMO nó que define o bloco, senão ela
-              passaria a medir de dentro de uma caixa que já começa colada. */}
-          <RevealScope
-            limiar={LIMIAR_REVEAL}
-            margem={MARGEM_REVEAL}
-            data-reveal-nome="servicos-cta"
-          >
-            <span data-reveal="fade-up" className="mt-10 block">
-              <Link href="/contato" className="btn-primary inline-flex">
-                Quero um serviço exclusivo
-              </Link>
-            </span>
-          </RevealScope>
-        </div>
+              <div aria-hidden className="grade-tecnica" />
+
+          Ela é `z-index: -1` e só se vê graças ao `isolation: isolate` que
+          `.solucoes-palco-servicos` declara (SIS-204). Com o vídeo de fundo em
+          `z-index: 0` dentro do mesmo contexto, a malha ficaria ATRÁS do vídeo: nó
+          que pinta e ninguém vê. O que o fundo desta faixa é agora é o take mais o
+          véu navy — e a malha continua existindo em todas as outras seções escuras
+          do site, que não têm vídeo.
+
+          `.solucoes-palco-servicos` FICA, e por dois motivos: é a base navy que
+          aparece enquanto o arquivo do vídeo não chega (e no movimento reduzido,
+          onde o laço não toca), e é ela que devolve a esta faixa o mesmo pixel
+          escuro que a SIS-204 mediu quando o palco era emprestado do `body`.
+          `overflow-x-clip` também fica — nunca `overflow-hidden`: a rota tem
+          camadas ancoradas na janela e um contêiner de rolagem as prenderia aqui. */}
+      <section
+        id="servicos-diferenciais"
+        className="relative overflow-x-clip solucoes-palco-servicos"
+      >
+        <ServicosPalco
+          titulo="Serviços"
+          /* A escrita continua morando na PÁGINA, e não no componente: é escrita da
+             página, e `scripts/copy-lock.mjs` compara por valor — passá-la por prop
+             não mexe no conteúdo travado. O segundo parágrafo é o de
+             `docs/servicos.md`, que a issue declara como fonte, e ele difere do que
+             estava aqui («acumulamos experiências e lições aprendidas em mais de 30
+             implementações»): a frase do doc é a da mock. */
+          paragrafos={[
+            'Dedicada ao mercado segurador, com experiência em todos os ramos, a Sistran atua como integradora de sistemas para clientes com grandes carteiras.',
+            'Somos uma empresa de TI 100% focada no segmento de Seguros no Brasil, com experiência acumulada em mais de 30 implementações de ERP bem-sucedidas.',
+          ]}
+          indicadores={[
+            { valor: '30+', legenda: 'implementações' },
+            { valor: '100%', legenda: 'Seguros' },
+          ]}
+          /* O CTA ENTROU NA COLUNA, logo abaixo dos indicadores «30+
+             implementações / 100% Seguros» — pedido em chat, contra a captura em
+             que ele caía muito abaixo dos números. Ele estava no
+             `<div className="container-lp pb-20 md:pb-24">` logo abaixo desta
+             chamada (que segue existindo, comentado, com o motivo).
+
+             Por que só mover não bastava e virou SLOT: o palco tem
+             `min-height: 100vh` e `align-items: center`, então entre o fim dos
+             indicadores e o fim da seção há a metade de baixo do palco mais o
+             `padding` dele — ou seja o botão não estava com margem grande, estava
+             em OUTRO bloco. Para ficar «logo abaixo dos números» ele tem de estar
+             no fluxo da mesma coluna, e a coluna é do componente.
+
+             O `RevealScope` próprio SAIU com ele: dentro da coluna o botão entra
+             no escopo `servicos-abertura`, que é o dos números que ele acompanha.
+             O `data-reveal` do nó continua vivendo no invólucro (o `.svc-palco-rodape`
+             do componente) e NUNCA no `.btn-primary` — a lição da SIS-271, que o
+             comentário do bloco comentado abaixo registra por inteiro. */
+          rodape={
+            <Link href="/contato" className="btn-primary inline-flex">
+              Quero um serviço exclusivo
+            </Link>
+          }
+        />
+
+        {/* ══════════════════════════════════════════════════════════════════════
+            A FAIXA QUE FECHAVA A SEÇÃO SAIU DE CENA, porque o CTA subiu para dentro
+            da coluna de texto (ver a prop `rodape` acima). Era, verbatim:
+
+                <div className="container-lp pb-20 md:pb-24">
+                  <RevealScope
+                    limiar={LIMIAR_REVEAL}
+                    margem={MARGEM_REVEAL}
+                    data-reveal-nome="servicos-cta"
+                  >
+                    <span data-reveal="fade-up" className="mt-10 block">
+                      <Link href="/contato" className="btn-primary inline-flex">
+                        Quero um serviço exclusivo
+                      </Link>
+                    </span>
+                  </RevealScope>
+                </div>
+
+            O `mt-10` e o `pb-20 md:pb-24` não vieram junto de propósito: eles
+            mediam a distância até o FIM da seção, e agora o respiro é o `gap` da
+            coluna (`.svc-palco-abertura`) mais o `padding` do palco.
+
+            O escopo `servicos-cta` (escopo 3 de 3 da SIS-273) deixou de existir
+            como escopo próprio — o botão entrou no `servicos-abertura`. A LIÇÃO que
+            ele carregava continua valendo e é a razão de o `rodape` ser embrulhado
+            pelo componente: o `data-reveal` NUNCA vai no `.btn-primary`. O botão
+            tem `:hover { transform: translateY(-2px) }` em `@layer components`, e
+            `[data-in='true'] [data-reveal] { transform: none }` está FORA de
+            qualquer camada — regra sem camada vence regra em camada seja qual for a
+            especificidade, então o botão marcado perderia o levantar do hover para
+            sempre (SIS-271). O invólucro leva a marca, o botão fica intacto.
+
+            Do bloco antigo saíram também duas notas de conteúdo, que ficam
+            registradas aqui: no site original cada card levava a uma página de
+            serviço com Lorem Ipsum em inglês e nenhuma delas foi recriada — o botão
+            aponta para o contato, que é o destino real da intenção.
+
+            ── E A HISTÓRIA MAIS ANTIGA DESTA FAIXA (SIS-268) ──
+            A PILHA STICKY SAIU DE CENA. A linha era, verbatim:
+
+                  <ServicesJourneyStage
+                    eyebrow="Diferenciais"
+                    title="Serviços"
+                    paragraphs={[…os dois parágrafos…]}
+                  />
+
+              …e o componente CONTINUA em `src/components/ui/ServicesJourneyStage.tsx`,
+              sem outro consumidor: ele é o layout portado da seção "Transição visual |
+              do sinal ao entendimento" da apresentação de Transformação de Legado, e
+              apagá-lo não é o pedido desta issue — o pedido é que esta seção passe a
+              ser a mock.
+
+              Por que ele não podia ficar: a mock quer o vídeo como FUNDO da seção
+              inteira (nele o vídeo é uma figura presa numa coluna), os quatro cards
+              visíveis ao mesmo tempo numa grade 2×2 (nele são uma pilha percorrida
+              por rolagem) e a issue PROÍBE nominalmente os ordinais 01–04, que são a
+              espinha da pilha. Não é ajuste de props, é outro layout.
+
+              O que o substitui é o `<ServicosPalco>` logo acima, e a abertura
+              (carimbo / «Serviços» / os dois parágrafos / os indicadores) foi com
+            ele: na mock ela é a coluna de 42%, ao lado da grade.
+            ══════════════════════════════════════════════════════════════════════ */}
       </section>
 
       {/* 3. Consultoria — azul claro (a classe vive no proprio componente) e,
@@ -192,7 +445,45 @@ export default function Page() {
       <Consulting />
 
       {/* 4. CTA final */}
-      <ContactCTA />
+      {/* SIS-286 — O FECHO PASSA A SER O DE `/esg`, e a mudança são PROPS: linha
+          anterior, para o registro, `<ContactCTA />`. Nada de markup novo —
+          `ContactCTA` já bifurca para `ContactCTAReferencia` (vidro + fio ciano +
+          blob/selo + botão com círculo) quando `layoutReferencia` está ligada, e
+          `contatoNoModal` é a porta que faz o botão abrir o `ContactModal` em vez
+          de navegar para `/#contato`. Duplicar a árvore aqui é o que o item 3 da
+          issue proíbe. É o terceiro mount da referência, depois de `/esg`
+          (SIS-253) e `/sistran-university` (SIS-283).
+
+          A ESCRITA NÃO VEM POR PROP: título e parágrafo são os PADRÃO do
+          componente, que é o que o `copy-lock` guarda, e «Fale com a SISTRAN» é
+          literal do arquivo da referência. Repetir o texto aqui criaria uma
+          segunda fonte da verdade para a mesma frase — e o item 4 pede copy
+          intacta.
+
+          `revelar` ENTRA AQUI, ao contrário do primeiro mount da University: esta
+          rota TEM calibre próprio (`./reveal-calibre.ts`, da SIS-273) e o resto da
+          página revela ao rolar. Sem a prop, o bloco da referência entra sem
+          orquestração nenhuma — o cartão navy de antes ao menos tinha o
+          `whileInView` do `vFadeUp`, então deixar `revelar` de fora TIRARIA
+          movimento desta rota em vez de manter. Os números não são inventados
+          aqui: são os mesmos que os outros blocos desta página já usam.
+
+          `className` NÃO seria aproveitado nem se eu passasse: o ramo da
+          referência não o encaminha (`ContactCTA.tsx:172`), de propósito, porque
+          `.cta-ref` traz o próprio campo claro e o `box-shadow` de 54px da SIS-93.
+          E a emenda aqui é o caso de `/sistran-labs`, não o de `/esg`: a seção de
+          cima é `Consulting`, que é `section-light section-light-blue` — claro
+          contra claro, com as duas rampas na mesma cor de base. O número está
+          medido no comentário da issue.
+
+          `haloClaro`, `reativo` e `motionShowcase` seguem desligados (nunca
+          estiveram ligados nesta rota): os três decoram a SUPERFÍCIE NAVY que a
+          referência substitui. */}
+      <ContactCTA
+        layoutReferencia
+        contatoNoModal
+        revelar={{ limiar: LIMIAR_REVEAL, margem: MARGEM_REVEAL }}
+      />
     </PageShell>
   );
 }

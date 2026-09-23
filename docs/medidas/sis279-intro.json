@@ -1,0 +1,244 @@
+{
+  "rota": "http://localhost:3000/solucoes",
+  "quando": "2026-09-22T23:15:16.486Z",
+  "larguras": {
+    "390": {
+      "estado": {
+        "h1Texto": "Soluções, Serviços e Consultoria",
+        "h1Tamanho": 35.2,
+        "capaTemAFraseLonga": false,
+        "capaTemSeguradora": false,
+        "capaTemOLema": false,
+        "capaTemEyebrow": 0,
+        "capaTextoInteiro": "Soluções, Serviços e Consultoria",
+        "introAntesDosCards": true,
+        "introTemAFraseLonga": true,
+        "introTemSeguradora": true,
+        "introTemOLema": true,
+        "introTemFecho": true,
+        "escopoMontado": true,
+        "escopoAceso": "true",
+        "arteEsperada": "/images/consultoria.png",
+        "arteServida": "/images/consultoria.png",
+        "arteCarregada": true,
+        "arteIntrinseca": [
+          1672,
+          941
+        ],
+        "arteAlt": "Executivo apoiando um laço infinito de vidro com uma malha de dados em azul, sobre uma mesa de escritório clara.",
+        "colunas": "350px",
+        "caixaTexto": {
+          "x": 20,
+          "y": 280,
+          "w": 350,
+          "h": 212
+        },
+        "caixaArte": {
+          "x": 17,
+          "y": 531,
+          "w": 355,
+          "h": 206
+        },
+        "arteAoLado": false,
+        "arteFundo": "rgba(0, 0, 0, 0)",
+        "arteBorda": "solid",
+        "lemaMontado": true,
+        "lemaFamiliaDeclarada": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+        "lemaPeso": "400",
+        "lemaTamanho": 30,
+        "lemaEntrelinha": 0.95,
+        "lemaCor": "rgb(18, 59, 93)",
+        "lemaRotate": "-4deg",
+        "lemaTransform": "none",
+        "lemaLarguraKalam": 401.81,
+        "lemaLarguraCorpo": 444.7,
+        "caixaLema": {
+          "x": 19,
+          "y": 395,
+          "w": 243,
+          "h": 59
+        },
+        "riscoMontado": true,
+        "riscoStroke": "rgb(22, 191, 232)",
+        "riscoLargura": 45,
+        "riscoAnimacao": "solucoes-lema-risco-desenha",
+        "riscoOffset": 0,
+        "destaqueCor": "rgb(0, 121, 203)",
+        "destaquePeso": "600"
+      },
+      "contrasteDoLema": {
+        "tinta": [
+          18,
+          59,
+          93
+        ],
+        "fundo": [
+          234,
+          245,
+          252
+        ],
+        "razao": 10.48
+      },
+      "respostas400": [],
+      "errosDeConsole": []
+    },
+    "1440": {
+      "estado": {
+        "h1Texto": "Soluções, Serviços e Consultoria",
+        "h1Tamanho": 70.4,
+        "capaTemAFraseLonga": false,
+        "capaTemSeguradora": false,
+        "capaTemOLema": false,
+        "capaTemEyebrow": 0,
+        "capaTextoInteiro": "Soluções, Serviços e Consultoria",
+        "introAntesDosCards": true,
+        "introTemAFraseLonga": true,
+        "introTemSeguradora": true,
+        "introTemOLema": true,
+        "introTemFecho": true,
+        "escopoMontado": true,
+        "escopoAceso": "true",
+        "arteEsperada": "/images/consultoria.png",
+        "arteServida": "/images/consultoria.png",
+        "arteCarregada": true,
+        "arteIntrinseca": [
+          1672,
+          941
+        ],
+        "arteAlt": "Executivo apoiando um laço infinito de vidro com uma malha de dados em azul, sobre uma mesa de escritório clara.",
+        "colunas": "530px 530px",
+        "caixaTexto": {
+          "x": 162,
+          "y": 338,
+          "w": 530,
+          "h": 278
+        },
+        "caixaArte": {
+          "x": 744,
+          "y": 321,
+          "w": 538,
+          "h": 312
+        },
+        "arteAoLado": true,
+        "arteFundo": "rgba(0, 0, 0, 0)",
+        "arteBorda": "solid",
+        "lemaMontado": true,
+        "lemaFamiliaDeclarada": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+        "lemaPeso": "400",
+        "lemaTamanho": 43.2,
+        "lemaEntrelinha": 0.95,
+        "lemaCor": "rgb(18, 59, 93)",
+        "lemaRotate": "-4deg",
+        "lemaTransform": "none",
+        "lemaLarguraKalam": 401.81,
+        "lemaLarguraCorpo": 444.7,
+        "caixaLema": {
+          "x": 160,
+          "y": 498,
+          "w": 350,
+          "h": 79
+        },
+        "riscoMontado": true,
+        "riscoStroke": "rgb(22, 191, 232)",
+        "riscoLargura": 45,
+        "riscoAnimacao": "solucoes-lema-risco-desenha",
+        "riscoOffset": 0,
+        "destaqueCor": "rgb(0, 121, 203)",
+        "destaquePeso": "600"
+      },
+      "contrasteDoLema": {
+        "tinta": [
+          18,
+          59,
+          93
+        ],
+        "fundo": [
+          227,
+          241,
+          250
+        ],
+        "razao": 10.07
+      },
+      "respostas400": [],
+      "errosDeConsole": []
+    }
+  },
+  "reduce": {
+    "sistema": {
+      "riscoAnimacao": "none",
+      "riscoOffset": 0,
+      "riscoVisivel": true,
+      "lemaOpacidade": "1",
+      "lemaVisivel": true,
+      "lemaRotate": "-4deg",
+      "imagemVisivel": true,
+      "imagemCarregada": true
+    },
+    "chave": {
+      "riscoAnimacao": "none",
+      "riscoOffset": 0,
+      "riscoVisivel": true,
+      "lemaOpacidade": "1",
+      "lemaVisivel": true,
+      "lemaRotate": "-4deg",
+      "imagemVisivel": true,
+      "imagemCarregada": true
+    }
+  },
+  "traco": {
+    "390": {
+      "amostras": [
+        {
+          "offset": 1,
+          "animacao": "solucoes-lema-risco-desenha",
+          "aceso": "true"
+        },
+        {
+          "offset": 0.822438,
+          "animacao": "solucoes-lema-risco-desenha",
+          "aceso": "true"
+        },
+        {
+          "offset": 0.420221,
+          "animacao": "solucoes-lema-risco-desenha",
+          "aceso": "true"
+        },
+        {
+          "offset": 0,
+          "animacao": "solucoes-lema-risco-desenha",
+          "aceso": "true"
+        }
+      ],
+      "valoresDistintos": 4,
+      "caiu": true,
+      "terminouDesenhado": true
+    },
+    "1440": {
+      "amostras": [
+        {
+          "offset": 1,
+          "animacao": "solucoes-lema-risco-desenha",
+          "aceso": "true"
+        },
+        {
+          "offset": 0.938707,
+          "animacao": "solucoes-lema-risco-desenha",
+          "aceso": "true"
+        },
+        {
+          "offset": 0.609306,
+          "animacao": "solucoes-lema-risco-desenha",
+          "aceso": "true"
+        },
+        {
+          "offset": 0,
+          "animacao": "solucoes-lema-risco-desenha",
+          "aceso": "true"
+        }
+      ],
+      "valoresDistintos": 4,
+      "caiu": true,
+      "terminouDesenhado": true
+    }
+  }
+}

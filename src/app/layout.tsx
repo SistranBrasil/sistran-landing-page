@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Geist_Mono, Kalam } from 'next/font/google';
 import './globals.css';
 import Background from '@/components/Background';
 import SmoothScroll from '@/components/ui/SmoothScroll';
@@ -220,6 +220,25 @@ const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   display: 'swap',
 });
+/* SIS-280 — A TERCEIRA FAMÍLIA, e ela é de UM USO SÓ: a frase manuscrita do hero da
+   `/solucoes/luminna-ai` («Grandes ideias constroem amanhã.»), especificada em
+   `docs/fonte2.md`. Kalam é a escolha do documento, e a razão dela está escrita lá:
+   NÃO é caligrafia de convite — é letra de mão apressada, que é o que faz a frase
+   parecer anotação humana sobre a arte e não assinatura decorativa.
+   SÓ O CORTE 400, porque a especificação pede `font-weight: 400` e mais nada; um
+   segundo corte seria peso que ninguém pede baixando em toda rota do site.
+   `display: 'swap'` como as outras duas: a frase é decorativa-editorial e não pode
+   sumir por três segundos esperando arquivo. O fallback declarado no CSS é Caveat e
+   depois `cursive` — se a família não chegar, ainda se lê como manuscrito.
+   `subsets: ['latin']` cobre o «ã» de «amanhã» (U+00E3 está no latin básico do
+   Google Fonts; `latin-ext` não é necessário para esta frase).
+   A variável é consumida em UM lugar: `.luminna-frase` no fim do `globals.css`. */
+const kalam = Kalam({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-kalam',
+  display: 'swap',
+});
 
 const SITE_TITLE = 'Sistran · Beyond Technology';
 const SITE_DESCRIPTION =
@@ -278,7 +297,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
        O escopo é o atributo deste elemento — não silencia os filhos. */
     <html
       lang="pt-BR"
-      className={`${geistSans.variable} ${geistMono.variable}`}
+      className={`${geistSans.variable} ${geistMono.variable} ${kalam.variable}`}
       suppressHydrationWarning
     >
       {/* O `<head>` manual SAIU daqui, e o script que vivia dentro dele desceu
@@ -312,7 +331,22 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           `document.documentElement` e `window.matchMedia`, nenhuma delas
           dependente de estar no `<head>`. As folhas de estilo do `<head>` já
           foram baixadas nesse ponto, mas o paint só acontece depois, então
-          `data-motion` continua gravado antes de o CSS resolver a política. */}
+          `data-motion` continua gravado antes de o CSS resolver a política.
+
+          O AVISO AINDA VOLTA NUMA SITUAÇÃO, e ela é só de desenvolvimento: quando
+          o Fast Refresh RE-RENDERIZA este `RootLayout` numa aba já aberta — o que
+          acontece sempre que alguém EDITA este arquivo com o `next dev` rodando —,
+          o React passa pelo `case "script"` do renderizador de cliente e avisa
+          «Encountered a script tag while rendering React component». Não é
+          regressão e não chega ao navegador de ninguém: é o mesmo caminho de
+          criação de nó, agora sem HTML do servidor para casar. Recarregar a aba
+          limpa. Medido na SIS-280 (2ª volta), depois de editar este arquivo: 0
+          erro de console em carga limpa de `/`, `/solucoes`,
+          `/solucoes/luminna-ai`, `/solucoes/match-ai`, `/contato` e `/esg`, com e
+          sem a preferência de movimento semeada, e 0 em navegação por cliente.
+          Não há correção a fazer AQUI sem perder a garantia de pré-paint: as duas
+          alternativas (`<head>` manual e `next/script`) são as que os parágrafos
+          acima descartam, cada uma com o seu motivo medido. */}
       <body className="font-sans antialiased">
         {/* Antes do primeiro paint: grava `data-motion` e intercepta matchMedia.
             Tem de continuar sendo o primeiro filho do body no JSX — ver a nota

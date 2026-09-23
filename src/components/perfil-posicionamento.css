@@ -1,0 +1,171 @@
+/* SIS-42 — a seção «Perfil & posicionamento» reduzida a fundo + casca + arte.
+   Companheiro de `PerfilPosicionamentoArte.tsx`; o porquê de cada camada está
+   no docblock de lá, e aqui ficam os NÚMEROS. */
+
+/* ── O FUNDO DA SEÇÃO ──────────────────────────────────────────────────────────
+   2ª passada, a pedido: «o fundo tem de ser da mesma cor e CONTINUAÇÃO dos
+   números». A primeira volta usava os três degradês de `.eco-secao`
+   (`positioning-ecosystem.css`) — navy também, mas OUTRO navy: a captura mostrava
+   uma linha horizontal nítida onde a faixa dos indicadores acabava e esta seção
+   começava. Herdar o desenho do componente antigo não tinha virtude nenhuma
+   depois que ele saiu de cena.
+
+   Agora é o MESMO degradê declarado em `.sobre-metricas` (`sobre-nos.css:463`),
+   copiado valor por valor: mesmo ângulo, mesmas três paradas. Copiado e não
+   importado de propósito — `sobre-nos.css` pertence à SIS-280, e um seletor meu
+   dentro do arquivo dela faria a próxima passada lá mexer nesta seção sem saber.
+
+   O QUE NÃO VEIO, e por quê: o `radial-gradient` que a faixa tem em `12% 0%`.
+   Ele clareia o canto superior esquerdo DELA; repetido aqui acenderia um segundo
+   foco a poucos pixels da junta — justamente onde a continuidade tem de ser
+   invisível. Na faixa esse radial já chega transparente à base (elipse de 120%
+   de altura terminando em 60%), então a junta não perde nada.
+
+   O ÂNGULO É `90deg`, E NÃO OS `105deg` QUE A FAIXA TINHA. Copiar as três paradas
+   não fechou a emenda: um degradê inclinado tem componente vertical, e o mesmo
+   valor pintado em duas caixas de alturas diferentes chega na junta em paradas
+   diferentes — a sonda mediu ΔRGB de 10 a 1440 e de 37 a 390, com a faixa sempre
+   mais clara que esta seção. Em `90deg` a cor depende só de `x / largura`; as duas
+   caixas são full-bleed e de largura igual, então a emenda é idêntica por
+   construção, em qualquer viewport. A faixa foi para `90deg` junto
+   (`sobre-nos.css`, com a nota do porquê lá) — é a única linha de «Sobre nós» que
+   esta passada tocou, e tocou porque a continuidade pedida não existe de um lado só.
+
+   A emenda foi medida pixel a pixel em sete colunas e em três larguras: o
+   relatório está no comentário da SIS-42. Depois da mudança de ângulo, ΔRGB de 0 a 1
+   em dezenove das vinte e uma colunas. As duas que sobraram (Δ18 a 1440, Δ15 a 768,
+   uma coluna cada) NÃO são diferença de tinta: escondendo `.sobre-atmosfera` e os
+   nós da aresta da faixa elas caem para 0 e 1. É a atmosfera decorativa de «Sobre
+   nós» morrendo junto com a caixa dela — desenho da SIS-280, dentro da seção dela, e
+   não uma emenda mal fechada desta. Fica como está. */
+.perfil-secao {
+  position: relative;
+  background: linear-gradient(90deg, #041d37 0%, #06325c 46%, #0a3e70 100%);
+}
+
+/* ── OS RISCOS ────────────────────────────────────────────────────────────────
+   `z-index: -1` como a `.grade-tecnica` da casa, e por isso mesmo o `isolate`
+   da seção é obrigatório — sem ele as duas camadas sobem para o contexto do
+   ancestral e pintam sob o fundo opaco de lá. */
+.perfil-riscos {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  /* A mesma máscara de entrada/saída da `.grade-tecnica`: os fios morrem antes
+     de encostar nas seções vizinhas, senão viram corte seco na emenda. */
+  mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+  -webkit-mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent);
+}
+.perfil-riscos > svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── A CASCA ──────────────────────────────────────────────────────────────────
+   Valores do cartão do «Fale com a Gente!» (`ContactCTA.tsx`): o raio de
+   `rounded-3xl` (1.5rem), a borda `white/12`, o degradê diagonal escurecido na
+   SIS-157 para o contraste passar nas oito rotas, e a mesma sombra projetada.
+   O teto de 1200px existe porque a arte tem 1672px de largura nativa: deixá-la
+   crescer além disso só interpolaria pixel para cima sem ganho de leitura. */
+.perfil-casca {
+  position: relative;
+  overflow: hidden;
+  max-width: 1200px;
+  margin-inline: auto;
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: clamp(0.75rem, 2vw, 1.75rem);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 62, 118, 0.95) 0%,
+    rgba(0, 88, 155, 0.9) 50%,
+    rgba(14, 160, 220, 0.35) 100%
+  );
+  box-shadow: 0 30px 80px -30px rgba(0, 77, 138, 0.8);
+}
+
+/* O brilho de canto do cartão de contato, no mesmo lugar e no mesmo raio. */
+.perfil-casca-brilho {
+  position: absolute;
+  right: -6rem;
+  top: -6rem;
+  width: 20rem;
+  height: 20rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.12);
+  filter: blur(110px);
+  pointer-events: none;
+}
+
+/* ── A JANELA DA ARTE ─────────────────────────────────────────────────────────
+   Em tela larga não há rolagem alguma: `overflow: visible` seria o mesmo, mas
+   `auto` deixa o navegador decidir e some sozinho quando não precisa. */
+.perfil-janela {
+  position: relative;
+  overflow-x: auto;
+  border-radius: 0.75rem;
+  /* O foco é visível de propósito — a janela é focalizável para quem rola por
+     teclado, e foco sem contorno é foco invisível. */
+  outline-offset: 3px;
+}
+.perfil-arte {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+}
+
+/* A DICA DE ROLAGEM. Existe só na faixa em que a janela rola; acima de 62rem a
+   arte cabe inteira e a frase seria falsa, então ela sai do fluxo por
+   `display: none` em vez de por opacidade — assim também não é lida por leitor
+   de tela onde não se aplica. */
+.perfil-dica {
+  display: none;
+}
+
+/* Abaixo de 62rem a arte para de encolher: 760px é o piso em que o corpo de
+   texto desenhado (~20px a 1672) ainda fica em ~9px na tela, que é o limite de
+   leitura. Daí para baixo quem alcança o resto é a rolagem da janela — e não o
+   documento, que continua sem transbordo. */
+@media (max-width: 61.99rem) {
+  .perfil-arte {
+    width: 760px;
+    min-width: 760px;
+  }
+  .perfil-janela {
+    /* Faixa de rolagem sempre visível nesta faixa: rolagem que não se anuncia
+       não é descoberta. */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.35) rgba(255, 255, 255, 0.08);
+  }
+
+  .perfil-dica {
+    display: block;
+    margin: 0.75rem 0 0;
+    text-align: center;
+    /* 12,5px é o piso de texto de apoio da casa. Branco a 72% sobre o navy da
+       casca — o contraste foi remedido pixel a pixel depois da dica entrar, com
+       média E pior pixel, porque texto pequeno esconde reprovação na média. */
+    font-size: 0.78rem;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  /* A FRANJA. O corte na borda direita tem de parecer continuação, não erro de
+     layout: 40px de véu sobre a última coluna de pixels da arte. Fica na CASCA e
+     não na janela porque pseudo-elemento dentro do contêiner rolável rola junto
+     com o conteúdo e sairia de quadro na primeira arrastada. */
+  .perfil-casca::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    pointer-events: none;
+    background: linear-gradient(to left, rgba(0, 62, 118, 0.85), transparent);
+  }
+}

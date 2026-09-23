@@ -1,0 +1,2022 @@
+{
+  "esperado": {
+    "LEAD": "Uma solução integrada de IA generativa que orquestra todo o Ciclo de Vida de Desenvolvimento de Software (SDLC), agilizando processos e integrando ferramentas líderes de mercado.",
+    "DESAFIOS": [
+      [
+        "Demanda Crescente",
+        "Como atender à necessidade de código de alta qualidade de forma ágil e produtiva?"
+      ],
+      [
+        "Débitos Técnicos",
+        "Como evitar a acumulação de débitos técnicos e resolver os existentes?"
+      ],
+      [
+        "Segurança e Conformidade",
+        "Como garantir baixa vulnerabilidade e respostas rápidas?"
+      ],
+      [
+        "Documentação Eficiente",
+        "Como manter registros claros e acessíveis?"
+      ]
+    ],
+    "BENEFICIOS": [
+      [
+        "Melhoria na Qualidade e Confiabilidade",
+        "Produtos mais robustos e confiáveis"
+      ],
+      [
+        "Aumento da Produtividade",
+        "Equipes mais eficientes e projetos mais rápidos"
+      ],
+      [
+        "Redução de Retrabalho e Custos",
+        "Menos correções e otimização de recursos"
+      ],
+      [
+        "Satisfação do Cliente",
+        "Experiência aprimorada para o usuário final"
+      ],
+      [
+        "Precisão em Previsões e Estimativas",
+        "Planejamento mais assertivo"
+      ],
+      [
+        "Redução do Time to Market",
+        "Lançamentos mais rápidos e competitivos"
+      ],
+      [
+        "Aumento da Robustez de Sistemas",
+        "Soluções mais estáveis e seguras"
+      ]
+    ],
+    "INTRO_INTEGRACAO": "O Luminna AI foi desenvolvido para ser facilmente integrável, oferecendo compatibilidade com uma ampla variedade de soluções de software de terceiros.",
+    "INTEGRACAO": [
+      "Repositórios de código",
+      "Ferramentas de Análise de Código",
+      "Serviços de IA",
+      "Ferramentas de Gestão de Projetos"
+    ],
+    "FECHO": [
+      "O Luminna AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez.",
+      "Com sua integração versátil e ferramentas avançadas, é a solução ideal para empresas que buscam se destacar no mercado competitivo atual."
+    ],
+    "ANCORAS_ESPERADAS": [
+      "desafios-no-desenvolvimento-de-software",
+      "beneficios",
+      "integracao-versatil"
+    ],
+    "TITULOS_DERIVADOS": [
+      "Todo o Ciclo de Vida de Desenvolvimento de Software",
+      "Uma revolução no desenvolvimento de software"
+    ]
+  },
+  "rotas": {
+    "velha": {
+      "status": 308,
+      "location": "/solucoes/luminna-ai"
+    },
+    "nova": {
+      "status": 200
+    },
+    "noNavegador": {
+      "urlFinal": "http://localhost:3000/solucoes/luminna-ai",
+      "statusFinal": 200
+    }
+  },
+  "w390": {
+    "status": 200,
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "todo-o-ciclo-de-vida-de-desenvolvimento-de-software",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Todo o Ciclo de Vida de Desenvolvimento de S",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "desafios-no-desenvolvimento-de-software",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Desafios no desenvolvimento de software",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "beneficios",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Benefícios",
+        "cards": 7,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "integracao-versatil",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Integração Versátil",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "uma-revolucao-no-desenvolvimento-de-software",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Uma revolução no desenvolvimento de software",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Conheça também",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "identidade": {
+      "nosDeIrmas": {
+        "matchai": 0,
+        "smartminer": 0,
+        "qaintegrado": 0,
+        "gurudeseguros": 0,
+        "connectapi": 0
+      },
+      "nosLuminna": 132,
+      "aneis": 5,
+      "orbitas": 15,
+      "pontos": 5,
+      "marcas": 40,
+      "cartoes": 8,
+      "arcos": 8,
+      "etapas": 7,
+      "discos": 7,
+      "fios": 1,
+      "pulsos": 1,
+      "grades": 2,
+      "letreiro": {
+        "temImagem": true,
+        "alt": "Luminna AI",
+        "src": "/images/logos/Lumina-AI-horizontal-branca.png",
+        "largura": 224,
+        "textoSolto": ""
+      },
+      "carimbos": 0,
+      "capaDoHero": "/images/solucoes/capa-card/luminna-ai-realista-componentes-v3.webp",
+      "artesDeMidia": [
+        "/images/solucoes/capa-card/luminna-ai-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/match-ai-realista-componentes-v3.webp",
+        "/images/logos/MatchAIlogo.png",
+        "/images/solucoes/capa-card/fast-realista-componentes-v3.webp",
+        "/images/logos/Fastlogo.png",
+        "/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp",
+        "/images/logos/QA-2-logo.png",
+        "/images/solucoes/capa-card/connect-api-realista-componentes-v3.webp",
+        "/images/logos/logoConnectAPI.png",
+        "/images/solucoes/capa-card/smart-miner-realista-componentes-v3.webp",
+        "/images/logos/Logo-Smart-Miner-1.png",
+        "/images/solucoes/capa-card/guru-de-seguros-realista-componentes-v3.webp",
+        "/images/logos/Guru-de-Seguros-letra-clara-2.png"
+      ]
+    },
+    "escrita": {
+      "titulos": [
+        "",
+        "Todo o Ciclo de Vida de Desenvolvimento de Software",
+        "Desafios no desenvolvimento de software",
+        "Demanda Crescente",
+        "Débitos Técnicos",
+        "Segurança e Conformidade",
+        "Documentação Eficiente",
+        "Benefícios",
+        "Melhoria na Qualidade e Confiabilidade",
+        "Aumento da Produtividade",
+        "Redução de Retrabalho e Custos",
+        "Satisfação do Cliente",
+        "Precisão em Previsões e Estimativas",
+        "Redução do Time to Market",
+        "Aumento da Robustez de Sistemas",
+        "Integração Versátil",
+        "Uma revolução no desenvolvimento de software",
+        "Conheça também",
+        "Fale com a Gente!"
+      ],
+      "idsDosTitulos": [
+        {
+          "id": "todo-o-ciclo-de-vida-de-desenvolvimento-de-software",
+          "texto": "Todo o Ciclo de Vida de Desenvolvimento de Software"
+        },
+        {
+          "id": "desafios-no-desenvolvimento-de-software",
+          "texto": "Desafios no desenvolvimento de software"
+        },
+        {
+          "id": "beneficios",
+          "texto": "Benefícios"
+        },
+        {
+          "id": "integracao-versatil",
+          "texto": "Integração Versátil"
+        },
+        {
+          "id": "uma-revolucao-no-desenvolvimento-de-software",
+          "texto": "Uma revolução no desenvolvimento de software"
+        },
+        {
+          "id": "conheca-tambem",
+          "texto": "Conheça também"
+        }
+      ],
+      "subtituloDoHero": "Uma solução integrada de IA generativa que orquestra todo o Ciclo de Vida de Desenvolvimento de Software (SDLC)",
+      "paragrafos": [
+        "Uma solução integrada de IA generativa que orquestra todo o Ciclo de Vida de Desenvolvimento de Software (SDLC)",
+        "Fale com um especialista",
+        "Uma solução integrada de IA generativa que orquestra todo o Ciclo de Vida de Desenvolvimento de Software (SDLC), agilizando processos e integrando ferramentas líderes de mercado.",
+        "Solução integrada com uso de IA generativa que orquestra toda a esteira do DEVOPs, gerando maior produtividade em toda cadeia, especialmente na codificação, integrada às ferramentas líderes de mercado.",
+        "Como atender à necessidade de código de alta qualidade de forma ágil e produtiva?",
+        "Como evitar a acumulação de débitos técnicos e resolver os existentes?",
+        "Como garantir baixa vulnerabilidade e respostas rápidas?",
+        "Como manter registros claros e acessíveis?",
+        "Produtos mais robustos e confiáveis",
+        "Equipes mais eficientes e projetos mais rápidos",
+        "Menos correções e otimização de recursos",
+        "Experiência aprimorada para o usuário final",
+        "Planejamento mais assertivo",
+        "Lançamentos mais rápidos e competitivos",
+        "Soluções mais estáveis e seguras",
+        "O Luminna AI foi desenvolvido para ser facilmente integrável, oferecendo compatibilidade com uma ampla variedade de soluções de software de terceiros.",
+        "Repositórios de código",
+        "Ferramentas de Análise de Código",
+        "Serviços de IA",
+        "Ferramentas de Gestão de Projetos",
+        "O Luminna AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez.",
+        "Com sua integração versátil e ferramentas avançadas, é a solução ideal para empresas que buscam se destacar no mercado competitivo atual.",
+        "Soluções que trabalham juntas para uma seguradora mais inteligente e conectada.",
+        "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades."
+      ],
+      "cartoes": [
+        {
+          "titulo": "Demanda Crescente",
+          "texto": "Como atender à necessidade de código de alta qualidade de forma ágil e produtiva?"
+        },
+        {
+          "titulo": "Débitos Técnicos",
+          "texto": "Como evitar a acumulação de débitos técnicos e resolver os existentes?"
+        },
+        {
+          "titulo": "Segurança e Conformidade",
+          "texto": "Como garantir baixa vulnerabilidade e respostas rápidas?"
+        },
+        {
+          "titulo": "Documentação Eficiente",
+          "texto": "Como manter registros claros e acessíveis?"
+        },
+        {
+          "titulo": null,
+          "texto": "Repositórios de código"
+        },
+        {
+          "titulo": null,
+          "texto": "Ferramentas de Análise de Código"
+        },
+        {
+          "titulo": null,
+          "texto": "Serviços de IA"
+        },
+        {
+          "titulo": null,
+          "texto": "Ferramentas de Gestão de Projetos"
+        }
+      ],
+      "etapas": [
+        {
+          "titulo": "Melhoria na Qualidade e Confiabilidade",
+          "texto": "Produtos mais robustos e confiáveis"
+        },
+        {
+          "titulo": "Aumento da Produtividade",
+          "texto": "Equipes mais eficientes e projetos mais rápidos"
+        },
+        {
+          "titulo": "Redução de Retrabalho e Custos",
+          "texto": "Menos correções e otimização de recursos"
+        },
+        {
+          "titulo": "Satisfação do Cliente",
+          "texto": "Experiência aprimorada para o usuário final"
+        },
+        {
+          "titulo": "Precisão em Previsões e Estimativas",
+          "texto": "Planejamento mais assertivo"
+        },
+        {
+          "titulo": "Redução do Time to Market",
+          "texto": "Lançamentos mais rápidos e competitivos"
+        },
+        {
+          "titulo": "Aumento da Robustez de Sistemas",
+          "texto": "Soluções mais estáveis e seguras"
+        }
+      ],
+      "textoVisivel": "Uma solução integrada de IA generativa que orquestra todo o Ciclo de Vida de Desenvolvimento de Software (SDLC)\n\nFale com um especialista\n\nTodo o Ciclo de Vida de Desenvolvimento de Software\n\nUma solução integrada de IA generativa que orquestra todo o Ciclo de Vida de Desenvolvimento de Software (SDLC), agilizando processos e integrando ferramentas líderes de mercado.\n\nDesafios no desenvolvimento de software\n\nSolução integrada com uso de IA generativa que orquestra toda a esteira do DEVOPs, gerando maior produtividade em toda cadeia, especialmente na codificação, integrada às ferramentas líderes de mercado.\n\nDemanda Crescente\n\nComo atender à necessidade de código de alta qualidade de forma ágil e produtiva?\n\nDébitos Técnicos\n\nComo evitar a acumulação de débitos técnicos e resolver os existentes?\n\nSegurança e Conformidade\n\nComo garantir baixa vulnerabilidade e respostas rápidas?\n\nDocumentação Eficiente\n\nComo manter registros claros e acessíveis?\n\nBenefícios\nMelhoria na Qualidade e Confiabilidade\n\nProdutos mais robustos e confiáveis\n\nAumento da Produtividade\n\nEquipes mais eficientes e projetos mais rápidos\n\nRedução de Retrabalho e Custos\n\nMenos correções e otimização de recursos\n\nSatisfação do Cliente\n\nExperiência aprimorada para o usuário final\n\nPrecisão em Previsões e Estimativas\n\nPlanejamento mais assertivo\n\nRedução do Time to Market\n\nLançamentos mais rápidos e competitivos\n\nAumento da Robustez de Sistemas\n\nSoluções mais estáveis e seguras\n\nIntegração Versátil\n\nO Luminna AI foi desenvolvido para ser facilmente integrável, oferecendo compatibilidade com uma ampla variedade de soluções de software de terceiros.\n\nRepositórios de código\n\nFerramentas de Análise de Código\n\nServiços de IA\n\nFerramentas de Gestão de Projetos\n\nUma revolução no desenvolvimento de software\n\nO Luminna AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez.\n\nCom sua integração versátil e ferramentas avançadas, é a solução ideal para empresas que buscam se destacar no mercado competitivo atual.\n\nConheça também\n\nSoluções que trabalham juntas para uma seguradora mais inteligente e conectada.\n\nMatch AI\nLuminna AI\nFast\nQA Integrado\nConnect API\nSmart Miner\nGuru de Seguros\nVer todas as soluções e serviços\nCONTATO\nFale com a Gente!\n\nQuer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.\n\nFale com a SISTRAN",
+      "leadNaTela": true,
+      "subtituloEhPrefixoDoLead": true,
+      "desafiosBatem": true,
+      "beneficiosBatem": true,
+      "introNaTela": true,
+      "integracaoBate": true,
+      "fechoNaTela": true,
+      "ancorasBatem": true,
+      "derivadosNaoColidem": true,
+      "idsDuplicados": [],
+      "grafiaNoMain": {
+        "erradas": 0,
+        "certas": 3
+      },
+      "grafiaNaPagina": {
+        "erradas": 0,
+        "certas": 3
+      }
+    },
+    "tomDasParadas": [
+      {
+        "id": "desafios-no-desenvolvimento-de-software",
+        "existe": true,
+        "clara": true,
+        "corDeFundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "beneficios",
+        "existe": true,
+        "clara": false,
+        "corDeFundo": "rgb(0, 26, 61)"
+      },
+      {
+        "id": "integracao-versatil",
+        "existe": true,
+        "clara": true,
+        "corDeFundo": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "movimento": {
+      "orbita": {
+        "nos": 15,
+        "visiveis": 0,
+        "moveramDosVisiveis": 0,
+        "amostra": [
+          {
+            "animacao": "luminna-orbita-gira",
+            "quadroA": "0deg",
+            "quadroB": "0deg",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "luminna-orbita-gira",
+            "quadroA": "360deg",
+            "quadroB": "360deg",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          }
+        ]
+      },
+      "pontoEmOrbita": {
+        "nos": 5,
+        "visiveis": 0,
+        "moveramDosVisiveis": 0,
+        "amostra": [
+          {
+            "animacao": "luminna-orbita-gira",
+            "quadroA": "0deg",
+            "quadroB": "0deg",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "luminna-orbita-gira",
+            "quadroA": "0deg",
+            "quadroB": "0deg",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          }
+        ]
+      },
+      "marca": {
+        "nos": 40,
+        "visiveis": 0,
+        "moveramDosVisiveis": 0,
+        "amostra": [
+          {
+            "animacao": "luminna-marca-acende",
+            "quadroA": "0.25",
+            "quadroB": "0.25",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          },
+          {
+            "animacao": "luminna-marca-acende",
+            "quadroA": "0.625",
+            "quadroB": "0.625",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          }
+        ]
+      },
+      "arcoDoSelo": {
+        "nos": 8,
+        "visiveis": 8,
+        "moveramDosVisiveis": 8,
+        "amostra": [
+          {
+            "animacao": "luminna-arco-gira",
+            "quadroA": "316.22deg",
+            "quadroB": "344.581deg",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "luminna-arco-gira",
+            "quadroA": "7.49023deg",
+            "quadroB": "35.8517deg",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          }
+        ]
+      },
+      "trilhoDoCartao": {
+        "nos": 8,
+        "visiveis": 8,
+        "moveramDosVisiveis": 5,
+        "amostra": [
+          {
+            "animacao": "luminna-trilho-corre",
+            "quadroA": "1",
+            "quadroB": "1",
+            "display": "block",
+            "visivel": true,
+            "moveu": false
+          },
+          {
+            "animacao": "luminna-trilho-corre",
+            "quadroA": "0.126614 1",
+            "quadroB": "0.207431 1",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          }
+        ]
+      },
+      "pulsoDoFio": {
+        "nos": 1,
+        "visiveis": 0,
+        "moveramDosVisiveis": 0,
+        "amostra": [
+          {
+            "animacao": "luminna-pulso-desce",
+            "quadroA": "0.12px",
+            "quadroB": "0.12px",
+            "display": "inline",
+            "visivel": false,
+            "moveu": false
+          }
+        ]
+      },
+      "haloDoDisco": {
+        "nos": 7,
+        "visiveis": 7,
+        "moveramDosVisiveis": 7,
+        "amostra": [
+          {
+            "animacao": "luminna-no-brilha",
+            "quadroA": "rgba(87, 183, 238, 0.01) 0px 0px 0px 0.364081px",
+            "quadroB": "rgba(87, 183, 238, 0.047) 0px 0px 0px 1.62393px",
+            "display": "flex",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "luminna-no-brilha",
+            "quadroA": "rgba(87, 183, 238, 0.133) 0px 0px 0px 4.76732px",
+            "quadroB": "rgba(87, 183, 238, 0.14) 0px 0px 0px 4.97152px",
+            "display": "flex",
+            "visivel": true,
+            "moveu": true
+          }
+        ]
+      },
+      "trilhoDoCartaoJanelaLonga": {
+        "nos": 8,
+        "moveram": 8,
+        "amostra": [
+          {
+            "quadroA": "0.416184 1",
+            "quadroB": "1",
+            "moveu": true
+          },
+          {
+            "quadroA": "0.167169 1",
+            "quadroB": "1",
+            "moveu": true
+          }
+        ]
+      }
+    },
+    "contrastes": [
+      {
+        "alvo": "H1",
+        "tinta": "rgb(248, 250, 252)",
+        "fundoComposto": "rgb(14, 34, 64)",
+        "contraste": 15.188
+      },
+      {
+        "alvo": "Fale com um especialista",
+        "tinta": "rgb(4, 33, 43)",
+        "fundoComposto": "rgb(87, 183, 238)",
+        "contraste": 7.485
+      },
+      {
+        "alvo": "Todo o Ciclo de Vida de Desenvolvi",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(232, 243, 252)",
+        "contraste": 14.436
+      },
+      {
+        "alvo": "Desafios no desenvolvimento de sof",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(232, 240, 248)",
+        "contraste": 14.122
+      },
+      {
+        "alvo": "Benefícios",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(1, 27, 62)",
+        "contraste": 17.106
+      },
+      {
+        "alvo": "Integração Versátil",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(232, 240, 248)",
+        "contraste": 14.122
+      },
+      {
+        "alvo": "Uma revolução no desenvolvimento d",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(0, 73, 130)",
+        "contraste": 9.229
+      },
+      {
+        "alvo": "Conheça também",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(232, 240, 249)",
+        "contraste": 14.131
+      },
+      {
+        "alvo": "Fale com a Gente!",
+        "tinta": "rgb(6, 39, 95)",
+        "fundoComposto": "rgb(157, 232, 247)",
+        "contraste": 10.47
+      },
+      {
+        "alvo": "Fale com a SISTRAN",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(6, 42, 98)",
+        "contraste": 13.859
+      }
+    ],
+    "subtituloContraste": {
+      "tinta": "rgba(255, 255, 255, 0.85)",
+      "fundoComposto": "rgb(6, 28, 59)",
+      "contraste": 16.977
+    },
+    "erros": []
+  },
+  "w1440": {
+    "status": 200,
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "todo-o-ciclo-de-vida-de-desenvolvimento-de-software",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Todo o Ciclo de Vida de Desenvolvimento de S",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "desafios-no-desenvolvimento-de-software",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Desafios no desenvolvimento de software",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "beneficios",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Benefícios",
+        "cards": 7,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "integracao-versatil",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Integração Versátil",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "uma-revolucao-no-desenvolvimento-de-software",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Uma revolução no desenvolvimento de software",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Conheça também",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "identidade": {
+      "nosDeIrmas": {
+        "matchai": 0,
+        "smartminer": 0,
+        "qaintegrado": 0,
+        "gurudeseguros": 0,
+        "connectapi": 0
+      },
+      "nosLuminna": 132,
+      "aneis": 5,
+      "orbitas": 15,
+      "pontos": 5,
+      "marcas": 40,
+      "cartoes": 8,
+      "arcos": 8,
+      "etapas": 7,
+      "discos": 7,
+      "fios": 1,
+      "pulsos": 1,
+      "grades": 2,
+      "letreiro": {
+        "temImagem": true,
+        "alt": "Luminna AI",
+        "src": "/images/logos/Lumina-AI-horizontal-branca.png",
+        "largura": 400,
+        "textoSolto": ""
+      },
+      "carimbos": 0,
+      "capaDoHero": "/images/solucoes/capa-card/luminna-ai-realista-componentes-v3.webp",
+      "artesDeMidia": [
+        "/images/solucoes/capa-card/luminna-ai-realista-componentes-v3.webp",
+        "/images/solucoes/capa-card/match-ai-realista-componentes-v3.webp",
+        "/images/logos/MatchAIlogo.png",
+        "/images/solucoes/capa-card/fast-realista-componentes-v3.webp",
+        "/images/logos/Fastlogo.png",
+        "/images/solucoes/capa-card/qa-integrado-realista-componentes-v3.webp",
+        "/images/logos/QA-2-logo.png",
+        "/images/solucoes/capa-card/connect-api-realista-componentes-v3.webp",
+        "/images/logos/logoConnectAPI.png",
+        "/images/solucoes/capa-card/smart-miner-realista-componentes-v3.webp",
+        "/images/logos/Logo-Smart-Miner-1.png",
+        "/images/solucoes/capa-card/guru-de-seguros-realista-componentes-v3.webp",
+        "/images/logos/Guru-de-Seguros-letra-clara-2.png"
+      ]
+    },
+    "escrita": {
+      "titulos": [
+        "",
+        "Todo o Ciclo de Vida de Desenvolvimento de Software",
+        "Desafios no desenvolvimento de software",
+        "Demanda Crescente",
+        "Débitos Técnicos",
+        "Segurança e Conformidade",
+        "Documentação Eficiente",
+        "Benefícios",
+        "Melhoria na Qualidade e Confiabilidade",
+        "Aumento da Produtividade",
+        "Redução de Retrabalho e Custos",
+        "Satisfação do Cliente",
+        "Precisão em Previsões e Estimativas",
+        "Redução do Time to Market",
+        "Aumento da Robustez de Sistemas",
+        "Integração Versátil",
+        "Uma revolução no desenvolvimento de software",
+        "Conheça também",
+        "Fale com a Gente!"
+      ],
+      "idsDosTitulos": [
+        {
+          "id": "todo-o-ciclo-de-vida-de-desenvolvimento-de-software",
+          "texto": "Todo o Ciclo de Vida de Desenvolvimento de Software"
+        },
+        {
+          "id": "desafios-no-desenvolvimento-de-software",
+          "texto": "Desafios no desenvolvimento de software"
+        },
+        {
+          "id": "beneficios",
+          "texto": "Benefícios"
+        },
+        {
+          "id": "integracao-versatil",
+          "texto": "Integração Versátil"
+        },
+        {
+          "id": "uma-revolucao-no-desenvolvimento-de-software",
+          "texto": "Uma revolução no desenvolvimento de software"
+        },
+        {
+          "id": "conheca-tambem",
+          "texto": "Conheça também"
+        }
+      ],
+      "subtituloDoHero": "Uma solução integrada de IA generativa que orquestra todo o Ciclo de Vida de Desenvolvimento de Software (SDLC)",
+      "paragrafos": [
+        "Uma solução integrada de IA generativa que orquestra todo o Ciclo de Vida de Desenvolvimento de Software (SDLC)",
+        "Fale com um especialista",
+        "Uma solução integrada de IA generativa que orquestra todo o Ciclo de Vida de Desenvolvimento de Software (SDLC), agilizando processos e integrando ferramentas líderes de mercado.",
+        "Solução integrada com uso de IA generativa que orquestra toda a esteira do DEVOPs, gerando maior produtividade em toda cadeia, especialmente na codificação, integrada às ferramentas líderes de mercado.",
+        "Como atender à necessidade de código de alta qualidade de forma ágil e produtiva?",
+        "Como evitar a acumulação de débitos técnicos e resolver os existentes?",
+        "Como garantir baixa vulnerabilidade e respostas rápidas?",
+        "Como manter registros claros e acessíveis?",
+        "Produtos mais robustos e confiáveis",
+        "Equipes mais eficientes e projetos mais rápidos",
+        "Menos correções e otimização de recursos",
+        "Experiência aprimorada para o usuário final",
+        "Planejamento mais assertivo",
+        "Lançamentos mais rápidos e competitivos",
+        "Soluções mais estáveis e seguras",
+        "O Luminna AI foi desenvolvido para ser facilmente integrável, oferecendo compatibilidade com uma ampla variedade de soluções de software de terceiros.",
+        "Repositórios de código",
+        "Ferramentas de Análise de Código",
+        "Serviços de IA",
+        "Ferramentas de Gestão de Projetos",
+        "O Luminna AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez.",
+        "Com sua integração versátil e ferramentas avançadas, é a solução ideal para empresas que buscam se destacar no mercado competitivo atual.",
+        "Soluções que trabalham juntas para uma seguradora mais inteligente e conectada.",
+        "Quer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades."
+      ],
+      "cartoes": [
+        {
+          "titulo": "Demanda Crescente",
+          "texto": "Como atender à necessidade de código de alta qualidade de forma ágil e produtiva?"
+        },
+        {
+          "titulo": "Débitos Técnicos",
+          "texto": "Como evitar a acumulação de débitos técnicos e resolver os existentes?"
+        },
+        {
+          "titulo": "Segurança e Conformidade",
+          "texto": "Como garantir baixa vulnerabilidade e respostas rápidas?"
+        },
+        {
+          "titulo": "Documentação Eficiente",
+          "texto": "Como manter registros claros e acessíveis?"
+        },
+        {
+          "titulo": null,
+          "texto": "Repositórios de código"
+        },
+        {
+          "titulo": null,
+          "texto": "Ferramentas de Análise de Código"
+        },
+        {
+          "titulo": null,
+          "texto": "Serviços de IA"
+        },
+        {
+          "titulo": null,
+          "texto": "Ferramentas de Gestão de Projetos"
+        }
+      ],
+      "etapas": [
+        {
+          "titulo": "Melhoria na Qualidade e Confiabilidade",
+          "texto": "Produtos mais robustos e confiáveis"
+        },
+        {
+          "titulo": "Aumento da Produtividade",
+          "texto": "Equipes mais eficientes e projetos mais rápidos"
+        },
+        {
+          "titulo": "Redução de Retrabalho e Custos",
+          "texto": "Menos correções e otimização de recursos"
+        },
+        {
+          "titulo": "Satisfação do Cliente",
+          "texto": "Experiência aprimorada para o usuário final"
+        },
+        {
+          "titulo": "Precisão em Previsões e Estimativas",
+          "texto": "Planejamento mais assertivo"
+        },
+        {
+          "titulo": "Redução do Time to Market",
+          "texto": "Lançamentos mais rápidos e competitivos"
+        },
+        {
+          "titulo": "Aumento da Robustez de Sistemas",
+          "texto": "Soluções mais estáveis e seguras"
+        }
+      ],
+      "textoVisivel": "Uma solução integrada de IA generativa que orquestra todo o Ciclo de Vida de Desenvolvimento de Software (SDLC)\n\nFale com um especialista\n\nTodo o Ciclo de Vida de Desenvolvimento de Software\n\nUma solução integrada de IA generativa que orquestra todo o Ciclo de Vida de Desenvolvimento de Software (SDLC), agilizando processos e integrando ferramentas líderes de mercado.\n\nDesafios no desenvolvimento de software\n\nSolução integrada com uso de IA generativa que orquestra toda a esteira do DEVOPs, gerando maior produtividade em toda cadeia, especialmente na codificação, integrada às ferramentas líderes de mercado.\n\nDemanda Crescente\n\nComo atender à necessidade de código de alta qualidade de forma ágil e produtiva?\n\nDébitos Técnicos\n\nComo evitar a acumulação de débitos técnicos e resolver os existentes?\n\nSegurança e Conformidade\n\nComo garantir baixa vulnerabilidade e respostas rápidas?\n\nDocumentação Eficiente\n\nComo manter registros claros e acessíveis?\n\nBenefícios\nMelhoria na Qualidade e Confiabilidade\n\nProdutos mais robustos e confiáveis\n\nAumento da Produtividade\n\nEquipes mais eficientes e projetos mais rápidos\n\nRedução de Retrabalho e Custos\n\nMenos correções e otimização de recursos\n\nSatisfação do Cliente\n\nExperiência aprimorada para o usuário final\n\nPrecisão em Previsões e Estimativas\n\nPlanejamento mais assertivo\n\nRedução do Time to Market\n\nLançamentos mais rápidos e competitivos\n\nAumento da Robustez de Sistemas\n\nSoluções mais estáveis e seguras\n\nIntegração Versátil\n\nO Luminna AI foi desenvolvido para ser facilmente integrável, oferecendo compatibilidade com uma ampla variedade de soluções de software de terceiros.\n\nRepositórios de código\n\nFerramentas de Análise de Código\n\nServiços de IA\n\nFerramentas de Gestão de Projetos\n\nUma revolução no desenvolvimento de software\n\nO Luminna AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez.\n\nCom sua integração versátil e ferramentas avançadas, é a solução ideal para empresas que buscam se destacar no mercado competitivo atual.\n\nConheça também\n\nSoluções que trabalham juntas para uma seguradora mais inteligente e conectada.\n\nMatch AI\nLuminna AI\nFast\nQA Integrado\nConnect API\nSmart Miner\nGuru de Seguros\nVer todas as soluções e serviços\nFale com a Gente!\n\nQuer conversar com um de nossos especialistas? Então fale com a gente. Temos uma equipe qualificada para atender as suas necessidades.\n\nFale com a SISTRAN",
+      "leadNaTela": true,
+      "subtituloEhPrefixoDoLead": true,
+      "desafiosBatem": true,
+      "beneficiosBatem": true,
+      "introNaTela": true,
+      "integracaoBate": true,
+      "fechoNaTela": true,
+      "ancorasBatem": true,
+      "derivadosNaoColidem": true,
+      "idsDuplicados": [],
+      "grafiaNoMain": {
+        "erradas": 0,
+        "certas": 3
+      },
+      "grafiaNaPagina": {
+        "erradas": 0,
+        "certas": 3
+      }
+    },
+    "tomDasParadas": [
+      {
+        "id": "desafios-no-desenvolvimento-de-software",
+        "existe": true,
+        "clara": true,
+        "corDeFundo": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "beneficios",
+        "existe": true,
+        "clara": false,
+        "corDeFundo": "rgb(0, 26, 61)"
+      },
+      {
+        "id": "integracao-versatil",
+        "existe": true,
+        "clara": true,
+        "corDeFundo": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "movimento": {
+      "orbita": {
+        "nos": 15,
+        "visiveis": 15,
+        "moveramDosVisiveis": 15,
+        "amostra": [
+          {
+            "animacao": "luminna-orbita-gira",
+            "quadroA": "95.0728deg",
+            "quadroB": "100.842deg",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "luminna-orbita-gira",
+            "quadroA": "208.339deg",
+            "quadroB": "198.673deg",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          }
+        ]
+      },
+      "pontoEmOrbita": {
+        "nos": 5,
+        "visiveis": 5,
+        "moveramDosVisiveis": 5,
+        "amostra": [
+          {
+            "animacao": "luminna-orbita-gira",
+            "quadroA": "194.978deg",
+            "quadroB": "209.477deg",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "luminna-orbita-gira",
+            "quadroA": "220.478deg",
+            "quadroB": "232.475deg",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          }
+        ]
+      },
+      "marca": {
+        "nos": 40,
+        "visiveis": 40,
+        "moveramDosVisiveis": 40,
+        "amostra": [
+          {
+            "animacao": "luminna-marca-acende",
+            "quadroA": "0.260054",
+            "quadroB": "0.434237",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "luminna-marca-acende",
+            "quadroA": "0.994417",
+            "quadroB": "0.804445",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          }
+        ]
+      },
+      "arcoDoSelo": {
+        "nos": 8,
+        "visiveis": 8,
+        "moveramDosVisiveis": 8,
+        "amostra": [
+          {
+            "animacao": "luminna-arco-gira",
+            "quadroA": "294.406deg",
+            "quadroB": "322.767deg",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "luminna-arco-gira",
+            "quadroA": "344.583deg",
+            "quadroB": "12.9449deg",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          }
+        ]
+      },
+      "trilhoDoCartao": {
+        "nos": 8,
+        "visiveis": 8,
+        "moveramDosVisiveis": 5,
+        "amostra": [
+          {
+            "animacao": "luminna-trilho-corre",
+            "quadroA": "1",
+            "quadroB": "1",
+            "display": "block",
+            "visivel": true,
+            "moveu": false
+          },
+          {
+            "animacao": "luminna-trilho-corre",
+            "quadroA": "1",
+            "quadroB": "0.142145 1",
+            "display": "block",
+            "visivel": true,
+            "moveu": true
+          }
+        ]
+      },
+      "pulsoDoFio": {
+        "nos": 1,
+        "visiveis": 1,
+        "moveramDosVisiveis": 1,
+        "amostra": [
+          {
+            "animacao": "luminna-pulso-desce",
+            "quadroA": "0.0235147px",
+            "quadroB": "-0.0552671px",
+            "display": "inline",
+            "visivel": true,
+            "moveu": true
+          }
+        ]
+      },
+      "haloDoDisco": {
+        "nos": 7,
+        "visiveis": 7,
+        "moveramDosVisiveis": 7,
+        "amostra": [
+          {
+            "animacao": "luminna-no-brilha",
+            "quadroA": "rgba(87, 183, 238, 0) 0px 0px 0px 0.0375943px",
+            "quadroB": "rgba(87, 183, 238, 0.02) 0px 0px 0px 0.747777px",
+            "display": "flex",
+            "visivel": true,
+            "moveu": true
+          },
+          {
+            "animacao": "luminna-no-brilha",
+            "quadroA": "rgba(87, 183, 238, 0.118) 0px 0px 0px 4.14361px",
+            "quadroB": "rgba(87, 183, 238, 0.14) 0px 0px 0px 4.93631px",
+            "display": "flex",
+            "visivel": true,
+            "moveu": true
+          }
+        ]
+      },
+      "trilhoDoCartaoJanelaLonga": {
+        "nos": 8,
+        "moveram": 8,
+        "amostra": [
+          {
+            "quadroA": "0.280071 1",
+            "quadroB": "1",
+            "moveu": true
+          },
+          {
+            "quadroA": "0.126568 1",
+            "quadroB": "1",
+            "moveu": true
+          }
+        ]
+      }
+    },
+    "contrastes": [
+      {
+        "alvo": "H1",
+        "tinta": "rgb(248, 250, 252)",
+        "fundoComposto": "rgb(6, 28, 59)",
+        "contraste": 16.226
+      },
+      {
+        "alvo": "Fale com um especialista",
+        "tinta": "rgb(4, 33, 43)",
+        "fundoComposto": "rgb(87, 183, 238)",
+        "contraste": 7.485
+      },
+      {
+        "alvo": "Todo o Ciclo de Vida de Desenvolvi",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(226, 240, 251)",
+        "contraste": 13.998
+      },
+      {
+        "alvo": "Desafios no desenvolvimento de sof",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(239, 245, 251)",
+        "contraste": 14.798
+      },
+      {
+        "alvo": "Benefícios",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(3, 28, 63)",
+        "contraste": 16.912
+      },
+      {
+        "alvo": "Integração Versátil",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(238, 244, 250)",
+        "contraste": 14.668
+      },
+      {
+        "alvo": "Uma revolução no desenvolvimento d",
+        "tinta": "rgb(255, 255, 255)",
+        "fundoComposto": "rgb(2, 72, 131)",
+        "contraste": 9.303
+      },
+      {
+        "alvo": "Conheça também",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(237, 244, 250)",
+        "contraste": 14.641
+      },
+      {
+        "alvo": "Fale com a Gente!",
+        "tinta": "rgb(6, 39, 95)",
+        "fundoComposto": "rgb(161, 227, 244)",
+        "contraste": 10.121
+      },
+      {
+        "alvo": "Fale com a SISTRAN",
+        "tinta": "rgb(10, 31, 68)",
+        "fundoComposto": "rgb(255, 255, 255)",
+        "contraste": 16.249
+      }
+    ],
+    "subtituloContraste": {
+      "tinta": "rgba(255, 255, 255, 0.85)",
+      "fundoComposto": "rgb(18, 22, 36)",
+      "contraste": 18.011
+    },
+    "erros": []
+  },
+  "irma-match-ai": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "matchai-campanha",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Ofertas inteligentes. Conversas mais relevan",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "o-que-o-match-ai-faz",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "O que o Match AI faz?",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "da-base-a-oferta-mais-relevante",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Da base à oferta mais relevante",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 1
+        }
+      },
+      {
+        "id": "posicionamento",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Posicionamento",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Conheça também",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "vazamentoDaqui": 0,
+    "grafia": {
+      "erradas": 0,
+      "certas": 1
+    }
+  },
+  "irma-fast": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "O que é o Fast?",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 1
+        }
+      },
+      {
+        "id": "o-que-o-fast-oferece",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "O que o Fast oferece?",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "integracao-sem-fronteiras",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Integração sem Fronteiras",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 1
+        }
+      },
+      {
+        "id": "beneficios",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Benefícios",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "monitore-e-aprimore-seus-processos",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Monitore e Aprimore seus Processos",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "outras-solucoes",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Outras soluções",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "vazamentoDaqui": 0,
+    "grafia": {
+      "erradas": 0,
+      "certas": 1
+    }
+  },
+  "irma-smart-miner": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "o-que-e-o-smart-miner",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "O que é o Smart Miner?",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "onde-usar-o-smart-miner",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Onde usar o Smart Miner?",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "como-usar-o-smart-miner",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Como usar o Smart Miner?",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 1
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Conheça também",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "vazamentoDaqui": 0,
+    "grafia": {
+      "erradas": 0,
+      "certas": 1
+    }
+  },
+  "irma-qa-integrado": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "QA Integrado",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "qualidade-nao-e-uma-etapa-final",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Qualidade não é uma etapa final",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "nossos-servicos-de-qa-integrado-incluem",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Nossos serviços de QA Integrado incluem",
+        "cards": 5,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "uma-abordagem-colaborativa",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Uma abordagem colaborativa",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": null,
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Conheça também",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "vazamentoDaqui": 0,
+    "grafia": {
+      "erradas": 0,
+      "certas": 1
+    }
+  },
+  "irma-guru-de-seguros": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "relacionamento-por-voz",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Relacionamento por voz",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "como-funciona",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Como funciona?",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "logo-voce-podera-perguntar",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Logo, você poderá perguntar",
+        "cards": 5,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 1
+        }
+      },
+      {
+        "id": "de-onde-pode-ser-acessada",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "De onde pode ser acessada?",
+        "cards": 9,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Conheça também",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "vazamentoDaqui": 0,
+    "grafia": {
+      "erradas": 0,
+      "certas": 1
+    }
+  },
+  "irma-connect-api": {
+    "faixas": [
+      {
+        "id": "topo",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "visible",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "ecossistema-orientado-a-servicos",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Ecossistema orientado a serviços",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "feito-para-cada-jornada-de-distribuicao",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Feito para cada jornada de distribuição",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "da-integracao-a-experiencia-do-cliente",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "clip",
+        "corDeFundo": "rgb(0, 26, 61)",
+        "titulo": "Da integração à experiência do cliente",
+        "cards": 4,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 1,
+          "malha": 1
+        }
+      },
+      {
+        "id": "principais-diferenciais",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Principais diferenciais",
+        "cards": 3,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 1,
+          "malha": 0
+        }
+      },
+      {
+        "id": "uma-jornada-multiplas-possibilidades",
+        "tag": "SECTION",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Uma jornada, múltiplas possibilidades",
+        "cards": 6,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "conheca-tambem",
+        "tag": "NAV",
+        "clara": true,
+        "overflow": "clip",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Conheça também",
+        "cards": 13,
+        "grafismos": {
+          "acentos": 1,
+          "arte": 0,
+          "malha": 0
+        }
+      },
+      {
+        "id": "SECTION",
+        "tag": "SECTION",
+        "clara": false,
+        "overflow": "hidden",
+        "corDeFundo": "rgba(0, 0, 0, 0)",
+        "titulo": "Fale com a Gente!",
+        "cards": 0,
+        "grafismos": {
+          "acentos": 0,
+          "arte": 0,
+          "malha": 0
+        }
+      }
+    ],
+    "vazamentoDaqui": 0,
+    "grafia": {
+      "erradas": 0,
+      "certas": 1
+    }
+  },
+  "indicador": {
+    "indicadorAqui": {
+      "nos": 5,
+      "rotulos": [
+        "Início",
+        "Desafios",
+        "Benefícios",
+        "Integração Versátil"
+      ],
+      "destinos": [
+        "#topo",
+        "#desafios-no-desenvolvimento-de-software",
+        "#beneficios",
+        "#integracao-versatil"
+      ]
+    },
+    "indicadorNoControle": {
+      "nos": 5,
+      "rotulos": [
+        "Início",
+        "O que faz",
+        "Da base à oferta",
+        "Posicionamento"
+      ],
+      "destinos": [
+        "#topo",
+        "#o-que-o-match-ai-faz",
+        "#da-base-a-oferta-mais-relevante",
+        "#posicionamento"
+      ]
+    }
+  },
+  "vitrine": {
+    "destinos": [
+      "/solucoes/luminna-ai",
+      "/solucoes/match-ai",
+      "/solucoes/fast",
+      "/solucoes/qa-integrado",
+      "/solucoes/connect-api",
+      "/solucoes/smart-miner",
+      "/solucoes/guru-de-seguros"
+    ],
+    "grafia": {
+      "erradas": 0,
+      "certas": 2
+    },
+    "erros": []
+  },
+  "reduce-media": {
+    "atributoNoHtml": "reduce",
+    "animacoesVivas": {
+      "orbita": 0,
+      "giro": 0,
+      "marca": 0,
+      "arco": 0,
+      "cartao": 0,
+      "trilho": 0,
+      "pulso": 0,
+      "disco": 0
+    },
+    "trilhosCheios": true,
+    "totalDeTrilhos": 8,
+    "pulsosContinuos": true,
+    "pulsosNoZero": 1,
+    "marcasAcesas": 40,
+    "totalDeMarcas": 40,
+    "discosSemHalo": true,
+    "amostraDoTrilho": [
+      {
+        "animacao": "none",
+        "opacidade": "1",
+        "traco": "0px",
+        "tracejado": "none",
+        "escala": "1",
+        "giro": "none",
+        "sombra": "none",
+        "display": "block"
+      },
+      {
+        "animacao": "none",
+        "opacidade": "1",
+        "traco": "0px",
+        "tracejado": "none",
+        "escala": "1",
+        "giro": "none",
+        "sombra": "none",
+        "display": "block"
+      }
+    ],
+    "erros": []
+  },
+  "reduce-preferencia": {
+    "atributoNoHtml": "reduce",
+    "animacoesVivas": {
+      "orbita": 0,
+      "giro": 0,
+      "marca": 0,
+      "arco": 0,
+      "cartao": 0,
+      "trilho": 0,
+      "pulso": 0,
+      "disco": 0
+    },
+    "trilhosCheios": true,
+    "totalDeTrilhos": 8,
+    "pulsosContinuos": true,
+    "pulsosNoZero": 1,
+    "marcasAcesas": 40,
+    "totalDeMarcas": 40,
+    "discosSemHalo": true,
+    "amostraDoTrilho": [
+      {
+        "animacao": "none",
+        "opacidade": "1",
+        "traco": "0px",
+        "tracejado": "none",
+        "escala": "1",
+        "giro": "none",
+        "sombra": "none",
+        "display": "block"
+      },
+      {
+        "animacao": "none",
+        "opacidade": "1",
+        "traco": "0px",
+        "tracejado": "none",
+        "escala": "1",
+        "giro": "none",
+        "sombra": "none",
+        "display": "block"
+      }
+    ],
+    "erros": []
+  }
+}

@@ -114,7 +114,7 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-218** | Todo | parceiros | Parceiros: seção fixa + avanço lateral com scroll da página (irmã da 219) |
 | **SIS-219** | Todo | parceiros | Logos dos cards bem maiores e mais destacadas (irmã da 218) |
 | **SIS-220** | Todo | parceiros | Linha do tempo: viajante = logo Luminna igual `/transformacao-legado` |
-| **SIS-204** | Todo | eventos | `/eventos-inovacao`: título único com scroll + sombra azul clara + rótulos inteiros nas miniaturas |
+| **SIS-204** | Todo | solucoes | Seção Consultoria = mock `consultoria.png` + `docs/consultoria.md` + `consultoria-img.png` — slot 22/09 |
 | **SIS-205** | Todo | eventos | Botão YouTube só em Web Summit AI + Suitability (demais cards sem botão) |
 | **SIS-206** | Todo | esg | Reparo: título da abertura quebrado (frase ESG) |
 | **SIS-207** | Todo | esg | SOCIAL: foguete silhueta branca + trajeto em toda a seção |
@@ -128,7 +128,7 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-213** | Todo | home | Números: retirar sombra/faixa branca do fundo |
 | **SIS-214** | Todo | home | Sobre o Luminna AI entre Números e Desafios |
 | **SIS-215** | Todo | eventos | Retirar/clarear bandas azuis escuras no início e fim do scroll |
-| **SIS-216** | Todo | sistran-labs | Negrito: capa, intro, Já desenvolvemos, Churn/Fast/Smart Miner, Principais Soluções |
+| **SIS-216** | Todo | solucoes/smart-miner | Artes dos 4 cards + Onde usar (`public/images/solucoes/smart/`) — pós SIS-279; slot 22/09 |
 | **SIS-244** | Backlog | home | Soluções: trocar imagens — **artes da usuária** (não despachar ao robô) |
 | **SIS-267** | Backlog | arte | Logo Picsel HD (PNG + transparente) — **sua**; não despachar até o arquivo |
 | **SIS-217** | Todo | solucoes | Cards aceleradores: logos `public/images/logos` + reação no hover |
@@ -154,14 +154,18 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-248** | Todo | sistran-university | Capa universitycapa.png (padrão HeroImageBackdrop) |
 | **SIS-249** | Todo | sistran-university | Seção Formar especialistas: arte + texto sombreado |
 | **SIS-250** | In Review | sistran-university | Logo University no navbar (só nesta página) |
-| **SIS-279** | Done | sistran-university | Navbar: duas logos + linha vertical (pós-250) — fechada em 15/09 **sem conferência** |
-| **SIS-280** | Todo | menu / quem-somos | **Sistran Latam** → [https://www.sistran.com/latam/](https://www.sistran.com/latam/) (externo, nova aba) — slot reaproveitado 17/09 (cota); corpo antigo «O Programa» saiu |
+| **SIS-279** | Todo | site | Logo Luminna → `luminnadoisnn.png` em todos os usos — slot 22/09 |
+| **SIS-268** | In Review · conferido | quem-somos | Fale com a Gente! = `layoutReferencia` (padrão esg/solucoes/labs) — slot 22/09 |
+| **(fechada)** | Done | quem-somos | Sobre nós = mock `sobrenos.png` — fechada 22/09 (slot virrou Tecnologias) |
+| **SIS-42** | Todo | quem-somos | Perfil = `posicionamentoperfil.png` em casca arredondada + fundo grade/riscos (tipo contato home) — rev. 22/09 |
+| **SIS-280** | Todo | quem-somos | Tecnologias = mock `tecnologia.png` + `docs/tecnologia.md` + carimbo ticket — slot 22/09 |
+| **SIS-181** | Todo | solucoes | Fale com a Gente! igual ao mobile em telas menores — slot reaproveitado 22/09 |
 | **SIS-281** | Todo | sistran-university | Capa «Sistran University» em negrito + Autossuficiência vira seção própria |
 | **SIS-282** | Todo | sistran-university | Negrito em «Formar especialistas…» + «Em parceria com o Unidep» |
 | **SIS-283** | Todo | sistran-university | Fale com a Gente! igual ao de `/esg` (`layoutReferencia`) |
 | **SIS-284** | Todo | sistran-university | Desde 2022 / números igual a `university.png` |
 | **SIS-285** | Todo | sistran-university | Unidep / turmas igual a `parceriauniversy.png` |
-| **SIS-288** | Todo | sistran-university | O Programa: linhas de destaque do card Unidep no quadro (+ quadrado azul) |
+| **SIS-288** | Todo | solucoes/match-ai | Posicionamento: imagem → `match.png` — slot reaproveitado 22/09 |
 | **SIS-289** | Todo | sistran-university | Reveal on scroll (`docs/scroll.md`, igual `/contato`) |
 | **SIS-223** | In Review | trabalhe-conosco | Formulário em card no scroll (envio tipo Contato) |
 | **SIS-224** | In Review | trabalhe-conosco | Suavizar véu/sombra feia da abertura |
@@ -170,11 +174,11 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-225** | Todo | parceiros | Capa `fundocapaparceiros` no fundo do título + descrição |
 | **SIS-226** | Todo | home | Hero: escritas alternando no vídeo (3 slides + pitch final) |
 | **SIS-227** | Todo | sistran-labs | Capa `SISTRAN-LABS.png` no fundo do título |
-| **SIS-286** | Todo | sistran-labs | Fale com a Gente! igual ao de `/sistran-university` (`layoutReferencia`) |
-| **SIS-287** | Todo | labs + university | Navbar: **só** a logo da página (Labs / University) — sem par + corp; slot reaproveitado 17/09 |
-| **SIS-290** | Done | sistran-labs | Intro «nativos digitais»: fundo `section-light` |
+| **SIS-286** | Todo | esg | Scroll bidirecional (scrub GSAP · `docs/scroll.md` §6) — irmã da família scrub; slot 22/09 |
+| **SIS-287** | Todo | solucoes/qa-integrado | Mesma estrutura do Match AI + identidade própria (`QaIntegradoPagina`) — irmã SIS-279; slot 22/09 |
+| **SIS-290** | Todo | solucoes/match-ai | Scroll bidirecional (scrub GSAP · `docs/scroll.md` §6 + skills) — após SIS-292; slot reaproveitado 22/09 |
 | **SIS-291** | Todo | sistran-labs | «Já desenvolvemos…» = `sistran-labs-5` + ícones (`guru1` / churn / fast / smart / email) |
-| **SIS-292** | Done | sistran-labs | Principais Soluções: só arte `principais-solucoes1` (reta + dinâmica), sem cards |
+| **SIS-292** | Todo | trabalhe-conosco | Scroll bidirecional (scrub GSAP · `docs/scroll.md` §6) — irmã da família scrub; slot 22/09 |
 | **SIS-293** | In Review | sistran-labs | 3 fotos (abas) surgindo de lado — **supersedida em parte por SIS-294** (pares texto+foto) |
 | **SIS-294** | Todo | sistran-labs | Intro: 3 parágrafos + abas em zigzag (azul claro) |
 | **SIS-228** | Todo | parceiros | Sombra atrás do título + descrição na abertura (pós-225) |
@@ -182,7 +186,6 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-230** | In Review | quem-somos | Premiações Celent (montagem 230) — supersedida visualmente por SIS-238 |
 | **SIS-231** | Todo | solucoes | Remover seção Transformação de Legado (método / quatro movimentos) |
 | **SIS-232** | In Review | eventos | Miniaturas laterais maiores e mais perto do card em destaque |
-| **SIS-268** | Done | eventos | Aproximar **ainda mais** as previews do card central (pós-232) — fechada em 15/09 **sem conferência**, a seu pedido |
 | **SIS-233** | Todo | esg | Título e descrição da abertura iguais ao padrão de /contato |
 | **SIS-234** | In Review | esg | SOCIAL: foguete do scroll colorido e 3D (logo Gerando Talentos) |
 | **SIS-254** | Todo | esg | SOCIAL: foguete do scroll = foguete.png (substitui SVG) |

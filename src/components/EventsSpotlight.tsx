@@ -126,6 +126,12 @@ import type { CSSProperties } from "react";
    `/trabalhe-conosco` (SIS-270). Ela escreve `data-in` num envelope e sai da
    frente; quem anima são os presets `[data-reveal]` do `globals.css`. */
 import RevealScope from "./motion/RevealScope";
+/* SIS-279 — a irmã BIDIRECIONAL da primitiva acima, criada na SIS-216
+   (`/contato`) e reaproveitada aqui sem alteração. Ela não anima nada: publica
+   `--scrub-p` (0..1), `data-scrub` e `data-scrub-dir` no próprio nó, e quem
+   consome é o CSS. O porquê de a escolha ter caído em decoração de fundo, e não
+   num trecho de conteúdo, está na nota dos dois escopos, mais abaixo. */
+import ScrubScope from "./motion/ScrubScope";
 /* SIS-272 — o calibre mora na pasta da ROTA, e não aqui, porque esta cena é
    montada só por ela (o mesmo arranjo de `MetricsBand` com
    `src/app/contato/reveal-calibre.ts`). O porquê de cada número está lá. */
@@ -666,6 +672,60 @@ export default function EventsSpotlight() {
         data-titulo={cessao ?? undefined}
         data-titulo-transicao={transicao ? "ligada" : undefined}
       >
+        {/* ══ SIS-279 · O SCRUB BIDIRECIONAL DESTA ROTA (1 de 2) ══════════════
+            A issue sugeria «faixa inferior / CTA / lista auxiliar». NENHUM DOS
+            TRÊS EXISTE MAIS AQUI: `ContactCTA`, `EventsMosaic` e `EventsGrid`
+            saíram do `page.tsx` nas SIS-152/166 e estão comentados lá. O que
+            sobrou na rota é hero + esta cena + `Social`, e os dois extremos estão
+            fechados — o hero é LCP (§3/§9 de `docs/scroll.md`) e o `Social` não
+            tem filho estático (é tudo `whileInView` e os refs por quadro do
+            `PalcoReativo`, conferido na SIS-272).
+
+            POR QUE DENTRO DA CENA, E POR QUE DECORAÇÃO DE FUNDO. Não é a saída
+            preguiçosa; é a única que passa no portão de PERCEPÇÃO. Auditei os nós
+            da rota com `scripts/auditar-donos-eventos-sis279.mjs`, que mede duas
+            coisas: quem já tem dono de movimento, e que PERCURSO o nó tem. O
+            resultado fechou as alternativas:
+
+            • As colunas de prévia (`--esq`/`--dir`), o cartão e o contador estão
+              todos DENTRO do palco `sticky`. Um scrub amarrado ao curso da cena
+              (8.100px a 1440) andaria a menos de 1px por 100px de roda com a
+              folga que a geometria permite (~37px até o header). É exactamente o
+              erro pelo qual a SIS-216 voltou: «percorreu o curso declarado» não é
+              portão de efeito visível — o portão é valor por unidade de rolagem.
+            • Abaixo de 1024px os três blocos da lista já têm mecanismo: a faixa É
+              o carrossel (`scrollLeft` é o dono), a barra de controles carrega o
+              relógio do laço, e o cabeçalho é o reveal da SIS-272.
+            • Fora do palco, sem dono e com percurso próprio, só restam o hero e as
+              sentinelas invisíveis do `IntersectionObserver` — mover sentinela
+              quebraria a troca de destaque.
+
+            O CANAL SEM TETO. Deslocar uma caixa tem teto (a folga da vizinhança) e
+            é isso que mata a taxa num curso de 9.000px. Um PADRÃO REPETIDO não
+            tem: derivar `background-position` por 560px num módulo de 72px é
+            indistinguível de deriva contínua, então a taxa pode ser a que o olho
+            pede sem nada sair de lugar. `background-attachment: fixed` ancora o
+            padrão na janela — é o que faz a malha se ler por baixo do palco
+            `sticky` durante a cena inteira, e é o mesmo canal que a SIS-216
+            terminou usando em `/contato` depois da recalibração.
+            As TRÊS camadas não são enfeite: a terceira deriva a 0,42 da taxa das
+            outras duas. Movimento relativo entre camadas se lê muito mais que
+            deslocamento absoluto de uma só — é o que separa este trecho de uma
+            opacidade de fundo, que na SIS-216 o olho leu como iluminação.
+
+            `gatilho="pai"` PORQUE O CURSO TEM DE SER O DA SEÇÃO, não o do escopo:
+            o escopo é `absolute inset-0` e sua caixa acompanharia a da seção, mas
+            declarar o pai deixa explícito que o relógio é a cena. `z-index: 0`
+            contra o 2 do palco e o 3 do fio — a malha fica atrás de tudo, e
+            `aria-hidden` porque não há nada a ler nela. */}
+        <ScrubScope
+          className="eventos-cena-scrub"
+          gatilho="pai"
+          nome="malha-cena-eventos"
+        >
+          <span className="eventos-malha-deriva" aria-hidden="true" />
+        </ScrubScope>
+
         {/* A linha ciano que o fio do hero encontra aceso na entrada: é o elo
             `hero -> eventos` da rota, que é por LINHA. Mesmos valores do
             `.pagehero-fio` — a nota está no CSS.
@@ -970,6 +1030,28 @@ export default function EventsSpotlight() {
         className="eventos-lista"
         aria-labelledby="eventos-lista-titulo"
       >
+        {/* ══ SIS-279 · O SCRUB BIDIRECIONAL DESTA ROTA (2 de 2) ══════════════
+            O gêmeo do escopo da cena, na versão que aparece abaixo de 1024px. Ele
+            existe porque as duas versões se excluem por `display: none`: sem este,
+            a rota inteira ficaria sem efeito amarrado ao scroll em telas estreitas
+            — o escopo de cima está sob o `display: none` da cena e o seu gatilho
+            nunca chega a ter caixa.
+            MESMO MECANISMO, CURSO DIFERENTE: esta seção é muito mais curta que a
+            cena, então o curso da deriva é menor para manter a MESMA taxa por
+            100px de roda. Os dois números estão calibrados no CSS, cada um ao lado
+            da sua conta.
+            Nada aqui toca a faixa, os controles ou o cabeçalho — os três têm dono
+            (ver a nota do reveal, logo abaixo). Esta malha é uma camada nova,
+            `absolute inset-0` atrás do conteúdo, sem nó compartilhado com
+            ninguém. */}
+        <ScrubScope
+          className="eventos-faixa-scrub"
+          gatilho="pai"
+          nome="malha-lista-eventos"
+        >
+          <span className="eventos-malha-deriva" aria-hidden="true" />
+        </ScrubScope>
+
         {/* SIS-272 — O REVEAL DA VERSÃO ESTREITA, e ele é UM só.
             Abaixo de 1024px a rota tem três blocos: este cabeçalho, a faixa dos
             quinze e a barra de controles. Os dois últimos estão fora por

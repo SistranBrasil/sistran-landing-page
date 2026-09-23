@@ -1,0 +1,689 @@
+{
+  "390": {
+    "existe": true,
+    "caixa": {
+      "x": 0,
+      "y": 3406,
+      "largura": 390,
+      "altura": 1580.8
+    },
+    "janela": {
+      "largura": 390,
+      "altura": 900
+    },
+    "sangraNaJanela": true,
+    "classesDaSecao": "section-py relative overflow-x-clip solucoes-palco-servicos",
+    "posicao": "relative",
+    "recorte": "clip visible",
+    "isolamento": "isolate",
+    "gradeTecnica": true,
+    "video": {
+      "src": "/videos/jornada.mp4",
+      "autoPlay": true,
+      "muted": true,
+      "loop": true,
+      "playsInline": true,
+      "controls": false,
+      "preload": "auto",
+      "encaixe": "cover",
+      "posicaoCss": "static",
+      "inset": "auto auto auto auto",
+      "caixa": {
+        "x": 20,
+        "y": 3486,
+        "largura": 350,
+        "altura": 304.2
+      },
+      "cobreASecao": false,
+      "pronto": 4,
+      "tocando": false
+    },
+    "playerUi": {
+      "comControls": 0,
+      "quantosVideos": 1
+    },
+    "carimbo": null,
+    "tagTextual": "Diferenciais",
+    "titulo": {
+      "fonte": "30.4px",
+      "peso": "400",
+      "entrelinha": "32.224px",
+      "cor": "rgb(255, 255, 255)",
+      "larguraMaxima": "none",
+      "texto": "Serviços"
+    },
+    "leads": [
+      {
+        "fonte": "15.2px",
+        "peso": "400",
+        "entrelinha": "24.32px",
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "larguraMaxima": "463.57px",
+        "texto": "Dedicada ao mercado segurador, com experiência em todos os ramos, a Sistran atua como inte"
+      },
+      {
+        "fonte": "15.2px",
+        "peso": "400",
+        "entrelinha": "24.32px",
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "larguraMaxima": "463.57px",
+        "texto": "Somos uma empresa de TI 100% focada no segmento de Seguros no Brasil, acumulamos experiênc"
+      }
+    ],
+    "indicadores": [],
+    "colunaEsquerda": null,
+    "colunaDireitaPrimeiroCard": null,
+    "cards": [],
+    "desvioDeAlturaPx": null,
+    "cta": {
+      "texto": "Quero um serviço exclusivo",
+      "caixa": {
+        "x": 20,
+        "y": 4886,
+        "largura": 231.7,
+        "altura": 44
+      }
+    },
+    "pagina": {
+      "alturaDoDocumento": 8601,
+      "transbordoPx": 0,
+      "faixas": [
+        {
+          "tag": "div",
+          "id": null,
+          "classes": "solucoes-atmosfera",
+          "topo": 0,
+          "altura": 900
+        },
+        {
+          "tag": "div",
+          "id": null,
+          "classes": "hero-backdrop",
+          "topo": 112,
+          "altura": 620
+        },
+        {
+          "tag": "section",
+          "id": "tecnologia-disruptiva",
+          "classes": "section-light section-light-blue section-py relative overflow-hidden",
+          "topo": 756,
+          "altura": 2649
+        },
+        {
+          "tag": "section",
+          "id": "servicos-diferenciais",
+          "classes": "section-py relative overflow-x-clip solucoes-palco-servicos",
+          "topo": 3406,
+          "altura": 1581
+        },
+        {
+          "tag": "section",
+          "id": "consultoria",
+          "classes": "section-light section-light-blue section-py relative overflow-hidden",
+          "topo": 4986,
+          "altura": 1751
+        },
+        {
+          "tag": "section",
+          "id": null,
+          "classes": "cta-ref section-py relative overflow-hidden",
+          "topo": 6738,
+          "altura": 749
+        }
+      ]
+    },
+    "rolagem": 3406,
+    "captura": "docs/capturas/sis268-servicos-390-antes.png",
+    "rolagemTopo": 3326,
+    "capturaTopo": "docs/capturas/sis268-servicos-topo-390-antes.png",
+    "tintas": {
+      "titulo": {
+        "cor": "rgb(255, 255, 255)",
+        "fonte": "30.4px",
+        "retanguloNaTela": [
+          20,
+          546,
+          112,
+          32
+        ]
+      },
+      "lead": {
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "fonte": "15.2px",
+        "retanguloNaTela": [
+          20,
+          590,
+          350,
+          97
+        ]
+      },
+      "indicador": null,
+      "card-titulo": {
+        "cor": "rgb(255, 255, 255)",
+        "fonte": "21.6px",
+        "retanguloNaTela": [
+          43,
+          873,
+          306,
+          48
+        ]
+      },
+      "card-descricao": {
+        "cor": "rgb(248, 250, 252)",
+        "fonte": "12.8px",
+        "retanguloNaTela": [
+          43,
+          843,
+          306,
+          19
+        ]
+      }
+    },
+    "contraste": {
+      "titulo": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(23, 129, 202)",
+        "amostraEm": [
+          11,
+          560
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-390-antes.png",
+        "contraste": 4.18
+      },
+      "lead": {
+        "tinta": "rgba(255, 255, 255, 0.85)",
+        "fundo": "rgb(22, 127, 200)",
+        "amostraEm": [
+          11,
+          637
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-390-antes.png",
+        "contraste": 4.28
+      },
+      "indicador": null,
+      "card-titulo": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(10, 58, 99)",
+        "amostraEm": [
+          34,
+          895
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-390-antes.png",
+        "contraste": 11.68
+      },
+      "card-descricao": {
+        "tinta": "rgb(248, 250, 252)",
+        "fundo": "rgb(11, 59, 102)",
+        "amostraEm": [
+          34,
+          851
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-390-antes.png",
+        "contraste": 10.96
+      }
+    }
+  },
+  "1024": {
+    "existe": true,
+    "caixa": {
+      "x": 0,
+      "y": 2573,
+      "largura": 1024,
+      "altura": 1857.3
+    },
+    "janela": {
+      "largura": 1024,
+      "altura": 900
+    },
+    "sangraNaJanela": true,
+    "classesDaSecao": "section-py relative overflow-x-clip solucoes-palco-servicos",
+    "posicao": "relative",
+    "recorte": "clip visible",
+    "isolamento": "isolate",
+    "gradeTecnica": true,
+    "video": {
+      "src": "/videos/jornada.mp4",
+      "autoPlay": true,
+      "muted": true,
+      "loop": true,
+      "playsInline": true,
+      "controls": false,
+      "preload": "auto",
+      "encaixe": "cover",
+      "posicaoCss": "static",
+      "inset": "auto auto auto auto",
+      "caixa": {
+        "x": 32,
+        "y": 2701,
+        "largura": 960,
+        "altura": 540
+      },
+      "cobreASecao": false,
+      "pronto": 4,
+      "tocando": false
+    },
+    "playerUi": {
+      "comControls": 0,
+      "quantosVideos": 1
+    },
+    "carimbo": null,
+    "tagTextual": "Diferenciais",
+    "titulo": {
+      "fonte": "32.768px",
+      "peso": "400",
+      "entrelinha": "34.7341px",
+      "cor": "rgb(255, 255, 255)",
+      "larguraMaxima": "none",
+      "texto": "Serviços"
+    },
+    "leads": [
+      {
+        "fonte": "15.2px",
+        "peso": "400",
+        "entrelinha": "24.32px",
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "larguraMaxima": "463.57px",
+        "texto": "Dedicada ao mercado segurador, com experiência em todos os ramos, a Sistran atua como inte"
+      },
+      {
+        "fonte": "15.2px",
+        "peso": "400",
+        "entrelinha": "24.32px",
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "larguraMaxima": "463.57px",
+        "texto": "Somos uma empresa de TI 100% focada no segmento de Seguros no Brasil, acumulamos experiênc"
+      }
+    ],
+    "indicadores": [],
+    "colunaEsquerda": null,
+    "colunaDireitaPrimeiroCard": null,
+    "cards": [],
+    "desvioDeAlturaPx": null,
+    "cta": {
+      "texto": "Quero um serviço exclusivo",
+      "caixa": {
+        "x": 32,
+        "y": 4282,
+        "largura": 231.7,
+        "altura": 44
+      }
+    },
+    "pagina": {
+      "alturaDoDocumento": 7060,
+      "transbordoPx": 0,
+      "faixas": [
+        {
+          "tag": "div",
+          "id": null,
+          "classes": "solucoes-atmosfera",
+          "topo": 0,
+          "altura": 900
+        },
+        {
+          "tag": "div",
+          "id": null,
+          "classes": "hero-backdrop",
+          "topo": 144,
+          "altura": 568
+        },
+        {
+          "tag": "section",
+          "id": "tecnologia-disruptiva",
+          "classes": "section-light section-light-blue section-py relative overflow-hidden",
+          "topo": 736,
+          "altura": 1837
+        },
+        {
+          "tag": "section",
+          "id": "servicos-diferenciais",
+          "classes": "section-py relative overflow-x-clip solucoes-palco-servicos",
+          "topo": 2573,
+          "altura": 1857
+        },
+        {
+          "tag": "section",
+          "id": "consultoria",
+          "classes": "section-light section-light-blue section-py relative overflow-hidden",
+          "topo": 4430,
+          "altura": 1605
+        },
+        {
+          "tag": "section",
+          "id": null,
+          "classes": "cta-ref section-py relative overflow-hidden",
+          "topo": 6035,
+          "altura": 565
+        }
+      ]
+    },
+    "rolagem": 2573,
+    "captura": "docs/capturas/sis268-servicos-1024-antes.png",
+    "rolagemTopo": 2493,
+    "capturaTopo": "docs/capturas/sis268-servicos-topo-1024-antes.png",
+    "tintas": {
+      "titulo": {
+        "cor": "rgb(255, 255, 255)",
+        "fonte": "32.768px",
+        "retanguloNaTela": [
+          32,
+          854,
+          121,
+          35
+        ]
+      },
+      "lead": {
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "fonte": "15.2px",
+        "retanguloNaTela": [
+          32,
+          901,
+          464,
+          73
+        ]
+      },
+      "indicador": null,
+      "card-titulo": {
+        "cor": "rgb(255, 255, 255)",
+        "fonte": "24.576px",
+        "retanguloNaTela": [
+          58,
+          1128,
+          913,
+          28
+        ]
+      },
+      "card-descricao": {
+        "cor": "rgb(248, 250, 252)",
+        "fonte": "12.8px",
+        "retanguloNaTela": [
+          58,
+          1098,
+          913,
+          19
+        ]
+      }
+    },
+    "contraste": {
+      "titulo": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(18, 116, 189)",
+        "amostraEm": [
+          23,
+          870
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1024-antes.png",
+        "contraste": 4.93
+      },
+      "lead": {
+        "tinta": "rgba(255, 255, 255, 0.85)",
+        "fundo": "rgb(18, 115, 188)",
+        "amostraEm": [
+          23,
+          936
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1024-antes.png",
+        "contraste": 5
+      },
+      "indicador": null,
+      "card-titulo": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(18, 115, 188)",
+        "amostraEm": [
+          49,
+          1140
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1024-antes.png",
+        "contraste": 5
+      },
+      "card-descricao": {
+        "tinta": "rgb(248, 250, 252)",
+        "fundo": "rgb(18, 115, 188)",
+        "amostraEm": [
+          49,
+          1106
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1024-antes.png",
+        "contraste": 4.77
+      }
+    }
+  },
+  "1440": {
+    "existe": true,
+    "caixa": {
+      "x": 0,
+      "y": 2490,
+      "largura": 1440,
+      "altura": 3047.1
+    },
+    "janela": {
+      "largura": 1440,
+      "altura": 900
+    },
+    "sangraNaJanela": true,
+    "classesDaSecao": "section-py relative overflow-x-clip solucoes-palco-servicos",
+    "posicao": "relative",
+    "recorte": "clip visible",
+    "isolamento": "isolate",
+    "gradeTecnica": true,
+    "video": {
+      "src": "/videos/jornada.mp4",
+      "autoPlay": true,
+      "muted": true,
+      "loop": true,
+      "playsInline": true,
+      "controls": false,
+      "preload": "auto",
+      "encaixe": "cover",
+      "posicaoCss": "static",
+      "inset": "auto auto auto auto",
+      "caixa": {
+        "x": 162,
+        "y": 2618,
+        "largura": 630.1,
+        "altura": 666
+      },
+      "cobreASecao": false,
+      "pronto": 4,
+      "tocando": false
+    },
+    "playerUi": {
+      "comControls": 0,
+      "quantosVideos": 1
+    },
+    "carimbo": null,
+    "tagTextual": "Diferenciais",
+    "titulo": {
+      "fonte": "46.08px",
+      "peso": "400",
+      "entrelinha": "48.8448px",
+      "cor": "rgb(255, 255, 255)",
+      "larguraMaxima": "none",
+      "texto": "Serviços"
+    },
+    "leads": [
+      {
+        "fonte": "15.2px",
+        "peso": "400",
+        "entrelinha": "24.32px",
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "larguraMaxima": "463.57px",
+        "texto": "Dedicada ao mercado segurador, com experiência em todos os ramos, a Sistran atua como inte"
+      },
+      {
+        "fonte": "15.2px",
+        "peso": "400",
+        "entrelinha": "24.32px",
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "larguraMaxima": "463.57px",
+        "texto": "Somos uma empresa de TI 100% focada no segmento de Seguros no Brasil, acumulamos experiênc"
+      }
+    ],
+    "indicadores": [],
+    "colunaEsquerda": null,
+    "colunaDireitaPrimeiroCard": null,
+    "cards": [],
+    "desvioDeAlturaPx": null,
+    "cta": {
+      "texto": "Quero um serviço exclusivo",
+      "caixa": {
+        "x": 162,
+        "y": 5389,
+        "largura": 231.7,
+        "altura": 44
+      }
+    },
+    "pagina": {
+      "alturaDoDocumento": 7750,
+      "transbordoPx": 0,
+      "faixas": [
+        {
+          "tag": "div",
+          "id": null,
+          "classes": "solucoes-atmosfera",
+          "topo": 0,
+          "altura": 900
+        },
+        {
+          "tag": "div",
+          "id": null,
+          "classes": "hero-backdrop",
+          "topo": 144,
+          "altura": 522
+        },
+        {
+          "tag": "section",
+          "id": "tecnologia-disruptiva",
+          "classes": "section-light section-light-blue section-py relative overflow-hidden",
+          "topo": 666,
+          "altura": 1824
+        },
+        {
+          "tag": "section",
+          "id": "servicos-diferenciais",
+          "classes": "section-py relative overflow-x-clip solucoes-palco-servicos",
+          "topo": 2490,
+          "altura": 3047
+        },
+        {
+          "tag": "section",
+          "id": "consultoria",
+          "classes": "section-light section-light-blue section-py relative overflow-hidden",
+          "topo": 5537,
+          "altura": 1229
+        },
+        {
+          "tag": "section",
+          "id": null,
+          "classes": "cta-ref section-py relative overflow-hidden",
+          "topo": 6766,
+          "altura": 542
+        }
+      ]
+    },
+    "rolagem": 2490,
+    "captura": "docs/capturas/sis268-servicos-1440-antes.png",
+    "rolagemTopo": 2410,
+    "capturaTopo": "docs/capturas/sis268-servicos-topo-1440-antes.png",
+    "tintas": {
+      "titulo": {
+        "cor": "rgb(255, 255, 255)",
+        "fonte": "46.08px",
+        "retanguloNaTela": [
+          840,
+          251,
+          170,
+          49
+        ]
+      },
+      "lead": {
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "fonte": "15.2px",
+        "retanguloNaTela": [
+          840,
+          311,
+          438,
+          73
+        ]
+      },
+      "indicador": null,
+      "card-titulo": {
+        "cor": "rgb(255, 255, 255)",
+        "fonte": "32px",
+        "retanguloNaTela": [
+          873,
+          574,
+          377,
+          107
+        ]
+      },
+      "card-descricao": {
+        "cor": "rgb(248, 250, 252)",
+        "fonte": "12.8px",
+        "retanguloNaTela": [
+          873,
+          543,
+          377,
+          19
+        ]
+      }
+    },
+    "contraste": {
+      "titulo": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(20, 124, 198)",
+        "amostraEm": [
+          831,
+          274
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1440-antes.png",
+        "contraste": 4.44
+      },
+      "lead": {
+        "tinta": "rgba(255, 255, 255, 0.85)",
+        "fundo": "rgb(23, 126, 201)",
+        "amostraEm": [
+          831,
+          346
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1440-antes.png",
+        "contraste": 4.32
+      },
+      "indicador": null,
+      "card-titulo": {
+        "tinta": "rgb(255, 255, 255)",
+        "fundo": "rgb(10, 57, 99)",
+        "amostraEm": [
+          864,
+          626
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1440-antes.png",
+        "contraste": 11.81
+      },
+      "card-descricao": {
+        "tinta": "rgb(248, 250, 252)",
+        "fundo": "rgb(11, 59, 102)",
+        "amostraEm": [
+          864,
+          551
+        ],
+        "arquivo": "docs/capturas/sis268-servicos-topo-1440-antes.png",
+        "contraste": 10.96
+      }
+    }
+  },
+  "nota": "gerado por scripts/medir-servicos-sis268.mjs (antes)",
+  "reducePorSistema": {
+    "atributoMotion": "reduce",
+    "existeVideo": true,
+    "pausado": true,
+    "tempo": 0,
+    "animacoesNaSecao": 0
+  },
+  "reducePorAtributo": {
+    "atributoMotion": "reduce",
+    "existeVideo": true,
+    "pausado": true,
+    "tempo": 0,
+    "animacoesNaSecao": 0
+  }
+}
