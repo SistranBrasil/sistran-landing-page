@@ -279,17 +279,27 @@ export default function Page() {
                 | um canal próprio para receber currículos por aqui. Preferimos
                 | dizer isso a manter um formulário que não leva o seu currículo a
                 | ninguém.
-                O que NÃO mudou é a honestidade: continua dito que o caminho que
-                chega a alguém hoje é o LinkedIn, porque o formulário abaixo ainda
-                não tem destino (ver `src/app/actions/contato.ts`). */}
+                SIS-246 — A FRASE DA DEMONSTRAÇÃO CAIU, no mesmo commit em que o
+                envio passou a existir. Ela dizia que o formulário não entrega o
+                currículo a ninguém, e isso virou informação errada quando
+                `enviarCurriculo` entrou (`src/app/actions/curriculo.ts`). O texto
+                anterior fica registrado:
+                | Não publicamos uma lista de vagas nesta página. O formulário
+                | abaixo já recebe seus dados e o seu arquivo, mas ainda é uma
+                | demonstração: enquanto não houver um destino definido, ele não
+                | entrega o seu currículo a ninguém.
+                A segunda frase também mudou: o LinkedIn deixou de ser «o caminho
+                que chega a alguém hoje» e passou a ser alternativa, porque o
+                formulário agora chega. Texto anterior:
+                | As oportunidades da Sistran são anunciadas no nosso LinkedIn, e é
+                | por lá que a conversa começa hoje — inclusive as candidaturas. */}
             <p className="mt-5 text-base leading-relaxed text-[#3a5a7c]">
-              Não publicamos uma lista de vagas nesta página. O formulário abaixo já recebe seus
-              dados e o seu arquivo, mas ainda é uma demonstração: enquanto não houver um destino
-              definido, ele não entrega o seu currículo a ninguém.
+              Não publicamos uma lista de vagas nesta página. O formulário abaixo recebe seus dados
+              e o seu arquivo e os encaminha à nossa equipe — envio espontâneo, sem vaga específica.
             </p>
             <p className="mt-4 text-base leading-relaxed text-[#3a5a7c]">
-              As oportunidades da Sistran são anunciadas no nosso LinkedIn, e é por lá que a
-              conversa começa hoje — inclusive as candidaturas.
+              As oportunidades da Sistran também são anunciadas no nosso LinkedIn, se você preferir
+              começar a conversa por lá.
             </p>
             <div className="mt-8">
               <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="btn-primary">
@@ -305,7 +315,14 @@ export default function Page() {
                 O aviso PRÓPRIO da coleta não vive mais aqui: ele fica no pé do
                 formulário, no ponto onde a coleta acontece (`privacyNote` em
                 `CurriculoCard.tsx`). Aqui sobra só o que este cartão precisa dizer —
-                que o caminho ao lado não passa por formulário nenhum. */}
+                que o caminho ao lado não passa por formulário nenhum.
+
+                SIS-246 — esta afirmação estava ERRADA quando foi escrita: o
+                `privacyNote` nunca chegou a ser passado ao `DemoForm`, então não
+                havia aviso nenhum no ponto da coleta e o único aviso era este
+                cartão, que pode não estar na tela quando a pessoa anexa o PDF.
+                Corrigido na SIS-246: o `privacyNote` agora é passado de verdade, e
+                a frase acima passou a descrever o que existe. */}
             {/* A LETRA MIÚDA USA A MESMA TINTA DO CORPO, e não um cinza-azul mais
                 claro. `#4c6c8e` foi a primeira escolha — hierarquia por cor, como
                 era com `text-ink-faint` sobre o vidro escuro — e ela MEDIU 4,04:1

@@ -6,6 +6,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowRight, Linkedin } from 'lucide-react';
 import { useReducedMotion } from '@/lib/motion';
 import { LINKEDIN_URL } from '@/data/contact';
+import { enviarCurriculo } from '@/app/actions/curriculo';
+import { EMAIL_CURRICULO } from '@/lib/curriculo-regras';
 import DemoForm, { type DemoField } from './forms/DemoForm';
 import './curriculo-card.css';
 
@@ -24,20 +26,25 @@ import './curriculo-card.css';
  *   WPForms — o próprio conteúdo-site o marca com ⚠️. Reproduzi-lo seria copiar
  *   um defeito como se fosse conteúdo.
  *
- * O telefone continua `required`, como no formulário legado. A SIS-117 havia
- * anotado que exigir telefone reduz candidatura e que nada no site justifica a
- * diferença em relação a `/contato` (onde é opcional) — a observação continua
- * válida e continua sendo decisão de RH, não desta issue: aqui o rótulo e a
- * obrigatoriedade seguem o conteúdo-site, que é o que está travado no copy-lock.
+ * O telefone era `required`, como no formulário legado. A SIS-117 anotou que
+ * exigir telefone reduz candidatura e que nada no site justificava a diferença em
+ * relação a `/contato` (onde é opcional), e deixou a decisão para o RH. A SIS-246
+ * decidiu: passou a OPCIONAL (ver a nota no campo).
  *
- * ── ANTES DE AFROUXAR OS TEXTOS ABAIXO, LEIA A SIS-246 ────────────────────────
- * O `successNote` e o `privacyNote` desta seção dizem que o envio é demonstração
- * porque `enviarFormulario` não tem destino (ver `src/app/actions/contato.ts`).
- * Isso NÃO é conservadorismo de redação: é a condição para o campo de arquivo
- * poder existir nesta página. A SIS-246 está no backlog com o ponto aberto —
- * destino do currículo, quem recebe, base legal, prazo de guarda. Enquanto ela
- * não fechar, trocar estas frases por algo que insinue que o currículo chegou a
- * alguém transforma a página em promessa falsa num commit.
+ * ── A SIS-246 FECHOU: O ENVIO TEM DESTINO ─────────────────────────────────────
+ * Até aqui o `successNote` dizia que o envio era demonstração, e isso não era
+ * conservadorismo de redação: era a condição para o campo de arquivo poder existir
+ * nesta página, porque `enviarFormulario` não tinha destino e devolvia `sucesso`
+ * sem ter enviado nada.
+ *
+ * Agora o formulário submete para `enviarCurriculo`
+ * (`src/app/actions/curriculo.ts`), que envia os dados e o anexo por e-mail, confere
+ * o arquivo no servidor e devolve `erro` quando o envio não sai. O cartão de
+ * sucesso só aparece quando houve sucesso de verdade — é o que permitiu trocar os
+ * textos sem a página virar promessa falsa.
+ *
+ * A regra que continua valendo: estes textos descrevem o que a action FAZ. Quem
+ * mexer num dos dois lados mexe no outro no mesmo commit.
  *
  * ── Por que a entrada é GSAP e não `data-reveal` ──────────────────────────────
  * `useRevealTrigger` (IntersectionObserver + CSS) resolve "acendeu/apagou" por
@@ -75,6 +82,13 @@ const CAMPOS: readonly DemoField[] = [
         required: true,
       },
       { kind: 'input', id: 'email', label: 'E-mail', type: 'email', autoComplete: 'email', required: true },
+      /* SIS-246 — `required: true` SAIU daqui (decisão de 01/10/2026). A SIS-117
+         havia anotado que exigir telefone reduz candidatura e que nada no site
+         justificava a diferença em relação a `/contato`, onde o campo é opcional;
+         a observação esperava decisão de RH, e a decisão veio: telefone opcional.
+         O rótulo e o placeholder não mudam, e `enviarCurriculo` inclui o número no
+         e-mail quando ele vem — o que o campo deixou de fazer é reprovar o envio
+         quando não vem. */
       {
         kind: 'input',
         id: 'telefone',
@@ -82,7 +96,6 @@ const CAMPOS: readonly DemoField[] = [
         type: 'tel',
         autoComplete: 'tel',
         placeholder: '(11) 96123-4567',
-        required: true,
       },
     ],
   },
@@ -245,15 +258,39 @@ export default function CurriculoCard() {
           <DemoForm
             fields={CAMPOS}
             className="cv-form space-y-4"
-            /* A frase do sucesso não pode dizer que o currículo chegou ao RH,
-               porque `enviarFormulario` não tem destino (ver o cabeçalho de
-               `src/app/actions/contato.ts`). Diz o que de fato aconteceu e para
-               onde ir enquanto o destino real não existir. */
+            /* SIS-246 — O DESTINO PASSOU A EXISTIR. `enviarCurriculo` envia os
+               dados e o anexo por e-mail à equipe, confere o arquivo no servidor e
+               devolve `erro` quando o envio não sai. É por isso que os dois textos
+               abaixo puderam deixar de dizer «demonstração»: o cartão de sucesso só
+               aparece com `status: 'sucesso'`, e o sucesso deixou de ser
+               incondicional — antes ele era devolvido mesmo sem nada ter sido
+               enviado, que era o defeito que esta issue abriu. */
+            action={enviarCurriculo}
             successNote={
               <>
-                Este formulário é uma demonstração: nenhuma integração externa foi executada e o
-                seu arquivo não foi encaminhado ao RH. Para se candidatar de verdade hoje, use o
-                nosso LinkedIn.
+                Recebemos seu currículo e ele já está com a nossa equipe. Se o seu perfil encaixar
+                em alguma oportunidade, entramos em contato pelo e-mail que você informou.
+                Guardamos seus dados por até 6 meses; para pedir acesso ou exclusão, escreva para{' '}
+                {EMAIL_CURRICULO}.
+              </>
+            }
+            /* SIS-246 — O `privacyNote` NUNCA FOI PASSADO, e esta é a correção.
+               O docblock no topo deste arquivo, o do `DemoForm` e o relatório da
+               SIS-223 todos afirmavam que os DOIS textos declaravam a situação do
+               envio; só o `successNote` estava aqui. Consequência: o único aviso
+               antes do envio vivia num cartão IRMÃO (`trabalhe-conosco/page.tsx`),
+               que pode nem estar na tela quando a pessoa anexa o PDF — ou seja, no
+               ponto da coleta não havia aviso nenhum.
+               Com base legal de legítimo interesse isso deixa de ser detalhe: é a
+               contrapartida que a LGPD cobra por não pedir consentimento, e tem de
+               estar visível onde a coleta acontece. O `DemoForm` já sabia
+               renderizá-lo — faltava passar. */
+            privacyNote={
+              <>
+                Seus dados e seu arquivo são enviados por e-mail à nossa equipe e usados apenas
+                para avaliar sua candidatura, com base no legítimo interesse de recrutamento.
+                Guardamos por até 6 meses e descartamos depois. Para acessar, corrigir ou excluir o
+                que enviou, escreva para {EMAIL_CURRICULO}.
               </>
             }
           />

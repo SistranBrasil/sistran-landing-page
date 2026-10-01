@@ -5,6 +5,7 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { hasSeenMotionPrompt } from '@/lib/motionPreference';
 import {
+  aplicarConsentimento,
   CONSENTIMENTO_MINIMO,
   CONSENTIMENTO_PADRAO,
   CONSENTIMENTO_TOTAL,
@@ -91,6 +92,15 @@ export default function CookieConsent() {
     if (gravado) {
       setEstado(gravado);
       setDecidiu(true);
+      /* ⚠️ APLICAR TAMBÉM NA MONTAGEM — 01/10, com a entrada do Google Analytics.
+         `gravarConsentimento` chama `aplicarConsentimento` no momento do clique, e
+         isso cobria a visita em que a escolha é feita. A visita SEGUINTE não passa
+         por ali: a escolha já está no storage e só era LIDA. Sem esta linha, quem
+         aceitou análise ontem voltaria hoje sem ser medido — o consentimento valeria
+         uma vez só, o que não é o que quem clicou «Aceitar tudo» espera.
+         Vale nos dois sentidos: para quem recusou, aplicar o estado gravado é o que
+         mantém a tag silenciada. */
+      aplicarConsentimento(gravado);
       return;
     }
     /* ⚠️ SEQUÊNCIA COM O BANNER DE MOVIMENTO, e é o que resolve o item 5 da

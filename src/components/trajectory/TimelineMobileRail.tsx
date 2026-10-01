@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import {
+  TRAJECTORY_ANO_INICIAL,
   TRAJECTORY_CAPABILITIES,
   type TrajectoryCompetenciaAcumulada,
 } from '@/data/trajectory';
@@ -96,30 +97,91 @@ export function TimelineGapIcons({
 }
 
 /**
- * A BOLINHA QUE ACOMPANHA A ROLAGEM, com o rótulo de tempo ao lado.
+ * O MEDALHÃO QUE ACOMPANHA A ROLAGEM pela linha da coluna.
  *
  * Desce pela linha da coluna em `top: calc(var(--p-base) * 100%)`, onde `--p-base` é
  * escrita por quadro pelo mesmo laço que o palco usa — uma atribuição de string, sem
  * re-render. É o papel que `TimelineTraveler` faz no palco, no eixo que o estático tem.
  *
- * ⚠️ O RÓTULO É A GERAÇÃO, NÃO UM ANO, E ISSO É LIMITE DO DADO — NÃO ESCOLHA DE
- * DESENHO. `timeline.ts` não guarda ano por evento: o campo é `generation` («1ª
- * geração», «Implantação», …), e `MilestoneCardData.year` existe no tipo mas nasce
- * `undefined` em todos os 24 marcos — está escrito em `marcoDoEvento`, «a geração é a
- * única marca de tempo que os dados têm». Interpolar 1988→2026 pelos 24 índices daria
- * um ano por card, mas seria número inventado em material que vai para cliente, e
- * nenhum dos dois modos mostra isso hoje.
+ * ⚠️ ELE NÃO CARREGA RÓTULO DE TEMPO, e a razão de fundo é o dado — não só o pedido de
+ * 01/10 que tirou a pílula. `timeline.ts` não guarda ano por evento: o campo é
+ * `generation` («1ª geração», «Implantação», …), e `MilestoneCardData.year` existe no
+ * tipo mas nasce `undefined` em todos os 24 marcos — está escrito em `marcoDoEvento`, «a
+ * geração é a única marca de tempo que os dados têm». Interpolar 1988→2026 pelos 24
+ * índices daria um ano por card, mas seria número inventado em material que vai para
+ * cliente. Ou seja: a pílula que saiu nunca pôde dizer ano, e nenhum dos dois modos diz.
  *
- * O ANO QUE A ISSUE PEDE CONTINUA EM CENA, e é o 1988 do início: a pílula
- * `.trajetoria-abertura-ano`, que no estático é a que vale (no palco quem mostra é
- * `TimelineOrigin` — há sempre um 1988 só na tela, ver a nota lá). Esta leva só lhe dá
- * destaque e a liga ao começo da linha.
+ * O ANO QUE A ISSUE PEDE CONTINUA EM CENA, e é o 1988 do início: no estático é
+ * `TimelineColumnStart`, logo abaixo neste arquivo; no palco é `TimelineOrigin`. Há sempre
+ * um 1988 só na tela — a pílula `.trajetoria-abertura-ano` saiu em 01/10, ver a nota lá.
  */
 export function TimelineColumnMarker({ rotulo }: { rotulo: string | null }) {
   return (
     <div className="trajetoria-andador" data-ativo={rotulo ? 'sim' : 'nao'} aria-hidden>
-      <span className="trajetoria-andador-no" />
-      {rotulo ? <span className="trajetoria-andador-rotulo">{rotulo}</span> : null}
+      {/* ⚠️ A ARTE É A MESMA DO MARCADOR DO PALCO — 01/10: «quero que seja esse icone
+          igual tem no web da Luminna LATAM». `/imagens/luminna-latam.png` é o arquivo que
+          `TimelineTraveler` já recebe em `TrajectoryScrollytelling`, então os dois modos
+          passaram a mostrar a MESMA marca descendo a linha, em eixos diferentes. Antes
+          aqui estava `/iconerobo.png`, que é o mesmo glifo redesenhado com disco e anel
+          embutidos — parecido na tela, outro arquivo, e divergia do desktop.
+
+          ⚠️ E A TROCA OBRIGA O DISCO NO CSS. Esta arte é BRANCA sobre transparente (traço,
+          estrelas e sombra, todos brancos); `iconerobo` trazia fundo marinho pronto. Sobre
+          o papel claro da seção, branco sobre branco é o defeito de contraste que a folha
+          já documenta no bloco do marcador do palco — a razão de ele ter ganhado disco em
+          01/10 (noite). O estático recebe o mesmo tratamento, na mesma linguagem.
+
+          234×200 é a razão MEDIDA do cabeçalho do PNG (889×760, ~1,17:1) — os mesmos
+          intrínsecos de `TimelineTraveler`, e não os 160×160 de antes, que pertenciam a uma
+          arte quadrada. Eles só reservam a caixa (`images: { unoptimized: true }`,
+          SIS-154); o tamanho de desenho é do CSS.
+
+          `priority` não: ele vive no meio da seção, não é o LCP da rota. */}
+      <span className="trajetoria-andador-no">
+        <Image
+          src="/imagens/luminna-latam.png"
+          alt=""
+          width={234}
+          height={200}
+          loading="lazy"
+          decoding="async"
+        />
+      </span>
+      {/* ⚠️ A PÍLULA DE GERAÇÃO SAIU — 01/10: «troque esse por o componente [medalhão]».
+          Ela escrevia «2ª GERAÇÃO» ao lado do medalhão, na faixa, e era repetição: a MESMA
+          geração está escrita em `.trajetoria-card-geracao`, no topo do card que está em
+          foco, a centímetros dela. O medalhão fica sendo a única marca que desce com a
+          rolagem, que é o que o pedido descreve.
+
+          `rotulo` CONTINUA SENDO PARÂMETRO, e não é sobra: ele é o sinal de que existe
+          parada em foco, e é só isso que `data-ativo` lê — sem ele o medalhão apareceria
+          colado no topo antes de a rolagem começar.
+
+      {rotulo ? <span className="trajetoria-andador-rotulo">{rotulo}</span> : null} */}
     </div>
+  );
+}
+
+/**
+ * A DATA DE COMEÇO NO ALTO DA FAIXA — 01/10: «coloque aqui no começo a data de começo 1988».
+ *
+ * ⚠️ NÃO É UMA SEGUNDA PÍLULA DE 1988 NA TELA, e vale dizer por quê. Quem mostrava o ano no
+ * estático era `.trajetoria-abertura-ano`, no bloco de abertura ACIMA da coluna — longe da
+ * linha, e portanto sem dizer que a linha começa em 1988. Esta marca o começo da LINHA, que
+ * é o que o pedido aponta; a pílula da abertura perde o papel de marco temporal e o CSS a
+ * reduz a texto do bloco (ver a nota na folha). Continua havendo um só 1988 por modo.
+ *
+ * O número vem de `TRAJECTORY_ANO_INICIAL`, a mesma constante que a abertura lê — não um
+ * literal digitado aqui, senão os dois poderiam discordar.
+ *
+ * SEM `aria-hidden`, ao contrário do medalhão e dos ícones: é texto, é informação que não
+ * está escrita em nenhum outro lugar da coluna, e é o critério 2 («o primeiro ano visível
+ * for 1988») sem depender de JavaScript.
+ */
+export function TimelineColumnStart() {
+  return (
+    <p className="trajetoria-coluna-inicio">
+      <span>{TRAJECTORY_ANO_INICIAL}</span>
+    </p>
   );
 }

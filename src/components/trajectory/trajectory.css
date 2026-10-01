@@ -566,16 +566,18 @@
   display: none;
 }
 
-/* Pílula navy, o mesmo vocabulário de `.trajetoria-mini-selo`.
+/* ⚠️ FORA DE CENA NOS DOIS MODOS DESDE 01/10 — ver a nota longa no bloco da coluna viva,
+   abaixo. Resumo: esta pílula mostrava o ano no bloco de TEXTO acima da coluna, longe da
+   linha; o pedido quer a data no começo da LINHA, e quem faz isso é
+   `.trajetoria-coluna-inicio`. No palco ela já estava escondida, então o `display: none`
+   aqui só faz o estático seguir a mesma regra.
 
-   SIS-177 — ganhou `position: relative` e sombra para «garantir destaque» do 1988 no
-   mobile: o `relative` é o que ancora o nó ciano do `::after` (ver o bloco da coluna viva,
-   abaixo), que liga a pílula ao começo da linha. */
+   O resto da declaração fica para o dia em que ela voltar — são as medidas da pílula navy,
+   o vocabulário de `.trajetoria-mini-selo`. `position` e `box-shadow` saíram com o `::after`
+   que os pedia (também guardado abaixo). */
 .trajetoria-abertura-ano {
-  position: relative;
-  display: inline-block;
+  display: none;
   margin: 0;
-  box-shadow: 0 0.5rem 1.25rem color-mix(in srgb, var(--ink) 20%, transparent);
   padding: 0.35rem 0.95rem;
   border-radius: 999px;
   background: var(--ink);
@@ -664,7 +666,19 @@
      TAMBÉM no palco: trilha medida com `width: 0px` a 1440px, `translateX(-50%)`
      resolvendo para zero e a banda de 900px deslocada meia tela. */
   height: auto;
-  padding-inline-start: 1.75rem;
+  /* ⚠️ O RECUO DA ESQUERDA É VARIÁVEL DESDE 01/10, e a variável existe porque QUATRO
+     lugares dependem dele: este `padding`, o `left` do nó da célula, o `margin-left`
+     negativo do vão e o medalhão que desce pela linha. Escritos à mão, mudar a faixa
+     exigia acertar os quatro juntos — e foi exatamente o que faltou na primeira leva.
+
+     3,5rem (56px) e não 1,75rem: a faixa de 28px não cabia o medalhão redondo nem a
+     pílula de 1988 que o pedido põe ali. É a área marcada em vermelho na captura.
+
+     ⚠️ O PALCO DEVOLVE 1,75rem, logo abaixo. Esta regra base vale para os dois modos, e o
+     palco consome o mesmo `padding` dentro da banda fixa de `--faixa`: alargar aqui sem
+     devolver lá deslocaria 28px do conteúdo do desktop, contra o critério 3. */
+  --trilha-recuo: 3.5rem;
+  padding-inline-start: var(--trilha-recuo);
   border-inline-start: 2px solid color-mix(in srgb, var(--signal-deep) 35%, transparent);
 }
 
@@ -730,7 +744,7 @@
 
 .trajetoria-celula::before {
   position: absolute;
-  left: -1.75rem;
+  left: calc(var(--trilha-recuo, 1.75rem) * -1);
   width: 0.7rem;
   height: 0.7rem;
   margin-top: 1.5rem;
@@ -788,10 +802,9 @@
   scale: 1 var(--p-base, 0);
 }
 
-/* A BOLINHA QUE DESCE, com o rótulo de tempo ao lado — o papel que `TimelineTraveler`
-   faz no palco. Ver a nota longa em `TimelineMobileRail` sobre por que o rótulo é a
-   geração e não um ano (o dado não tem ano por marco; o 1988 do início está na pílula
-   de abertura). */
+/* O MEDALHÃO QUE DESCE pela linha — o papel que `TimelineTraveler` faz no palco. Sem
+   rótulo de tempo ao lado desde 01/10 (ver a regra arquivada mais abaixo); o 1988 do
+   início é `.trajetoria-coluna-inicio`, no alto da mesma faixa. */
 .trajetoria-andador {
   position: absolute;
   /* `top` percentual contra a altura da trilha, e o deslocamento de meia caixa em
@@ -822,18 +835,93 @@
   opacity: 1;
 }
 
+/* ⚠️ VIROU O MEDALHÃO, DE 0,95rem PARA 2rem — 01/10: «deve colocar o [medalhão] mas de um
+   tamanho menor». A bolinha ciano lisa de antes não era a arte que o pedido mostra.
+
+   2rem (32px) é o «menor» com uma régua: a faixa esquerda tem `--trilha-recuo` = 3,5rem
+   (56px) e o medalhão fica CENTRADO na linha, ou seja metade dele cai fora da faixa, à
+   esquerda. A 2rem sobram 16px de cada lado do centro; a 76px (o tamanho do palco) ele
+   cobriria a faixa inteira e invadiria o card.
+
+   ⚠️ E GANHOU DISCO EM 01/10, com a troca da arte: «quero que seja esse icone igual tem no
+   web da Luminna LATAM». A arte passou a ser `/imagens/luminna-latam.png`, a mesma do
+   marcador do palco — BRANCA sobre transparente, sem fundo nenhum. `iconerobo.png`, que
+   estava aqui, trazia disco marinho e anel ciano desenhados dentro do arquivo, e era por
+   isso que este bloco não declarava fundo nem borda. Sobre o papel claro da seção a arte
+   nova ficaria branco sobre branco — o MESMO defeito literal que a nota do marcador do
+   palco descreve, e que o disco resolveu lá. O desenho é o de lá, reduzido: marinho
+   preenchido, anel ciano, halo do mesmo ciano.
+
+   O halo creme de antes saiu: ele existia para separar o medalhão da linha que passa por
+   trás, e o anel ciano faz isso com mais contraste contra uma linha que também é ciano. */
 .trajetoria-andador-no {
+  display: flex;
   flex: 0 0 auto;
-  width: 0.95rem;
-  height: 0.95rem;
-  border: 2px solid var(--cream);
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  /* Borda de 1,5px e não os 2px do palco: ali o disco tem 96px, aqui 32px — 2px seriam
+     1/8 do diâmetro e o anel engoliria o glifo. */
+  padding: 0.3rem;
+  border: 1.5px solid color-mix(in srgb, var(--signal) 85%, transparent);
   border-radius: 50%;
-  background: var(--signal);
-  box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--signal) 24%, transparent);
+  background: radial-gradient(
+    circle at 35% 25%,
+    color-mix(in srgb, var(--deep) 70%, var(--ink)) 0%,
+    var(--ink) 100%
+  );
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--signal) 14%, transparent),
+    0 0.4rem 0.9rem color-mix(in srgb, var(--ink) 30%, transparent);
 }
 
-/* Pílula clara e não navy: ela se desenha sobre o fundo da seção, no vão, e o mesmo
-   vocabulário navy da `.trajetoria-abertura-ano` a faria ler como um card pequeno. */
+.trajetoria-andador-no img {
+  display: block;
+  /* `contain` nas duas medidas: a caixa é o disco e é ela que manda. A arte é 1,17:1, e com
+     `height: auto` ela definiria a altura e o disco sairia oval. */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* A DATA DE COMEÇO NO ALTO DA FAIXA — 01/10: «coloque aqui no começo a data de começo 1988».
+
+   ⚠️ CENTRADA NA LINHA E ACIMA DELA, não dentro da faixa. `left: 0` é a borda da trilha, que
+   é a própria linha; `translate: -50% -100%` põe a pílula em cima do ponto onde a linha
+   nasce. O espaço existe: `.trajetoria-abertura` tem `margin-bottom` de 1,75–2,75rem, e é
+   nele que a pílula se encaixa — sem empurrar o primeiro card.
+
+   ⚠️ E ELA NÃO É `position: absolute` POR CAPRICHO: a alternativa seria um primeiro item de
+   fluxo na coluna, que ganharia o `gap` de 1,25rem da trilha e o `padding-inline-start`
+   inteiro, aterrissando alinhada com os cards em vez de sobre a linha. */
+.trajetoria-coluna-inicio {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  margin: 0;
+  translate: -50% -100%;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* ⚠️ `.trajetoria-andador-rotulo` SAIU — 01/10: «troque esse por o componente [medalhão]».
+   A pílula escrevia a geração ao lado do medalhão, na faixa, e dizia o mesmo que
+   `.trajetoria-card-geracao` já diz no topo do card em foco, a centímetros dela. Quem desce
+   com a rolagem passa a ser só o medalhão.
+
+   A regra fica arquivada aqui porque voltar é descomentar — e ela foi reescrita em linha
+   única, sem o comentário de motivo que tinha dentro, porque comentário de CSS não aninha e
+   o bloco quebraria o build:
+
 .trajetoria-andador-rotulo {
   translate: 0.4rem 0;
   padding: 0.2rem 0.6rem;
@@ -847,6 +935,7 @@
   text-transform: uppercase;
   white-space: nowrap;
 }
+*/
 
 /* OS ÍCONES NO VÃO, em fluxo entre duas células.
 
@@ -863,14 +952,12 @@
   display: flex;
   gap: 0.6rem;
   align-items: center;
-  /* Recuo negativo para a esquerda do `padding-inline-start: 1.75rem` da trilha: o nó do
-     vão tem de cair SOBRE a linha, como o das células, e não alinhado com os cards. O
-     `padding` devolve a mesma medida, então os ícones ficam alinhados com os cards e só o
-     nó fica fora, na linha. */
-  margin-left: -1.75rem;
-  /* 0,45rem e não 1,75rem: a guia tem de começar onde o nó termina. O nó tem centro em
-     −1,75rem e raio 0,35rem, logo sua borda direita está em −1,4rem — este recuo põe a
-     guia a um fio dela, em vez de deixar um vazio entre as duas. */
+  /* Recuo negativo para a esquerda do `padding-inline-start` da trilha: o nó do vão tem de
+     cair SOBRE a linha, como o das células, e não alinhado com os cards. */
+  margin-left: calc(var(--trilha-recuo, 1.75rem) * -1);
+  /* A guia começa onde o nó termina: o nó está sobre a linha, com raio 0,35rem, logo sua
+     borda direita fica a 0,35rem dela. Em `calc` sobre o recuo e não em número fixo, senão
+     mudar a faixa descolaria a guia do nó — foi o que a variável veio resolver. */
   padding-left: 0.45rem;
   /* Respiro vertical: o vão é passagem, e sem ele as pastilhas encostam nos dois cards e
      parecem pertencer a um deles. */
@@ -988,24 +1075,36 @@
   transition: border-color 0.4s ease, box-shadow 0.4s ease, translate 0.4s ease;
 }
 
-/* O 1988 DO INÍCIO, COM DESTAQUE — «garantir destaque».
-   A pílula já existia e já era a que vale no modo estático; o que ela não tinha era
-   ligação visível com o começo da linha. O `::after` é o nó ciano a cavalo na borda de
-   baixo, o mesmo papel que o nó de `.trajetoria-origem-ano` faz no palco — ali sobre o
-   `M` do `d`, aqui sobre o topo da coluna. O `position: relative` e a sombra que ele pede
-   estão na regra da própria pílula, acima — e não repetidos num segundo bloco com o mesmo
-   seletor, que é duas fontes de verdade para uma caixa só. */
-.trajetoria-abertura-ano::after {
-  position: absolute;
-  bottom: -0.45rem;
-  left: 1.1rem;
-  width: 0.6rem;
-  height: 0.6rem;
-  border: 2px solid var(--cream);
-  border-radius: 50%;
-  background: var(--signal);
-  content: '';
-}
+/* ⚠️ O 1988 DO CANTO SAIU DE CENA — 01/10: «coloque aqui no começo a data de começo 1988»,
+   apontando o começo da LINHA.
+
+   A pílula desta classe vive em `.trajetoria-abertura`, o bloco de texto ACIMA da coluna.
+   Ela mostrava o ano, mas longe da linha — e portanto sem dizer que a linha começa em 1988,
+   que é o que o pedido quer. Quem passa a cumprir o critério 2 no estático é
+   `.trajetoria-coluna-inicio`, centrada sobre o ponto onde a borda da trilha nasce.
+
+   Escondida e não apagada do JSX: `TimelineYearIntro` é o mesmo componente dos dois modos,
+   e no palco esta pílula já estava em `display: none` (ver a regra do palco, abaixo) —
+   então esta linha não muda nada a ≥901px, só faz o estático seguir a mesma regra. Volta
+   com uma linha, se a área quiser os dois.
+
+   ⚠️ CONTINUA HAVENDO UM SÓ 1988 POR MODO: palco → `.trajetoria-origem-ano` sobre o `M` do
+   caminho; estático → `.trajetoria-coluna-inicio` sobre o topo da coluna.
+
+   O `display: none` está na regra da própria pílula, acima, e não repetido aqui: dois
+   blocos com o mesmo seletor são duas fontes de verdade para uma caixa só. */
+
+/* O nó ciano que pendurava no pé daquela pílula morreu com ela — era o que a ligava ao
+   começo da linha, e agora a pílula do começo da linha É a marca. Guardado aqui porque
+   comentário de CSS não aninha e o bloco tinha nota dentro:
+
+   .trajetoria-abertura-ano::after {
+     position: absolute; bottom: -0.45rem; left: 1.1rem;
+     width: 0.6rem; height: 0.6rem;
+     border: 2px solid var(--cream); border-radius: 50%;
+     background: var(--signal); content: '';
+   }
+*/
 
 /* ── Card de marco (§4) ──────────────────────────────────────────────────── */
 
@@ -1829,9 +1928,19 @@
   content: none;
 }
 
-.trajetoria-scroll[data-modo='palco'] .trajetoria-abertura-ano::after {
-  content: none;
+/* A retirada do nó de `.trajetoria-abertura-ano::after` saiu daqui porque o `::after` deixou
+   de existir (01/10) — a pílula inteira está em `display: none` nos dois modos agora. Uma
+   regra que anula algo que não é desenhado é instrução que parece ter efeito e não tem:
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-abertura-ano::after { content: none; }
+*/
+
+/* A PÍLULA DO COMEÇO DA COLUNA sai no palco, como as outras peças do estático: lá o 1988
+   sobre a linha é `.trajetoria-origem-ano`, pendurado no `M` do caminho. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-coluna-inicio {
+  display: none;
 }
+
 
 .trajetoria-scroll[data-modo='palco'] .trajetoria-viewport {
   position: absolute;
@@ -1874,6 +1983,12 @@
   height: var(--percurso);
   padding: 0;
   border: 0;
+  /* ⚠️ O RECUO DA FAIXA ESQUERDA VOLTA AO VALOR DE ANTES — 01/10. A base subiu para
+     3,5rem para caber o medalhão e a pílula de 1988 na faixa que o pedido marcou (ver a
+     nota em `.trajetoria-trilha`). O `padding: 0` acima já tira o recuo da trilha no
+     palco, mas a variável é lida também pelo `left` do nó da célula, que o palco NÃO
+     redeclara — sem esta linha aquele nó andaria 28px a ≥901px, contra o critério 3. */
+  --trilha-recuo: 1.75rem;
   /* ⚠️ ERA `(var(--p) + 1) * var(--passo)`, E A CONTA SAIU DAQUI EM 01/10 (NOITE).
      Ela só fechava enquanto todos os vãos eram iguais, e deixaram de ser: os quatro vãos
      que penduram selo de ícone medem 640 e os outros vinte, 420 («diminua os espaçamento

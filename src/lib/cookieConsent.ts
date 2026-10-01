@@ -15,6 +15,8 @@
  * tratamento de dado — são assuntos diferentes e ficam separados de propósito.
  */
 
+import { carregarGoogleAnalytics, silenciarGoogleAnalytics } from './googleAnalytics';
+
 /** As cinco categorias do padrão de mercado, na ordem em que o painel as mostra. */
 export type CookieCategoryId =
   | 'necessary'
@@ -123,15 +125,16 @@ export function gravarConsentimento(estado: CookieConsentState): void {
 }
 
 /**
- * ⚠️ AQUI É O GANCHO, e ele está vazio de propósito.
+ * ⚠️ O GANCHO DEIXOU DE ESTAR VAZIO — 01/10. O primeiro script de terceiro chegou:
+ * Google Analytics 4, propriedade «Sistran Landing Page».
  *
- * Hoje o site não carrega NENHUM script de terceiro: não há `gtag`, GTM, pixel
- * de anúncio nem mapa de calor em `src/`. Então gravar a escolha é tudo o que
- * existe para fazer, e qualquer código a mais aqui seria andaime para algo que
- * ninguém pediu.
+ * O parágrafo que estava aqui dizia «hoje o site não carrega NENHUM script de
+ * terceiro» e era verdade até esta data. Fica registrado porque é o que explica a
+ * forma do arquivo: o gancho foi escrito ANTES de existir o que ligar, e a entrada
+ * do GA não exigiu mudar uma linha do componente de UI nem do layout — só preencher
+ * esta função. Era para isso que ele existia.
  *
- * Quando entrar o primeiro script de terceiro, ele entra POR AQUI e não no
- * `layout` — a ordem certa é: nada é injetado antes de esta função ver o estado
+ * A ordem continua a prevista: nada é injetado antes de esta função ver o estado
  * e ver `true` na categoria correspondente. O mapa é:
  *
  *   • `analytics`      → Google Analytics / Plausible / similar
@@ -140,14 +143,21 @@ export function gravarConsentimento(estado: CookieConsentState): void {
  *   • `functional`     → incorporação de rede social, widget de atendimento
  *
  * E o inverso importa igual: quem RETIRA o consentimento espera que o script
- * pare. Script já injetado não desaparece do documento — então a retirada de uma
- * categoria que já carregou algo precisa de `window.location.reload()` (é o
- * mesmo caminho honesto que o `MotionPreferenceDialog` usa quando a política de
- * movimento muda depois de GSAP e Lenis já terem medido a página).
+ * pare. Script já injetado não desaparece do documento — este bloco previa
+ * `window.location.reload()` para isso, e o GA resolve melhor: ele tem chave
+ * oficial de desligamento (`window['ga-disable-G-…']`), que silencia a tag sem
+ * jogar fora a rolagem e o estado das animações de quem só foi ajustar uma
+ * preferência. Ver `silenciarGoogleAnalytics`. A recarga continua sendo a saída
+ * para um terceiro futuro que NÃO ofereça esse desligamento.
  */
-export function aplicarConsentimento(_estado: CookieConsentState): void {
-  /* Sem terceiros no projeto: nada a ligar ou desligar. Ver o bloco acima. */
-  void _estado;
+export function aplicarConsentimento(estado: CookieConsentState): void {
+  /* ⚠️ CHAMADO NOS DOIS SENTIDOS, SEMPRE — e não só quando a categoria é `true`.
+     «Não carregar» e «parar de enviar» são estados diferentes para quem já
+     consentiu antes e mudou de ideia, e um `if (estado.analytics)` solto deixaria
+     a retirada sem efeito até a próxima recarga. As duas funções são inofensivas
+     quando não há nada a fazer, de propósito, para esta linha poder ser direta. */
+  if (estado.analytics) carregarGoogleAnalytics();
+  else silenciarGoogleAnalytics();
 }
 
 export type CookieCategoryCopy = {

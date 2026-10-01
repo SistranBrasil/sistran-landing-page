@@ -13,6 +13,10 @@
  * ou sem JS.
  *
  * ── Estado atual: ainda é demonstração ──────────────────────────────────────
+ * SIS-246 — vale para as DUAS actions deste arquivo, e não mais para o currículo:
+ * ele saiu daqui para `./curriculo.ts`, que tem destino, valida o anexo no servidor
+ * e devolve `erro` quando o envio não sai. O que segue abaixo descreve
+ * `enviarContato` e `enviarFormulario`, que continuam sem destino.
  * Não há integração externa: nada é gravado, nada é enviado por e-mail. É o que
  * o texto do site já dizia ("Este formulário é uma demonstração. Nenhuma
  * integração externa foi executada.") e esse texto não mudou.

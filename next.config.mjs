@@ -15,6 +15,26 @@ const nextConfig = {
 
      Só esta rota, escrita à mão: não é um padrão `/solucoes/:slug` com reescrita
      de grafia, que pegaria slugs futuros por acidente. */
+  /* SIS-246 — O CAMPO PROMETIA 5 MB E O SERVIDOR ACEITAVA 1 MB.
+     `serverActions.bodySizeLimit` tem padrão de 1 MB
+     (`node_modules/next/dist/docs/01-app/03-api-reference/05-config/01-next-config-js/serverActions.md:29`),
+     e esta chave não existia aqui. O campo de currículo anuncia «PDF, DOC, DOCX
+     até 5 MB» ao candidato, então todo arquivo entre 1 e 5 MB passava pela
+     validação do navegador e era recusado na requisição da action — currículo com
+     foto passa de 1 MB sem esforço.
+
+     6 MB e não 5: o limite é do CORPO INTEIRO da requisição, não do arquivo. Além
+     do anexo vão os campos de texto e o envelope `multipart` (fronteiras,
+     cabeçalhos de parte, metadados) — a própria doc, na linha 45, recomenda deixar
+     folga para isso. 1 MB de folga sobre o limite de 5 MB conferido no servidor
+     (`src/lib/curriculo-regras.ts`), que é quem de fato recusa o arquivo grande,
+     com mensagem, em vez de derrubar a requisição.
+
+     `experimental` é onde a chave mora nesta versão (Next 16.3.0) — é o que a doc
+     acima mostra, apesar de Server Actions serem estáveis desde o 14. */
+  experimental: {
+    serverActions: { bodySizeLimit: '6mb' },
+  },
   async redirects() {
     return [{ source: '/solucoes/lumina-ai', destination: '/solucoes/luminna-ai', permanent: true }];
   },

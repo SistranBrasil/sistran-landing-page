@@ -3,7 +3,8 @@
 import { useActionState, useId, useRef, useState } from 'react';
 import { Check, UploadCloud, FileText, AlertCircle } from 'lucide-react';
 import { enviarFormulario } from '@/app/actions/contato';
-import { ESTADO_INICIAL } from '@/app/actions/contato-estado';
+import { ESTADO_INICIAL, type EstadoContato } from '@/app/actions/contato-estado';
+import { ACEITE_CURRICULO, LIMITE_CURRICULO } from '@/lib/curriculo-regras';
 import './demo-form.css';
 
 /* SIS-223 — `DemoInput` ganhou nome próprio porque agora aparece em dois
@@ -51,11 +52,20 @@ export type DemoField =
       maxBytes?: number;
     };
 
-/* Documento, não imagem e não arquivo executável. `.doc` entra porque currículo
+/* SIS-246 — as duas constantes SAÍRAM deste arquivo para `src/lib/curriculo-regras.ts`.
+   Elas eram privadas do componente, e por isso a action não tinha como ler o mesmo
+   número: o campo anunciava 5 MB e o servidor recusava a partir de 1 MB. Agora a
+   regra é de um módulo neutro, que o campo lê para DESENHAR e a action lê para
+   IMPOR. Ficam aqui, comentadas, para a pista do valor antigo não se perder:
+
+   | const ACEITE_PADRAO = '.pdf,.doc,.docx';
+   | const LIMITE_PADRAO = 5 * 1024 * 1024;
+
+   Documento, não imagem e não arquivo executável. `.doc` entra porque currículo
    antigo ainda circula nesse formato; `.pages`/`.odt` ficam de fora porque quem
    receber não necessariamente abre. */
-const ACEITE_PADRAO = '.pdf,.doc,.docx';
-const LIMITE_PADRAO = 5 * 1024 * 1024;
+const ACEITE_PADRAO = ACEITE_CURRICULO;
+const LIMITE_PADRAO = LIMITE_CURRICULO;
 
 /**
  * Formulario dos formularios WPForms do site, com os mesmos rotulos e as mesmas
@@ -92,10 +102,21 @@ export default function DemoForm({
   submitLabel = 'Enviar',
   successNote,
   privacyNote,
+  action,
   className = 'glass-card space-y-5 p-7 md:p-8',
 }: {
   fields: readonly DemoField[];
   submitLabel?: string;
+  /**
+   * SIS-246 — a action passou a ser DECLARÁVEL. Ela era importada e cravada aqui
+   * dentro, então todo formulário desta casa submetia para `enviarFormulario`,
+   * que não tem destino — inclusive o de currículo, que precisa de destino,
+   * validação de anexo e base legal próprios.
+   *
+   * O padrão continua sendo `enviarFormulario`, para nenhum outro uso do
+   * componente mudar de comportamento por esta issue.
+   */
+  action?: (anterior: EstadoContato, dados: FormData) => Promise<EstadoContato>;
   /**
    * Texto do card de sucesso. O padrão é o mesmo de `/contato`; quem monta pode
    * trocar quando o formulário coleta algo que exige ser mais específico (o
@@ -111,7 +132,7 @@ export default function DemoForm({
   /* Server action = POST. Antes era `onSubmit` sem `method`/`action`: sem JS o
      navegador enviava GET e publicava nome, e-mail, telefone, mensagem e todo o
      resto na barra de endereços (relatorio de UX, p12, P0). */
-  const [estado, enviar, pendente] = useActionState(enviarFormulario, ESTADO_INICIAL);
+  const [estado, enviar, pendente] = useActionState(action ?? enviarFormulario, ESTADO_INICIAL);
   const sent = estado.status === 'sucesso';
 
   if (sent) {

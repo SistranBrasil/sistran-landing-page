@@ -215,6 +215,7 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-238** | Todo | quem-somos | Nossa Trajetória / Reconhecimentos = mock `trofeis.png` + `docs/trofeus.md` — slot 24/09 |
 | **SIS-239** | In Review | eventos | Mobile: carrossel horizontal automático dos eventos |
 | **SIS-251** | Todo | eventos | Mobile: carrossel mais intuitivo (swipe + auto) — pós SIS-239 |
-| **SIS-240** | Todo | home | BrandGrid: logos ilegíveis em repouso (7/15 &lt; 3:1) |
+| **SIS-240** | In Review | home | BrandGrid: logos ilegíveis em repouso (7/15 &lt; 3:1) |
+| **SIS-242** | Todo | site | Reveal atrasado/preso: textos/blocos demoram ou só aparecem ao voltar no scroll (primitiva) — slot 01/10 |
 | **SIS-241** | Todo | home | Peso: 24 MB entregues + ~163 MB bruto em public/ |
 | **SIS-243** | Todo | home | Hero: vídeo só inicia depois do carregamento da página |

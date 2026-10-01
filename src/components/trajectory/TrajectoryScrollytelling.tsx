@@ -19,7 +19,11 @@ import { MilestoneCard, type EstadoDoItem } from './MilestoneCard';
 import { TimelineClosing } from './TimelineClosing';
 import { TimelineContinue } from './TimelineContinue';
 import { TimelineEvolving } from './TimelineEvolving';
-import { TimelineColumnMarker, TimelineGapIcons } from './TimelineMobileRail';
+import {
+  TimelineColumnMarker,
+  TimelineColumnStart,
+  TimelineGapIcons,
+} from './TimelineMobileRail';
 import { TimelineOrigin } from './TimelineOrigin';
 import { TimelinePath } from './TimelinePath';
 import { TimelineProgress } from './TimelineProgress';
@@ -419,6 +423,12 @@ export function TrajectoryScrollytelling({ anoFinal }: { anoFinal: number }) {
                     ANTES das células no documento porque o `z-index` dela é baixo: o
                     marcador passa por TRÁS dos cards e aparece no vão entre eles, que é
                     onde há linha visível. Ver a nota em `TimelineMobileRail`. */}
+                {/* A DATA DE COMEÇO sobre o ponto onde a linha da coluna nasce — 01/10.
+                    DENTRO da trilha porque é a borda dela que é a linha: a pílula se
+                    posiciona contra essa caixa (`left: 0` é a própria linha). Fora dela não
+                    haveria a que se referir sem repetir a medida do recuo. */}
+                <TimelineColumnStart />
+
                 <TimelineColumnMarker
                   rotulo={
                     focoBase >= 0
