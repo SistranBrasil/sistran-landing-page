@@ -4308,6 +4308,52 @@ html[data-motion='reduce'] .orbit-counter {
   }
 }
 
+/* ── SIS-98 · o painel INLINE não pode ser scrollport ─────────────────────────
+   Queixa medida: «o scroll só funciona fora» do painel navy, no mobile. A causa
+   é a regra base do `.contact-dialog-inner` (~L4214), escrita para a variante
+   `<dialog>`: `overflow: hidden auto` + `overscroll-behavior: contain`. Ela vale
+   para o modal E para o cartão inline, e `overflow` com qualquer valor diferente
+   de `visible` faz do elemento um CONTÊINER DE SCROLL — é a mesma distinção que
+   o `.ct-inner` já registra algumas centenas de linhas abaixo. Com o dedo dentro
+   do cartão o gesto vira do scrollport do cartão; `overscroll-behavior: contain`
+   então impede que ele seja encadeado para o documento, e a página não anda.
+
+   Não bastava zerar `max-height`: o `.contact-inline` já declara
+   `--cd-altura: none`, e mesmo assim o cartão transborda por dentro (a coluna da
+   foto mede `100% + var(--cd-avanco)` a partir de 60rem, e as camadas
+   decorativas são absolutas), então havia curso real de rolagem para capturar.
+   E o bloco `@media (min-width: 60rem)` logo acima troca para `overflow: hidden`
+   — que também é scrollport, só sem barra — portanto a faixa de 960px a 1023px
+   ficava presa do mesmo jeito. Por isso esta regra vem DEPOIS dele.
+
+   `clip`, e não `visible`: `visible` resolveria a captura, mas o cartão deixaria
+   de recortar no `--cd-raio` e a faixa da foto reapareceria de canto reto sobre
+   os 28px de raio. `clip` recorta igual a `hidden` e NÃO cria scrollport — é a
+   única das três que atende as duas exigências de uma vez.
+
+   O modal fica intacto, e é por isso que o seletor é `.contact-inline`: no
+   `ContactModal` o mesmo `.contact-dialog-inner` é filho do `<dialog>` e precisa
+   continuar rolando por dentro (é uma janela sobre a página, com
+   `data-lenis-prevent` e tudo). Ele não recebe `.contact-inline` em lugar nenhum.
+
+   Dois seletores porque são dois casos distintos, não redundância:
+     · a media query cobre o mobile, onde a seção nunca é dirigida;
+     · `[data-modo='lista']` cobre a tela LARGA em que a seção caiu para o modo
+       lista porque o painel não cabia na altura (SIS-88) — ali também é o
+       documento que rola, e o cartão também não pode interceptar. */
+@media (max-width: 63.9375rem) {
+  .contact-inline .contact-dialog-inner {
+    max-height: none;
+    overflow: clip;
+    overscroll-behavior: auto;
+  }
+}
+.ct-palco[data-modo='lista'] .contact-dialog-inner {
+  max-height: none;
+  overflow: clip;
+  overscroll-behavior: auto;
+}
+
 /* --- painel visual: a foto da sede ---------------------------------------- */
 /* A divisao com o formulario nao é uma linha reta: a propria fotografia é
    recortada num arco vertical — estreito no topo, mais largo perto do meio,
@@ -11965,6 +12011,36 @@ html[data-motion='reduce'] .ct-trilha::before {
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
+/* ── SIS-98 · a VIDA do painel no modo lista ──────────────────────────────────
+   Em lista o painel não tinha movimento nenhum: nem entrada (resolvida pelo
+   `RevealScope` em `Contact.tsx`) nem vida depois de chegar. A flutuação de 11s
+   acima é a vida do modo dirigido e está escopada em `[data-modo='scroll']`;
+   aqui ela é reaproveitada — MESMA `@keyframes`, mesma duração, mesma curva —
+   para que o gesto do mobile seja o do desktop e não um efeito paralelo.
+
+   A CAMADA É OUTRA, e isso é a decisão: em dirigido a flutuação vive no
+   `.contact-dialog-inner`, porque o `transform` do `.ct-painel` já é o do
+   relógio da rolagem. Em lista é o inverso — o `transform` do
+   `.contact-dialog-inner` passou a ser o do `fade-up` de entrada, então a
+   flutuação sobe para o `.ct-painel`, que em lista não tem `transform` nenhum.
+   Duas coisas animando a mesma propriedade do mesmo nó é o defeito de SIS-42
+   que o bloco anterior já registra; isto é o que o evita.
+
+   `:focus-within` pausa, pela mesma razão de lá: escrever num alvo que oscila é
+   hostil, e o formulário é a conversão da página. `animation-play-state` em vez
+   de desligar a animação — parar no lugar, sem salto.
+
+   Movimento reduzido: os dois canais, mais abaixo, já devolvem
+   `transform: none !important` ao `.ct-painel`; a linha de `animation-name` foi
+   acrescentada lá para a animação também não ficar rodando à toa. */
+.ct-palco[data-modo='lista'] .ct-painel {
+  animation: ct-flutuar 11s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+  backface-visibility: hidden;
+}
+.ct-palco[data-modo='lista'] .ct-painel:focus-within {
+  animation-play-state: paused;
+}
+
 /* Paralaxe interno: a foto anda mais que o corpo. Profundidade sem mover nada
    que esteja sendo lido — o corpo, que tem o texto e os campos, é o que menos se
    desloca.
@@ -11996,6 +12072,12 @@ html[data-motion='reduce'] .ct-trilha::before {
   .ct-painel {
     transform: none !important;
     opacity: 1 !important;
+    /* SIS-98 — em lista o `.ct-painel` passou a carregar a flutuação. O
+       `transform: none !important` acima já vence a animação (declaração
+       `!important` de autor ganha de origem de animação), mas deixá-la rodando
+       seria custo de compositor por nada. `animation-name`, e não o atalho, para
+       não reescrever duração e direção da regra derivada. */
+    animation-name: none !important;
   }
   /* SIS-56: as tres camadas de vida morrem aqui. `animation-name`, e nao o
      atalho `animation`, para nao reescrever duracao e direcao de uma regra
@@ -12025,6 +12107,8 @@ html[data-motion='reduce'] .ct-trilha .ct-inner {
 html[data-motion='reduce'] .ct-painel {
   transform: none !important;
   opacity: 1 !important;
+  /* Espelho da linha do bloco `@media` — ver a razão lá. */
+  animation-name: none !important;
 }
 /* Espelho do bloco `@media` acima para o interruptor em tempo de execucao. */
 html[data-motion='reduce'] .ct-palco .contact-dialog-inner {

@@ -5,6 +5,8 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useReducedMotion } from '@/lib/motion';
 import { criarConsultaDeMedia } from '@/lib/mediaStore';
+import RevealScope from '@/components/motion/RevealScope';
+import { LIMIAR_REVEAL, MARGEM_REVEAL } from '@/lib/reveal-calibre';
 import PainelContato from './ContactPanel';
 
 /**
@@ -243,14 +245,49 @@ export default function Contact() {
               do `::backdrop` do modal, mas sem tirar a pagina do caminho. */}
           <div aria-hidden className="ct-veu" />
           <div className="ct-painel contact-inline" ref={painelRef}>
-            <div className="contact-dialog-inner">
-              <PainelContato
-                eyebrow="SAIBA MAIS SOBRE O QUE PODEMOS OFERECER"
-                title="Entre em contato conosco"
-                description="Contacte-nos para saber que tipo de soluções podemos implementar para o seu negócio!"
-                tituloId="contato-titulo"
-              />
-            </div>
+            {/* SIS-98 — A ENTRADA DO PAINEL NO MODO LISTA (mobile e tela baixa).
+                No modo dirigido o painel chega por `--ct-surgir`; em lista ele
+                simplesmente estava lá, pronto, no fluxo — a «versão morta» que a
+                issue descreve. Aqui ele passa a chegar pela primitiva da casa
+                (`RevealScope` + preset `fade-up`), com o calibre canônico, que é
+                exatamente o que `/contato` já faz com o MESMO cartão
+                (`src/app/contato/page.tsx:373`) — nenhum mecanismo novo.
+
+                O envelope é montado NOS DOIS MODOS, de propósito. Montá-lo só em
+                lista faria o nó aparecer e desaparecer na promoção para dirigido
+                (que depende de medir a altura do painel e, por isso, pode virar
+                num `resize`): o React remontaria `PainelContato` e apagaria o que
+                já estivesse digitado no formulário. Em modo dirigido ele fica
+                sendo uma `<div>` inerte com um `data-in` que nenhum descendente
+                consome — o `data-reveal` abaixo é condicional, o envelope não.
+
+                `umaVez` no default: o painel entra e fica. Reverter a entrada do
+                formulário quando ele sai de cena faria o cartão apagar a cada
+                passagem. */}
+            <RevealScope limiar={LIMIAR_REVEAL} margem={MARGEM_REVEAL}>
+              {/* O `fade-up` vai no `.contact-dialog-inner` pelo mesmo motivo
+                  registrado em `/contato`: inline o cartão não tem nada `fixed`
+                  dentro, e ele continua `position: relative` (o `transform` não
+                  troca `position`), que é o que mantém a `.grade-tecnica` por
+                  baixo do conteúdo.
+
+                  SÓ em lista: no modo dirigido o `transform` deste nó já é a
+                  flutuação de 11s (`ct-flutuar`), e os dois disputariam a mesma
+                  propriedade do mesmo elemento — a lição de SIS-42 que o próprio
+                  CSS desta seção cita. A vida do painel em lista mora numa camada
+                  diferente, o `.ct-painel` (ver `globals.css`). */}
+              <div
+                className="contact-dialog-inner"
+                data-reveal={dirigindo ? undefined : 'fade-up'}
+              >
+                <PainelContato
+                  eyebrow="SAIBA MAIS SOBRE O QUE PODEMOS OFERECER"
+                  title="Entre em contato conosco"
+                  description="Contacte-nos para saber que tipo de soluções podemos implementar para o seu negócio!"
+                  tituloId="contato-titulo"
+                />
+              </div>
+            </RevealScope>
           </div>
         </div>
       </div>

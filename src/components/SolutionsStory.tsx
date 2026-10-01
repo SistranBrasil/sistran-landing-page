@@ -33,12 +33,32 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
 import { SOLUTIONS } from '@/data/solutions';
 import { useReducedMotion } from '@/lib/motion';
-import { criarConsultaDeMedia } from '@/lib/mediaStore';
+// SIS-98 — import comentado junto com o `useHistoriaLarga` logo abaixo (ver a
+// nota lá): deixá-lo ativo quebraria o lint por import não utilizado, e removê-lo
+// apagaria a pista de como religar o limiar em JS.
+// import { criarConsultaDeMedia } from '@/lib/mediaStore';
 import RevealScope from '@/components/motion/RevealScope';
 import { LIMIAR_REVEAL, MARGEM_REVEAL } from '@/lib/reveal-calibre';
 
-/* O mesmo limiar governa a estrutura CSS e o modo dirigido. */
-const useHistoriaLarga = criarConsultaDeMedia('(min-width: 1024px)');
+/* SIS-98 — O LIMIAR GOVERNA A ESTRUTURA, E NÃO MAIS O MODO DIRIGIDO.
+   Era este o maior buraco da home mobile: abaixo de 1024px `dirigindo` era
+   `false`, então as quatro frases vinham como parágrafo pronto, nada acendia com
+   a rolagem e a seção lia como um folheto — a «versão morta» da issue, na seção
+   que ela nomeia primeiro.
+
+   O que separava os dois modos era a ESTRUTURA (coluna de mídia `sticky`, etapas
+   de 78vh, crossfade), e ela continua separada: TODAS as regras
+   `.story-solucoes[data-dirigindo] …` de `solutions-story.css` moram dentro de
+   `@media (min-width: 1024px)`. Por isso ligar o atributo no mobile não muda uma
+   caixa de lugar — o que ele liga é só o laço que acende os caracteres, que é
+   puramente geométrico (`getBoundingClientRect` de cada etapa contra o centro da
+   janela) e funciona igual numa coluna só.
+
+   O hook fica COMENTADO, e não apagado: é a pista de onde o limiar morava, e
+   ativo sem consumo ele quebraria o lint por variável não usada. Quem for
+   redesenhar a seção (SIS-196) e precisar do limiar em JS reativa esta linha.
+
+   | const useHistoriaLarga = criarConsultaDeMedia('(min-width: 1024px)'); */
 
 const TOTAL = SOLUTIONS.length;
 
@@ -103,12 +123,16 @@ export default function SolutionsStory() {
      de rolagem reentraria no render a 60 Hz para trocar uma cor. */
   const [ativo, setAtivo] = useState(0);
   const ativoRef = useRef(0);
-  const isDesktop = useHistoriaLarga();
+  /* | const isDesktop = useHistoriaLarga(); — ver a nota do hook, no topo. */
   const rm = useReducedMotion();
   /* `useReducedMotion` devolve `false` no servidor e no primeiro render: o modo
      dirigido é uma PROMOÇÃO depois de montar, e a árvore servida é a mesma da
-     hidratada (sem `if (rm) return outra coisa`). */
-  const dirigindo = isDesktop && !rm;
+     hidratada (sem `if (rm) return outra coisa`).
+     SIS-98 — a LARGURA saiu da conta; a preferência de movimento NÃO. Com
+     movimento reduzido continua valendo o parágrafo pronto (`.story-frase` sem
+     caracteres), que é o que garante a frase inteira legível sem depender de
+     nenhum laço — a regra de conteúdo×decoração da casa. */
+  const dirigindo = !rm;
 
   /* SIS-197 / SIS-275 — o CABEÇALHO da seção era o único bloco estático dela:
      eyebrow, título e rótulo apareciam prontos enquanto tudo abaixo é

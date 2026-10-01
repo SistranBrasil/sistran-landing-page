@@ -14,6 +14,16 @@ Ordem: as que travam código publicado primeiro.
 
 ---
 
+## 0. Google Analytics — Measurement ID (SIS-196)
+
+Pedido: ligar **GA4** (`analytics.google.com`) atrás do consentimento de cookies.
+
+**Falta:** o ID da propriedade, formato `G-XXXXXXXX`. Sem ele a issue fica em Backlog.
+
+Quando tiver: cole aqui ou diga **SIS-196** + o ID; a issue sobe para Todo e despacha.
+
+---
+
 ## 1. Uma ratificação que é sua — SIS-169, item 1
 
 A cena de escritórios entrega **duas faixas, não três**. A engenharia é boa e eu concordo com ela

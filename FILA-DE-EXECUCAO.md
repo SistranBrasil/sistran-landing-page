@@ -103,7 +103,7 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-193** | Todo | base | Tokens motion + primitiva Reveal |
 | **SIS-195** | Todo | 1 | BrandGrid: cascata fade-up das logos |
 | **SIS-194** | Todo | 2 | Títulos: revelação por linha/palavra |
-| **SIS-196** | Todo | 3 + layout | Soluções de Negócios: **redesenho inteiro** sticky storytelling (`docs/secao-sticky-storytelling-terminal.md`) — não só efeito em cima do teatro atual |
+| **SIS-196** | Backlog | site | GA4 (`gtag`) atrás do consentimento — **falta Measurement ID `G-…`** |
 | **SIS-197** | Todo | 4 | Presets `data-reveal` nos blocos estáticos |
 | **SIS-198** | Todo | hero | Tamanho fixo (sem scale/drop) + contorno ciano melhorado — ref 2ª captura; skills `.claude/gsap-skills` |
 | **SIS-230** | Todo | home | Fundo claro = mesma estrutura/visual de `/quem-somos` (token azul + malha pontos + AtmosferaQuadrados) — slot 28/09 |
@@ -138,10 +138,10 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-217** | Todo | solucoes | Cards aceleradores: logos `public/images/logos` + reação no hover |
 | **SIS-221** | Todo | quem-somos | Escritórios: mapa + cards mesmo tamanho em PB/SP/RJ (mocks mapaescritorio) — slot 29/09 |
 | **SIS-165** | Todo | quem-somos | Números = faixa da home (`FaixaIndicadores` + 7 métricas) — slot 29/09 |
-| **SIS-177** | Todo | quem-somos | Celent = `docs/celen.md` + mock `exemplocele.png` (2 cols; `cele.png` à D, não fundo) — slot 29/09 |
+| **SIS-177** | Todo | parceiros | Implantações MOBILE: ano+bolinha entre cards + ícones (só ≤900px) — slot 01/10 |
 | **SIS-199** | Todo | quem-somos | Por que SISTRAN?: negrito SISTRAN + cards flutuantes/hover + medalhão `porquesistran.png` — slot 28/09 |
 | **SIS-277** | Todo | quem-somos | Como Agimos = `docs/comagimos.md` + mock `exemplocomoagimos.png` (8 cards, sem numeração) — slot 28/09 |
-| **SIS-98** | Todo | quem-somos | Modelos: 4 PNG + TituloAceso (como Reconhecimentos) + «Segurador» fonte2; sem descriptions — slot 29/09 |
+| **SIS-98** | Todo | home | Mobile: scroll Contato + dinâmica ≥ web — slot 01/10 |
 | **SIS-170** | Todo | quem-somos | Premiações: halo/sombra atrás da Gaivota (presença igual ao ISO) — slot 29/09 |
 | **SIS-222** | Todo | contato | Loading a cada entrada até página + mapa prontos |
 | **SIS-245** | Todo | home | Pilares do hero: Lucide → `1home`–`4home.png` (ordem Conhecimento→…→Solidez) — slot 28/09 |

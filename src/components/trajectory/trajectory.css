@@ -566,10 +566,16 @@
   display: none;
 }
 
-/* Pílula navy, o mesmo vocabulário de `.trajetoria-mini-selo`. */
+/* Pílula navy, o mesmo vocabulário de `.trajetoria-mini-selo`.
+
+   SIS-177 — ganhou `position: relative` e sombra para «garantir destaque» do 1988 no
+   mobile: o `relative` é o que ancora o nó ciano do `::after` (ver o bloco da coluna viva,
+   abaixo), que liga a pílula ao começo da linha. */
 .trajetoria-abertura-ano {
+  position: relative;
   display: inline-block;
   margin: 0;
+  box-shadow: 0 0.5rem 1.25rem color-mix(in srgb, var(--ink) 20%, transparent);
   padding: 0.35rem 0.95rem;
   border-radius: 999px;
   background: var(--ink);
@@ -704,7 +710,20 @@
      mesmo ponto (medido a 1440px — `left` inline de 210px computado como `0px`).
      Agora a coordenada chega em variável e não posiciona nada por conta própria,
      então não há inline a vencer e o estado base não precisa retirar nada. */
-  position: static;
+  /* ⚠️ `relative` E NÃO `static` — SIS-177, defeito visível na captura de 01/10 («não
+     está aparecendo [...] nessa linha esquerda»).
+
+     Era `position: static`, e o efeito é que o `::before` logo abaixo — que é
+     `position: absolute` — pulava a célula e resolvia contra `.trajetoria-trilha`, o
+     primeiro ancestral posicionado. As 24 bolinhas da coluna caíam no MESMO ponto, a
+     1,5rem do topo da trilha: uma só visível lá em cima e nenhuma ao lado dos cards. A
+     linha esquerda ficava lisa de ponta a ponta, que é o que a captura mostra.
+
+     `relative` sem `inset` não desloca nada (a célula segue no lugar que o fluxo da
+     coluna lhe dá) — só devolve o `::before` ao dono dele. E não reintroduz a armadilha
+     do bloco acima: o que causava as 28 células empilhadas era `left`/`top` INLINE, e
+     hoje a coordenada do palco chega em variável, que não posiciona por conta própria. */
+  position: relative;
   inset: auto;
   transform: none;
 }
@@ -719,6 +738,272 @@
   border: 2px solid var(--cream);
   border-radius: 50%;
   background: var(--signal-deep);
+  content: '';
+}
+
+/* ══ A COLUNA VIVA DO MOBILE — SIS-177 ════════════════════════════════════════
+   «em ≤900px: ano + bolinha/progresso entre cards ao rolar» e «ícones visíveis entre
+   cards no mobile».
+
+   O que faltava: a coluna estática era inteiramente parada. Linha cinza de ponta a
+   ponta, um nó igual por card, vão vazio entre eles. Tudo o que acompanha a rolagem
+   morava em `[data-modo='palco']`, que só existe a partir de 901px — então em celular a
+   seção era uma fila de 24 cards navy e nada mais.
+
+   ⚠️ TODO ESTE BLOCO É BASE, NÃO `@media`, e a escolha é a mesma inversão que o arquivo
+   usa de cabo a rabo (ver a nota do topo). Quem decide o modo é o JavaScript, num ponto
+   só, depois de olhar largura E preferência de movimento; replicar a condição aqui em
+   `@media (max-width: 900px)` criaria uma segunda fonte de verdade que precisaria ficar
+   igual à primeira para sempre — e ela divergiria no caso que não é largura: desktop com
+   movimento reduzido, que também cai na coluna. O palco retira estas peças logo abaixo,
+   em quatro regras, e é por isso que o desktop fica literalmente inalterado.
+
+   ⚠️ E NADA AQUI DEPENDE DE JAVASCRIPT PARA EXISTIR. Sem script não há `--p-base` nem
+   `data-visto`: a linha fica cinza inteira, os nós ficam todos iguais, o marcador fica
+   no topo — e os ícones do vão, que são markup, continuam na página. A fila segue
+   legível por completo, que é o critério 11. O script acrescenta posição; ele não é o
+   que torna o conteúdo alcançável. */
+
+/* O TRAÇO PERCORRIDO, sobre a borda cinza da coluna.
+   `::before` da trilha e não uma segunda borda: a borda já é o trilho inteiro, e o que
+   falta é a parte acesa por cima dela. Em `scaleY` e não em `height` porque é o que o
+   quadro de rolagem anima de graça — a altura entraria em layout 60 vezes por segundo
+   numa coluna de 24 cards. */
+.trajetoria-trilha::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  /* −2px: a borda da coluna tem 2px e nasce fora da caixa de conteúdo, então o traço
+     aceso tem de cobrir exatamente aquela faixa, não encostar nela. */
+  left: -2px;
+  z-index: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--signal) 0%,
+    var(--signal-deep) 100%
+  );
+  content: '';
+  transform-origin: top center;
+  scale: 1 var(--p-base, 0);
+}
+
+/* A BOLINHA QUE DESCE, com o rótulo de tempo ao lado — o papel que `TimelineTraveler`
+   faz no palco. Ver a nota longa em `TimelineMobileRail` sobre por que o rótulo é a
+   geração e não um ano (o dado não tem ano por marco; o 1988 do início está na pílula
+   de abertura). */
+.trajetoria-andador {
+  position: absolute;
+  /* `top` percentual contra a altura da trilha, e o deslocamento de meia caixa em
+     `translate` separado: somar os dois no mesmo `top` exigiria conhecer a altura da
+     pílula em px, que muda com o rótulo. */
+  top: calc(var(--p-base, 0) * 100%);
+  left: -2px;
+  /* ⚠️ `z-index: 0` — POR TRÁS DOS CARDS, de propósito. O marcador segue a linha, e a
+     linha passa atrás da coluna de cards; é no VÃO entre dois cards que ela se vê, e é
+     ali que o marcador aparece. Acima dos cards ele cruzaria o navy e pareceria um
+     selo solto flutuando sobre o conteúdo. */
+  z-index: 0;
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  /* Sem `transition` no eixo do movimento: a posição vem de `--p-base`, que é reescrita
+     a cada quadro de rolagem. Interpolar um valor que já muda por quadro só atrasaria o
+     marcador em relação ao dedo. O que ganha transição é o APARECER. */
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+/* Só entra em cena quando há uma parada em foco — antes disso ele estaria colado no topo
+   dizendo o nome de nada. */
+.trajetoria-andador[data-ativo='sim'] {
+  opacity: 1;
+}
+
+.trajetoria-andador-no {
+  flex: 0 0 auto;
+  width: 0.95rem;
+  height: 0.95rem;
+  border: 2px solid var(--cream);
+  border-radius: 50%;
+  background: var(--signal);
+  box-shadow: 0 0 0 0.3rem color-mix(in srgb, var(--signal) 24%, transparent);
+}
+
+/* Pílula clara e não navy: ela se desenha sobre o fundo da seção, no vão, e o mesmo
+   vocabulário navy da `.trajetoria-abertura-ano` a faria ler como um card pequeno. */
+.trajetoria-andador-rotulo {
+  translate: 0.4rem 0;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--signal-deep) 42%, transparent);
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--signal-deep);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* OS ÍCONES NO VÃO, em fluxo entre duas células.
+
+   ⚠️ O DESENHO SEGUE A CAPTURA DO PALCO (01/10, imagem 4): nó encostado na linha →
+   guia pontilhada → pastilhas brancas. É o mesmo vocabulário de `.trajetoria-selo`, e é
+   de propósito: o vão do mobile e o selo do desktop são a MESMA informação em eixos
+   diferentes, e dois desenhos distintos para ela leriam como dois sistemas.
+
+   ⚠️ A GUIA É `::before` E NÃO UMA MARGEM: ela tem de nascer no nó (sobre a linha) e
+   morrer na primeira pastilha. Em `border-top` tracejado, que é como o pontilhado do
+   palco é feito — não um `repeating-linear-gradient` novo. */
+.trajetoria-vao {
+  position: relative;
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  /* Recuo negativo para a esquerda do `padding-inline-start: 1.75rem` da trilha: o nó do
+     vão tem de cair SOBRE a linha, como o das células, e não alinhado com os cards. O
+     `padding` devolve a mesma medida, então os ícones ficam alinhados com os cards e só o
+     nó fica fora, na linha. */
+  margin-left: -1.75rem;
+  /* 0,45rem e não 1,75rem: a guia tem de começar onde o nó termina. O nó tem centro em
+     −1,75rem e raio 0,35rem, logo sua borda direita está em −1,4rem — este recuo põe a
+     guia a um fio dela, em vez de deixar um vazio entre as duas. */
+  padding-left: 0.45rem;
+  /* Respiro vertical: o vão é passagem, e sem ele as pastilhas encostam nos dois cards e
+     parecem pertencer a um deles. */
+  padding-block: 0.35rem;
+}
+
+/* A GUIA PONTILHADA do nó até a primeira pastilha. */
+.trajetoria-vao::before {
+  flex: 0 0 auto;
+  width: 1.4rem;
+  border-top: 2px dashed color-mix(in srgb, var(--signal-deep) 38%, transparent);
+  content: '';
+}
+
+/* O nó do vão, no mesmo lugar e no mesmo tamanho do `::before` das células: é a mesma
+   linha, e dois diâmetros diferentes no mesmo trilho leriam como dois sistemas. */
+.trajetoria-vao-no {
+  position: absolute;
+  left: -0.35rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 2px solid var(--cream);
+  border-radius: 50%;
+  background: var(--signal);
+}
+
+.trajetoria-vao-icones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+/* Pastilha CLARA, pela MESMA razão das pastilhas dentro do card (ver a nota lá): as
+   artes `fino` de `/images/parceiros/` são traço escuro feito para papel e
+   desapareceriam sobre qualquer fundo escuro. Aqui o fundo é o da seção, claro, mas a
+   pastilha fica porque é ela que faz o ícone ler como «ponto da linha» e não como
+   imagem perdida entre dois cards. */
+.trajetoria-vao-icone {
+  display: inline-flex;
+  /* ⚠️ SUBIU DE 38px PARA 52px — 01/10, a captura do palco (imagem 4) mostra a pastilha
+     bem maior que a de dentro do card. A premissa dos 38px era «o vão não pode competir
+     com o marco», e ela estava errada de lado: no mobile o vão é o ÚNICO lugar onde o
+     ícone aparece grande, porque o selo do palco não monta aqui. A 38px ele lia como
+     miniatura repetida da pastilha do card. */
+  width: 52px;
+  height: 52px;
+  padding: 0.45rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--signal-deep) 14%, transparent);
+  /* 16px: o canto arredondado generoso do quadrado branco da captura, não os 10px de
+     pastilha pequena. */
+  border-radius: 16px;
+  background: var(--paper);
+  box-shadow: 0 0.5rem 1.1rem color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+/* A ARTE QUE JÁ TEM FUNDO PRÓPRIO dispensa a pastilha — 01/10.
+   `/iconerobo.png` é medalhão redondo com anel ciano e fundo opaco: dentro do quadrado
+   branco ele fica com duas molduras concêntricas, uma redonda dentro de uma quadrada. Aqui
+   só a sombra fica, para ele continuar assentado sobre a linha e não parecer colado.
+   Quem decide é `data-arte`, escrito em `TimelineMobileRail` a partir da lista declarada de
+   artes de competência — não do nome do arquivo. */
+.trajetoria-vao-icone[data-arte='propria'] {
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  box-shadow: 0 0.4rem 0.9rem color-mix(in srgb, var(--ink) 18%, transparent);
+}
+
+.trajetoria-vao-icone img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* O NÓ DA CÉLULA ACENDE quando a rolagem passa. `data-visto` é cumulativo (ver a nota no
+   observador): o trilho acende para baixo e não apaga atrás de quem rola. */
+.trajetoria-celula[data-visto='sim']::before {
+  background: var(--signal);
+  box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--signal) 20%, transparent);
+}
+
+/* O CARD EM FOCO SOBE — «ativo sobe, contorno = cor da tag».
+   ⚠️ `translate` E NUNCA `scale`, e isto é o «sem cortar» da issue: o card tem
+   `overflow` visível mas vive numa coluna com `gap` fixo, e escalá-lo o faria invadir o
+   vizinho ou ser invadido. 2px de subida e a borda na cor da categoria dizem a mesma
+   coisa sem mexer na caixa que o layout reservou.
+
+   `--chip-cor` já está escrita no próprio card pelo `MilestoneCard` (é a cor da
+   categoria, a mesma do chip) — não há token novo aqui, nem cor inventada. */
+.trajetoria-celula[data-foco='sim'] .trajetoria-card {
+  border-color: color-mix(in srgb, var(--chip-cor, var(--signal)) 72%, transparent);
+  box-shadow: 0 0.75rem 1.75rem color-mix(in srgb, var(--ink) 22%, transparent);
+  translate: 0 -2px;
+}
+
+/* A cor é reforço, não o único sinal: a sombra e a subida valem para quem não a
+   distingue, e o nome da categoria está escrito no chip do próprio card.
+
+   ⚠️ A TRANSIÇÃO PENDE DE `[data-visto]`, E NÃO DE `.trajetoria-card` SOLTO. Declarada no
+   card sem condição, ela valeria TAMBÉM no palco — e lá já existe uma `transition` em
+   `.trajetoria-scroll[data-modo='palco'] .trajetoria-card`, com outra lista de
+   propriedades. Seriam duas declarações da mesma propriedade disputando por
+   especificidade, ou seja mexer no desktop, que o critério 3 proíbe. `data-visto` só
+   existe no modo estático (o observador o limpa ao trocar de modo), então esta regra não
+   alcança o palco em nenhuma largura.
+
+   O custo é a primeira entrada em foco não interpolar: `data-visto` e `data-foco` entram
+   no MESMO quadro, então no primeiro encontro o card salta os 2px. Da segunda vez em
+   diante — e na saída de foco, que é o movimento que se nota — a transição vale. */
+.trajetoria-celula[data-visto] .trajetoria-card {
+  transition: border-color 0.4s ease, box-shadow 0.4s ease, translate 0.4s ease;
+}
+
+/* O 1988 DO INÍCIO, COM DESTAQUE — «garantir destaque».
+   A pílula já existia e já era a que vale no modo estático; o que ela não tinha era
+   ligação visível com o começo da linha. O `::after` é o nó ciano a cavalo na borda de
+   baixo, o mesmo papel que o nó de `.trajetoria-origem-ano` faz no palco — ali sobre o
+   `M` do `d`, aqui sobre o topo da coluna. O `position: relative` e a sombra que ele pede
+   estão na regra da própria pílula, acima — e não repetidos num segundo bloco com o mesmo
+   seletor, que é duas fontes de verdade para uma caixa só. */
+.trajetoria-abertura-ano::after {
+  position: absolute;
+  bottom: -0.45rem;
+  left: 1.1rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  border: 2px solid var(--cream);
+  border-radius: 50%;
+  background: var(--signal);
   content: '';
 }
 
@@ -1525,6 +1810,29 @@
   }
 }
 
+/* ══ O PALCO RETIRA AS PEÇAS DA COLUNA — SIS-177 ══════════════════════════════
+   Estas quatro regras são TODO o contato da issue com o desktop, e são de retirada: as
+   peças da coluna viva são montadas sempre (ver por quê em `TimelineMobileRail`) e aqui
+   saem de cena. Nenhum seletor do palco teve valor alterado.
+
+   ⚠️ `display: none` E NÃO `opacity: 0`: os ícones do vão são markup real na página, e em
+   opacidade zero eles continuariam ocupando altura entre as células absolutas do palco —
+   que é justamente o eixo que o palco controla por coordenada. Também não há conteúdo a
+   perder: os três são `aria-hidden`, e no palco o mesmo conteúdo está pendurado no traço
+   por `TimelineWaypoints` e `TimelineTraveler`. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-andador,
+.trajetoria-scroll[data-modo='palco'] .trajetoria-vao {
+  display: none;
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-trilha::before {
+  content: none;
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-abertura-ano::after {
+  content: none;
+}
+
 .trajetoria-scroll[data-modo='palco'] .trajetoria-viewport {
   position: absolute;
   inset: 0;
@@ -2287,6 +2595,32 @@
   .trajetoria-scroll[data-modo='palco'] .trajetoria-abertura-pulso {
     animation: none;
   }
+
+  /* SIS-177 — e aqui a régua da casa separa as duas coisas com cuidado, porque em
+     movimento reduzido a coluna estática é o ÚNICO modo que existe (o palco nem se
+     liga): o que for apagado aqui está apagado para sempre para essa pessoa.
+
+     MORRE o levantar de 2px do card em foco. É decoração — a borda na cor da categoria e
+     a sombra dizem «este é o que está em foco» sem deslocar nada, e o chip com o nome da
+     categoria está escrito dentro do card.
+
+     ⚠️ NÃO MORREM o traço que acende, o nó que acende nem a descida do marcador, e a
+     razão é a régua: eles não são efeito, são a RESPOSTA à pergunta «onde eu estou nos 24
+     marcos». Pará-los devolveria a fila morta que esta issue mandou consertar, e faria
+     isso justamente para quem tem menos pistas de posição. Nenhum deles é animação
+     declarada, aliás: são valores que seguem a rolagem do próprio usuário — parar a
+     rolagem não é pedido de quem pede menos movimento. */
+  .trajetoria-celula[data-foco='sim'] .trajetoria-card {
+    translate: none;
+  }
+
+  .trajetoria-celula[data-visto] .trajetoria-card {
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .trajetoria-andador {
+    transition: none;
+  }
 }
 
 html[data-motion='reduce'] .trajetoria-role-seta {
@@ -2300,4 +2634,18 @@ html[data-motion='reduce'] .trajetoria-competencia:hover .trajetoria-competencia
 
 html[data-motion='reduce'] .trajetoria-scroll[data-modo='palco'] .trajetoria-abertura-pulso {
   animation: none;
+}
+
+/* O segundo canal das regras de SIS-177 acima. Mesma decisão, mesmas razões — ver o
+   bloco `@media`. */
+html[data-motion='reduce'] .trajetoria-celula[data-foco='sim'] .trajetoria-card {
+  translate: none;
+}
+
+html[data-motion='reduce'] .trajetoria-celula[data-visto] .trajetoria-card {
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+html[data-motion='reduce'] .trajetoria-andador {
+  transition: none;
 }
