@@ -23,14 +23,21 @@
    e entraria no texto a 1366. Não é escrita nova — cada `navLabel` é um recorte
    do título que está ao lado dele. Ausente, o rótulo é o próprio título. */
 export type AccelBlock =
-  | { kind: 'paragraphs'; heading?: string; navLabel?: string; paragraphs: readonly string[] }
+  | {
+      kind: 'paragraphs';
+      heading?: string;
+      navLabel?: string;
+      inPageNav?: boolean;
+      paragraphs: readonly string[];
+    }
   | {
       kind: 'list';
       heading?: string;
       navLabel?: string;
+      inPageNav?: boolean;
       intro?: string;
       ordered?: boolean;
-      items: readonly { term?: string; text: string }[];
+      items: readonly { term?: string; text: string; highlights?: readonly string[] }[];
     };
 
 export type AcceleratorPage = {
@@ -39,6 +46,7 @@ export type AcceleratorPage = {
   name: string;
   /* Frase de abertura do site. Vira o subtitulo do hero. */
   lead: string;
+  metadataDescription?: string;
   blocks: readonly AccelBlock[];
 };
 
@@ -184,9 +192,16 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
             term: 'Demanda Crescente',
             text: 'Como atender à necessidade de código de alta qualidade de forma ágil e produtiva?',
           },
-          /* Site escreve "Débitos Técnica" no titulo do card. */
+          /* SIS-220 (5ª volta) — «Débitos Técnica», COM A CONCORDÂNCIA QUEBRADA, porque
+             é o que o paste escreve e o pedido é publicar o paste verbatim.
+             A nota anterior («Site escreve "Débitos Técnica" no titulo do card») já
+             dizia isso desde a SIS-280 e o dado a contrariava: alguém tinha corrigido
+             a gramática e deixado a nota apontando para o texto certo. Quem é dono da
+             escrita é a área, não a gramática — se um dia a fonte corrigir, o conserto
+             é uma linha aqui.
+             Linha anterior: term: 'Débitos Técnicos', */
           {
-            term: 'Débitos Técnicos',
+            term: 'Débitos Técnica',
             text: 'Como evitar a acumulação de débitos técnicos e resolver os existentes?',
           },
           {
@@ -212,6 +227,188 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
           { term: 'Aumento da Robustez de Sistemas', text: 'Soluções mais estáveis e seguras' },
         ],
       },
+      /* ⚠️ LEIA ISTO ANTES DAS DUAS NOTAS ABAIXO (SIS-220, 5ª volta): elas contam por
+         que a faixa Ecossistema foi construída e depois reduzida a cabeçalho, e AMBAS
+         AS PREMISSAS CADUCARAM — a faixa saiu da rota. Ficam como histórico de decisão
+         (é nelas que está registrado onde foram parar os oito produtos e por que a
+         métrica de +55% está sob o CASE e não sob o TEST), e não como descrição do que
+         a página publica hoje. Nada abaixo deste ponto está montado em /luminna-ai. */
+      /* SIS-220 (2ª volta, item 4) — O ECOSSISTEMA DE PRODUTOS, QUE NÃO EXISTIA.
+         O bloco é NOVO no dado: até aqui a slug tinha três `heading` (Desafios,
+         Benefícios, Integração Versátil) e nenhuma lista dos oito produtos, embora
+         eles sejam o que a solução vende. A escrita é a da issue, verbatim — nome,
+         descrição e métricas —, e nada além dela foi acrescentado.
+
+         `heading: 'Luminna AI'` e `navLabel: 'Ecossistema'`: o pedido é sobrancelha
+         «Ecossistema» + título «Luminna AI». O `navLabel` já é, por contrato deste
+         arquivo, o recorte curto do título para a coluna lateral — e aqui ele serve
+         duas vezes sem repetir escrita, porque o corpo da slug desenha a
+         sobrancelha A PARTIR dele. Rótulo «Luminna AI» na coluna também seria pior:
+         repetiria o nome da página como se fosse uma parada.
+         Grafia com DOIS n, sempre: o paste da issue escreve «Lumina» e essa é a
+         grafia errada que a SIS-280 já corrigiu em `id` e `name` acima.
+
+         POSIÇÃO: antes de «Integração Versátil», como a issue prefere — primeiro
+         quais são os produtos, depois com o que eles conversam. A ordem daqui é a
+         ordem das paradas do indicador lateral, então mexer nela mexe nas duas
+         coisas de uma vez.
+
+         `highlights` PARA AS MÉTRICAS, e não um `text` com os números colados: o
+         precedente é o SDS («Três pilares», ~L505), onde `highlights` é justamente
+         a lista de itens curtos sob o parágrafo do cartão. Quem tem duas métricas
+         (ESTIMATE, CODE) fica com dois itens em vez de uma frase com «·».
+
+         ⚠️ DIVERGÊNCIA DECLARADA, e ela é do paste, não nossa: a métrica «+55% mais
+         rapidez na criação de TESTES UNITÁRIOS» aparece sob o LUMINNA CASE AI, que
+         é o de testes FUNCIONAIS; quem gera teste unitário é o LUMINNA TEST AI. A
+         issue registra o desencontro («métrica no paste fica sob CASE — ver nota») e
+         manda não inventar métrica. Então o número fica onde o paste o pôs e o TEST
+         fica SEM métrica — mover seria reescrever dado de negócio por dedução. Se a
+         fonte confirmar a troca, o conserto é passar este `highlights` de um item
+         para o outro, e nada mais.
+         O LUMINNA PROMPT AI também não tem métrica no paste, e por isso não tem
+         `highlights` — a ausência é do dado, não esquecimento.
+         «Backend Button», que aparece no paste, é artefato de export do Figma e não
+         entra: não é produto nem CTA. */
+      /* ── SIS-220 (3ª VOLTA) · O BLOCO PERDE OS ITENS E FICA COM O CABEÇALHO ────
+         O que aconteceu, em uma frase: os oito produtos saíram daqui para
+         `src/data/luminnaEcossistema.ts`, tipados, e este bloco ficou sendo só o
+         CABEÇALHO da faixa — título, sobrancelha e a linha de apoio.
+         POR QUE ELE NÃO FOI APAGADO: é a existência de um bloco COM `heading` que
+         faz a faixa ser parada do indicador lateral (`pageSections.ts` deriva as
+         paradas dos blocos com título) e é `idDoBloco(heading)` que dá a âncora.
+         Sem ele, a seção continuaria na tela e desapareceria da navegação — o
+         defeito que aquele arquivo já registra em palavras.
+         POR QUE OS ITENS SAÍRAM: o desenho de `docs/luminnaecosistema.md` precisa de
+         CATEGORIA por produto, MÉTRICA partida em número e rótulo, COLUNA da
+         composição bento e `id` estável para o painel aberto. Nada disso cabe em
+         `{ term, text, highlights }`, e alargar `AccelBlock` empurraria os quatro
+         campos para as outras seis páginas de acelerador, que não têm nenhum deles.
+         A justificativa inteira está no docblock do arquivo novo.
+         MUDOU DE `kind`, de `list` para `paragraphs`: sem itens, uma lista vazia
+         seria uma lista mentindo sobre ser lista.
+
+         O TÍTULO MUDOU, e é pedido literal da issue: era «Luminna AI» e agora é
+         «Tecnologia aplicada em todo o ciclo», com a sobrancelha «ECOSSISTEMA» —
+         em palavras da issue, «Não utilizar `Luminna AI` como título da seção». Os
+         NOMES DOS PRODUTOS continuam com «Luminna», que é o nome das soluções.
+         ⚠️ ISSO MOVE A ÂNCORA: `idDoBloco('Luminna AI')` dava `luminna-ai` e
+         `idDoBloco('Tecnologia aplicada em todo o ciclo')` dá
+         `tecnologia-aplicada-em-todo-o-ciclo`. A chave correspondente em
+         `pageSections.ts` foi trocada no mesmo passo — as duas juntas ou o rótulo do
+         indicador vai com a tinta errada sobre faixa clara.
+         ⚠️ E MOVE O `copy-lock`: o título, a descrição e os oito textos de cartão
+         mudam de nó (e as descrições mudam de escrita, porque a fonte agora é o
+         documento). O portão do lock NÃO foi rodado nesta passada.
+
+         A DESCRIÇÃO é a do documento, verbatim. Ela não existia — a 2ª volta não
+         tinha `intro` porque o paste não trazia nenhuma.
+
+         A LISTA DE OITO ITENS QUE ESTAVA AQUI, na íntegra, porque era a escrita do
+         paste da 2ª volta e é o histórico contra o qual se compara o documento
+         (as divergências item a item estão anotadas no arquivo novo):
+
+         | items: [
+         |   { term: 'LUMINNA STORY AI',
+         |     text: 'Criação ágil de histórias e priorização de tarefas',
+         |     highlights: ['+60% de aumento na velocidade de criação de histórias'] },
+         |   { term: 'LUMINNA ESTIMATE AI',
+         |     text: 'Estimativas precisas de esforço, complexidade e tamanho funcional',
+         |     highlights: ['+60% mais detalhes na criação de tarefas',
+         |                  '+95% mais rapidez na estimativa de esforços'] },
+         |   { term: 'LUMINNA CODE AI',
+         |     text: 'Automação de Revisão de Código e Migração de Tecnologias (Spring Boot, Angular, Java 21+, BSAD5)',
+         |     highlights: ['+84% de aumento na velocidade de revisão de código',
+         |                  '−57% menos tempo para correção de bugs'] },
+         |   { term: 'LUMINNA FIX AI',
+         |     text: 'Correção automática de bugs e vulnerabilidades',
+         |     highlights: ['+84% mais rapidez na identificação de vulnerabilidade'] },
+         |   { term: 'LUMINNA DOC AI',
+         |     text: 'Geração automática de documentação clara e concisa',
+         |     highlights: ['+85% de ganho de tempo e qualidade na geração de documentação'] },
+         |   { term: 'LUMINNA TEST AI',
+         |     text: 'Geração de testes unitários abrangentes' },
+         |   { term: 'LUMINNA CASE AI',
+         |     text: 'Criação de testes funcionais detalhados',
+         |     highlights: ['+55% mais rapidez na criação de testes unitários'] },
+         |   { term: 'LUMINNA PROMPT AI',
+         |     text: 'Direcionamento das respostas da IA de forma mais precisa, garantindo maior aderência às necessidades do negócio.' },
+         | ],                                                                      */
+      /* SIS-220 — O ECOSSISTEMA SAI DA ROTA. Não é redesenho nem "enxugar": a frase
+         «Soluções especializadas que apoiam planejamento, desenvolvimento, qualidade e
+         conhecimento.» não existe no paste, e o pedido é que a página publique SÓ o
+         paste. Era a última versão viva do bloco (a de 8 produtos já estava desativada
+         logo abaixo) — com as duas comentadas, a rota não tem mais faixa Ecossistema.
+
+         ⚠️ `src/data/luminnaEcossistema.ts` e `EcossistemaLuminna.tsx` FICAM EM DISCO,
+         intactos, e sem consumidor nesta rota. Não estão órfãos por descuido: os dados
+         dos 8 produtos são a única cópia dos ganhos medidos (+84% revisão, +85% doc…) e
+         apagá-los perderia número que ninguém remede. Se a faixa voltar, descomentar o
+         bloco de `list` abaixo e a montagem em `LuminnaAiPagina.tsx` basta.
+      {
+        kind: 'paragraphs',
+        heading: 'Tecnologia aplicada em todo o ciclo',
+        navLabel: 'Ecossistema',
+        paragraphs: [
+          'Soluções especializadas que apoiam planejamento, desenvolvimento, qualidade e conhecimento.',
+        ],
+      },
+      */
+      /* O BLOCO ANTIGO, DESATIVADO E NÃO APAGADO (regra da casa). Ativo, ele
+         duplicaria a faixa: `LuminnaAiPagina` acha o bloco por `heading` e os dois
+         títulos são diferentes, então os dois montariam.
+      {
+        kind: 'list',
+        heading: 'Luminna AI',
+        navLabel: 'Ecossistema',
+        items: [
+          {
+            term: 'LUMINNA STORY AI',
+            text: 'Criação ágil de histórias e priorização de tarefas',
+            highlights: ['+60% de aumento na velocidade de criação de histórias'],
+          },
+          {
+            term: 'LUMINNA ESTIMATE AI',
+            text: 'Estimativas precisas de esforço, complexidade e tamanho funcional',
+            highlights: [
+              '+60% mais detalhes na criação de tarefas',
+              '+95% mais rapidez na estimativa de esforços',
+            ],
+          },
+          {
+            term: 'LUMINNA CODE AI',
+            text: 'Automação de Revisão de Código e Migração de Tecnologias (Spring Boot, Angular, Java 21+, BSAD5)',
+            highlights: [
+              '+84% de aumento na velocidade de revisão de código',
+              '−57% menos tempo para correção de bugs',
+            ],
+          },
+          {
+            term: 'LUMINNA FIX AI',
+            text: 'Correção automática de bugs e vulnerabilidades',
+            highlights: ['+84% mais rapidez na identificação de vulnerabilidade'],
+          },
+          {
+            term: 'LUMINNA DOC AI',
+            text: 'Geração automática de documentação clara e concisa',
+            highlights: ['+85% de ganho de tempo e qualidade na geração de documentação'],
+          },
+          {
+            term: 'LUMINNA TEST AI',
+            text: 'Geração de testes unitários abrangentes',
+          },
+          {
+            term: 'LUMINNA CASE AI',
+            text: 'Criação de testes funcionais detalhados',
+            highlights: ['+55% mais rapidez na criação de testes unitários'],
+          },
+          {
+            term: 'LUMINNA PROMPT AI',
+            text: 'Direcionamento das respostas da IA de forma mais precisa, garantindo maior aderência às necessidades do negócio.',
+          },
+        ],
+      },
+      */
       {
         kind: 'list',
         heading: 'Integração Versátil',
@@ -227,9 +424,15 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
       },
       {
         kind: 'paragraphs',
+        /* SIS-220 — UM parágrafo, porque o paste escreve UM. A quebra em dois era
+           editorial nossa, e ela custava: partida no ponto, a segunda metade («Com sua
+           integração versátil…») virava uma segunda afirmação de revolução solta no fim
+           da página. Junta, é uma frase com sujeito e consequência.
+           Antes:
+             'O Luminna AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez.',
+             'Com sua integração versátil e ferramentas avançadas, é a solução ideal para empresas que buscam se destacar no mercado competitivo atual.', */
         paragraphs: [
-          'O Luminna AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez.',
-          'Com sua integração versátil e ferramentas avançadas, é a solução ideal para empresas que buscam se destacar no mercado competitivo atual.',
+          'O Luminna AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez. Com sua integração versátil e ferramentas avançadas, é a solução ideal para empresas que buscam se destacar no mercado competitivo atual.',
         ],
       },
     ],
@@ -438,6 +641,161 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
           /* "IOS" -> iOS. O site apresenta os dados de dispositivos no presente
              sem nenhuma data; o paragrafo seguinte registra isso. */
           'Em qualquer lugar: além dos Echo Dots da Amazon, ou outros dispositivos, que em conjunto já atendem mais de 1 milhão de contas no Brasil, a Amazon disponibiliza Alexa de forma independente do sistema operacional (Windows, Android, iOS). Por exemplo, televisões LG e Samsung já vêm com Alexa instalada, assim como laptops e também veículos no Brasil (BMW, Mini e o mais recente lançamento, Jeep Commander); também é possível acionar a Alexa em qualquer celular.',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'sds',
+    name: 'SDS — Sistema Digital de Sinistros',
+    lead:
+      'O SDS conecta segurados, documentos, equipes e agentes especializados em uma jornada contínua, rastreável e configurável. A solução estrutura o comunicado, apoia a análise documental, identifica indícios relevantes e prepara a regulação, mantendo as decisões críticas sob responsabilidade humana.',
+    metadataDescription:
+      'Conheça o SDS, plataforma da Sistran que conecta comunicado, documentos, apoio antifraude e regulação em uma jornada rastreável, com inteligência artificial e decisão humana.',
+    blocks: [
+      {
+        kind: 'paragraphs',
+        heading: 'Uma plataforma para toda a jornada de sinistros',
+        navLabel: 'O que é',
+        paragraphs: [
+          'O Sistema Digital de Sinistros é uma solução da Sistran que combina regras de negócio, inteligência artificial e participação humana para organizar e conduzir o sinistro desde o primeiro relato até o parecer da regulação.',
+          'A plataforma transforma documentos e informações não estruturadas em um caso compreendido, preservando o contexto, a origem das evidências e o histórico de cada análise.',
+        ],
+      },
+      {
+        kind: 'list',
+        heading: 'Do comunicado à regulação em oito etapas',
+        navLabel: 'Como funciona',
+        ordered: true,
+        items: [
+          { term: 'Comunicado', text: 'Coleta o relato inicial e identifica a natureza do sinistro.' },
+          { term: 'Documentos', text: 'Orienta o envio e classifica os documentos necessários.' },
+          {
+            term: 'Extração inteligente',
+            text: 'Transforma documentos e conteúdos não estruturados em dados utilizáveis.',
+          },
+          {
+            term: 'Validação',
+            text: 'Cruza informações cadastrais, contratuais e relacionadas à ocorrência.',
+          },
+          {
+            term: 'Apoio antifraude',
+            text: 'Identifica anomalias e organiza indícios para revisão especializada.',
+          },
+          {
+            term: 'Consolidação',
+            text: 'Reúne dados, documentos, pendências, histórico e alertas.',
+          },
+          {
+            term: 'Protocolo',
+            text: 'Formaliza o caso e preserva a rastreabilidade das informações.',
+          },
+          {
+            term: 'Regulação',
+            text: 'Agentes especializados apoiam a análise e a elaboração do parecer, mantendo a decisão com o regulador.',
+          },
+        ],
+      },
+      {
+        kind: 'list',
+        heading: 'Três pilares',
+        navLabel: 'Pilares',
+        items: [
+          {
+            term: 'Comunicado inteligente',
+            text: 'Conduz o segurado em uma coleta contextual e assistida, antecipando pendências e reduzindo o preenchimento manual e o retrabalho.',
+            highlights: [
+              'Contexto da ocorrência preservado',
+              'Documentos classificados',
+              'Pendências identificadas antecipadamente',
+              'Acompanhamento claro da jornada',
+            ],
+          },
+          {
+            term: 'Regulação agêntica',
+            text: 'Agentes especializados de inteligência artificial analisam contrato, cobertura, consistência, evidências e riscos para preparar um parecer estruturado e fundamentado.',
+            highlights: [
+              'Cobertura e vigência verificadas',
+              'Evidências relacionadas ao caso',
+              'Exceções sinalizadas',
+              'Histórico auditável',
+              'Decisão humana preservada',
+            ],
+          },
+          {
+            term: 'Apoio antifraude',
+            text: 'Analisa documentos em diferentes camadas e apresenta sinais priorizados para apoiar a investigação especializada, sem classificar automaticamente uma ocorrência como fraude.',
+            highlights: [
+              'Metadados e estrutura dos arquivos',
+              'Indícios de manipulação',
+              'Inconsistências visuais e tipográficas',
+              'Mapa de calor das regiões suspeitas',
+              'Critérios e evidências registrados',
+            ],
+          },
+        ],
+      },
+      {
+        kind: 'list',
+        heading: 'Um agente especializado para cada momento da jornada',
+        navLabel: 'Agentes',
+        intro:
+          'Os agentes do SDS possuem responsabilidades definidas e trabalham de forma coordenada. Eles classificam documentos, extraem informações, verificam consistência, identificam lacunas e organizam evidências para que a equipe concentre sua capacidade técnica nos casos que realmente exigem análise e julgamento.',
+        items: [
+          { term: 'Agente Orquestrador', text: '' },
+          { term: 'Extração de documentos', text: '' },
+          { term: 'Revisão documental', text: '' },
+          { term: 'Validação de informações', text: '' },
+          { term: 'Elegibilidade', text: '' },
+          { term: 'Análise contratual', text: '' },
+          { term: 'Apoio antifraude', text: '' },
+          { term: 'Especialistas da regulação', text: '' },
+        ],
+      },
+      {
+        kind: 'list',
+        heading: 'A inteligência artificial apoia. A decisão permanece humana.',
+        navLabel: 'Governança',
+        intro:
+          'O SDS não substitui o julgamento técnico do regulador. A plataforma organiza informações, executa verificações e apresenta recomendações fundamentadas, permitindo que profissionais avaliem exceções, consultem evidências e assumam a responsabilidade pelas decisões.',
+        items: [
+          { text: 'Evidências vinculadas às conclusões' },
+          { text: 'Origem dos dados preservada' },
+          { text: 'Critérios aplicados registrados' },
+          { text: 'Histórico completo das análises' },
+          { text: 'Revisão humana nos pontos críticos' },
+        ],
+      },
+      {
+        kind: 'list',
+        heading: 'Impacto em toda a operação de sinistros',
+        navLabel: 'Benefícios',
+        items: [
+          { term: 'Menos esforço operacional', text: 'Reduz atividades manuais e repetitivas ao longo da jornada.' },
+          { term: 'Mais velocidade', text: 'Acelera o comunicado e antecipa o início da regulação.' },
+          { term: 'Maior qualidade dos dados', text: 'Extrai, valida e organiza informações com consistência.' },
+          { term: 'Menos retrabalho', text: 'Identifica documentos ausentes e divergências antecipadamente.' },
+          { term: 'Mais segurança', text: 'Mantém evidências, critérios e decisões em uma trilha rastreável.' },
+          { term: 'Melhor experiência do segurado', text: 'Oferece orientação clara e acompanhamento durante o processo.' },
+          { term: 'Escalabilidade operacional', text: 'Permite processar mais casos sem crescimento proporcional da equipe.' },
+          { term: 'Regulação mais consistente', text: 'Padroniza verificações e prepara pareceres fundamentados para revisão.' },
+        ],
+      },
+      {
+        kind: 'paragraphs',
+        heading: 'Integração com o ecossistema da seguradora',
+        navLabel: 'Integração',
+        paragraphs: [
+          'O SDS pode se conectar aos sistemas já utilizados pela seguradora, incluindo plataformas de apólices, gestão de sinistros, documentos, pagamentos, comunicação e sistemas corporativos.',
+          'A arquitetura configurável permite adaptar regras, documentos e etapas de acordo com o produto, a cobertura e o modelo operacional de cada organização.',
+        ],
+      },
+      {
+        kind: 'paragraphs',
+        heading: 'Sinistros mais inteligentes começam com uma jornada melhor estruturada',
+        inPageNav: false,
+        paragraphs: [
+          'Conheça como o SDS pode conectar pessoas, documentos, inteligência e decisões em uma operação mais ágil, segura e rastreável.',
         ],
       },
     ],

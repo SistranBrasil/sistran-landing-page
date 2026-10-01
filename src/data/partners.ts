@@ -26,10 +26,37 @@ export type Partner = {
   icon: IconName;
   logo?: string;
   logoAlt?: string;
+  /**
+   * SIS-219 — destino do «saiba mais» do card, quando existe.
+   *
+   * SÓ QUATRO PARCEIROS TÊM, e isso é o pedido literal da issue: «coloque o
+   * saiba mais em apenas 4 cards» — aws, addactis, friss e sensedia —, todos
+   * apontando para a MESMA página (a listagem da Sistran no AWS Partner
+   * Central). Os outros doze ficam sem CTA nenhum, e é por isso que o campo é
+   * opcional em vez de obrigatório com string vazia: card sem `saibaMaisUrl`
+   * não renderiza o link, e não há como esquecer de esconder um vazio.
+   *
+   * É URL externa e absoluta de propósito — não é rota interna, então não passa
+   * por `next/link` de app router; o componente abre em aba nova com
+   * `rel="noopener noreferrer"`.
+   */
+  saibaMaisUrl?: string;
   /** Imagem editorial usada no card horizontal da página de parceiros. */
   cardImage: string;
   cardImageAlt: string;
 };
+
+/**
+ * SIS-219 — o destino único do «saiba mais». É a listagem da Sistran no AWS
+ * Partner Central, a mesma página para os quatro cards, conforme o adendo da
+ * issue: «com o link https://partners.amazonaws.com/partners/0010h00001c9KHZAA2/SISTRAN%20INFORMATICA%20LTDA».
+ *
+ * Constante e não string repetida quatro vezes: são quatro campos que têm de
+ * apontar para o mesmo lugar, e URL copiada é URL que divergirá em uma das
+ * cópias no dia em que ela mudar.
+ */
+export const AWS_PARTNER_CENTRAL_URL =
+  'https://partners.amazonaws.com/partners/0010h00001c9KHZAA2/SISTRAN%20INFORMATICA%20LTDA';
 
 export const PARTNER_CATEGORIES: Record<PartnerCategory, { label: string }> = {
   seguros: { label: 'Especialistas em seguros' },
@@ -109,6 +136,7 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Layers',
     logo: '/images/AWS.png',
     logoAlt: 'AWS',
+    saibaMaisUrl: AWS_PARTNER_CENTRAL_URL,
     cardImage: '/parceiros-implementacoes/06-aws-cloud-ai-insurance-bg.png',
     cardImageAlt: 'AWS',
     description:
@@ -135,6 +163,7 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Briefcase',
     logo: '/images/Addactis-logo.png',
     logoAlt: 'Addactis',
+    saibaMaisUrl: AWS_PARTNER_CENTRAL_URL,
     cardImage: '/parceiros-implementacoes/08-addactis-actuarial-bg.png',
     cardImageAlt: 'Addactis',
     /* No site este card repete, palavra por palavra, o texto da AWS — inclusive
@@ -163,6 +192,7 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Shield',
     logo: '/images/Friss.png',
     logoAlt: 'FRISS',
+    saibaMaisUrl: AWS_PARTNER_CENTRAL_URL,
     cardImage: '/parceiros-implementacoes/10-friss-fraud-prevention-bg.png',
     cardImageAlt: 'FRISS',
     description:
@@ -208,6 +238,7 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Code2',
     logo: '/images/Sensedia-logo-website-UPDATED2.png',
     logoAlt: 'Sensedia',
+    saibaMaisUrl: AWS_PARTNER_CENTRAL_URL,
     cardImage: '/parceiros-implementacoes/12-sensedia-api-management-bg.png',
     cardImageAlt: 'Sensedia',
     description:
@@ -232,7 +263,15 @@ export const PARTNERS: readonly Partner[] = [
     focus: 'Seguro AGRO',
     category: 'seguros',
     icon: 'Leaf',
-    logo: '/images/Picsel-logo.png',
+    /* SIS-219 — logo nova da Picsel, entregue em `public/logos-parceiros/`
+       (1791x878, com canal alfa). A anterior era:
+
+           logo: '/images/Picsel-logo.png',
+
+       arte antiga que a issue manda deixar de usar: «substituir a logo da Picsel
+       pela nova em todos os lugares onde ela aparece». O arquivo velho segue em
+       `public/images/` como origem, sem ser servido. */
+    logo: '/logos-parceiros/picsel-logo.png',
     logoAlt: 'Picsel',
     cardImage: '/parceiros-implementacoes/14-picsel-agro-insurance-bg.png',
     cardImageAlt: 'Picsel',

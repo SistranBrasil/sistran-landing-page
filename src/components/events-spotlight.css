@@ -1618,6 +1618,19 @@
   margin-top: 0.4rem;
 }
 
+/* SIS-235 — o chip de `kind` do cartão virou carimbo nos QUATRO kinds
+   (`CarimboKindEvento`), então estas duas regras não têm mais quem as use: o
+   aceite da issue pede «zero chip textual de kind no card», desktop e mobile.
+
+   Ficam comentadas, e não apagadas, porque são o desenho que volta se o carimbo
+   for revertido — o JSX que as consumia está comentado do mesmo jeito nos dois
+   blocos de `EventsSpotlight.tsx` (palco e lista estreita).
+
+   ⚠️ NÃO reaproveite estes seletores para outra coisa. Se o chip voltar, ele volta
+   com estas medidas: `font-size` no teto de 0,7rem e altura de 24px medida, que é
+   o número contra o qual o tamanho do carimbo foi calibrado
+   (`carimbo-kind-evento.css`).
+
 .eventos-destaque-chip {
   display: inline-flex;
   align-items: center;
@@ -1636,6 +1649,7 @@
   height: 6px;
   border-radius: 50%;
 }
+*/
 
 .eventos-destaque-cartao-titulo {
   font-family: var(--font-display);

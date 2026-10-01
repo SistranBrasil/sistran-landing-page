@@ -1,0 +1,284 @@
+{
+  "rota": "http://localhost:3000/quem-somos",
+  "quando": "2026-09-24T19:12:42.142Z",
+  "override": [
+    ".os-palco[data-modo='scroll'] .bm-camera{--os-lente:calc(1 + 1.2 * var(--os-aproxima,0))!important;--os-arrasta:calc(var(--os-aproxima,0) * -6%)!important;--os-sobe:calc(var(--os-aproxima,0) * -20.7%)!important}"
+  ],
+  "janelas": [
+    {
+      "largura": 1280,
+      "altura": 800,
+      "paradas": [
+        {
+          "f": 0.9167,
+          "ativa": "rj",
+          "transito": "1",
+          "aproxima": "1",
+          "rjPino": {
+            "esq": 754.2,
+            "dir": 759.2,
+            "topo": 436.2,
+            "base": 441.2,
+            "dentro": true,
+            "folgaColuna": 258.2,
+            "folgaCartao": 24.8
+          },
+          "rjRotulo": {
+            "esq": 739.5,
+            "dir": 839.2,
+            "topo": 406.8,
+            "base": 430.3,
+            "dentro": true,
+            "folgaColuna": 243.5,
+            "folgaCartao": -55.2
+          },
+          "pais": {
+            "esq": 515.4,
+            "dir": 822.9,
+            "topo": 213.6,
+            "base": 536,
+            "larg": 307.4,
+            "alt": 322.4
+          },
+          "recorte": {
+            "esq": 547.2,
+            "dir": 1216,
+            "topo": 144,
+            "base": 744
+          },
+          "sobra": {
+            "esq": -31.8,
+            "dir": 393.1,
+            "topo": 69.6,
+            "base": 208
+          },
+          "colunaDir": 496,
+          "folgaColuna": 19.4,
+          "cartaoEsq": 784,
+          "folgaCartao": -38.9
+        }
+      ],
+      "erros": []
+    },
+    {
+      "largura": 1280,
+      "altura": 1000,
+      "paradas": [
+        {
+          "f": 0.9167,
+          "ativa": "rj",
+          "transito": "1",
+          "aproxima": "1",
+          "rjPino": {
+            "esq": 717.7,
+            "dir": 724.2,
+            "topo": 534,
+            "base": 540.4,
+            "dentro": true,
+            "folgaColuna": 221.7,
+            "folgaCartao": 59.8
+          },
+          "rjRotulo": {
+            "esq": 698.9,
+            "dir": 827.1,
+            "topo": 496.4,
+            "base": 527,
+            "dentro": true,
+            "folgaColuna": 202.9,
+            "folgaCartao": -43.1
+          },
+          "pais": {
+            "esq": 410.5,
+            "dir": 806,
+            "topo": 247.5,
+            "base": 662.3,
+            "larg": 395.6,
+            "alt": 414.8
+          },
+          "recorte": {
+            "esq": 547.2,
+            "dir": 1216,
+            "topo": 158,
+            "base": 930
+          },
+          "sobra": {
+            "esq": -136.7,
+            "dir": 410,
+            "topo": 89.5,
+            "base": 267.7
+          },
+          "colunaDir": 496,
+          "folgaColuna": -85.5,
+          "cartaoEsq": 784,
+          "folgaCartao": -22
+        }
+      ],
+      "erros": []
+    },
+    {
+      "largura": 1366,
+      "altura": 900,
+      "paradas": [
+        {
+          "f": 0.9167,
+          "ativa": "rj",
+          "transito": "1",
+          "aproxima": "1",
+          "rjPino": {
+            "esq": 780.6,
+            "dir": 786.4,
+            "topo": 485.1,
+            "base": 490.8,
+            "dentro": true,
+            "folgaColuna": 280.4,
+            "folgaCartao": 79.3
+          },
+          "rjRotulo": {
+            "esq": 763.9,
+            "dir": 878,
+            "topo": 451.6,
+            "base": 478.2,
+            "dentro": true,
+            "folgaColuna": 263.6,
+            "folgaCartao": -12.3
+          },
+          "pais": {
+            "esq": 507.7,
+            "dir": 859.2,
+            "topo": 230.5,
+            "base": 599.1,
+            "larg": 351.5,
+            "alt": 368.6
+          },
+          "recorte": {
+            "esq": 554.9,
+            "dir": 1297.7,
+            "topo": 151,
+            "base": 837
+          },
+          "sobra": {
+            "esq": -47.3,
+            "dir": 438.5,
+            "topo": 79.5,
+            "base": 237.9
+          },
+          "colunaDir": 500.3,
+          "folgaColuna": 7.4,
+          "cartaoEsq": 865.7,
+          "folgaCartao": 6.5
+        }
+      ],
+      "erros": []
+    },
+    {
+      "largura": 1440,
+      "altura": 900,
+      "paradas": [
+        {
+          "f": 0.9167,
+          "ativa": "rj",
+          "transito": "1",
+          "aproxima": "1",
+          "rjPino": {
+            "esq": 863.1,
+            "dir": 868.9,
+            "topo": 485.1,
+            "base": 490.8,
+            "dentro": true,
+            "folgaColuna": 271.1,
+            "folgaCartao": 67.1
+          },
+          "rjRotulo": {
+            "esq": 846.4,
+            "dir": 960.4,
+            "topo": 451.6,
+            "base": 478.2,
+            "dentro": true,
+            "folgaColuna": 254.4,
+            "folgaCartao": -24.4
+          },
+          "pais": {
+            "esq": 590.1,
+            "dir": 941.6,
+            "topo": 230.5,
+            "base": 599.1,
+            "larg": 351.5,
+            "alt": 368.6
+          },
+          "recorte": {
+            "esq": 649.6,
+            "dir": 1368,
+            "topo": 151,
+            "base": 837
+          },
+          "sobra": {
+            "esq": -59.5,
+            "dir": 426.4,
+            "topo": 79.5,
+            "base": 237.9
+          },
+          "colunaDir": 592,
+          "folgaColuna": -1.9,
+          "cartaoEsq": 936,
+          "folgaCartao": -5.6
+        }
+      ],
+      "erros": []
+    },
+    {
+      "largura": 1800,
+      "altura": 1000,
+      "paradas": [
+        {
+          "f": 0.9167,
+          "ativa": "rj",
+          "transito": "1",
+          "aproxima": "1",
+          "rjPino": {
+            "esq": 1028.1,
+            "dir": 1034.6,
+            "topo": 534,
+            "base": 540.4,
+            "dentro": true,
+            "folgaColuna": 436.1,
+            "folgaCartao": 253.4
+          },
+          "rjRotulo": {
+            "esq": 1009.2,
+            "dir": 1137.5,
+            "topo": 496.4,
+            "base": 527,
+            "dentro": true,
+            "folgaColuna": 417.2,
+            "folgaCartao": 150.5
+          },
+          "pais": {
+            "esq": 720.9,
+            "dir": 1116.4,
+            "topo": 247.5,
+            "base": 662.3,
+            "larg": 395.6,
+            "alt": 414.8
+          },
+          "recorte": {
+            "esq": 664,
+            "dir": 1720,
+            "topo": 158,
+            "base": 930
+          },
+          "sobra": {
+            "esq": 56.9,
+            "dir": 603.6,
+            "topo": 89.5,
+            "base": 267.7
+          },
+          "colunaDir": 592,
+          "folgaColuna": 128.9,
+          "cartaoEsq": 1288,
+          "folgaCartao": 171.6
+        }
+      ],
+      "erros": []
+    }
+  ]
+}

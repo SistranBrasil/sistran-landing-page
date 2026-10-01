@@ -100,6 +100,17 @@
    assenta o cartão no azul-gelo e uma curta que dá a borda de contato. Em azul
    (`rgb(9 86 150 / …)`) e não em preto, porque preto sobre azul-gelo lê como
    sujeira — é o mesmo ajuste que o cartão claro de `/trabalhe-conosco` recebeu. */
+/* A CÉLULA é o `<li>` do `ScrollReveal`: não tem aparência, só estica o cartão
+   até a altura da linha da grade — antes era o próprio `<li>` que era o cartão e
+   o `stretch` da grade dava isso de graça; com o cartão um nível abaixo, sem
+   estas duas linhas os três cartões de uma linha ficam de alturas diferentes. */
+.dif-celula {
+  display: flex;
+}
+.dif-celula > .dif-cartao {
+  flex: 1;
+}
+
 .dif-cartao {
   display: flex;
   align-items: center;
@@ -144,4 +155,115 @@
   /* Navy institucional; o contraste sobre o cartão foi medido pixel a pixel na
      captura, com média e pior pixel. */
   color: #0b2d52;
+}
+
+/* ── MOVIMENTO E HOVER (pedido de 23/09) ──────────────────────────────────────
+   «os cards devem ficar se movimentando para cima e para baixo, os icones
+   pulsando, e quando da o hover ele fica azul escuro e a escrita em branco e
+   acontece a mesma coisa com os icones».
+
+   Três decisões que não são de gosto:
+
+   1. A flutuação está em `.dif-flutua`, um nó DENTRO do `<li>` animado, e não no
+      `<li>`. O `<li>` é do `ScrollReveal` e recebe `transform` inline do motion;
+      animação CSS vence estilo inline, então o `@keyframes` daqui apagaria o
+      deslocamento da entrada. Dois nós, duas responsabilidades.
+   2. Os quadros 0% e 100% descansam em `translate3d(0,0,0)`. Com movimento
+      reduzido o reset global da casa corta a duração para 0.01ms, o que congela a
+      animação no PRIMEIRO quadro: se o repouso fosse deslocado, o cartão ficaria
+      torto para sempre. É a mesma regra do estado final visível do `ScrollReveal`.
+   3. Movimento infinito acima de 5s precisa de pausa (WCAG 2.2.2), e aqui ela
+      também é funcional: sem pausar, o cartão desliza por baixo do cursor durante
+      o hover e o alvo escapa. `:focus-within` acompanha porque o cartão é item de
+      lista percorrido por teclado. */
+.dif-flutua {
+  /* `--i` vem do JSX (índice do cartão). Defesa: se faltar, atraso 0. */
+  animation: dif-flutua 5.4s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 0.42s);
+  will-change: transform;
+}
+@keyframes dif-flutua {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+
+.dif-selo > svg {
+  animation: dif-pulsa 2.8s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 0.23s);
+}
+@keyframes dif-pulsa {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.14);
+  }
+}
+
+/* O hover: só cor, nada de layout — `background`, `border-color`, `box-shadow` e
+   `color` não reflowam. O navy é o mesmo par de tons do vidro escuro da casa, de
+   modo que o cartão em hover lê como a mesma família dos cartões escuros das
+   outras seções, e não como uma sexta cor nova. */
+.dif-cartao {
+  transition:
+    background 0.32s ease,
+    border-color 0.32s ease,
+    box-shadow 0.32s ease;
+}
+.dif-frase,
+.dif-selo,
+.dif-selo > svg {
+  transition:
+    background 0.32s ease,
+    border-color 0.32s ease,
+    color 0.32s ease;
+}
+
+.dif-cartao:hover,
+.dif-cartao:focus-within {
+  background: linear-gradient(160deg, #083a63 0%, #04223d 100%);
+  border-color: rgb(255 255 255 / 18%);
+  box-shadow:
+    0 22px 46px -20px rgb(4 34 61 / 45%),
+    0 2px 6px -3px rgb(4 34 61 / 30%);
+  animation-play-state: paused;
+}
+.dif-cartao:hover .dif-frase,
+.dif-cartao:focus-within .dif-frase {
+  color: #fff;
+}
+/* «a mesma coisa com os icones»: o selo inverte junto — fundo e anel passam a ser
+   o branco a baixa opacidade, e o traço do ícone vai a branco puro. */
+.dif-cartao:hover .dif-selo,
+.dif-cartao:focus-within .dif-selo {
+  background: rgb(255 255 255 / 14%);
+  border-color: rgb(255 255 255 / 40%);
+}
+.dif-cartao:hover .dif-selo > svg,
+.dif-cartao:focus-within .dif-selo > svg {
+  color: #fff;
+  animation-play-state: paused;
+}
+
+/* Movimento reduzido, os DOIS canais da casa: a media query da preferência real e
+   o espelho por atributo (`html[data-motion='reduce']`, o seletor que o alternador
+   do site usa). O reset global já corta a duração, mas `animation: none` é
+   explícito: flutuação e pulso são pura decoração, e com eles desligados o cartão
+   fica em `translate(0)` e o ícone em `scale(1)` — nada some, nada desloca. O
+   hover continua, porque troca de cor não é movimento. */
+@media (prefers-reduced-motion: reduce) {
+  .dif-flutua,
+  .dif-selo > svg {
+    animation: none !important;
+  }
+}
+html[data-motion='reduce'] .dif-flutua,
+html[data-motion='reduce'] .dif-selo > svg {
+  animation: none !important;
 }

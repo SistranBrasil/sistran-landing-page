@@ -53,6 +53,40 @@ import { prefersReducedMotion } from '@/lib/motion';
    filtro garante que descomentar uma lá não desenhe um item torto aqui. */
 const PARCEIROS = CLIENTS.filter((c) => c.logo);
 
+/* ── 01/10 · «ESSA PARTE TA PASSANDO MUITO RÁPIDO» (faixa de /parceiros-e-implementacoes)
+   ──────────────────────────────────────────────────────────────────────────────────
+   O defeito não era a duração ser curta. Era a duração ser FIXA enquanto a trilha
+   CRESCE: `--mq-duration` tinha o padrão de 40s em `globals.css`, e a animação leva
+   `translate3d(-50%)` — uma cópia inteira — sempre nesses 40s. Só que `repeats`
+   multiplica a cópia para ela cobrir a viewport, então em tela larga a mesma volta de
+   40s percorre duas ou três vezes mais pixels. Resultado: a velocidade APARENTE da
+   faixa depende da largura do monitor, e nos monitores largos ela dispara. Era por
+   isso que a faixa parecia correr na captura e não num notebook.
+
+   A correção é tornar a duração proporcional ao que a trilha realmente mede:
+   `repeats × SEGUNDOS_POR_PASSADA`. Assim a velocidade em pixels por segundo fica a
+   mesma em qualquer largura — uma passada de 18 marcas leva sempre o mesmo tempo para
+   atravessar, e a tela larga só ganha mais marcas visíveis ao mesmo tempo, não um
+   loop mais rápido.
+
+   O número: 70s por passada, contra os 40s que valiam para `repeats: 1`. Os dois
+   efeitos somam de propósito — desacoplar da largura já desacelera onde `repeats > 1`,
+   e os 70s desaceleram também o caso estreito, que é o que o pedido diz em geral.
+
+   ⚠️ VALE TAMBÉM PARA `/contato`, que monta o mesmo componente. Não escopei por
+   página porque o que está sendo corrigido é a MECÂNICA (duração presa à largura), e
+   ela estava errada nas duas telas igualmente; deixar `/contato` com velocidade
+   dependente de monitor seria preservar o defeito só porque ninguém reclamou dele
+   ainda.
+
+   ⚠️ CUSTOM PROPERTY INLINE, e a nota em `globals.css:2115` explica por que isso é
+   seguro: o que não pode ser inline é a declaração `animation-duration`, porque ela
+   perderia para o `!important` da regra global de movimento reduzido. Aqui o inline é
+   só o VALOR que alimenta a declaração, que continua na classe. E com movimento
+   reduzido a regra global nem usa duração: ela troca o mecanismo (a viewport vira
+   lista rolável e a cópia duplicada sai), então este número fica inerte. */
+const SEGUNDOS_POR_PASSADA = 70;
+
 export function SignalMarquee() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const groupRef = useRef<HTMLDivElement>(null);
@@ -116,33 +150,70 @@ export function SignalMarquee() {
     };
   }, []);
 
+  /* `repeats` também num ref, e não só no estado: a medição PRECISA do valor
+     corrente para dividir, mas se ele entrar no array de dependências o efeito
+     re-roda a cada mudança, remede e volta a decidir — que é o laço descrito
+     abaixo. Ref dá leitura fresca sem reinscrever o observador.
+     Quem escreve nos dois é o próprio `measure`, lado a lado; não há atribuição
+     durante o render, que seria mutação em fase de renderização. */
+  const repeatsRef = useRef(1);
+
   useEffect(() => {
     const vp = viewportRef.current;
     const group = groupRef.current;
     if (!vp || !group) return;
 
+    /* ⚠️ POR QUE SÓ CRESCE — e não é preguiça, é o que fecha o laço.
+       `group.width / repeats` NÃO é a largura de uma passada: `getBoundingClientRect`
+       devolve float, e a soma das passadas com o vão entre elas não divide exato.
+       Então o quociente oscila por fração de pixel e o `Math.ceil` alterna entre
+       dois valores vizinhos (ex.: 3 e 4). Com o efeito reagindo a `repeats`, cada
+       alternância remedia e devolvia a anterior — "Maximum update depth exceeded"
+       era exatamente isso, não um observador disparando demais.
+       Monotônico resolve porque o alvo é uma COBERTURA, não um número exato: mais
+       passadas do que o necessário não estraga nada (a trilha só fica mais longa,
+       a emenda continua no mesmo lugar), enquanto menos deixa vazio na tela. E
+       termina sozinho: subir `repeats` aumenta a largura medida, o que derruba o
+       `needed` da medição seguinte. Encolher jamais — é justamente o movimento de
+       volta que fazia o pêndulo. */
     const measure = () => {
-      const groupW = group.getBoundingClientRect().width / repeats;
+      const atual = repeatsRef.current;
+      const groupW = group.getBoundingClientRect().width / atual;
       const vpW = vp.getBoundingClientRect().width;
       if (groupW < 1 || vpW < 1) return;
       const needed = Math.max(1, Math.ceil(vpW / groupW));
-      setRepeats((prev) => (prev === needed ? prev : needed));
+      if (needed <= atual) return;
+      /* Teto de segurança: se alguma logo medir perto de zero (arquivo faltando,
+         imagem ainda sem layout), `needed` explodiria e cada passada custa 18
+         nós × 2 cópias. 12 já cobre uma viewport ultrawide com folga. */
+      const proximo = Math.min(needed, 12);
+      if (proximo === atual) return;
+      repeatsRef.current = proximo;
+      setRepeats(proximo);
     };
 
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(vp);
+    /* O GRUPO também é observado, e é isso que substitui o `[repeats]` que estava
+       nas dependências: quando uma passada nova entra ou uma logo termina de
+       carregar, a largura do grupo muda e a remedição vem daqui. Sem isso, o
+       efeito com dependências vazias perderia as imagens das passadas
+       acrescentadas depois da montagem. O `measure` monotônico acima é o que
+       impede o observador de se realimentar — ele muda a largura que o próprio
+       observador vigia. */
+    ro.observe(group);
     /* A 1ª medição acontece antes das logos chegarem: a largura ainda vai
        mudar, e com ela o número de repetições. */
     document.fonts?.ready.then(measure).catch(() => undefined);
-    const logos = Array.from(group.querySelectorAll('img'));
-    logos.forEach((img) => img.addEventListener('load', measure));
 
     return () => {
       ro.disconnect();
-      logos.forEach((img) => img.removeEventListener('load', measure));
     };
-  }, [repeats]);
+    /* Dependências VAZIAS de propósito — ver o bloco do laço acima. `repeats` é
+       lido por ref; reinscrever o observador a cada mudança dele é o que criava
+       a realimentação. */
+  }, []);
 
   /* A logo é o conteúdo do item — não há mais texto ao lado nomeando a marca —,
      então o `alt` carrega o nome. Na cópia `aria-hidden` ele é ignorado, e é
@@ -230,7 +301,17 @@ export function SignalMarquee() {
           .marquee-viewport` em `legacy.css`). Elas sobem de onde a curva
           terminou, e não de um traço desenhado para isso. */}
       <div ref={viewportRef} className="marquee-viewport">
-        <div className="marquee-track marquee-left">
+        {/* A duração acompanha `repeats` — ver `SEGUNDOS_POR_PASSADA` no topo. O cast
+            é o mesmo padrão de custom property do resto do projeto: `CSSProperties`
+            não conhece `--*`. */}
+        <div
+          className="marquee-track marquee-left"
+          style={
+            {
+              '--mq-duration': `${repeats * SEGUNDOS_POR_PASSADA}s`,
+            } as React.CSSProperties
+          }
+        >
           <div ref={groupRef} className="marquee-copy lp-signals-copy">
             {copia}
           </div>

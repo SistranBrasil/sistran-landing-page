@@ -144,8 +144,11 @@ import { ChevronLeft, ChevronRight, ImageIcon, PlayCircle } from "lucide-react";
 /* SIS-235 — o carimbo dos eventos `proprio`. Componente próprio, e não markup
    inline, porque ele nasce em DOIS lugares desta mesma cena (palco e lista estreita)
    e a issue pede um só reutilizável. */
-import CarimboRealizadoSistran from "./CarimboRealizadoSistran";
-import { EVENTS, EVENT_KIND_META } from "@/data/events";
+import CarimboKindEvento from "./CarimboKindEvento";
+/* SIS-235 — `EVENT_KIND_META` saiu do import junto com o chip textual: quem lê o
+   `label` e o `tone` do kind agora é o `CarimboKindEvento`.
+   import { EVENTS, EVENT_KIND_META } from "@/data/events"; */
+import { EVENTS } from "@/data/events";
 import { YOUTUBE_URL } from "@/data/contact";
 import { prefersReducedMotion, useReducedMotion } from "@/lib/motion";
 import { criarConsultaDeMedia } from "@/lib/mediaStore";
@@ -595,7 +598,11 @@ export default function EventsSpotlight() {
   };
 
   const evento = EVENTS[ativo];
-  const meta = EVENT_KIND_META[evento.kind];
+  /* SIS-235 — saiu com o chip textual: o `label` e o `tone` do kind eram lidos
+     SÓ por ele, e agora quem resolve os dois é o `CarimboKindEvento` (o `label`
+     vira o `alt`, o `tone` já está pintado na arte). Fica comentado junto do chip
+     que o consumia, alguns blocos abaixo — os dois voltam no mesmo movimento.
+     const meta = EVENT_KIND_META[evento.kind]; */
 
   /* A miniatura, em dois estados: a vaga VAZIA e tracejada quando aquele evento é
      o destaque (é o que amarra coluna e centro), e o botão com `thumb` + título
@@ -813,35 +820,40 @@ export default function EventsSpotlight() {
               aria-live="polite"
               aria-atomic="true"
             >
-              {/* SIS-235 — nos eventos `proprio` a tag textual vira CARIMBO. Os
-                  outros três `kind` seguem no chip, e o admin e os filtros seguem
-                  com o rótulo em texto: a issue troca a tag do CARTÃO, não a
-                  taxonomia.
+              {/* SIS-235 — a tag de `kind` do cartão é CARIMBO nos QUATRO kinds.
+                  O admin e os filtros seguem com o rótulo em texto: a issue troca a
+                  tag do CARTÃO, não a taxonomia.
 
-                  O chip NÃO foi apagado — ele continua sendo o caminho dos outros
-                  três kinds, e este é o mesmo ramo, só com a condição na frente.
+                  Não há mais condição por kind aqui. A escolha da arte desceu para
+                  dentro do componente, que monta o caminho a partir do `kind` — o
+                  ramo `kind === "proprio" ? carimbo : chip` que existia neste lugar
+                  virou desnecessário quando os quatro passaram a ter arte.
+
                   `animar` ligado aqui e desligado na lista estreita porque o palco
                   tem UM cartão, que remonta ao trocar de evento; a lista monta os
                   quinze de uma vez (o porquê está no componente do carimbo). */}
-              {evento.kind === "proprio" ? (
-                <CarimboRealizadoSistran animar />
-              ) : (
-                <span
-                  className="eventos-destaque-chip"
-                  style={{
-                    borderColor: `${meta.tone}66`,
-                    background: `${meta.tone}1f`,
-                    color: "#0b3a5c",
-                  }}
-                >
+              <CarimboKindEvento kind={evento.kind} animar />
+              {/* O chip textual que ocupava este lugar nos kinds `global`,
+                  `nacional` e `parceiro`, guardado porque é o desenho que volta se o
+                  carimbo for revertido. Saiu por pedido da issue: «Zero chip textual
+                  de kind no card». O `meta.tone` que ele pintava não ficou órfão —
+                  é ele que colore o tracejado das quatro artes (ver o script).
+
                   <span
-                    className="eventos-destaque-chip-no"
-                    style={{ background: meta.tone }}
-                    aria-hidden="true"
-                  />
-                  {meta.label}
-                </span>
-              )}
+                    className="eventos-destaque-chip"
+                    style={{
+                      borderColor: `${meta.tone}66`,
+                      background: `${meta.tone}1f`,
+                      color: "#0b3a5c",
+                    }}
+                  >
+                    <span
+                      className="eventos-destaque-chip-no"
+                      style={{ background: meta.tone }}
+                      aria-hidden="true"
+                    />
+                    {meta.label}
+                  </span> */}
               <h3 className="eventos-destaque-cartao-titulo">{evento.title}</h3>
               <p className="eventos-destaque-cartao-texto">
                 {evento.description}
@@ -1155,31 +1167,33 @@ export default function EventsSpotlight() {
           onBlur={() => setComFoco(false)}
         >
           {EVENTS.map((e) => {
-            const m = EVENT_KIND_META[e.kind];
+            /* SIS-235 — mesmo motivo do `meta` do palco: só o chip textual lia
+               isto. const m = EVENT_KIND_META[e.kind]; */
             return (
               <li key={e.id} className="eventos-lista-item">
-                {/* SIS-235 — o MESMO ramo do palco, repetido porque este bloco é a
-                    lista estreita (carrossel da SIS-239) e tem markup próprio.
+                {/* SIS-235 — o MESMO carimbo do palco, repetido porque este bloco é
+                    a lista estreita (carrossel da SIS-239) e tem markup próprio. É
+                    este bloco que atende o «mobile» do aceite.
                     Sem `animar`: aqui os quinze cartões montam de uma vez. */}
-                {e.kind === "proprio" ? (
-                  <CarimboRealizadoSistran />
-                ) : (
-                  <span
-                    className="eventos-destaque-chip"
-                    style={{
-                      borderColor: `${m.tone}66`,
-                      background: `${m.tone}1f`,
-                      color: "#0b3a5c",
-                    }}
-                  >
+                <CarimboKindEvento kind={e.kind} />
+                {/* O chip textual que ocupava este lugar, guardado pelo mesmo motivo
+                    do bloco do palco (ver lá).
+
                     <span
-                      className="eventos-destaque-chip-no"
-                      style={{ background: m.tone }}
-                      aria-hidden="true"
-                    />
-                    {m.label}
-                  </span>
-                )}
+                      className="eventos-destaque-chip"
+                      style={{
+                        borderColor: `${m.tone}66`,
+                        background: `${m.tone}1f`,
+                        color: "#0b3a5c",
+                      }}
+                    >
+                      <span
+                        className="eventos-destaque-chip-no"
+                        style={{ background: m.tone }}
+                        aria-hidden="true"
+                      />
+                      {m.label}
+                    </span> */}
                 <h3 className="eventos-destaque-cartao-titulo">{e.title}</h3>
                 <p className="eventos-destaque-cartao-texto">{e.description}</p>
                 <div className="eventos-destaque-arte">

@@ -9,7 +9,20 @@
    completo. */
 .partner-terminal {
   --partner-card-width: clamp(42rem, 68vw, 64rem);
-  padding-block: 1.5rem 5rem;
+  /* SIS-201 (2ª volta) — item 4, «aproximar o carimbo dos cards». Era
+     `1.5rem 5rem`: os 24px de cima entravam INTEIROS no vão entre o carimbo e o
+     primeiro card, porque o carimbo mora fora de `.partner-terminal` (em
+     `page.tsx`) e encosta nela — `carimboAoBloco` mede 0 nas quatro larguras.
+     O rodapé de 5rem não se mexe: ele separa a seção de Implementações.
+
+     ⚠️ SIS-201 (3ª volta) — A PREMISSA DESTA NOTA CADUCOU: o carimbo agora mora
+     DENTRO de `.partner-terminal` (primeiro filho do palco). O valor FICA em
+     0,5rem, e por um motivo novo: este topo não é mais o vão carimbo↔cards, é o
+     respiro entre a seção anterior e o carimbo — e a SIS-225 já entregou esse
+     respiro no `.section-py` de baixo da intro (80–128px). Subir daqui somaria em
+     cima do que já existe. Quem mede o vão do carimbo agora mede o
+     `.partner-terminal__carimbo` e o `margin-top` da trilha. */
+  padding-block: 0.5rem 5rem;
 }
 
 .partner-terminal__controls {
@@ -17,6 +30,11 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: 1rem;
+  /* SIS-201 (2ª volta) — o bloco desceu para DEPOIS da trilha, e esta margem é a
+     folga que ele perdeu ao mudar de lado: antes quem separava controles e cards
+     era o `margin-top` da trilha, que agora serve ao vão do carimbo. Sem isto os
+     filtros encostam no pé dos cards. */
+  margin-top: 1.25rem;
 }
 
 .partner-terminal__filters {
@@ -100,7 +118,12 @@
   display: flex;
   align-items: stretch;
   gap: clamp(1rem, 2vw, 1.75rem);
-  margin-top: 1.5rem;
+  /* SIS-201 (2ª volta) — item 4. Era `1.5rem`, e essa margem separava a trilha do
+     bloco de controles que ficava ACIMA dela. O bloco desceu (item 3), então o que
+     esta margem separa agora é o CARIMBO dos cards — é exatamente o vão de que a
+     captura reclama. Cai a 0,75rem; a folga de baixo dos controles passou para o
+     `margin-top` deles. */
+  margin-top: 0.75rem;
   padding: 0.25rem max(1rem, calc((100vw - var(--partner-card-width)) / 2)) 1.25rem;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
@@ -187,37 +210,109 @@
    ou núclea — os deitados, que são a maioria. O par 20rem × 6rem guarda razão
    3,33:1, próxima da anterior (4:1), para o teto não trocar de eixo entre as
    marcas. */
+/* SIS-201 (3ª volta) — item 3: A CAIXA DA PLACA É TRAVADA, IGUAL NOS DEZESSEIS.
+
+   O DEFEITO, tal como a issue o descreve: a placa era `width: fit-content` com
+   pisos (`min-width: 12rem` / `min-height: 7.5rem`). «fit-content» quer dizer que a
+   caixa branca tem o tamanho da ARTE — então Samplemed, que é um logo largo e bate
+   o teto de 34rem, ganhava uma placa de ~600px, e PEGA, que é compacto, ficava no
+   piso de 12rem (192px). Dezesseis placas de dezesseis tamanhos, porque o tamanho
+   nunca foi da placa: era do arquivo de cada parceiro.
+
+   AGORA: `width: min(100%, 37.5rem)` e `height: 12rem`. Os dois lados são medida
+   fechada, e é a diferença entre «mesma caixa» e «caixa parecida» —
+   `min-width`/`min-height` são PISOS e deixam a arte crescer acima deles; largura e
+   altura resolvidas não deixam.
+
+   POR QUE 37,5rem (600px) E NÃO UM VALOR NOVO: é exatamente o footprint que as
+   placas de REFERÊNCIA da issue (Samplemed / Microsoft Azure / Virtusa) já têm
+   hoje — o teto de 34rem da img mais os 1,75rem de padding de cada lado. «Tamanho
+   grande das refs» é isso, literalmente: as três placas citadas não mudam de
+   tamanho nenhum, as outras treze sobem até elas.
+
+   `min(100%, …)` E NÃO 37,5rem CHAPADO: a coluna de conteúdo é
+   `max-width: 48rem` menos `clamp(1.5rem, 4vw, 3.5rem)` de cada lado, e a 1024 ela
+   rende ~606px — 600px passa raspando e uma largura chapada estouraria em qualquer
+   largura futura mais estreita, empurrando o card. Com `min(100%, …)` a placa nunca
+   é maior que a coluna, e como os dezesseis cards têm largura idêntica
+   (`--partner-card-width`), `100%` rende O MESMO número nos dezesseis — a
+   uniformidade não depende do teto ser alcançado.
+
+   A ALTURA É 12rem (192px) e o teto da img caiu de 12rem para 10,5rem (168px), que
+   com `0.75rem` de padding em cima e embaixo fecha os 192 exatos. O corte no teto
+   de ALTURA não toca nas refs: as três são deitadas e o que as governa é a
+   LARGURA (34rem), não a altura. Quem perde 24px de teto é só logo quase quadrado —
+   e em troca ganha a caixa inteira de 600×192, que é maior que qualquer placa da
+   página hoje.
+
+   O ORÇAMENTO VERTICAL, QUE É O QUE ESTA MUDANÇA GASTA. A placa vai de 120px
+   (o piso de 7,5rem) para 192px: +72px. A folga medida entre o pé da placa e o topo
+   do eyebrow no card mais apertado a 1440 era 132px (nota da SIS-219 acima), e o
+   card perde 28px de altura em modo pin pelo novo teto de `100svh` — sobram ~32px
+   para o critério `placa.bottom <= eyebrow.top`. É folga POSITIVA mas estreita, e
+   não foi re-medida nesta volta: ver os portões declarados na issue.
+
+   `object-fit: contain` e o `align/justify: center` FICAM — a arte é centrada na
+   caixa e nunca esticada, que é o resto do item 3. O que preenche a sobra é papel
+   branco, não logo deformado. */
 .partner-terminal__placa {
   display: flex;
-  width: fit-content;
-  min-width: 12rem;
-  min-height: 7.5rem;
+  width: min(100%, 37.5rem);
+  height: 12rem;
   align-items: center;
   justify-content: center;
   margin-bottom: auto;
-  padding: 1.125rem 1.75rem;
+  padding: 0.75rem 1.75rem;
   border-radius: 1.125rem;
   box-shadow: 0 1rem 2.5rem -1rem rgba(3, 25, 48, 0.55);
-}
-
-.partner-terminal__placa[data-tinta='escura'] {
+  /* SIS-219 — ver o bloco abaixo: branca nos dezesseis, sem `data-tinta`. */
   border: 1px solid rgba(255, 255, 255, 0.55);
   background: #fff;
 }
 
-/* Tinta clara: fundo navy. A borda clara existe para a placa não se dissolver
-   na parte escura da imagem de fundo — sem ela, logo claro sobre overlay escuro
-   perde a moldura e deixa de parecer uma placa. */
-.partner-terminal__placa[data-tinta='clara'] {
-  border: 1px solid rgba(255, 255, 255, 0.38);
-  background: rgba(4, 29, 51, 0.82);
-}
+/* SIS-219 — BRANCA NOS DEZESSEIS, sem seletor de atributo. O `data-tinta` saiu
+   do JSX, então as duas regras abaixo perderam alvo. Eram:
 
+       .partner-terminal__placa[data-tinta='escura'] {
+         border: 1px solid rgba(255, 255, 255, 0.55);
+         background: #fff;
+       }
+
+       // Tinta clara: fundo navy. A borda clara existe para a placa não se
+       // dissolver na parte escura da imagem de fundo — sem ela, logo claro sobre
+       // overlay escuro perde a moldura e deixa de parecer uma placa.
+       .partner-terminal__placa[data-tinta='clara'] {
+         border: 1px solid rgba(255, 255, 255, 0.38);
+         background: rgba(4, 29, 51, 0.82);
+       }
+
+   O contraste que a variante navy protegia está medido no cabeçalho de
+   `PartnerTerminalCards.tsx` — quatro logos caem abaixo de 3:1 sobre branco. A
+   issue pede branco de qualquer modo; a saída sem regressão é arte de tinta
+   escura para essas quatro, não o fundo de volta. */
+
+/* SIS-219 — O TAMANHO DE REPOUSO É O TAMANHO DO HOVER. Era `20rem × 6rem`.
+   «Logo no tamanho do hover como padrão»: o alvo não foi escolhido, foi MEDIDO no
+   estado de hover antes da mudança (sonda em `docs/medidas/`, a 1440 e 1280 o eco
+   renderizava 600,3 × 193 px; a 768, 496 × 193).
+
+   Daí `max-height: 12rem` (192px, os 193 medidos) e `max-width: 34rem` (544px).
+   A largura NÃO é os 600 medidos porque ela tem de caber no card mais estreito do
+   desktop: a 1024 o card tem 688px e a coluna de conteúdo desconta
+   `clamp(1.5rem, 4vw, 3.5rem)` de cada lado mais os `1.75rem` de padding da
+   placa; 600px estouraria ali e a placa empurraria a largura do card. 544px passa
+   em toda a faixa. Para logo deitado (razão > 34/12) manda a largura, como antes.
+
+   SIS-201 (3ª volta): o teto de ALTURA caiu de 12rem para 10,5rem (168px), para
+   fechar os 192px de `height` travados na placa com `0.75rem` de padding em cima e
+   embaixo — se a img pudesse ir aos 192, a placa não teria mais margem interna e a
+   arte encostaria na borda branca. As refs da issue (Samplemed / Azure / Virtusa)
+   não sentem: são deitadas e quem as governa é `max-width: 34rem`. */
 .partner-terminal__placa-img {
   width: auto;
-  max-width: 20rem;
+  max-width: 34rem;
   height: auto;
-  max-height: 6rem;
+  max-height: 10.5rem;
   object-fit: contain;
 }
 
@@ -248,39 +343,63 @@
    relação justamente na largura mais estreita do desktop. 62% mantém o eco
    maior em toda a faixa.
 
-   Só `opacity`, `transform` e `filter` animam: nada aqui provoca layout. */
-.partner-terminal__eco {
-  position: absolute;
-  z-index: -1;
-  top: clamp(1.5rem, 4vw, 3.5rem);
-  left: clamp(1.5rem, 4vw, 3.5rem);
-  width: min(28rem, 62%);
-  opacity: 0;
-  transform: scale(0.92);
-  transform-origin: top left;
-  transition:
-    opacity 260ms ease,
-    transform 340ms ease;
-  pointer-events: none;
-}
+   SIS-219 (2ª volta) — O CRITÉRIO «eco maior que a placa» CADUCOU, e não por
+   descuido: o pedido desta volta é justamente trazer a caixa do hover para o
+   repouso, então a placa passou a ter o tamanho que o eco alcança. Os números do
+   eco ficam como estão (é deles que a placa herdou o tamanho); o que ele faz
+   agora é o halo ciano por trás da placa, não uma segunda leitura maior. A sonda
+   nova não pede mais essa relação — pede que a placa não invada a copy.
 
-.partner-terminal__card:hover .partner-terminal__eco,
-.partner-terminal__card:focus-within .partner-terminal__eco {
-  opacity: 0.34;
-  transform: scale(1.34);
-}
+   Só `opacity`, `transform` e `filter` animam: nada aqui provoca layout.
 
-.partner-terminal__eco-img {
-  width: 100%;
-  max-height: 9rem;
-  object-fit: contain;
-  /* Sombra ciano da marca (#0ed8f6) mais um halo azul mais aberto. Duas camadas
-     porque uma só ou fica dura na borda ou não alcança o fundo claro de algumas
-     imagens editoriais. Verde do Terminal não entra. */
-  filter:
-    drop-shadow(0 0 1.25rem rgba(14, 216, 246, 0.78))
-    drop-shadow(0 0 3rem rgba(9, 107, 173, 0.62));
-}
+   ── SIS-201 (2ª volta) — O ECO SAIU, E COM ELE ESTAS TRÊS REGRAS ────────────
+   O nó `.partner-terminal__eco` foi retirado do JSX («retirar o eco atrás no
+   hover … de TODOS os cards»), então elas perderam alvo. Ficam aqui porque toda
+   a calibração acima — as escalas medidas, o `62%`, os dois critérios de sonda
+   que caducaram um atrás do outro — é o histórico de por que os números eram
+   esses, e apagar isso obrigaria a próxima volta a remedir do zero.
+
+   ⚠️ E É A PLACA QUE HERDOU ESSES NÚMEROS: na 2ª volta da SIS-219 o tamanho de
+   repouso da placa passou a ser a caixa que o eco alcançava no hover (600×193 a
+   1440, 270,8×107,5 a 390). Quem for mexer nos tetos de
+   `.partner-terminal__placa-img` está mexendo em medidas que nasceram aqui.
+
+       .partner-terminal__eco {
+         position: absolute;
+         z-index: -1;
+         top: clamp(1.5rem, 4vw, 3.5rem);
+         left: clamp(1.5rem, 4vw, 3.5rem);
+         width: min(28rem, 62%);
+         opacity: 0;
+         transform: scale(0.92);
+         transform-origin: top left;
+         transition:
+           opacity 260ms ease,
+           transform 340ms ease;
+         pointer-events: none;
+       }
+
+       .partner-terminal__card:hover .partner-terminal__eco,
+       .partner-terminal__card:focus-within .partner-terminal__eco {
+         opacity: 0.34;
+         transform: scale(1.34);
+       }
+
+       .partner-terminal__eco-img {
+         width: 100%;
+         max-height: 9rem;
+         object-fit: contain;
+         // Sombra ciano da marca (#0ed8f6) mais um halo azul mais aberto. Duas
+         // camadas porque uma só ou fica dura na borda ou não alcança o fundo
+         // claro de algumas imagens editoriais. Verde do Terminal não entra.
+         filter:
+           drop-shadow(0 0 1.25rem rgba(14, 216, 246, 0.78))
+           drop-shadow(0 0 3rem rgba(9, 107, 173, 0.62));
+       }
+
+   ⚠️ O `isolation: isolate` DO CARD FICA, e não é resíduo. Ele existe para os
+   `z-index` negativos da imagem (-3) e do overlay (-2) não escaparem para trás
+   do fundo da seção; sem ele o card ficaria transparente. Só o -1 do eco saiu. */
 
 .partner-terminal__eyebrow,
 .partner-terminal__focus,
@@ -297,14 +416,70 @@
   color: #a5f0ff;
 }
 
-.partner-terminal__content h3 {
-  margin-top: 0.75rem;
+/* SIS-219 — o `<h3>` com o nome do parceiro saiu do JSX («retirar o título …
+   apenas as logos como sinal de marca»), e esta regra ficou sem alvo. Era:
+
+       .partner-terminal__content h3 {
+         margin-top: 0.75rem;
+         color: #fff;
+         font-family: var(--font-display);
+         font-size: clamp(2.25rem, 5vw, 4.5rem);
+         font-weight: 500;
+         letter-spacing: -0.04em;
+         line-height: 0.96;
+       }
+
+   Os 69px de altura que esse título ocupava a 1440 (36,9px a 768, 48,7px a 390)
+   são o que paga o crescimento da placa até o tamanho do hover — o orçamento
+   vertical do card não mudou, a régua está no comentário da placa. */
+
+/* SIS-219 — «saiba mais», só nos quatro cards com `saibaMaisUrl`.
+   Leve por desenho: sem preenchimento, sem borda, sem caixa. Só a cor ciano da
+   casa, o tamanho de uma legenda e a seta deslizando — assim ele lê como link e
+   não disputa com a placa. `width: fit-content` para a área clicável terminar no
+   texto, e não atravessar a largura do card. */
+.partner-terminal__saiba-mais {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 1.125rem;
+  color: #a5f0ff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    color 200ms ease,
+    gap 200ms ease;
+}
+
+.partner-terminal__saiba-mais:hover,
+.partner-terminal__saiba-mais:focus-visible {
   color: #fff;
-  font-family: var(--font-display);
-  font-size: clamp(2.25rem, 5vw, 4.5rem);
-  font-weight: 500;
-  letter-spacing: -0.04em;
-  line-height: 0.96;
+  gap: 0.625rem;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+/* O foco tem de ser visível sobre imagem editorial de luminância qualquer, por
+   isso o anel é branco com deslocamento, e não a cor do texto. */
+.partner-terminal__saiba-mais:focus-visible {
+  border-radius: 0.25rem;
+  outline: 2px solid #fff;
+  outline-offset: 0.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .partner-terminal__saiba-mais {
+    transition: none;
+  }
+}
+
+html[data-motion='reduce'] .partner-terminal__saiba-mais {
+  transition: none;
 }
 
 .partner-terminal__focus {
@@ -320,10 +495,48 @@
   line-height: 1.6;
 }
 
+/* Pedido de 30/09 (chat) — «coloque isso ao lado do carimbo». O invólucro do
+   carimbo virou uma linha de duas pontas: carimbo à esquerda, indicador de
+   posição à direita.
+
+   `align-items: flex-end` e não `center`: o carimbo é uma peça de ~87,5px e o
+   indicador uma linha de ~15px; centrado, o texto flutuaria no meio da altura do
+   carimbo e pareceria solto. Alinhado pelo pé, ele lê como legenda da mesma linha
+   de base.
+
+   `flex-wrap: wrap` é o plano B de largura estreita: se o par não couber, o
+   indicador cai para a linha de baixo em vez de comprimir o carimbo. Ele mantém
+   `text-align` próprio e continua legível empilhado.
+
+   O `> .carimbo-batida` leva `flex: 0 0 auto` para o carimbo não ser encolhido
+   pelo flex — a largura dele é `--carimbo-batida-w`, uma medida deliberada, e
+   `flex-shrink` padrão (1) a violaria. */
+.partner-terminal__carimbo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+}
+
+.partner-terminal__carimbo > .carimbo-batida {
+  flex: 0 0 auto;
+}
+
 .partner-terminal__status {
   margin-top: 0.5rem;
   color: rgba(8, 49, 86, 0.58);
   text-align: center;
+}
+
+/* Na linha do carimbo o indicador é a ponta direita, então perde a margem de topo
+   (que existia para separá-lo dos controles, quando ele ficava no pé do palco) e o
+   centramento. `margin-bottom` mínimo para a linha de base não encostar no pé da
+   arte do carimbo. */
+.partner-terminal__carimbo .partner-terminal__status {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  text-align: right;
 }
 
 @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
@@ -348,8 +561,68 @@
     min-height: 0;
     flex-direction: column;
     justify-content: flex-start;
-    padding-top: calc(var(--header-h, 88px) + 1rem);
+    /* SIS-201 (2ª volta) — item 4. Era `+ 1rem`. O `--header-h` NÃO se toca: é a
+       folga do cabeçalho fixo, e no modo pin o palco fica grudado no topo, então
+       cortá-la põe o card por baixo do cabeçalho — trocaria um defeito por outro.
+       O que é negociável é só o acréscimo, que vai a 0,5rem (−8px no vão). Dos
+       166,3px medidos a 1440, 50,3px eram o bloco de controles (resgatados pelo
+       item 3) e ~96px continuam sendo essa folga: é o PISO do vão em modo pin. */
+    padding-top: calc(var(--header-h, 88px) + 0.5rem);
     overflow: clip;
+  }
+
+  /* SIS-201 (3ª volta) — itens 1 e 2. O carimbo agora é o primeiro filho do palco
+     e é ELE que ocupa a faixa sob o cabeçalho que antes ficava vazia. Duas coisas
+     acontecem com um único nó:
+
+     · ITEM 1, «cards mais abaixo»: os cards descem a altura do carimbo. A arte é
+       640×200 e o `--carimbo-batida-w` padrão rende 280px a 1440 → ~87,5px de
+       altura. Não é padding novo: é conteúdo ocupando espaço que já estava
+       reservado e vazio.
+     · ITEM 2, «carimbo colado»: o vão até o primeiro card passa a ser só o
+       `margin-top: 0.5rem` da trilha em modo pin (8px), mais o `0.25rem` de baixo
+       daqui. Antes o carimbo não estava na tela para haver vão.
+
+     `flex: 0 0 auto` para o palco não repartir altura com ele: quem cede altura no
+     aperto é o card, pelo teto da regra seguinte, não o carimbo.
+
+     O ORÇAMENTO VERTICAL DO PALCO, em modo pin, a 1440×900:
+     88 (header) + 8 + 87,5 (carimbo) + 4 + 8 (margem da trilha) + card
+     + 4 + 20 (controles) + 44 ≈ 263,5 + card — os 24px do indicador saíram desta
+     conta no pedido de 30/09, quando ele subiu para a linha do carimbo.
+     Com o card no valor cheio de 640px isso dá 927,5 e ESTOURA os 900 —
+     daí o teto da regra abaixo. */
+  .partner-terminal__carimbo {
+    flex: 0 0 auto;
+    padding-bottom: 0.25rem;
+  }
+
+  /* SIS-201 (3ª volta) — O TETO DE ALTURA DO CARD em modo pin.
+
+     `min-height` sozinho é PISO: com o palco preso em `100svh` e o carimbo
+     ocupando 87,5px a mais, um piso de 640px transborda em qualquer viewport mais
+     baixa que ~930px de altura — e o palco é `overflow: clip`, então o transbordo
+     não rola: ele CORTA o pé dos cards, junto com os controles e o status. (A
+     rigor isso já podia acontecer a 768px de altura antes desta volta; o carimbo
+     só aproxima a borda.)
+
+     `min(…, calc(100svh - 18rem))` faz o card ceder em vez de ser cortado. As
+     18rem (288px) são o resto do orçamento acima — 287,5px, arredondado para cima.
+     Pedido de 30/09 (chat): a queixa era exatamente esse corte — o indicador de
+     posição e a fileira de filtros apareciam cortados no pé. Duas coisas foram
+     feitas juntas. O indicador SUBIU para a linha do carimbo, o que tira ~24px da
+     pilha de baixo sem custar altura nova (a linha já tem os ~87,5px do carimbo);
+     e o desconto aqui subiu de 18rem para 19rem, 16px de folga a mais por seguro,
+     porque o corte foi visto e não medido. Somados, ~40px de margem contra o
+     `overflow: clip`.
+
+     A 900 de altura o teto rende 608px (total ≈ 871,5, com ~28px de sobra); a 768,
+     476px. Acima de ~925 o `clamp` continua mandando e nada muda.
+
+     Só em modo pin: fora dele a seção rola normalmente, o card não é preso a
+     viewport nenhuma e o piso do `clamp` segue sendo a medida certa. */
+  .partner-terminal__card {
+    min-height: min(clamp(32rem, 55vw, 40rem), calc(100svh - 19rem));
   }
 
   .partner-terminal__controls {
@@ -427,16 +700,24 @@
   }
 
   .partner-terminal__track {
-    margin-top: 1rem;
+    /* SIS-201 (2ª volta) — item 4, mesmo motivo da regra base: era `1rem` para
+       descolar a trilha dos controles, que aqui ocupavam 116px acima dela (os
+       filtros embrulham para uma linha própria, `order: 2`). Com o bloco abaixo,
+       esta margem é o vão do carimbo e acompanha a base. */
+    margin-top: 0.75rem;
   }
 
   .partner-terminal__card {
     min-height: 34rem;
   }
 
-  .partner-terminal__content h3 {
-    font-size: clamp(2.25rem, 13vw, 3.5rem);
-  }
+  /* SIS-219 — sem `<h3>` não há o que dimensionar aqui. Era:
+
+         .partner-terminal__content h3 {
+           font-size: clamp(2.25rem, 13vw, 3.5rem);
+         }
+
+     Rendia 48,7px de altura a 390 — é a folga que a placa ocupa agora. */
 
   /* A placa encolhe junto: em 88vw o card tem largura de sobra, mas altura é o
      recurso escasso (34rem para placa + eyebrow + título + foco + descrição).
@@ -447,33 +728,56 @@
      3,5rem → 5,25rem (+28px) e img 2,25 → 3,5rem deixam ~68px de sobra. Aplicar
      as 7,5rem do desktop consumiria 68 dos 96px só na placa e encostaria no
      eyebrow do card mais apertado. A altura do card NÃO muda. */
+  /* SIS-201 (3ª volta) — o mesmo travamento do item 3 a esta largura: os pisos
+     viram medida fechada, senão a placa continua do tamanho de cada arquivo.
+
+     19,25rem (308px) = as 17rem do teto da img mais 1,125rem de padding de cada
+     lado; 8,25rem (132px) = as 6,75rem da img mais 0,75rem em cima e embaixo. São
+     exatamente os 132px que a nota da SIS-219 abaixo registra como altura já
+     alcançada pela placa mais alta daqui — então esta volta NÃO gasta orçamento
+     vertical no mobile (a folga medida de ~68px fica como estava). O que muda é que
+     as treze placas menores sobem até essa caixa em vez de encolher com a arte.
+
+     `min(100%, …)` pelo mesmo motivo do desktop: em 88vw a coluna pode ser mais
+     estreita que 308px (abaixo de ~400px de viewport), e a placa não pode empurrar
+     o card. */
   .partner-terminal__placa {
-    min-width: 8.5rem;
-    min-height: 5.25rem;
+    width: min(100%, 19.25rem);
+    height: 8.25rem;
     padding: 0.75rem 1.125rem;
   }
 
+  /* SIS-219 (2ª volta) — aqui também o repouso passa a ser o tamanho do hover,
+     medido a 390: o eco renderizava 270,8 × 107,5 px. Daí `17rem × 6,75rem`
+     (272 × 108). Os tetos anteriores eram `12rem × 3,5rem`.
+
+     Cabe nas 34rem do card: a placa vai de 84px para 132px de altura (108 da img
+     + 24 de padding), +48px — e o `<h3>` que saiu media 48,7px a esta largura. A
+     folga medida entre placa e eyebrow (96px) fica praticamente intacta. */
   .partner-terminal__placa-img {
-    max-width: 12rem;
-    max-height: 3.5rem;
+    max-width: 17rem;
+    max-height: 6.75rem;
   }
 
-  /* Em 88vw o eco cresceria por cima da copy: o card tem 34rem de altura e a
-     folga entre placa e texto cai para 96px. Menor base, menor escala.
-     SIS-219 — sobe junto com a placa, e pelo mesmo motivo do desktop: o eco tem
-     de continuar MAIOR que a placa renderizada, senão a sonda reprova. */
-  .partner-terminal__eco {
-    width: min(16rem, 62%);
-  }
+  /* SIS-201 (2ª volta) — as três regras do eco a esta largura saíram com o nó.
+     Ver o bloco do eco mais acima. Eram:
 
-  .partner-terminal__eco-img {
-    max-height: 5.25rem;
-  }
+         // Em 88vw o eco cresceria por cima da copy: o card tem 34rem de altura e
+         // a folga entre placa e texto cai para 96px. Menor base, menor escala.
+         // SIS-219 — sobe junto com a placa, e pelo mesmo motivo do desktop: o eco
+         // tem de continuar MAIOR que a placa renderizada, senão a sonda reprova.
+         .partner-terminal__eco {
+           width: min(16rem, 62%);
+         }
 
-  .partner-terminal__card:hover .partner-terminal__eco,
-  .partner-terminal__card:focus-within .partner-terminal__eco {
-    transform: scale(1.28);
-  }
+         .partner-terminal__eco-img {
+           max-height: 5.25rem;
+         }
+
+         .partner-terminal__card:hover .partner-terminal__eco,
+         .partner-terminal__card:focus-within .partner-terminal__eco {
+           transform: scale(1.28);
+         } */
 
   .partner-terminal__description {
     font-size: 0.875rem;
@@ -491,14 +795,20 @@
     scroll-behavior: auto;
   }
 
-  /* O eco é decoração: em movimento reduzido o card fica no estado idle, sem
-     eco nenhum. `display: none` em vez de só matar a transição — com a
-     transição desligada o eco APARECERIA de uma vez no hover, que é o oposto
-     do pedido. Nada de conteúdo se perde: a placa continua, e a marca também
-     está em texto no `<h3>`. */
-  .partner-terminal__eco {
-    display: none;
-  }
+  /* SIS-201 (2ª volta) — desnecessário: o eco não existe mais em estado nenhum,
+     então não há o que esconder em movimento reduzido. Era:
+
+         // O eco é decoração: em movimento reduzido o card fica no estado idle,
+         // sem eco nenhum. `display: none` em vez de só matar a transição — com a
+         // transição desligada o eco APARECERIA de uma vez no hover, que é o
+         // oposto do pedido. Nada de conteúdo se perde: a placa continua, e desde
+         // a SIS-219 é ela que leva o nome do parceiro no `alt` (o `<h3>` saiu).
+         .partner-terminal__eco {
+           display: none;
+         }
+
+     O raciocínio continua valendo para o `html[data-motion='reduce']` logo
+     abaixo, comentado pelo mesmo motivo. */
 }
 
 html[data-motion='reduce'] .partner-terminal__filter,
@@ -506,16 +816,22 @@ html[data-motion='reduce'] .partner-terminal__arrow {
   transition: none;
 }
 
-html[data-motion='reduce'] .partner-terminal__eco {
-  display: none;
-}
+/* SIS-201 (2ª volta) — o par do bloco acima, sem alvo desde que o eco saiu do
+   JSX. Era:
+
+       html[data-motion='reduce'] .partner-terminal__eco {
+         display: none;
+       } */
 
 /* Espelho do toggle manual: a media query do sistema acima pode continuar
    casando quando `useReducedMotion()` já desligou o relógio. Restaurar altura,
    sticky, transform e overflow em conjunto evita uma trilha congelada. */
 html[data-motion='reduce'] .partner-terminal {
   height: auto;
-  padding-block: 1.5rem 5rem;
+  /* SIS-201 (2ª volta) — acompanha a base (era `1.5rem 5rem`). Esta regra existe
+     para desfazer o `padding-block: 0` do modo pin, então tem de repetir o valor
+     base: deixá-la em 1,5rem devolveria o vão do carimbo em movimento reduzido. */
+  padding-block: 0.5rem 5rem;
   overflow: visible;
 }
 

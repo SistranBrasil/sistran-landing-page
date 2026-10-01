@@ -918,27 +918,29 @@ export default function Page() {
               />
             </div>
 
-            {/* A LEGENDA NÃO É DECORAÇÃO: com os cartões fora, os seis rótulos
-                da seção existem SÓ COMO PIXEL dentro do arquivo — e rótulo em
-                raster não é texto para leitor de tela, para busca, para tradutor
-                automático nem para quem aumenta a fonte. O `alt` sozinho
-                resolveria o leitor de tela e mais nada, porque `alt` não se
-                pinta. Daí a legenda visível, com as seis frentes na mesma
-                escrita da arte — inventar nome novo aqui criaria uma segunda
-                versão dos rótulos, divergente do desenho no primeiro retoque
-                dele. */}
-            {/* A ORDEM DECLARADA foi corrigida contra a captura: os seis nós estão
-                em DUAS fileiras em volta do hub (acima Data Analytics, Cloud
-                Migration e AI & Machine Learning; abaixo App Modernization, IoT e
-                Data Mining & Enrichment), então «da esquerda para a direita» —
-                como estava — descrevia um arranjo que a arte não tem. Legenda que
-                erra a posição é pior que legenda nenhuma para quem cruza o texto
-                com o desenho. */}
-            <figcaption className="labs-principais-legenda">
-              Seis frentes em torno do hub de dados — acima: Data Analytics, Cloud
-              Migration e AI &amp; Machine Learning; abaixo: App Modernization, IoT e
-              Data Mining &amp; Enrichment.
-            </figcaption>
+            {/* SIS-229 — A LEGENDA VISÍVEL SAIU DAQUI, por decisão editorial: a
+                frase repetia em texto os seis rótulos que a arte já pinta, e o
+                pedido é que a seção fique só com a peça. O corpo removido,
+                verbatim, para quem vier depois:
+
+                <figcaption className="labs-principais-legenda">
+                  Seis frentes em torno do hub de dados — acima: Data Analytics, Cloud
+                  Migration e AI &amp; Machine Learning; abaixo: App Modernization, IoT e
+                  Data Mining &amp; Enrichment.
+                </figcaption>
+
+                A RAZÃO ORIGINAL dela continua verdadeira e é o que se perde:
+                com os cartões fora, os seis rótulos existem SÓ COMO PIXEL no
+                arquivo — raster não é texto para busca, tradutor automático nem
+                para quem aumenta a fonte. O que segura a a11y agora é o `alt`
+                da `<Image>` acima, que nomeia as seis plataformas na mesma
+                escrita da arte: ele cobre leitor de tela, e só ele. Por isso o
+                `alt` NÃO pode encurtar enquanto esta legenda estiver fora — se
+                a decisão um dia reverter, o bloco acima volta como está.
+
+                A ordem declarada (duas fileiras em volta do hub, não «da
+                esquerda para a direita») foi medida contra a captura e está
+                preservada tanto no `alt` quanto no texto guardado aqui. */}
           </figure>
 
           {/* SIS-292 — A VITRINE DE SETE CARTÕES SAIU DAQUI. O que havia,

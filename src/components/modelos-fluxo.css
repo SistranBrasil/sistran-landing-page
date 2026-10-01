@@ -1,0 +1,394 @@
+/**
+ * Modelos — fluxo horizontal de anéis (SIS-165, escopo 29/09).
+ *
+ * ── Fundo branco, e ele continua sendo a regra ───────────────────────────────
+ * Herdado da órbita que esta composição substitui, e pelo mesmo motivo: o desenho
+ * é feito de fio de 1,5px e de um orb pequeno, e nenhum dos dois existe sobre
+ * superfície que compita. Nenhum cartão, nenhum degradê sob texto — o azul entra
+ * em traço e em sombra difusa.
+ *
+ * ── Os números do anel ──────────────────────────────────────────────────────
+ * O `viewBox` é 120×120 para os três nós. Raios: externo 56, tracejado 48,
+ * interno 38, e o eixo do orb em 52 — exatamente o meio do vão 48–56, que é o
+ * «orb no gap» do mock. O `r` do orb é 4,5: metade do vão (8) menos a folga do
+ * traço dos dois anéis, senão ele encosta nos dois.
+ *
+ * ── O que se move ───────────────────────────────────────────────────────────
+ * Uma coisa: o grupo do orb, girando. É decoração pela régua de
+ * `reduced-motion-conteudo` — nenhuma das três descrições depende dele para ser
+ * alcançada (as três estão visíveis ao mesmo tempo, sempre). Sob movimento
+ * reduzido ele PARA e continua visível; não há `opacity` envolvida em lugar
+ * nenhum, então não existe estado final escondido a devolver.
+ *
+ * ── Contraste, medido antes de escrever a cor ────────────────────────────────
+ * Sobre o branco da seção, e para o ícone sobre o disco `#f1f8fd`:
+ *   manchete e título do nó `#001a3d` ......... 17,28:1  (piso 4,5 — 1.4.3)
+ *   descrição do nó `#0a3f7d` ................. 10,40:1  (piso 4,5)
+ *   ícone `#0079cb` sobre o disco ............. 4,26:1   (piso 3,0 — 1.4.11)
+ *   anel externo (0079cb a 85%) ............... 3,60:1   (piso 3,0)
+ *   seta: fio e ponta a 75% ................... 3,04:1   (piso 3,0)
+ * O fio da seta nasceu em 55% (2,23:1) e subiu para 75% por causa deste piso: ela
+ * é o que diz «isto é um fluxo», então é elemento gráfico com informação.
+ * Ficam DE PROPÓSITO abaixo de 3:1 dois traços puramente decorativos, cada um
+ * redundante com algo que passa: o anel tracejado (1,89:1), que repete o contorno
+ * do anel externo, e o preenchimento do orb (`#0ed8f6`, 1,73:1), que tem contorno
+ * `#0079cb` a 4,57:1 desenhando a forma dele.
+ *
+ * ═════════════════════════════════════════════════════════════════════════════
+ * ⚠️ SIS-98 (29/09) — o que envelheceu acima, item por item:
+ *
+ * · «os três nós» / «as três descrições» → são QUATRO nós e NENHUMA descrição:
+ *   Outsourcing religado, `.mfx-no-texto` fora da UI (a regra ficou, comentada, no
+ *   fim do bloco de escrita). A conclusão do parágrafo «O que se move» fica de pé e
+ *   por argumento mais curto: o orb continua sendo o único movimento decorativo, e
+ *   agora não há descrição nenhuma que pudesse depender dele para ser alcançada.
+ *
+ * · A linha «descrição do nó `#0a3f7d` … 10,40:1» ficou sem objeto na rota — a cor
+ *   segue medida e verdadeira, e a regra que a usa está comentada logo abaixo dela.
+ *
+ * · «ícone `#0079cb` sobre o disco … 4,26:1» passou a valer para a ARTE e não para
+ *   um ícone de traço nosso: a tinta agora vem do PNG. MEDIDO nos quatro arquivos
+ *   servidos (`sharp`, histograma dos pixels opacos): o traço dominante é um azul
+ *   entre #003794 (Consultoria) e #0043D2 (Especialistas) → 9,83:1 e 7,10:1 contra o
+ *   disco `#f1f8fd`, os dois acima do piso de 3:1 de 1.4.11 com folga. Os acentos
+ *   cianos ficam entre #00AEFA e #00E3FB → 2,34:1 e 1,46:1, abaixo do piso DE
+ *   PROPÓSITO e pela mesma razão do orb: são realce dentro de um desenho cujo
+ *   contorno é o azul escuro medido acima.
+ *
+ * · A manchete não é mais um `<h2>` liso: é `TituloAceso`, que monta
+ *   `.titulo-aceso > h2.mfx-titulo` + `.titulo-risco`. Contraste de tinta inalterado
+ *   (#001a3d, 17,28:1); a palavra «Segurador» ganhou tratamento de `docs/fonte2.md`
+ *   e a cor dele, #123B5D, dá 11,57:1 no branco desta seção — acima do piso de 4,5.
+ * ═════════════════════════════════════════════════════════════════════════════
+ */
+
+.mfx-secao {
+  position: relative;
+  background: #ffffff;
+  color: #0a3f7d;
+}
+
+/* ── Manchete ─────────────────────────────────────────────────────────────── */
+.mfx-titulo {
+  margin-inline: auto;
+  max-width: 980px;
+  color: #001a3d;
+  font-size: clamp(2rem, 3.6vw, 3.75rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-align: center;
+  text-wrap: pretty;
+}
+/* ⚠️ SIS-98 — `.mfx-titulo-linha` FICOU SEM NÓ. `TituloAceso` distribui a manchete
+   palavra por palavra (cada uma num `inline-block` próprio), então não existe mais o
+   par de spans de linha para segurar. A regra fica comentada porque ela guarda uma
+   decisão que volta a valer se a manchete um dia sair do `TituloAceso`:
+
+     | .mfx-titulo-linha { display: inline-block; }   ( as duas linhas de sentido
+     |   não se partem no meio quando sobra largura; em tela estreita cada uma
+     |   reflui por conta própria )
+
+   Quem faz esse trabalho hoje é o `text-wrap: pretty` acima, que já estava aqui. */
+
+/* ── «Segurador» no tratamento de `docs/fonte2.md` ───────────────────────────
+   A palavra chega pelo `destaque` de `TituloAceso` — a única fatia que o componente
+   trata em separado — e vem embrulhada em `.text-gradient-brand`, que é a assinatura
+   de destaque da casa. Este bloco DESFAZ o degradê e põe o manuscrito no lugar:
+   `background-clip: text` com `-webkit-text-fill-color: transparent` continuaria
+   vencendo a `color` daqui e a palavra sairia pintada de gradiente, não de #123B5D.
+
+   Os valores são os de `docs/fonte2.md`, sem invenção: Kalam com Caveat de reserva
+   (a família é carregada em `src/app/layout.tsx` como `--font-kalam`), peso 400, cor
+   #123B5D, `line-height: 0.95`, corpo `clamp(30px, 3vw, 50px)` e inclinação de −4°.
+   É o mesmo conjunto que `.agimos-manuscrito` usa em `como-agimos.css`, incluindo os
+   dois detalhes que aquele precedente mediu e vale repetir:
+
+   · `rotate: -4deg` e NÃO `transform: rotate(...)`. `TituloAceso` põe `opacity` em
+     linha no filho animado, mas a propriedade longa é o que protege o dia em que o
+     acendimento passar a mexer em `transform`: `rotate` é eixo próprio e não é
+     sobrescrito por uma declaração de `transform`.
+   · `transform-origin: left center`, para a palavra girar pendurada no início e não
+     descolar do «mercado» que vem antes dela.
+
+   O corpo fica MENOR que o resto da manchete (que vai a 60px no topo do `clamp`), e
+   isso é do documento: o manuscrito é uma assinatura ao lado da manchete, não um
+   pedaço dela em escala display. `vertical-align: baseline` mantém as duas na mesma
+   linha de escrita apesar da diferença de corpo.
+
+   ⚠️ NÃO ENTRA um segundo risco ciano de ~45px aqui. O documento pede o traço, e ele
+   JÁ EXISTE nesta manchete: `TituloAceso` desenha `.titulo-risco` logo abaixo do
+   `<h2>`, com o mesmo papel e o mesmo ciano, e é ele que se desenha com a rolagem.
+   Um segundo traço seria a mesma marca duas vezes na mesma peça. */
+.mfx-titulo .text-gradient-brand {
+  display: inline-block;
+  background: none;
+  background-clip: border-box;
+  -webkit-background-clip: border-box;
+  -webkit-text-fill-color: currentcolor;
+  color: #123b5d;
+  font-family: var(--font-kalam), 'Caveat', cursive;
+  font-size: clamp(30px, 3vw, 50px);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.95;
+  vertical-align: baseline;
+  rotate: -4deg;
+  transform-origin: left center;
+  /* ⚠️ `.text-gradient-brand` traz `animation: gradient-shift 8s infinite`, que
+     desloca o `background-position` para sempre. Com `background: none` ela não tem
+     mais o que deslocar, mas continuaria correndo: um loop infinito num nó que não
+     muda de aparência. Morre aqui — e não precisa de exceção de movimento reduzido,
+     porque quem some é o próprio movimento. */
+  animation: none;
+}
+
+/* O risco de sinal do `TituloAceso`, centrado porque esta manchete é centrada —
+   solto à esquerda ele leria como um traço perdido na margem. O degradê é o da
+   variante clara (`.section-light .titulo-risco`, em `globals.css`), e não o
+   padrão: o padrão termina em #a5f0ff, que sobre o branco desta seção some. É a
+   mesma correção, pela mesma razão medida, que `recognition-gallery.css:151` faz
+   na seção de Reconhecimentos — a peça de referência desta issue. */
+.mfx-secao .titulo-risco {
+  margin-inline: auto;
+  background: linear-gradient(90deg, #004d8a, #0079cb 60%, #0ed8f6);
+}
+
+/* ── Fluxo ────────────────────────────────────────────────────────────────────
+   `--mfx-anel` é o diâmetro do nó e `--mfx-vao` a calha entre colunas. Os dois
+   são lidos pela conta da seta, logo abaixo — mexer num deles reposiciona a seta
+   sozinho. */
+.mfx-fluxo {
+  --mfx-anel: clamp(120px, 12vw, 176px);
+  --mfx-vao: clamp(24px, 4vw, 56px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(36px, 5vw, 56px) var(--mfx-vao);
+  margin: clamp(40px, 5vw, 72px) auto 0;
+  max-width: 1080px;
+  padding: 0;
+  list-style: none;
+}
+/* ⚠️ SIS-98 — QUATRO em linha, e o limiar subiu de 700px para 760px. A conta foi
+   refeita do zero porque a anterior era de três colunas e não se transpõe:
+
+   · a 1440 de janela: `.mfx-fluxo` bate no teto de 1080px, o vão fica em 56px
+     (topo do `clamp`) e cada coluna sobra com (1080 − 3×56)/4 = 228px. O anel pede
+     172,8px (12vw) ali, então a seta ainda mede 228 + 56 − 172,8 = 111px.
+   · a 768 (o caso do aceite): `.container-lp` entrega ~720px úteis, o vão vai a
+     30,7px e cada coluna fica com (720 − 3×30,7)/4 = 156,9px, contra um anel de
+     92,2px. «Alocação de Especialistas» é o rótulo mais largo e cabe em duas linhas
+     nos 18px que o `clamp` do título do nó resolve nessa largura.
+   · a 760, o próprio limiar: 684px úteis, vão de 30,4px, coluna de 148,2px e anel
+     de 91,2px. A seta sai com 148,2 + 30,4 − 91,2 = 87,4px — positiva, que é a
+     condição de a fórmula da seta ainda desenhar algo.
+
+   Por que 760 e não os 700 de antes: com quatro colunas, 700 deixaria a coluna em
+   136px, e «Especialistas» sozinho mede ~117px a 18px de corpo — passaria, mas com
+   11px de ar de cada lado, o que não é folga, é sorte. Abaixo do limiar a fileira
+   vira PILHA de uma coluna, e não uma grade 2×2: em 2×2 o primeiro nó de cada fila
+   receberia a seta horizontal do nó anterior (ela existe para todo `i > 0`) e ela
+   apontaria para fora da fila, do lado esquerdo, para nada. */
+@media (min-width: 760px) {
+  .mfx-fluxo {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.mfx-no {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ── Seta tracejada entre os nós ──────────────────────────────────────────────
+   Empilhado (até 699px) ela é o PRIMEIRO filho em fluxo do nó, e por isso aparece
+   acima dele apontando para baixo — sem `position`, sem cálculo e sem risco de
+   sobrar solta no fim da lista. */
+.mfx-seta {
+  position: relative;
+  display: block;
+  width: 2px;
+  height: 30px;
+  margin-bottom: 20px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 121, 203, 0.75) 0 7px,
+    transparent 7px 13px
+  );
+}
+/* A ponta: dois lados de uma caixa girados 45°, e não um glifo — fica no mesmo
+   fio de 2px do tracejado em qualquer zoom. */
+.mfx-seta::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid rgba(0, 121, 203, 0.75);
+  border-bottom: 2px solid rgba(0, 121, 203, 0.75);
+  transform: translate(-50%, 2px) rotate(45deg);
+}
+
+/* ⚠️ SIS-98 — 760px, o mesmo limiar da fileira acima: os dois blocos têm de virar
+   na MESMA largura, senão existe uma faixa em que a seta é absoluta e horizontal
+   numa lista que ainda está empilhada. */
+@media (min-width: 760px) {
+  /* Na fileira, a seta vai da borda direita do anel anterior à borda esquerda
+     deste. Em unidades da própria coluna (largura w, vão g, raio do anel R), com
+     a origem na borda esquerda DESTA coluna — o centro da coluna anterior está em
+     -w/2 - g, e não em -(w+g)/2:
+       início  = -w/2 - g + R     →  left: calc(-50% - var(--mfx-vao) + anel/2)
+       largura =  w   + g   - 2R  →  width: calc(100% + var(--mfx-vao) - anel)
+     A primeira escrita usava `-g/2` e a sonda pegou: a seta nascia 28px depois do
+     anel anterior e entrava 28px dentro do seguinte a 1440 (exatamente g/2), com
+     a largura já certa. Erro de origem, não de comprimento — por isso as duas
+     folgas saíam simétricas e de sinais opostos.
+     Ela mora no nó de DESTINO (ver o TSX), então nunca há uma sobrando depois do
+     último — que a SIS-98 passou a ser o quarto, sem mexer em nada aqui: era
+     exatamente para isto que ela não dependia de `:last-child`. `top` é o raio do anel: a altura do centro do nó. */
+  .mfx-seta {
+    position: absolute;
+    top: calc(var(--mfx-anel) / 2 - 1px);
+    left: calc(-50% - var(--mfx-vao) + var(--mfx-anel) / 2);
+    width: calc(100% + var(--mfx-vao) - var(--mfx-anel));
+    height: 2px;
+    margin-bottom: 0;
+    background: repeating-linear-gradient(
+      to right,
+      rgba(0, 121, 203, 0.75) 0 7px,
+      transparent 7px 13px
+    );
+  }
+  .mfx-seta::after {
+    top: 50%;
+    right: 0;
+    bottom: auto;
+    left: auto;
+    transform: translate(2px, -50%) rotate(-45deg);
+  }
+}
+
+/* ── O nó: anéis + ícone ─────────────────────────────────────────────────── */
+.mfx-aneis {
+  position: relative;
+  display: block;
+  width: var(--mfx-anel);
+  height: var(--mfx-anel);
+}
+.mfx-aneis-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.mfx-anel {
+  fill: none;
+  stroke: #0079cb;
+  /* O traço é em unidades do `viewBox` (120), então ele escala com o nó — é o
+     mesmo critério do `ModelosIcones`, que também recusa
+     `non-scaling-stroke`. */
+  stroke-width: 1.4;
+}
+.mfx-anel--externo {
+  stroke-opacity: 0.85;
+}
+.mfx-anel--tracejado {
+  stroke-dasharray: 5 6;
+  stroke-opacity: 0.45;
+}
+/* O disco do ícone: superfície própria muito clara, para o ícone não ficar
+   flutuando no branco da seção. */
+.mfx-anel--interno {
+  fill: #f1f8fd;
+  stroke: rgba(0, 121, 203, 0.28);
+  stroke-width: 1.2;
+}
+
+.mfx-orbe {
+  fill: #0ed8f6;
+  stroke: #0079cb;
+  stroke-width: 1.2;
+}
+.mfx-orbe-eixo {
+  transform-box: view-box;
+  transform-origin: 60px 60px;
+  animation: mfx-orbita 14s linear infinite;
+}
+@keyframes mfx-orbita {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mfx-icone {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  /* ⚠️ SIS-98 — `color` já não pinta nada: era o `currentColor` do ícone de traço,
+     e a arte PNG traz a própria tinta. Fica porque é o valor de reserva se algum dia
+     voltar um SVG ao centro, e porque não há descendente nenhum que a herde. */
+  color: #0079cb;
+}
+/* ⚠️ SIS-98 — `.mfx-icone-svg` saiu com o `<Icone>`. A regra fica comentada porque
+   guarda a única medida que não se lê no arquivo: os 38% do anel eram o corpo em que
+   um ícone de traço de 1,5px lia dentro do disco de r38 do `viewBox`.
+
+     | .mfx-icone-svg { width: 38%; height: 38%; }
+
+   A arte PNG entra MAIOR, em 56%, e a razão é geométrica: o disco interno tem raio
+   38 de 60, ou seja 63% do diâmetro do nó, e a arte é um quadrado inscrito nele. O
+   lado do maior quadrado que cabe num círculo é d/√2 = 63% × 0,707 = 44,5% do nó —
+   só que os desenhos são aparados no alfa e ocupam o quadro todo, sem a margem folgada
+   que o ícone de traço tinha. 56% deixa os cantos do quadrado pisando o anel interno
+   de leve e é o que faz a arte LER no tamanho do anel; a 44,5% ela ficaria com um
+   vazio de 1/5 do disco em volta.
+
+   `object-fit: contain` é redundante num quadrado dentro de um quadrado, e está aqui
+   como rede: se uma arte futura entrar fora de proporção, ela encolhe em vez de
+   deformar. Sem `mix-blend-mode` nem filtro — os arquivos já são transparentes
+   (medido; ver o TSX), então não há fundo para neutralizar. */
+.mfx-arte {
+  width: 56%;
+  height: 56%;
+  object-fit: contain;
+}
+
+/* ── Escrita do nó ───────────────────────────────────────────────────────── */
+.mfx-no-titulo {
+  margin-top: clamp(18px, 2vw, 26px);
+  color: #001a3d;
+  font-size: clamp(1.125rem, 1.4vw, 1.5rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+/* ⚠️ SIS-98 — A DESCRIÇÃO SAIU DA UI («rótulos only — retirar as descriptions do
+   painel/UI»), então esta regra ficou sem nó. Comentada e não apagada: a copy segue
+   viva em `modelosAtuacao.ts` e em `CircularEngagementModel`, e os 30ch são a medida
+   de linha de leitura que valia para ela.
+
+     | .mfx-no-texto {
+     |   margin-top: 10px;
+     |   max-width: 30ch;
+     |   color: #0a3f7d;                       ( 10,40:1 no branco da seção )
+     |   font-size: clamp(0.9375rem, 1vw, 1.0625rem);
+     |   line-height: 1.55;
+     | } */
+
+/* ── Movimento reduzido ──────────────────────────────────────────────────────
+   O orb PARA, e para visível — ele é o único movimento da seção e é decorativo.
+   As duas listas, porque a `@media` não cobre a chave que o próprio site oferece
+   (`html[data-motion='reduce']`, de `lib/motion`). */
+@media (prefers-reduced-motion: reduce) {
+  .mfx-orbe-eixo {
+    animation: none !important;
+  }
+}
+html[data-motion='reduce'] .mfx-orbe-eixo {
+  animation: none !important;
+}

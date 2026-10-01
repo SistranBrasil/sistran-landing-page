@@ -181,6 +181,22 @@ const CIDADES: Cidade[] = [
       },
     ],
   },
+  /* 24/09 — a TERCEIRA parada, pedida «sem imagem, so aproximando o mapa ainda
+     mais e passando para a proxima sessao». `fotos: []` nao é descuido: é o
+     pedido, e a galeria ja sabe se ausentar (`Fotos` devolve `null` com lista
+     vazia), entao nao houve nada a acrescentar para suprimi-la.
+     `texto` fica `undefined` porque `OFFICES` (`src/data/aSistran.ts`) tem só
+     `sp` e `pr` — o site NAO tem descricao do escritorio do Rio em lugar nenhum
+     (no rodape e em `/contato` ele aparece só pelo nome). O cartao entao nasce
+     com o nome sozinho, pelo guarda `{c.texto ? … : null}` que ja existia. Isso
+     é falta de REDACAO, nao de codigo: quando houver texto, basta uma entrada
+     `rj` em `OFFICES` e ele aparece sem mais nenhuma mudanca aqui. */
+  {
+    id: "rj",
+    nome: "Rio de Janeiro",
+    texto: textoDe("rj"),
+    fotos: [],
+  },
 ];
 
 function Fotos({ fotos }: { fotos: Foto[] }) {
@@ -206,6 +222,102 @@ function Fotos({ fotos }: { fotos: Foto[] }) {
           />
         </figure>
       ))}
+    </div>
+  );
+}
+
+/* GaleriaCidade — o modal que o clique no cartao abre.
+   Pedido: «quando clica no card em vira um modal e da para ver as imagens mais
+   nitidos». A miniatura do cartao mede ~104x126px com `object-fit: cover`: ela é um
+   RECORTE de um arquivo de 1600px de largura, então o que falta na tela nao é
+   resolucao, é AREA. Aqui o mesmo arquivo entra inteiro (`contain`, no CSS), na
+   largura da janela.
+
+   `srcSet` NAO é o mesmo das miniaturas, e a diferenca é o ponto: lá a variante de
+   960px é a que o navegador escolhe (e deve escolher — a caixa tem 104px). Aqui a
+   figura ocupa ~30vw em tela larga e a janela inteira no celular, então o arquivo de
+   1600px é o padrao e a variante menor só entra onde a caixa realmente é pequena. As
+   duas larguras sao as que `scripts/otimizar-fotos-escritorios.mjs` gera — nenhum
+   arquivo novo.
+
+   `loading="eager"`: a galeria só existe depois do clique, então nao ha o que adiar —
+   `lazy` aqui atrasaria justamente a imagem que a pessoa acabou de pedir. */
+function GaleriaCidade({
+  cidade,
+  onFechar,
+}: {
+  cidade: Cidade;
+  onFechar: () => void;
+}) {
+  const fecharRef = useRef<HTMLButtonElement>(null);
+  const tituloId = `os-galeria-${cidade.id}`;
+
+  /* Esc fecha, e o foco vai para o botao de fechar na abertura: sem isso o foco
+     continua no gatilho, ATRAS do modal, e quem navega por teclado tabula por uma
+     cena que nao esta mais visivel. O retorno do foco ao gatilho na saida é feito por
+     quem abriu (ver `abrirGaleria`/`fecharGaleria`). */
+  useEffect(() => {
+    fecharRef.current?.focus();
+    const aoTeclar = (evento: KeyboardEvent) => {
+      if (evento.key === "Escape") onFechar();
+    };
+    document.addEventListener("keydown", aoTeclar);
+    /* A rolagem da pagina fica travada enquanto o modal esta aberto: o fundo é uma
+       cena presa por `ScrollTrigger`, e rolar atras dela trocaria a cidade por baixo
+       do modal. O valor anterior é restaurado no fim — nao assumido como `""`. */
+    const overflowAntes = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", aoTeclar);
+      document.body.style.overflow = overflowAntes;
+    };
+  }, [onFechar]);
+
+  return (
+    /* `aria-modal` + `role="dialog"` sem biblioteca: o conteudo é tres imagens e um
+       botao, e o unico alcancavel é o botao — nao ha ciclo de foco para prender
+       porque nao ha um segundo destino. O clique no fundo tambem fecha, e o
+       `onClick` do proprio painel para a propagacao para o clique NA FOTO nao fechar. */
+    <div
+      className="os-galeria"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={tituloId}
+      onClick={onFechar}
+    >
+      <div className="os-galeria-topo" onClick={(e) => e.stopPropagation()}>
+        <h3 className="os-galeria-titulo" id={tituloId}>
+          {cidade.nome}
+        </h3>
+        <button
+          className="os-galeria-fechar"
+          type="button"
+          onClick={onFechar}
+          ref={fecharRef}
+        >
+          Fechar
+        </button>
+      </div>
+      <div className="os-galeria-grade" onClick={(e) => e.stopPropagation()}>
+        {cidade.fotos.map((f) => (
+          <figure className="os-galeria-figura" key={f.base}>
+            {/* Tag simples pelo mesmo motivo das miniaturas: `images:
+                { unoptimized: true }` (SIS-154) faz o componente do framework nao
+                gerar variante nenhuma, e o `srcSet` a mao é o que de fato escolhe. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`/images/escritorios/${f.base}-1600.webp`}
+              srcSet={`/images/escritorios/${f.base}-960.webp 960w, /images/escritorios/${f.base}-1600.webp ${f.largura}w`}
+              sizes="(min-width: 900px) 30vw, 92vw"
+              width={f.largura}
+              height={f.altura}
+              alt={f.alt}
+              loading="eager"
+              decoding="async"
+            />
+          </figure>
+        ))}
+      </div>
     </div>
   );
 }
@@ -297,7 +409,16 @@ function TorreSaoPaulo({ escondida }: { escondida?: boolean }) {
 
           `inert` NAO é preciso aqui, ao contrario do resto da torre: `span` vazio
           nao recebe foco e nao tem conteudo a ler. O `aria-hidden` fica pelo
-          mesmo motivo do `.os-elo` — tirar da arvore um no que é risco na tela. */}
+          mesmo motivo do `.os-elo` — tirar da arvore um no que é risco na tela.
+
+          ⚠️ 29/09 — ESTE NO NAO DESENHA MAIS NADA, por pedido: «tire a linha que vai
+          ate o mapa do predio». As duas regras que o acendiam no modo rolagem estao
+          COMENTADAS em `globals.css` (procure por «O FEIXE SAIU DE CENA»), e a regra
+          base `.os-feixe { display: none }` passou a valer em todos os modos. O `span`
+          fica — custa um no vazio e `aria-hidden`, e devolver a linha é descomentar
+          duas regras de folha em vez de remontar no, medida e efeito. `medirFeixe`
+          (abaixo) tambem continua correndo e escrevendo `--os-feixe-larg`/`-topo`:
+          ninguem le essas variaveis enquanto as regras estiverem comentadas. */}
       <span aria-hidden className="os-feixe" />
     </div>
   );
@@ -332,36 +453,73 @@ const CIDADES_INICIO = 0.4; // antes disso nenhuma cidade esta acesa
 const ENTRADA_DURACAO = 3.2;
 
 /* SIS-169 — O PERCURSO, E A CONTA DELE POR INTEIRO.
+   24/09 — reescrito para TRES paradas. Os valores anteriores ficam registrados
+   no fim desta nota; a estrutura da conta é a mesma, ganhou um trecho.
 
-   A trilha tem 300svh. Deste total o painel preso ocupa 100svh — ele é o que se
-   ve —, e por isso o CURSO do sticky, que é o que a rolagem esfrega, sao os
-   200svh que sobram: 300 - 100. Nao é numero escolhido; é a altura menos o painel,
-   e é a mesma expressao que o gatilho usa no `end`.
+   O painel preso ocupa 100svh — ele é o que se ve —, e por isso o CURSO do
+   sticky, que é o que a rolagem esfrega, é a trilha MENOS esses 100svh. Nao é
+   numero escolhido; é a mesma expressao que o gatilho usa no `end`. Para nao
+   haver duas verdades, o percurso passa a ser DERIVADO dos blocos abaixo em vez
+   de escrito à mão.
 
-   Esses 200svh se dividem em tres trechos, e a divisao tem motivo:
+   Os blocos, em svh, e o motivo de cada um:
 
-     ·   0 -> 0.25   POUSO em Pato Branco — 50svh de leitura parada. A primeira
-                     ficha nao pode comecar a ir embora no primeiro pixel de
-                     rolagem, senao ninguem a le.
-     · 0.25 -> 0.75  TRANSITO — 100svh, metade do curso. É o unico trecho com
-                     movimento, e é o mais longo porque é o unico que pede tempo:
-                     o cartao cruza a tela e o mapa fecha o zoom.
-     · 0.75 -> 1     POUSO em Sao Paulo — 50svh, simetrico ao primeiro, para a
-                     segunda ficha tambem ter leitura parada antes da secao sair.
+     · 50  POUSO em Pato Branco — leitura parada. A primeira ficha nao pode
+           comecar a ir embora no primeiro pixel de rolagem.
+     · 100 TRANSITO — o unico trecho em que o CARTAO cruza a tela, e o mais longo
+           porque é o unico que pede tempo: cartao atravessando e mapa fechando.
+     · 50  POUSO em Sao Paulo — simetrico ao primeiro.
+     · 50  APROXIMACAO do Rio — o trecho novo. Aqui o cartao NAO volta a
+           atravessar: `--os-transito` fica em 1 e a travessia do cartao é
+           `--os-viagem * --os-transito` (globals.css), entao ele permanece
+           estacionado à direita. Quem se move é só a camera, por um eixo
+           proprio, `--os-aproxima`. Generalizar a travessia em duas pernas faria
+           o cartao SALTAR de volta para a esquerda no comeco da segunda — foi por
+           isso que o trecho é de camera, e nao mais uma perna de transito.
+     · 50  POUSO no Rio — leitura parada antes de a secao sair, como as outras.
 
-   A TROCA da cidade ativa é a METADE do transito, nao a borda dele: trocar em
-   0.25 acenderia Sao Paulo no primeiro quadro do movimento, e trocar em 0.75
-   deixaria Pato Branco aceso durante a viagem inteira. No meio, cada cidade
-   fica acesa exatamente enquanto o cartao dela esta na frente. */
-const PERCURSO_SVH = 300;
-const TRANSITO_INICIO = 0.25;
-const TRANSITO_FIM = 0.75;
-const TROCA = (TRANSITO_INICIO + TRANSITO_FIM) / 2; // 0.5
+   A TROCA de cada cidade é a METADE do trecho de movimento que leva a ela, nao a
+   borda dele: trocar na borda de entrada acenderia a cidade no primeiro quadro
+   do movimento, e na de saida deixaria a anterior acesa durante a viagem toda.
+
+   ANTES (duas paradas): `PERCURSO_SVH = 300`, `TRANSITO_INICIO = 0.25`,
+   `TRANSITO_FIM = 0.75`, `TROCA = 0.5`, `POUSO = [0.125, 0.875]`. */
+const BLOCOS_SVH = {
+  pousoPr: 50,
+  transito: 100,
+  pousoSp: 50,
+  aproxima: 50,
+  pousoRj: 50,
+} as const;
+const CURSO_SVH =
+  BLOCOS_SVH.pousoPr +
+  BLOCOS_SVH.transito +
+  BLOCOS_SVH.pousoSp +
+  BLOCOS_SVH.aproxima +
+  BLOCOS_SVH.pousoRj; // 300
+const PERCURSO_SVH = 100 + CURSO_SVH; // 400 — painel preso + curso
+/* Fracoes do CURSO. Somas acumuladas dos blocos: uma fonte só. */
+const TRANSITO_INICIO = BLOCOS_SVH.pousoPr / CURSO_SVH; // 1/6 ≈ 0.1667
+const TRANSITO_FIM = (BLOCOS_SVH.pousoPr + BLOCOS_SVH.transito) / CURSO_SVH; // 0.5
+const APROXIMA_INICIO =
+  (BLOCOS_SVH.pousoPr + BLOCOS_SVH.transito + BLOCOS_SVH.pousoSp) / CURSO_SVH; // 2/3
+const APROXIMA_FIM =
+  (BLOCOS_SVH.pousoPr +
+    BLOCOS_SVH.transito +
+    BLOCOS_SVH.pousoSp +
+    BLOCOS_SVH.aproxima) /
+  CURSO_SVH; // 5/6
+const TROCA = (TRANSITO_INICIO + TRANSITO_FIM) / 2; // ≈ 0.3333
+const TROCA_RJ = (APROXIMA_INICIO + APROXIMA_FIM) / 2; // 0.75
 
 /* Centro de cada pouso — para onde a aba leva a janela quando é usada como
-   atalho. Sao os pontos mais longe do transito em cada ponta, ou seja onde a
-   ficha esta inteira e imovel. */
-const POUSO = [TRANSITO_INICIO / 2, (TRANSITO_FIM + 1) / 2] as const; // 0.125 e 0.875
+   atalho. Sao os pontos mais longe do movimento, ou seja onde a ficha esta
+   inteira e imovel. */
+const POUSO = [
+  TRANSITO_INICIO / 2, // ≈ 0.0833
+  (TRANSITO_FIM + APROXIMA_INICIO) / 2, // ≈ 0.5833
+  (APROXIMA_FIM + 1) / 2, // ≈ 0.9167
+] as const;
 
 /* SIS-169 — o feixe pino->torre só existe com o transito INTEIRO, e o numero é 1
    por medicao, nao por simetria.
@@ -428,6 +586,12 @@ export default function OfficesScene() {
      `tablist` sem painel corrente. Quem esconde o cartao durante a entrada é o
      `revelado` abaixo, que é assunto de tempo, nao de selecao. */
   const [ativa, setAtiva] = useState(0);
+  /* A cidade cuja galeria esta aberta, por ID — e nao o objeto: se `CIDADES` mudar,
+     o ID continua resolvendo e um objeto guardado ficaria velho. `null` = fechada.
+     `gatilhoRef` guarda quem abriu, para devolver o foco no fechamento: sem isso o
+     foco volta para o `<body>` e a navegacao por teclado recomeca do topo da pagina. */
+  const [galeria, setGaleria] = useState<string | null>(null);
+  const gatilhoRef = useRef<HTMLButtonElement | null>(null);
   /* Vira `true` quando a entrada passa de `CIDADES_INICIO` — ou de saida, se a
      entrada nem roda (sem JavaScript, movimento reduzido, modo lista). */
   const [revelado, setRevelado] = useState(false);
@@ -629,6 +793,18 @@ export default function OfficesScene() {
 
        O deslocamento é a UNICA coisa que muda de lugar na cena, e muda por
        `transform` — nenhuma faixa de grade é animada. */
+    /* ⚠️ SIS-221 — A COMPENSACAO DO TETO DE LARGURA DA FICHA.
+       A ficha ganhou `max-width: 21rem` no `globals.css` (a razao esta la: é o que
+       abre a faixa livre do mapa, e sem isso nao ha escala constante possivel). Isso
+       cria uma folga entre a aresta direita da FICHA e a do INVOLUCRO, que continua
+       com os 27rem da faixa de leitura. A viagem medida contra o involucro ignora
+       essa folga, e a ficha pousaria 96px antes da borda interna — vao morto a
+       direita dela, e a faixa do mapa nao ganharia nada.
+       A folga é somada aqui, e é medida, nao escrita: `offsetWidth` da ficha contra
+       o do involucro. `offsetWidth` de proposito, e nao `getBoundingClientRect`: é a
+       largura de LAYOUT, imune a `transform`, e a ficha é justamente o que se
+       desloca — pela mesma razao que a nota acima da para nao medir a ficha. O
+       involucro nao se move e as duas medidas saem do mesmo sistema. */
     const medirViagem = () => {
       const base = palco.querySelector<HTMLElement>(".os-baixo");
       if (!base) return;
@@ -636,9 +812,13 @@ export default function OfficesScene() {
       const bordaInterna =
         palco.getBoundingClientRect().right -
         (parseFloat(estilo.paddingRight) || 0);
+      const ficha = base.querySelector<HTMLElement>(".os-painel");
+      const folgaDoTeto = ficha
+        ? Math.max(0, base.offsetWidth - ficha.offsetWidth)
+        : 0;
       palco.style.setProperty(
         "--os-viagem",
-        `${Math.max(0, bordaInterna - base.getBoundingClientRect().right)}px`,
+        `${Math.max(0, bordaInterna - base.getBoundingClientRect().right + folgaDoTeto)}px`,
       );
     };
 
@@ -695,11 +875,24 @@ export default function OfficesScene() {
         (p - TRANSITO_INICIO) / (TRANSITO_FIM - TRANSITO_INICIO),
       );
       palco.style.setProperty("--os-transito", String(transito));
+      /* 24/09 — o SEGUNDO eixo esfregado, o da aproximacao do Rio. Ele existe
+         separado do transito justamente porque o transito ja terminou (fica em 1
+         daqui para frente) e a travessia do cartao esta amarrada a ele. */
+      const aproxima = clamp01(
+        (p - APROXIMA_INICIO) / (APROXIMA_FIM - APROXIMA_INICIO),
+      );
+      palco.style.setProperty("--os-aproxima", String(aproxima));
       /* Uma medicao por chegada, e nao uma por quadro. `data-pousado` é o que o
          CSS le para acender o feixe: ele nasce JUNTO com a medida, no mesmo
-         instante, entao nao ha um quadro com o fio aceso e o comprimento velho. */
+         instante, entao nao ha um quadro com o fio aceso e o comprimento velho.
+         24/09 — `aproxima <= 0` entrou na condicao por necessidade, nao por
+         zelo: o feixe mede pino->torre com `getBoundingClientRect`, e durante a
+         aproximacao o pino ANDA (a camera o move) com `--os-transito` ainda em 1.
+         Sem esta clausula o fio ficaria aceso com o comprimento do quadro velho,
+         que é exatamente a farpa que a medicao de SIS-169 tinha eliminado. */
       const pousado =
-        transito >= (feixeMedidoRef.current ? FEIXE_APAGA : FEIXE_ACENDE);
+        transito >= (feixeMedidoRef.current ? FEIXE_APAGA : FEIXE_ACENDE) &&
+        aproxima <= 0;
       if (pousado !== feixeMedidoRef.current) {
         feixeMedidoRef.current = pousado;
         if (pousado) {
@@ -714,7 +907,7 @@ export default function OfficesScene() {
       /* UNICO escritor de `ativa` em toda a cena quando a rolagem dirige. O
          estado é discreto e muda uma vez por travessia, entao a comparacao com o
          ref evita um `setState` por quadro. */
-      const indice = p >= TROCA ? 1 : 0;
+      const indice = p >= TROCA_RJ ? 2 : p >= TROCA ? 1 : 0;
       if (indice !== ativaRef.current) {
         ativaRef.current = indice;
         setAtiva(indice);
@@ -747,6 +940,7 @@ export default function OfficesScene() {
       gatilho.kill();
       if (remedir) clearTimeout(remedir);
       palco.style.removeProperty("--os-transito");
+      palco.style.removeProperty("--os-aproxima");
       palco.style.removeProperty("--os-viagem");
       palco.style.removeProperty("--os-feixe-larg");
       palco.style.removeProperty("--os-feixe-topo");
@@ -843,6 +1037,18 @@ export default function OfficesScene() {
     [dirigindo],
   );
 
+  const fecharGaleria = useCallback(() => {
+    setGaleria(null);
+    /* Devolve o foco a quem abriu. `focus()` no mesmo quadro em que o modal sai da
+       arvore é o momento certo: o no do gatilho continua montado (o cartao nunca sai
+       do DOM — ver a nota do `inert`). */
+    gatilhoRef.current?.focus();
+  }, []);
+
+  const cidadeDaGaleria = galeria
+    ? (CIDADES.find((c) => c.id === galeria) ?? null)
+    : null;
+
   const modo = dirigindo ? "scroll" : "lista";
 
   return (
@@ -900,9 +1106,26 @@ export default function OfficesScene() {
                 `TituloAceso` abaixo — e la a palavra continua sendo lida uma vez.
                 Nao foi apagado: apagar tiraria da tela um elemento que a
                 referencia tem. */}
-            <p aria-hidden className="os-olho">
+            {/* ⚠️ SIS-221 (29/09) — A TAG SAIU DE CENA POR PEDIDO EXPRESSO, junto
+                desta issue: «remova a tag Escritórios», com captura apontando o chip
+                «— ESCRITÓRIOS» acima de «Escritórios BRASIL».
+                Isso REVERTE a decisao da nota logo acima, e é bom que o contraste
+                fique registrado: ali o argumento para MANTER era «apagar tiraria da
+                tela um elemento que a referencia tem» — a referencia de desenho da
+                SIS-161. O pedido de agora é do dono do produto e é mais recente, e o
+                fato que a nota levanta continua verdadeiro e agora joga a favor: a
+                palavra ja estava `aria-hidden` porque nao acrescentava nada, e o nome
+                da secao vem do `aria-labelledby="escritorios"` apontando para o
+                `TituloAceso` abaixo. Ou seja, NENHUMA informacao se perde — nem em
+                tela (a palavra continua no titulo) nem no leitor de tela (que nunca
+                lia esta linha). O que sai é so a repeticao visual.
+                Comentado em vez de apagado: se a hierarquia da referencia voltar a
+                ser exigida, descomentar as tres linhas devolve o chip identico, com o
+                travessao do `::before` (`globals.css:7211`) — que fica no lugar, sem
+                elemento a que se aplicar, por ser gratuito e ser o par desta volta. */}
+            {/* <p aria-hidden className="os-olho">
               Escritórios
-            </p>
+            </p> */}
 
             {/* O titulo VEIO DE `quem-somos/page.tsx` para dentro da cena, com as
                 mesmas palavras e o mesmo `id`, entao o `aria-labelledby` da secao
@@ -1009,6 +1232,51 @@ export default function OfficesScene() {
                       <p className="os-cidade-texto">{c.texto}</p>
                     ) : null}
                     <Fotos fotos={c.fotos} />
+                    {/* O CARTAO INTEIRO ABRE A GALERIA, por um botao que o cobre — o
+                        porque de ser `<button>` e nao clique no `<article>` esta no
+                        CSS (`.os-gatilho-fotos`). SÓ ONDE HA FOTO: o Rio tem
+                        `fotos: []` por pedido de 24/09, e agora «so o nome em um card
+                        pequeno» — um gatilho ali abriria um modal vazio.
+                        O `aria-label` nomeia a cidade porque ha tres cartoes: "Ver
+                        fotos" sozinho, repetido, nao distingue um do outro numa lista
+                        de elementos de um leitor de tela. */}
+                    {c.fotos.length ? (
+                      <button
+                        className="os-gatilho-fotos"
+                        type="button"
+                        aria-label={`Ver fotos do escritório de ${c.nome}`}
+                        onClick={(evento) => {
+                          gatilhoRef.current = evento.currentTarget;
+                          setGaleria(c.id);
+                        }}
+                      >
+                        {/* ⚠️ 29/09 — A LUPA ENTROU AQUI, e nao como pseudo-elemento
+                            de CSS: desenhar lupa com `::before`/`::after` custa dois
+                            nos e ainda sai torta (o cabo é uma diagonal, e diagonal em
+                            pseudo-elemento pede `rotate` sobre `transform`, que a
+                            pastilha ja usa no hover). Em SVG é um circulo e uma linha.
+                            `focusable="false"` pelo IE/Edge legado e `aria-hidden`
+                            herdado do `<span>`: quem le tela recebe o `aria-label` do
+                            botao, que nomeia a cidade — o desenho nao acrescenta nada.
+                            O motivo de existir esta na nota de `.os-gatilho-chip`: em
+                            11px de caixa-alta o rotulo se apaga no antialiasing, e a
+                            lupa é o sinal que sobrevive a isso. */}
+                        <span aria-hidden className="os-gatilho-chip">
+                          <svg
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            focusable="false"
+                          >
+                            <circle cx="6.8" cy="6.8" r="4.6" />
+                            <path d="M10.3 10.3 14 14" />
+                          </svg>
+                          Ver fotos
+                        </span>
+                      </button>
+                    ) : null}
                   </article>
                 );
               })}
@@ -1072,6 +1340,18 @@ export default function OfficesScene() {
           */}
         </div>
       </div>
+
+      {/* A GALERIA MORA AQUI, E NAO DENTRO DO CARTAO, e o lugar é a parte tecnica da
+          coisa: ela é `position: fixed`, e um fixo é posicionado pelo ancestral mais
+          proximo que tenha `transform` — `.os-cidades` tem `translate3d` (a travessia)
+          e o `.os-palco` tem `overflow: clip`. Dentro do cartao o modal viajaria com
+          ele e seria recortado pelo palco. Como filho da trilha (que nao tem
+          `transform`) ele cobre a janela, que é o que um modal deve cobrir.
+          Montado só quando aberto: enquanto nao ha clique, nao ha no, nao ha imagem
+          buscada e nao ha nada na arvore de acessibilidade. */}
+      {cidadeDaGaleria ? (
+        <GaleriaCidade cidade={cidadeDaGaleria} onFechar={fecharGaleria} />
+      ) : null}
     </div>
   );
 }

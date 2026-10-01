@@ -212,5 +212,6 @@ A SIS-155 é a **última da fila e isolada**, ratificado por você.
 | SIS-125 | Backlog — índice da varredura; índice não tem "pronto". Virar documento, se quiser |
 | SIS-177 | Backlog — conteúdo de “Sistran em números” |
 | SIS-244 | Backlog — home Soluções: você cria as 4 imagens novas; robô só troca quando entregar |
+| SIS-235 | Todo — eventos: tags de kind → carimbos; pasta `public/images/EVENTOS/carimbos/` **vazia** — aguarda artes (1 por kind) |
 
 Todas as issues com label `conferido` e em In Review estão aprovadas e saíram deste arquivo.

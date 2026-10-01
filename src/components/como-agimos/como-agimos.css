@@ -1,0 +1,508 @@
+/* «Como Agimos» de `/quem-somos`. Companheiro de `ComoAgimos.tsx`; o porquê de
+   cada decisão de ESTRUTURA está lá, aqui ficam as de pintura.
+
+   A seção é ESCURA, e isso não é escolha de gosto: o carimbo entregue
+   (`public/carimbo-agimos-ticket-outline-ffffff.png`) é tinta BRANCA sobre
+   transparência — medido com `sharp`, a tinta cheia é `rgb(255,255,255)` em 32.683
+   pixels, e o arquivo aberto sobre branco não mostra absolutamente nada. Foi por
+   isso que a variante `ffffff` foi exportada: o papel dela é o navy desta seção.
+   Nenhuma regra de `globals.css:1099-1136` disputa cor aqui — aquelas valem dentro
+   de `.section-light`, e esta seção não é clara. É a diferença que fez a ISG
+   precisar de `.on-dark` e esta não precisar. */
+
+/* ── A GRADE DA SEÇÃO (24/09) ─────────────────────────────────────────────────
+   A seção era uma coluna só: carimbo, frase, prosa e o bilhete embaixo, em quatro
+   colunas. Medido a 1440 na captura que abriu esta passada, o bilhete ocupava 790
+   dos 1180px do `container-lp` e sobrava um terço da largura em navy vazio à
+   direita dele. Agora são duas colunas: a abertura à esquerda e o bilhete inteiro
+   ao lado, em duas colunas de quatro talões.
+   O TRILHO TEM LARGURA FIXA EM `rem`, e o bilhete fica com o resto (`minmax(0,
+   1fr)` — o `minmax` é obrigatório, senão o conteúdo do talão define um mínimo
+   maior que a coluna e a grade estoura o container). 27rem = 432px a 1440, o que dá
+   ~700px ao bilhete: duas colunas de ~350px, quase o dobro dos 197px de antes.
+   `align-items: center` porque as duas colunas têm alturas naturais diferentes (a
+   abertura é mais baixa que oito talões) e o que se lê como composição é o eixo do
+   meio das duas, não o topo.
+   Abaixo de 64rem não há grade nenhuma: uma coluna, na ordem do DOM.
+
+   ── SIS-277 · AS MEDIDAS PASSARAM A SER AS DO §6, E O CORTE SUBIU PARA 72rem ────
+   O documento fecha os trilhos e o `gap` da seção com números literais:
+   `minmax(320px, 0.8fr) minmax(620px, 1.35fr)` e `gap: clamp(64px, 7vw, 120px)`.
+   São eles que estão abaixo, nas unidades do documento — o `minmax(0, 27rem)` de
+   antes era invenção desta casa para a composição antiga.
+   O `minmax` DE VERDADE, com piso em px, é o que obriga a mover o breakpoint, e a
+   conta é esta: duas colunas com piso de 320px e 620px mais o `gap` pedem
+   320 + 620 + gap. O `container-lp` é `max-w-container` (1180px) com `px-8` (64px de
+   soma), então a largura útil é `min(1180, janela) − 64`.
+     · a 1024 (o antigo corte de 64rem): útil 960px; o `gap` em 7vw vale 71,7px;
+       requisito 1011,7px. TRANSBORDA 51,7px — barra de rolagem horizontal, que é
+       exatamente o que o critério de aceite da issue proíbe.
+     · a 1152 (72rem): útil 1088px; `gap` 80,6px; requisito 1020,6px. CABE, com 67px
+       de folga, e a folga só cresce daí para cima (o `gap` trava no teto de 120px em
+       1714px de janela, onde o útil já é 1116px).
+   72rem também é o que o §10 descreve: tablet com «coluna editorial acima, cards
+   abaixo em duas colunas» — ou seja, a seção em UMA coluna e os cards em duas, que é
+   o que acontece entre 40rem e 72rem. Nenhuma faixa perdeu desenho; o que era
+   desktop-estreito virou tablet, que é onde o documento o coloca.
+   `align-items: center` fica: as duas colunas têm alturas naturais diferentes e o que
+   se lê como composição é o eixo do meio das duas. */
+.agimos-grade {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+@media (min-width: 72rem) {
+  .agimos-grade {
+    grid-template-columns: minmax(320px, 0.8fr) minmax(620px, 1.35fr);
+    gap: clamp(64px, 7vw, 120px);
+    align-items: center;
+  }
+}
+
+/* ── A ABERTURA ──────────────────────────────────────────────────────────────── */
+
+/* O CARIMBO É O `<h2>`. A tinta ocupa 779×313 a partir de (10,13) num arquivo de
+   801×339 — só 10px e 13px de margem transparente, ou seja, o arquivo JÁ é a caixa
+   da tinta. Por isso não há janela de recorte aqui, ao contrário do logo da ISG
+   (`isg-provider-lens.css:190-219`), cujo arquivo era 91,5% vazio: recortar 10px
+   não move a peça, só adicionaria uma conta para alguém manter depois.
+   A LARGURA segue o sistema da casa (`globals.css:22493-22580`): a medida mora numa
+   `--carimbo-batida-w` DO PRÓPRIO consumidor — nenhuma das doze declarações dela no
+   projeto está no `:root`, cada carimbo declara a sua —, é clamp em rem com teto e
+   nunca % do container, para a linha pequena do carimbo não cair abaixo do piso de
+   10px que a SIS-277 mediu.
+   O CLAMP É MAIOR que o de `/parceiros` (17–19,5rem) por duas razões medidas: lá o
+   carimbo é assinatura ao pé de um `h1` e mede 55% da largura dele, enquanto aqui
+   ele É o cabeçalho da seção e substitui um `text-section`; e a proporção é outra —
+   779÷313 = 2,49, uma faixa deitada, contra a batida quase quadrada de lá. No teto
+   de 19,5rem esta faixa teria 125px de altura, menos que o `h2` que ela substitui.
+   NÃO há `rotate` aqui: a inclinação já está desenhada no arquivo (o bilhete chega
+   tombado), e tombar de novo dobraria o ângulo.
+   24/09 — O TETO CAIU DE 30rem PARA 23rem, e o `vw` do meio de 32 para 26. A razão
+   é a grade nova: o carimbo deixou de ter o container inteiro e passou a viver num
+   trilho de 27rem (432px). Com o clamp antigo ele pedia 480px a 1440 e transbordava
+   a própria coluna. 23rem = 368px, ou 85% do trilho, o que é a mesma proporção que
+   ele tinha contra o container antes — a batida não encolheu na leitura, mudou de
+   caixa. A altura resultante (368 ÷ 2,49 = 148px) continua acima do `text-section`
+   que ele substitui, que era a conta da nota acima.
+   SIS-277 — O CLAMP NÃO MUDOU, e isso foi conferido e não presumido. O trilho deixou
+   de ser `27rem` fixo e passou a ser o `minmax(320px, 0.8fr)` do §6: a 1440, o útil
+   do container é 1116px, o `gap` em 7vw vale 100,8px, e os 1015,2px restantes se
+   repartem 0,8/2,15 — 377,8px para a esquerda. O teto do carimbo é 23rem = 368px, ou
+   seja, cabe com 10px de folga e segue em ~97% do trilho. Abaixo de 72rem a seção é
+   uma coluna e o clamp bate no `vw` ou no piso, como antes. */
+.agimos-carimbo {
+  --carimbo-batida-w: clamp(17rem, 26vw, 23rem);
+  width: var(--carimbo-batida-w);
+  max-width: 100%;
+  margin: 0;
+}
+.agimos-carimbo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* A FRASE MANUSCRITA — `docs/fonte2.md`, e é a quarta consumidora da Kalam já
+   carregada em `src/app/layout.tsx:236` (`--font-kalam`). As demais:
+   `.luminna-frase`, `.solucoes-canvas .solucoes-lema` e
+   `.sobre-secao .sobre-citacao .sobre-assinatura`.
+   Cada número é o do documento: família Kalam com Caveat e `cursive` de reserva,
+   peso 400, `line-height: 0.95`, `font-size: clamp(30px, 3vw, 50px)`, tombo -4deg.
+
+   A COR DIVERGE DO DOCUMENTO, e a razão é medida. O documento pede `#123B5D`, que
+   é navy — sobre o navy desta seção ele reprova de longe (é praticamente a mesma
+   cor). A casa já enfrentou isto duas vezes e resolveu dos dois jeitos possíveis:
+   `.luminna-frase` manteve `#123B5D` e INVENTOU uma placa envidraçada para lhe dar
+   superfície clara; `.solucoes-lema` manteve a cor porque o fundo dela já era
+   claro. Aqui a placa não serve: ela daria à frase a silhueta de cartão justamente
+   na seção que deixou de ter cartões (ver a nota do rolo, abaixo), e vidro claro
+   embaixo do carimbo branco apagaria o carimbo. Então inverte-se a ponta da rampa:
+   branco no lugar do navy. O traço ciano do documento continua idêntico, e é ele
+   que carrega o acento da especificação.
+   `rotate` e NÃO `transform`: quem anima o `transform` deste ramo é o reveal da
+   casa, e duas mãos na mesma propriedade fazem uma apagar a outra. `rotate` é
+   propriedade independente e as duas convivem — a mesma conta das outras três
+   consumidoras.
+   `transform-origin` à esquerda para o tombo não empurrar o «N» para dentro da
+   margem do `container-lp`.
+
+   `width: max-content` SAIU, e é o defeito mais visível que esta passada corrige.
+   Ele fazia a caixa crescer até a frase inteira caber numa linha — 52 caracteres —,
+   e `max-width: 100%` não o segurava, porque o que estoura não é a caixa, é o TEXTO
+   dentro dela: `max-content` já resolveu a largura em uma linha, e a frase não tem
+   onde reparti-la. Medido a 390 na captura que abriu esta passada: as duas pontas da
+   frase saíam da tela, com «Nossos» cortado à esquerda e «organizacional.» à
+   direita. Agora a caixa é a da coluna e a frase reparte sozinha, em duas ou três
+   linhas — que é como escrita à mão se comporta.
+   O CORPO acompanhou: teto de 40px no lugar de 50px. Num trilho de 432px, 50px de
+   Kalam entregavam três linhas com a última quase vazia; 40px dão duas linhas
+   cheias. O piso desceu a 26px pelo mesmo motivo do outro lado da rampa — a 390 a
+   coluna tem 358px úteis, e 30px punham «organizacional.» sozinha na terceira linha.
+   O tombo de -4deg do documento fica; com a caixa agora limitada pela coluna, o que
+   ele pode fazer de pior é pedir alguns pixels de folga lateral, e não uma barra de
+   rolagem horizontal na página. */
+.agimos-manuscrito {
+  margin: 1.75rem 0 0;
+  max-width: 100%;
+  font-family: var(--font-kalam), 'Caveat', cursive;
+  font-weight: 400;
+  font-size: clamp(26px, 2.6vw, 40px);
+  /* O DOCUMENTO PEDE 0,95, e aqui são 1,06. A divergência é consequência da linha
+     acima: `line-height` menor que 1 é medida para UMA linha, onde não há vizinha
+     para colidir. Com a frase repartindo em duas ou três, 0,95 põe as hastes
+     inferiores da Kalam (que é manuscrita, de descendentes longos) dentro das
+     maiúsculas da linha de baixo. 1,06 é o menor valor em que nenhum glifo se toca,
+     medido na frase real desta seção; acima disso a escrita começa a parecer lista
+     em vez de frase à mão. As outras três consumidoras da Kalam no site seguem em
+     0,95 porque as três são de uma linha só. */
+  line-height: 1.06;
+  color: #fff;
+  rotate: -4deg;
+  transform-origin: left center;
+}
+
+/* O TRAÇO CIANO: ~45px, levemente inclinado, sob a última linha — o item do
+   documento, com os mesmos valores de `.solucoes-lema-traco`. `overflow: visible`
+   porque a ponta arredondada passa da caixa do `viewBox`. */
+.agimos-risco {
+  display: block;
+  width: 45px;
+  height: 8px;
+  margin-top: 0.35rem;
+  overflow: visible;
+}
+
+/* O risco NASCE POR DESENHAR, da esquerda para a direita, como o documento pede.
+   `pathLength="1"` normaliza o comprimento, então o traço entra puxando
+   `stroke-dashoffset` de 1 a 0 — o mecanismo de traço da casa.
+   O GATILHO É `[data-in='true']` do `RevealScope`, e não a montagem: esta seção
+   nasce muito abaixo da dobra e uma animação de montagem terminaria antes de
+   alguém chegar aqui (a lição da SIS-188, e o mesmo gatilho que
+   `globals.css:31776-31800` usa para o risco de `/solucoes`).
+   `forwards` porque ele tem de FICAR desenhado — sem isso a frase acaba sublinhada
+   por nada. O atraso põe o risco depois do texto assentar. */
+.agimos-risco-traco {
+  fill: none;
+  stroke: #16bfe8;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+[data-in='true'] .agimos-risco-traco {
+  animation: agimos-risco-desenha 0.9s ease-out 0.35s forwards;
+}
+@keyframes agimos-risco-desenha {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+/* Os DOIS canais da casa: a preferência real e o espelho por atributo, que é o que
+   o alternador do site escreve. O risco é decoração, MAS o estado final dele é
+   visível — `stroke-dashoffset: 0` direto, e não `animation: none`, que deixaria o
+   traço eternamente não desenhado (o modo de falha que a skill de movimento
+   reduzido chama de «conteúdo invisível para sempre»). */
+@media (prefers-reduced-motion: reduce) {
+  .agimos-risco-traco {
+    animation: none !important;
+    stroke-dashoffset: 0;
+  }
+}
+html[data-motion='reduce'] .agimos-risco-traco {
+  animation: none !important;
+  stroke-dashoffset: 0;
+}
+
+/* A prosa que entrega a lista. Segunda frase do mesmo texto de sempre — a primeira
+   é a manuscrita acima. O corte é no PONTO entre as duas, feito na renderização
+   (ver `ComoAgimos.tsx`), não no dado. */
+.agimos-prosa {
+  margin: 1.5rem 0 0;
+  /* Era 42rem, a medida de uma coluna de leitura no container inteiro. No trilho de
+     27rem o teto nunca chega a valer, e mantê-lo apenas escondia a intenção: 26rem
+     é o que a coluna comporta, e é contra esse número que a frase reparte. */
+  max-width: 26rem;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: rgb(255 255 255 / 85%);
+}
+
+/* ── OS OITO CARDS (SIS-277) ──────────────────────────────────────────────────────
+   O QUE HAVIA AQUI ERA UM ROLO DE BILHETES, e ele saiu inteiro. A metáfora era
+   invenção desta casa e defensável: o carimbo entregue é um `ticket-outline`, e o
+   papel tinha a silhueta da tinta. A spec fechada da seção (`docs/comagimos.md` §3 +
+   o mock `public/imagensexemplo/exemplocomoagimos.png`) pede o contrário dela, com
+   estas palavras: «oito cards INDEPENDENTES», «os cards não podem parecer células de
+   uma tabela», «manter espaçamento visível entre os cards», e nas Restrições «não
+   deixar os cards unidos como uma tabela». Um rolo de `gap: 0` costurado por dentro é
+   a definição do que está proibido — então saíram, nesta ordem: a costura tracejada,
+   as duas perfurações laterais, a borda e o fundo do rolo, e a série 01–08 (§1).
+
+   O BLOCO ANTIGO, resumido para registro (o corpo completo está no histórico do
+   arquivo, que é onde ele continua legível sem custar 250 linhas de comentário):
+     .agimos-rolo  { display: grid; gap: 0; border: 1px solid rgb(255 255 255 / 16%);
+                     border-radius: 20px; background: rgb(255 255 255 / 4%);
+                     mask-image: radial-gradient(circle 11px at 0 50%, transparent 98%,
+                       #000 100%), radial-gradient(circle 11px at 100% 50%, …);
+                     mask-composite: intersect; }
+     .agimos-talao { position: relative; isolation: isolate; overflow: hidden; flex; }
+     costuras      { .agimos-talao + .agimos-talao { border-top: 1px dashed … }
+                     .agimos-talao:nth-child(2n)   { border-left: 1px dashed … }
+                     .agimos-talao:nth-child(n+3)  { border-top: 1px dashed … } }
+     .agimos-serie { var(--font-mono); 0.75rem; letter-spacing .18em; color #9ceeff }
+                     + ::after, o fio curto de 1,5rem em gradiente ciano.
+     .agimos-talao-texto { min-width: 0 }   — o `div` que empilhava série + nome
+     hover         { .agimos-talao::before { inset: 0; z-index: -1; background:
+                     linear-gradient(160deg, …); opacity: 0 → 1 } }
+   Três peças do bloco antigo NÃO voltam por decisão do documento, e não por descuido:
+   a máscara dos furos (o rolo deixou de existir), o `::before` de preenchimento (o §8
+   define o hover em `transform` + `border-color` + `box-shadow`, e dois mecanismos de
+   hover na mesma peça brigam) e a série (§1, «não deixe espaços vazios ou elementos
+   decorativos que pareçam numeração» — foi por essa frase que o fio do `::after` caiu
+   junto: sozinho ele é o tal elemento decorativo no lugar do número).
+
+   ── A GRADE DOS CARDS ─────────────────────────────────────────────────────────────
+   `gap` em rem e não 0: é o «espaçamento visível» do §3, e é ele que faz oito peças em
+   vez de uma. Duas colunas a partir de 40rem — o §10 põe os cards em duas colunas já
+   no tablet e as mantém em duas no desktop, então é um corte só, e a ordem de
+   `COMO_AGIMOS` entrega o arranjo do mock (Ética | Transparência, Valorização Humana |
+   Integração, Inovação | Qualidade, Comprometimento | Profissionalismo).
+   `min-width: 0` na grade E `minmax(0, 1fr)` nas colunas: sem os dois, o nome mais
+   longo da lista («Valorização Humana») define um mínimo de conteúdo maior que a
+   coluna, a grade cresce além do trilho e a página ganha barra horizontal. É a mesma
+   razão que já estava escrita no `.agimos-talao-texto` que saiu, e é o que sustenta o
+   «sem scroll horizontal» do §10 nas três larguras. */
+.agimos-cards {
+  min-width: 0;
+  /* Zero nas duas faixas: o respiro entre a abertura e os cards é do `gap` da grade
+     da seção quando são duas colunas, e do `gap` de 3rem dela quando é uma. Margem
+     aqui somaria às duas. */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(0.875rem, 1.4vw, 1.25rem);
+}
+@media (min-width: 40rem) {
+  .agimos-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ── O CARD ───────────────────────────────────────────────────────────────────────
+   Os quatro tokens de pintura são os do §4, verbatim: gradiente 135deg de
+   `rgba(29,133,195,0.42)` a `rgba(13,87,151,0.28)`, borda de 1px em
+   `rgba(78,221,255,0.55)`, raio de 20px e a sombra de duas camadas. Escritos na
+   notação de espaço que o resto do arquivo usa (`rgb(… / 42%)`), que é a mesma cor —
+   o projeto não mistura as duas sintaxes.
+   A SOMBRA TEM DUAS FUNÇÕES e é por isso que as duas camadas importam: o `inset 0 1px
+   0` branco é a aresta de vidro que o mock mostra no topo de cada card, e a projetada
+   de 40px é o que descola o card do navy do §7 — sem ela, um retângulo translúcido
+   sobre azul lê como mancha, não como peça.
+   `backdrop-filter` NÃO entra, e é o próprio §4 que autoriza a omissão («aplique
+   apenas se já houver suporte e uso desse recurso no projeto»). Duas razões medidas:
+   o gradiente já é opaco o bastante (42%/28%) para o card ter corpo sem desfocar
+   nada, e o que está atrás aqui é a `.grade-tecnica`, que é `background-attachment:
+   fixed` — desfocar um fundo fixo por baixo de oito caixas é custo de GPU em cada
+   quadro de rolagem por um efeito que o mock não pede.
+   NADA DE ROXO e nada de neon (Restrições): a única cor fora do azul/ciano aqui é o
+   branco do texto e do brilho interno.
+   `align-items: center` é o §3 «título centralizado verticalmente» — o nome reparte em
+   duas linhas em colunas estreitas e o selo tem de ficar no eixo do conjunto.
+   A TRANSIÇÃO MORA NO REPOUSO, não no hover: declarada aqui ela vale nos dois
+   sentidos, e sem isso o card volta do hover num salto. 300ms é o meio da faixa de
+   250–350ms do §8. Só `transform`, `border-color` e `box-shadow` entram, que é
+   exatamente o que o §8 muda: `transform` é de composição e as outras duas repintam
+   sem reflow, porque nenhuma altera a caixa. */
+.agimos-card {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: clamp(0.875rem, 1.4vw, 1.25rem);
+  padding: clamp(1.125rem, 1.6vw, 1.5rem) clamp(1rem, 1.5vw, 1.5rem);
+  border: 1px solid rgb(78 221 255 / 55%);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgb(29 133 195 / 42%), rgb(13 87 151 / 28%));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 12%),
+    0 18px 40px rgb(0 35 79 / 18%);
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* O RESPIRO MAIOR só quando a coluna tem largura para ele — o §3 pede «cards maiores,
+   com boa área interna e bastante respiro», e a coluna direita só ganha largura
+   quando a seção vira duas colunas, que agora é em 72rem (ver a grade da seção). */
+@media (min-width: 72rem) {
+  .agimos-card {
+    padding: 1.625rem 1.75rem;
+  }
+}
+
+/* ── O SELO DO ÍCONE ──────────────────────────────────────────────────────────────
+   §5: container entre 58px e 64px, glifo entre 28px e 32px, borda circular em ciano
+   de baixa opacidade, traço consistente (1,6px, escrito no JSX), sem emoji. A rampa
+   de 40rem para cima vai de 3,625rem (58px) a 4rem (64px), que são as duas pontas do
+   documento; abaixo de 40rem vale a rampa do §10 para mobile, 48–54px, que é a
+   declaração base (3rem = 48px a 3,375rem = 54px).
+   O GLIFO É BRANCO, e o §5 dá as duas opções («cor branca ou ciano-claro»). Branco é
+   escolha MEDIDA e não gosto: o `#9ceeff` que o talão usava dá 4,43:1 sobre o fundo
+   composto do card novo — `rgb(16 106 165)`, que é o gradiente do §4 achatado sobre o
+   navy do §7 — e um traço de 1,6px é a definição de tinta fina, então o piso que vale
+   é o de texto pequeno, 4,5:1. Reprovava por pouco, no mesmo tipo de conta que o
+   talão fez quando escolheu `#9ceeff` em cima de `#5fe3fb`; o que mudou é o fundo, que
+   ficou mais claro com o gradiente do §4. Branco no mesmo fundo dá 5,78:1. O mock
+   também desenha os oito glifos praticamente brancos. O ANEL segue ciano: é decoração
+   e não carrega leitura, então vale para ele o piso de componente gráfico.
+   `flex: none` porque sem ele o selo encolhe quando o nome reparte em duas linhas —
+   defeito que a mesma regra já pagou nos Diferenciais desta página, a 390. */
+.agimos-selo {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(3rem, 12vw, 3.375rem);
+  height: clamp(3rem, 12vw, 3.375rem);
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 7%);
+  border: 1px solid rgb(78 221 255 / 45%);
+  color: #fff;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+.agimos-selo > svg {
+  width: clamp(1.5rem, 6vw, 1.6875rem);
+  height: clamp(1.5rem, 6vw, 1.6875rem);
+}
+@media (min-width: 40rem) {
+  .agimos-selo {
+    width: clamp(3.625rem, 4.4vw, 4rem);
+    height: clamp(3.625rem, 4.4vw, 4rem);
+  }
+  /* 28px a 32px, o par do container acima — a proporção glifo/container fica em ~0,48
+     nas duas pontas, que é o que mantém o anel com o mesmo ar em qualquer largura. */
+  .agimos-selo > svg {
+    width: clamp(1.75rem, 2.2vw, 2rem);
+    height: clamp(1.75rem, 2.2vw, 2rem);
+  }
+}
+
+/* O NOME DO VALOR — a única tinta de texto do card, agora que a série saiu (§1).
+   `margin: 0` porque ele deixou de ser a segunda linha de um par (série em cima, nome
+   embaixo, 0,375rem entre as duas) e passou a ser filho direto do flex: quem o centra
+   contra o selo é o `align-items` do card, e qualquer margem de topo aqui
+   descentraria o que o §3 pede centrado.
+   `text-wrap: balance` para «Valorização Humana» repartir em duas linhas parecidas em
+   vez de deixar uma palavra órfã. A 1440 o nome cabe em linha única, como no mock; a
+   reparte só aparece em coluna estreita.
+   O CORPO subiu de 1,1875rem para 1,25rem no teto: o §3 diz que os cards são «o
+   principal foco visual» da seção, e o nome é a única tinta que eles carregam. */
+.agimos-valor {
+  min-width: 0;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.0625rem, 1.2vw, 1.25rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: #fff;
+  text-wrap: balance;
+}
+
+/* ── O HOVER ──────────────────────────────────────────────────────────────────────
+   §8, verbatim: 4px de subida, borda a 90% e a sombra de duas camadas mais aberta,
+   com `scale(1.06)` no selo. Nada de rotação, nada de neon, nada contínuo — as três
+   proibições do próprio §8.
+   Só em ponteiro fino: num toque não existe estado intermediário, e o card ficaria
+   preso no estado de hover depois do primeiro toque (a mesma razão que o talão já
+   tinha escrita).
+   `:focus-within` acompanha porque o §11 pede foco visível «caso algum card
+   futuramente se torne interativo». HOJE A REGRA É INERTE: não há nada focável dentro
+   do card, e o card não é botão nem link, porque não há ação (§3, §11). Ela fica
+   escrita de propósito — no dia em que alguém puser um link ali, o foco já tem
+   desenho, em vez de depender de quem lembrar. */
+@media (hover: hover) and (pointer: fine) {
+  .agimos-card:hover,
+  .agimos-card:focus-within {
+    transform: translateY(-4px);
+    border-color: rgb(79 224 255 / 90%);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 16%),
+      0 22px 46px rgb(0 35 79 / 28%);
+  }
+  .agimos-card:hover .agimos-selo,
+  .agimos-card:focus-within .agimos-selo {
+    transform: scale(1.06);
+    background: rgb(255 255 255 / 12%);
+    border-color: rgb(79 224 255 / 90%);
+  }
+}
+
+/* §9/§11 — movimento reduzido, nos dois canais da casa: a preferência real e o
+   espelho por atributo que o alternador do site escreve.
+   MATAR A TRANSIÇÃO AQUI É SEGURO, e é a conta que a skill de movimento reduzido
+   manda fazer: o estado de REPOUSO do card já é o estado visível, porque o hover é
+   acréscimo e não revelação — não existe o modo de falha de «conteúdo invisível para
+   sempre». O que morre é o amortecimento; o hover continua acontecendo, em salto.
+   A entrada por rolagem não é tratada aqui: mora no `ScrollReveal`, que com a
+   preferência ligada usa as mesmas variantes de início e de fim (é o §9 «respeitar
+   prefers-reduced-motion» e o §11 na mesma peça, sem duplicar mecanismo). */
+@media (prefers-reduced-motion: reduce) {
+  .agimos-card,
+  .agimos-selo {
+    transition: none !important;
+  }
+}
+html[data-motion='reduce'] .agimos-card,
+html[data-motion='reduce'] .agimos-selo {
+  transition: none !important;
+}
+
+/* ── O FUNDO DA SEÇÃO (§7) ────────────────────────────────────────────────────────
+   O §7 fecha o fundo em dois valores: o `radial-gradient` ciano a 12% no canto
+   superior esquerdo e o `linear-gradient` 135deg de `#062d5a` a `#07578f` a `#063d73`.
+   Estão abaixo, na ordem do documento.
+   ISTO SOBRESCREVE `var(--fundo-marca)`, e só nesta seção. `.agimos-secao` recebia o
+   fundo da alternância de paridade da casa (`globals.css:17225`,
+   `main > section:nth-of-type(even)`), cuja rampa termina em
+   `linear-gradient(115deg, #005c9e, #00518d 46%, #003f73)`. A substituição é legítima
+   porque o fundo do §7 é OPACO e é navy do mesmo sistema: a alternância clara/escura
+   da página continua legível, a seção segue sendo uma das escuras, e o carimbo branco
+   continua tendo papel escuro embaixo (que é a primeira nota deste arquivo). Se a
+   alternância um dia sair, esta seção já tem palco próprio e não depende dela — que é
+   justamente a ressalva escrita em `globals.css:32040-32075`.
+   OS ARCOS. O §7 permite «um ou dois arcos grandes parcialmente visíveis» e proíbe
+   fotografia e ilustração. Eles entram como duas camadas de `radial-gradient` no
+   MESMO `background`, e não como DOM novo: um anel é um radial com a parada de cor
+   estreita, e resolvê-lo em pintura evita um segundo elemento absoluto disputando
+   contexto de empilhamento com a `.grade-tecnica` e com o conteúdo. As duas ficam a
+   6% e 5% de branco — «muito sutis», e nunca por cima da leitura, porque estão no
+   `background` da seção e todo o conteúdo é filho dela.
+   O GRID DE BAIXA OPACIDADE que o §7 também permite já existe e não foi tocado: é a
+   `.grade-tecnica` do JSX, que era a consumidora desta seção antes e continua sendo.
+   Nenhum ponto decorativo foi adicionado — o §7 os permite, não os exige, e o mock
+   não os mostra fora do trilho do ScrollSpy, que é peça de outra seção. */
+.agimos-secao {
+  background:
+    radial-gradient(
+      circle at 88% 22%,
+      transparent 0,
+      transparent 27%,
+      rgb(255 255 255 / 6%) 28%,
+      transparent 29%
+    ),
+    radial-gradient(
+      circle at 8% 92%,
+      transparent 0,
+      transparent 34%,
+      rgb(255 255 255 / 5%) 35%,
+      transparent 36%
+    ),
+    radial-gradient(circle at 22% 18%, rgb(0 174 239 / 12%), transparent 35%),
+    linear-gradient(135deg, #062d5a 0%, #07578f 48%, #063d73 100%);
+}

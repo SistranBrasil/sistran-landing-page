@@ -1,6 +1,15 @@
 /**
  * SIS-201 — prova o eco da logo no hover.
  *
+ * ⚠ CADUCOU NA SIS-219 — NÃO RODAR ESPERANDO VERDE. Duas razões, cada uma
+ * suficiente: (1) esta sonda localiza os cards por `.partner-terminal__card h3`,
+ * e o `<h3>` com o nome do parceiro saiu do componente («retirar o título, só as
+ * logos»), então ela não encontra card nenhum; (2) o critério central dela — eco
+ * MAIOR que a placa renderizada — virou o contrário do pedido, porque a placa em
+ * repouso passou a ter exatamente a caixa que o eco alcançava no hover.
+ * A sonda vigente é `scripts/medir-placa-idle-sis219.mjs`. Este arquivo fica como
+ * registro do teto de escala que fixou os números do eco no CSS.
+ *
  * O critério do pedido tem uma parte que é opinião ("a logo destaca") e uma que
  * é fato verificável ("o eco atrás não tapa a copy"). Esta sonda mede a parte
  * verificável, e é ela que fixa o teto de escala do eco no CSS.

@@ -38,8 +38,17 @@ export type TrailStop = {
   id: string
   /** Linha de cima do card. Cliente/case no legado; geração na timeline. */
   client: string
+  /** Iniciais da parada. Ramo de reserva do selo quando não há `logo`. */
   monogram: string
+  /** Arte de marca. Ausente = o selo do cabeçalho mostra o monograma. */
   logo?: string
+  /**
+   * Liga o cartão branco grande de marca (`.roadmap-card-logo`) ABAIXO do
+   * cabeçalho. Desligado por padrão porque o selo do cabeçalho já mostra a
+   * `logo`: sem esta guarda o card desenharia a mesma marca duas vezes. Ver a
+   * nota na guarda do bloco.
+   */
+  cartaoDeMarca?: boolean
   title: string
   text: string
   /** Ausente onde a fonte não classifica por estágio de entrega. */
@@ -261,11 +270,41 @@ export function RoadmapTrail({
 
                   <div className="roadmap-card-body">
                     <header className="roadmap-card-head">
-                      {/* Monograma, não a logo: quem carrega a marca é o
-                          cartão branco abaixo, e repetir a logo aqui roubava
-                          dele o papel. */}
-                      <span className="roadmap-badge" aria-hidden="true">
-                        <b>{stop.monogram}</b>
+                      {/* ── O `logo` VAI NO SELO (2ª volta da SIS-202) ──
+
+                          Aqui havia monograma SEMPRE, e a razão escrita era
+                          "quem carrega a marca é o cartão branco abaixo, e
+                          repetir a logo aqui roubava dele o papel". A premissa
+                          caducou por dois fatos medidos, não por gosto:
+
+                          1. O cartão branco de baixo (`.roadmap-card-logo`)
+                             renderiza em ZERO cards hoje. Ele só aparece com
+                             `stop.logo`, e o único consumidor vivo desta trilha
+                             é `/parceiros-e-implementacoes`, cuja lista nascia
+                             sem `logo`. A rota que tinha os dois blocos era
+                             `/transformacao-legado`, APAGADA na SIS-279.
+                          2. É este selo que a captura da issue aponta — o
+                             "quadrado branco do canto" com «CC» —, e o pedido é
+                             a marca no lugar das iniciais.
+
+                          O monograma segue como RAMO DE RESERVA: 5 das 24
+                          paradas não nomeiam marca com arte no acervo, e ali as
+                          iniciais continuam. Nada de PNG inventado.
+
+                          `aria-hidden` fica: o selo é decorativo nos dois ramos,
+                          porque o nome da empresa já está em `.roadmap-title`
+                          logo abaixo, como texto. Por isso o `alt` é vazio — a
+                          logo aqui repetiria o título para quem usa leitor. */}
+                      <span
+                        className={stop.logo ? "roadmap-badge roadmap-badge--marca" : "roadmap-badge"}
+                        aria-hidden="true"
+                      >
+                        {stop.logo ? (
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img src={stop.logo} alt="" loading="lazy" decoding="async" />
+                        ) : (
+                          <b>{stop.monogram}</b>
+                        )}
                       </span>
                       <div>
                         <p className="roadmap-client">{stop.client}</p>
@@ -281,7 +320,15 @@ export function RoadmapTrail({
                         Só aparece onde existe arquivo de logo — com monograma
                         ampliado o cartão viraria uma moldura vazia. Todo
                         decorativo: cliente, estágio e título já estão no texto. */}
-                    {stop.logo ? (
+                    {/* SIS-202 — a guarda ganhou `cartaoDeMarca` além de `logo`.
+                        Antes bastava `logo`, e com a trilha de Implementações
+                        passando a ter logo isso desenharia a MESMA marca duas
+                        vezes no card (aqui e no selo do cabeçalho), além de
+                        somar ~15rem de altura em 19 dos 24 cards — altura que o
+                        card não tem de sobra. Quem quiser o cartão grande pede
+                        por escrito; ninguém pede hoje, e o bloco fica de pé para
+                        a rota que voltar a usá-lo. */}
+                    {stop.logo && stop.cartaoDeMarca ? (
                       <div className="roadmap-card-logo" aria-hidden="true">
                         <div className="roadmap-card-logo-frame">
                           {/* Logos são arquivos estáticos de proporções variadas;

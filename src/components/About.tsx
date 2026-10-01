@@ -42,188 +42,35 @@
  */
 
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+// SIS-272 — `useEffect`/`useRef`/`useState` saíram daqui junto com a faixa: os três
+// eram do `IntersectionObserver` do contador e do `rAF` dele, e agora vivem em
+// `FaixaIndicadores`. O que resta nesta seção é a parte editorial, sem estado.
+// import { useEffect, useRef, useState } from 'react';
 import CarimboBatida from '@/components/CarimboBatida';
+import FaixaIndicadores from '@/components/FaixaIndicadores';
 import RevealScope from '@/components/motion/RevealScope';
 import './sobre-nos.css';
 
-/* Numeros e frases da secao "Sobre nós" da pagina A Sistran — nada aqui é
-   redacao nova: cada `detail` é uma frase do proprio texto do site.
-   Fonte: .claude/conteudo-site/01-a-sistran.md (secao 1) */
-const HIGHLIGHTS = [
-  {
-    value: '1988',
-    label: 'Estabelecida no Brasil',
-    detail: 'Processamos um terço de todos os prêmios de Seguro de Vida no país.',
-    num: 1988,
-    suffix: '',
-    start: 1900,
-    color: '#0ed8f6',
-    icone: 'calendario',
-  },
-  {
-    value: '150+',
-    label: 'Clientes',
-    detail: 'Ampla presença na América do Sul, com mais de 150 clientes e 850 colaboradores.',
-    num: 150,
-    suffix: '+',
-    start: 0,
-    color: '#0ed8f6',
-    icone: 'pessoas',
-  },
-  {
-    value: '18',
-    label: 'Países',
-    detail:
-      'Nossas soluções e serviços estão presentes em 18 países, com qualidade e confiabilidade.',
-    num: 18,
-    suffix: '',
-    start: 0,
-    color: '#0ed8f6',
-    icone: 'globo',
-  },
-] as const;
+/* SIS-272 — `HIGHLIGHTS`, `IconeIndicador`, `easeOut` e `CountUpNumber` NÃO foram
+   apagados: foram MOVIDOS, sem alteração de valor nenhuma, para
+   `src/components/FaixaIndicadores.tsx`, porque a home passou a montar a mesma
+   faixa. Não ficam comentados aqui como a casa faz com código retirado — o motivo
+   da regra é não perder o que saiu de cena, e nada saiu: o arquivo novo é o mesmo
+   código, vivo, e duas cópias (uma viva e uma comentada) são exatamente a
+   divergência calada que a extração existe para evitar.
+   O `<span className="sr-only">` com o valor real, o `on-dark` e as classes
+   `sobre-*` seguem lá, idênticos. */
 
 /* Os acentos tipográficos da borda direita da mock. São DECORAÇÃO — `aria-hidden`
    no consumo — e as oito palavras já são ditas na prosa ao lado. */
 const ACENTOS_TOPO = ['Tecnologia', 'Pessoas', 'Seguros', 'Resultados'];
 const ACENTOS_BASE = ['Mais', 'Seguros', 'Para', 'Pessoas'];
 
-function IconeIndicador({ nome }: { nome: string }) {
-  const comum = {
-    className: 'sobre-metrica-icone',
-    viewBox: '0 0 48 48',
-    fill: 'none',
-    stroke: 'currentColor',
-    strokeWidth: 2,
-    strokeLinecap: 'round' as const,
-    strokeLinejoin: 'round' as const,
-    'aria-hidden': true,
-    focusable: 'false' as const,
-  };
-  if (nome === 'calendario') {
-    return (
-      <svg {...comum}>
-        <rect x="7" y="11" width="34" height="30" rx="5" />
-        <path d="M7 20h34M16 6v8M32 6v8" />
-        <path d="M15 27h4M22 27h4M29 27h4M15 34h4M22 34h4" />
-      </svg>
-    );
-  }
-  if (nome === 'pessoas') {
-    return (
-      <svg {...comum}>
-        <circle cx="24" cy="16" r="6" />
-        <path d="M13 40v-3a11 11 0 0 1 22 0v3" />
-        <circle cx="9" cy="21" r="4.5" />
-        <circle cx="39" cy="21" r="4.5" />
-        <path d="M2 38v-2a7.5 7.5 0 0 1 7-7.5M46 38v-2a7.5 7.5 0 0 0-7-7.5" />
-      </svg>
-    );
-  }
-  return (
-    <svg {...comum}>
-      <circle cx="24" cy="24" r="17" />
-      <path d="M7 24h34M24 7c4.5 4.6 7 10.7 7 17s-2.5 12.4-7 17c-4.5-4.6-7-10.7-7-17s2.5-12.4 7-17Z" />
-    </svg>
-  );
-}
-
-function easeOut(t: number) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
-/**
- * Contador crescente. Escreve direto no DOM dentro do rAF em vez de chamar
- * setState por frame — evita ~96 re-renders por número durante a contagem.
- */
-function CountUpNumber({
-  target,
-  start,
-  suffix,
-  active,
-  color,
-}: {
-  target: number;
-  start: number;
-  suffix: string;
-  active: boolean;
-  color: string;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-
-  /* A contagem é a informação em si, não um efeito decorativo: roda também com
-     movimento reduzido. */
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    if (!active) {
-      el.textContent = `${start}${suffix}`;
-      return;
-    }
-    const dur = 1800;
-    const t0 = performance.now();
-    let id = 0;
-    const tick = (now: number) => {
-      const p = Math.min(1, (now - t0) / dur);
-      el.textContent = `${Math.round(start + (target - start) * easeOut(p))}${suffix}`;
-      if (p < 1) id = requestAnimationFrame(tick);
-    };
-    id = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(id);
-  }, [active, start, target, suffix]);
-
-  return (
-    <span
-      ref={ref}
-      aria-hidden
-      /* SIS-155 — VALOR na camada técnica: `font-display` virou `font-mono`. É o
-         número de 96px do bloco, e o papel dele (dado, não escrita) é justamente o
-         que a issue reserva para a Mono. */
-      /* SIS-155 — `font-semibold` NÃO é ênfase: a utilitária `font-mono` só troca a
-         família, e sem peso declarado este nó pedia 400 — peso que o único corte
-         carregado da Geist Mono (600) não tem. O navegador servia o 600 e o código
-         dizia 400: se um dia entrar um corte 400 na Mono, oito pontos como este
-         mudariam de aparência calados. Medido em 600 computado pela sonda. */
-      className="font-mono font-semibold leading-none tabular-nums"
-      style={{
-        /* SIS-280 — era `clamp(3.25rem, 7.5vw, 6rem)`, a medida de quando o número
-           era a peça solitária de um cartão de 26px de raio. Na faixa navy ele
-           divide a linha com o ícone de até 52px dentro de um terço da largura, e
-           96px ali empurravam «150+» para fora da coluna a 1024. O teto novo é o
-           tamanho medido na mock (~72px a 1440). */
-        fontSize: 'clamp(2.5rem, 5.2vw, 4.5rem)',
-        /* Calibrado contra proporcional; em monoespaçada aperta mais, porque o avanço
-           já é fixo. Fica: o transbordo deste número foi medido depois da troca. */
-        letterSpacing: '-0.05em',
-        fontFeatureSettings: '"tnum" 1',
-        background: `linear-gradient(135deg, ${color} 0%, #a5f0ff 60%, #ffffff 100%)`,
-        WebkitBackgroundClip: 'text',
-        backgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        color: 'transparent',
-      }}
-    >
-      {`${start}${suffix}`}
-    </span>
-  );
-}
-
 export default function About() {
-  const railRef = useRef<HTMLDivElement>(null);
-  const [countActive, setCountActive] = useState(false);
-  useEffect(() => {
-    const el = railRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        setCountActive(e.isIntersecting);
-      },
-      { threshold: 0.25 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
+  /* SIS-272 — o `railRef` e o `IntersectionObserver` (threshold 0.25) que ligavam a
+     contagem saíram com a faixa: quem observa a própria entrada em quadro é
+     `FaixaIndicadores`, e tem de ser ele — o observador mede O NÓ DA FAIXA, que na
+     home nem é filho desta seção. */
 
   return (
     <section id="quem-somos" className="sobre-secao">
@@ -345,110 +192,15 @@ export default function About() {
       </RevealScope>
 
       {/* ── A FAIXA INSTITUCIONAL NAVY ──────────────────────────────────────────
-          `on-dark` não é decoração: a rota monta esta seção dentro de uma
-          `div.section-light`, e os overrides de texto sobre fundo claro de
-          `globals.css:1099` pintam todo `p` de `#0a1f44` com um seletor de (0,1,1).
-          A sonda mediu o rótulo e o detalhe desta faixa saindo NAVY SOBRE NAVY,
-          1,07:1 e 1,01:1 — invisíveis. `on-dark` é a classe que a própria casa criou
-          para ilha escura dentro de seção clara e devolve o branco com `!important`;
-          o número do contador escapa porque leva cor no `style` inline e o override
-          de `on-dark` traz `:not([style*="color"])`. */}
-      <div ref={railRef} className="sobre-metricas on-dark">
-        {/* A aresta em degrau da mock, com a linha ciano e os três pontos. */}
-        <svg
-          aria-hidden
-          className="sobre-metricas-aresta"
-          viewBox="0 0 1440 24"
-          preserveAspectRatio="none"
-          focusable="false"
-        >
-          <path d="M0 1H518L548 23H1440" />
-        </svg>
-        <span aria-hidden className="sobre-metricas-ponto" style={{ left: '6%', top: '-3px' }} />
-        <span aria-hidden className="sobre-metricas-ponto" style={{ left: '30%', top: '-3px' }} />
-        <span aria-hidden className="sobre-metricas-ponto" style={{ left: '56%', top: '19px' }} />
-
-        {/* ── QUADRADOS E LINHAS, DINÂMICOS, ATRÁS DOS NÚMEROS ──────────────────
-            Pedido em chat para ESTA faixa. É o mesmo motivo de
-            `ui/AtmosferaQuadrados.tsx` (SIS-204) — retângulos de canto redondo e
-            linhas finas —, mas a peça é OUTRA por duas razões medidas, não por
-            gosto: aquela é `position: fixed` na janela inteira com `z-index: -1`,
-            então não existe como camada dentro de um bloco; e a tinta dela é
-            branco translúcido calibrado para fundo CLARO, que sobre este navy ou
-            desaparece ou vira névoa. Aqui a tinta é ciano da marca em alfa baixo.
-
-            O raio 28 e o `vector-effect: non-scaling-stroke` vêm de lá de
-            propósito: a forma que a atmosfera da casa usa é esta, e o fio de 1px
-            não pode engrossar quando o `slice` escala a arte para cobrir a faixa.
-
-            «NÃO ATRAPALHAR A ESCRITA» é o que decide o resto: a camada é
-            `aria-hidden`, não recebe ponteiro, vive em `z-index: 0` enquanto a
-            grade de indicadores sobe para `z-index: 1`, e as peças foram postas
-            nos VÃOS medidos da faixa — as duas calhas entre as três colunas e as
-            margens — em vez de atrás dos glifos. O contraste dos rótulos foi
-            remedido pixel a pixel depois dela entrar. */}
-        <div aria-hidden className="sobre-atmosfera">
-          <svg viewBox="0 0 1440 332" preserveAspectRatio="xMidYMid slice" focusable="false">
-            {/* As linhas longas: duas horizontais e as duas verticais que caem nas
-                calhas entre as colunas (x=490 e x=950 na grade de 216px de recuo). */}
-            <g
-              stroke="rgba(120, 214, 245, 0.16)"
-              strokeWidth="1"
-              fill="none"
-              vectorEffect="non-scaling-stroke"
-            >
-              <path d="M-40 74H1480" vectorEffect="non-scaling-stroke" />
-              <path d="M-40 268H1480" vectorEffect="non-scaling-stroke" />
-              <path d="M490 -40V372" vectorEffect="non-scaling-stroke" />
-              <path d="M950 -40V372" vectorEffect="non-scaling-stroke" />
-            </g>
-
-            {/* Os quadrados. Dois grupos com derivas independentes e lentas, para o
-                movimento não ler como um bloco só escorregando. */}
-            <g
-              className="sobre-atmosfera-deriva-a"
-              fill="rgba(120, 214, 245, 0.05)"
-              stroke="rgba(120, 214, 245, 0.13)"
-              strokeWidth="1"
-            >
-              <rect x="56" y="34" width="150" height="150" rx="28" vectorEffect="non-scaling-stroke" />
-              <rect x="1216" y="150" width="190" height="190" rx="28" vectorEffect="non-scaling-stroke" />
-              <rect x="560" y="212" width="118" height="118" rx="28" vectorEffect="non-scaling-stroke" />
-            </g>
-            <g
-              className="sobre-atmosfera-deriva-b"
-              fill="rgba(120, 214, 245, 0.035)"
-              stroke="rgba(120, 214, 245, 0.10)"
-              strokeWidth="1"
-            >
-              <rect x="1020" y="-30" width="164" height="164" rx="28" vectorEffect="non-scaling-stroke" />
-              <rect x="300" y="238" width="132" height="132" rx="28" vectorEffect="non-scaling-stroke" />
-              <rect x="792" y="12" width="96" height="96" rx="28" vectorEffect="non-scaling-stroke" />
-            </g>
-          </svg>
-        </div>
-
-        <ul className="sobre-metricas-grade">
-          {HIGHLIGHTS.map((h) => (
-            <li key={h.label} className="sobre-metrica">
-              <div className="sobre-metrica-topo">
-                <IconeIndicador nome={h.icone} />
-                <CountUpNumber
-                  target={h.num}
-                  start={h.start}
-                  suffix={h.suffix}
-                  active={countActive}
-                  color={h.color}
-                />
-                {/* Valor real para leitores de tela — o contador é aria-hidden */}
-                <span className="sr-only">{h.value}</span>
-              </div>
-              <p className="sobre-metrica-rotulo">{h.label}</p>
-              <p className="sobre-metrica-detalhe">{h.detail}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
+          SIS-272 — o mesmo bloco de antes, agora em `FaixaIndicadores`: dado,
+          ícones, contador, observador, camada de atmosfera e as classes `sobre-*`
+          foram para lá inteiros, porque a home passou a montar esta mesma faixa e a
+          issue proíbe reproduzir o visual à mão do outro lado.
+          Sem props: `aresta` é `true` por default, então o que esta rota renderiza é
+          o DOM idêntico ao de antes da extração — o degrau, a linha ciano e os três
+          pontos continuam aqui, e o `on-dark` que salva rótulo e detalhe de sair navy
+          sobre navy dentro da `div.section-light` da rota vive dentro da peça. */}
+      <FaixaIndicadores />
     </section>
   );
 }

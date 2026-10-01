@@ -94,6 +94,12 @@
 .accel-item:nth-child(5) { animation-delay: -3.2s; }
 .accel-item:nth-child(6) { animation-delay: -4s; }
 .accel-item:nth-child(7) { animation-delay: -4.8s; }
+/* 23/09 — o OITAVO existia e não tinha atraso: a grade é Luminna + SDS + os seis,
+   e a série paravam no 7 desde que o SDS entrou (SIS-42), quando ele era um card de
+   outro componente e o `nth-child` deste seletor já o contava. Sem esta linha o
+   primeiro e o último card respiram em fase — que é o realinhamento que a nota
+   acima diz querer evitar. −5,6s mantém o passo de 0,8s. */
+.accel-item:nth-child(8) { animation-delay: -5.6s; }
 
 /* Os dois canais da casa, e aqui a regra é «o movimento para» sem plano B: um card
    parado no quadro 0 é o card no lugar exato onde a grade o põe, e nada de conteúdo
@@ -110,12 +116,22 @@ html[data-motion='reduce'] .accel-item {
   animation: none;
 }
 
-/* A LINHA INTEIRA PARA O DESTAQUE. `1 / -1` e não `span 2`: a grade é de uma
-   coluna abaixo de 640px, e `span 2` ali pediria uma segunda coluna que não
-   existe (o navegador criaria uma implícita). */
-.accel-item--destaque {
-  grid-column: 1 / -1;
-}
+/* 23/09 — NINGUÉM MAIS OCUPA A LINHA INTEIRA. As duas regras eram:
+
+     .accel-item--destaque { grid-column: 1 / -1; }
+     .accel-item--sds      { grid-column: 1 / -1; }
+
+   …com a nota de que `1 / -1` era escolhido em vez de `span 2` porque abaixo de
+   640px a grade tem uma coluna só e `span 2` faria o navegador criar uma coluna
+   implícita. A observação continua valendo para quem devolver a faixa.
+
+   Por que caíram: «coloque o card SDS ao lado direito do da luminna». Vizinho à
+   direita só existe se nenhum dos dois esticar pela linha — as oito peças passam a
+   dividir as duas colunas em quatro pares (Luminna+SDS, Match+Fast, QA+Connect,
+   Smart Miner+Guru). `.accel-item--destaque` continua sendo aplicada pela Luminna:
+   ela marca a PRIMEIRA POSIÇÃO e o seletor segue existindo, sem declaração de
+   grade. Não virou classe morta por acidente — está aqui para o dia em que a faixa
+   voltar. */
 
 .accel-card {
   /* Quanto o card sobe no hover/foco — os −6px que a issue pede, num só lugar
@@ -199,17 +215,47 @@ html[data-motion='reduce'] .accel-item {
     min-height: 13.5rem;
   }
 
-  .accel-item--destaque .accel-card {
-    min-height: 15.5rem;
-  }
+  /* 23/09 — o degrau de altura do destaque saiu com a faixa:
+
+       .accel-item--destaque .accel-card { min-height: 15.5rem; }
+
+     As duas peças da primeira linha agora dividem a MESMA linha de grade, e `1fr`
+     de coluna com min-heights diferentes daria dois cards de alturas diferentes
+     lado a lado — o item da grade estica, o `article` de dentro não. */
 }
+
+/* 23/09 — AS ~250 LINHAS DO CARD ESPECIALIZADO DO SDS SAÍRAM DAQUI (todo o bloco
+   `.sds-card*`, os keyframes `sds-documento-pulso`, as duas quebras em 52rem e
+   39.999rem e os dois desligamentos de movimento reduzido).
+
+   A SIS-42 abria este bloco dizendo «SDS não tem capa fotográfica … usa apenas CSS,
+   a logo aprovada e uma jornada documental abstrata». Era uma superfície desenhada
+   à mão para um card sem arte: grade mascarada, dois orbes, cinco documentos
+   pulsando com `animation-delay` negativo escalonado, conectores em seta e um selo
+   «Decisão humana preservada».
+
+   A premissa caiu: a arte chegou (`public/images/solucoes/sds.png`), e a usuária
+   pediu o card «seguindo o padrão dos outros» — capa atrás, logo com halo, sem
+   eyebrow e sem título visível. Isso é exatamente `.accel-card` + `.accel-card__foto`
+   + `.accel-card__veu` + `.accel-logo`, que estão logo abaixo e valem para os oito.
+   Manter o bloco significaria manter um segundo desenho do mesmo card, que divergiria
+   do padrão no primeiro ajuste feito em um dos dois.
+
+   O motivo, peça por peça, e o que aconteceu com o conteúdo da jornada (ele continua
+   escrito de verdade em `src/components/solucoes/SdsPagina.tsx`) está na nota que
+   ocupa o lugar do `SdsCard` em `Accelerators.tsx`. Aqui não fica cópia comentada:
+   250 linhas de CSS morto é o que o próximo a passar reativa por engano. */
 
 /* A CAPA. `next/image` com `fill` já escreve `position: absolute; inset: 0` —
    aqui ficam só o recorte e o zoom.
    `object-position: center`: a arte é 16:9 e a caixa vai a 4,8:1, então o
    `cover` descarta ~60% da altura. O que importa da foto (as pessoas e os
    painéis de UI) está na faixa central vertical das sete artes — conferido nas
-   capturas desta issue. */
+   capturas desta issue.
+   23/09 — sem o card de largura total, a caixa mais larga passou a ser a coluna
+   de 548px (~2,5:1), e o descarte de altura das sete artes 16:9 caiu para ~30%.
+   A do SDS é 1962x801 (2,45:1), ou seja quase a razão da caixa: ali o `cover`
+   praticamente não corta, e o `center` continua sendo o enquadramento certo. */
 .accel-card__foto {
   z-index: 0;
   object-fit: cover;
@@ -278,10 +324,15 @@ html[data-motion='reduce'] .accel-item {
     padding: 1.75rem;
   }
 
-  .accel-item--destaque .accel-card__corpo {
-    max-width: 48%;
-    padding: 2rem 2.25rem;
-  }
+  /* 23/09 — idem: a coluna de texto mais estreita do destaque era medida contra
+     uma caixa de 1116px, não contra os 548px da coluna. A regra era:
+
+       .accel-item--destaque .accel-card__corpo { max-width: 48%; padding: 2rem 2.25rem; }
+
+     Com 548px de caixa, 48% dariam 263px de texto — mais estreito que o dos
+     vizinhos, num card do mesmo tamanho. Os 60% acima valem para os oito. Isso
+     também recoloca o véu no caso medido de 60% (ver as paradas logo acima): o
+     «pior caso» que a SIS-216 mediu era exatamente este 48%, que já não existe. */
 }
 
 .accel-card__texto {
@@ -482,10 +533,16 @@ html[data-motion='reduce'] .accel-card:hover .accel-card__foto {
 }
 
 /* SIS-216 — este seletor tinha um segundo lado, `.accel-item--destaque
-   .accel-logo__eco-img`, que saiu com o eco (motivo no bloco abaixo). */
-.accel-item--destaque .accel-logo__img {
-  max-height: 4rem;
-}
+   .accel-logo__eco-img`, que saiu com o eco (motivo no bloco abaixo).
+
+   23/09 — e agora saiu o seletor todo:
+
+     .accel-item--destaque .accel-logo__img { max-height: 4rem; }
+
+   Os 4rem eram 24% da altura mínima de 15,5rem do card de largura total (a conta
+   está no bloco acima). Sem faixa, a Luminna tem a caixa dos outros sete e os
+   3,25rem que são 19% de 13,5rem — uma logo 23% maior que a do vizinho imediato, no
+   mesmo tamanho de card, leria como erro de escala. */
 
 /* SIS-216 — O ECO FOI EMBORA, e o motivo é o pedido literal da issue: «hoje o
    `.accel-logo__eco` acende uma segunda cópia; não quero duplicação — a MESMA logo

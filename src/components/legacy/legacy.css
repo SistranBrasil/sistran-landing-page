@@ -1569,6 +1569,25 @@ html[data-motion="reduce"] {
   display: flex;
   gap: 0.8rem;
   align-items: center;
+
+  /* SIS-202 — VÁLVULA DE ESCAPE, não mudança de desenho.
+     O selo passou a poder carregar uma logo, e aí ele é mais largo que os 3rem
+     do monograma. A conta do card mais estreito do desktop (1024px: card
+     `clamp(18rem, 27vw, 28rem)` → 18rem = 288px, menos `--card-pad` 1.3rem×2 =
+     246px de conteúdo) já era apertada ANTES: selo 48 + gap 12,8 + bloco de
+     texto ~85 + pílula ~82 = ~228px, ou seja ~18px de folga. Em 1440 a folga é
+     ~97px (card 27vw = 389px, conteúdo ~325px), e lá o selo largo entra inteiro.
+     Com `wrap`, onde a folga acaba a pílula desce para uma segunda linha em vez
+     de estourar a largura do card. Onde não falta espaço NADA se move — é por
+     isso que isto é guarda e não redesenho. */
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
+}
+
+/* Sem isto o bloco de texto se recusa a encolher (mínimo automático do flex) e
+   empurra a pílula para fora antes de o `wrap` agir. */
+.roadmap-card-head > div {
+  min-width: 0;
 }
 
 .roadmap-badge {
@@ -1587,6 +1606,42 @@ html[data-motion="reduce"] {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+/* ── SELO COM LOGO (SIS-202) ──
+   A ALTURA NÃO MUDA: seguem os 3rem do monograma, e é isso que mantém o ritmo
+   vertical do cabeçalho e a altura do card idênticos nos dois ramos. O que muda é
+   a LARGURA, porque logo de marca é deitada e num quadrado de 3rem ela fica
+   ilegível — medido no acervo: das 23 artes, 10 têm razão 3,00 e só uma é mais
+   alta que larga. Contida num quadrado de 3rem (interior de 2,2rem = 35px), uma
+   arte 3:1 desenha 35×11,7px e as letras ficam com ~5px. É o defeito que a issue
+   nomeia ao pedir "logo legível".
+
+   Com largura livre e altura de 3rem, a placa passa a abraçar a razão da própria
+   arte. O teto é `clamp(5rem, 7vw, 7rem)`: em 1440 dá 7rem (112px), que sobre a
+   folga medida de ~97px do cabeçalho cabe, e uma arte 3:1 desenha ~98×33px —
+   letras de ~15px, legíveis. Em telas menores o teto cai para 5rem e a válvula
+   de `flex-wrap` do cabeçalho cuida do resto.
+
+   `padding` menor que o do monograma (0.3rem contra 0.4rem): as letras precisavam
+   de respiro contra a borda, a arte já vem com margem interna própria. */
+.roadmap-badge--marca {
+  width: auto;
+  /* Piso igual ao selo do monograma: a largura vem da arte, e enquanto o PNG não
+     chega (`loading="lazy"`) a arte não tem largura intrínseca resolvida. Sem o
+     piso a placa nasceria colada em 0 e daria um salto no cabeçalho quando a
+     imagem caísse. Com ele, o pior caso é a placa começar quadrada e alargar. */
+  min-width: 3rem;
+  max-width: clamp(5rem, 7vw, 7rem);
+  padding: 0.3rem 0.45rem;
+}
+
+/* `width: auto` sobrepõe o `100%` do `.roadmap-badge img`: é a largura seguindo a
+   altura que faz a placa ter a razão da arte, em vez de esticá-la. */
+.roadmap-badge--marca img {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
 }
 
 /* Sem arquivo de logo, o monograma ocupa o mesmo selo. */
@@ -2651,7 +2706,19 @@ html.has-dialog {
      SIS-179 levou a grade para depois do hero. Agora quem chega é
      `.impact-saida`, que dissolve a foto de “Sistran em números” no mesmo
      `--paper`. Este background continua sendo a segunda metade da passagem:
-     `--paper` entra e se resolve no `--cream` da sequência. */
+     `--paper` entra e se resolve no `--cream` da sequência.
+
+     SIS-213 (2ª passagem) — ESTA CAMADA FICA, e a razão é geométrica, não
+     histórica: a rampa `--paper` ocupa os primeiros 40svh do fundo DA SEÇÃO, e os
+     primeiros 100svh da seção estão cobertos de ponta a ponta pelo
+     `.sequence-visual`, que é `width/height: 100%` dentro de um `.sequence-sticky`
+     de `100svh` em `top: 0`. Nenhum pixel desta rampa alcança a tela, nem em
+     `data-static` (movimento reduzido), onde o sticky e o full bleed continuam
+     valendo; o encolhimento em card só começa em 0.72 do curso de 200svh, muito
+     abaixo da rampa. Ou seja: o `--paper` daqui NÃO é a faixa clara que se relatou,
+     e mexer nele seria alterar o fundo da seção sem efeito visível — risco sem
+     ganho. O que restava pintando tinta no topo do vídeo era só o
+     `.sequence::after`, e é ele que saiu. */
   background:
     linear-gradient(to bottom, var(--paper) 0, rgb(255 255 255 / 0%) 40svh),
     var(--cream);
@@ -2701,15 +2768,41 @@ html.has-dialog {
 
    ANTERIOR:
    background: linear-gradient(to bottom, var(--paper) 0, rgb(255 255 255 / 0%) 100%); */
-.sequence::after {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 120px;
-  z-index: 2;
-  pointer-events: none;
-  background: linear-gradient(to bottom, #041b3d 0, rgb(4 27 61 / 0%) 100%);
-}
+
+/* SIS-213 (2ª passagem) — O VÉU SAIU INTEIRO, e o que o derruba é a medição que a
+   própria passagem anterior deixou registrada. A aposta de lá era que tingir o véu
+   de navy tornaria a emenda escuro→escuro e portanto invisível. Não tornou: 120px
+   de `#041b3d` chapado no alto, dissolvidos para transparente, NÃO somem sobre um
+   quadro de vídeo cujo topo mede `rgb(67 83 93)` — eles se leem como uma banda
+   escura com borda inferior suave, que é exatamente a captura desta issue. Véu que
+   precisa ser da cor de um dos lados só é invisível quando o outro lado tem a mesma
+   cor; aqui os dois lados são escuros, mas escuros DIFERENTES.
+
+   A coluna «sem os véus» da tabela em `.impact-saida` (`globals.css`, medida a 1440
+   por `scripts/medir-emenda-numeros-sequencia-sis213.mjs`) é o estado que esta
+   remoção entrega: `rgb(1 43 90)` no último pixel de cima, `rgb(67 83 93)` no
+   primeiro de baixo. Não é dissolução — é corte, e é o corte limpo que o pedido
+   aceita explicitamente («corte limpo ou dissolução imperceptível»). Duas
+   superfícies escuras encostadas, sem faixa de tinta nenhuma entre elas.
+
+   O CORTE É DELIBERADO, então a justificativa original — «sem véu o quadro escuro
+   do vídeo abre um corte reto na fronteira» — não é mais objeção: era verdadeira, e
+   o pedido decidiu contra ela. Qualquer retorno a um véu aqui, de QUALQUER tinta,
+   reabre esta issue: já se tentou branco (faixa clara, relatada) e navy (faixa
+   escura, relatada). O terceiro caminho, se um dia se quiser suavizar, não é pintar
+   sobre o vídeo — é aproximar as duas superfícies (o topo do clipe, ou o `#041b3d`
+   sob a arte da Metrics), e isso é outra issue.
+
+   ANTERIOR (o véu navy, verbatim):
+   .sequence::after {
+     content: '';
+     position: absolute;
+     inset: 0 0 auto 0;
+     height: 120px;
+     z-index: 2;
+     pointer-events: none;
+     background: linear-gradient(to bottom, #041b3d 0, rgb(4 27 61 / 0%) 100%);
+   } */
 
 .sequence-sticky {
   position: sticky;
@@ -2765,9 +2858,30 @@ html.has-dialog {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  /* O clipe é claro nas bordas; sem isso o texto perde contraste no canto. */
-  filter: saturate(1.05) brightness(0.92);
+  /* O clipe é claro nas bordas; sem isso o texto perde contraste no canto.
+
+     ── 01/10 · O DESFOQUE DE CHEGADA entra nesta mesma lista ────────────────────
+     «quando chegue na sessão do vídeo luminna ele esteja assim»: o quadro abre fora de
+     foco e ganha nitidez com a rolagem. Quem escreve `--sequencia-desfoque` é o
+     `ImpactSequence`, por `motion`, no `.sequence-visual` — ver a nota longa em
+     `DESFOQUE` lá.
+
+     ⚠️ A ORDEM DOS FILTROS IMPORTA e o `blur` é o ÚLTIMO de propósito: filtros se
+     aplicam em cadeia, e desfocar depois de ajustar cor é desfocar a imagem final.
+     Invertido, o `saturate`/`brightness` operaria sobre pixels já misturados e a
+     correção de contraste da borda — que é a razão de existir das duas primeiras —
+     mudaria de intensidade conforme o desfoque.
+
+     ⚠️ O VALOR DE ORIGEM É `0px`, e isso é a saída de emergência: sem JS, com
+     movimento reduzido ou se a variável nunca for escrita, o filtro resolve para
+     `blur(0px)` e o quadro fica nítido. O erro a evitar aqui era pôr o desfoque como
+     estado inicial do CSS e contar com o JS para removê-lo — era assim que o pôster do
+     modo estático acabaria permanentemente fora de foco. */
+  filter: saturate(1.05) brightness(0.92) blur(var(--sequencia-desfoque, 0px));
   opacity: 0;
+  /* A sangria que esconde a franja transparente do desfoque — ver `SANGRIA` no
+     componente. Em foco o fator é 1 e isto é a identidade. */
+  transform: scale(var(--sequencia-sangria, 1));
   transition: opacity 0.25s ease-out;
 }
 

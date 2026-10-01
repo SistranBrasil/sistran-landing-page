@@ -3,7 +3,18 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { ACCELERATORS, type Accelerator } from '@/data/accelerators';
+/* 23/09 — A LISTA IMPORTADA É SÓ `SOLUTIONS_CATALOG`. A linha era:
+
+     import { ACCELERATORS, SOLUTIONS_CATALOG, type Accelerator, type SdsAccelerator,
+       type SolutionCatalogItem } from '@/data/accelerators';
+
+   · `ACCELERATORS` só aparecia dentro de comentários desde que a SIS-280 tirou o
+     selo «N aceleradores» — a nota de lá dizia que ele «continua importado porque
+     ORDEM_VISUAL é montado a partir dele», e isso já não era verdade: `ORDEM_VISUAL`
+     lê o catálogo. Ficava como import morto.
+   · `SdsAccelerator` e `SolutionCatalogItem` saíram com a união (ver o dado): o SDS
+     agora é um `Accelerator` e o componente tem um só tipo de card. */
+import { SOLUTIONS_CATALOG, type Accelerator } from '@/data/accelerators';
 /* SIS-280 — o carimbo que substitui a tag «Tecnologia Disruptiva» é o COMPONENTE
    GENÉRICO da casa (SIS-277), o mesmo de `/parceiros-e-implementacoes` e
    `/sistran-labs`: batida por `fromTo`, reduce nascendo no estado final, razão de
@@ -23,10 +34,18 @@ import { vGrid, vCard, vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '
    `useTilt` continua em uso por outros cartões do site; nada foi apagado de lá. */
 import './accelerators.css';
 
-/** Quem ocupa o card de largura total, em primeira posição visual. */
+/** Quem abre a grade, em primeira posição visual. */
 /* SIS-280 — dois n, acompanhando o `id` em `ACCELERATORS`. Não é cosmética: este
    valor é comparado com `a.id`, e a grafia velha faria `ORDEM_VISUAL` não achar
-   destaque nenhum — o card de largura total sumiria sem erro. */
+   nada — o card sairia do topo da grade sem erro.
+
+   23/09 — ELE JÁ NÃO É O CARD DE LARGURA TOTAL, e isso é consequência direta do
+   pedido: «coloque o card SDS ao lado direito do da luminna». Só existe um vizinho
+   à direita se a Luminna deixar de ocupar a linha inteira, então a faixa de
+   destaque da SIS-216 caiu — as duas passam a dividir a primeira linha das duas
+   colunas, com a mesma caixa dos outros seis. O que a Luminna conserva é a
+   PRIMEIRA POSIÇÃO. Ver `.accel-item--destaque` em `accelerators.css`, onde o
+   `grid-column: 1 / -1` está comentado com o mesmo motivo. */
 const ID_DESTAQUE = 'luminna-ai';
 
 /* A ORDEM DE EXIBIÇÃO É DERIVADA, NÃO UMA SEGUNDA LISTA: o destaque vem primeiro
@@ -39,9 +58,38 @@ const ID_DESTAQUE = 'luminna-ai';
    consome a mesma lista, e mexer nela mudaria uma rota fora do escopo desta
    issue. */
 const ORDEM_VISUAL = [
-  ...ACCELERATORS.filter((a) => a.id === ID_DESTAQUE),
-  ...ACCELERATORS.filter((a) => a.id !== ID_DESTAQUE),
+  ...SOLUTIONS_CATALOG.filter((a) => a.id === ID_DESTAQUE),
+  ...SOLUTIONS_CATALOG.filter((a) => a.id === 'sds'),
+  ...SOLUTIONS_CATALOG.filter((a) => a.id !== ID_DESTAQUE && a.id !== 'sds'),
 ];
+
+/* 23/09 — O CARD ESPECIALIZADO DO SDS SAIU DE CENA, inteiro. Pedido da dona do
+   conteúdo: «retire essa escrita JORNADA INTELIGENTE DE SINISTROS / SDS — Sistema
+   Digital de Sinistros e deixe só a logo com sombra clara atrás seguindo o padrão
+   dos outros e coloque a imagem atrás sds.png». Tirando o eyebrow e o título
+   visíveis, e pondo capa fotográfica e a logo com halo, o que resta É o card
+   padrão — manter um segundo componente para chegar ao mesmo desenho garantiria
+   que os dois divergissem no primeiro ajuste feito num só deles. O SDS passa pelo
+   `AccelCard` como os outros sete, e o `<h3>` em `sr-only` de lá é o que conserva
+   o nome do produto para leitor de tela e para o `copy-lock`.
+
+   O que morreu com o componente, e por quê cada peça:
+   · `isSdsAccelerator` — o discriminante da união, que já não separa nada;
+   · a JORNADA de cinco documentos («Comunicado → Documentos → Análise → Apoio
+     antifraude → Regulação»), os dois orbes, o selo «Decisão humana preservada» e
+     o pulso `sds-documento-pulso`. Era ilustração inventada aqui para um card sem
+     arte; a arte chegou. Nada disso era conteúdo publicado: o bloco inteiro estava
+     `aria-hidden`, e as cinco etapas continuam escritas de verdade na página do
+     produto (`src/components/solucoes/SdsPagina.tsx`), que é a fonte delas;
+   · o CTA dizia «Conheça o SDS» e agora diz «Conheça a solução» + nome em
+     `sr-only`, que é a copy travada no `copy-lock.json` para os sete vizinhos —
+     sete links iguais e um diferente na mesma grade lia como card de outro lote.
+
+   O markup e as regras não ficam transcritos aqui: eram ~50 linhas de JSX e ~250
+   de CSS (`.sds-card*` em `accelerators.css`), e é o mesmo tratamento que
+   `TechnologyShowcase` recebeu — o que preserva a intenção é esta nota, não a
+   cópia morta. O que a nota tem de dizer, e diz, é o que existia e por que não
+   existe mais. */
 
 function AccelCard({ a, destaque }: { a: Accelerator; destaque: boolean }) {
   return (
@@ -94,7 +142,12 @@ function AccelCard({ a, destaque }: { a: Accelerator; destaque: boolean }) {
         alt=""
         aria-hidden
         fill
-        sizes={destaque ? '(min-width: 1180px) 1116px, 100vw' : '(min-width: 640px) 548px, 100vw'}
+        /* 23/09 — UMA CAIXA SÓ, porque a faixa de largura total acabou: as oito
+           capas vivem na coluna de 548px. Era
+           `destaque ? '(min-width: 1180px) 1116px, 100vw' : …`. A derivada da
+           Luminna continua sendo a de 1672px (era a do destaque) — sobra
+           resolução para a caixa nova, e regerá-la é outro assunto. */
+        sizes="(min-width: 640px) 548px, 100vw"
         loading="lazy"
         className="accel-card__foto"
       />

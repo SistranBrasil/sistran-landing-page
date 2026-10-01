@@ -1,0 +1,1090 @@
+/* RECONHECIMENTOS — pintura e geometria da galeria (SIS-238).
+   Companheiro de `RecognitionGallery.tsx`; o porquê de cada decisão de ESTRUTURA
+   e de comportamento está lá.
+
+   ── OS NÚMEROS SÃO MEDIDOS NA MOCK ────────────────────────────────────────────
+   `public/imagensexemplo/trofeis.png` tem 1672×941 — 16:9, isto é, um quadro de
+   janela inteiro. Lido com `sharp` e reescalado para 1440 (fator 0,861):
+
+     faixa da galeria      y 366→853  (487px)   → 419px, 52% da altura do quadro
+     painel ativo          x 0→837              → 50,1% da largura
+     painéis fechados      ~278px cada          → ~16,6% cada
+     divisórias           x≈1106 e x≈1379
+     superfícies fechadas  rgb(228,243,254) → rgb(246,251,254) → rgb(251,252,253)
+     marinho do ativo      rgb(3,30,71) … rgb(5,46,95)
+     eyebrow y≈133 · título y 155→275 · apoio y≈300 · dica y≈893
+
+   50,1% está dentro dos «48% a 52%» que `docs/trofeus.md` pede, então o número
+   da mock e o da especificação não brigam — é o da mock que vale, por ser o mais
+   preciso dos dois.
+
+   ── OS TOKENS DIVERGEM DA SUGESTÃO DA ISSUE, DE PROPÓSITO ─────────────────────
+   A issue oferece uma «sugestão de tokens» com `--recognition-navy: #051b3a` e
+   `--recognition-signal: #16c8f4`. A autoridade de cor do projeto é
+   `.claude/skills/sistran-marca`, e lá o marinho é `#001A3D`/`#002D5C` e o ciano
+   de acento é `#0ed8f6`. Onde os dois falam da mesma coisa, vale a marca — uma
+   sugestão não sobrepõe o design system, e três marinhos quase iguais no mesmo
+   site é exatamente como a deriva de paleta começa. Os tokens que a issue traz e
+   a marca não nomeia (papel, tinta, muted, linha, curva) entram como estão. */
+
+.rgal-secao {
+  position: relative;
+  /* SEM `isolation` e SEM `transform` aqui: a rampa de dentro depende de
+     `position: sticky`, e sticky morre sob um ancestral com `transform`,
+     `filter` ou `contain` — é a armadilha que a skill `scroll-orchestrated-lp`
+     nomeia. É também a razão de o fundo ser um irmão pintado e não um
+     `background` desta caixa com pseudo-elementos empilhados. */
+  --rgal-papel: #f7fbfe;
+  --rgal-branco: #ffffff;
+  --rgal-tinta: #06183b;
+  --rgal-marinho: #001a3d;
+  --rgal-marinho-2: #002d5c;
+  --rgal-azul: #0b5f9f;
+  --rgal-ciano: #0ed8f6;
+  --rgal-muted: #667c99;
+  --rgal-linha: rgb(19 98 151 / 16%);
+  --rgal-curva: cubic-bezier(0.19, 1, 0.22, 1);
+  /* A faixa: 52% da altura do quadro, com piso e teto. O piso de 340px é o que
+     mantém o troféu em tamanho nativo (252px de altura) com respiro; o teto
+     evita que uma tela de 1600px de altura estique a faixa até virar cartaz. */
+  --rgal-faixa: clamp(340px, 52svh, 560px);
+  background: var(--rgal-papel);
+  color: var(--rgal-tinta);
+}
+
+/* As duas manchas do fundo claro da casa, na intensidade mais baixa da família —
+   o papel tem de ler como papel, não como gradiente. Sem roxo: a paleta da marca
+   é branco e azuis. */
+.rgal-fundo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 12% 6%, rgb(0 121 203 / 7%), transparent 64%),
+    radial-gradient(52% 54% at 94% 92%, rgb(14 216 246 / 6%), transparent 66%);
+}
+
+/* ── A RAMPA ─────────────────────────────────────────────────────────────────
+   `320svh` é o valor da issue. São quatro etapas de 80svh cada — folga bastante
+   para o gesto de rolagem não pular uma etapa, e curto o suficiente para a
+   seção não virar um túnel. A altura extra existe SÓ na faixa em que o quadro
+   fica preso; nas outras a rampa é `auto` e a lista cai no fluxo, e é por isso
+   que ela é declarada dentro da consulta de mídia e não fora com um `unset`
+   depois: um `min-height` global seria uma rampa de 320svh sem nada preso nela
+   no mobile, ou seja, três telas vazias. */
+.rgal-rampa {
+  position: relative;
+}
+
+.rgal-quadro {
+  padding: clamp(3.5rem, 7vh, 6rem) 0 clamp(2.5rem, 5vh, 4rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.75rem, 4vh, 3rem);
+}
+
+/* ── CABEÇALHO EDITORIAL ─────────────────────────────────────────────────── */
+
+/* O cabeçalho respeita a margem da rota e por isso carrega `container-lp` no
+   JSX — a medida da casa, não uma cópia dela aqui. A FAIXA de painéis é que
+   sangra de borda a borda (nota em `.rgal-lista`), e é por isso que o container
+   está nos filhos e não em `.rgal-quadro`: um container não pode ser pai de um
+   elemento que precisa sangrar. */
+.rgal-cabecalho {
+  position: relative;
+  z-index: 2;
+}
+
+.rgal-eyebrow {
+  margin: 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  /* «tracking amplo», conforme a issue. */
+  letter-spacing: 0.26em;
+  /* O ciano da marca sobre o papel `#f7fbfe` dá 1,9:1 — reprova como TEXTO, e
+     eyebrow de 13px é texto pequeno, não decoração. O azul institucional
+     `#0b5f9f` dá 5,7:1 no mesmo papel. A issue pede «eyebrow em caixa alta,
+     ciano»: o ciano fica, mas no fio que acompanha a linha (`::after`), que é
+     forma e não carrega leitura. Foi a mesma troca que `.agimos-serie` fez, e
+     pela mesma régua. */
+  color: var(--rgal-azul);
+}
+.rgal-eyebrow::after {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 2.25rem;
+  height: 2px;
+  margin-left: 0.75rem;
+  background: linear-gradient(90deg, var(--rgal-ciano), transparent);
+}
+
+.rgal-h2 {
+  margin: clamp(0.875rem, 2vh, 1.25rem) 0 0;
+  font-family: var(--font-display);
+  /* A mock põe o título em duas linhas ocupando y 155→275, isto é ~103px de
+     caixa para duas linhas a 1440 — ~50px por linha. O clamp fecha nesse valor
+     no topo. */
+  font-size: clamp(2rem, 4.2vw, 3.125rem);
+  font-weight: 700;
+  /* A issue pede entre 0,95 e 1,02. */
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  /* `max-inline-size` em `ch` e não em `rem`: o que se quer é «duas linhas no
+     desktop», e o que decide isso é a contagem de caracteres da frase, não uma
+     medida absoluta. `Reconhecimentos que marcam nossa trajetória` tem 46
+     caracteres; 24ch quebra depois de «que». */
+  max-inline-size: 24ch;
+  color: var(--rgal-tinta);
+  /* Sem gradiente no texto — a issue proíbe em duas linhas diferentes. */
+}
+
+/* SIS-98 — o risco do `TituloAceso` no PAPEL desta seção.
+   O gradiente padrão do risco termina em `#a5f0ff`, que nasceu para título sobre
+   fundo escuro: sobre o papel `#f7fbfe` essa ponta some (1,2:1) e o traço parece
+   cortado no meio. A casa já tem a versão para fundo claro — `.section-light
+   .titulo-risco`, em `globals.css` — e esta seção é clara mas não é uma
+   `.section-light`, então ela não a herdava. Aqui é a MESMA declaração, apontada
+   para `.rgal-secao`: não é tinta nova, é a variante certa chegando ao lugar que
+   ficou de fora. O risco é grafismo e não tem piso de contraste, mas tem de ser
+   visível para existir. */
+.rgal-secao .titulo-risco {
+  background: linear-gradient(90deg, #004d8a, #0079cb 60%, #0ed8f6);
+}
+
+/* SIS-98 — APOIO + NOTA TOP 5 LADO A LADO.
+   Duas colunas em `ch` pelo mesmo critério do `max-inline-size` do título: o que
+   se quer é «duas medidas de leitura confortáveis», e quem decide isso é a
+   contagem de caracteres, não um valor absoluto. As duas frases têm 56 e 79
+   caracteres, e 30ch/34ch as fecham em duas ou três linhas cada.
+
+   O PAR CRUZA A MARCA D'ÁGUA, E ISSO É ACEITO — com número.
+   Eu havia escrito aqui que 30ch + 2rem + 34ch «sobra folga larga» antes da
+   tinta de «TRAJETÓRIA». MEDIDO, é falso: a grade resolve em 318+32+361 = 711px,
+   o cabeçalho começa em x=162 a 1440, e o par termina em x=870 contra a tinta do
+   contorno que começa em 741 — 129px de cruzamento a 1440, 130 a 1280 e 202 a
+   1024, com sobreposição vertical (par 237..291, tinta a partir de 229).
+
+   Fica assim de propósito, porque o que passa por trás do par não é um bloco: é
+   o CONTORNO de `-webkit-text-stroke: 1.5px rgb(11 95 159 / 15%)`, um fio de
+   1,5px a 15% — e a régua que importa é o contraste do texto onde o fio passa.
+   Medido pixel a pixel na área de cruzamento, com o par escondido para fotografar
+   só o fundo: o pixel mais escuro do fio é `rgb(153,198,229)` a 1440 e
+   `rgb(156,199,230)` a 1280, e a tinta do apoio (`rgb(6 24 59 / 82%)`, que
+   resolve em `rgb(60,74,100)`) dá 4,91:1 e 4,98:1 contra ele. Acima do piso AA de
+   4,5:1 para corpo de 17px, e isso no PIOR pixel: o resto da frase segue nos
+   6,8:1 do papel. Texto legível sobre marca d'água é a composição pretendida —
+   afastar o par do contorno custaria a leitura em duas medidas, que é o que a
+   issue pede.
+
+   As colunas seguem com teto em `ch` e não `1fr 1fr` por outro motivo, esse
+   intacto: `1fr 1fr` esticaria o par até a largura inteira do container, e aí o
+   cruzamento passaria de um fio para a palavra toda.
+
+   Abaixo de 64rem é uma coluna só (a grade nasce com uma), então empilhar é o
+   estado padrão e não há de onde vazar a 390. */
+.rgal-apoio-par {
+  margin: clamp(0.875rem, 2vh, 1.375rem) 0 0;
+  display: grid;
+  gap: clamp(0.625rem, 2vw, 2rem);
+}
+@media (min-width: 64rem) {
+  .rgal-apoio-par {
+    grid-template-columns: minmax(0, 30ch) minmax(0, 34ch);
+    align-items: start;
+  }
+}
+/* SIS-177 — com a nota Top 5 fora (ela virou o título da faixa Celent), o par tem
+   UM filho, e a primeira coluna acima mede 30ch: o apoio ficaria 4ch mais estreito
+   do que a medida própria dele (`max-inline-size: 34ch`, abaixo) sem nada ao lado
+   para justificar o aperto. Quando o filho é único a grade volta a uma coluna e a
+   medida é a do parágrafo.
+   Seletor `:has()` e não uma classe nova no TSX: o par continua sendo o mesmo nó,
+   e devolver a segunda frase (a volta atrás está comentada no componente) religa
+   as duas colunas sozinho, sem tocar nesta folha. */
+@media (min-width: 64rem) {
+  .rgal-apoio-par:has(> .rgal-apoio:only-child) {
+    /* 34ch é a medida declarada em `.rgal-apoio` — repetida aqui porque a regra de
+       (0,3,0) mais abaixo zera o `max-inline-size` dentro do par, e sem teto na
+       coluna a frase se esticaria em uma linha só. */
+    grid-template-columns: minmax(0, 34ch);
+  }
+}
+
+/* Dentro do par a margem e a medida saem do avô: quem as governa agora é a
+   grade. A regra é de 3 classes (0,3,0) para vencer a de 1 classe abaixo. */
+.rgal-cabecalho .rgal-apoio-par .rgal-apoio {
+  margin: 0;
+  max-inline-size: none;
+}
+/* A nota Top 5, em negrito, como a issue pede. A COR NÃO MUDA — é a mesma tinta
+   a 82% do apoio, que dá 6,8:1 sobre o papel (nota abaixo); negrito só aumenta a
+   área de tinta, então o piso continua folgado. */
+.rgal-apoio-forte {
+  font-weight: 700;
+}
+
+.rgal-apoio {
+  margin: clamp(0.875rem, 2vh, 1.375rem) 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  max-inline-size: 34ch;
+  /* `--rgal-muted` (#667c99) sobre o papel dá 3,9:1 e reprovaria como corpo de
+     texto. O apoio é 17px, então ele fica na tinta com opacidade zero — é a
+     tinta `#06183b` a 82%, que resolve em `rgb(60,74,100)` sobre o papel e dá
+     6,8:1. O token muted continua declarado porque a divisória e a dica o usam,
+     e lá ele é forma e letra miúda decorativa. */
+  color: rgb(6 24 59 / 82%);
+}
+
+/* ── TEXTO DECORATIVO ────────────────────────────────────────────────────────
+   Contorno, sem preenchimento, escala monumental, recortado pelas bordas.
+   Quem recorta é o `overflow: clip` de `.rgal-quadro` — e é `clip` e não
+   `hidden` porque `hidden` faria do quadro um scroll container e MATARIA o
+   `position: sticky` dele mesmo. */
+/* ── SIS-98: A GEOMETRIA REFEITA, POR MEDIÇÃO ─────────────────────────────────
+   O recorte estava agressivo o bastante para virar defeito. Medido a 1440, no
+   quadro preso:
+
+     NOSSA       tinta 1095→1613   173px fora da janela = 33,5% da palavra
+                 topo da tinta −38px, ou seja ACIMA da janela e sob o header
+     TRAJETÓRIA  tinta  749→1660   220px fora da janela = 24,1% da palavra
+
+   «TRAJETÓR» era o que sobrava, e NOSSA praticamente não existia. Três causas,
+   três correções:
+
+   1. A CAIXA ERA ESTREITA DEMAIS PARA A PALAVRA. `text-align: right` só alinha
+      linha que CABE; «TRAJETÓRIA» media 911px numa caixa de 864px, então ela
+      ignorava o alinhamento, começava na borda esquerda da caixa e transbordava
+      47px para além da borda direita — que já estava 173px fora da janela. A
+      caixa agora é mais larga que a palavra (48% a −2% = 54% da janela = 777px a
+      1440) e as duas palavras voltam a se alinhar à direita, no mesmo eixo, que é
+      a leitura de marca d'água que se queria desde o começo.
+
+   2. O CORPO ERA GRANDE DEMAIS. `11vw` com teto de 9,5rem dava 152px a 1440. A
+      relação é linear e foi medida: «TRAJETÓRIA» ocupa 5,99px de largura por px
+      de corpo, «NOSSA» 3,40. Com 8,3vw / teto de 7,5rem o corpo fica em 119,5px a
+      1440 e a palavra em 717px — dentro dos 778px da caixa. O que sangra agora é
+      só o pedaço em que a CAIXA passa da borda, e as duas palavras sangram o
+      mesmo tanto, porque terminam no mesmo eixo. Medido no quadro preso, com a
+      tinta lida por `Range` (a caixa do `<span>` é a do bloco, não a da tinta):
+
+        1440   corpo 119,5px   NOSSA 23px fora (5,7%)   TRAJETÓRIA 23px (3,2%)
+        1280   corpo 106,2px   NOSSA 20px fora (5,5%)   TRAJETÓRIA 20px (3,1%)
+        1024   corpo  85,0px   NOSSA 15px fora (5,2%)   TRAJETÓRIA 15px (2,9%)
+         390   corpo  37,1px   nenhuma das duas sangra (0%)
+
+      Continua beijando a borda, como a issue permite; deixa de cortar sílaba —
+      era «TRAJETÓR» com 24,1% fora, hoje é a palavra inteira com 3,2%.
+
+   3. O TOPO NÃO CONTAVA O HEADER. `line-height: 0.86` faz a tinta transbordar o
+      topo da caixa em 22% do corpo (34px medidos com 152px de corpo), e o quadro
+      preso encosta em `top: var(--header-height, 0px)` — a variável NÃO É
+      DEFINIDA em nenhum lugar do projeto (conferido: só há os dois consumos, aqui
+      e em `recognition-theater.css`), então o valor que vale é 0 e o header de
+      104px medidos fica POR CIMA do topo do quadro. Não é assunto desta issue
+      definir a variável — seria mexer no travamento da galeria inteira, que o
+      escopo proíbe —, então o recuo do decorativo é que absorve o header: 17vh
+      dão 153px a uma janela de 900px, menos os 26px de transbordo do novo corpo,
+      e a tinta de NOSSA nasce, medida, em 126px a 1440, 129px a 1280 e 134px a
+      1024 — abaixo dos 104px do header nas três, que é o que o aceite cobra.
+
+      O quadro a medir é o quadro PRESO, e «preso» começa depois de `+40px` de
+      rampa: a `+40` o `sticky` ainda não engatou (`.rgal-quadro` em top=−40) e o
+      decorativo lê 40px mais alto do que lê pelo resto do percurso. Abaixo de
+      64rem não há `sticky` nenhum, a seção só passa, e o header cobrir a marca
+      d'água por um instante ali é o comportamento normal de header fixo. */
+.rgal-decorativo {
+  position: absolute;
+  top: clamp(8.5rem, 17vh, 12rem);
+  /* «parcialmente recortado pelas bordas»: a caixa continua terminando fora — só
+     não mais 12% fora, que era um sexto da palavra jogado no vazio. */
+  left: 48%;
+  right: -2%;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-display);
+  font-size: clamp(3.25rem, 8.3vw, 7.5rem);
+  font-weight: 700;
+  line-height: 0.86;
+  letter-spacing: -0.03em;
+  text-align: right;
+  /* Contorno puro. `color: transparent` sozinho não basta — sem
+     `-webkit-text-stroke` o texto simplesmente não existe, e sem
+     `color: transparent` ele vem cheio. Os dois juntos, sempre. Não há
+     equivalente padronizado; `-webkit-text-stroke` é o que todos os navegadores
+     de hoje implementam. */
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(11 95 159 / 15%);
+}
+
+/* ── A FAIXA DE PAINÉIS ──────────────────────────────────────────────────────
+   Sangra de borda a borda, como na mock, onde o painel ativo começa em x=0.
+   `list-style: none` e `padding: 0` porque é `ul` — a lista é semântica, não
+   marcador. */
+.rgal-lista {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  height: var(--rgal-faixa);
+  /* A divisória externa: o fio fino que fecha a faixa por cima e por baixo, para
+     ela ler como uma peça de arquitetura contínua e não como quatro cartões. */
+  border-block: 1px solid var(--rgal-linha);
+  background: var(--rgal-branco);
+}
+
+.rgal-painel {
+  position: relative;
+  /* A LARGURA ANIMA EM `flex-grow`, e isso é uma escolha consciente contra a
+     regra geral de só animar `transform`/`opacity`. Não há alternativa honesta:
+     `transform: scaleX` esticaria o logo e o título junto, e `width` em % tem o
+     mesmo custo de layout que `flex-grow`. O que torna o custo aceitável é a
+     contagem — quatro nós, e a transição dispara em MUDANÇA DE ESTADO discreta
+     (quatro vezes no percurso inteiro), nunca a cada pixel de rolagem. Por isso
+     também não há `will-change` aqui: a issue proíbe `will-change` permanente, e
+     um hint permanente para uma transição que roda quatro vezes é desperdício de
+     memória de GPU.
+     3,01 contra 1 resolve em 3,01/6,01 = 50,08% — os 50,1% medidos na mock. */
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  /* Recorta o alvo esticado do botão (nota em `.rgal-botao::after`). */
+  overflow: hidden;
+  transition:
+    flex-grow 0.6s var(--rgal-curva),
+    background-color 0.6s var(--rgal-curva);
+  background: var(--rgal-branco);
+}
+
+/* As três superfícies fechadas da mock são progressivamente mais claras da
+   esquerda para a direita (228,243,254 → 246,251,254 → 251,252,253): é um
+   degradê de papel ao longo da faixa, não três cores decididas por item. Por
+   isso vem por `nth-child` do painel FECHADO — quando um deles abre, ele sai
+   desta escala e vira marinho. */
+.rgal-painel:not([data-ativo='true']):nth-child(2) {
+  background: #e4f3fe;
+}
+.rgal-painel:not([data-ativo='true']):nth-child(3) {
+  background: #f6fbfe;
+}
+.rgal-painel:not([data-ativo='true']):nth-child(4) {
+  background: #fbfcfd;
+}
+
+/* A divisória vertical «muito fina». Em `::before` absoluto e não em
+   `border-left`: borda participaria da caixa e os 1px entrariam na conta do
+   `flex-grow`, fazendo o painel ativo medir 50,1% menos um pixel e meio. Não no
+   primeiro painel — não há nada à esquerda dele. */
+.rgal-painel + .rgal-painel::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 1px;
+  background: var(--rgal-linha);
+  /* O fio desaparece quando o painel à esquerda ou o próprio painel é marinho:
+     ali a mudança de superfície já é a divisão, e um fio claro sobre marinho
+     seria um risco luminoso que a mock não tem. */
+  transition: opacity 0.6s var(--rgal-curva);
+}
+.rgal-painel[data-ativo='true']::before,
+.rgal-painel[data-ativo='true'] + .rgal-painel::before {
+  opacity: 0;
+}
+
+.rgal-painel[data-ativo='true'] {
+  flex-grow: 3.01;
+  background: linear-gradient(155deg, var(--rgal-marinho) 0%, var(--rgal-marinho-2) 100%);
+}
+
+/* ── A JANELA E A ARTE ───────────────────────────────────────────────────── */
+
+.rgal-janela {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  /* A MÁSCARA da issue: o logo sobe por dentro dela. `hidden` é seguro aqui —
+     esta caixa não é ancestral de nenhum sticky. */
+  overflow: hidden;
+}
+
+.rgal-arte {
+  position: relative;
+  z-index: 2;
+  /* Altura como medida de comando: cada peça tem proporção própria (382px de
+     altura no selo Reactions contra 200px no Cobertura Performance) e só a
+     altura deixa as quatro com presença equivalente. `width: auto` +
+     `object-fit: contain` garante que nenhuma delas seja esticada.
+     O TETO É O TAMANHO NATIVO. Medida na mock, a arte do painel ativo ocupa
+     ~207×258 a 1440 — praticamente os 200×252 nativos do troféu. Então a
+     galeria NÃO amplia o asset: `max-height` fecha em 252px, que é a altura
+     nativa da peça mais alta que abre em escala grande, e nada aqui pede um
+     arquivo que não existe. Era o risco que eu havia levantado antes de medir, e
+     a medição o dissolveu — não há upscale. */
+  width: auto;
+  height: auto;
+  max-width: min(72%, 260px);
+  max-height: clamp(96px, 26vh, 176px);
+  object-fit: contain;
+  transform: translateY(24px);
+  opacity: 0.3;
+  /* SIS-98 — sem sombra no painel FECHADO. Ali a arte está em `opacity: 0.3`, e
+     uma sombra a 30% não é elevação, é sujeira sob um logo pequeno. */
+  filter: none;
+  transition:
+    transform 0.6s var(--rgal-curva),
+    opacity 0.6s var(--rgal-curva),
+    max-height 0.6s var(--rgal-curva),
+    filter 0.6s var(--rgal-curva);
+}
+.rgal-painel[data-ativo='true'] .rgal-arte {
+  transform: translateY(0);
+  opacity: 1;
+  /* «troféu centralizado e apresentado em grande escala» — e nunca acima do
+     nativo (nota acima). */
+  max-height: min(252px, 46vh);
+  max-width: min(68%, 340px);
+}
+
+/* ── SIS-98: A SOMBRA SOB A ARTE ──────────────────────────────────────────────
+   Antes era `filter: none`: nenhuma sombra, o troféu flutuava. A base elíptica é
+   um BRILHO ciano, que empurra a peça para frente mas não a apoia em nada.
+
+   COMO ISTO FOI MEDIDO, e por que não por perfil de luminância. A primeira
+   tentativa foi uma coluna de 120px descendo do PÉ DA CAIXA da arte, e ela lia
+   99,7 constante — com e sem sombra. Não era ausência de sombra: os quatro PNG
+   têm margem transparente embaixo, a silhueta termina ACIMA da borda da caixa, e
+   `drop-shadow` desenha a partir do alfa, então a sombra cai DENTRO da caixa e a
+   coluna a media pelo lado de fora. A leitura que vale é por DIFERENÇA: fotografo
+   a região da arte com folga de 40px, desligo só o `filter`, fotografo de novo, e
+   comparo pixel a pixel — nenhum outro pixel da página muda, então a diferença É
+   a sombra, onde ela estiver. Com o painel da Gaivota aberto:
+
+     1440   26,0% da região mudou   escurecimento médio 7,4/255   pior −32,3
+     1280   25,8%                   7,4/255                       pior −32,7
+     1024   25,6%                   7,4/255                       pior −35,0
+
+   O «médio 7,4» não é sombra fraca, é o TETO DO FUNDO: o marinho `#001a3d` tem
+   luminância ~23/255, então nem sombra opaca poderia baixá-lo mais de 23 pontos.
+   Os picos de 32 a 35 são justamente onde a sombra encontra o brilho da base — é
+   ali que o contato se lê, e é ali que a elevação aparece. Empurrar mais alfa não
+   compraria contraste, viraria borrão preto sobre preto.
+
+   `drop-shadow` e não `box-shadow`: os quatro PNG são RGBA com fundo transparente
+   (conferido byte a byte — ver cabeçalho de `src/data/reconhecimentos.ts`), então
+   `drop-shadow` segue o canal alfa e desenha a sombra DO TROFÉU. `box-shadow`
+   desenharia a sombra de um retângulo que não existe.
+
+   DUAS CAMADAS, que é como elevação se lê: uma curta e mais fechada (o contato
+   com o palco) e uma larga e difusa (a ambiente). Empilhar dois `drop-shadow`
+   custa dois passes de GPU num único nó por painel, e só no painel aberto — há um
+   aberto por vez.
+
+   SEM NEON ROXO, e sem ciano: a sombra é a tinta da própria seção levada abaixo
+   do marinho (`#001a3d`), não uma cor de luz. A linguagem clara da seção fica
+   onde estava — no papel, no eyebrow azul e no fio ciano.
+
+   AS QUATRO PEÇAS RECEBEM SOMBRA, com força por `data-tinta`, senão a Gaivota
+   ficaria a única peça apoiada e as outras três continuariam flutuando — é o
+   «alinhar família» que a issue pede. A força difere porque o FUNDO IMEDIATO
+   difere, e isso não é gosto: o troféu (tinta clara) fica direto sobre o marinho,
+   e os três selos de tinta escura ficam sobre a base de papel `rgb(232,248,255)`
+   que existe para lhes dar 5,6:1 (nota de `tintaEscura`). A mesma sombra que
+   apenas apoia o troféu no marinho comeria esse papel por baixo do selo. */
+.rgal-painel[data-ativo='true'][data-tinta='clara'] .rgal-arte {
+  filter:
+    drop-shadow(0 3px 4px rgb(0 6 20 / 70%))
+    drop-shadow(0 16px 22px rgb(0 8 24 / 55%));
+}
+.rgal-painel[data-ativo='true'][data-tinta='escura'] .rgal-arte {
+  /* Mais curta e mais fraca: o papel da base é o que garante a leitura do selo, e
+     a sombra aqui só o separa da base — não pode escurecê-lo. */
+  filter:
+    drop-shadow(0 2px 3px rgb(6 24 59 / 34%))
+    drop-shadow(0 10px 16px rgb(6 24 59 / 22%));
+}
+
+/* ── O FUNDO ATRÁS DO TROFÉU: FITAS DE LUZ + MALHA INTERATIVA ─────────────────
+   Pedido de 24/09. As três camadas ficam em `z-index: 0` — um degrau ABAIXO da
+   base elíptica. É a única posição possível: a base é o papel que garante 5,6:1
+   ao selo da ABNT sobre o marinho, e pintar por cima dela roubaria contraste de
+   três dos quatro painéis. Por baixo, o fundo fica mais rico sem tocar no selo.
+
+   Também só existem no painel ATIVO, pelo mesmo motivo dos aros. */
+.rgal-fitas,
+.rgal-malha,
+.rgal-malha-luz {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s var(--rgal-curva);
+}
+/* As duas malhas NÃO entram aqui: elas abrem em opacidade fracionária própria,
+   logo abaixo. Só as fitas chegam a 1 (a tinta delas já é fraca no gradiente). */
+.rgal-painel[data-ativo='true'] .rgal-fitas {
+  opacity: 1;
+}
+
+/* FITAS DE LUZ — três varrimentos radiais muito largos e muito fracos. Elipses
+   achatadas e deslocadas dão a curvatura das fitas da referência sem precisar de
+   `<svg>`: aqui não há canto redondo nem arco de traço, só luz. */
+.rgal-fitas {
+  background:
+    radial-gradient(120% 52% at 12% 18%, rgb(14 216 246 / 13%), transparent 70%),
+    radial-gradient(110% 46% at 96% 74%, rgb(165 240 255 / 11%), transparent 72%),
+    radial-gradient(90% 70% at 50% 116%, rgb(11 95 159 / 26%), transparent 76%);
+}
+
+/* MALHA DE QUADRADOS — o idioma de `AtmosferaQuadrados`, mas em gradiente: lá a
+   forma era retângulo arredondado e arco (geometria, pede SVG); aqui é repetição
+   regular, e dois gradientes repetidos custam um pintar em vez de um nó por
+   célula. Passo de 44px, a mesma ordem de grandeza da grade fina da casa.
+   A malha desbota nas bordas por `mask`, senão viraria moldura. */
+.rgal-malha,
+.rgal-malha-luz {
+  background-image:
+    linear-gradient(to right, rgb(165 240 255 / 100%) 0 1px, transparent 1px 100%),
+    linear-gradient(to bottom, rgb(165 240 255 / 100%) 0 1px, transparent 1px 100%);
+  background-size: 44px 44px;
+  background-position: center center;
+}
+.rgal-malha {
+  /* Desbota para as bordas: sem a máscara a malha encostaria nos quatro lados e
+     leria como moldura do painel, não como atmosfera. */
+  /* O prefixo acompanha o padrão do `globals.css`: sem ele o Safari não recorta
+     e a malha encosta nas bordas. */
+  -webkit-mask-image: radial-gradient(100% 78% at 50% 50%, #000 42%, transparent 88%);
+  mask-image: radial-gradient(100% 78% at 50% 50%, #000 42%, transparent 88%);
+}
+.rgal-painel[data-ativo='true'] .rgal-malha {
+  opacity: 0.085;
+}
+
+/* A MALHA INTERATIVA. É a MESMA malha, mais acesa, recortada por uma máscara
+   redonda centrada no ponteiro: `--sx`/`--sy` (0..1) são publicadas no `<li>`
+   por `usePonteiroNaSecao` e herdadas até aqui. O que se move é a máscara — a
+   malha continua parada, então nada desalinha com a cópia de repouso.
+
+   O repouso de 0.5/0.5 vem do SEGUNDO ARGUMENTO do `var()`, e não de um
+   `--sx: 0.5` neste elemento. A diferença não é de estilo: declarar a variável
+   aqui BLOQUEIA o valor herdado do `<li>`, e a máscara nunca sai do centro —
+   foi o defeito medido na primeira passada (`--sx` no painel andava 0,47 e o
+   bloco de pixels não mudava um byte). O valor padrão no `var()` mantém o
+   estado desenhado para o toque, o teclado e quem nunca passa o cursor. */
+.rgal-malha-luz {
+  -webkit-mask-image: radial-gradient(
+    circle 120px at calc(var(--sx, 0.5) * 100%) calc(var(--sy, 0.5) * 100%),
+    #000 0%,
+    rgb(0 0 0 / 35%) 55%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    circle 120px at calc(var(--sx, 0.5) * 100%) calc(var(--sy, 0.5) * 100%),
+    #000 0%,
+    rgb(0 0 0 / 35%) 55%,
+    transparent 100%
+  );
+}
+.rgal-painel[data-ativo='true'] .rgal-malha-luz {
+  opacity: 0.34;
+}
+
+/* A BASE ELÍPTICA e os três aros técnicos. Só existem no painel ativo: é ali que
+   a issue os pede, e num painel fechado eles seriam ruído sob um logo pequeno. */
+.rgal-base,
+.rgal-aro {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s var(--rgal-curva);
+}
+.rgal-painel[data-ativo='true'] .rgal-base,
+.rgal-painel[data-ativo='true'] .rgal-aro {
+  opacity: 1;
+}
+
+.rgal-base {
+  left: 50%;
+  top: 50%;
+  width: min(78%, 400px);
+  aspect-ratio: 1 / 0.82;
+  translate: -50% -50%;
+  border-radius: 50%;
+}
+/* Tinta CLARA (o troféu da Gaivota de Ouro).
+   ── SIS-170: O HALO ATRÁS DO TROFÉU ──────────────────────────────────────────
+
+   A regra anterior era UM radial ciano a 18% de alfa, e a nota que a justificava
+   («o troféu tem 72% dos pixels acima de 0,5 de luminância e lê sozinho sobre
+   marinho») explicava por que ele NÃO precisava de papel — não por que ele não
+   podia ter presença. Ciano a 18% sobre `--rgal-marinho` é quase invisível, que é
+   exatamente o que a issue audita: a Gaivota fica com sombra fraca enquanto o selo
+   da ABNT tem glow evidente (a base dele é papel a 95%).
+
+   POR QUE NÃO É «MAIS OPACIDADE NO MESMO GRADIENTE» (a opção 1 da issue, lida até
+   o fim). Clarear o disco inteiro é clarear justamente o que fica ATRÁS do troféu.
+   O selo da ABNT é tinta escura — papel atrás dele COMPRA contraste (5,6:1). O
+   troféu é claro e dourado: papel atrás dele PERDE contraste, e é o «lavar o ouro»
+   que o aceite proíbe. Os dois painéis pedem coisas opostas do mesmo nó.
+
+   ENTÃO O HALO É UMA AURÉOLA, não um disco: duas camadas com papéis contrários.
+     · O NÚCLEO é mais FUNDO que o marinho (`rgb(0 12 32)`), e morre em 52% do
+       raio. É ele que fica sob a silhueta, e é ele que dá elevação de verdade —
+       junto com o `drop-shadow` de duas camadas que a SIS-98 mediu logo acima
+       (aquela medição registrou que o pico da sombra aparece «onde ela encontra o
+       brilho da base»; aprofundar o núcleo é aumentar esse encontro).
+     · A AURÉOLA acende FORA da silhueta: transparente até 30%, pico de luz entre
+       52% e 66%, e apaga antes da borda. O glow se vê em volta do troféu, que é o
+       pedido, sem nenhum pixel claro novo por baixo do ouro.
+   O disco também cresceu (88%/460px contra 78%/400px) para o pico de luz cair
+   fora da arte, que abre em 340px de largura por 252px de altura.
+
+   Tinta de luz: gelo (`rgb(190 238 255)`) no pico e o ciano da casa logo depois —
+   é a paleta da seção. Sem neon roxo, como a issue exige, e sem tocar na base de
+   tinta escura: os três selos continuam byte por byte na regra abaixo.
+
+   ⚠️ NÃO MEDIDO POR SONDA nesta passada (instrução em vigor: só lint). Os alfas
+   acima foram escolhidos pela aritmética do fundo que a SIS-98 já havia medido — o
+   marinho `#001a3d` tem luminância ~23/255, então o núcleo a 55% é o teto útil de
+   escurecimento, e acima disso não se compra contraste. A conferência visual a 1440
+   fica em aberto. */
+.rgal-painel[data-tinta='clara'] .rgal-base {
+  width: min(88%, 460px);
+  aspect-ratio: 1 / 0.86;
+  background:
+    /* O núcleo fundo, sob a silhueta. */
+    radial-gradient(
+      closest-side,
+      rgb(0 12 32 / 55%),
+      rgb(0 12 32 / 24%) 34%,
+      transparent 52%
+    ),
+    /* A auréola, acesa só fora dela. */
+    radial-gradient(
+      closest-side,
+      transparent 30%,
+      rgb(190 238 255 / 30%) 52%,
+      rgb(14 216 246 / 26%) 66%,
+      rgb(14 216 246 / 8%) 80%,
+      transparent 92%
+    );
+}
+/* Tinta ESCURA (os três selos): a base vira papel. Sem ela o selo da ABNT, com
+   100% da tinta abaixo de 0,18 de luminância, desapareceria por completo ao
+   painel virar marinho — o defeito que a mock não mostra porque o painel ativo
+   desenhado é justamente o único asset claro. Sobre `rgb(232,248,255)` a tinta
+   da ABNT dá 5,6:1. Continua sendo elipse: sem borda, sem canto arredondado de
+   caixa, sem sombra pesada — não é cartão interno. */
+.rgal-painel[data-tinta='escura'] .rgal-base {
+  background: radial-gradient(
+    closest-side,
+    rgb(232 248 255 / 95%),
+    rgb(232 248 255 / 88%) 46%,
+    rgb(232 248 255 / 30%) 66%,
+    rgb(14 216 246 / 10%) 76%,
+    transparent 86%
+  );
+}
+
+/* Três aros finos, nada além. */
+.rgal-aro {
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  border-radius: 50%;
+  border: 1px solid rgb(165 240 255 / 16%);
+}
+.rgal-aro-1 {
+  width: min(92%, 460px);
+  aspect-ratio: 1;
+}
+.rgal-aro-2 {
+  width: min(64%, 320px);
+  aspect-ratio: 1;
+  border-color: rgb(14 216 246 / 14%);
+}
+/* O terceiro é o de fora, e o mais fraco dos três: ele fecha a leitura de anéis
+   concêntricos da referência e some antes de virar borda do painel. */
+.rgal-aro-3 {
+  width: min(118%, 600px);
+  aspect-ratio: 1;
+  border-color: rgb(165 240 255 / 9%);
+}
+
+/* ── O BOTÃO, O TÍTULO E O FIO ───────────────────────────────────────────── */
+
+.rgal-botao {
+  position: relative;
+  /* z-index acima da arte para o alvo esticado cobrir o painel inteiro. */
+  z-index: 3;
+  display: block;
+  width: 100%;
+  padding: 0 clamp(1rem, 2vw, 2rem) clamp(1.25rem, 3vh, 2rem);
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+/* O ALVO ESTICADO: o botão é pequeno (só o rodapé do painel) mas a área clicável
+   é o painel todo. `inset` negativo no topo o faz subir até a borda superior do
+   painel. Qualquer painel, fechado ou aberto, em qualquer largura, passa muito
+   folgado dos 44×44px que a issue exige — o mais estreito é o fechado no
+   desktop, ~16,6% de 1024px = 170px. */
+.rgal-botao::after {
+  content: '';
+  position: absolute;
+  inset: -100vh 0 0;
+  /* O `-100vh` só alcança o topo do painel: `.rgal-painel` tem
+     `overflow: hidden` e recorta o excesso. Isso é seguro — o `sticky` desta
+     seção está ACIMA no DOM (`.rgal-quadro`), e o que mata sticky é um scroll
+     container ANCESTRAL, não um descendente. */
+}
+
+.rgal-botao:focus-visible {
+  outline: none;
+}
+/* Foco visível nas DUAS superfícies, que a issue cobra por nome: no papel o anel
+   é azul institucional, no marinho ele é ciano. Desenhado no `::after`, que é o
+   alvo real — um `outline` no botão mostraria só o retângulo do rodapé. */
+.rgal-botao:focus-visible::after {
+  outline: 3px solid var(--rgal-azul);
+  outline-offset: -3px;
+}
+.rgal-painel[data-ativo='true'] .rgal-botao:focus-visible::after {
+  outline-color: var(--rgal-ciano);
+}
+
+.rgal-titulo {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  /* «compacto → ampliado». Os dois corpos, e a transição entre eles. Animar
+     `font-size` custa layout, mas são quatro nós e quatro disparos no percurso —
+     a mesma conta do `flex-grow`. */
+  font-size: 1rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--rgal-tinta);
+  transition:
+    font-size 0.6s var(--rgal-curva),
+    color 0.6s var(--rgal-curva);
+}
+.rgal-painel[data-ativo='true'] .rgal-titulo {
+  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  color: #fff;
+}
+
+.rgal-fio {
+  display: block;
+  width: clamp(2.5rem, 5vw, 4.5rem);
+  height: 2px;
+  margin-top: 0.75rem;
+  background: var(--rgal-ciano);
+  transform-origin: left center;
+  /* O fio existe em todo painel — a issue pede «pequena linha ciano horizontal
+     abaixo do título» também nos fechados — e é o SEU CRESCIMENTO que sinaliza o
+     ativo. Fechado ele vive em 34% do comprimento. */
+  transform: scaleX(0.34);
+  transition: transform 0.6s var(--rgal-curva);
+}
+.rgal-painel[data-ativo='true'] .rgal-fio {
+  transform: scaleX(1);
+}
+
+/* ── A DICA ──────────────────────────────────────────────────────────────── */
+
+.rgal-dica {
+  margin: 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  /* `--rgal-muted` a 3,9:1 não serve para texto de 13px. O azul institucional
+     serve (5,7:1) e é a mesma escolha do eyebrow. */
+  color: var(--rgal-azul);
+}
+
+/* ── AS NOTAS DE RODAPÉ ──────────────────────────────────────────────────── */
+
+.rgal-notas {
+  position: relative;
+  z-index: 2;
+  padding-bottom: clamp(3.5rem, 7vh, 5rem);
+  display: grid;
+  gap: 1rem;
+}
+.rgal-notas p {
+  margin: 0;
+  max-inline-size: 48rem;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: rgb(6 24 59 / 85%);
+}
+
+/* ═══ DESKTOP: A RAMPA PRESA ════════════════════════════════════════════════
+   Só a partir de 64rem, o limite que a issue nomeia. */
+@media (min-width: 64rem) {
+  .rgal-rampa {
+    /* Quatro etapas de 80svh. O valor da issue. */
+    min-height: 320svh;
+  }
+  .rgal-quadro {
+    position: sticky;
+    top: var(--header-height, 0px);
+    min-height: calc(100svh - var(--header-height, 0px));
+    /* `clip` e nunca `hidden`: `hidden` faz desta caixa um scroll container e o
+       próprio `sticky` dela deixa de funcionar. É o mesmo par que
+       `recognition-theater.css:1002-1018` usa. */
+    overflow: clip;
+    justify-content: center;
+  }
+}
+
+/* ═══ MOBILE E TABLET: CARROSSEL NATIVO ═════════════════════════════════════
+   Abaixo de 64rem não há rampa (o `min-height` acima simplesmente não existe
+   aqui) e a faixa vira scroll horizontal com snap. Nada de autoplay, nada que
+   dependa de hover — o painel se abre no toque, pelo `onClick` do botão. */
+@media (max-width: 63.999rem) {
+  .rgal-lista {
+    /* Sangra para a borda e volta com padding, para o primeiro painel encostar
+       na margem da rota e o último ter respiro no fim da rolagem. */
+    height: auto;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    /* O mesmo respiro lateral do `container-lp` (`px-5` = 1,25rem na base). */
+    padding-inline: 1.25rem;
+    gap: 0;
+    /* A barra nativa fica: ela é a única pista de que há mais à direita, agora
+       que setas e bolinhas estão proibidas. */
+    scrollbar-width: thin;
+  }
+  .rgal-painel {
+    /* 82vw, o valor da issue: o painel seguinte fica parcialmente visível e
+       comunica continuidade. */
+    flex: 0 0 82vw;
+    min-height: 26rem;
+    scroll-snap-align: start;
+    /* Nada de animar largura aqui — a largura é fixa e quem muda é a superfície. */
+    transition: background-color 0.6s var(--rgal-curva);
+  }
+  .rgal-painel[data-ativo='true'] {
+    flex-grow: 0;
+  }
+  /* O decorativo «escondido ou bastante reduzido»: reduzido, e empurrado para
+     fora da coluna de leitura.
+
+     SIS-98 — o mesmo defeito vivia aqui, e pior: a 390, `16vw` dava 62px de corpo
+     e uma «TRAJETÓRIA» de 374px numa caixa de 312px (40% a −20%), isto é 140px
+     fora da janela, 37% da palavra. A issue nomeia 1440 e 1280 no aceite, mas o
+     defeito é o mesmo e não faz sentido consertar só onde ele foi fotografado.
+     Mesma aritmética: 9,5vw dão 37px de corpo e 222px de palavra, e 34% a −2% dão
+     265px de caixa — a palavra cabe, alinha à direita e sangra os 8px em que a
+     caixa passa da borda (3,5%).
+
+     Aqui NÃO há quadro preso e o recuo do topo volta ao valor curto: sem sticky a
+     seção rola por inteiro e o header não fica parado sobre ela. */
+  .rgal-decorativo {
+    top: clamp(1rem, 4vh, 3rem);
+    left: 34%;
+    right: -2%;
+    font-size: clamp(2.25rem, 9.5vw, 4rem);
+    opacity: 0.6;
+  }
+  /* A dica fala de cursor e de rolagem vertical — nenhum dos dois é verdade
+     aqui, e mantê-la seria instrução errada. */
+  .rgal-dica {
+    display: none;
+  }
+}
+
+/* ═══ HOVER SÓ ONDE HÁ PONTEIRO ═════════════════════════════════════════════
+   O `onPointerEnter` do componente dispara em toque também (um toque emite
+   `pointerenter`), e num toque não existe «sair»: o painel ficaria antecipado
+   para sempre. A guarda fica no CSS *e* precisa de par no comportamento — o
+   `onClick` é o que resolve de verdade no toque, então o hover antecipado é
+   puramente visual e o estado real é sempre alcançável por clique, como a issue
+   exige ao dizer que «o hover não pode ser o único meio de interação». */
+@media (hover: hover) and (pointer: fine) {
+  .rgal-painel:not([data-ativo='true']):hover {
+    background: #eaf5ff;
+  }
+}
+
+/* ═══ MOVIMENTO REDUZIDO ════════════════════════════════════════════════════
+   Os dois canais: a preferência real e o espelho por atributo que o alternador
+   do site escreve no `<html>` antes da primeira pintura.
+   O que se exige aqui não é «parar tudo»: é que os quatro painéis fiquem no
+   fluxo, legíveis e alcançáveis, sem sticky e sem parallax. A arte NÃO pode
+   ficar em `translateY(24px)` com `opacity: 0.3` — esse é o estado inicial de
+   uma animação, e congelado ele é o «conteúdo invisível para sempre» que a
+   skill de movimento reduzido descreve. Então todo painel entra no estado
+   final. */
+@media (prefers-reduced-motion: reduce) {
+  .rgal-rampa {
+    min-height: 0 !important;
+  }
+  .rgal-quadro {
+    position: static !important;
+    min-height: 0 !important;
+  }
+  .rgal-lista {
+    display: grid;
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+  .rgal-painel {
+    flex: none;
+    min-height: 18rem;
+    /* Máximo de 150ms, conforme a issue. */
+    transition-duration: 150ms !important;
+  }
+  .rgal-arte,
+  .rgal-base,
+  .rgal-aro,
+  .rgal-titulo,
+  .rgal-fio {
+    transition-duration: 150ms !important;
+  }
+  .rgal-arte {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  /* SIS-98 — A MARCA D'ÁGUA NÃO PODE VAZAR A JANELA AQUI.
+     MEDIDO: com movimento reduzido a página ganhava barra horizontal — 1469px de
+     `scrollWidth` numa janela de 1440 e 398 numa de 390. Os 29px e os 8px são
+     exatamente os 2% de `right: -2%`, e a causa é a regra logo acima: com
+     `position: static` o `.rgal-quadro` deixa de ser o bloco contentor do
+     decorativo, que passa a resolver contra a seção, e o recuo negativo vira
+     rolagem do documento em vez de sangramento recortado. `overflow: clip` no
+     quadro não resolveria — ele não clipa quem tem bloco contentor ACIMA dele.
+     Encostar a caixa em `right: 0` resolve, e não custa nada de leitura: as duas
+     palavras continuam alinhadas no mesmo eixo à direita, só sem sangrar. O
+     sangramento é efeito de composição do estado animado, e é justamente o tipo
+     de coisa que este canal desliga. */
+  .rgal-decorativo {
+    right: 0 !important;
+  }
+  /* SIS-98 — a sombra também entra no estado final, e nos QUATRO painéis: aqui a
+     rampa virou grade e os quatro aparecem abertos ao mesmo tempo, com base e
+     aros acesos pelas regras abaixo. Um único painel apoiado no meio de três
+     flutuando seria o mesmo desalinho de família que a issue manda evitar.
+     A força é a do fundo CLARO, e não a do marinho: neste canal só o painel ativo
+     é marinho, os outros três são papel — e é a sombra suave a que pertence ao
+     papel (nota longa em `.rgal-arte`). */
+  .rgal-painel:not([data-ativo='true']) .rgal-arte {
+    filter:
+      drop-shadow(0 2px 3px rgb(6 24 59 / 34%))
+      drop-shadow(0 10px 16px rgb(6 24 59 / 22%)) !important;
+  }
+  .rgal-base,
+  .rgal-aro {
+    opacity: 1 !important;
+  }
+  /* O fundo novo entra no MESMO estado final, e em todos os painéis: aqui a
+     rampa virou grade e os quatro estão abertos ao mesmo tempo. */
+  .rgal-fitas,
+  .rgal-malha,
+  .rgal-malha-luz {
+    transition-duration: 150ms !important;
+  }
+  .rgal-fitas {
+    opacity: 1 !important;
+  }
+  .rgal-malha {
+    opacity: 0.085 !important;
+  }
+  /* A máquina do ponteiro fica PRESA NO CENTRO. Neste canal o hook já nem é
+     registrado (`useReducedMotion` lê esta mesma consulta), mas a regra fica
+     escrita porque é ela que vale no outro canal, abaixo — e porque um estilo
+     inline remanescente de antes da preferência mudar não pode voltar a mexer. */
+  .rgal-malha-luz {
+    opacity: 0.34 !important;
+    --sx: 0.5 !important;
+    --sy: 0.5 !important;
+  }
+  .rgal-fio {
+    transform: scaleX(1) !important;
+  }
+  /* O deslocamento do decorativo é escrito no estilo inline pelo `motion`, então
+     CSS não o alcança — quem o desliga é o próprio `motion`, que respeita a
+     preferência. O que fica aqui é a garantia de que nenhuma transição sobra. */
+}
+html[data-motion='reduce'] .rgal-rampa {
+  min-height: 0 !important;
+}
+html[data-motion='reduce'] .rgal-quadro {
+  position: static !important;
+  min-height: 0 !important;
+}
+/* SIS-98 — o par da regra acima: `position: static` no quadro tira dele o papel
+   de bloco contentor do decorativo, e o `right: -2%` deste vira barra horizontal
+   no documento (medido no canal de media query: 1469px de `scrollWidth` a 1440 e
+   398 a 390, que são os 2% exatos). Nota longa no outro canal. */
+html[data-motion='reduce'] .rgal-decorativo {
+  right: 0 !important;
+}
+html[data-motion='reduce'] .rgal-lista {
+  display: grid;
+  grid-template-columns: 1fr;
+  height: auto;
+  overflow: visible;
+  scroll-snap-type: none;
+}
+html[data-motion='reduce'] .rgal-painel {
+  flex: none;
+  min-height: 18rem;
+  transition-duration: 150ms !important;
+}
+html[data-motion='reduce'] .rgal-arte {
+  transform: none !important;
+  opacity: 1 !important;
+  transition-duration: 150ms !important;
+}
+/* SIS-98 — o par da regra acima, no canal do alternador do site. */
+html[data-motion='reduce'] .rgal-painel:not([data-ativo='true']) .rgal-arte {
+  filter:
+    drop-shadow(0 2px 3px rgb(6 24 59 / 34%))
+    drop-shadow(0 10px 16px rgb(6 24 59 / 22%)) !important;
+}
+html[data-motion='reduce'] .rgal-base,
+html[data-motion='reduce'] .rgal-aro {
+  opacity: 1 !important;
+  transition-duration: 150ms !important;
+}
+html[data-motion='reduce'] .rgal-fitas {
+  opacity: 1 !important;
+  transition-duration: 150ms !important;
+}
+html[data-motion='reduce'] .rgal-malha {
+  opacity: 0.085 !important;
+  transition-duration: 150ms !important;
+}
+/* AQUI a regra é indispensável, e não só simétrica: neste canal quem pediu menos
+   movimento foi o alternador do site, a consulta de mídia não casa e o hook
+   CONTINUA registrado escrevendo `--sx`/`--sy` no `<li>`. A máscara fica presa no
+   centro porque a declaração própria do elemento vence o valor herdado do pai. */
+html[data-motion='reduce'] .rgal-malha-luz {
+  opacity: 0.34 !important;
+  --sx: 0.5 !important;
+  --sy: 0.5 !important;
+  transition-duration: 150ms !important;
+}
+html[data-motion='reduce'] .rgal-titulo {
+  transition-duration: 150ms !important;
+}
+html[data-motion='reduce'] .rgal-fio {
+  transform: scaleX(1) !important;
+  transition-duration: 150ms !important;
+}

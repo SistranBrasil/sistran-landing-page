@@ -1,0 +1,497 @@
+/* SIS-87 — «ISG Provider Lens» de `/quem-somos`, a composição da mock
+   `public/isg.png` construída em HTML/CSS. Companheiro de `IsgProviderLens.tsx`;
+   o porquê de cada decisão de estrutura está lá, aqui ficam as de pintura.
+
+   Os valores vêm de `docs/isg.md` (fundo, raios, colunas, tipografia, ordem no
+   mobile). Onde o documento e a casa divergem, a casa ganha e a nota diz por quê —
+   é o que o próprio documento manda no item «reaproveite os padrões atuais». */
+
+/* A seção é `.section-light.isg-secao` no JSX, e é assim que o seletor tem de ser
+   escrito: `.isg-secao` sozinha é (0,1,0) e perdia do fundo herdado. Medido — com
+   uma classe só, `getComputedStyle` devolvia o gradiente da casa, não este. */
+.section-light.isg-secao {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* O fundo do documento, com as duas manchas radiais e a base `#f7fbff`.
+     ELE SUBSTITUI o de `.section-light-blue`, e isso não é detalhe: aquele
+     terminava em `#cfe7f7`, e os dois `NotchDivider` que cercam esta seção usavam
+     `#f2f9fe` (topo) e `#cfe7f7` (base) justamente para casar com ele. Trocar o
+     fundo sem retocar os dois chanfros deixaria duas linhas de corte na página —
+     por isso os dois passaram a `#f7fbff` no mesmo commit, com a emenda medida.
+     `.section-light-blue` NÃO continua na seção (ver o comentário no JSX): além
+     da base de cor, ela traz a sombra de costura da SIS-93, que sangra `#e3f1fb`
+     — cor do gradiente antigo, que aqui deixou de existir. `.section-light`
+     continua, pela textura de 96px e pelo navy padrão do texto. */
+  background:
+    radial-gradient(circle at 10% 10%, rgb(0 183 235 / 8%), transparent 30%),
+    radial-gradient(circle at 92% 85%, rgb(48 105 220 / 9%), transparent 32%),
+    #f7fbff;
+}
+
+/* Riscos lineares nos cantos superior direito e inferior esquerdo, como a mock.
+   Decorativos: sem conteúdo e `aria-hidden` no JSX. São dois arcos finos em ciano
+   a baixa opacidade, desenhados por borda + raio — não por SVG — porque o traço é
+   um quarto de círculo e borda resolve sem mais um arquivo. */
+.isg-cantos::before,
+.isg-cantos::after {
+  content: '';
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border: 1px solid rgb(5 189 232 / 22%);
+  pointer-events: none;
+}
+.isg-cantos::before {
+  top: -60px;
+  right: -60px;
+  border-radius: 0 0 0 120px;
+  border-width: 0 0 1px 1px;
+}
+.isg-cantos::after {
+  bottom: -60px;
+  left: -60px;
+  border-radius: 0 120px 0 0;
+  border-width: 1px 1px 0 0;
+}
+
+/* A GRADE de duas colunas. Os `minmax` são os do documento; o `gap` também.
+   Abaixo de 68.75rem (1100px, a fronteira que o documento nomeia) tudo empilha. */
+.isg-grade {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.75rem, 3vw, 3rem);
+  /* `start` e não `stretch`: esticado, o painel da foto ganhava a altura da coluna
+     de texto (826px medidos contra 543 de proporção natural) e o `object-fit:
+     cover` cortava as laterais da fotografia — era isso que aparecia como imagem
+     cortada. Alinhado ao topo, o painel fica na proporção do arquivo e nada é
+     recortado. */
+  align-items: start;
+}
+@media (min-width: 68.75rem) {
+  .isg-grade {
+    grid-template-columns: minmax(420px, 0.85fr) minmax(620px, 1.25fr);
+  }
+}
+
+/* ── COLUNA ESQUERDA: a fotografia ───────────────────────────────────────────── */
+.isg-painel {
+  position: relative;
+  border-radius: 26px;
+  overflow: hidden;
+  border: 1px solid rgb(0 170 230 / 22%);
+  box-shadow: 0 24px 60px rgb(8 39 86 / 12%);
+  /* `4 / 5` é a proporção do arquivo (1122×1402, medida com `sharp`) e é a que o
+     documento pede no mobile — e agora vale em toda largura, pelo motivo do bloco
+     comentado logo abaixo. */
+  aspect-ratio: 4 / 5;
+}
+/* O painel guarda `4 / 5` EM TODA LARGURA. O bloco que havia aqui soltava a
+   proporção no desktop (`aspect-ratio: auto; min-height: 680px`) para o painel
+   acompanhar a coluna de texto; o preço era o recorte da fotografia, e o pedido
+   foi justamente não cortar. Sem ele, a coluna da esquerda termina antes da
+   direita — o que a mock também mostra.
+@media (min-width: 68.75rem) {
+  .isg-painel { aspect-ratio: auto; min-height: 680px; }
+} */
+.isg-painel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* O SELO. Gradiente roxo→azul, cantos de 16px, sobre a base da foto.
+   O roxo é exigência da mock e do documento, e é a única mancha roxa da rota: fica
+   contida no selo, que é peça de terceiro (ISG), não elemento de marca Sistran. */
+.isg-selo {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 24px;
+  max-width: 420px;
+  display: flex;
+  gap: 0.875rem;
+  align-items: flex-start;
+  padding: 1rem 1.125rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #5b3fa8 0%, #4433a0 55%, #2f4bb0 100%);
+  box-shadow: 0 14px 34px rgb(24 16 64 / 32%);
+}
+@media (max-width: 47.9375rem) {
+  .isg-selo {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+}
+/* A asterisco do selo. NÃO é o logo recortado — recortar o arquivo oficial para
+   pescar o símbolo é justamente o que `docs/isg.md` proíbe («sem redesenhá-lo»).
+   É um glifo decorativo, `aria-hidden`, e o nome da marca aparece escrito ao lado
+   dele em texto real. */
+/* AS TRÊS REGRAS ABAIXO NÃO DECLARAM COR, de propósito. Quem pinta o texto do
+   selo é `.on-dark` em `globals.css:1233-1255`, com `!important`: qualquer cor
+   escrita aqui seria descartada, e escrevê-la daria a impressão falsa de que
+   manda. O efeito é que título e linha ficam ambos em branco a 88% — a distinção
+   entre eles passa a ser só peso e corpo, o que basta, e 88% de branco sobre o
+   roxo mais claro do gradiente (`#5b3fa8`) é o número que a sonda confere.
+   Removido daqui: `color: rgb(255 255 255 / 92%)` na marca, `color: #fff` no
+   título e `color: rgb(255 255 255 / 88%)` no texto. */
+.isg-selo__marca {
+  flex: none;
+  font-size: 2rem;
+  line-height: 1;
+}
+.isg-selo__titulo {
+  margin: 0;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  line-height: 1.3;
+}
+.isg-selo__texto {
+  margin: 0.375rem 0 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+/* ── COLUNA DIREITA ──────────────────────────────────────────────────────────── */
+.isg-conteudo {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sobretítulo + a linha que corre pelo espaço restante. */
+.isg-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+/* O rótulo TEM de ter «eyebrow» no nome da classe, e não ser um `span` anônimo:
+   `globals.css:1132-1136` pinta `.section-light [class*='eyebrow']` de `#024e86`
+   com `!important`, e `globals.css:1099-1124` pinta de navy todo `span` cuja
+   classe NÃO contenha «eyebrow». Sem o nome, o rótulo caía no navy do corpo e
+   deixava de ser sobretítulo. Com o nome, vale a cor da casa — e ela é aceitável
+   aqui: o `#05bde8` que o documento sugere mede ~2,1:1 sobre `#f7fbff`, reprovado
+   para texto, enquanto `#024e86` passa com folga. O ciano do documento segue nos
+   traços e nas linhas, onde é decoração e não escrita. Por isso não se declara
+   `color` nesta regra: seria descartada pelo `!important` da casa. */
+.isg-eyebrow__rotulo {
+  text-transform: uppercase;
+  font-size: clamp(0.75rem, 0.9vw, 0.875rem);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+}
+.isg-eyebrow__linha {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgb(5 189 232 / 55%), rgb(5 189 232 / 12%));
+}
+
+/* O LOGO, recortado pela caixa da tinta.
+   O arquivo é 2560×868 e 91,5% dele é transparente: a tinta ocupa 2461×377 a
+   partir de (49, 223) — medido com `sharp`. Encaixado inteiro, sobrariam ~26% de
+   vazio em cima e ~31% embaixo, e o logo flutuaria longe do sobretítulo, ao
+   contrário da mock. O recorte é feito por janela + deslocamento do próprio
+   arquivo (nada é reexportado, nenhum pixel é reescalado de forma não uniforme),
+   então o logo continua sendo o oficial, com proporção intacta. */
+.isg-logo {
+  position: relative;
+  /* 460px e não os 620px do documento: a pedido — naquela largura o logotipo
+     dominava a coluna e competia com os dois diferenciais. */
+  width: min(100%, 460px);
+  aspect-ratio: 2461 / 377;
+  overflow: hidden;
+  margin-top: 1.5rem;
+}
+.isg-logo img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* `max-width: none` é OBRIGATÓRIO e não é zelo: o preflight do Tailwind aplica
+     `img { max-width: 100% }`, que travava a imagem em 620px (a própria largura
+     da janela) e anulava o recorte — a sonda mediu `imagemMaiorQueAJanela:
+     false` com largura exatamente igual à da caixa. */
+  max-width: none;
+  width: 104.023%; /* 2560 / 2461 */
+  height: auto;
+  /* Em % do PRÓPRIO tamanho: 49/2560 na horizontal, 223/868 na vertical. */
+  transform: translate(-1.914%, -25.691%);
+}
+@media (max-width: 68.6875rem) {
+  .isg-logo {
+    width: min(100%, 360px);
+  }
+}
+
+/* Os dois diferenciais: uma composição editorial, não dois cartões. */
+.isg-diferenciais {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin-top: 2.5rem;
+}
+@media (min-width: 68.75rem) {
+  .isg-diferenciais {
+    grid-template-columns: 1fr 1fr;
+  }
+  /* A linha divisória existe só no segundo item, e só enquanto há duas colunas. */
+  .isg-diferenciais > :nth-child(2) {
+    border-left: 1px solid rgb(9 128 196 / 18%);
+    padding-left: clamp(1.5rem, 2vw, 2.5rem);
+  }
+}
+.isg-diferencial {
+  padding: 0 clamp(0rem, 1vw, 1rem) 1.5rem 0;
+}
+.isg-diferencial__selo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 82%);
+  border: 1px solid rgb(9 128 196 / 16%);
+  box-shadow: 0 8px 20px -12px rgb(8 39 86 / 22%);
+}
+.isg-diferencial__selo > svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #0b6ea8;
+}
+/* O traço horizontal ciano ao lado do ícone, como a mock. */
+.isg-diferencial__traco {
+  display: block;
+  width: 84px;
+  height: 3px;
+  border-radius: 2px;
+  margin-top: 1rem;
+  background: linear-gradient(90deg, #0079cb, #0ed8f6);
+}
+/* OS QUATRO CORPOS DE TEXTO DESTA SEÇÃO desceram um passo do que `docs/isg.md`
+   prescreve, a pedido («diminua o tamanho da escrita»). Eram
+   `clamp(1.25rem, 1.6vw, 1.75rem)` nos títulos de diferencial,
+   `clamp(1.125rem, 1.4vw, 1.5rem)` no título da citação e
+   `clamp(1rem, 1.05vw, 1.16rem)` nos dois parágrafos. Os pisos novos continuam
+   em 1rem/0,9375rem, que é o mínimo que a casa aceita para leitura.
+
+   AS QUATRO REGRAS DE TEXTO DAQUI NÃO DECLARAM MAIS COR — as duas abaixo e as
+   duas da citação. Elas declaravam (`#082756` nos títulos, `#355782` nos corpos) e
+   nenhuma chegava à tela: `globals.css:1099-1124` pinta `.section-light h3` e
+   `.section-light p` de `#0a1f44`, e isso é (0,1,1) contra (0,1,0) das minhas
+   classes. A sonda leu `rgb(10, 31, 68)` nos quatro, ou seja, o navy da casa. Era
+   o caso do selo repetido: cor escrita que não manda dá a impressão falsa de que
+   manda. O navy da casa, medido, contrasta 15,10:1 no pior pixel do corpo e
+   16,22:1 no da citação — melhor que os tons que eu pedia. */
+.isg-diferencial__titulo {
+  margin: 1rem 0 0;
+  font-weight: 700;
+  font-size: clamp(1.0625rem, 1.15vw, 1.25rem);
+  line-height: 1.3;
+}
+.isg-diferencial__texto {
+  margin: 0.75rem 0 0;
+  font-size: clamp(0.9375rem, 0.9vw, 1rem);
+  line-height: 1.55;
+}
+
+/* O COMENTÁRIO DO ANALISTA: destaque editorial de largura inteira. */
+.isg-citacao {
+  position: relative;
+  margin: 2rem 0 0;
+  /* O RECUO ENCOLHEU a pedido («tirar os espaços em branco que estão sobrando»).
+     Era `2.25rem 2.625rem 2.25rem 9.375rem`: os 150px da esquerda existiam para
+     abrir campo ao glifo de aspas de 7rem, e sobrava faixa vazia dos quatro lados.
+     Agora o glifo tem 3,5rem e o recuo é o que ele ocupa mais o respiro — o texto
+     começa onde antes só havia branco. */
+  padding: 1.5rem 1.75rem 1.625rem 5rem;
+  background: rgb(255 255 255 / 86%);
+  border: 1px solid rgb(0 153 220 / 25%);
+  border-radius: 24px;
+  box-shadow: 0 18px 45px rgb(8 39 86 / 8%);
+}
+@media (max-width: 47.9375rem) {
+  .isg-citacao {
+    padding: 1.5rem 1.25rem 1.5rem 1.25rem;
+  }
+}
+/* As aspas decorativas. Em azul muito claro para não competirem com o texto. No
+   mobile elas saem do recuo e viram uma marca acima do título — no padding
+   estreito não caberia texto ao lado delas.
+
+   ELAS SÃO UM `::before` E NÃO UM `<span aria-hidden>`, por especificidade
+   medida: `globals.css:1122` pinta de navy todo `span` cuja classe não contenha
+   «badge», «pill», «eyebrow» ou «tag-section», e esse seletor é (0,5,1) — nenhuma
+   composição razoável de classes minhas o alcança, então o glifo saía navy cheio
+   e a cor declarada aqui era letra morta. Um pseudo-elemento não é `span`: ele
+   HERDA a cor do `blockquote`, e uma declaração explícita vence a herança sem
+   precisar de `!important`. De passagem, o nó decorativo deixa de existir na
+   árvore, o que é melhor que marcá-lo `aria-hidden`. */
+/* O GLIFO ENCOLHEU de 7rem para 3,5rem, e saiu de `top: 1.75rem; left: 2.25rem`
+   para o canto. Era ele que ditava o recuo de 150px: com 7rem de corpo em Georgia
+   a tinta ocupa ~56px de largura, e o texto só podia começar depois disso mais o
+   respiro. Em 3,5rem a mesma marca cabe em ~28px, e o recuo de 5rem já é folga. */
+.isg-citacao::before {
+  content: '\201C';
+  position: absolute;
+  top: 1.125rem;
+  left: 1.5rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 3.5rem;
+  line-height: 0.8;
+  color: rgb(0 121 203 / 16%);
+  user-select: none;
+}
+@media (max-width: 47.9375rem) {
+  .isg-citacao::before {
+    position: static;
+    display: block;
+    /* `font-size` SAIU deste bloco: ele repetia 3,5rem, que agora é o valor da
+       regra base — declarar de novo era duas verdades para o mesmo número. O que
+       o bloco ainda faz é tirar o glifo do fluxo absoluto, porque no recuo
+       estreito do mobile não cabe texto ao lado dele. */
+    margin-bottom: -1rem;
+  }
+}
+/* Sem `color`, pelo motivo medido no bloco dos diferenciais. */
+.isg-citacao__titulo {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(1rem, 1.1vw, 1.1875rem);
+}
+.isg-citacao__texto {
+  margin: 0.75rem 0 0;
+  font-size: clamp(0.9375rem, 0.9vw, 1rem);
+  line-height: 1.55;
+}
+
+/* ── A FLUTUAÇÃO DO CARD («deixe o card em movimento leve para cima e para baixo»)
+   Mesmo padrão de `diferenciais-seis.css:160-193`, e pelas mesmas três razões
+   medidas lá, que valem palavra por palavra aqui:
+
+   1. A animação está no `<blockquote>`, DENTRO da `.isg-citacao-casca` que o
+      `ScrollReveal` anima. A casca recebe `transform` inline do motion, e animação
+      CSS vence estilo inline: um `@keyframes` na casca apagaria o deslocamento de
+      entrada. Foi por isso que a casca já existia — aqui ela ganha um segundo uso.
+   2. Os quadros 0% e 100% descansam em `translate3d(0,0,0)`: com movimento
+      reduzido o reset da casa corta a duração para 0.01ms e congela o PRIMEIRO
+      quadro; repouso deslocado deixaria o card torto para sempre.
+   3. Movimento infinito acima de 5s precisa de pausa (WCAG 2.2.2). Aqui ela também
+      é funcional: dentro do card há um texto que se lê e, na coluna, um link nos
+      créditos — `:focus-within` cobre o percurso por teclado. */
+.isg-citacao {
+  animation: isg-flutua 5.4s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes isg-flutua {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -8px, 0);
+  }
+}
+.isg-citacao:hover,
+.isg-citacao:focus-within {
+  animation-play-state: paused;
+}
+/* Os DOIS canais da casa: a preferência real e o espelho por atributo, que é o que
+   o alternador do site escreve. `animation: none` é explícito mesmo com o reset
+   global cortando a duração — a flutuação é pura decoração, e desligada o card
+   fica em `translate(0)`: nada some, nada desloca. */
+@media (prefers-reduced-motion: reduce) {
+  .isg-citacao {
+    animation: none !important;
+  }
+}
+html[data-motion='reduce'] .isg-citacao {
+  animation: none !important;
+}
+
+/* CRÉDITOS. No desktop, três informações separadas por linhas verticais finas; no
+   mobile, empilhadas e sem separador — os separadores são `::before` dos itens a
+   partir do segundo, então desaparecem junto com a linha. */
+.isg-creditos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 1.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  /* Sem `color` pelo mesmo motivo dos outros corpos: `.section-light p` é (0,1,1)
+     e vencia o `#47679a` que estava aqui. Medido a 15,49:1 no pior pixel. O link
+     CONTINUA com cor porque `a` não está na lista da casa — ele é o único texto
+     desta seção cuja cor eu realmente escolho, e é o pior contraste dela (4,91). */
+}
+.isg-creditos > * {
+  margin: 0;
+}
+.isg-creditos a {
+  color: #0b6ea8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.isg-creditos a:focus-visible {
+  outline: 2px solid #0079cb;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+@media (min-width: 48rem) {
+  .isg-creditos > * + *::before {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 0.875rem;
+    margin-right: 1rem;
+    vertical-align: -2px;
+    background: rgb(9 128 196 / 28%);
+  }
+}
+@media (max-width: 47.9375rem) {
+  .isg-creditos {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ── ORDEM NO MOBILE ─────────────────────────────────────────────────────────
+   `docs/isg.md` fixa a ordem abaixo de 768px: sobretítulo, logo, fotografia,
+   diferencial 1, diferencial 2, citação, créditos. No DOM a fotografia vem antes
+   da coluna de conteúdo (é a coluna da esquerda no desktop), então quem reordena
+   é a grade — e só visualmente. A ordem de LEITURA muda com ela, o que aqui é
+   desejável: a foto entre o logo e os diferenciais é exatamente o que o documento
+   descreve, e nenhuma das duas ordens cria dependência de sentido.
+   Acima de 68.75rem nada disto se aplica e as duas colunas voltam. */
+@media (max-width: 68.6875rem) {
+  .isg-grade {
+    display: flex;
+    flex-direction: column;
+  }
+  .isg-painel {
+    order: 2;
+  }
+  .isg-conteudo {
+    order: 1;
+    display: contents;
+  }
+  .isg-conteudo > .isg-eyebrow {
+    order: 0;
+  }
+  .isg-conteudo > .isg-logo {
+    order: 1;
+  }
+  .isg-conteudo > .isg-diferenciais {
+    order: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .isg-conteudo > .isg-citacao-casca {
+    order: 4;
+  }
+  .isg-conteudo > .isg-creditos {
+    order: 5;
+  }
+}

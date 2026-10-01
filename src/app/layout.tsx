@@ -5,8 +5,14 @@ import Background from '@/components/Background';
 import SmoothScroll from '@/components/ui/SmoothScroll';
 import PageTransition from '@/components/ui/PageTransition';
 import AnchorFocus from '@/components/ui/AnchorFocus';
+import ScrollProgressBar from '@/components/ui/ScrollProgressBar';
 import MotionPolicyProvider from '@/components/layout/MotionPolicyProvider';
 import { MotionPreferenceIntro } from '@/components/layout/MotionPreferenceIntro';
+/* SIS-226 — import estático, como o `MotionPreferenceIntro` logo acima e pelo
+   mesmo motivo: o CMP abre sozinho na primeira visita, e adiá-lo por uma
+   requisição faria a página aparecer inteira antes de existir o pedido de
+   consentimento. */
+import CookieConsent from '@/components/layout/CookieConsent';
 import RouteLoadGate from '@/components/loading/RouteLoadGate';
 import {
   DEFAULT_MOTION_PREFERENCE,
@@ -361,8 +367,30 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             o body e o Tab seguinte volta ao topo. O `<main>` fica na rota, e
             nao aqui, para nao aninhar dois. */}
         <MotionPreferenceIntro />
+        {/* SIS-226 — o CMP, e DEPOIS do prompt de movimento no JSX de propósito.
+            Não é ordem de pintura (os dois se portam para `document.body` e a
+            camada é decidida pelo `z-index`: 90 no banner de movimento, 80/91 no
+            lançador/painel de cookies). É ordem de LEITURA para quem vier
+            depois: os dois são decisões de nível de documento, moram lado a
+            lado, e a sequência entre eles está escrita em `CookieConsent.tsx` —
+            o CMP espera a escolha de movimento, porque a 390px os dois
+            disputariam a mesma faixa de baixo da tela.
+            Fora de `/admin` por dentro do componente, e não por um route group:
+            é o mesmo caminho que a SIS-216 abriu para o diálogo de movimento. */}
+        <CookieConsent />
         <Background />
         <SmoothScroll />
+        {/* SIS-278 — a barra de progresso da rolagem, e o lugar dela é AQUI:
+            irmã global, logo depois de quem publica `--scroll-p`, e FORA do
+            `PageTransition`. Dentro dele a barra entraria na troca de rota —
+            seria desmontada e remontada a cada navegação, e herdaria o fade da
+            transição justamente no momento em que o leitor precisa saber que
+            está no topo de uma página nova.
+            Também não é filha do `Header`: o header tem o seu próprio
+            `z-index`, recua ao rolar e some em algumas rotas — a barra não pode
+            depender de nenhuma dessas três coisas. Ela é do DOCUMENTO.
+            Fora de `/admin` por dentro do componente, como o `CookieConsent`. */}
+        <ScrollProgressBar />
         <AnchorFocus />
         <MotionPolicyProvider>
           <RouteLoadGate>

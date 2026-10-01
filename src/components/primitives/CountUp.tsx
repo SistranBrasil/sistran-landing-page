@@ -17,6 +17,16 @@ type Props = {
    * `null` desliga o `.sr-only` daqui — use quando quem chama já tem o seu.
    */
   srText?: string | null;
+  /**
+   * SIS-202 — conta UMA vez e não recomeça ao reentrar. Padrão `false`, que é o
+   * comportamento histórico deste primitivo (ver o docblock: zerar na saída é o
+   * que faz a segunda passagem ter efeito) — nenhum consumidor existente muda.
+   * Ligado só onde a especificação pede contagem única: o encerramento da
+   * trajetória em `/parceiros-e-implementacoes`, que fica no fim de um palco
+   * sticky e por isso entra e sai de quadro várias vezes num mesmo gesto de
+   * rolagem; recontar ali leria como número instável, não como reforço.
+   */
+  once?: boolean;
 };
 
 /**
@@ -72,12 +82,12 @@ type Props = {
  *
  * Valor não numérico ("1,5 mil") volta como texto, sem contagem.
  */
-export function CountUp({ value, className, duration = 1.4, srText }: Props) {
+export function CountUp({ value, className, duration = 1.4, srText, once = false }: Props) {
   const target = Number(value);
   const ref = useRef<HTMLSpanElement>(null);
   // `amount: 0.6` para a contagem começar com o número claramente em cena, não
   // ao encostar a primeira linha de pixels na borda.
-  const inView = useInView(ref, { amount: 0.6 });
+  const inView = useInView(ref, { amount: 0.6, once });
   const reduced = useReducedMotion();
   /* Nasce no valor final para o HTML do servidor já trazer o número (ver a nota
      acima). `NaN` não chega aqui: o caminho não numérico devolve texto antes de

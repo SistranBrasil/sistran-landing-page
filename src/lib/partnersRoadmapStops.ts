@@ -17,9 +17,21 @@
  * O que a fonte antiga NÃO tem fica de fora, em vez de ser inventado: sem
  * `stage` (logo, sem pílula "CONCLUÍDO" nem tempo verbal de entrega), sem
  * `detail` (logo, sem chips de stack, sem checklist e sem "Ver detalhes e
- * evidências" abrindo um modal vazio), sem `logo` (logo, sem o cartão branco de
- * marca) e sem `next`. `RoadmapTrail` omite cada um desses blocos quando o campo
- * falta — ver as guardas lá.
+ * evidências" abrindo um modal vazio) e sem `next`. `RoadmapTrail` omite cada um
+ * desses blocos quando o campo falta — ver as guardas lá.
+ *
+ * ── `logo` PASSOU A EXISTIR (2ª volta da SIS-202) ──
+ *
+ * Esta lista nasceu SEM `logo`, e a razão escrita era boa na época: a fonte
+ * (`timeline.ts`) não traz arquivo de marca, e inventar um seria conteúdo
+ * fabricado. O que mudou não é a fonte — é o acervo: `public/logos-parceiros/`
+ * tem 23 PNGs de marca, e a issue mandou LIGAR os que casam com as paradas.
+ * Então o `logo` não é inventado: é DERIVADO por casamento de nome, e a parada
+ * sem arquivo continua sem `logo` (cai no monograma, que é o ramo que já existia).
+ *
+ * O pedido é o da captura: a placa branca do canto mostrava o monograma «CC» e
+ * passa a mostrar a marca. Quem decide isso é `RoadmapTrail` — ver
+ * "O `logo` VAI NO SELO" lá.
  *
  * Este arquivo mora em `src/lib` e não em `src/data` de propósito: `copy-lock`
  * trava os literais de `src/data/**`, e aqui não há literal de conteúdo nenhum —
@@ -27,26 +39,15 @@
  */
 import { TIMELINE_CATEGORY_META, TIMELINE_EVENTS } from "@/data/timeline"
 import { NEUTRAL_GRADIENT } from "@/lib/legacyRoadmap"
+import { logoDaMarca, monogramaDaMarca } from "@/lib/logoDeMarca"
 import type { TrailStop } from "@/components/legacy/RoadmapTrail"
 
-/**
- * Monograma a partir do PRIMEIRO nome da parada — "Castelo Costa · Coplaven ·
- * Zurich Brasil" → `CC`. Duas letras porque é o que a pílula redonda do card
- * comporta: com dois nomes, as iniciais; com um só, as duas primeiras letras
- * ("Mapfre" → `MA`). Nada é inventado, só recortado.
- */
-function monograma(company: string): string {
-  const primeiro = company.split("·")[0].trim()
-  const palavras = primeiro.split(/\s+/).filter(Boolean)
-  /* `join` de duas iniciais em vez de `palavras[0][0] + palavras[1][0]`: a soma
-     de dois identificadores era colhida por `scripts/copy-lock.mjs` como se
-     fosse escrita do site e aparecia no relatório de textos novos. */
-  const iniciais = palavras
-    .slice(0, 2)
-    .map((palavra) => palavra[0])
-    .join("")
-  return (palavras.length >= 2 ? iniciais : primeiro.slice(0, 2)).toUpperCase()
-}
+/* A tabela de marcas, o monograma e o casamento por nome SAÍRAM deste arquivo para
+   `src/lib/logoDeMarca.ts` quando o segundo consumidor apareceu: os cards do fluxo
+   detalhado (`src/data/trajectory.ts`) precisam da MESMA resposta. Duas cópias
+   divergiriam na primeira marca nova, e divergiriam em silêncio — o modo de falha é
+   um card com monograma onde o outro mostra a logo. As notas de por que cada chave
+   tem uma palavra só e de por que o casamento usa `\b` moram lá agora. */
 
 export const partnersTrailStops: TrailStop[] = TIMELINE_EVENTS.map((evento) => {
   const meta = TIMELINE_CATEGORY_META[evento.category]
@@ -54,7 +55,12 @@ export const partnersTrailStops: TrailStop[] = TIMELINE_EVENTS.map((evento) => {
   return {
     id: String(evento.id),
     client: evento.generation,
-    monogram: monograma(evento.company),
+    monogram: monogramaDaMarca(evento.company),
+    /* O monograma CONTINUA sendo montado mesmo onde há logo: ele é o ramo de
+       reserva do selo (parada sem arte) e o rótulo do cartão de marca, e custa
+       duas letras. Calcular só na ausência de logo economizaria nada e daria ao
+       tipo um campo opcional a mais para as guardas cobrirem. */
+    logo: logoDaMarca(evento.company),
     title: evento.company,
     text: evento.detail,
     /* A pílula do card passa a ser a CATEGORIA, que é o que esta lista

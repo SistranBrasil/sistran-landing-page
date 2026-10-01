@@ -49,6 +49,49 @@ import EssenceHologram from '@/components/ui/EssenceHologram';
 import { ESSENCIA, ESSENCIA_INICIAL, type ItemEssencia } from '@/data/essencia';
 import './essence-accordion.css';
 
+/**
+ * SIS-260 — ESTE COMPONENTE SAIU DE `/quem-somos` e não está montado em rota
+ * nenhuma. A seção «Nossa Essência» passou a ser `NossaEssenciaSection`, pela
+ * mock `public/ms.png` / `docs/missao,valores.md`; o porquê está escrito na
+ * montagem, em `src/app/quem-somos/page.tsx`.
+ *
+ * O arquivo fica porque o mecanismo aqui dentro é medido e não cabe em
+ * comentário: a âncora de rolagem manual que impede o salto de ~490px ao fechar
+ * um painel (SIS-98) e a troca por POSIÇÃO DE CABEÇALHO que substituiu o
+ * progresso de rolagem do SIS-79. Se a decisão de arte voltar atrás, é isto que
+ * volta.
+ *
+ * O QUE O DESLIGA DO RESTO: `src/data/essencia.ts` seguiu adiante. Lá `arte`
+ * passou a ser o caminho inteiro de um `.webp` novo e `arteAlt` deixou de
+ * existir, porque as artes daquela seção agora são decorativas. Este componente
+ * precisa das artes ANTIGAS (os renders 3D de `public/images/essencia/`, servidos
+ * pelo par de larguras que `EssenceHologram` monta a partir da base do nome) e da
+ * descrição delas. Então elas moram aqui, ao lado de quem as usa, em vez de
+ * segurar o dado compartilhado num formato que a página publicada não usa mais.
+ */
+const ARTE_3D: Readonly<
+  Record<ItemEssencia['id'], { base: string; alt: string; largura: number; altura: number }>
+> = {
+  missao: {
+    base: 'missao',
+    alt: 'Ilustração tridimensional de uma plataforma de vidro azul luminosa: um núcleo central de cubos ligado por trilhas de luz a oito módulos ao redor, entre eles nuvem, pessoas, dados e um escudo.',
+    largura: 1536,
+    altura: 1024,
+  },
+  valores: {
+    base: 'valores',
+    alt: 'Ilustração tridimensional de um troféu de cristal azul luminoso sobre uma base circular, envolto por fitas de luz em órbita e acompanhado de um grupo de cubos de vidro.',
+    largura: 1254,
+    altura: 1254,
+  },
+  pilares: {
+    base: 'pilares',
+    alt: 'Ilustração tridimensional de oito colunas hexagonais de vidro azul luminoso dispostas em círculo sobre uma base octogonal, com um cristal maior ao centro.',
+    largura: 1254,
+    altura: 1254,
+  },
+};
+
 /* Folga do cabeçalho fixo, para o painel recém-aberto não nascer atrás dele. */
 const FOLGA_CABECALHO = 96;
 
@@ -159,11 +202,13 @@ function EssenceAccordionItem({
               )}
               {item.nota ? <p className="essence-footnote">{item.nota}</p> : null}
             </div>
+            {/* SIS-260 — as quatro props vinham de `item`. Ver `ARTE_3D`, no alto
+                do arquivo, para o motivo de terem mudado de lugar. */}
             <EssenceHologram
-              arte={item.arte}
-              alt={item.arteAlt}
-              largura={item.largura}
-              altura={item.altura}
+              arte={ARTE_3D[item.id].base}
+              alt={ARTE_3D[item.id].alt}
+              largura={ARTE_3D[item.id].largura}
+              altura={ARTE_3D[item.id].altura}
             />
           </div>
         </div>

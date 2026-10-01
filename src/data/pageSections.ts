@@ -63,9 +63,62 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
     /* SIS-181 — hero-sheet `#f4f8fc` na margem esquerda (vídeo à direita). Não
        é `.section-light`; sem `tom` o rótulo saía branco e sumia. */
     { id: 'top', label: 'Início', tom: 'claro' },
-    { id: 'solucoes', label: 'Soluções' },
+    /* SIS-184 — a linha era `{ id: 'solucoes', label: 'Soluções' }`, sem `tom`, e
+       por isso caía no par escuro: rótulo BRANCO e traço ciano sobre o papel
+       quase-branco que a SIS-230 pôs na margem. Medido com a parada ATIVA, a 1440,
+       no PIOR pixel da moldura do rótulo (a média mentiria — ver abaixo):
+
+         escuro (branco / #0ed8f6)   rótulo  1,10:1   traço  1,31:1
+         claro  (#0a1f44 / #0079CB)  rótulo 13,38:1   traço  3,46:1
+         medio  (#02070e / #02070e)  rótulo 16,63:1   traço 15,31:1
+
+       `claro` é o valor, e não o `medio` que pontua mais alto no cru: o fundo aqui
+       é papel quase-branco (rgb(232 244 252)), que é exatamente o caso para que o
+       par claro foi calibrado, e ele passa nos dois portões com folga (4,5:1 da
+       1.4.3 no rótulo de 11px e 3:1 da 1.4.11 no traço). O `medio` é o azul
+       INTERMEDIÁRIO — usá-lo aqui só porque quase-preto ganha de tudo em papel
+       claro seria trocar o repertório medido por um vencedor acidental, e é o
+       mesmo raciocínio que a nota de `premiacoes` logo abaixo já registra ao
+       RECUSAR o `medio` num fundo que não é azul médio.
+       Números em `docs/medidas/scrollspy-pares-sis184-*.json`. */
+    { id: 'solucoes', label: 'Soluções', tom: 'claro' },
     { id: 'resultados', label: 'Números' },
-    { id: 'contato', label: 'Contato' },
+    /* SIS-184 — o tom passa a ser EXPLÍCITO, e o comportamento visível não muda:
+       esta parada já saía no par claro, mas por RESERVA (`closest('.section-light')`),
+       não por decisão. É a mesma troca que a SIS-204 fez em `/solucoes` e pelo mesmo
+       motivo: depois da SIS-230 quem pinta a margem é o plano da `<main>`, então
+       `.section-light` deixou de ser sinônimo de «claro aqui» e deixar a legibilidade
+       pendurada nessa classe é apostar num atalho que já se esvaziou uma vez.
+       Medido com a parada ativa, a 1440, no pior pixel: campo rgb(215 227 236),
+       faixa esquerda do rótulo 12,20:1 com #0a1f44, traço 3,04:1 com #0079CB.
+
+       RESÍDUO CONHECIDO, e ele NÃO é resolvível por `tom`: há uma emenda vertical
+       de ~2px em x=100 (rgb(32 63 90)) que atravessa o último glifo de «CONTATO»
+       (caixa do rótulo x=48..111). Contra ela o pior pixel cai para 1,49:1 — e cai
+       para 1,29 no par escuro e 1,85 no médio, ou seja NENHUM dos três pares passa,
+       porque a mesma faixa contém o papel claro e a emenda escura e toda tinta
+       falha contra uma das duas. A média da moldura dá 8,75:1 e escondia isso; é
+       por isso que a sonda desta issue reporta o pior pixel, não a média.
+       Consertar a emenda é geometria da faixa, fora do escopo desta issue
+       («contraste do ScrollSpy na home e só o mapa/`tom` necessário»). */
+    { id: 'contato', label: 'Contato', tom: 'claro' },
+    /* SIS-184 — FICA SEM CHAVE (escuro), e a ausência é medida, não herdada. O
+       fundo na margem é rgb(14 92 157), azul intermediário de verdade, então o
+       `medio` era o candidato óbvio; os dois pares foram medidos com a parada
+       ativa, a 1440, no pior pixel:
+
+         escuro (branco / #0ed8f6)   rótulo 6,58:1 ✓   traço 2,51:1 ✗
+         medio  (#02070e / #02070e)  rótulo 2,79:1 ✗   traço 3,23:1 ✓
+
+       Nenhum passa nos dois. Entre um rótulo legível com o traço 0,49 abaixo do 3:1
+       e um traço no limite com o rótulo REPROVADO em texto, vale o rótulo: ele é a
+       tinta que a pessoa lê, e a informação do traço é redundante (o `aria-current`
+       e a opacidade do rótulo ativo dizem a mesma coisa). Trocar 6,58 por 2,79 para
+       ganhar 0,72 num ponto de 6px piora o que importa.
+       O resíduo do traço (2,51 < 3:1) é limite do repertório de três pares contra
+       este azul, não desta parada — as duas cores de traço disponíveis são ciano
+       claro e quase-preto, e este azul fica no meio das duas. Pede par novo, que é
+       paleta nova e a issue proíbe (item 3). Registrado para issue própria. */
     { id: 'social', label: 'Social' },
   ],
   '/quem-somos': [
@@ -73,7 +126,20 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
     { id: 'escritorios', label: 'Escritórios' },
     { id: 'diferenciais-6', label: 'Diferenciais' },
     { id: 'como-agimos', label: 'Como Agimos' },
-    { id: 'premiacoes', label: 'Premiações' },
+    /* SIS-238 — a seção virou clara e `.rgal-secao` não carrega `.section-light`,
+       então a reserva do `closest` a leria como escura e pintaria ciano. Pior: a
+       margem esquerda desta seção tem DUAS fases, porque o painel ativo sangra
+       até x=0. Lido em pixel sob o rótulo (x=18, meio da janela) em seis pontos
+       do percurso da rampa: rgb(0 29 66) nos dois primeiros (painel 1 aberto) e
+       rgb(255 255 255) nos quatro seguintes — um quarto marinho, três quartos
+       claro. Um `tom` por seção não sabe dizer isso, e a escolha é por número:
+       `claro` (#0079CB) fecha 4,57:1 no branco e 3,66:1 no marinho, os dois
+       acima do 3:1 que a 1.4.11 pede para elemento gráfico; sem `tom`, o ciano
+       daria 1,73:1 em três quartos do curso. `medio` (#02070e) não serve — dá
+       1,21:1 no marinho, porque foi calibrado para azul intermediário, não para
+       quase-preto. O resíduo (3,66 < 4,5) é limite do modelo de um tom por
+       faixa, compartilhado por 13 rotas, não desta seção. */
+    { id: 'premiacoes', label: 'Premiações', tom: 'claro' },
     { id: 'isg', label: 'ISG' },
     { id: 'por-que-sistran', label: 'Por que Sistran' },
     /* SIS-181 — a seção clara vaza sobre o azul intermediário do CTA na margem;
@@ -126,12 +192,19 @@ export const PAGE_SECTIONS: Readonly<Record<string, readonly PageSection[]>> = {
        (SIS-279 apagou a rota `/transformacao-legado`; a MEDIÇÃO continua valendo
        porque é da classe `.lp-section--cream`, que este arquivo ainda usa — só o
        apontador «logo abaixo» é que morreu com a chave.)
-       O `label` fica: 'Linha do tempo' continua sendo o nome desta seção — na
-       correção da issue (opção 2) só o LAYOUT vem do legado, e o cabeçalho é o
-       desta rota, com este mesmo rótulo como título. A âncora `#linha-do-tempo`
-       também fica — é a que esta rota
-       já publicava, e é ela que o `id` do componente recebe. */
-    { id: 'linha-do-tempo', label: 'Linha do tempo', tom: 'claro' },
+       SIS-205 — O RÓTULO VIROU 'Trajetória', E A NOTA ANTERIOR CADUCOU INTEIRA.
+       Ela justificava manter 'Linha do tempo' com um argumento que deixou de
+       existir: «o cabeçalho é o desta rota, com este mesmo rótulo como título». Esse
+       título FOI REMOVIDO por esta issue — o cabeçalho agora é o carimbo «NOSSA
+       Trajetória» — então o navegador lateral apontava para uma seção com um nome
+       que não estava escrito em lugar nenhum dela. O rótulo passa a repetir o que a
+       arte e o `<h2>` `sr-only` dizem.
+
+       ⚠️ A ÂNCORA `#linha-do-tempo` NÃO MUDA, e não é descuido de coerência: é a
+       URL que esta rota já publicava, e renomeá-la quebraria qualquer link externo
+       para a seção. O `id` do componente continua recebendo essa chave; o `label` é
+       só o texto do navegador. */
+    { id: 'linha-do-tempo', label: 'Trajetória', tom: 'claro' },
   ],
   '/latam': [
     { id: 'topo', label: 'Inicio' },
@@ -285,6 +358,7 @@ const VAZIO: readonly PageSection[] = [];
    guru/de-onde-pode-ser-acessada: rgb(22 127 199). */
 const TOM_MEDIO_DE_ACELERADOR: Readonly<Record<string, ReadonlySet<string>>> = {
   'match-ai': new Set(['o-que-o-match-ai-faz']),
+  sds: new Set(['a-inteligencia-artificial-apoia-a-decisao-permanece-humana']),
   /* SIS-280 — o `lumina-ai` SAIU DESTE MAPA, pelo mesmo motivo que o `fast`
      (SIS-286), o `smart-miner` (SIS-279) e o `guru-de-seguros` (SIS-280) saíram,
      e com uma mudança a mais: a chave também trocou de grafia. A linha era:
@@ -360,7 +434,28 @@ const TOM_CLARO_DE_ACELERADOR: Readonly<Record<string, ReadonlySet<string>>> = {
      faixa `.section-light` no corpo próprio; «Benefícios» é a faixa escura e por
      isso não aparece em mapa nenhum. A chave tem dois n porque a slug tem — ver o
      bloco SIS-280 no mapa de cima. */
-  'luminna-ai': new Set(['desafios-no-desenvolvimento-de-software', 'integracao-versatil']),
+  /* SIS-220 (5ª volta) — A PARADA DO ECOSSISTEMA SAI, porque a faixa saiu da rota: a
+     escrita dela não está no paste que a página passou a publicar, e o bloco está
+     comentado em `acceleratorPages.ts`. Com ele fora, `idDoBloco` nunca emite
+     `tecnologia-aplicada-em-todo-o-ciclo` e a chave ficaria apontando para uma âncora
+     que não existe — não é erro de execução, é lixo que o próximo leitor lê como
+     verdade.
+     As duas notas que estavam aqui (2ª e 3ª voltas) descreviam a entrada e a troca de
+     âncora dessa mesma parada e caducaram inteiras; foram removidas em vez de
+     empilhadas, porque somadas contavam três estados e nenhum deles é o atual.
+     A SLUG VOLTA A TER TRÊS `heading` — quatro paradas com o «topo». É exatamente o
+     piso em que `SECOES_DE_ACELERADOR` ainda monta o indicador em vez de devolver
+     `VAZIO` (ele exige três paradas restantes), e vale dizer: tirar UMA parada a mais
+     desta rota apaga a coluna lateral inteira. */
+  'luminna-ai': new Set([
+    'desafios-no-desenvolvimento-de-software',
+    'integracao-versatil',
+  ]),
+  sds: new Set([
+    'uma-plataforma-para-toda-a-jornada-de-sinistros',
+    'tres-pilares',
+    'impacto-em-toda-a-operacao-de-sinistros',
+  ]),
 };
 
 const SECOES_DE_ACELERADOR: Readonly<Record<string, readonly PageSection[]>> = Object.fromEntries(
@@ -368,7 +463,7 @@ const SECOES_DE_ACELERADOR: Readonly<Record<string, readonly PageSection[]>> = O
     const paradas: PageSection[] = [
       { id: 'topo', label: 'Início' },
       ...p.blocks
-        .filter((b) => b.heading)
+        .filter((b) => b.heading && b.inPageNav !== false)
         .map((b): PageSection => {
           const id = idDoBloco(b.heading!);
           return {

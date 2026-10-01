@@ -7,9 +7,28 @@ import '@/components/solutions-story.css';
 // em volta de `<Differentials />`): deixá-lo ativo quebraria o lint por import
 // não utilizado, e removê-lo apagaria a pista de como religar a seção.
 // import Differentials from '@/components/Differentials';
-import Metrics from '@/components/Metrics';
-import SolutionsStory from '@/components/SolutionsStory';
+/* SIS-272 (2ª correção de curso, 29/09) — `Metrics` SAI OUTRA VEZ, agora pelo motivo
+   certo: o pedido é a escrita dos sete no DESENHO da faixa de `/quem-somos`, e quem
+   desenha aquilo é `FaixaIndicadores`, não a `Metrics`. Comentado e não apagado —
+   ativo e sem consumo, o lint quebra por import não utilizado.
+
+   A apuração de que `Metrics` é o ÚNICO capítulo inscrito na jornada
+   (`jornada.registrar('metrics', …)` em `Metrics.tsx:755`) continua verdadeira, e
+   agora ela TEM consequência: `ProofJourney` fica montado dirigindo ZERO capítulos.
+   Fica de propósito, e não por inércia — os irmãos que vivem dentro do wrapper
+   (emendas, parceiros) dependem dele como ancestral, e `useJornada` sem wrapper
+   devolve `dirigindo: false` fazendo cada um recriar o seu próprio trigger. Um
+   wrapper sem capítulo é inofensivo; tirá-lo mexeria em seções que esta issue manda
+   não tocar.
+// import Metrics from '@/components/Metrics'; */
 import ProofJourney from '@/components/ProofJourney';
+/* SIS-272 (2ª correção de curso) — A FAIXA VOLTA À HOME, com a escrita dos SETE
+   (`fonte="metricas"`) e não com 1988/150+/18. É o layout que a usuária pediu, e é o
+   que o docblock de `FaixaIndicadores.tsx` sempre deu como razão de a peça existir.
+   `About.tsx` continua montando a MESMA peça em `/quem-somos` com o default de três
+   e com aresta — as duas rotas dividem um desenho só, que era o ponto da extração. */
+import FaixaIndicadores from '@/components/FaixaIndicadores';
+import SolutionsStory from '@/components/SolutionsStory';
 import Social from '@/components/Social';
 import Contact from '@/components/Contact';
 // Import comentado junto com o consumo do bloco "Fale com a Gente!" no fim do
@@ -23,6 +42,9 @@ import ScrollSpy from '@/components/ui/ScrollSpy';
 // import não utilizado, e removê-lo apagaria a pista de como religar o fio.
 // import ScrollSpine from '@/components/ui/ScrollSpine';
 import BackToTop from '@/components/ui/BackToTop';
+// SIS-230 — a terceira camada do plano claro, a mesma peça de `/solucoes` e
+// `/quem-somos`. Montada com a classe da rota (ver a nota no mount).
+import AtmosferaQuadrados from '@/components/ui/AtmosferaQuadrados';
 // SIS-192 — o handoff saiu da home junto com o mosaico (não há tile de origem
 // para viajar). Import comentado junto com o consumo (ver a nota no lugar dele):
 // deixá-lo ativo quebraria o lint por import não utilizado, e removê-lo apagaria
@@ -94,6 +116,23 @@ export default function Page() {
           `background-attachment: fixed` voltar a resolver por caixa, e o degrau de
           cor entre as seções volta calado. */}
       <main id="conteudo" className="home-canvas" tabIndex={-1}>
+        {/* SIS-230 — A TERCEIRA CAMADA DO PLANO CLARO: quadrados arredondados
+            translúcidos e o arco azul, que gradiente não desenha. Primeiro nó do
+            `<main>` porque é fundo — e, sendo `position: fixed` com `z-index: -1`,
+            a posição na árvore não muda o que se vê; o que ela faz é deixar a
+            leitura do arquivo na mesma ordem das camadas. É a mesma ordem e a mesma
+            justificativa do mount em `/quem-somos`.
+
+            A classe é própria da rota (`.home-atmosfera`, no bloco da home do
+            `globals.css`): a folha de `/solucoes` é da SIS-204 e reusar o seletor
+            dela faria a próxima passada lá mexer aqui sem saber.
+
+            Ela NÃO conta como "embrulhar as seções" — é um irmão que vem antes do
+            hero, e `#top + *` continua casando com a `.marcas-grade`, porque o
+            seletor de irmão adjacente ignora quem está antes do `#top`. Conferido
+            na sonda: a grade segue com `z-index: 1`. */}
+        <AtmosferaQuadrados classe="home-atmosfera" />
+
         {/* Fio condutor comentado a pedido: a linha lateral que costurava hero
             -> contato e acendia um nó por seção passava por cima do conteúdo e
             incomodava mais do que orientava.
@@ -211,6 +250,14 @@ export default function Page() {
             precisam de altura real e sua mídia sticky precisa soltar no fim da
             própria seção; colocá-la no palco absoluto criaria dois stickies.
             A jornada passa a começar em Metrics. */}
+        {/* SIS-272 (reparo 29/09) — A JORNADA VOLTOU, com o capítulo que ela dirige.
+            A nota longa acima vale inteira, e as suas exigências são as de sempre: nada
+            de `transform`/`filter`/`contain`/`overflow` neste wrapper, senão morrem os
+            condutores `fixed` e os `sticky` dos capítulos.
+            Do INVENTÁRIO que a nota cita, só um capítulo se inscreve de fato: Soluções
+            virou irmã na SIS-196, o handoff e os parceiros nunca se inscreveram, e
+            `Metrics` é o único `registrar()` vivo. A jornada com um capítulo é o estado
+            que valia antes desta issue, e é o estado que o reparo devolve. */}
         <ProofJourney>
         {/* "Sistran em números" subiu para cá, a pedido: passa a ocupar o lugar
             que era do bloco "Resultados | evidências dos casos", logo depois do
@@ -227,7 +274,48 @@ export default function Page() {
             do próprio componente — um degradê do navy na borda de cima da faixa,
             que se dissipa conforme a seção entra (`--impact-entrada`, variável
             que o único ScrollTrigger da seção já escreve). */}
-          <Metrics />
+        {/* SIS-272 (2ª correção de curso, 29/09) — A ESCRITA É A DOS SETE, O DESENHO É O
+            DA FAIXA DE `/quem-somos`.
+            A passada anterior leu «manter layout Metrics» ao pé da letra e devolveu o
+            scrollytelling de sete células — cartão com moldura, ícone em caixa acima do
+            número, trilho de pontos no rodapé. Errado: o pedido era o CONTEÚDO dos sete
+            («850+ Membros do Grupo Sistran» … «25+ Implantações de Sinistro») no LAYOUT
+            da faixa do 1988 — ícone e número na mesma linha, rótulo em caixa alta, régua
+            de 1px entre as células, sem moldura e sem pontos.
+            É, aliás, o que o docblock de `FaixaIndicadores.tsx` sempre descreveu como
+            razão de a peça existir: «a seção Números da HOME leia como esta faixa».
+
+            `fonte="metricas"` é o que troca os três indicadores pelos sete. A escrita sai
+            de `src/data/metrics.ts` dentro do componente, e não daqui, para não haver uma
+            segunda cópia dos rótulos fora de `src/data/` — ver a nota lá.
+
+            `sobre-metricas--sete` é só ESCALA (número, ícone, recuo e a régua que muda de
+            lugar quando os sete caem em 4+3 abaixo de 90rem). A identidade do desenho é a
+            da faixa, sem modificador.
+
+            `aresta={false}` continua pelo motivo geométrico de sempre: o degrau em
+            `clip-path` acompanha a coluna da foto de `/quem-somos`, e aqui não há foto
+            acima — os 22px vazados abririam um talho sem origem. */}
+        <section id="resultados" aria-label="Sistran em números">
+          <FaixaIndicadores
+            aresta={false}
+            fonte="metricas"
+            className="sobre-metricas--avulsa sobre-metricas--sete"
+          />
+        </section>
+        {/* SIS-272 (2ª correção de curso) — `<Metrics />` SAI DA HOME, e com ele o
+            `id="resultados"` + `aria-label="Sistran em números"` que eram DELE
+            (`Metrics.tsx:807` e `:818`). É por isso que a `<section>` acima os declara
+            à mão: sem isso a parada `resultados` do `ScrollSpy` da rota
+            (`top`/`solucoes`/`resultados`/`contato`/`social`) ficaria sem alvo. E é por
+            isso que há UMA só: duas no mesmo documento seriam `id` duplicado.
+
+            Comentado, não apagado. `Metrics.tsx` fica intacto — com o palco, os atalhos
+            01–07, `[data-fio-chegada]` e o `registrar()` da jornada. Religar é
+            descomentar esta linha e o import, e tirar a `<section>` acima junto (senão o
+            `id` duplica).
+        <Metrics />
+        */}
         {/* Condutor da emenda Soluções -> Números: o fio que se dissipa à direita
             do último nó de Soluções se estende com o scroll até a boca de entrada
             da onda da Metrics, para os dois traços lerem como um só.
@@ -288,6 +376,20 @@ export default function Page() {
             O componente `ui/NotchDivider.tsx` continua no projeto e é usado por
             outras páginas — só este consumo saiu. */}
         </ProofJourney>
+
+        {/* ── NÚMEROS — A FAIXA DE TRÊS INDICADORES SAIU DAQUI (SIS-272, reparo 29/09)
+            Ela ocupou este lugar por uma passada só, sob a leitura anterior desta issue
+            («home com o layout da faixa 1988/150+/18»). A usuária corrigiu o curso no
+            mesmo dia: o layout de Números da home é o `Metrics` de sete, logo acima.
+            Não fica comentário de religar apontando para cá, porque religar isto é
+            justamente o que o escopo agora proíbe («não voltar a pedir layout de 3 na
+            home»). O que fica é o registro de que a peça não se perdeu: a faixa é
+            `src/components/FaixaIndicadores.tsx`, viva e montada por `About.tsx` em
+            `/quem-somos` — que é a rota onde ela foi pedida e onde continua intacta,
+            com aresta e degrau, porque lá existem a foto e o bloco editorial de que a
+            geometria dela depende.
+            A `<section id="resultados" aria-label="Sistran em números">` que a envolvia
+            saiu com ela, e tinha de sair: os dois atributos são do próprio `Metrics`. */}
         {/* SIS-192 — A TRAVESSIA SAIU COM O MOSAICO, e não por escolha de
             desenho: ela era o tile "Arquitetura modular e escalável" viajando até
             a foto do card 01 de Soluções, e sem mosaico não existe ponto de

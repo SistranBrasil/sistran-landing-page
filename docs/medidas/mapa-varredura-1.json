@@ -1,0 +1,340 @@
+{
+  "rota": "http://localhost:3000/quem-somos",
+  "quando": "2026-09-24T18:49:11.456Z",
+  "override": [
+    ".os-palco[data-modo='scroll'][data-ativa='pr']{--os-foco-escala:1.5!important}",
+    ".os-palco[data-modo='scroll'][data-ativa='sp']{--os-foco-escala:1.5!important}",
+    ".os-palco[data-modo='scroll'][data-ativa='pr']{--os-foco-x:-4%!important}",
+    ".os-palco[data-modo='scroll'][data-ativa='sp']{--os-foco-x:-4%!important}",
+    ".os-palco[data-modo='scroll'][data-ativa='pr']{--os-foco-y:26.4%!important}",
+    ".os-palco[data-modo='scroll'][data-ativa='sp']{--os-foco-y:26.4%!important}",
+    ".os-palco[data-modo='scroll'] .bm-camera{--os-recuo:calc(1 - 0.353 * var(--os-transito,0))!important;--os-desliza:calc(var(--os-transito,0) * -30%)!important}"
+  ],
+  "janelas": [
+    {
+      "largura": 1280,
+      "altura": 800,
+      "paradas": [
+        {
+          "f": 0.125,
+          "ativa": "pr",
+          "transito": "0",
+          "pais": {
+            "esq": 664.5,
+            "dir": 1080.4,
+            "topo": 202.2,
+            "base": 638.3,
+            "larg": 415.9,
+            "alt": 436.1
+          },
+          "recorte": {
+            "esq": 547.2,
+            "dir": 1216,
+            "topo": 144,
+            "base": 744
+          },
+          "sobra": {
+            "esq": 117.3,
+            "dir": 135.6,
+            "topo": 58.2,
+            "base": 105.7
+          },
+          "colunaDir": 496,
+          "folgaColuna": 168.5,
+          "cartaoEsq": 64,
+          "folgaCartao": -1016.4
+        },
+        {
+          "f": 0.875,
+          "ativa": "sp",
+          "transito": "1",
+          "pais": {
+            "esq": 642.4,
+            "dir": 911.5,
+            "topo": 385.7,
+            "base": 667.9,
+            "larg": 269.1,
+            "alt": 282.2
+          },
+          "recorte": {
+            "esq": 547.2,
+            "dir": 1216,
+            "topo": 144,
+            "base": 744
+          },
+          "sobra": {
+            "esq": 95.2,
+            "dir": 304.5,
+            "topo": 241.7,
+            "base": 76.1
+          },
+          "colunaDir": 496,
+          "folgaColuna": 146.4,
+          "cartaoEsq": 784,
+          "folgaCartao": -127.5
+        }
+      ],
+      "erros": []
+    },
+    {
+      "largura": 1280,
+      "altura": 1000,
+      "paradas": [
+        {
+          "f": 0.125,
+          "ativa": "pr",
+          "transito": "0",
+          "pais": {
+            "esq": 602.2,
+            "dir": 1137.3,
+            "topo": 232.8,
+            "base": 794,
+            "larg": 535.1,
+            "alt": 561.1
+          },
+          "recorte": {
+            "esq": 547.2,
+            "dir": 1216,
+            "topo": 158,
+            "base": 930
+          },
+          "sobra": {
+            "esq": 55,
+            "dir": 78.7,
+            "topo": 74.8,
+            "base": 136
+          },
+          "colunaDir": 496,
+          "folgaColuna": 106.2,
+          "cartaoEsq": 64,
+          "folgaCartao": -1073.3
+        },
+        {
+          "f": 0.875,
+          "ativa": "sp",
+          "transito": "1",
+          "pais": {
+            "esq": 573.9,
+            "dir": 920.1,
+            "topo": 469,
+            "base": 832.1,
+            "larg": 346.2,
+            "alt": 363.1
+          },
+          "recorte": {
+            "esq": 547.2,
+            "dir": 1216,
+            "topo": 158,
+            "base": 930
+          },
+          "sobra": {
+            "esq": 26.7,
+            "dir": 295.9,
+            "topo": 311,
+            "base": 97.9
+          },
+          "colunaDir": 496,
+          "folgaColuna": 77.9,
+          "cartaoEsq": 784,
+          "folgaCartao": -136.1
+        }
+      ],
+      "erros": []
+    },
+    {
+      "largura": 1366,
+      "altura": 900,
+      "paradas": [
+        {
+          "f": 0.125,
+          "ativa": "pr",
+          "transito": "0",
+          "pais": {
+            "esq": 678.1,
+            "dir": 1153.6,
+            "topo": 217.5,
+            "base": 716.1,
+            "larg": 475.5,
+            "alt": 498.6
+          },
+          "recorte": {
+            "esq": 554.9,
+            "dir": 1297.7,
+            "topo": 151,
+            "base": 837
+          },
+          "sobra": {
+            "esq": 123.1,
+            "dir": 144.1,
+            "topo": 66.5,
+            "base": 120.9
+          },
+          "colunaDir": 500.3,
+          "folgaColuna": 177.8,
+          "cartaoEsq": 68.3,
+          "folgaCartao": -1085.3
+        },
+        {
+          "f": 0.875,
+          "ativa": "sp",
+          "transito": "1",
+          "pais": {
+            "esq": 652.9,
+            "dir": 960.5,
+            "topo": 427.4,
+            "base": 750,
+            "larg": 307.7,
+            "alt": 322.6
+          },
+          "recorte": {
+            "esq": 554.9,
+            "dir": 1297.7,
+            "topo": 151,
+            "base": 837
+          },
+          "sobra": {
+            "esq": 97.9,
+            "dir": 337.2,
+            "topo": 276.4,
+            "base": 87
+          },
+          "colunaDir": 500.3,
+          "folgaColuna": 152.6,
+          "cartaoEsq": 865.7,
+          "folgaCartao": -94.8
+        }
+      ],
+      "erros": []
+    },
+    {
+      "largura": 1440,
+      "altura": 900,
+      "paradas": [
+        {
+          "f": 0.125,
+          "ativa": "pr",
+          "transito": "0",
+          "pais": {
+            "esq": 760.5,
+            "dir": 1236.1,
+            "topo": 217.5,
+            "base": 716.1,
+            "larg": 475.5,
+            "alt": 498.6
+          },
+          "recorte": {
+            "esq": 649.6,
+            "dir": 1368,
+            "topo": 151,
+            "base": 837
+          },
+          "sobra": {
+            "esq": 110.9,
+            "dir": 131.9,
+            "topo": 66.5,
+            "base": 120.9
+          },
+          "colunaDir": 592,
+          "folgaColuna": 168.5,
+          "cartaoEsq": 160,
+          "folgaCartao": -1076.1
+        },
+        {
+          "f": 0.875,
+          "ativa": "sp",
+          "transito": "1",
+          "pais": {
+            "esq": 735.3,
+            "dir": 1043,
+            "topo": 427.4,
+            "base": 750,
+            "larg": 307.7,
+            "alt": 322.6
+          },
+          "recorte": {
+            "esq": 649.6,
+            "dir": 1368,
+            "topo": 151,
+            "base": 837
+          },
+          "sobra": {
+            "esq": 85.7,
+            "dir": 325,
+            "topo": 276.4,
+            "base": 87
+          },
+          "colunaDir": 592,
+          "folgaColuna": 143.3,
+          "cartaoEsq": 936,
+          "folgaCartao": -107
+        }
+      ],
+      "erros": []
+    },
+    {
+      "largura": 1800,
+      "altura": 1000,
+      "paradas": [
+        {
+          "f": 0.125,
+          "ativa": "pr",
+          "transito": "0",
+          "pais": {
+            "esq": 912.6,
+            "dir": 1447.8,
+            "topo": 232.8,
+            "base": 794,
+            "larg": 535.1,
+            "alt": 561.1
+          },
+          "recorte": {
+            "esq": 664,
+            "dir": 1720,
+            "topo": 158,
+            "base": 930
+          },
+          "sobra": {
+            "esq": 248.6,
+            "dir": 272.2,
+            "topo": 74.8,
+            "base": 136
+          },
+          "colunaDir": 592,
+          "folgaColuna": 320.6,
+          "cartaoEsq": 160,
+          "folgaCartao": -1287.8
+        },
+        {
+          "f": 0.875,
+          "ativa": "sp",
+          "transito": "1",
+          "pais": {
+            "esq": 884.3,
+            "dir": 1230.5,
+            "topo": 469,
+            "base": 832.1,
+            "larg": 346.2,
+            "alt": 363.1
+          },
+          "recorte": {
+            "esq": 664,
+            "dir": 1720,
+            "topo": 158,
+            "base": 930
+          },
+          "sobra": {
+            "esq": 220.3,
+            "dir": 489.5,
+            "topo": 311,
+            "base": 97.9
+          },
+          "colunaDir": 592,
+          "folgaColuna": 292.3,
+          "cartaoEsq": 1288,
+          "folgaCartao": 57.5
+        }
+      ],
+      "erros": []
+    }
+  ]
+}

@@ -8,14 +8,20 @@
  * «Parceiros e Implementações» (prop `eyebrowArte` do `PageHero`), e a seção
  * «Principais Soluções Sistran Labs» de `/sistran-labs` (SIS-188).
  *
- * ── POR QUE UM COMPONENTE NOVO E NÃO O `CarimboRealizadoSistran` ──
+ * ── POR QUE UM COMPONENTE NOVO E NÃO O `CarimboKindEvento` ──
+ *
+ * (Ele se chamava `CarimboRealizadoSistran` quando este parágrafo foi escrito; a
+ * SIS-235 o renomeou ao generalizá-lo de um kind para os quatro. O argumento não
+ * mudou com a renomeação — ver o fim do parágrafo.)
  *
  * A issue pede para «reusar o padrão (componente novo ou genérico com src/alt) em
  * vez de copiar GSAP ad hoc sem reduce», e este arquivo é o ramo "componente
- * novo". O da SIS-235 não serve como está: ele tem o caminho da arte fixo, tira o
- * texto do `alt` de `EVENT_KIND_META.proprio.label` (rastreado pelo portão de
- * cópia da Regra Zero) e carrega o tombo de −6° que a arte DAQUELA issue não
- * trazia. Nada disso é parametrizável sem editá-lo — e «Eventos / outros
+ * novo". O da SIS-235 não serve como está: o caminho da arte é montado a partir do
+ * `kind` do evento (não é um `src` livre), o texto do `alt` sai de
+ * `EVENT_KIND_META[kind].label` (rastreado pelo portão de cópia da Regra Zero) e
+ * ele carrega o tombo de −6° que a arte DAQUELA issue não trazia. Generalizá-lo
+ * para quatro kinds não o tornou genérico para OUTRAS rotas: ele segue amarrado à
+ * taxonomia de eventos. Nada disso é parametrizável sem editá-lo — e «Eventos / outros
  * carimbos» está FORA DE ESCOPO nesta issue, então unificar os dois num só
  * componente ficaria por conta de uma issue própria, com medição da rota de
  * eventos. O que se repete aqui é o PADRÃO (batida por `fromTo`, reduce nascendo
@@ -220,7 +226,7 @@ export default function CarimboBatida({
          passaria a competir com uma matriz congelada no elemento. `"all"` e não
          `"transform,opacity"` — a string com nome de prop entrava no lock do
          portão de cópia da Regra Zero como se fosse texto do site (apuração no
-         `CarimboRealizadoSistran`). */
+         `CarimboKindEvento`). */
       gsap.set(no, { clearProps: 'all' });
     };
   }, [pronto]);

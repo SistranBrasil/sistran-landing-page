@@ -1,0 +1,246 @@
+{
+  "390": {
+    "janela": 390,
+    "scrollWidthDoDocumento": 390,
+    "scrollWidthDoBody": 390,
+    "sobra": 0,
+    "rolavelNaHorizontal": false,
+    "celent": {
+      "faixa": {
+        "x": 0,
+        "w": 390,
+        "h": 537
+      },
+      "capa": {
+        "x": 0,
+        "w": 390,
+        "h": 219
+      },
+      "colunaTexto": {
+        "x": 20,
+        "w": 350,
+        "h": 250
+      },
+      "tituloVisivelDaEsquerda": 20
+    },
+    "culpados": [],
+    "totalCulpados": 0
+  },
+  "768": {
+    "janela": 768,
+    "scrollWidthDoDocumento": 768,
+    "scrollWidthDoBody": 768,
+    "sobra": 0,
+    "rolavelNaHorizontal": false,
+    "celent": {
+      "faixa": {
+        "x": 0,
+        "w": 768,
+        "h": 817
+      },
+      "capa": {
+        "x": 0,
+        "w": 768,
+        "h": 432
+      },
+      "colunaTexto": {
+        "x": 140,
+        "w": 488,
+        "h": 295
+      },
+      "tituloVisivelDaEsquerda": 140
+    },
+    "culpados": [],
+    "totalCulpados": 0
+  },
+  "1024": {
+    "janela": 1024,
+    "scrollWidthDoDocumento": 1024,
+    "scrollWidthDoBody": 1024,
+    "sobra": 0,
+    "rolavelNaHorizontal": false,
+    "celent": {
+      "faixa": {
+        "x": 0,
+        "w": 1024,
+        "h": 576
+      },
+      "capa": {
+        "x": 0,
+        "w": 1024,
+        "h": 576
+      },
+      "colunaTexto": {
+        "x": 48,
+        "w": 928,
+        "h": 396
+      },
+      "tituloVisivelDaEsquerda": 48
+    },
+    "culpados": [],
+    "totalCulpados": 0
+  },
+  "1110": {
+    "janela": 1110,
+    "scrollWidthDoDocumento": 1110,
+    "scrollWidthDoBody": 1110,
+    "sobra": 0,
+    "rolavelNaHorizontal": false,
+    "celent": {
+      "faixa": {
+        "x": 0,
+        "w": 1110,
+        "h": 625
+      },
+      "capa": {
+        "x": 0,
+        "w": 1110,
+        "h": 625
+      },
+      "colunaTexto": {
+        "x": 48,
+        "w": 1014,
+        "h": 418
+      },
+      "tituloVisivelDaEsquerda": 48
+    },
+    "culpados": [],
+    "totalCulpados": 0
+  },
+  "1280": {
+    "janela": 1280,
+    "scrollWidthDoDocumento": 1280,
+    "scrollWidthDoBody": 1280,
+    "sobra": 0,
+    "rolavelNaHorizontal": false,
+    "celent": {
+      "faixa": {
+        "x": 0,
+        "w": 1280,
+        "h": 720
+      },
+      "capa": {
+        "x": 0,
+        "w": 1280,
+        "h": 720
+      },
+      "colunaTexto": {
+        "x": 48,
+        "w": 1184,
+        "h": 449
+      },
+      "tituloVisivelDaEsquerda": 48
+    },
+    "culpados": [],
+    "totalCulpados": 0
+  },
+  "1422": {
+    "janela": 1422,
+    "scrollWidthDoDocumento": 1422,
+    "scrollWidthDoBody": 1422,
+    "sobra": 0,
+    "rolavelNaHorizontal": false,
+    "celent": {
+      "faixa": {
+        "x": 0,
+        "w": 1422,
+        "h": 800
+      },
+      "capa": {
+        "x": 0,
+        "w": 1422,
+        "h": 800
+      },
+      "colunaTexto": {
+        "x": 111,
+        "w": 1200,
+        "h": 464
+      },
+      "tituloVisivelDaEsquerda": 111
+    },
+    "culpados": [],
+    "totalCulpados": 0
+  },
+  "1440": {
+    "janela": 1440,
+    "scrollWidthDoDocumento": 1440,
+    "scrollWidthDoBody": 1440,
+    "sobra": 0,
+    "rolavelNaHorizontal": false,
+    "celent": {
+      "faixa": {
+        "x": 0,
+        "w": 1440,
+        "h": 810
+      },
+      "capa": {
+        "x": 0,
+        "w": 1440,
+        "h": 810
+      },
+      "colunaTexto": {
+        "x": 120,
+        "w": 1200,
+        "h": 464
+      },
+      "tituloVisivelDaEsquerda": 120
+    },
+    "culpados": [],
+    "totalCulpados": 0
+  },
+  "1600": {
+    "janela": 1600,
+    "scrollWidthDoDocumento": 1600,
+    "scrollWidthDoBody": 1600,
+    "sobra": 0,
+    "rolavelNaHorizontal": false,
+    "celent": {
+      "faixa": {
+        "x": 0,
+        "w": 1600,
+        "h": 900
+      },
+      "capa": {
+        "x": 0,
+        "w": 1600,
+        "h": 900
+      },
+      "colunaTexto": {
+        "x": 200,
+        "w": 1200,
+        "h": 464
+      },
+      "tituloVisivelDaEsquerda": 200
+    },
+    "culpados": [],
+    "totalCulpados": 0
+  },
+  "1920": {
+    "janela": 1920,
+    "scrollWidthDoDocumento": 1920,
+    "scrollWidthDoBody": 1920,
+    "sobra": 0,
+    "rolavelNaHorizontal": false,
+    "celent": {
+      "faixa": {
+        "x": 0,
+        "w": 1920,
+        "h": 900
+      },
+      "capa": {
+        "x": 0,
+        "w": 1920,
+        "h": 900
+      },
+      "colunaTexto": {
+        "x": 360,
+        "w": 1200,
+        "h": 464
+      },
+      "tituloVisivelDaEsquerda": 360
+    },
+    "culpados": [],
+    "totalCulpados": 0
+  },
+  "nota": "gerado por scripts/medir-transbordo-quem-somos.mjs"
+}

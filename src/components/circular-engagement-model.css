@@ -28,11 +28,44 @@
   color: #0a3f7d;
 }
 
+/* ── Grade da secao (SIS-165) ────────────────────────────────────────────────
+   Uma coluna até 1199px (titulo, painel, depois a orbita — a ordem do DOM), duas
+   a partir de 1200px: escrita a esquerda, diagrama a direita.
+
+   1200px é o MESMO degrau em que o painel absoluto abria ao lado da estacao, e
+   isso nao é coincidencia — é o ponto onde ha largura para orbita e texto na
+   mesma linha. O que mudou é o que ocupa a folga: antes era o painel voando de
+   quadrante em quadrante, agora é o titulo, parado.
+
+   `minmax(0, …)` nas duas colunas: sem isso o `min-content` do `<h2>` (a palavra
+   mais longa, «Segurador») empurraria a coluna do palco e a orbita encolheria em
+   telas de 1200–1320px. */
+.cem-grade {
+  display: grid;
+  gap: clamp(32px, 4vw, 72px);
+  align-items: center;
+}
+@media (min-width: 1200px) {
+  .cem-grade {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  }
+}
+
 /* ── Cabecalho ───────────────────────────────────────────────────────────── */
 .cem-cabecalho {
   max-width: 920px;
   margin-inline: auto;
   text-align: center;
+}
+/* A esquerda, e alinhado a esquerda, só quando existe a segunda coluna. Abaixo de
+   1200px o titulo continua centrado sobre a orbita, que é o arranjo que a largura
+   permite. */
+@media (min-width: 1200px) {
+  .cem-cabecalho {
+    max-width: none;
+    margin-inline: 0;
+    text-align: left;
+  }
 }
 .cem-eyebrow {
   color: #0ed8f6;
@@ -49,6 +82,18 @@
   line-height: 1.08;
   letter-spacing: -0.035em;
   text-wrap: balance;
+}
+/* Em duas colunas o titulo tem meia largura, e o teto de 76px (4.75rem) daria
+   cinco linhas com «Segurador» sozinha na ultima. 3,5rem = 56px é o maior corpo
+   que mantem «Temos uma abordagem completa de projetos para o mercado Segurador»
+   em quatro linhas a 1440px. `balance` sai: com quatro linhas ele encurta a
+   primeira para igualar as outras, e o titulo perde a borda esquerda reta contra a
+   qual o eyebrow e o painel se alinham. */
+@media (min-width: 1200px) {
+  .cem-titulo {
+    font-size: clamp(2.5rem, 3.1vw, 3.5rem);
+    text-wrap: pretty;
+  }
 }
 /* Duas linhas de sentido, cada uma entrando por conta propria. `inline-block`
    para o `translateY` valer — `span` normal nao aceita transformacao. */
@@ -271,27 +316,90 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 24%;
+  /* 24% → 27%: a manuscrita é mais larga por letra que a caixa-alta condensada que
+     estava aqui, e «Segurador» a 34px precisa de ~136px. 27% de um palco de 620px
+     (a largura da coluna direita a 1440px) dá 167px, que é a largura interna da
+     elipse do nucleo — o texto cabe dentro do vidro, nao em cima da borda. */
+  width: 27%;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.5s ease-out 1.38s;
+}
+.cem-secao[data-entrou='1'] .cem-nucleo-texto {
+  opacity: 1;
+}
+
+/* A LINHA «Abordagem completa» viveu aqui, em caixa-alta e peso 700. Saiu na
+   SIS-165 junto com o `<span>` que a imprimia (o motivo esta no TSX, no lugar). As
+   duas regras ficam comentadas porque religar o hub de duas linhas é descomentar
+   isto e o span de la:
+.cem-nucleo-sobre {
+  display: block;
   color: #001a3d;
   font-size: clamp(0.72rem, 1.08vw, 1rem);
   font-weight: 700;
   letter-spacing: 0.1em;
   line-height: 1.34;
-  text-align: center;
   text-transform: uppercase;
-  opacity: 0;
-  transition: opacity 0.5s ease-out 1.38s;
-}
-.cem-nucleo-texto span {
-  display: block;
 }
 .cem-nucleo-texto-2 {
   margin-top: 6px;
   color: rgba(10, 63, 125, 0.68);
   font-weight: 600;
+} */
+
+/* ── «Mercado Segurador» manuscrito · `docs/fonte2.md` (SIS-165) ──────────────
+   Quinta consumidora da Kalam no site, depois de `.sobre-assinatura`,
+   `.luminna-frase`, `.solucoes-lema`, `.ne-assinatura` e a frase de
+   `como-agimos`. Mesma familia (Kalam → Caveat → cursive), mesmo peso 400, mesma
+   cor `#123B5D`, mesmo `line-height: 0.95`, mesmo tombo de −4° e o mesmo traco
+   ciano `#16BFE8`.
+
+   O QUE DIVERGE DO DOCUMENTO, e por que: o corpo. `fonte2.md` pede
+   `clamp(30px, 3vw, 50px)`, que é medida de HERO — 50px aqui poriam «Segurador»
+   em 200px de largura dentro de um nucleo de 167px, ou seja a frase sairia por
+   cima da borda do vidro e por cima das linhas radiais. O teto desce para 34px e
+   o piso para 17px (o palco do celular tem 120px de nucleo). A familia, a cor, o
+   peso, a entrelinha, o tombo e o traco — tudo o que o documento chama de
+   tratamento — ficam intactos. */
+.cem-nucleo-manuscrito {
+  display: block;
+  font-family: var(--font-kalam), 'Caveat', cursive;
+  font-weight: 400;
+  font-size: clamp(17px, 2.4vw, 34px);
+  line-height: 0.95;
+  color: #123b5d;
+  /* `rotate` e nao `transform`: o `transform` do `.cem-nucleo-texto` é a centragem
+     do bloco, e escrever a rotacao la apagaria o `translate(-50%, -50%)`. */
+  rotate: -4deg;
 }
-.cem-secao[data-entrou='1'] .cem-nucleo-texto {
-  opacity: 1;
+/* `display: block` num `span`, e nao `<br>`: continua uma expressao só para quem
+   inspeciona o DOM, e a quebra nao depende de largura nem de zoom. */
+.cem-nucleo-linha {
+  display: block;
+}
+.cem-nucleo-traco {
+  display: block;
+  width: 38px;
+  height: 7px;
+  /* Centrado sob as duas linhas, com a folga de um respiro de caneta. */
+  margin: 0.28em auto 0;
+  /* A ponta arredondada passa da caixa do `viewBox`. */
+  overflow: visible;
+  fill: none;
+  stroke: #16bfe8;
+  stroke-width: 3;
+  stroke-linecap: round;
+  /* Desenhado da esquerda para a direita, como o documento pede. 100 de
+     `pathLength` deixa o valor em porcentagem — o `d` pode mudar sem refazer a
+     conta. O atraso é o do texto do hub mais um respiro: o traco vem DEPOIS da
+     frase que ele sublinha. */
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset 0.62s cubic-bezier(0.22, 1, 0.36, 1) 1.72s;
+}
+.cem-secao[data-entrou='1'] .cem-nucleo-traco {
+  stroke-dashoffset: 0;
 }
 
 /* ── Esfera da orbita ────────────────────────────────────────────────────── */
@@ -373,7 +481,8 @@
 /* Segunda base: nasce escondida atras da primeira e só desce no estado ativo. É
    o que faz o ativo parecer levantado, e é a razao de o estado nao depender de
    cor — quem nao distingue ciano de azul ainda ve o degrau e a escala. */
-.cem-base--fundo {
+.cem-base--fundo,
+.cem-base--fundo2 {
   background: #f4fafd;
   border-color: rgba(14, 216, 246, 0.16);
   box-shadow: none;
@@ -382,6 +491,14 @@
   transition:
     opacity 0.32s ease-out,
     transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* A camada mais funda da pilha: mais clara, mais fraca de borda e com 40ms de
+   atraso, para as duas descerem em sequencia e nao em bloco. É esse atraso de um
+   quadro e meio que faz a leitura ser "empilhou" em vez de "engrossou". */
+.cem-base--fundo2 {
+  background: #eaf6fc;
+  border-color: rgba(14, 216, 246, 0.1);
+  transition-delay: 0.04s;
 }
 .cem-icone {
   position: relative;
@@ -442,9 +559,18 @@
     0 18px 38px rgba(0, 77, 138, 0.16),
     inset 0 0 22px rgba(165, 240, 255, 0.55);
 }
+/* A pilha do estado ativo: 9px e 18px, progressao linear. Nao é perspectiva de
+   verdade (nao ha `perspective` nem `rotateX` em lugar nenhum da secao) — é a
+   mesma elipse repetida com deslocamento constante, que é como um empilhamento se
+   le num desenho ortografico. Duas camadas somam 18px, que é o que ainda cabe
+   entre o pé da estacao e o rotulo da estacao de baixo. */
 .cem-estacao[data-ativo='true'] .cem-base--fundo {
   opacity: 1;
   transform: translateY(9px);
+}
+.cem-estacao[data-ativo='true'] .cem-base--fundo2 {
+  opacity: 1;
+  transform: translateY(18px);
 }
 .cem-estacao[data-ativo='true'] .cem-icone {
   color: #0ed8f6;
@@ -454,30 +580,62 @@
   font-weight: 700;
 }
 
-/* ── Painel ──────────────────────────────────────────────────────────────── */
+/* ── Painel — o CARD AZUL do destaque (SIS-165) ───────────────────────────────
+   Era branco translucido. Virou azul porque ele É o cartao em destaque: mostra
+   sempre o modelo ativo, e nunca outra coisa. Por isso o azul é PERMANENTE e nao
+   um estado — nao existe um quadro em que este cartao esteja exibindo um modelo
+   que nao seja o destacado, e uma regra `[data-ativo]` aqui casaria sempre. Quem
+   der ao painel uma segunda funcao (uma lista dos quatro, por exemplo) precisa
+   mover o azul para um seletor de estado.
+
+   O «lift» do pedido está no par elevacao + sombra projetada (`translateY(-4px)` e
+   sombra de 22px contra os 14px de antes), e o pulso de TROCA continua sendo a
+   remontagem do corpo — ver `.cem-painel-corpo`. Animar o lift a cada troca seria
+   o cartao inteiro pulando de 3,2 em 3,2 segundos, o movimento mais chamativo da
+   tela num bloco cuja funcao é ser lido.
+
+   Contraste calculado sobre a parada MAIS CLARA do degrade (`#0a3f7d`), que é o
+   pior caso: titulo `#ffffff` 10,40:1 e texto `rgba(255,255,255,0.86)` — composto
+   em `#dde4ed` — 8,12:1. Os dois passam 4,5:1 com folga; na parada escura sobem
+   para 15,05:1 e 11,41:1. A borda `rgba(14,216,246,0.42)` fica em 2,32:1, abaixo
+   dos 3:1 de componente grafico, e por isso NAO carrega informacao sozinha: quem
+   identifica o cartao é o fundo azul, nao o fio. Numeros e metodo em
+   `docs/medidas/cem-painel-azul-sis165.json`. */
 .cem-painel {
   width: min(420px, 100%);
   margin: clamp(28px, 4vw, 44px) auto 0;
-  padding: 20px 22px;
-  border: 1px solid rgba(14, 216, 246, 0.3);
+  padding: 22px 24px;
+  border: 1px solid rgba(14, 216, 246, 0.42);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 14px 34px rgba(0, 77, 138, 0.12);
+  background: linear-gradient(140deg, #0a3f7d 0%, #04264f 100%);
+  box-shadow: 0 22px 44px rgba(0, 41, 82, 0.28);
   text-align: center;
   opacity: 0;
-  transition: opacity 0.4s ease-out 1.62s;
+  transform: translateY(0);
+  transition:
+    opacity 0.4s ease-out 1.62s,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) 1.62s;
 }
 .cem-secao[data-entrou='1'] .cem-painel {
   opacity: 1;
+  transform: translateY(-4px);
+}
+/* Alinhado com o titulo quando existe a segunda coluna; centrado quando o painel
+   fica sozinho sob a orbita. */
+@media (min-width: 1200px) {
+  .cem-painel {
+    margin-inline: 0;
+    text-align: left;
+  }
 }
 .cem-painel-titulo {
-  color: #001a3d;
+  color: #ffffff;
   font-size: 1.0625rem;
   font-weight: 700;
 }
 .cem-painel-texto {
   margin-top: 8px;
-  color: rgba(10, 63, 125, 0.68);
+  color: rgba(255, 255, 255, 0.86);
   font-size: 0.9375rem;
   line-height: 1.55;
 }
@@ -498,20 +656,39 @@
   }
 }
 
-/* ── Desktop: o painel vai para o lado da estacao ativa ──────────────────────
-   Só a partir de 1200px. Abaixo disso a largura util nao cabe orbita e painel na
-   mesma linha sem o painel sair do container — e sair do container era proibido.
-   Os itens da esquerda abrem para a esquerda e os da direita para a direita: a
-   folga esta ali, e abrir "para o centro" passaria por cima do nucleo, que é o
-   unico texto que nao pode ser encoberto. */
+/* ── O painel absoluto ao lado da estacao ativa — FORA DE CENA (SIS-165) ──────
+   Este bloco inteiro governava o painel no desktop: ele era `position: absolute`
+   dentro do palco, ia para o lado do quadrante ativo e se ligava a estacao por uma
+   linha de 46px com dois pontos.
+
+   Saiu porque a premissa dele morreu. Ele existia por causa da folga lateral que
+   sobrava quando a orbita ocupava a largura inteira do container; com o titulo
+   ocupando a coluna da esquerda, essa folga é o titulo. Mantido ativo, o painel
+   ficaria em `right: 79%` do palco — ou seja, POR CIMA do `<h2>` nos dois
+   quadrantes da esquerda.
+
+   Fica comentado, e nao apagado, porque é o unico registro de como o painel se
+   liga a estacao: os `-25 / -275 / -525 / -775` de `stroke-dashoffset` do realce
+   tem par aqui, nas mesmas quatro posicoes, e a linha com dois pontos (o segundo
+   é `box-shadow` do primeiro, nao um terceiro elemento) é a solucao que nao
+   acrescenta nó. Quem devolver o cabecalho para cima do palco religa este bloco e
+   tira o painel da coluna do titulo no TSX — as duas coisas, nunca uma.
+
+   ⚠️ Comentario de CSS NAO ANINHA. Os dois comentarios que viviam dentro deste
+   bloco estao com os delimitadores trocados por «(*» e «*)» — o primeiro fecha-
+   comentario deles encerraria este comentario aqui e devolveria metade das regras
+   ao navegador, que é pior do que apagar (regra morta rodando). Nem esta nota pode
+   escrever os delimitadores por extenso, nem entre acentos graves. Ao religar,
+   desfazer a troca junto.
+
 @media (min-width: 1200px) {
   .cem-painel {
     position: absolute;
     width: clamp(180px, 18vw, 224px);
     margin: 0;
     text-align: left;
-    /* A troca de lado nao é animada de proposito: ver o painel voar de um canto
-       ao outro da orbita a cada hover seria o movimento mais chamativo da tela. */
+    (* A troca de lado nao é animada de proposito: ver o painel voar de um canto
+       ao outro da orbita a cada hover seria o movimento mais chamativo da tela. *)
     transition: opacity 0.4s ease-out 1.62s;
   }
   .cem-painel[data-pos='top-left'],
@@ -537,9 +714,9 @@
     text-align: right;
   }
 
-  /* Linha fina + dois pontos ligando o painel a estacao. A linha é o `::before`;
+  (* Linha fina + dois pontos ligando o painel a estacao. A linha é o `::before`;
      o segundo ponto é a sombra deslocada do primeiro, e nao um terceiro
-     elemento. */
+     elemento. *)
   .cem-painel::before,
   .cem-painel::after {
     content: '';
@@ -574,6 +751,7 @@
     box-shadow: -41px 0 0 0 #0ed8f6;
   }
 }
+   ── fim do bloco fora de cena (SIS-165) ─────────────────────────────────── */
 
 /* ── Tablet ──────────────────────────────────────────────────────────────── */
 @media (max-width: 1199px) {
@@ -646,10 +824,15 @@
   .cem-label-curto {
     display: block;
   }
+  /* O nucleo cresce em proporcao (30% contra 27%) porque a manuscrita tem duas
+     linhas e `line-height: 0.95` nao perdoa falta de largura: em 360px o texto
+     mede 17px (o piso do clamp) e «Segurador», a linha mais longa, pede 74px. */
   .cem-nucleo-texto {
     width: 30%;
-    font-size: 0.6rem;
-    letter-spacing: 0.06em;
+  }
+  /* O traco de 38px é mais largo que a palavra nesse tamanho — encolhe com ela. */
+  .cem-nucleo-traco {
+    width: 30px;
   }
   .cem-titulo {
     letter-spacing: -0.02em;
@@ -692,7 +875,15 @@
     opacity: 1 !important;
     transition: opacity 120ms linear !important;
   }
-  .cem-secao .cem-anel {
+  /* O painel nasce 4px abaixo e sobe ao entrar; sem percurso ele nasce no lugar.
+     `transform: none` é seguro aqui (a centragem dele é `margin`, nao transform). */
+  .cem-secao .cem-painel {
+    transform: none !important;
+  }
+  /* O traco do «Mercado Segurador» aparece desenhado: ele é parte do desenho da
+     palavra, nao um efeito — se ficasse em `dashoffset: 100` sumiria de vez. */
+  .cem-secao .cem-anel,
+  .cem-secao .cem-nucleo-traco {
     stroke-dashoffset: 0 !important;
     transition: none !important;
   }
@@ -738,7 +929,11 @@ html[data-motion='reduce'] .cem-nucleo-texto {
   opacity: 1 !important;
   transition: opacity 120ms linear !important;
 }
-html[data-motion='reduce'] .cem-anel {
+html[data-motion='reduce'] .cem-painel {
+  transform: none !important;
+}
+html[data-motion='reduce'] .cem-anel,
+html[data-motion='reduce'] .cem-nucleo-traco {
   stroke-dashoffset: 0 !important;
   transition: none !important;
 }

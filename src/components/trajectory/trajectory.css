@@ -1,0 +1,2303 @@
+/**
+ * SIS-202 — «Nossa trajetória»: preview compacta + fluxo detalhado.
+ * Especificação: `docs/implantacoes.md`. Tokens: `src/components/legacy/legacy.css`.
+ *
+ * ── A ORDEM DESTE ARQUIVO É DELIBERADA ───────────────────────────────────────
+ * O layout ESTÁTICO é a base, escrito sem nenhuma media query: fila vertical, todos
+ * os cards em opacidade cheia, linha desenhada em CSS na lateral. O palco sticky com
+ * rolagem horizontal vem DEPOIS, inteiro dentro de
+ * `.trajetoria-scroll[data-modo='palco']`, e esse atributo só existe quando o
+ * JavaScript confirmou largura ≥ 901px e movimento não reduzido
+ * (`TrajectoryScrollytelling`).
+ *
+ * ⚠️ NÃO INVERTER ISSO. Se o palco fosse o padrão e o estático viesse por
+ * `@media`, sem JavaScript a página serviria o palco sem `--p`: 27 dos 28 cards em
+ * `opacity: .15` e a linha nunca desenhada — conteúdo perdido para sempre, que é
+ * exatamente a armadilha de reduced-motion documentada no projeto.
+ *
+ * Todo valor que o JavaScript escreve é lido com FALLBACK (`var(--p, 0)`), para o
+ * primeiro quadro e para o caso de o efeito não rodar.
+ */
+
+.trajetoria {
+  position: relative;
+  overflow: clip; /* o palco desliza 28 × 420px na horizontal: a página não herda isso */
+  color: var(--ink);
+  background: var(--cream);
+}
+
+/* Grade técnica discretíssima (§9: «sutil, nunca competindo com o conteúdo»). */
+.trajetoria::before {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--deep) 100%, transparent) 0 1px,
+      transparent 1px 100%
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--deep) 100%, transparent) 0 1px,
+      transparent 1px 100%
+    );
+  background-size: 72px 72px;
+  opacity: 0.05;
+  content: '';
+  pointer-events: none;
+}
+
+.trajetoria-quadro {
+  position: relative;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-block: clamp(3.5rem, 7vw, 6.5rem) clamp(2rem, 4vw, 3.5rem);
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+/* ── Cabeçalho ───────────────────────────────────────────────────────────── */
+
+.trajetoria-cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: clamp(2rem, 4vw, 3.25rem);
+}
+
+/* SIS-205 — O CARIMBO NO LUGAR DO CABEÇALHO TEXTUAL.
+   Largura própria, sobrescrevendo o `--carimbo-batida-w` que `carimbo-batida.css`
+   define (`clamp(15rem, 19vw, 17.5rem)`): esta arte é 741×285, quase 2,6:1, e no
+   padrão da casa — pensado para cápsulas mais quadradas — ela viria com ~6rem de
+   largura útil de letra. Só a largura muda; a proporção sai dos intrínsecos no TSX.
+
+   ⚠️ O PISO DO `clamp` É O QUE IMPORTA EM TELA ESTREITA: a 390px, 24vw daria 94px e
+   a arte ficaria ilegível. O piso de 16rem (256px) cabe nos 390px menos os 2×1,25rem
+   de `padding-inline` do quadro (350px de útil) sem estourar. */
+.trajetoria-carimbo {
+  --carimbo-batida-w: clamp(16rem, 24vw, 22rem);
+}
+
+/* Rótulo em caixa alta com o marcador da casa, mas em tinta para fundo CLARO — a
+   `.eyebrow` global é `#7dd3fc`, feita para painéis escuros.
+
+   ⚠️ SEM CONSUMIDOR DESDE A SIS-205. Os dois usos eram a tag «Implementações» do
+   cabeçalho e a tag «Nossa trajetória» da preview, e os dois saíram quando o carimbo
+   assumiu o papel de rótulo visual da seção — o JSX de cada um está preservado em
+   comentário em `TrajectorySection.tsx` e `TrajectoryOverview.tsx`. A regra fica
+   aqui pelo mesmo motivo que aquele JSX ficou lá: é ela que carrega a tinta para
+   fundo claro, e apagá-la obrigaria a redescobrir esse ajuste caso o cabeçalho volte
+   a ter texto. Quem for limpar folha morta nesta rota resolve as três coisas de uma
+   vez. Vale o mesmo para `.trajetoria-cabecalho-titulo`, logo abaixo. */
+.trajetoria-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--signal-deep);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.trajetoria-eyebrow::before {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--signal-deep);
+  content: '';
+}
+
+.trajetoria-cabecalho-titulo {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.9rem, 3.4vw, 2.85rem);
+  line-height: 1.1;
+}
+
+/* ── Preview (§2) ────────────────────────────────────────────────────────── */
+
+.trajetoria-preview {
+  display: grid;
+  grid-template-columns: 65fr 35fr;
+  gap: clamp(1.75rem, 3.5vw, 3.5rem);
+  align-items: center;
+}
+
+.trajetoria-preview-principal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  min-width: 0;
+}
+
+.trajetoria-titulo {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  line-height: 1.15;
+}
+
+.trajetoria-subtitulo {
+  max-width: 42ch;
+  margin: 0;
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+  font-size: clamp(1rem, 1.2vw, 1.12rem);
+  line-height: 1.55;
+}
+
+/* ── Miniatura da linha (§2) ─────────────────────────────────────────────── */
+
+.trajetoria-mini {
+  position: relative;
+  width: 100%;
+  margin-block: clamp(0.5rem, 1.5vw, 1.25rem);
+}
+
+.trajetoria-mini-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  /* Empilhado ACIMA dos selos de propósito: é o que faz o nó ciano cobrir a ponta
+     da pílula, como no mock, sem precisar converter o raio da `viewBox` em px de
+     layout dentro de um `translate`. Ver `.trajetoria-mini-selo`. */
+  position: relative;
+  z-index: 1;
+}
+
+.trajetoria-mini-linha {
+  fill: none;
+  stroke: var(--signal-deep);
+  stroke-linecap: round;
+  stroke-width: 4;
+  /* Glow discreto, do mock. `drop-shadow` e não `filter: blur` num duplicado do
+     traço: é uma declaração, não um segundo `<path>` para manter em sincronia.
+
+     ⚠️ ESTÁTICO DE PROPÓSITO — não há glow pulsante aqui, em nenhum modo. A folha
+     inteira desta rota tem um reset de movimento reduzido, e um brilho que pulsasse
+     morreria lá congelado num quadro qualquer; sem animação, o que se vê com
+     `prefers-reduced-motion: reduce` é exatamente o que se vê sem, e não há regra a
+     mais para manter. */
+  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--signal-deep) 55%, transparent));
+}
+
+.trajetoria-mini-haste {
+  stroke: color-mix(in srgb, var(--ink) 30%, transparent);
+  stroke-dasharray: 3 5;
+  stroke-width: 1.5;
+}
+
+.trajetoria-mini-ponto {
+  stroke: var(--paper);
+  stroke-width: 2.5;
+}
+
+/* Nós das pontas: ciano com anel branco e halo — o desenho da captura de 30/09. Era
+   navy cheio; a pílula do selo é que carrega o navy agora, e repetir a cor nos dois
+   colaria um no outro. */
+.trajetoria-mini-no {
+  fill: var(--signal);
+  stroke: var(--paper);
+  stroke-width: 4;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--paper) 85%, transparent));
+}
+
+/* Os anos são HTML sobre a mesma geometria, e não `<text>` no SVG: no SVG eles
+   encolheriam junto com o desenho e a 390px ficariam abaixo do mínimo legível que o
+   §14 exige. Aqui herdam a fonte do projeto e têm tamanho próprio.
+
+   ⚠️ O ALINHAMENTO COM O NÓ NÃO USA `-50%`. A pílula não é centrada no nó: ela
+   encosta nele, à esquerda no início e à direita no fim. Então o `translate`
+   horizontal é 0 ou −100% — a borda da pílula cai EXATAMENTE na coordenada do nó — e
+   o `padding` do lado de dentro é o que afasta o texto de debaixo do círculo. Feito
+   com `-50%` mais um recuo em px, o recuo teria de valer o raio do nó em pixels de
+   layout, que muda com a largura do container e não existe em CSS. */
+.trajetoria-mini-selo {
+  position: absolute;
+  z-index: 0;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: clamp(0.95rem, 1.5vw, 1.2rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* SIS-205 — OS CHIPS DE MARCA, na ponta externa de cada haste pontilhada.
+
+   ⚠️ O TAMANHO É PX (via `clamp`) E NÃO UNIDADE DA `viewBox`, e é a razão de o chip
+   ser HTML: dentro do SVG ele escalaria com o desenho, e a 390px de tela a caixa
+   renderiza a ~0,44 da escala — a logo viria com menos de 20px de largura, onde não
+   se reconhece marca. Em px ela tem o mesmo tamanho em qualquer largura; o que
+   acompanha a linha é só a POSIÇÃO, em porcentagem da mesma geometria (ver
+   `posicaoNaCaixa` no TSX).
+
+   ⚠️ `z-index: 2` PORQUE O SVG ESTÁ EM 1. Os selos de ano ficam em 0 de propósito
+   (o nó ciano tem de cobrir a ponta da pílula); o chip é o contrário — ele mora fora
+   do traço, na folga que a `viewBox` reservou, e passar por baixo dele só criaria um
+   recorte estranho se as duas coisas se tocassem por um pixel de arredondamento.
+
+   Centrado de verdade no fim da haste: aqui o `translate(-50%, -50%)` é correto — ao
+   contrário do selo de ano, que ENCOSTA no nó em vez de se centrar nele. */
+.trajetoria-mini-marca {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(3rem, 7vw, 4.5rem);
+  aspect-ratio: 3 / 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* `contain` e 100%/100%: as artes do acervo têm proporções diferentes entre si, e é
+   o `contain` que faz uma logo quadrada e uma deitada ocuparem a mesma caixa sem
+   distorcer nenhuma das duas. Os intrínsecos do `next/image` (240×80) só reservam
+   espaço — ver a nota no TSX. */
+.trajetoria-mini-marca img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.trajetoria-mini-selo--inicio {
+  transform: translate(-100%, -50%);
+  padding-inline-end: 1.7rem;
+}
+
+.trajetoria-mini-selo--fim {
+  transform: translate(0, -50%);
+  padding-inline-start: 1.7rem;
+}
+
+/* ⚠️ EM TELA ESTREITA A PÍLULA SAI DA TELA, e foi medido: a 390px o selo `1988`
+   começava em x = −31,8 e o `2026` terminava em 425 — os dois cortados. A causa é
+   geométrica e não some com ajuste fino: o nó inicial fica a 7,5% da caixa, e uma
+   pílula de ~80px não cabe à ESQUERDA de 26px. Encolher a fonte até caber é o que o
+   §14 proíbe.
+
+   Então o selo troca de lado em vez de encolher: passa a encostar no nó por BAIXO
+   (início) e por CIMA (fim), alinhado pela borda que aponta para dentro do desenho.
+   Os dois cantos escolhidos são os vazios da serpentina — a perna do meio começa em
+   x=248 e termina em x=541, então abaixo do nó inicial e acima do nó final não há
+   traço para cobrir. E sem a sobreposição com o círculo, o recuo interno de 1,7rem
+   que existia só para tirar o texto de debaixo dele deixa de ter função. */
+@media (max-width: 600px) {
+  .trajetoria-mini-selo--inicio {
+    transform: translate(0, 0.5rem);
+    padding-inline-end: 0.85rem;
+  }
+
+  .trajetoria-mini-selo--fim {
+    transform: translate(-100%, calc(-100% - 0.5rem));
+    padding-inline-start: 0.85rem;
+  }
+}
+
+/* ── Legenda de categorias (§2) ──────────────────────────────────────────── */
+
+.trajetoria-legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trajetoria-legenda-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.38rem 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--deep) 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 70%, transparent);
+  color: color-mix(in srgb, var(--ink) 85%, transparent);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.trajetoria-legenda-ponto {
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 50%;
+  background: var(--legenda-cor, var(--signal-deep));
+}
+
+/* ── Painel lateral: indicadores + competências (§2) ─────────────────────── */
+
+/* SIS-205 — O PAINEL GANHOU PROFUNDIDADE.
+   A sombra é de TRÊS camadas de propósito, e não um `box-shadow` único: a primeira
+   é o contato (2px, quase opaca), a segunda é o corpo (28px, é ela que faz o cartão
+   parecer descolado do creme) e a terceira é o halo largo (60px, muito diluído), que
+   é o que impede a sombra de terminar num contorno visível sobre um fundo claro. Uma
+   sombra só, com desfoque grande o bastante para o corpo, deixaria a borda superior
+   sem apoio e o cartão flutuaria sem base.
+   O `y` negativo no deslocamento não existe: a luz da página vem de cima, como em
+   todos os outros cartões da rota.
+   O fundo subiu de 78% para 88% de `--paper`: com sombra atrás, um fundo translúcido
+   demais deixa a própria sombra aparecer ATRAVÉS do cartão, e o painel fica sujo.
+
+   ⚠️ ESTA `transition` NÃO PODE LISTAR `transform` NEM `opacity`.
+   O `<aside>` é o alvo do reveal (`data-reveal="fade-up"`, ver `TrajectoryOverview`),
+   e o preset `[data-reveal]` do `globals.css` é quem anima essas duas propriedades.
+   Uma classe tem a MESMA especificidade de um atributo, e esta regra é carregada
+   depois — ela venceria o empate, a entrada apareceria de estalo e a cadência dos
+   tokens iria embora. Por isso o hover é só sombra e borda, e o levantar do cartão
+   NÃO EXISTE: quem se move no hover é a caixa do ícone, que não é nó de reveal. */
+.trajetoria-painel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  padding: clamp(1.5rem, 2.5vw, 2.25rem);
+  border: 1px solid color-mix(in srgb, var(--deep) 14%, transparent);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  box-shadow:
+    0 2px 4px color-mix(in srgb, var(--deep) 8%, transparent),
+    0 18px 28px -14px color-mix(in srgb, var(--deep) 22%, transparent),
+    0 40px 60px -30px color-mix(in srgb, var(--deep) 18%, transparent);
+  transition:
+    box-shadow 0.35s var(--motion-ease-out, ease),
+    border-color 0.35s var(--motion-ease-out, ease);
+}
+
+/* `@media (hover: hover)` porque no toque não existe «sair» do hover: sem a
+   consulta, o painel ficaria com a sombra forte presa depois do primeiro toque. */
+@media (hover: hover) {
+  .trajetoria-painel:hover {
+    border-color: color-mix(in srgb, var(--deep) 22%, transparent);
+    box-shadow:
+      0 2px 4px color-mix(in srgb, var(--deep) 10%, transparent),
+      0 22px 34px -14px color-mix(in srgb, var(--deep) 28%, transparent),
+      0 48px 72px -30px color-mix(in srgb, var(--deep) 22%, transparent);
+  }
+}
+
+.trajetoria-indicadores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1rem, 2vw, 1.75rem);
+  margin: 0;
+}
+
+.trajetoria-indicador {
+  flex: 1 1 8rem;
+  min-width: 7.5rem;
+}
+
+/* O fio vertical do mock é `border-inline-start` do SEGUNDO item, e não um nó
+   próprio: assim ele desaparece sozinho quando os indicadores empilham no mobile,
+   onde um fio vertical entre linhas não significaria nada. */
+.trajetoria-indicador + .trajetoria-indicador {
+  padding-inline-start: clamp(1rem, 2vw, 1.75rem);
+  border-inline-start: 1px solid color-mix(in srgb, var(--deep) 18%, transparent);
+}
+
+.trajetoria-indicador-valor {
+  color: var(--ink);
+  font-size: clamp(2.1rem, 3.6vw, 3rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.trajetoria-indicador-rotulo {
+  margin: 0.4rem 0 0;
+  color: color-mix(in srgb, var(--ink) 68%, transparent);
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+.trajetoria-competencias {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* SIS-205 — a linha inteira virou alvo de hover (item 3 da issue), com `padding` e
+   `margin` negativo do mesmo tamanho: assim a área sensível cobre a linha toda sem
+   deslocar nada na medida padrão — sem o `margin`, dar `padding` aqui empurraria os
+   quatro itens para dentro e o painel cresceria só por causa do hover.
+   O realce é FUNDO, e não peso ou tamanho de letra: a issue pede «sem atrapalhar a
+   leitura», e mudar a tipografia no hover faz o texto pular sob o cursor. */
+.trajetoria-competencia {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-inline: -0.6rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 14px;
+  transition: background-color 0.28s var(--motion-ease-out, ease);
+}
+
+@media (hover: hover) {
+  .trajetoria-competencia:hover {
+    background: color-mix(in srgb, var(--cream) 55%, transparent);
+  }
+
+  /* O ÚNICO `transform` do painel, e ele mora aqui de propósito: a caixa do ícone
+     não é nó de reveal, então animar `transform` nela não disputa com o preset
+     `[data-reveal]` do `<aside>` (ver o aviso em `.trajetoria-painel`). 2px é
+     deliberadamente pequeno — é o sinal de que a linha respondeu, não um salto. */
+  .trajetoria-competencia:hover .trajetoria-competencia-icone {
+    transform: translateY(-2px);
+    background: color-mix(in srgb, var(--cream) 95%, transparent);
+  }
+}
+
+/* A ARTE FOI DE 36px PARA 56px (o alvo da issue) e a caixa acompanhou em proporção:
+   72px de caixa mantém a mesma moldura de 8px por lado que os 48/36 antigos tinham,
+   então o ícone não passa a encostar na borda do disco. O raio subiu junto (12→16px)
+   porque um raio fixo numa caixa 50% maior lê como quadrado. */
+.trajetoria-competencia-icone {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--cream) 80%, transparent);
+  transition:
+    transform 0.28s var(--motion-ease-out, ease),
+    background-color 0.28s var(--motion-ease-out, ease);
+}
+
+.trajetoria-competencia-icone img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+/* 0.95rem → 1.02rem: com o ícone a 72px, o título antigo ficava pequeno ao lado da
+   própria arte que ele nomeia. O TEXTO NÃO MUDOU — só o corpo. */
+.trajetoria-competencia-titulo {
+  color: var(--ink);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* ── Convite a rolar (§2) ────────────────────────────────────────────────── */
+
+.trajetoria-role {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+  margin: clamp(2rem, 4vw, 3.25rem) 0 0;
+  color: color-mix(in srgb, var(--ink) 62%, transparent);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.trajetoria-role-seta {
+  width: 18px;
+  height: 26px;
+  fill: none;
+  stroke: var(--signal-deep);
+  stroke-linecap: round;
+  stroke-width: 1.5;
+  animation: trajetoria-seta 2.2s ease-in-out infinite;
+}
+
+@keyframes trajetoria-seta {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translate3d(0, -3px, 0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate3d(0, 3px, 0);
+  }
+}
+
+/* ══ FLUXO DETALHADO — BASE ESTÁTICA ═════════════════════════════════════════
+   Vale em mobile, com movimento reduzido e sem JavaScript. Fila vertical, tudo
+   legível, sem sticky e sem rolagem horizontal (§10, §11 e critério 11). */
+
+.trajetoria-scroll {
+  position: relative;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+.trajetoria-palco {
+  position: relative;
+}
+
+/* A barra de capítulos é um resumo de posição DENTRO do palco. Sem palco não há
+   posição a resumir — e ela não é navegação (nada nela é clicável), então esconder
+   não remove nenhum caminho. */
+.trajetoria-barra,
+.trajetoria-pista {
+  display: none;
+}
+
+.trajetoria-abertura {
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+/* ⚠️ COLUNA, não linha — 01/10: «o numero deve ficar no começo [...] e o icone logo a
+   baixo». `align-items: flex-start` para a pílula não esticar na largura da coluna: ela
+   é uma caixa que envolve o texto, e esticada deixaria de ser pílula.
+
+   `flex-wrap` saiu junto: em coluna ele não tem o que fazer (um só item por linha) e
+   ficaria como declaração que parece ter efeito e não tem. */
+.trajetoria-abertura-marca {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  align-items: flex-start;
+}
+
+/* O ícone grande é do palco. Na fila estática ele não entra. */
+.trajetoria-abertura-pulso {
+  display: none;
+}
+
+/* Pílula navy, o mesmo vocabulário de `.trajetoria-mini-selo`. */
+.trajetoria-abertura-ano {
+  display: inline-block;
+  margin: 0;
+  padding: 0.35rem 0.95rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+/* A PLACA AZUL DA MARCA — 01/10 (noite, fim): «coloque a logo da sistran com um quadrado de
+   fundo azul».
+
+   ⚠️ `aspect-ratio: 1` É O «QUADRADO», e é ele e não uma altura fixa: a largura é fluida
+   (`clamp`), então altura em px daria retângulo em alguma viewport. O `--deep` é o azul da
+   paleta da casa, não um tom novo — e sobre ele a arte clara da marca tem contraste de 4,9:1
+   contra o `#004d8a` (luminância relativa 0,0836), bem acima do 3:1 que elemento gráfico
+   pede.
+
+   `padding` generoso porque a arte é 560×374 (3:2 deitada): num quadrado ela só se lê com
+   respiro em cima e embaixo, e `object-fit: contain` garante que o respiro não vire corte. */
+.trajetoria-abertura-marca-placa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(4.5rem, 7vw, 6rem);
+  aspect-ratio: 1;
+  margin-top: 1.1rem;
+  padding: 0.9rem;
+  border-radius: 1rem;
+  background: var(--deep);
+  box-shadow: 0 0.75rem 1.5rem color-mix(in srgb, var(--ink) 22%, transparent);
+}
+
+.trajetoria-abertura-marca-placa img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ⚠️ «AUMENTE LEVEMENTE O TAMANHO» — 01/10 (noite, fim). O título sobe de
+   `clamp(1.35rem, 2.4vw, 1.9rem)` para `clamp(1.6rem, 2.9vw, 2.3rem)` e o texto de apoio
+   ganha tamanho explícito, que antes herdava o corpo.
+
+   ⚠️ «LEVEMENTE» É O QUE LIMITA O TETO, e há uma referência medida para ele: o título do card
+   aceso é a manchete do palco, e esta abertura não pode competir com ela. 2,3rem contra os
+   ~2,4rem do card deixa a hierarquia de pé — acima disso o olho vai para a abertura, que é
+   contexto, e não para o marco, que é conteúdo. */
+.trajetoria-abertura-titulo {
+  margin: 0.5rem 0 0;
+  color: var(--ink);
+  font-size: clamp(1.6rem, 2.9vw, 2.3rem);
+  line-height: 1.2;
+}
+
+.trajetoria-abertura-texto {
+  /* `44ch` e não 46: a medida é em CARACTERES, logo acompanha o corpo maior e a linha
+     ficaria ~4% mais larga se o número ficasse. Dois caracteres a menos devolvem a largura
+     de coluna que já estava escolhida. */
+  max-width: 44ch;
+  margin: 0.6rem 0 0;
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+  font-size: clamp(1rem, 1.35vw, 1.1rem);
+  line-height: 1.55;
+}
+
+/* No estático a trilha é uma coluna, e a linha é uma borda em CSS à esquerda: o SVG
+   sai de cena porque sua geometria é horizontal e não tem como reaproveitar. */
+.trajetoria-viewport {
+  position: relative;
+}
+
+.trajetoria-trilha {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  /* ⚠️ NÃO HÁ `width: auto !important` NEM `height: auto !important` AQUI, e a
+     ausência é a correção de um defeito medido nesta leva.
+
+     As dimensões do palco (`--faixa`, `--percurso`) chegam do JSX como VARIÁVEIS, que
+     não dimensionam nada sozinhas — então o estado base simplesmente não as consome e
+     a coluna cresce com o conteúdo, sem precisar anular nada. Foi assim que o bloco
+     das células já resolvia o mesmo problema; a primeira versão desta inversão
+     escreveu `width`/`height` inline e precisou do `!important`, que então valia
+     TAMBÉM no palco: trilha medida com `width: 0px` a 1440px, `translateX(-50%)`
+     resolvendo para zero e a banda de 900px deslocada meia tela. */
+  height: auto;
+  padding-inline-start: 1.75rem;
+  border-inline-start: 2px solid color-mix(in srgb, var(--signal-deep) 35%, transparent);
+}
+
+.trajetoria-linha {
+  display: none;
+}
+
+/* O marcador viajante fica FORA do modo estático pelo mesmo motivo que o SVG: sua
+   posição é `--viajante-x`/`--viajante-y`, escritas por quadro pelo palco. Sem palco
+   não há essas variáveis, e ele encalharia no canto superior esquerdo da coluna. Não
+   se perde conteúdo: ele é decorativo (`aria-hidden`), e o que ele indica — onde a
+   leitura está — no estático é dado por tudo estar visível de uma vez. */
+.trajetoria-viajante {
+  display: none;
+}
+
+/* Os selos de competência somem no estático pelo MESMO motivo, e vale dizer por que
+   isso não perde conteúdo: eles são ícones sem texto (`aria-hidden`), e as quatro
+   competências que eles representam estão escritas com título e descrição no painel
+   da preview, acima, que no estático está inteiro visível. O selo é recorte visual do
+   que já se lê por extenso — não a única aparição. */
+.trajetoria-selo {
+  display: none;
+}
+
+/* E o aviso de saída não tem o que avisar: no estático a coluna é toda visível e o
+   fecho vem logo depois, no fluxo normal. Ele existe para o palco sticky, onde ~24
+   telas de rolagem sem fim declarado se confundem com página travada. */
+.trajetoria-continue {
+  display: none;
+}
+
+.trajetoria-celula {
+  /* Coluna estática: a célula é um item de fluxo, e as coordenadas do palco
+     (`--celula-x`/`--celula-y`) simplesmente não são consumidas aqui.
+
+     ⚠️ O `!important` que havia nestas duas linhas FOI REMOVIDO com a causa dele.
+     A premissa era outra: as coordenadas chegavam como `left`/`top` INLINE, e
+     anular estilo inline por seletor exige `!important` — daí
+     `inset: auto !important`. Só que aquele `inset` valia também no palco, onde o
+     bloco de baixo devolvia `position: absolute !important` e esquecia de
+     redevolver o `inset`: as 28 células ficavam em `left/top: auto`, empilhadas no
+     mesmo ponto (medido a 1440px — `left` inline de 210px computado como `0px`).
+     Agora a coordenada chega em variável e não posiciona nada por conta própria,
+     então não há inline a vencer e o estado base não precisa retirar nada. */
+  position: static;
+  inset: auto;
+  transform: none;
+}
+
+.trajetoria-celula::before {
+  position: absolute;
+  left: -1.75rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-top: 1.5rem;
+  margin-left: -0.35rem;
+  border: 2px solid var(--cream);
+  border-radius: 50%;
+  background: var(--signal-deep);
+  content: '';
+}
+
+/* ── Card de marco (§4) ──────────────────────────────────────────────────── */
+
+.trajetoria-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: clamp(1.1rem, 1.8vw, 1.5rem);
+  border: 1px solid color-mix(in srgb, var(--signal) 26%, transparent);
+  border-radius: 16px;
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--deep) 45%, var(--ink)) 0%,
+    var(--ink) 100%
+  );
+  color: var(--paper);
+}
+
+.trajetoria-card-topo {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* O glifo genérico de prédio SAIU do `MilestoneCard` no pedido de 30/09 («coloque as
+   logos em cada card»): a placa de marca abaixo ocupa o lugar dele. A regra fica
+   comentada porque é o desenho exato do canto anterior — se a área quiser o glifo de
+   volta ao lado da placa, é esta medida, não uma nova.
+
+.trajetoria-card-glifo {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 1.4;
+  opacity: 0.85;
+}
+*/
+
+/* A placa de marca. Fundo CLARO e não transparente: as artes de
+   `public/logos-parceiros/` são quase todas monocromáticas escuras, feitas para
+   papel — sobre o gradiente marinho do card elas desapareceriam. O mesmo fundo serve
+   ao ramo do monograma, então as duas variantes têm a mesma silhueta na fila e o card
+   não muda de forma conforme a marca tenha arte ou não.
+
+   As medidas crescem no estado ativo (ver o bloco do palco): é a parte do pedido que
+   diz «a logo deixe maior». */
+.trajetoria-card-placa {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 46px;
+  padding: 0.3rem 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: 10px;
+  background: var(--paper);
+  transition: width 0.45s ease, height 0.45s ease;
+}
+
+/* `contain` e 100% nas duas medidas: as artes têm proporções muito diferentes entre
+   si (de quadrada a muito deitada) e é a caixa que manda, não o arquivo. */
+.trajetoria-card-placa img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.trajetoria-card-placa[data-tipo='monograma'] b {
+  color: var(--ink);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* Empurra a pílula de categoria para a direita da cabeça do card, com a geração
+   encostada na placa — a ordem da captura da versão publicada. */
+.trajetoria-card-selo {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* A cor vem do token da categoria (`--chip-cor`, escrito no JSX). Nunca é o ÚNICO
+   sinal: o chip tem o texto da categoria ao lado. */
+.trajetoria-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.22rem 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--chip-cor, var(--signal)) 55%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--chip-cor, var(--signal)) 16%, transparent);
+  color: var(--chip-cor, var(--signal));
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.trajetoria-card-titulo {
+  margin: 0;
+  font-size: clamp(1.02rem, 1.4vw, 1.2rem);
+  line-height: 1.25;
+}
+
+.trajetoria-card-texto {
+  margin: 0;
+  color: color-mix(in srgb, var(--paper) 78%, transparent);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+/* ─── AS COMPETÊNCIAS ACUMULADAS DENTRO DO CARD ────────────────────────────────
+   Pedido de 01/10 (noite): «quero que os icones seja colocados sendo respectiva a
+   quantidade de qual icone tem antes na linha do tempo dentro dos cards e aparecem
+   quando fica em destaque e uma breve explicação do que é o icone».
+
+   ⚠️ OS ÍCONES SÃO FIXOS E O TEXTO É QUE APARECE — 01/10 (noite, fim): «nao quero que os
+   icones surjam quero que ja estejam fixos». A lista inteira nascia em `display: none` e
+   acendia só no card aceso; agora as PASTILHAS estão em cena em todos os cards, em fila
+   horizontal, e o que o destaque revela é a coluna com título e explicação.
+
+   ⚠️ E A DIVISÃO NÃO É MEIO-TERMO: ela é o que torna o pedido compatível com o outro da
+   MESMA mensagem, «diminua os espaçamento entre os cards». Com as explicações abertas em
+   todos os 24, o card em repouso passaria de ~254 para ~450px de altura e o vão não teria
+   como encolher — seria o oposto do que foi pedido. Em fila, os quatro ícones custam ~48px
+   ao card em repouso, que é o que os 420 de `VAO` já comportam.
+
+   ⚠️ O MOTIVO DE `display` E NÃO `opacity` SOBREVIVEU, e agora vale para o TEXTO: as mesmas
+   três ou quatro frases são montadas em todos os cards, e em `opacity: 0` continuariam no
+   documento 24 vezes para o leitor de tela. Em `none` só as do card aceso são anunciadas. As
+   pastilhas não entram nessa conta porque são `aria-hidden` desde que existem.
+
+   ⚠️ NA COLUNA ESTÁTICA (mobile e movimento reduzido) só as pastilhas aparecem, e é a
+   mesma razão de antes: lá «ativo» não quer dizer destaque, quer dizer primeiro da lista, e
+   o texto das quatro competências já está por extenso no painel `.trajetoria-competencias`
+   da mesma seção. Com o texto aberto nos 24 seria a terceira cópia.
+
+   O custo é não haver transição no bloco de texto (`none` não interpola); o card em volta
+   tem a dele, e o bloco entra junto. */
+.trajetoria-card-competencias {
+  /* Fila horizontal de pastilhas: é esta a forma de repouso, e `wrap` porque a quinta
+     competência (se a área acrescentar uma) tem de cair para a linha seguinte em vez de
+     comprimir as quatro. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.15rem 0 0;
+  padding: 0.75rem 0 0;
+  border-top: 1px solid color-mix(in srgb, var(--signal) 20%, transparent);
+  list-style: none;
+}
+
+.trajetoria-card-competencia {
+  display: flex;
+  gap: 0.6rem;
+  /* `center` na fila (a pastilha é o único conteúdo visível); o card aceso troca para
+     `flex-start`, onde o texto de duas linhas precisa alinhar pelo topo. */
+  align-items: center;
+}
+
+/* O texto só existe no card aceso do palco — ver a nota do bloco. */
+.trajetoria-card-competencia-texto {
+  display: none;
+}
+
+/* Pastilha CLARA, pelo mesmo motivo da placa de marca logo acima: as artes `fino` de
+   `/images/parceiros/` são traço escuro feito para papel e desapareceriam sobre o
+   gradiente marinho do card. Mesma linguagem (fundo `--paper`, canto arredondado),
+   um pouco menor — aqui o ícone acompanha uma linha de texto, não é a manchete. */
+.trajetoria-card-competencia-icone {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  /* ⚠️ 34 → 40px EM 01/10 (NOITE): «aumente levemente os icones dentro dos card mas pouco
+     nao muito». 40px é o teto do «pouco» e o número tem referência: a placa de marca no
+     topo do card mede 46px de altura em repouso, e o ícone de competência não pode
+     competir com a marca do cliente — a hierarquia é empresa primeiro. Os 6px a mais
+     aparecem na altura do card (ver a conta de `PASSO`). */
+  width: 40px;
+  height: 40px;
+  padding: 0.34rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: 10px;
+  background: var(--paper);
+}
+
+.trajetoria-card-competencia-icone img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ⚠️ SEM `display` AQUI, de propósito: ele é decidido no par de regras acima/abaixo (`none`
+   em repouso, `flex` no card aceso do palco). Declarar `display: flex` neste bloco venceria
+   o `none` por vir depois com a mesma especificidade — e o defeito seria a explicação aberta
+   nos 24 cards, que é justamente o que o vão de 420 não comporta. */
+.trajetoria-card-competencia-texto {
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.trajetoria-card-competencia-texto b {
+  color: color-mix(in srgb, var(--signal) 90%, var(--paper));
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* A «breve explicação» — menor que o texto de apoio do marco (0,92rem) de propósito:
+   a hierarquia do card é empresa primeiro, competência depois. */
+.trajetoria-card-competencia-texto span {
+  color: color-mix(in srgb, var(--paper) 70%, transparent);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.trajetoria-card-geracao {
+  margin: 0.2rem 0 0;
+  color: color-mix(in srgb, var(--signal) 78%, transparent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Passagem de competência (§7) ────────────────────────────────────────── */
+
+.trajetoria-passagem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: clamp(1.1rem, 1.8vw, 1.5rem);
+  border: 1px solid color-mix(in srgb, var(--signal-deep) 40%, transparent);
+  border-radius: 16px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.trajetoria-passagem-eyebrow {
+  margin: 0;
+  color: var(--signal-deep);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.trajetoria-passagem-icone {
+  display: inline-flex;
+}
+
+.trajetoria-passagem-icone img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.trajetoria-passagem-titulo {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  line-height: 1.25;
+}
+
+.trajetoria-passagem-texto {
+  margin: 0;
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+/* ── Encerramento (§8) ───────────────────────────────────────────────────── */
+
+.trajetoria-fecho {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  align-items: center;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.25rem, 4vw, 4rem) clamp(3.5rem, 7vw, 6rem);
+  text-align: center;
+}
+
+.trajetoria-fecho-marcador {
+  display: inline-flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.trajetoria-fecho-no {
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 3px solid var(--cream);
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 35%, transparent);
+}
+
+.trajetoria-fecho-ano {
+  color: var(--ink);
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  font-weight: 700;
+}
+
+.trajetoria-fecho-titulo {
+  max-width: 24ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.5rem, 3vw, 2.35rem);
+  line-height: 1.15;
+}
+
+.trajetoria-indicadores--fecho {
+  justify-content: center;
+  margin-top: 0.75rem;
+}
+
+/* ══ FLUXO DETALHADO — PALCO ══════════════════════════════════════════════════
+   Só com `data-modo="palco"`, que o JavaScript põe depois de confirmar largura
+   ≥ 901px E movimento não reduzido. Tudo daqui para baixo é o modo opcional. */
+
+.trajetoria-scroll[data-modo='palco'] {
+  /* A altura desta caixa É a duração da experiência. `svh` porque a barra de URL
+     mexe na `vh` durante a própria rolagem. */
+  height: calc(100svh + var(--itens, 0) * 34svh);
+  padding-inline: 0;
+  /* ⚠️ O `max-width: 1440px` DO BLOCO BASE É ANULADO AQUI, e é a correção do defeito
+     da captura de 30/09: numa janela mais larga que 1440px o painel navy virava uma
+     coluna centrada e o creme da seção aparecia como duas faixas claras nas laterais.
+     O `padding-inline: 0` acima já tinha sido zerado por esse motivo, mas sozinho não
+     bastava — quem prendia a largura era o `max-width`, não o recuo.
+
+     E o card cortado na borda do navy era o MESMO defeito, não um segundo: o palco é
+     `overflow: hidden`, então o que cortava o card era o limite da coluna de 1440px.
+     De borda a borda não há onde cortar.
+
+     Só no palco. No estado base (mobile, movimento reduzido, sem JavaScript) a fila é
+     uma coluna de leitura e continua limitada a 1440px com o recuo — ali largura
+     total seria linha de texto longa demais. */
+  max-width: none;
+  /* ══ O LADO DA PLACA E O RECUO DO PONTILHADO — 01/10 (noite) ═════════════════
+     «aplique a mesma coisa para os demais icones [...] deixe do mesmo tamanho».
+
+     Subiram da `.trajetoria-origem` para cá porque deixaram de ser dois números de UMA
+     peça: agora a placa da origem e as pastilhas dos selos de competência têm de medir o
+     mesmo, e o pontilhado que liga cada uma ao traço tem de ter o mesmo comprimento. Com
+     os valores repetidos em dois blocos, o primeiro ajuste de tamanho desempata os dois e
+     o «mesmo tamanho» do pedido se desfaz sem ninguém notar.
+
+     ⚠️ QUEM CONSOME: `--placa-lado` em `.trajetoria-origem-pulso`, em
+     `.trajetoria-selo-icone` e na conta do `bottom` do pontilhado da origem;
+     `--origem-recuo` na margem da placa, na largura dos dois pontilhados e na haste do
+     selo. A tela baixa troca os dois num lugar só, no fim do arquivo. */
+  --placa-lado: 104px;
+  --origem-recuo: 3.25rem;
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-palco {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-barra {
+  position: relative;
+  z-index: 6;
+  display: block;
+  flex: 0 0 auto;
+  padding: clamp(1.25rem, 2.5vw, 2rem) clamp(1.25rem, 4vw, 4rem) 0;
+  background: var(--cream);
+}
+
+.trajetoria-barra-lista {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Fio de fundo + fio percorrido, num pseudo cada, sobre a mesma lista. */
+.trajetoria-barra-lista::before,
+.trajetoria-barra-lista::after {
+  position: absolute;
+  top: 0.32rem;
+  left: 0;
+  height: 2px;
+  content: '';
+}
+
+.trajetoria-barra-lista::before {
+  right: 0;
+  background: color-mix(in srgb, var(--ink) 15%, transparent);
+}
+
+.trajetoria-barra-lista::after {
+  width: 100%;
+  background: var(--signal-deep);
+  transform: scaleX(calc(var(--p, 0) / max(var(--passos, 1), 1)));
+  transform-origin: left center;
+}
+
+.trajetoria-barra-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.trajetoria-barra-ponto {
+  width: 0.72rem;
+  height: 0.72rem;
+  border: 2px solid var(--cream);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 25%, transparent);
+  transition: background-color 0.4s ease, transform 0.4s ease;
+}
+
+.trajetoria-barra-item[data-estado='vencido'] .trajetoria-barra-ponto {
+  background: var(--signal-deep);
+}
+
+.trajetoria-barra-item[data-estado='ativo'] .trajetoria-barra-ponto {
+  background: var(--signal);
+  transform: scale(1.35);
+}
+
+.trajetoria-barra-rotulo {
+  color: color-mix(in srgb, var(--ink) 45%, transparent);
+  transition: color 0.4s ease;
+}
+
+.trajetoria-barra-item[data-estado='ativo'] .trajetoria-barra-rotulo,
+.trajetoria-barra-item[data-estado='vencido'] .trajetoria-barra-rotulo {
+  color: var(--ink);
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-palco-corpo {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* A abertura de 1988 fica montada: é de onde a linha nasce. No topo do palco, à esquerda,
+   acima do primeiro card — o card ativo ocupa o centro.
+
+   ⚠️ O DESBOTAMENTO SAIU EM 01/10 (NOITE, FIM) — «fique essa parte e conforme for
+   escrollando vai acompanhando o scroll». Era
+   `opacity: clamp(0, calc(1.35 - var(--p, 0)), 1)`: o bloco apagava no primeiro item e meio
+   de percurso e o resto da trajetória corria sem ele. O pedido é o oposto, e é o palco que
+   o cumpre sem código novo — a abertura é `position: absolute` DENTRO do corpo do palco,
+   que é `sticky` pela caixa de `.trajetoria-scroll`. Preso ao palco, ele acompanha a rolagem
+   enquanto a seção durar. Bastou parar de apagá-lo.
+
+   ⚠️ `pointer-events: none` FICA, e agora é a declaração que carrega o peso: com o bloco em
+   cena o percurso inteiro, ele cobre uma faixa do canto esquerdo por ~24 paradas. Sem isto,
+   a placa azul e o título interceptariam cliques destinados aos cards que passam atrás. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-abertura {
+  position: absolute;
+  top: 0.4rem;
+  left: clamp(1.25rem, 4vw, 4rem);
+  z-index: 5;
+  /* ⚠️ ESTREITOU DE `min(26rem, 40vw)` PARA `min(19rem, 30vw)`, e o motivo é medido. Com o
+     bloco em cena o percurso inteiro, ele passou a dividir espaço com a COLUNA ESQUERDA de
+     cards, que antes só cruzava durante o item e meio em que ele desbotava. A conta, num
+     palco de largura W: a trilha é uma banda de 900 centrada, logo a borda esquerda do card
+     da esquerda está em `(W − 900) / 2 + 100`. A 1440px são 370px; a abertura ia de ~58 a
+     ~362 — 8px de sobra. A 1280px o card começa em 290 e a abertura chegava a 355: 65px de
+     invasão. Em 19rem ela termina em ~362 a 1440 e ~355 a 1280 contra 290… ainda invade.
+
+     ⚠️ E É POR ISSO QUE O PAINEL ABAIXO NÃO É DECORAÇÃO. Abaixo de ~1420px de palco não
+     existe largura que acomode texto legível à esquerda da banda de 900 — a geometria não
+     permite. Então o bloco fica POR CIMA (z-index 5) e ganha fundo opaco, e o card que sobe
+     passa atrás de uma superfície limpa em vez de atrás de letras. Alargar a `FAIXA` ou
+     aproximar as colunas do centro seria a alternativa, e as duas mexem na serpentina. */
+  max-width: min(19rem, 30vw);
+  margin: 0;
+  padding: 1rem 1.15rem 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  border-radius: 1.25rem;
+  /* 94% e não 100%: deixa adivinhar o movimento atrás sem deixar o texto disputar com ele.
+     ⚠️ A OPACIDADE SOZINHA RESOLVE — o `backdrop-filter` que seria natural aqui fica de
+     fora de propósito: ele falha calado quando um ancestral tem `transform`, e este palco é
+     exatamente o tipo de estrutura em que isso acontece sem avisar. */
+  background: color-mix(in srgb, var(--paper) 94%, transparent);
+  box-shadow: 0 1rem 2rem color-mix(in srgb, var(--ink) 10%, transparent);
+  transform: none;
+  pointer-events: none;
+}
+
+/* ⚠️ NO PALCO, O ANO E O ÍCONE DO CANTO SAEM DE CENA — 01/10: «mas isso deve estar
+   ligada a linha».
+
+   Eles não foram apagados nem movidos: quem assume os dois no palco é
+   `.trajetoria-origem`, que mora DENTRO da trilha, sobre o primeiro ponto do traço (ver
+   `TimelineOrigin`). O canto fica com o que é texto de leitura — título e parágrafo —,
+   que precisa de largura e por isso não pode viajar com a trilha.
+
+   ⚠️ E NÃO HÁ 1988 DUPLICADO. No modo estático é o inverso: `.trajetoria-origem` não
+   aparece (não existe `<svg>` com traço onde pendurar a origem) e estes dois voltam. Um
+   dos dois está em cena em qualquer modo, nunca os dois. */
+/* ⚠️ E EM 01/10 (noite) O ANO DO CANTO SAI DO PALCO DE NOVO — «aqui eu quero deixar o
+   numero 1988 como estava antes». A pílula voltou para a ORIGEM do traço (ver
+   `TimelineOrigin`), então mostrar o ano no canto ao mesmo tempo poria DOIS 1988 na tela,
+   que é justamente o que a nota acima proíbe. A volta da tarde está desfeita: no palco o
+   canto fica só com título e parágrafo, e quem cumpre o critério 2 da SIS-202 é a pílula
+   da linha. No modo estático segue o inverso, e o ano do canto é que cumpre.
+   O ícone do canto continua fora pelo mesmo motivo de sempre: a placa da origem mostra o
+   mesmo glifo. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-abertura-ano,
+.trajetoria-scroll[data-modo='palco'] .trajetoria-abertura-pulso {
+  display: none;
+}
+
+/* ══ A ORIGEM DO TRAÇO — A PÍLULA DE 1988 SOBRE A LINHA ═══════════════════════
+   «mas isso deve estar ligada a linha» + «use de exemplo a preview mas deve ser em um
+   tamanho bem maior».
+
+   ⚠️ O BLOCO BASE A ESCONDE, e a inversão é a mesma do resto do arquivo. No estático a
+   trilha é uma coluna e a linha é uma borda em CSS — não há caminho em SVG com um ponto
+   de partida onde pendurar isto, e a pílula do canto (`.trajetoria-abertura-ano`) faz o
+   papel. Se o padrão fosse mostrar, sem JavaScript apareceria uma pílula absoluta sobre
+   coordenadas que ninguém consumiu. */
+.trajetoria-origem {
+  display: none;
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-origem {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Acima do traço e dos cards: a pílula é o que cobre a ponta da linha, como o nó da
+     miniatura cobre a ponta do selo de ano. */
+  z-index: 4;
+  display: flex;
+  /* ⚠️ COLUNA OUTRA VEZ — 01/10 (noite): «o numero 1988 como estava antes [...] e colocar
+     o icone antes do card Castelo Costa · Coplaven · Zurich Brasil». Voltaram a ser dois
+     filhos, e a coluna é o que atende as duas metades do pedido de uma vez: a pílula fica
+     NO ponto de partida do traço e a placa do ícone cai ABAIXO dela, no vão que separa a
+     origem do primeiro card — que é o «antes do card» pedido. Em linha, a placa ficaria ao
+     LADO do número, à mesma altura, e não antes de nada.
+     `align-items: flex-end` e não `center`: as duas caixas alinham pela BORDA DIREITA, que
+     é a coordenada `--origem-x`. É isso que mantém o nó ciano da pílula sobre o `M` do `d`
+     e põe a placa na mesma vertical dele, em vez de centrada numa largura que depende do
+     número de algarismos. */
+  flex-direction: column;
+  align-items: flex-end;
+  /* ⚠️ CRESCE PARA A ESQUERDA a partir da origem, e isto não é gosto. A origem está em
+     x=620 e o primeiro card, centrado em 300, ocupa 100–500: à esquerda o grupo fica em
+     ~500–620 e não cruza nenhum dos dois.
+
+     ⚠️ A RAZÃO MUDOU EM 01/10 (NOITE), A DIREÇÃO NÃO. Era «a alça sai para a DIREITA
+     (c1x = 620 + BARRIGA = 880)», logo o traço fazia barriga do lado direito do ponto e o
+     grupo ali ficaria em cima dele. A `BARRIGA` saiu (ver a geometria: era ela que quebrava
+     o nó), então `c1x = 620` e o traço desce reto a partir da origem — não há mais barriga
+     para desviar. Continua à esquerda pelo primeiro motivo, que basta sozinho. */
+  justify-content: flex-end;
+  gap: 0.85rem;
+  /* ⚠️ A ALTURA DA PÍLULA VOLTOU À CONTA — 01/10 (noite). Quem tem de cair sobre o `M` do
+     `d` é a PÍLULA, não o grupo: é na borda direita dela que mora o nó ciano. Como ela é o
+     primeiro filho da coluna, descontar meia pílula (e não meio grupo) é o que alinha o nó
+     com a coordenada; com `-50%` do grupo inteiro a pílula subiria ~65px acima do traço.
+     O valor é medido do próprio tipo: `font-size` no teto (2,9rem) × `line-height` 1,2 =
+     3,48rem, mais 0,6rem de recuo em cima e embaixo → ~4,7rem. Quem mexer no corpo ou no
+     recuo da pílula abaixo revisa ESTE número. */
+  --pilula-alt: 4.7rem;
+  /* ⚠️ `--placa-lado` e `--origem-recuo` NÃO MORAM MAIS AQUI — subiram para o bloco
+     `.trajetoria-scroll[data-modo='palco']`, quando os selos de competência passaram a
+     usar os mesmos dois números. Ver a nota lá. O pontilhado desta origem (`::after`
+     abaixo) continua dependendo dos dois: começa a `--origem-recuo` da direita e se centra
+     em `--placa-lado / 2`. */
+  transform: translate(
+    calc(var(--origem-x, 0px) - 100%),
+    calc(var(--origem-y, 0px) - var(--pilula-alt) / 2)
+  );
+  /* Desbota junto com a abertura do canto: `--p` é contínuo, então é desbotamento e não
+     corte. O traço continua nascendo no mesmo ponto depois que a pílula sai. */
+  opacity: clamp(0, calc(1.35 - var(--p, 0)), 1);
+  transition: opacity 0.3s linear;
+  pointer-events: none;
+}
+
+/* ⚠️ AS DUAS REGRAS ABAIXO VOLTARAM A VALER EM 01/10 (noite) — «o numero 1988 como estava
+   antes». Ficaram arquivadas em comentário por algumas horas, de tarde, e é por isso que
+   existiam para serem descomentadas: o que elas guardam é uma conta difícil de
+   reconstruir, o nó ciano a cavalo na borda direita da pílula caindo exatamente sobre o
+   `M` do `d` do caminho. É isso que faz o rótulo se ler como o ponto de partida do traço,
+   e não como adorno. Voltaram junto com o `--pilula-alt` no bloco acima.
+
+   ⚠️ AS NOTAS INTERNAS VOLTARAM A SER COMENTÁRIOS, porque com as regras vivas isso é
+   legal — mas quem ARQUIVAR este bloco de novo tem de convertê-las em prosa («·») ANTES
+   de comentar. Arquivá-lo como estava foi o que derrubou o build de
+   `/parceiros-e-implementacoes` de manhã, porque
+   comentário de CSS NÃO ANINHA — um par abre-fecha aqui dentro encerra o comentário
+   externo no primeiro fechamento interno e o resto volta a ser CSS vivo, com uma chave de
+   fecho sem abertura (`CssSyntaxError: Unexpected }`). Aconteceu DUAS vezes, porque a
+   primeira correção escrevia a sequência de fechamento por extenso para explicar o
+   problema, e com isso o reproduzia; por isso aqui só se fala dela por nome. E o pedido
+   sobre este bloco já virou duas vezes num dia — vai virar de novo. */
+.trajetoria-origem-ano {
+  position: relative;
+  margin: 0;
+  /* · o recuo à direita é maior porque abre o lugar do nó DENTRO da pílula: o algarismo
+       final não fica debaixo dele. Mesmo truque do `padding-inline-end` dos selos da
+       preview. */
+  padding: 0.6rem 2.6rem 0.6rem 1.6rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* O NÓ CIANO — o acabamento de `.trajetoria-mini-ponto` (ciano com anel `--paper`), em
+   pseudo-elemento. Fica a cavalo na borda direita da pílula, que é a coordenada
+   `--origem-x`: ou seja, sobre o `M` do `d` do caminho. É o ponto de onde a linha sai. */
+.trajetoria-origem-ano::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 1.5em;
+  height: 1.5em;
+  border: 0.18em solid var(--paper);
+  border-radius: 999px;
+  background: var(--signal);
+  transform: translate(50%, -50%);
+  /* o MESMO brilho de `.trajetoria-linha-ativa`, para o nó se ler como a própria linha
+     e não como um adorno colado nela. */
+  box-shadow: 0 0 12px color-mix(in srgb, var(--signal) 55%, transparent);
+}
+
+/* ── A PLACA BRANCA — 01/10 ────────────────────────────────────────────────────
+   «o icone passa a morar numa placa branca de cantos arredondados, como na captura».
+   Mesmo acabamento das pastilhas dos selos (`.trajetoria-selo-icone`), em escala maior.
+
+   ⚠️ 120px, E NÃO 180 — e o número FICA em 120 mesmo depois que a coluna voltou, em 01/10
+   (noite). Ele nasceu de «continua grande aqui», junto do `flex-direction: row` da tarde;
+   a noite desfez a direção do empilhamento («o numero 1988 como estava antes [...] e
+   colocar o icone antes do card»), mas não o tamanho. São dois ajustes independentes, e o
+   de tamanho resolvia um problema real: com 180 o grupo ia de y≈44 a y≈310 contra um topo
+   de card em ~315, ou seja 5px de sobra sobre uma altura de card que ninguém mediu.
+
+   ⚠️ A FOLGA DE AGORA, com pílula em cima e placa de 104 embaixo: a pílula é centrada em
+   y=80 e mede ~75, logo ocupa 42–117; mais 14 de `gap`, a placa vai de 131 a 235. O topo do
+   primeiro card («Castelo Costa · Coplaven · Zurich Brasil», o nó 0, em y=420 com ~210 de
+   altura) está em ~315 — sobram ~80px. É folga de verdade, e é isso que faz a placa se ler
+   como ANTES do card e não encostada nele.
+   ⚠️ E A CONTA ACIMA É A QUE VALE OUTRA VEZ — 01/10 (noite, fim). Ela já valeu, foi
+   reescrita para `PASSO` 620 com a origem em y=280 (pílula 242–317, placa 331–435, topo do
+   card em ~515) e voltou ao original quando o vão comum voltou a 420 e `ORIGEM.y` a 80. O
+   que não volta é a altura do card em repouso, hoje ~254 e não ~210, porque a fila de
+   pastilhas de competência passou a ser fixa: o topo do nó 0 é ~293 em vez de ~315, e a
+   folga sobre a placa é ~57px em vez de ~80. Continua folga de verdade.
+
+   Os dois números que movem isto (`VAO` e `ORIGEM.y`) andam juntos de propósito — ver a nota
+   de `ORIGEM`, que registra as duas viradas e a razão de cada uma.
+
+   `box-sizing: border-box` (global da casa) é o que faz o `padding` descontar de dentro em
+   vez de somar fora: a placa mede 120 e o glifo ~86. */
+/* ⚠️ 104px E AFASTADA DA LINHA — 01/10 (noite, 2º ajuste): «o icone esta no lugar certo so
+   coloque um pontilhado na linha e coloque ele para o lado e diminua so um pouco o
+   tamanho». Três ajustes de um mesmo movimento, e a ordem entre eles importa: a placa SAI
+   do eixo do traço (`--origem-recuo`), e é justamente a folga que isso abre que o
+   pontilhado atravessa (`::after` abaixo). Sem o recuo não há onde desenhar o pontilhado;
+   sem o pontilhado a placa afastada volta a parecer solta, que é o defeito que a origem
+   existe para resolver.
+
+   O «diminua só um pouco» é literal: 120 → 104, ~13%. Não desce mais porque o glifo vive
+   em 104 − 2 × 14 de recuo = 76px, e abaixo disso ele passa a ler-se como as pastilhas
+   pequenas dos selos (76px de LADO), perdendo a hierarquia de «abertura». */
+.trajetoria-origem-pulso {
+  display: grid;
+  place-items: center;
+  width: var(--placa-lado, 104px);
+  height: var(--placa-lado, 104px);
+  /* O deslocamento para o lado. Em `margin-right` e não em `transform`: a placa é o
+     segundo filho de uma coluna alinhada pela borda direita, então a margem a empurra para
+     a esquerda SEM tirar a pílula do lugar — e `transform` aqui brigaria com a animação
+     `trajetoria-pulso`, que já usa a propriedade. */
+  margin-right: var(--origem-recuo, 3.25rem);
+  /* Quadrado de canto generoso, não círculo nem retângulo: é o desenho da captura, e é
+     o mesmo vocabulário das pastilhas dos selos (`.trajetoria-selo-icone`), só em
+     escala maior — 18px num lado de 76 é a mesma proporção que 40px num lado de 180. */
+  /* Recuo e raio acompanham o lado para manter a MESMA proporção de canto da captura:
+     30 em 120 era o que 40 era em 180, e 26 em 104 é a mesma razão. */
+  padding: 0.875rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  border-radius: 26px;
+  background: var(--paper);
+  /* Sombra mais aberta que a das pastilhas pequenas: a placa é grande e precisa
+     descolar do fundo quadriculado do palco, que já tem linhas claras. */
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--ink) 14%, transparent);
+  animation: trajetoria-pulso 2.8s ease-in-out infinite;
+}
+
+/* ── O PONTILHADO QUE LIGA A PLACA AO TRAÇO ────────────────────────────────────
+   «coloque um pontilhado na linha». Atravessa exatamente o recuo que a placa acabou de
+   abrir: nasce na borda direita dela e termina em `--origem-x`, a coordenada do `M` do
+   `d` — ou seja, encosta no eixo do traço e não num ponto aproximado.
+
+   ⚠️ MORA NO GRUPO, NÃO NA PLACA, e o motivo é a animação. `trajetoria-pulso` escala a
+   placa 6% sem parar; um pseudo-elemento dela herdaria a escala, e o pontilhado passaria a
+   respirar junto — mudando de comprimento (ultrapassaria o eixo do traço no pico) e de
+   espaçamento entre pontos, que é justamente o que precisa casar com o `2 10` do SVG.
+   Pendurado no grupo, ele fica parado. O preço é que a altura da placa entra na conta do
+   `bottom` à mão: por isso ela é a variável `--placa-lado`, e não um número solto.
+
+   ⚠️ É O MESMO VOCABULÁRIO DE `.trajetoria-linha-base`, de propósito: ponto de ~2px com
+   vão largo, em `--ink` a 30%. Esse é o traço que o arquivo usa para «há caminho aqui, mas
+   não é o percurso aceso» — que é precisamente o papel deste trecho. Com o ciano da linha
+   ativa ele mentiria, parecendo um ramo do percurso que a rolagem pudesse acender.
+
+   `border-top: dotted` seria uma linha a menos, mas o desenho dela é do navegador: o vão
+   entre os pontos muda com a espessura e não dá para casar com o `2 10` do SVG. O gradiente
+   repetido fixa os dois números. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-origem::after {
+  content: '';
+  position: absolute;
+  /* A borda direita do grupo É `--origem-x`; a meia altura da placa, medida do pé do
+     grupo, é o centro vertical dela. */
+  right: 0;
+  bottom: calc(var(--placa-lado) / 2 - 1px);
+  width: var(--origem-recuo);
+  height: 2px;
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--ink) 30%, transparent) 0 1px,
+    transparent 1px
+  );
+  background-repeat: repeat-x;
+  background-size: 12px 2px;
+}
+
+.trajetoria-origem-pulso img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Tela baixa: a placa divide a metade de cima do palco com o título e o parágrafo do
+   canto, e aí 120 já briga. Encolher a placa é o que preserva a LIGAÇÃO com a linha, que é
+   o ponto do pedido — ela continua centrada na coordenada exata da origem. */
+@media (max-height: 760px) {
+  /* ⚠️ O LADO MUDA NA RAIZ DO PALCO, e não na placa: é de lá que a placa da origem, as
+     pastilhas dos selos e os dois pontilhados tiram a medida. Trocado aqui, os quatro
+     continuam de acordo sem segunda regra. O recuo encolhe junto, senão o pontilhado
+     ficaria longo demais para uma placa pequena — e o selo de quatro ícones, que é o que
+     aperta na largura, encolhe 64px de brinde. */
+  .trajetoria-scroll[data-modo='palco'] {
+    --placa-lado: 88px;
+    --origem-recuo: 2.5rem;
+  }
+
+  .trajetoria-origem-pulso {
+    padding: 0.75rem;
+    border-radius: 22px;
+  }
+}
+
+.trajetoria-abertura-pulso img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+@keyframes trajetoria-pulso {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@media (max-height: 760px) {
+  .trajetoria-scroll[data-modo='palco'] .trajetoria-abertura-titulo,
+  .trajetoria-scroll[data-modo='palco'] .trajetoria-abertura-texto {
+    display: none;
+  }
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-viewport {
+  position: absolute;
+  inset: 0;
+  /* O corte fica 28px além da caixa: escala e sombra do card ativo cabem.
+     A barra de capítulos, opaca e por cima, tapa o que vazar para o rótulo. */
+  overflow: clip;
+  overflow-clip-margin: 28px;
+}
+
+/* ⚠️ O DESLIZE FICOU VERTICAL — 30/09. «invés quando escrolla ele vai para o lado
+   deve ir para baixo».
+
+   O que mudou, e por que cada peça está assim:
+
+   · `top: calc(50% + 2.25rem)` + `left: 50%`. A trilha é uma banda de `FAIXA`
+     (900px) de largura e `paradas × PASSO` de altura; `left: 50%` com
+     `translateX(-50%)` a centra na horizontal. O deslocamento para baixo deixa a
+     pílula de 1988 no topo sem cobrir o card ativo.
+
+   · `--meio` SAIU DA CONTA, e isso é uma simplificação e não um descuido. Na versão
+     horizontal ela trazia metade da largura do palco, medida em JavaScript porque
+     `50vw` inclui a barra de rolagem. Na vertical, `top` em porcentagem da viewport
+     do palco resolve o mesmo problema em CSS: a altura de referência é a do pai
+     posicionado — já descontadas a barra de capítulos e a pista, que uma medida de
+     `palco.clientHeight` incluiria por engano. Uma variável a menos escrita por quadro.
+
+   · Os dois eixos no MESMO `transform`, e não `translateX` no `left`: `transform` é
+     uma propriedade só, e escrever a centralização em `margin-left` negativo
+     obrigaria a repetir metade de `FAIXA` aqui — um número que já mora na geometria. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-trilha {
+  position: absolute;
+  top: calc(50% + 2.25rem);
+  left: 50%;
+  display: block;
+  /* AS DIMENSÕES SÃO CONSUMIDAS AQUI, e só aqui — mesma disciplina que `--celula-x`.
+     Sem elas a trilha é um bloco absoluto cujos filhos são todos absolutos: encolhe
+     para 0×0 e leva o `translateX(-50%)` com ela. */
+  width: var(--faixa);
+  height: var(--percurso);
+  padding: 0;
+  border: 0;
+  /* ⚠️ ERA `(var(--p) + 1) * var(--passo)`, E A CONTA SAIU DAQUI EM 01/10 (NOITE).
+     Ela só fechava enquanto todos os vãos eram iguais, e deixaram de ser: os quatro vãos
+     que penduram selo de ícone medem 640 e os outros vinte, 420 («diminua os espaçamento
+     entre os cards que nao possui icones no meio»). Multiplicar um passo único por `--p`
+     passaria a apontar entre dois nós em vez de um nó.
+
+     `--trilha-y` chega escrito por quadro, interpolado LINEARMENTE entre as alturas dos
+     mesmos nós que posicionam os cards — ver `deslocamentoDaTrilha` na geometria, inclusive
+     a razão de ser linear e não a curva. Era aqui que havia dois números para desencontrar;
+     agora há um. */
+  transform: translate3d(-50%, calc(0px - var(--trilha-y, 420px)), 0);
+  will-change: transform;
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-linha {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+/* ⚠️ A ESPESSURA E O ACABAMENTO SÃO OS DA TRILHA PUBLICADA, não uma escolha nova.
+   O pedido de 30/09 é literal — «a linha atrás quero que fique assim como está
+   anteriormente» — e aponta a rota no ar. O desenho de lá está em
+   `src/components/legacy/legacy.css`: `stroke-width: 5`, base pontilhada escura,
+   percorrido em `--signal` sólido com brilho `drop-shadow(0 0 12px)`. Era 3 e lisa
+   nas duas camadas; subiu para 5 nas duas. */
+.trajetoria-linha-base,
+.trajetoria-linha-ativa {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 5;
+}
+
+/* Pontilhada: é o que faz o trecho ainda não percorrido se ler como «há caminho
+   adiante» em vez de como uma linha apagada. `stroke-dasharray` em unidade de
+   caminho e NÃO na escala de `pathLength` — o `pathLength={1}` só reescala a camada
+   de cima, que é a que anima; aqui o tracejado é fixo, então vale a medida real. */
+.trajetoria-linha-base {
+  stroke: color-mix(in srgb, var(--ink) 30%, transparent);
+  stroke-dasharray: 2 10;
+}
+
+/* `pathLength={1}` no SVG faz o tracejado valer na escala 0–1: desenho progressivo
+   sem `getTotalLength()` e sem medição por quadro.
+   O brilho vai em `filter` no traço, como na trilha antiga, e não em `box-shadow`:
+   `box-shadow` não existe para geometria SVG. */
+.trajetoria-linha-ativa {
+  stroke: var(--signal);
+  stroke-dasharray: 1;
+  /* ⚠️ `(--p + 1)` desde 01/10, e o `+ 1` casa com o segmento a mais que o caminho
+     ganhou no começo (`ORIGEM` → nó 0). Alcançar o nó `i` passou a significar `i + 1`
+     segmentos desenhados de um total de `--passos` = último + 1. Sem o `+ 1` no
+     numerador, o traço aceso nasceria DEPOIS da pílula de 1988 e o primeiro trecho
+     ficaria eternamente pontilhado — ou seja, a pílula voltaria a parecer solta. */
+  stroke-dashoffset: calc(1 - (var(--p, 0) + 1) / max(var(--passos, 1), 1));
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--signal) 45%, transparent));
+}
+
+/* ── O marcador viajante sobre a linha ───────────────────────────────────────
+   Posicionado SÓ por variável: `--viajante-x`/`--viajante-y` chegam do mesmo quadro
+   que escreve `--p`, em px do sistema 1:1 da trilha (por isso ele mora dentro dela).
+
+   Sem `transition`: a posição já é contínua com a rolagem, e uma transição faria a
+   pílula perseguir o ponto com atraso — visível como deslizar fora do traço.
+
+   ⚠️ A POSIÇÃO VAI EM `transform`, NÃO EM `top`/`left`. Com `top`/`left` a pílula se
+   reposicionaria por layout a cada quadro de rolagem — exatamente o custo que o §12
+   recusa. Em `translate3d` ela é composta na GPU, como o deslize da própria trilha.
+   O `- 50%` dentro do `calc` é sobre o tamanho da pílula: é o que a centra no ponto
+   da curva (px e % no mesmo `calc` é válido dentro de `translate`).
+
+   `z-index: 0` a deixa ACIMA do traço e ABAIXO dos cards (que estão em 1): o
+   marcador nunca cobre texto, e aparece nos vãos entre um card e o seguinte — que é
+   onde ele tem algo a dizer. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-viajante {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  /* O `display: block` que desarmava o `display: none` do bloco base saiu DAQUI e virou
+     `display: flex` no bloco do DISCO, abaixo — qualquer um dos dois tira o marcador do
+     `none`, e deixar os dois seria uma declaração morta (mesma especificidade, a de
+     baixo vence) a enganar quem leia este bloco primeiro. */
+  /* ⚠️ ERA 168px, PARA UMA ARTE 3:1. A troca de 30/09 (`imagens/luminna-latam.png`,
+     889×760) é quase quadrada: mantidos os 168, o marcador viria com 144px de ALTURA
+     — mais de um terço do vão entre cards — e taparia o traço em vez de marcá-lo. 96px
+     dão ~82 de altura, que é a mesma presença visual da pílula antiga. */
+  width: 96px;
+  /* ⚠️ ALTURA IGUAL À LARGURA DESDE 01/10 (noite) — ver a nota do DISCO abaixo. Antes a
+     altura era a da arte (`height: auto`, ~82px para a razão 1,17:1); agora a caixa é o
+     disco, e disco não é «quase redondo»: é redondo. A arte se acomoda dentro dele por
+     `object-fit: contain`, então a razão do arquivo continua respeitada. */
+  height: 96px;
+  transform: translate3d(
+    calc(var(--viajante-x, 0px) - 50%),
+    calc(var(--viajante-y, 0px) - 50%),
+    0
+  );
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* ── O DISCO ESCURO SOB O MARCADOR — 01/10 (noite) ─────────────────────────────
+   «melhore essa [captura do marcador sobre o palco claro] deixe dessa forma [captura do
+   mesmo símbolo sobre disco marinho com anel ciano]».
+
+   ⚠️ O DEFEITO DA CAPTURA É DE CONTRASTE, E É LITERAL: `imagens/luminna-latam.png` é
+   arte BRANCA sobre transparente — traço branco, estrelas brancas, sombra branca. O
+   palco da trajetória é claro (papel + grade). Branco sobre branco: o que a captura
+   mostra é o símbolo quase ausente, legível só pela sombra que ele projeta, com o traço
+   ciano passando no meio dele. A arte não está errada; ela só nunca teve fundo.
+
+   O disco é esse fundo, e vem com a mesma linguagem da referência: marinho preenchido,
+   anel ciano (`--signal`) e um halo do mesmo ciano por fora. Três coisas de uma vez:
+   devolve o contraste à arte branca, fecha a silhueta redonda que a própria arte sugere
+   (a lua da marca), e tapa o traço no ponto onde está — que é o que um marcador de
+   posição deve fazer. O `z-index: 0` herdado continua valendo, então ele cobre a LINHA e
+   nunca o texto dos cards.
+
+   ⚠️ `box-shadow` E NÃO `filter: drop-shadow`, que era o que estava aqui:
+
+   filter: drop-shadow(0 6px 18px color-mix(in srgb, var(--ink) 35%, transparent));
+
+   `drop-shadow` segue o canal alfa, que é a escolha certa para arte recortada e era o
+   caso até agora. Com o disco opaco a silhueta passou a ser um círculo, e aí
+   `drop-shadow` paga por quadro o contorno de um alfa que não tem mais recorte nenhum —
+   `box-shadow` desenha a mesma sombra sem ler a arte, e ainda compõe o anel luminoso na
+   mesma propriedade. O marcador se move a cada quadro de rolagem (§12), então o custo
+   não é teórico. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-viajante {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem;
+  border: 2px solid color-mix(in srgb, var(--signal) 85%, transparent);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 25%,
+    color-mix(in srgb, var(--deep) 70%, var(--ink)) 0%,
+    var(--ink) 100%
+  );
+  box-shadow:
+    0 0 0 6px color-mix(in srgb, var(--signal) 14%, transparent),
+    0 10px 24px color-mix(in srgb, var(--ink) 32%, transparent);
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-viajante img {
+  display: block;
+  /* `contain` nas duas medidas: a caixa é o disco e é ela que manda. `height: auto`
+     (o que havia aqui) voltaria a deixar a arte definir a altura e o disco sairia
+     oval. */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.trajetoria-linha-no {
+  fill: color-mix(in srgb, var(--ink) 22%, transparent);
+  stroke: var(--paper);
+  stroke-width: 2.5;
+  transition: fill 0.4s ease;
+}
+
+.trajetoria-linha-no[data-estado='ativo'] {
+  stroke-width: 3.5;
+}
+
+/* A COORDENADA É CONSUMIDA AQUI, e só aqui: `--celula-x`/`--celula-y` vêm inline de
+   `TrajectoryScrollytelling`, com os nós de `trajectoryGeometry`. O `left`/`top`
+   mora neste bloco — o mesmo em que `position: absolute` passa a valer — porque
+   posição e coordenada têm de entrar e sair JUNTAS. Foi a separação das duas que
+   empilhou os 28 cards no mesmo ponto: o palco ligava o `absolute` e o estado base
+   continuava anulando o `inset`.
+
+   Sem `!important`: nada mais dá `inset` a esta classe, e o seletor com
+   `[data-modo]` já vence o bloco base por especificidade. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-celula {
+  position: absolute;
+  left: var(--celula-x);
+  top: var(--celula-y);
+  z-index: 1;
+  /* Era 340px. Subiu para 400 com o pedido de 30/09 («gostaria de aumentar os
+     cards»), e `PASSO` subiu de 420 para 500 no mesmo movimento: com o passo antigo o
+     card ativo, que cresce ao acender, encostaria nos vizinhos. As duas medidas
+     têm de mudar juntas — é a mesma razão por que a geometria vive num módulo só. */
+  width: 400px;
+  /* Centrado no nó: a linha passa ATRÁS do card, como nos dois mocks. */
+  transform: translate(-50%, -50%);
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-celula:has([data-estado='ativo']) {
+  z-index: 4;
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-celula::before {
+  display: none;
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-card,
+.trajetoria-scroll[data-modo='palco'] .trajetoria-passagem {
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s ease,
+    border-color 0.55s ease,
+    box-shadow 0.55s ease;
+}
+
+.trajetoria-scroll[data-modo='palco'] [data-estado='distante'] {
+  opacity: 0.15;
+  transform: translateY(14px) scale(0.94);
+}
+
+.trajetoria-scroll[data-modo='palco'] [data-estado='vizinho'] {
+  opacity: 0.45;
+  transform: scale(0.96);
+}
+
+/* O DESTAQUE DO ATIVO. A escala passa de 1,05: o card sobe à frente (z-index na
+   célula) e a sombra clara fica atrás. O contorno é `--chip-cor`, a mesma cor da
+   tag, não o anel ciano. */
+.trajetoria-scroll[data-modo='palco'] [data-estado='ativo'] {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-card[data-estado='ativo'] {
+  border-color: var(--chip-cor, var(--signal));
+  border-width: 2px;
+  box-shadow: 0 18px 36px color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+/* «a logo deixe maior»: a placa cresce de 92×46 para 136×66 no card ativo. A
+   transição está declarada na própria classe, no bloco base. */
+.trajetoria-scroll[data-modo='palco']
+  .trajetoria-card[data-estado='ativo']
+  .trajetoria-card-placa {
+  width: 136px;
+  height: 66px;
+}
+
+.trajetoria-scroll[data-modo='palco']
+  .trajetoria-card[data-estado='ativo']
+  .trajetoria-card-placa[data-tipo='monograma']
+  b {
+  font-size: 1.45rem;
+}
+
+/* ⚠️ «MOSTRE MAIS INFORMAÇÕES» É TEXTO QUE ESTAVA CORTADO, não conteúdo novo.
+   `timeline.ts` guarda empresa, detalhe, geração e categoria — e o card já exibe os
+   quatro. Então o que o ativo revela é o `detail` INTEIRO: em repouso ele é limitado a
+   duas linhas, e no card em destaque o limite sai. Inventar um campo para preencher o
+   card grande quebraria o critério 13.
+
+   `-webkit-line-clamp` com os três prefixos porque é assim que a propriedade existe
+   em todos os motores até hoje; sem `overflow: hidden` ela não corta. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-card-texto {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.trajetoria-scroll[data-modo='palco']
+  .trajetoria-card[data-estado='ativo']
+  .trajetoria-card-texto {
+  -webkit-line-clamp: unset;
+}
+
+/* O CARD ACESO ABRE A FILA EM COLUNA, e é só isto que o destaque revela desde 01/10
+   (noite, fim) — as pastilhas já estão em cena em todos os cards («nao quero que os icones
+   surjam quero que ja estejam fixos»). A regra que acendia a lista inteira (`display: none`
+   → `block`) virou esta troca de eixo mais o `display` do texto.
+
+   ⚠️ A ALTURA DO CARD CRESCE AQUI, e foi ela que mexeu no vão. A conta que eu fiz na
+   primeira versão olhava o CARD VIZINHO e dava folga de sobra — e estava certa sobre o
+   vizinho e errada sobre o que a tela mostra. Quem o card aceso tapa é o SELO pendurado
+   no vão (placa de 104px, centrada no meio do vão), não o card seguinte: a captura de
+   01/10 mostra três placas de ícone escondidas atrás do card de Combined · Generali.
+   A folga passou a ser dimensionada por ele, e o número está em `trajectoryGeometry.ts` —
+   hoje `VAO_COM_SELO` (640) nos quatro vãos que penduram selo, e `VAO` (420) nos outros
+   vinte, onde não há selo para tapar.
+
+   ⚠️ Quem acrescentar uma QUINTA competência refaz a conta de `VAO_COM_SELO`: cada linha
+   custa ~58px de altura ao card aceso, ou seja ~63 escalados, ou seja ~32 de vão. */
+.trajetoria-scroll[data-modo='palco']
+  .trajetoria-card[data-estado='ativo']
+  .trajetoria-card-competencias {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0.55rem;
+}
+
+.trajetoria-scroll[data-modo='palco']
+  .trajetoria-card[data-estado='ativo']
+  .trajetoria-card-competencia {
+  align-items: flex-start;
+}
+
+.trajetoria-scroll[data-modo='palco']
+  .trajetoria-card[data-estado='ativo']
+  .trajetoria-card-competencia-texto {
+  display: flex;
+}
+
+/* A competência em destaque também cresce o ícone — as quatro passagens são o outro
+   «coloque as logos referente a cada um» do pedido, e o ícone é a arte delas. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-passagem-icone img {
+  transition: width 0.45s ease, height 0.45s ease;
+}
+
+.trajetoria-scroll[data-modo='palco']
+  .trajetoria-passagem[data-estado='ativo']
+  .trajetoria-passagem-icone
+  img {
+  width: 80px;
+  height: 80px;
+}
+
+/* Pista fina no pé do palco. Decorativa: a barra de capítulos já diz, em texto,
+   onde a pessoa está. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-pista {
+  display: block;
+  flex: 0 0 auto;
+  height: 3px;
+  margin: 0 clamp(1.25rem, 4vw, 4rem) clamp(1.25rem, 2.5vw, 2rem);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+.trajetoria-pista-preenchida {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--signal-deep), var(--signal));
+  transform: scaleX(calc(var(--p, 0) / max(var(--passos, 1), 1)));
+  transform-origin: left center;
+}
+
+/* ══ FUNDO DO PALCO ═══════════════════════════════════════════════════════════
+   Azul-gelo (`--cream` / #e2effa), só nesta caixa. Cabeçalho, miniatura,
+   indicadores e fecho ficam como estão: todo seletor daqui carrega
+   `[data-modo='palco']`.
+
+   A grade é fina e discreta. O circuito diagonal saiu. Abertura, barra, pista e
+   pontilhado ficam na tinta escura do bloco base — sobre gelo, papel some. O nó
+   usa a cor da categoria do marco. */
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-palco {
+  background-color: var(--cream);
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--ink) 5%, transparent) 0 1px,
+      transparent 1px 40px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--ink) 5%, transparent) 0 1px,
+      transparent 1px 40px
+    );
+  color: var(--ink);
+}
+
+/* Tracejado do trecho adiante, em tinta. 3 12 porque a curva desce e o mesmo
+   traço da horizontal se lê apertado. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-linha-base {
+  stroke: color-mix(in srgb, var(--ink) 38%, transparent);
+  stroke-dasharray: 3 12;
+}
+
+/* Repouso: contorno suave, sem o anel ciano. O ativo usa a cor da tag. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-card {
+  border-color: color-mix(in srgb, var(--paper) 42%, transparent);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+/* ══ SELOS DE COMPETÊNCIA SOBRE A LINHA ═══════════════════════════════════════
+   «na linha mesmo puxar um ponto do qual deve aparecer». Posicionados por
+   `--selo-x`/`--selo-y`, que `TimelineWaypoints` calcula com a MESMA cúbica do
+   caminho — por isso o selo encosta no traço em qualquer `PASSO`.
+
+   `transform` e não `top`/`left` pelo mesmo motivo do marcador viajante: composição
+   na GPU. A haste encosta no ponto: à direita o selo começa nele, à esquerda termina
+   nele (`-100%`). O `-50%` vertical centra o conjunto na curva. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-selo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  gap: 0;
+  align-items: center;
+  transform: translate3d(var(--selo-x, 0px), calc(var(--selo-y, 0px) - 50%), 0);
+  /* A revelação. `translateY` de 10px E escala: o selo sobe ao aparecer, que é o que
+     o faz parecer PUXADO da linha em vez de aceso no lugar — a palavra do pedido. */
+  opacity: 0;
+  transition: opacity 0.5s ease, scale 0.5s ease;
+  scale: 0.82;
+  pointer-events: none;
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-selo[data-lado='esquerda'] {
+  flex-direction: row-reverse;
+  transform: translate3d(calc(var(--selo-x, 0px) - 100%), calc(var(--selo-y, 0px) - 50%), 0);
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-selo[data-revelado='sim'] {
+  opacity: 1;
+  scale: 1;
+}
+
+/* ── A HASTE É O MESMO PONTILHADO DA ORIGEM — 01/10 (noite) ────────────────────
+   «aplique a mesma coisa para os demais icones». Era um `border-top: dashed` de 36px em
+   `--ink` a 32%: tracejado de traços, desenhado pelo navegador, com o vão variando com a
+   espessura. Agora é o gradiente repetido de pontos de `.trajetoria-origem::after` — mesmo
+   ponto de ~2px, mesmo vão de 12px, mesma cor — e o mesmo comprimento (`--origem-recuo`).
+
+   É o que faz a ligação selo↔linha e placa↔linha se lerem como o MESMO gesto, que é o
+   pedido. E casa com o `2 10` / `3 12` do `stroke-dasharray` da linha base, que é o traço
+   que o arquivo usa para «há caminho, mas não é o percurso aceso». */
+.trajetoria-selo-haste {
+  flex: 0 0 var(--origem-recuo);
+  align-self: center;
+  width: var(--origem-recuo);
+  height: 2px;
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--ink) 30%, transparent) 0 1px,
+    transparent 1px
+  );
+  background-repeat: repeat-x;
+  background-size: 12px 2px;
+}
+
+.trajetoria-selo-corpo {
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+/* ⚠️ A placa de marca do selo SAIU em 01/10 («retire as logos e ficou estranho»): ela
+   repetia a placa do card vizinho, lado a lado, em proporção diferente. O par de regras
+   fica comentado porque o JSX dela também ficou — voltar é descomentar os dois:
+
+.trajetoria-selo-marca {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 4.25rem;
+  aspect-ratio: 3 / 1;
+}
+
+.trajetoria-selo-marca img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+*/
+
+.trajetoria-selo-rotulo {
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: var(--signal-deep);
+  color: var(--paper);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* ── O TAMANHO DOS ÍCONES — 01/10 ──────────────────────────────────────────────
+   «aumente bastante os icones». Pastilha de 38px → 76px e glifo de 24px → 50px: o
+   dobro de lado, quatro vezes a área. Não é um ajuste fino, é a palavra «bastante».
+
+   O que o dobro custa: o `selo-ia` acumula QUATRO ícones (ver `TRAJECTORY_WAYPOINTS`),
+   então a fileira passa de 4×38 + 3×0,35rem ≈ 169px para 4×76 + 3×0,55rem ≈ 330px. O
+   selo nasce na coordenada da curva e cresce para o lado (`data-lado`), dentro de uma
+   banda `--faixa` de 900px — 330px + 36px de haste cabem, mas é a conta que aperta
+   primeiro se a faixa encolher ou um quinto ícone entrar. Quem mexer em `FAIXA` ou
+   acrescentar ícone revisa ESTA linha.
+
+   O `gap` sobe junto (0,35 → 0,55rem): mantido no valor antigo, pastilhas do dobro do
+   tamanho se leem como um bloco único em vez de quatro selos. */
+.trajetoria-selo-icones {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+/* ── A PASTILHA PASSOU A SER A PLACA DA ORIGEM — 01/10 (noite) ─────────────────
+   «deixe do mesmo tamanho». Era 76px de lado com raio 18, recuo implícito e sombra fraca;
+   agora é `--placa-lado` com o acabamento de `.trajetoria-origem-pulso` — mesmo raio
+   proporcional, mesma borda, mesma sombra aberta. Os dois são a mesma peça em dois pontos
+   da curva, e o pedido é que se leiam assim.
+
+   ⚠️ O QUE ISSO CUSTA EM LARGURA, medido, porque é a conta que aperta primeiro: os selos
+   ACUMULAM ícones (1, 2, 3, 4 — decisão da área, ver `TRAJECTORY_WAYPOINTS`), e o de quatro
+   passa de 4×76 + 3×0,55rem ≈ 330px para 4×104 + 3×0,55rem ≈ 442px, mais 52px de
+   pontilhado: ~494px a partir do ponto da curva.
+
+   ⚠️ E ELE AINDA CABE, mas por pouco, e não é no lugar onde se pensaria. O selo nasce no
+   MEIO do vão entre dois nós, e esse meio é o centro da banda: com nós em 300 e 600 e
+   barriga 260, a cúbica em t=0,5 dá x=450 exatamente. Daí 494px para um lado alcançam -44
+   ou 944 numa banda de 900 — ou seja, ~44px FORA dela. Não há corte: quem recorta é
+   `.trajetoria-palco` (`overflow: hidden`), na borda da janela, e a banda de 900 é centrada,
+   então a 1440px sobram 270px de folga de cada lado. Abaixo de ~990px de largura isso
+   deixaria de valer — e abaixo disso a rota não entra no palco.
+
+   Quem acrescentar um QUINTO ícone acumulado, aumentar `--placa-lado` ou estreitar `FAIXA`
+   revisa ESTES números. */
+.trajetoria-selo-icone {
+  display: grid;
+  place-items: center;
+  width: var(--placa-lado, 104px);
+  height: var(--placa-lado, 104px);
+  padding: 0.875rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+  /* A mesma proporção de canto da placa da origem: 26 em 104. */
+  border-radius: 26px;
+  background: var(--paper);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--ink) 14%, transparent);
+}
+
+/* O glifo preenche o que o recuo deixa (104 − 2 × 14 = 76), como na placa da origem —
+   lá o `img` é `100%` porque o lado vem do `padding`; aqui é o mesmo resultado. */
+.trajetoria-selo-icone img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ══ O FIM ABERTO DA TRILHA — «EM EVOLUÇÃO» ═══════════════════════════════════
+   «apos esse card coloque algo como estar em evolução» (01/10).
+
+   ⚠️ O BLOCO BASE É O ESTÁTICO, e ele mostra a pílula SEM condição. Esta é a mesma
+   inversão que o resto do arquivo usa, e aqui ela é obrigatória: no modo estático
+   `ativo` é fixado em 0 (ver `desligar()` em `TrajectoryScrollytelling`), então
+   `data-revelado` sai `nao` e uma regra que dependesse dele esconderia o marcador para
+   sempre em mobile, em movimento reduzido e sem JavaScript. Quem controla a revelação é
+   só o bloco do palco, abaixo.
+
+   Na coluna estática o marcador é o último filho do flex: entra em fluxo normal,
+   depois do último card, que é literalmente «após esse card». */
+.trajetoria-evolucao {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* No estático a haste é horizontal curta, só para ligar a pílula à borda-linha da
+   coluna; no palco ela vira a continuação pontilhada do traço. */
+.trajetoria-evolucao-haste {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 0;
+  border-top: 1.5px dashed color-mix(in srgb, var(--ink) 32%, transparent);
+}
+
+.trajetoria-evolucao-pilula {
+  padding: 0.4rem 1rem;
+  border: 1px dashed color-mix(in srgb, var(--signal) 60%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--signal) 12%, transparent);
+  color: var(--ink);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+/* Tracejada e não cheia, de propósito: é o mesmo vocabulário que
+   `.trajetoria-linha-base` usa para «trecho que ainda não chegou». A pílula do ano
+   (1988) é sólida porque aquele ano aconteceu; esta não fechou. */
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-evolucao {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Acima dos cards (z-index 2 dos selos) porque o último nó é justamente onde o card
+     final está, e a pílula não pode ficar por baixo dele. */
+  z-index: 3;
+  transform: translate3d(var(--evolucao-x, 0px), calc(var(--evolucao-y, 0px) - 50%), 0);
+  opacity: 0;
+  transition: opacity 0.5s ease, scale 0.5s ease;
+  scale: 0.82;
+  pointer-events: none;
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-evolucao[data-lado='esquerda'] {
+  flex-direction: row-reverse;
+  transform: translate3d(
+    calc(var(--evolucao-x, 0px) - 100%),
+    calc(var(--evolucao-y, 0px) - 50%),
+    0
+  );
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-evolucao[data-revelado='sim'] {
+  opacity: 1;
+  scale: 1;
+}
+
+/* No palco a haste é mais longa que a dos selos (36px): ela representa o percurso que
+   continua, não um ponto puxado da linha. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-evolucao-haste {
+  flex-basis: 56px;
+  width: 56px;
+}
+
+/* ══ O AVISO DE SAÍDA ═════════════════════════════════════════════════════════
+   «quando chegar no ultimo card coloque que indica um continue dai coloque um efeito
+   de transição para esse continue».
+
+   Fica no pé do palco, acima da pista, e só existe com `data-visivel="sim"` — que
+   entra quando o índice ativo alcança a última parada. O «efeito de transição» são as
+   três propriedades abaixo, todas em `transition`: ele sobe, aparece e ganha brilho
+   ao mesmo tempo. A seta pulsa, e é decorativa — o texto ao lado diz o mesmo. O
+   pulso do ícone de abertura é a outra `animation`; os dois morrem com movimento
+   reduzido. */
+.trajetoria-scroll[data-modo='palco'] .trajetoria-continue {
+  position: absolute;
+  bottom: clamp(2rem, 5vh, 4rem);
+  left: 50%;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 0.6rem 1.4rem;
+  border: 1px solid color-mix(in srgb, var(--signal) 45%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 75%, transparent);
+  color: var(--paper);
+  /* `translate` e `opacity` separados do `transform` da centralização: a pílula tem
+     de ficar centrada nos dois estados, e somar `-50%` com o deslocamento de entrada
+     dentro do mesmo `translate3d` obrigaria a repetir o `-50%` nas duas regras. A
+     propriedade `translate` (individual) compõe com `transform` sem essa repetição. */
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.6s ease, translate 0.6s ease, box-shadow 0.6s ease;
+  translate: 0 18px;
+  pointer-events: none;
+}
+
+.trajetoria-scroll[data-modo='palco'] .trajetoria-continue[data-visivel='sim'] {
+  opacity: 1;
+  box-shadow: 0 0 28px color-mix(in srgb, var(--signal) 32%, transparent);
+  translate: 0 0;
+}
+
+.trajetoria-continue-texto {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Chevron em CSS, sem arquivo e sem SVG: são duas bordas de um quadrado girado. */
+.trajetoria-continue-seta {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 2px solid var(--signal);
+  border-bottom: 2px solid var(--signal);
+  transform: rotate(45deg);
+  animation: trajetoria-continue-desce 1.6s ease-in-out infinite;
+}
+
+@keyframes trajetoria-continue-desce {
+  0%,
+  100% {
+    opacity: 0.55;
+    translate: 0 -2px;
+  }
+
+  50% {
+    opacity: 1;
+    translate: 0 3px;
+  }
+}
+
+/* ── Preview em telas estreitas (§10, §14) ───────────────────────────────── */
+
+@media (max-width: 900px) {
+  .trajetoria-preview {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Movimento reduzido ──────────────────────────────────────────────────────
+   Os dois canais da casa. O palco já não se liga (o JavaScript não põe
+   `data-modo`), então o que sobra aqui é parar o que é CSS puro: a seta do
+   convite. Nenhuma dessas animações revela conteúdo — a seta é enfeite ao lado de
+   um texto que diz a mesma coisa —, então parar não esconde nada.
+
+   SIS-205 — entrou o levantar de 2px da caixa do ícone, que é o único `transform`
+   do painel. O QUE NÃO ENTRA AQUI, e é o ponto:
+   · a SOMBRA do painel não é movimento, é profundidade — apagá-la devolveria o
+     cartão flat que a issue mandou consertar;
+   · a transição de COR (fundo da linha, borda do painel) fica: mudança de cor não
+     é deslocamento, e sem ela o realce do hover salta em vez de aparecer;
+   · a ENTRADA do painel (`data-reveal="fade-up"`) não é tratada aqui porque o
+     `globals.css` já a neutraliza nos dois canais no próprio preset — repetir a
+     regra nesta folha criaria uma segunda fonte de verdade para o mesmo estado. */
+
+@media (prefers-reduced-motion: reduce) {
+  .trajetoria-role-seta {
+    animation: none;
+    opacity: 0.8;
+  }
+
+  .trajetoria-competencia:hover .trajetoria-competencia-icone {
+    transform: none;
+  }
+
+  .trajetoria-scroll[data-modo='palco'] .trajetoria-abertura-pulso {
+    animation: none;
+  }
+}
+
+html[data-motion='reduce'] .trajetoria-role-seta {
+  animation: none;
+  opacity: 0.8;
+}
+
+html[data-motion='reduce'] .trajetoria-competencia:hover .trajetoria-competencia-icone {
+  transform: none;
+}
+
+html[data-motion='reduce'] .trajetoria-scroll[data-modo='palco'] .trajetoria-abertura-pulso {
+  animation: none;
+}

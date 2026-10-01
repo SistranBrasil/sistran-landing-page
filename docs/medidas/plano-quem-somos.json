@@ -1,0 +1,1485 @@
+{
+  "rota": "http://localhost:3000/quem-somos",
+  "quando": "2026-09-24T18:18:30.698Z",
+  "larguras": [
+    {
+      "largura": 1440,
+      "altura": 900,
+      "faixas": 13,
+      "emendas": [
+        {
+          "faixa": 1,
+          "classe": "section-light",
+          "yJunta": -10350,
+          "piorDelta": -1,
+          "onde": null
+        },
+        {
+          "faixa": 2,
+          "classe": "perfil-secao section-py relative isolate overflow-hidden",
+          "yJunta": 450,
+          "piorDelta": 11,
+          "onde": {
+            "x": 301,
+            "acima": [
+              11,
+              50,
+              82
+            ],
+            "abaixo": [
+              5,
+              39,
+              72
+            ]
+          }
+        },
+        {
+          "faixa": 3,
+          "classe": "section-light",
+          "yJunta": 450,
+          "piorDelta": 234,
+          "onde": {
+            "x": 900,
+            "acima": [
+              6,
+              52,
+              97
+            ],
+            "abaixo": [
+              240,
+              246,
+              251
+            ]
+          }
+        },
+        {
+          "faixa": 4,
+          "classe": "ne-secao",
+          "yJunta": 450,
+          "piorDelta": 2,
+          "onde": {
+            "x": 1259,
+            "acima": [
+              221,
+              238,
+              250
+            ],
+            "abaixo": [
+              219,
+              236,
+              249
+            ]
+          }
+        },
+        {
+          "faixa": 5,
+          "classe": "cem-secao section-py",
+          "yJunta": 450,
+          "piorDelta": 2,
+          "onde": {
+            "x": 1259,
+            "acima": [
+              221,
+              238,
+              250
+            ],
+            "abaixo": [
+              219,
+              236,
+              249
+            ]
+          }
+        },
+        {
+          "faixa": 6,
+          "classe": "section-py agimos-secao relative overflow-hidden",
+          "yJunta": 450,
+          "piorDelta": 235,
+          "onde": {
+            "x": 181,
+            "acima": [
+              235,
+              245,
+              251
+            ],
+            "abaixo": [
+              0,
+              94,
+              159
+            ]
+          }
+        },
+        {
+          "faixa": 7,
+          "classe": "impact-scroll",
+          "yJunta": 450,
+          "piorDelta": 59,
+          "onde": {
+            "x": 61,
+            "acima": [
+              0,
+              88,
+              152
+            ],
+            "abaixo": [
+              18,
+              50,
+              93
+            ]
+          }
+        },
+        {
+          "faixa": 8,
+          "classe": "rgal-secao",
+          "yJunta": 450,
+          "piorDelta": 231,
+          "onde": {
+            "x": 780,
+            "acima": [
+              0,
+              47,
+              95
+            ],
+            "abaixo": [
+              231,
+              242,
+              251
+            ]
+          }
+        },
+        {
+          "faixa": 9,
+          "classe": "section-py section-light isg-secao isg-cantos",
+          "yJunta": 450,
+          "piorDelta": 9,
+          "onde": {
+            "x": 1259,
+            "acima": [
+              211,
+              236,
+              249
+            ],
+            "abaixo": [
+              220,
+              238,
+              250
+            ]
+          }
+        },
+        {
+          "faixa": 10,
+          "classe": "section-py relative overflow-hidden",
+          "yJunta": 450,
+          "piorDelta": 235,
+          "onde": {
+            "x": 181,
+            "acima": [
+              235,
+              245,
+              251
+            ],
+            "abaixo": [
+              0,
+              90,
+              154
+            ]
+          }
+        },
+        {
+          "faixa": 11,
+          "classe": "section-py section-light section-light-blue pt-12 md:pt-14 lg:pt-16",
+          "yJunta": 450,
+          "piorDelta": 185,
+          "onde": {
+            "x": 181,
+            "acima": [
+              49,
+              117,
+              167
+            ],
+            "abaixo": [
+              234,
+              244,
+              251
+            ]
+          }
+        },
+        {
+          "faixa": 12,
+          "classe": "cta-ref section-py relative overflow-hidden",
+          "yJunta": 450,
+          "piorDelta": 21,
+          "onde": {
+            "x": 61,
+            "acima": [
+              231,
+              243,
+              251
+            ],
+            "abaixo": [
+              252,
+              253,
+              255
+            ]
+          }
+        }
+      ],
+      "planoPontos": [
+        {
+          "faixa": 1,
+          "pontos": [
+            [
+              0,
+              91,
+              155
+            ],
+            [
+              0,
+              30,
+              70
+            ],
+            [
+              0,
+              32,
+              71
+            ]
+          ]
+        },
+        {
+          "faixa": 2,
+          "pontos": [
+            [
+              220,
+              237,
+              248
+            ],
+            [
+              4,
+              29,
+              56
+            ],
+            [
+              10,
+              62,
+              112
+            ]
+          ]
+        },
+        {
+          "faixa": 3,
+          "pontos": [
+            [
+              4,
+              29,
+              55
+            ],
+            [
+              222,
+              234,
+              247
+            ],
+            [
+              234,
+              243,
+              250
+            ]
+          ]
+        },
+        {
+          "faixa": 4,
+          "pontos": [
+            [
+              221,
+              238,
+              250
+            ],
+            [
+              232,
+              243,
+              252
+            ],
+            [
+              202,
+              219,
+              246
+            ]
+          ]
+        },
+        {
+          "faixa": 5,
+          "pontos": [
+            [
+              221,
+              237,
+              250
+            ],
+            [
+              232,
+              243,
+              252
+            ],
+            [
+              203,
+              219,
+              246
+            ]
+          ]
+        },
+        {
+          "faixa": 6,
+          "pontos": [
+            [
+              221,
+              237,
+              250
+            ],
+            [
+              0,
+              94,
+              160
+            ],
+            [
+              1,
+              69,
+              124
+            ]
+          ]
+        },
+        {
+          "faixa": 7,
+          "pontos": [
+            [
+              0,
+              98,
+              162
+            ],
+            [
+              19,
+              53,
+              95
+            ],
+            [
+              1,
+              28,
+              67
+            ]
+          ]
+        },
+        {
+          "faixa": 8,
+          "pontos": [
+            [
+              0,
+              30,
+              70
+            ],
+            [
+              220,
+              236,
+              248
+            ],
+            [
+              251,
+              252,
+              253
+            ]
+          ]
+        },
+        {
+          "faixa": 9,
+          "pontos": [
+            [
+              255,
+              255,
+              255
+            ],
+            [
+              249,
+              252,
+              254
+            ],
+            [
+              203,
+              219,
+              248
+            ]
+          ]
+        },
+        {
+          "faixa": 10,
+          "pontos": [
+            [
+              221,
+              237,
+              250
+            ],
+            [
+              0,
+              92,
+              158
+            ],
+            [
+              1,
+              71,
+              128
+            ]
+          ]
+        },
+        {
+          "faixa": 11,
+          "pontos": [
+            [
+              0,
+              89,
+              152
+            ],
+            [
+              231,
+              243,
+              252
+            ],
+            [
+              202,
+              219,
+              246
+            ]
+          ]
+        },
+        {
+          "faixa": 12,
+          "pontos": [
+            [
+              220,
+              237,
+              248
+            ],
+            [
+              252,
+              253,
+              255
+            ],
+            [
+              242,
+              249,
+              254
+            ]
+          ]
+        }
+      ],
+      "contrastes": [
+        {
+          "sel": ".hero-backdrop h1",
+          "corTexto": "rgb(255, 255, 255)",
+          "fundoLido": "rgb(9, 31, 60)",
+          "razao": 16.5
+        },
+        {
+          "sel": ".perfil-secao h2",
+          "corTexto": "rgb(248, 250, 252)",
+          "fundoLido": "rgb(4, 39, 74)",
+          "razao": 14.4
+        },
+        {
+          "sel": "#por-que-sistran",
+          "corTexto": "rgb(255, 255, 255)",
+          "fundoLido": "rgb(0, 91, 156)",
+          "razao": 7.06
+        },
+        {
+          "sel": ".sobre-metricas.on-dark, .sobre-metricas .on-dark, .on-dark",
+          "corTexto": "rgba(255, 255, 255, 0.88)",
+          "fundoLido": "rgb(5, 35, 67)",
+          "razao": 15.81
+        }
+      ],
+      "transbordoPx": 0,
+      "erros": []
+    },
+    {
+      "largura": 768,
+      "altura": 1024,
+      "faixas": 13,
+      "emendas": [
+        {
+          "faixa": 1,
+          "classe": "section-light",
+          "yJunta": -11919,
+          "piorDelta": -1,
+          "onde": null
+        },
+        {
+          "faixa": 2,
+          "classe": "perfil-secao section-py relative isolate overflow-hidden",
+          "yJunta": 512,
+          "piorDelta": 6,
+          "onde": {
+            "x": 97,
+            "acima": [
+              8,
+              41,
+              71
+            ],
+            "abaixo": [
+              4,
+              35,
+              65
+            ]
+          }
+        },
+        {
+          "faixa": 3,
+          "classe": "section-light",
+          "yJunta": 512,
+          "piorDelta": 227,
+          "onde": {
+            "x": 288,
+            "acima": [
+              4,
+              48,
+              88
+            ],
+            "abaixo": [
+              231,
+              243,
+              251
+            ]
+          }
+        },
+        {
+          "faixa": 4,
+          "classe": "ne-secao",
+          "yJunta": 512,
+          "piorDelta": 1,
+          "onde": {
+            "x": 33,
+            "acima": [
+              229,
+              242,
+              251
+            ],
+            "abaixo": [
+              228,
+              241,
+              251
+            ]
+          }
+        },
+        {
+          "faixa": 5,
+          "classe": "cem-secao section-py",
+          "yJunta": 512,
+          "piorDelta": 1,
+          "onde": {
+            "x": 33,
+            "acima": [
+              229,
+              242,
+              251
+            ],
+            "abaixo": [
+              228,
+              241,
+              251
+            ]
+          }
+        },
+        {
+          "faixa": 6,
+          "classe": "section-py agimos-secao relative overflow-hidden",
+          "yJunta": 512,
+          "piorDelta": 233,
+          "onde": {
+            "x": 288,
+            "acima": [
+              233,
+              244,
+              252
+            ],
+            "abaixo": [
+              0,
+              86,
+              149
+            ]
+          }
+        },
+        {
+          "faixa": 7,
+          "classe": "impact-scroll",
+          "yJunta": 512,
+          "piorDelta": 41,
+          "onde": {
+            "x": 161,
+            "acima": [
+              0,
+              81,
+              141
+            ],
+            "abaixo": [
+              20,
+              108,
+              182
+            ]
+          }
+        },
+        {
+          "faixa": 8,
+          "classe": "rgal-secao",
+          "yJunta": 512,
+          "piorDelta": 230,
+          "onde": {
+            "x": 480,
+            "acima": [
+              0,
+              47,
+              97
+            ],
+            "abaixo": [
+              230,
+              242,
+              251
+            ]
+          }
+        },
+        {
+          "faixa": 9,
+          "classe": "section-py section-light isg-secao isg-cantos",
+          "yJunta": 512,
+          "piorDelta": 9,
+          "onde": {
+            "x": 735,
+            "acima": [
+              219,
+              240,
+              251
+            ],
+            "abaixo": [
+              228,
+              241,
+              251
+            ]
+          }
+        },
+        {
+          "faixa": 10,
+          "classe": "section-py relative overflow-hidden",
+          "yJunta": 512,
+          "piorDelta": 232,
+          "onde": {
+            "x": 288,
+            "acima": [
+              232,
+              243,
+              252
+            ],
+            "abaixo": [
+              0,
+              87,
+              150
+            ]
+          }
+        },
+        {
+          "faixa": 11,
+          "classe": "section-py section-light section-light-blue pt-12 md:pt-14 lg:pt-16",
+          "yJunta": 512,
+          "piorDelta": 183,
+          "onde": {
+            "x": 288,
+            "acima": [
+              49,
+              110,
+              156
+            ],
+            "abaixo": [
+              232,
+              244,
+              252
+            ]
+          }
+        },
+        {
+          "faixa": 12,
+          "classe": "cta-ref section-py relative overflow-hidden",
+          "yJunta": 512,
+          "piorDelta": 24,
+          "onde": {
+            "x": 33,
+            "acima": [
+              228,
+              241,
+              251
+            ],
+            "abaixo": [
+              252,
+              253,
+              255
+            ]
+          }
+        }
+      ],
+      "planoPontos": [
+        {
+          "faixa": 1,
+          "pontos": [
+            [
+              0,
+              32,
+              70
+            ],
+            [
+              229,
+              242,
+              251
+            ],
+            [
+              196,
+              213,
+              241
+            ]
+          ]
+        },
+        {
+          "faixa": 2,
+          "pontos": [
+            [
+              220,
+              237,
+              248
+            ],
+            [
+              4,
+              30,
+              56
+            ],
+            [
+              8,
+              62,
+              114
+            ]
+          ]
+        },
+        {
+          "faixa": 3,
+          "pontos": [
+            [
+              3,
+              33,
+              64
+            ],
+            [
+              248,
+              252,
+              254
+            ],
+            [
+              203,
+              219,
+              247
+            ]
+          ]
+        },
+        {
+          "faixa": 4,
+          "pontos": [
+            [
+              221,
+              237,
+              250
+            ],
+            [
+              229,
+              242,
+              251
+            ],
+            [
+              202,
+              219,
+              246
+            ]
+          ]
+        },
+        {
+          "faixa": 5,
+          "pontos": [
+            [
+              220,
+              237,
+              250
+            ],
+            [
+              229,
+              242,
+              251
+            ],
+            [
+              203,
+              219,
+              246
+            ]
+          ]
+        },
+        {
+          "faixa": 6,
+          "pontos": [
+            [
+              221,
+              237,
+              250
+            ],
+            [
+              0,
+              92,
+              158
+            ],
+            [
+              1,
+              72,
+              128
+            ]
+          ]
+        },
+        {
+          "faixa": 7,
+          "pontos": [
+            [
+              0,
+              95,
+              159
+            ],
+            [
+              22,
+              84,
+              141
+            ],
+            [
+              0,
+              27,
+              62
+            ]
+          ]
+        },
+        {
+          "faixa": 8,
+          "pontos": [
+            [
+              0,
+              30,
+              68
+            ],
+            [
+              218,
+              235,
+              248
+            ],
+            [
+              228,
+              243,
+              254
+            ]
+          ]
+        },
+        {
+          "faixa": 9,
+          "pontos": [
+            [
+              0,
+              29,
+              66
+            ],
+            [
+              249,
+              252,
+              254
+            ],
+            [
+              196,
+              213,
+              240
+            ]
+          ]
+        },
+        {
+          "faixa": 10,
+          "pontos": [
+            [
+              220,
+              237,
+              248
+            ],
+            [
+              0,
+              92,
+              158
+            ],
+            [
+              1,
+              76,
+              134
+            ]
+          ]
+        },
+        {
+          "faixa": 11,
+          "pontos": [
+            [
+              0,
+              84,
+              145
+            ],
+            [
+              229,
+              242,
+              252
+            ],
+            [
+              202,
+              219,
+              246
+            ]
+          ]
+        },
+        {
+          "faixa": 12,
+          "pontos": [
+            [
+              220,
+              237,
+              248
+            ],
+            [
+              252,
+              253,
+              255
+            ],
+            [
+              234,
+              243,
+              249
+            ]
+          ]
+        }
+      ],
+      "contrastes": [
+        {
+          "sel": ".hero-backdrop h1",
+          "corTexto": "rgb(255, 255, 255)",
+          "fundoLido": "rgb(4, 23, 49)",
+          "razao": 17.92
+        },
+        {
+          "sel": ".perfil-secao h2",
+          "corTexto": "rgb(248, 250, 252)",
+          "fundoLido": "rgb(3, 35, 68)",
+          "razao": 15.12
+        },
+        {
+          "sel": "#por-que-sistran",
+          "corTexto": "rgb(255, 255, 255)",
+          "fundoLido": "rgb(0, 91, 156)",
+          "razao": 7.06
+        },
+        {
+          "sel": ".sobre-metricas.on-dark, .sobre-metricas .on-dark, .on-dark",
+          "corTexto": "rgba(255, 255, 255, 0.88)",
+          "fundoLido": "rgb(5, 36, 68)",
+          "razao": 15.65
+        }
+      ],
+      "transbordoPx": 118,
+      "erros": []
+    },
+    {
+      "largura": 390,
+      "altura": 844,
+      "faixas": 13,
+      "emendas": [
+        {
+          "faixa": 1,
+          "classe": "section-light",
+          "yJunta": -9831,
+          "piorDelta": -1,
+          "onde": null
+        },
+        {
+          "faixa": 2,
+          "classe": "perfil-secao section-py relative isolate overflow-hidden",
+          "yJunta": 422,
+          "piorDelta": 10,
+          "onde": {
+            "x": 17,
+            "acima": [
+              9,
+              40,
+              68
+            ],
+            "abaixo": [
+              4,
+              31,
+              58
+            ]
+          }
+        },
+        {
+          "faixa": 3,
+          "classe": "section-light",
+          "yJunta": 422,
+          "piorDelta": 228,
+          "onde": {
+            "x": 114,
+            "acima": [
+              4,
+              43,
+              81
+            ],
+            "abaixo": [
+              232,
+              243,
+              252
+            ]
+          }
+        },
+        {
+          "faixa": 4,
+          "classe": "ne-secao",
+          "yJunta": 422,
+          "piorDelta": 3,
+          "onde": {
+            "x": 341,
+            "acima": [
+              231,
+              242,
+              251
+            ],
+            "abaixo": [
+              228,
+              241,
+              251
+            ]
+          }
+        },
+        {
+          "faixa": 5,
+          "classe": "cem-secao section-py",
+          "yJunta": 422,
+          "piorDelta": 2,
+          "onde": {
+            "x": 17,
+            "acima": [
+              229,
+              242,
+              252
+            ],
+            "abaixo": [
+              227,
+              241,
+              251
+            ]
+          }
+        },
+        {
+          "faixa": 6,
+          "classe": "section-py agimos-secao relative overflow-hidden",
+          "yJunta": 422,
+          "piorDelta": 233,
+          "onde": {
+            "x": 114,
+            "acima": [
+              233,
+              244,
+              252
+            ],
+            "abaixo": [
+              0,
+              89,
+              153
+            ]
+          }
+        },
+        {
+          "faixa": 7,
+          "classe": "impact-scroll",
+          "yJunta": 422,
+          "piorDelta": 108,
+          "onde": {
+            "x": 17,
+            "acima": [
+              0,
+              76,
+              134
+            ],
+            "abaixo": [
+              27,
+              184,
+              207
+            ]
+          }
+        },
+        {
+          "faixa": 8,
+          "classe": "rgal-secao",
+          "yJunta": 422,
+          "piorDelta": 230,
+          "onde": {
+            "x": 211,
+            "acima": [
+              1,
+              40,
+              85
+            ],
+            "abaixo": [
+              231,
+              243,
+              252
+            ]
+          }
+        },
+        {
+          "faixa": 9,
+          "classe": "section-py section-light isg-secao isg-cantos",
+          "yJunta": 422,
+          "piorDelta": 8,
+          "onde": {
+            "x": 341,
+            "acima": [
+              222,
+              242,
+              252
+            ],
+            "abaixo": [
+              230,
+              242,
+              252
+            ]
+          }
+        },
+        {
+          "faixa": 10,
+          "classe": "section-py relative overflow-hidden",
+          "yJunta": 422,
+          "piorDelta": 233,
+          "onde": {
+            "x": 114,
+            "acima": [
+              233,
+              244,
+              252
+            ],
+            "abaixo": [
+              0,
+              90,
+              155
+            ]
+          }
+        },
+        {
+          "faixa": 11,
+          "classe": "section-py section-light section-light-blue pt-12 md:pt-14 lg:pt-16",
+          "yJunta": 422,
+          "piorDelta": 185,
+          "onde": {
+            "x": 373,
+            "acima": [
+              44,
+              97,
+              141
+            ],
+            "abaixo": [
+              229,
+              242,
+              251
+            ]
+          }
+        },
+        {
+          "faixa": 12,
+          "classe": "cta-ref section-py relative overflow-hidden",
+          "yJunta": 422,
+          "piorDelta": 25,
+          "onde": {
+            "x": 50,
+            "acima": [
+              227,
+              241,
+              251
+            ],
+            "abaixo": [
+              252,
+              254,
+              255
+            ]
+          }
+        }
+      ],
+      "planoPontos": [
+        {
+          "faixa": 1,
+          "pontos": [
+            [
+              0,
+              82,
+              142
+            ],
+            [
+              17,
+              53,
+              94
+            ],
+            [
+              0,
+              29,
+              66
+            ]
+          ]
+        },
+        {
+          "faixa": 2,
+          "pontos": [
+            [
+              6,
+              42,
+              80
+            ],
+            [
+              4,
+              30,
+              57
+            ],
+            [
+              8,
+              62,
+              113
+            ]
+          ]
+        },
+        {
+          "faixa": 3,
+          "pontos": [
+            [
+              3,
+              35,
+              65
+            ],
+            [
+              248,
+              252,
+              254
+            ],
+            [
+              202,
+              218,
+              246
+            ]
+          ]
+        },
+        {
+          "faixa": 4,
+          "pontos": [
+            [
+              219,
+              237,
+              250
+            ],
+            [
+              228,
+              241,
+              251
+            ],
+            [
+              202,
+              218,
+              246
+            ]
+          ]
+        },
+        {
+          "faixa": 5,
+          "pontos": [
+            [
+              218,
+              236,
+              248
+            ],
+            [
+              227,
+              241,
+              251
+            ],
+            [
+              203,
+              219,
+              247
+            ]
+          ]
+        },
+        {
+          "faixa": 6,
+          "pontos": [
+            [
+              218,
+              236,
+              248
+            ],
+            [
+              0,
+              92,
+              157
+            ],
+            [
+              1,
+              79,
+              137
+            ]
+          ]
+        },
+        {
+          "faixa": 7,
+          "pontos": [
+            [
+              0,
+              82,
+              142
+            ],
+            [
+              19,
+              52,
+              92
+            ],
+            [
+              0,
+              28,
+              65
+            ]
+          ]
+        },
+        {
+          "faixa": 8,
+          "pontos": [
+            [
+              0,
+              36,
+              76
+            ],
+            [
+              216,
+              234,
+              248
+            ],
+            [
+              228,
+              243,
+              254
+            ]
+          ]
+        },
+        {
+          "faixa": 9,
+          "pontos": [
+            [
+              0,
+              35,
+              75
+            ],
+            [
+              248,
+              252,
+              254
+            ],
+            [
+              196,
+              211,
+              240
+            ]
+          ]
+        },
+        {
+          "faixa": 10,
+          "pontos": [
+            [
+              215,
+              233,
+              244
+            ],
+            [
+              0,
+              92,
+              158
+            ],
+            [
+              0,
+              83,
+              145
+            ]
+          ]
+        },
+        {
+          "faixa": 11,
+          "pontos": [
+            [
+              0,
+              75,
+              132
+            ],
+            [
+              227,
+              241,
+              251
+            ],
+            [
+              204,
+              220,
+              248
+            ]
+          ]
+        },
+        {
+          "faixa": 12,
+          "pontos": [
+            [
+              218,
+              236,
+              248
+            ],
+            [
+              252,
+              253,
+              255
+            ],
+            [
+              216,
+              232,
+              246
+            ]
+          ]
+        }
+      ],
+      "contrastes": [
+        {
+          "sel": ".hero-backdrop h1",
+          "corTexto": "rgb(255, 255, 255)",
+          "fundoLido": "rgb(19, 81, 118)",
+          "razao": 8.51
+        },
+        {
+          "sel": ".perfil-secao h2",
+          "corTexto": "rgb(248, 250, 252)",
+          "fundoLido": "rgb(4, 36, 69)",
+          "razao": 14.94
+        },
+        {
+          "sel": "#por-que-sistran",
+          "corTexto": "rgb(255, 255, 255)",
+          "fundoLido": "rgb(0, 91, 156)",
+          "razao": 7.06
+        },
+        {
+          "sel": ".sobre-metricas.on-dark, .sobre-metricas .on-dark, .on-dark",
+          "corTexto": "rgba(255, 255, 255, 0.88)",
+          "fundoLido": "rgb(5, 36, 68)",
+          "razao": 15.65
+        }
+      ],
+      "transbordoPx": 104,
+      "erros": []
+    }
+  ]
+}

@@ -32,8 +32,18 @@ export const CLIENTS: readonly Client[] = [
      uma caixa cinza-esverdeada no meio da fileira.
      `Picsel-logo-transparente.png` é o MESMO arquivo com essa cor chapada
      transformada em alfa e a folga aparada — derivado do asset que já existia,
-     nada redesenhado. O original fica no lugar como fonte. */
-  { name: 'Picsel', logo: '/images/Picsel-logo-transparente.png' },
+     nada redesenhado. O original fica no lugar como fonte.
+
+     SIS-219 — a derivada também saiu de cena. Era:
+
+         { name: 'Picsel', logo: '/images/Picsel-logo-transparente.png' },
+
+     A issue manda usar a logo nova «em todos os lugares onde ela aparece», e
+     este é o segundo lugar (o outro é `src/data/partners.ts`). A arte entregue
+     em `public/logos-parceiros/picsel-logo.png` já vem com canal alfa (1791x878,
+     4 canais, conferido com sharp), então o recorte que a nota acima descreve
+     deixou de ser necessário — não há mais retângulo chapado para aparar. */
+  { name: 'Picsel', logo: '/logos-parceiros/picsel-logo.png' },
   { name: 'Earnix', logo: '/images/Earnix_logo.png' },
   { name: 'Dacadoo', logo: '/images/Dacadoo-Logo_1.png' },
 

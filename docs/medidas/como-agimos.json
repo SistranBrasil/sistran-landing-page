@@ -1,0 +1,669 @@
+{
+  "rota": "http://localhost:3000/quem-somos",
+  "quando": "2026-09-24T17:57:54.992Z",
+  "larguras": {
+    "390": {
+      "carimbo": {
+        "h2ehH2": true,
+        "idNoH2": true,
+        "textoAcessivel": "Como Agimos",
+        "alt": "Como Agimos",
+        "arquivoCerto": true,
+        "carregou": true,
+        "intrinseca": {
+          "w": 801,
+          "h": 339
+        },
+        "intrinsecaCasaComSharp": true,
+        "caixa": {
+          "x": 20,
+          "y": -33.97,
+          "w": 272,
+          "h": 115.11
+        },
+        "proporcao": 2.36,
+        "proporcaoArquivo": 2.36,
+        "rotateCss": "none",
+        "semTituloAceso": true
+      },
+      "manuscrito": {
+        "familia": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+        "usaKalam": true,
+        "peso": "400",
+        "corpoPx": 26,
+        "alturaLinha": 1.06,
+        "cor": "rgb(255, 255, 255)",
+        "rotate": "-4deg",
+        "transform": "none",
+        "caixa": {
+          "x": 17.6,
+          "y": 84.81,
+          "w": 353.94,
+          "h": 92.93
+        },
+        "pontoFundo": {
+          "x": 194.57,
+          "y": 183.74
+        },
+        "ehTextoHtml": true,
+        "semImagemDentro": true
+      },
+      "risco": {
+        "existe": true,
+        "stroke": "rgb(22, 191, 232)",
+        "larguraTraco": "2.5px",
+        "dashoffset": 0,
+        "desenhado": true,
+        "caixaSvg": {
+          "x": 21.84,
+          "y": 166.62,
+          "w": 45.45,
+          "h": 11.12
+        },
+        "escopoAcendeu": "true"
+      },
+      "rolo": {
+        "ehLista": true,
+        "taloes": 8,
+        "colunas": 1,
+        "gap": 0,
+        "raio": "20px",
+        "borda": "1px rgba(255, 255, 255, 0.16)",
+        "mask": "radial-gradient(11px at 0px 50%, rgba(0, 0, 0, 0) 98%, rgb(0, 0, 0) 100%), radial-gradient(11px at 100% 50%, rgba(0, 0, ",
+        "maskComposite": "intersect, intersect",
+        "roloVisivel": true,
+        "caixa": {
+          "x": 20,
+          "y": 309.2,
+          "w": 350,
+          "h": 745.75
+        },
+        "comFioEsquerda": 0,
+        "comFioTopo": 7,
+        "semGlassCard": true,
+        "semBarraSinal": true,
+        "semNumMonumental": true,
+        "emendaHorizontal": -348
+      },
+      "talao": {
+        "serieCorpoPx": 12,
+        "serieCor": "rgb(156, 238, 255)",
+        "serieTexto": "01",
+        "serieTabular": true,
+        "serieCaixa": {
+          "x": 91,
+          "y": 334.2,
+          "w": 50.73,
+          "h": 18
+        },
+        "seriePontoFundo": {
+          "x": 116.37,
+          "y": 358.2
+        },
+        "valorCorpoPx": 17,
+        "valorCor": "rgb(255, 255, 255)",
+        "valorEhH3": true,
+        "valorCaixa": {
+          "x": 91,
+          "y": 360.2,
+          "w": 50.73,
+          "h": 22.09
+        },
+        "valorPontoFundo": {
+          "x": 116.37,
+          "y": 388.3
+        }
+      },
+      "prosa": {
+        "corpoPx": 18,
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "caixa": {
+          "x": 20,
+          "y": 201.83,
+          "w": 350,
+          "h": 59.38
+        },
+        "pontoFundo": {
+          "x": 195,
+          "y": 267.2
+        }
+      },
+      "secaoInfo": {
+        "temGradeTecnica": true,
+        "ehSectionLight": false,
+        "rotulada": true,
+        "largura": 390,
+        "estouro": 104
+      },
+      "textosPresentes": [
+        {
+          "t": "Nossos valores são a base da nossa cultura organizacional.",
+          "presente": true
+        },
+        {
+          "t": "Respeitando as individualidades, prezamos pela:",
+          "presente": true
+        },
+        {
+          "t": "Ética",
+          "presente": true
+        },
+        {
+          "t": "Transparência",
+          "presente": true
+        },
+        {
+          "t": "Valorização Humana",
+          "presente": true
+        },
+        {
+          "t": "Integração",
+          "presente": true
+        },
+        {
+          "t": "Inovação",
+          "presente": true
+        },
+        {
+          "t": "Qualidade",
+          "presente": true
+        },
+        {
+          "t": "Comprometimento",
+          "presente": true
+        },
+        {
+          "t": "Profissionalismo",
+          "presente": true
+        }
+      ],
+      "contraste": {
+        "janela": {
+          "largura": 390,
+          "altura": 900
+        },
+        "manuscrito": {
+          "fundoMedio": "rgb(0, 79, 139)",
+          "tintaMedia": "rgb(213, 226, 236)",
+          "pixelsDeTinta": 2950,
+          "medio": 6.39,
+          "pior": 4.64
+        },
+        "prosa": {
+          "fundoMedio": "rgb(0, 78, 137)",
+          "tintaMedia": "rgb(192, 214, 229)",
+          "pixelsDeTinta": 1753,
+          "medio": 5.71,
+          "pior": 3.9
+        },
+        "serie": {
+          "fundoMedio": "rgb(10, 98, 157)",
+          "tintaMedia": "rgb(129, 219, 243)",
+          "pixelsDeTinta": 69,
+          "medio": 4.11,
+          "pior": 2.97
+        },
+        "valor": {
+          "fundoMedio": "rgb(10, 98, 158)",
+          "tintaMedia": "rgb(239, 245, 249)",
+          "pixelsDeTinta": 261,
+          "medio": 5.87,
+          "pior": 3.89
+        }
+      },
+      "hover": {
+        "ponteiroFino": true,
+        "antes": 0,
+        "depois": 1
+      }
+    },
+    "768": {
+      "carimbo": {
+        "h2ehH2": true,
+        "idNoH2": true,
+        "textoAcessivel": "Como Agimos",
+        "alt": "Como Agimos",
+        "arquivoCerto": true,
+        "carregou": true,
+        "intrinseca": {
+          "w": 801,
+          "h": 339
+        },
+        "intrinsecaCasaComSharp": true,
+        "caixa": {
+          "x": 24,
+          "y": 180.22,
+          "w": 272,
+          "h": 115.11
+        },
+        "proporcao": 2.36,
+        "proporcaoArquivo": 2.36,
+        "rotateCss": "none",
+        "semTituloAceso": true
+      },
+      "manuscrito": {
+        "familia": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+        "usaKalam": true,
+        "peso": "400",
+        "corpoPx": 26,
+        "alturaLinha": 1.06,
+        "cor": "rgb(255, 255, 255)",
+        "rotate": "-4deg",
+        "transform": "none",
+        "caixa": {
+          "x": 22.57,
+          "y": 273.15,
+          "w": 721.12,
+          "h": 91.27
+        },
+        "pontoFundo": {
+          "x": 383.12,
+          "y": 370.42
+        },
+        "ehTextoHtml": true,
+        "semImagemDentro": true
+      },
+      "risco": {
+        "existe": true,
+        "stroke": "rgb(22, 191, 232)",
+        "larguraTraco": "2.5px",
+        "dashoffset": 0,
+        "desenhado": true,
+        "caixaSvg": {
+          "x": 24.88,
+          "y": 353.3,
+          "w": 45.45,
+          "h": 11.12
+        },
+        "escopoAcendeu": "true"
+      },
+      "rolo": {
+        "ehLista": true,
+        "taloes": 8,
+        "colunas": 2,
+        "gap": 0,
+        "raio": "20px",
+        "borda": "1px rgba(255, 255, 255, 0.16)",
+        "mask": "radial-gradient(11px at 0px 50%, rgba(0, 0, 0, 0) 98%, rgb(0, 0, 0) 100%), radial-gradient(11px at 100% 50%, rgba(0, 0, ",
+        "maskComposite": "intersect, intersect",
+        "roloVisivel": true,
+        "caixa": {
+          "x": 24,
+          "y": 466.16,
+          "w": 720,
+          "h": 373.38
+        },
+        "comFioEsquerda": 4,
+        "comFioTopo": 6,
+        "semGlassCard": true,
+        "semBarraSinal": true,
+        "semNumMonumental": true,
+        "emendaHorizontal": 0
+      },
+      "talao": {
+        "serieCorpoPx": 12,
+        "serieCor": "rgb(156, 238, 255)",
+        "serieTexto": "01",
+        "serieTabular": true,
+        "serieCaixa": {
+          "x": 95,
+          "y": 491.16,
+          "w": 50.73,
+          "h": 18
+        },
+        "seriePontoFundo": {
+          "x": 120.37,
+          "y": 515.16
+        },
+        "valorCorpoPx": 17,
+        "valorCor": "rgb(255, 255, 255)",
+        "valorEhH3": true,
+        "valorCaixa": {
+          "x": 95,
+          "y": 517.16,
+          "w": 50.73,
+          "h": 22.09
+        },
+        "valorPontoFundo": {
+          "x": 120.37,
+          "y": 545.25
+        }
+      },
+      "prosa": {
+        "corpoPx": 18,
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "caixa": {
+          "x": 24,
+          "y": 388.47,
+          "w": 416,
+          "h": 29.69
+        },
+        "pontoFundo": {
+          "x": 232,
+          "y": 424.16
+        }
+      },
+      "secaoInfo": {
+        "temGradeTecnica": true,
+        "ehSectionLight": false,
+        "rotulada": true,
+        "largura": 768,
+        "estouro": 118
+      },
+      "textosPresentes": [
+        {
+          "t": "Nossos valores são a base da nossa cultura organizacional.",
+          "presente": true
+        },
+        {
+          "t": "Respeitando as individualidades, prezamos pela:",
+          "presente": true
+        },
+        {
+          "t": "Ética",
+          "presente": true
+        },
+        {
+          "t": "Transparência",
+          "presente": true
+        },
+        {
+          "t": "Valorização Humana",
+          "presente": true
+        },
+        {
+          "t": "Integração",
+          "presente": true
+        },
+        {
+          "t": "Inovação",
+          "presente": true
+        },
+        {
+          "t": "Qualidade",
+          "presente": true
+        },
+        {
+          "t": "Comprometimento",
+          "presente": true
+        },
+        {
+          "t": "Profissionalismo",
+          "presente": true
+        }
+      ],
+      "contraste": {
+        "janela": {
+          "largura": 768,
+          "altura": 900
+        },
+        "manuscrito": {
+          "fundoMedio": "rgb(0, 81, 141)",
+          "tintaMedia": "rgb(235, 242, 247)",
+          "pixelsDeTinta": 2539,
+          "medio": 7.25,
+          "pior": 4.6
+        },
+        "prosa": {
+          "fundoMedio": "rgb(0, 80, 140)",
+          "tintaMedia": "rgb(192, 215, 230)",
+          "pixelsDeTinta": 1732,
+          "medio": 5.58,
+          "pior": 3.77
+        },
+        "serie": {
+          "fundoMedio": "rgb(10, 102, 161)",
+          "tintaMedia": "rgb(129, 220, 243)",
+          "pixelsDeTinta": 69,
+          "medio": 3.93,
+          "pior": 2.88
+        },
+        "valor": {
+          "fundoMedio": "rgb(10, 100, 159)",
+          "tintaMedia": "rgb(239, 245, 249)",
+          "pixelsDeTinta": 261,
+          "medio": 5.72,
+          "pior": 3.83
+        }
+      },
+      "hover": {
+        "ponteiroFino": true,
+        "antes": 0,
+        "depois": 1
+      }
+    },
+    "1440": {
+      "carimbo": {
+        "h2ehH2": true,
+        "idNoH2": true,
+        "textoAcessivel": "Como Agimos",
+        "alt": "Como Agimos",
+        "arquivoCerto": true,
+        "carregou": true,
+        "intrinseca": {
+          "w": 801,
+          "h": 339
+        },
+        "intrinsecaCasaComSharp": true,
+        "caixa": {
+          "x": 162,
+          "y": 324.91,
+          "w": 368,
+          "h": 155.73
+        },
+        "proporcao": 2.36,
+        "proporcaoArquivo": 2.36,
+        "rotateCss": "none",
+        "semTituloAceso": true
+      },
+      "manuscrito": {
+        "familia": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+        "usaKalam": true,
+        "peso": "400",
+        "corpoPx": 37.44,
+        "alturaLinha": 1.0600961538461537,
+        "cor": "rgb(255, 255, 255)",
+        "rotate": "-4deg",
+        "transform": "none",
+        "caixa": {
+          "x": 157.37,
+          "y": 478.67,
+          "w": 440.2,
+          "h": 162.42
+        },
+        "pontoFundo": {
+          "x": 377.47,
+          "y": 647.09
+        },
+        "ehTextoHtml": true,
+        "semImagemDentro": true
+      },
+      "risco": {
+        "existe": true,
+        "stroke": "rgb(22, 191, 232)",
+        "larguraTraco": "2.5px",
+        "dashoffset": 0,
+        "desenhado": true,
+        "caixaSvg": {
+          "x": 166.07,
+          "y": 629.97,
+          "w": 45.45,
+          "h": 11.12
+        },
+        "escopoAcendeu": "true"
+      },
+      "rolo": {
+        "ehLista": true,
+        "taloes": 8,
+        "colunas": 2,
+        "gap": 0,
+        "raio": "20px",
+        "borda": "1px rgba(255, 255, 255, 0.16)",
+        "mask": "radial-gradient(11px at 0px 50%, rgba(0, 0, 0, 0) 98%, rgb(0, 0, 0) 100%), radial-gradient(11px at 100% 50%, rgba(0, 0, ",
+        "maskComposite": "intersect, intersect",
+        "roloVisivel": true,
+        "caixa": {
+          "x": 651.59,
+          "y": 299.23,
+          "w": 626.41,
+          "h": 421.38
+        },
+        "comFioEsquerda": 4,
+        "comFioTopo": 6,
+        "semGlassCard": true,
+        "semBarraSinal": true,
+        "semNumMonumental": true,
+        "emendaHorizontal": 0
+      },
+      "talao": {
+        "serieCorpoPx": 12,
+        "serieCor": "rgb(156, 238, 255)",
+        "serieTexto": "01",
+        "serieTabular": true,
+        "serieCaixa": {
+          "x": 740.59,
+          "y": 330.23,
+          "w": 50.73,
+          "h": 18
+        },
+        "seriePontoFundo": {
+          "x": 765.96,
+          "y": 354.23
+        },
+        "valorCorpoPx": 17,
+        "valorCor": "rgb(255, 255, 255)",
+        "valorEhH3": true,
+        "valorCaixa": {
+          "x": 740.59,
+          "y": 356.23,
+          "w": 50.73,
+          "h": 22.09
+        },
+        "valorPontoFundo": {
+          "x": 765.96,
+          "y": 384.33
+        }
+      },
+      "prosa": {
+        "corpoPx": 18,
+        "cor": "rgba(255, 255, 255, 0.85)",
+        "caixa": {
+          "x": 162,
+          "y": 665.25,
+          "w": 416,
+          "h": 29.69
+        },
+        "pontoFundo": {
+          "x": 370,
+          "y": 700.94
+        }
+      },
+      "secaoInfo": {
+        "temGradeTecnica": true,
+        "ehSectionLight": false,
+        "rotulada": true,
+        "largura": 1440,
+        "estouro": 0
+      },
+      "textosPresentes": [
+        {
+          "t": "Nossos valores são a base da nossa cultura organizacional.",
+          "presente": true
+        },
+        {
+          "t": "Respeitando as individualidades, prezamos pela:",
+          "presente": true
+        },
+        {
+          "t": "Ética",
+          "presente": true
+        },
+        {
+          "t": "Transparência",
+          "presente": true
+        },
+        {
+          "t": "Valorização Humana",
+          "presente": true
+        },
+        {
+          "t": "Integração",
+          "presente": true
+        },
+        {
+          "t": "Inovação",
+          "presente": true
+        },
+        {
+          "t": "Qualidade",
+          "presente": true
+        },
+        {
+          "t": "Comprometimento",
+          "presente": true
+        },
+        {
+          "t": "Profissionalismo",
+          "presente": true
+        }
+      ],
+      "contraste": {
+        "janela": {
+          "largura": 1440,
+          "altura": 900
+        },
+        "manuscrito": {
+          "fundoMedio": "rgb(0, 85, 146)",
+          "tintaMedia": "rgb(239, 245, 249)",
+          "pixelsDeTinta": 3760,
+          "medio": 7.04,
+          "pior": 4.37
+        },
+        "prosa": {
+          "fundoMedio": "rgb(0, 82, 142)",
+          "tintaMedia": "rgb(193, 214, 230)",
+          "pixelsDeTinta": 1726,
+          "medio": 5.4,
+          "pior": 3.7
+        },
+        "serie": {
+          "fundoMedio": "rgb(10, 86, 143)",
+          "tintaMedia": "rgb(129, 219, 242)",
+          "pixelsDeTinta": 68,
+          "medio": 4.87,
+          "pior": 3.55
+        },
+        "valor": {
+          "fundoMedio": "rgb(10, 85, 143)",
+          "tintaMedia": "rgb(241, 245, 249)",
+          "pixelsDeTinta": 252,
+          "medio": 7.08,
+          "pior": 4.37
+        }
+      },
+      "hover": {
+        "ponteiroFino": true,
+        "antes": 0,
+        "depois": 1
+      }
+    }
+  },
+  "movimentoReduzido": {
+    "preferencia": {
+      "riscoAnimacao": "none",
+      "riscoDashoffset": 0,
+      "riscoDesenhado": true,
+      "talaoTransicao": "0s",
+      "oitoValores": 8,
+      "textoManuscritoVisivel": 1
+    },
+    "atributo": {
+      "riscoAnimacao": "none",
+      "riscoDashoffset": 0,
+      "riscoDesenhado": true,
+      "talaoTransicao": "0s",
+      "oitoValores": 8,
+      "textoManuscritoVisivel": 1
+    }
+  }
+}

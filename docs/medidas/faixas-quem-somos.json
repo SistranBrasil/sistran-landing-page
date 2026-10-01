@@ -1,0 +1,149 @@
+{
+  "rota": "http://localhost:3000/quem-somos",
+  "quando": "2026-09-24T18:08:18.205Z",
+  "faixas": [
+    {
+      "classe": "hero-backdrop",
+      "aria": null,
+      "altura": 522,
+      "corPropria": "rgba(0, 0, 0, 0)",
+      "temSuperficieOpaca": false,
+      "coberturaPor": null,
+      "textoLumMediana": 255,
+      "amostrasDeTexto": 2,
+      "destino": "C_ESCURA_SEM_PALCO"
+    },
+    {
+      "classe": "section-light",
+      "aria": null,
+      "altura": 1144,
+      "corPropria": "rgba(0, 0, 0, 0)",
+      "temSuperficieOpaca": false,
+      "coberturaPor": null,
+      "textoLumMediana": 80.2,
+      "amostrasDeTexto": 31,
+      "destino": "A_CLARA_RECEBE_PLANO"
+    },
+    {
+      "classe": "perfil-secao section-py relative isolate overflow-hidden",
+      "aria": "posicionamento-titulo",
+      "altura": 909,
+      "corPropria": "rgba(0, 0, 0, 0)",
+      "temSuperficieOpaca": false,
+      "coberturaPor": null,
+      "textoLumMediana": 249.7,
+      "amostrasDeTexto": 25,
+      "destino": "C_ESCURA_SEM_PALCO"
+    },
+    {
+      "classe": "section-light",
+      "aria": "escritorios",
+      "altura": 4166,
+      "corPropria": "rgba(0, 0, 0, 0)",
+      "temSuperficieOpaca": false,
+      "coberturaPor": null,
+      "textoLumMediana": 29.2,
+      "amostrasDeTexto": 28,
+      "destino": "A_CLARA_RECEBE_PLANO"
+    },
+    {
+      "classe": "ne-secao",
+      "aria": "_R_aslritqelb_",
+      "altura": 2700,
+      "corPropria": "rgba(0, 0, 0, 0)",
+      "temSuperficieOpaca": false,
+      "coberturaPor": null,
+      "textoLumMediana": 52.7,
+      "amostrasDeTexto": 28,
+      "destino": "A_CLARA_RECEBE_PLANO"
+    },
+    {
+      "classe": "cem-secao section-py",
+      "aria": "_R_cslritqelb_",
+      "altura": 1196,
+      "corPropria": "rgb(255, 255, 255)",
+      "temSuperficieOpaca": true,
+      "coberturaPor": null,
+      "textoLumMediana": 56.2,
+      "amostrasDeTexto": 18,
+      "destino": "A_CLARA_RECEBE_PLANO"
+    },
+    {
+      "classe": "section-py agimos-secao relative overflow-hidden",
+      "aria": "como-agimos",
+      "altura": 677,
+      "corPropria": "rgba(0, 0, 0, 0)",
+      "temSuperficieOpaca": false,
+      "coberturaPor": null,
+      "textoLumMediana": 255,
+      "amostrasDeTexto": 18,
+      "destino": "C_ESCURA_SEM_PALCO"
+    },
+    {
+      "classe": "impact-scroll",
+      "aria": null,
+      "altura": 674,
+      "corPropria": "rgb(4, 27, 61)",
+      "temSuperficieOpaca": true,
+      "coberturaPor": null,
+      "textoLumMediana": 0,
+      "amostrasDeTexto": 36,
+      "destino": "A_CLARA_RECEBE_PLANO"
+    },
+    {
+      "classe": "rgal-secao",
+      "aria": "premiacoes",
+      "altura": 2973,
+      "corPropria": "rgb(247, 251, 254)",
+      "temSuperficieOpaca": true,
+      "coberturaPor": null,
+      "textoLumMediana": 22.7,
+      "amostrasDeTexto": 15,
+      "destino": "A_CLARA_RECEBE_PLANO"
+    },
+    {
+      "classe": "section-py section-light isg-secao isg-cantos",
+      "aria": "isg",
+      "altura": 978,
+      "corPropria": "rgb(247, 251, 255)",
+      "temSuperficieOpaca": true,
+      "coberturaPor": null,
+      "textoLumMediana": 29.2,
+      "amostrasDeTexto": 16,
+      "destino": "A_CLARA_RECEBE_PLANO"
+    },
+    {
+      "classe": "section-py relative overflow-hidden",
+      "aria": "por-que-sistran",
+      "altura": 1316,
+      "corPropria": "rgba(0, 0, 0, 0)",
+      "temSuperficieOpaca": false,
+      "coberturaPor": null,
+      "textoLumMediana": 255,
+      "amostrasDeTexto": 27,
+      "destino": "C_ESCURA_SEM_PALCO"
+    },
+    {
+      "classe": "section-py section-light section-light-blue pt-12 md:pt-14 lg:pt-16",
+      "aria": "mais-quem-somos",
+      "altura": 616,
+      "corPropria": "rgba(0, 0, 0, 0)",
+      "temSuperficieOpaca": false,
+      "coberturaPor": null,
+      "textoLumMediana": 29.2,
+      "amostrasDeTexto": 14,
+      "destino": "A_CLARA_RECEBE_PLANO"
+    },
+    {
+      "classe": "cta-ref section-py relative overflow-hidden",
+      "aria": null,
+      "altura": 542,
+      "corPropria": "rgba(0, 0, 0, 0)",
+      "temSuperficieOpaca": false,
+      "coberturaPor": null,
+      "textoLumMediana": 85.9,
+      "amostrasDeTexto": 2,
+      "destino": "A_CLARA_RECEBE_PLANO"
+    }
+  ]
+}

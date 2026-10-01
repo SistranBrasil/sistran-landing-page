@@ -35,6 +35,34 @@ type Props = {
   destaque?: string;
   /** SIS-262 — `font-bold` só nos spans de `texto`. Default false: demais rotas intactas. */
   negritoTexto?: boolean;
+  /**
+   * SIS-199 — `font-bold` só nos spans de `destaque`.
+   *
+   * Existe porque `negritoTexto` não serve ao caso: em «Por que SISTRAN?» a palavra
+   * que a issue manda engrossar é a DESTACADA, e o destaque leva
+   * `text-gradient-brand` — que pinta e anima o degradê, mas não declara peso.
+   * Separado do `negritoTexto` de propósito: são dois pedidos diferentes de duas
+   * rotas diferentes, e um único parâmetro engrossaria as duas metades do título em
+   * quem só pediu uma. Aditivo, default `false` — os demais call sites ficam
+   * idênticos.
+   */
+  negritoDestaque?: boolean;
+  /**
+   * 23/09 — Cascata LETRA por letra em `texto`, em vez de palavra por palavra.
+   *
+   * Existe por uma medição: pediram que «Diferenciais» tivesse o mesmo efeito de
+   * rolagem de «Entrega com Alta Performance e Comprometimento», e o componente já
+   * era o mesmo. A sonda mostrou onde estava a diferença — a referência tem SEIS
+   * unidades acendendo em sequência, e «Diferenciais» tem UMA: o mecanismo é
+   * idêntico e a cascata é invisível porque não há por onde cascatear. Em título de
+   * uma palavra, a unidade que devolve o mesmo efeito é a letra.
+   *
+   * Não vira o padrão (default `false`): num título longo isto seriam dezenas de
+   * `inline-block`, e palavra podendo quebrar no meio na virada de linha. A leitura
+   * não muda — o `aria-label` do heading continua entregando a frase inteira e cada
+   * unidade segue `aria-hidden`.
+   */
+  porLetra?: boolean;
   className?: string;
 };
 
@@ -80,13 +108,17 @@ export default function TituloAceso({
   resto,
   destaque,
   negritoTexto = false,
+  negritoDestaque = false,
+  porLetra = false,
   className,
 }: Props) {
   const ref = useRef<HTMLHeadingElement>(null);
   const reduzido = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 92%', 'end 55%'] });
 
-  const palavras = agruparPontuacao(texto);
+  /* Com `porLetra` as unidades de `texto` são caracteres; `resto` e `destaque`
+     continuam por palavra, porque a razão do modo é título de UMA palavra. */
+  const palavras = porLetra ? Array.from(texto) : agruparPontuacao(texto);
   const restos = resto ? agruparPontuacao(resto) : [];
   const destacadas = destaque ? agruparPontuacao(destaque) : [];
   const total = palavras.length + restos.length + destacadas.length;
@@ -111,7 +143,9 @@ export default function TituloAceso({
               progresso={scrollYProgress}
               reduzido={reduzido}
             />
-            {i < total - 1 ? ' ' : null}
+            {/* Por letra não há espaço ENTRE as unidades; só depois da última,
+                e só se ainda vem `resto` ou `destaque` atrás. */}
+            {(porLetra ? i === palavras.length - 1 : true) && i < total - 1 ? ' ' : null}
           </span>
         ))}
         {restos.map((palavra, i) => (
@@ -127,7 +161,12 @@ export default function TituloAceso({
           </span>
         ))}
         {destacadas.map((palavra, i) => (
-          <span className="text-gradient-brand" key={`d-${palavra}-${i}`}>
+          <span
+            className={
+              negritoDestaque ? 'text-gradient-brand font-bold' : 'text-gradient-brand'
+            }
+            key={`d-${palavra}-${i}`}
+          >
             <Palavra
               palavra={palavra}
               indice={indiceDestaque + i}
@@ -168,7 +207,9 @@ function Palavra({
 
   return (
     <motion.span aria-hidden="true" style={{ opacity, display: 'inline-block' }}>
-      {palavra}
+      {/* No modo por letra a unidade pode SER um espaço, e espaço dentro de
+          `inline-block` colapsa e some: entra como espaço rígido. */}
+      {palavra === ' ' ? ' ' : palavra}
     </motion.span>
   );
 }

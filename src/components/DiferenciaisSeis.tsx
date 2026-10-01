@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import TituloAceso from '@/components/ui/TituloAceso';
 import { DIFERENCIAIS_6 } from '@/data/aSistran';
@@ -49,9 +50,18 @@ export default function DiferenciaisSeis() {
       <div className="dif-grade" aria-hidden />
 
       <div className="container-lp dif-miolo">
+        {/* `negritoTexto`: «titulo deve ficar em negrito» — medido em 400 antes.
+            `porLetra`: «deve ter o mesmo efeito quando vai escrolando que o
+            titulo Entrega com Alta Performance e Comprometimento». O componente
+            já era o mesmo e o risco já se desenhava com a rolagem (medido,
+            `scaleX` 0 → 1); o que faltava é que a cascata precisa de unidades, e
+            «Diferenciais» tinha UMA contra as SEIS da referência — um passo só,
+            invisível. Por letra são 12 passos e o efeito aparece. */}
         <TituloAceso
           id="diferenciais-6"
           texto="Diferenciais"
+          negritoTexto
+          porLetra
           className="font-display text-section text-ink"
         />
         <ul className="dif-grade-cartoes">
@@ -66,17 +76,20 @@ export default function DiferenciaisSeis() {
                  na borda da caixa. Medido: com a cortina ligada o `box-shadow`
                  deste cartão não aparecia em nenhum pixel, com o CSS intacto no
                  computado. A entrada continua — opacidade, deslocamento e escala. */
-              <ScrollReveal
-                as="li"
-                indice={i}
-                key={d.texto}
-                cortina={false}
-                className="dif-cartao"
-              >
-                <span className="dif-selo">
-                  <Icone aria-hidden strokeWidth={1.75} />
-                </span>
-                <p className="dif-frase">{d.texto}</p>
+              <ScrollReveal as="li" indice={i} key={d.texto} cortina={false} className="dif-celula">
+                {/* O cartão desceu um nível de propósito. O `<li>` do
+                    `ScrollReveal` tem `transform` INLINE, escrito pelo motion na
+                    entrada; animação CSS vence estilo inline, então um `@keyframes`
+                    de flutuação no mesmo nó apagaria o deslocamento da entrada. Aqui
+                    são dois nós: o de fora entra, o de dentro flutua.
+                    `--i` escalona a flutuação e o pulso — seis cartões subindo no
+                    mesmo instante leem como a página inteira tremendo. */}
+                <div className="dif-cartao dif-flutua" style={{ '--i': i } as CSSProperties}>
+                  <span className="dif-selo">
+                    <Icone aria-hidden strokeWidth={1.75} />
+                  </span>
+                  <p className="dif-frase">{d.texto}</p>
+                </div>
               </ScrollReveal>
             );
           })}

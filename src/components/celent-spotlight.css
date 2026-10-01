@@ -1,0 +1,466 @@
+/* ===========================================================
+   SIS-177 — Faixa Celent, entre «Premiações» e «ISG» de `/quem-somos`.
+
+   ── A FOLHA INTEIRA FOI REESCRITA, E O QUE SAIU ESTÁ NO FIM ────────────────
+
+   As duas passadas anteriores montavam a arte como FUNDO (`.cel-capa` em
+   `position: absolute; inset: 0; z-index: -1` com `object-fit: cover`) e a
+   tipografia por cima, na metade esquerda, protegida por um véu local
+   (`.cel-faixa::before`). Todo esse bloco está COMENTADO no fim do arquivo, com a
+   razão: `docs/celen.md` abre descrevendo esse arranjo como o defeito a corrigir e
+   fecha proibindo-o por nome («Não utilizar a imagem como fundo de toda a seção»).
+   As medidas de contraste que justificavam o véu continuam registradas lá porque
+   são verdadeiras — elas só deixaram de ter objeto: sem sobreposição não há
+   contraste de texto contra arte para medir.
+
+   ── O QUE ESTA FOLHA DESENHA ──────────────────────────────────────────────
+
+   ⚠️ 29/09, PEDIDO NO CHAT — «aumente ainda mais a imagem ta muito pequena» pela
+   SEGUNDA vez. As proporções deste parágrafo são HISTÓRIA: hoje são 34% / 66% com vão
+   de 40px e sangria à direita sobre a margem vazia da janela, os três documentados no
+   ramo `@media (min-width: 64rem)` no fim do arquivo. A faixa de 38–42% / 58–62% do
+   documento ficou atrás — a passada anterior já tinha ido ao extremo dela e ainda leu
+   pequeno na tela, então o teto é que está revisto, por quem o escreveu.
+
+   Duas colunas acima de 64rem: texto a 40% e arte a 60% (a faixa pedida é 38–42% /
+   58–62%), `gap` de 48–72px, dentro do `container-lp` — «a mesma largura máxima
+   utilizada nas demais seções da página», que aqui é 1180px. Abaixo de 64rem,
+   uma coluna só, na ordem eyebrow → manchete → bloco Celent → destaque →
+   complemento → imagem, que é a ordem do DOM: não há reordenação por CSS, então o
+   mobile é o próprio fluxo.
+
+   ── O FUNDO É O IDIOMA CLARO DA CASA ──────────────────────────────────────
+
+   `section-light` (que já traz a malha de 0.04 de opacidade com vinheta) +
+   `grade-tecnica` no JSX + dois radiais muito suaves + arcos grandes desenhados
+   por `border`+`border-radius`. É o MESMO conjunto de `isg-provider-lens.css`, a
+   seção imediatamente abaixo desta na rota, e cobre item por item o que o
+   documento pede: azul-gelo, gradiente radial muito suave, linhas técnicas finas,
+   arcos grandes com baixa opacidade, grid quase imperceptível. Reusar o idioma é o
+   que faz as duas seções pertencerem à mesma página em vez de a duas.
+
+   ⚠️ NADA DE NAVY AQUI («Não utilizar fundo azul-escuro nesta seção») e nada de
+   neon nem de glassmorphism: a moldura tem borda de 1px a 22% e uma sombra azul de
+   opacidade baixa, não vidro.
+
+   ── AS TINTAS ─────────────────────────────────────────────────────────────
+
+   Continuam navy, e agora por razão mais simples que antes: o fundo é claro por
+   construção (`#f7fbff` com radiais de 8–9%), não uma arte fotográfica com pixels
+   imprevisíveis por baixo. `--cel-tinta-forte/media/fraca` são as mesmas três de
+   antes, que já tinham sido medidas acima de 4,5:1 contra fundo desta claridade.
+
+   ⚠️ A COR DO EYEBROW NÃO É DECLARADA AQUI, de propósito: `globals.css:1335` pinta
+   `.section-light [class*='eyebrow']` de `#024e86` com `!important`, e
+   `.cel-eyebrow` casa com esse seletor. É o azul institucional que o documento
+   pede («Eyebrow em azul ou ciano»), vindo do padrão da casa — declarar cor aqui
+   seria escrever uma linha que o `!important` descarta.
+
+   ⚠️ OS PARÁGRAFOS SÃO ESCOPADOS EM `.cel-secao`. `.section-light p` é (0,1,1) e
+   venceria `.cel-linha1` (0,1,0), pintando tudo de `#0a1f44` e apagando a
+   hierarquia de três níveis. O prefixo duplo devolve a especificidade.
+   =========================================================== */
+
+.cel-secao {
+  --cel-tinta-forte: var(--palco-marca, #032d67);
+  --cel-tinta-media: #0a3f7d;
+  --cel-tinta-fraca: #2c4f79;
+  /* A borda da moldura, e a versão mais forte do hover. Em variável porque o
+     hover só intensifica — «Intensificar discretamente a borda ciano» — e duas
+     opacidades soltas em regras distantes deixam de andar juntas. */
+  --cel-borda: rgb(5 189 232 / 26%);
+  --cel-borda-forte: rgb(5 189 232 / 52%);
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  /* Azul-gelo com dois radiais muito suaves. Mesmos valores de `.isg-secao`.
+     ⚠️ MEDIDO: nesta rota o computado destas três camadas sai `none` /
+     `rgba(0,0,0,0)` — a rota neutraliza o fundo das seções `section-light` e pinta
+     o azul-gelo ela mesma, no pano de fundo. A declaração FICA, e sem `!important`,
+     por duas razões: `.isg-secao`, a seção imediatamente abaixo desta, comporta-se
+     exatamente igual (conferido lado a lado), então este é o contrato da rota e não
+     um defeito local; e a mesma folha serve a seção fora de `/quem-somos`, onde não
+     há pano de fundo para herdar. Forçar aqui pintaria uma faixa distinta das
+     vizinhas — o oposto do que o documento pede. */
+  background:
+    radial-gradient(circle at 10% 10%, rgb(0 183 235 / 8%), transparent 30%),
+    radial-gradient(circle at 92% 85%, rgb(48 105 220 / 9%), transparent 32%),
+    #f7fbff;
+}
+
+/* Os «arcos grandes com baixa opacidade»: dois quadrados de 220px com UM canto
+   arredondado em 120px e borda de 1px, deslocados para fora da caixa. É assim que
+   `isg-cantos` desenha os arcos daquela seção — curva por `border-radius`, não por
+   SVG, porque o traço fica com a espessura de 1px real em qualquer escala e não
+   custa um nó a mais. */
+.cel-cantos::before,
+.cel-cantos::after {
+  content: '';
+  position: absolute;
+  inline-size: 220px;
+  block-size: 220px;
+  border: 1px solid var(--cel-borda);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.cel-cantos::before {
+  inset-block-start: -60px;
+  inset-inline-start: -60px;
+  border-radius: 0 0 120px 0;
+}
+
+.cel-cantos::after {
+  inset-block-end: -60px;
+  inset-inline-end: -60px;
+  border-radius: 120px 0 0 0;
+}
+
+/* --- A grade de duas colunas --------------------------------------------- */
+
+.cel-grade {
+  display: grid;
+  /* Base: UMA coluna. O mobile é o fluxo do DOM, sem reordenação. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(28px, 6vw, 44px);
+  align-items: center;
+}
+
+/* --- Coluna esquerda ------------------------------------------------------ */
+
+.cel-coluna {
+  /* «Largura de leitura controlada para evitar linhas excessivamente longas».
+     Na coluna de 40% do desktop o limite real é geométrico; o `ch` é o que segura
+     a linha no mobile e no tablet de uma coluna. */
+  max-width: 46ch;
+}
+
+.cel-eyebrow {
+  margin: 0 0 clamp(12px, 1.6vw, 18px);
+  font-size: clamp(0.7rem, 0.9vw, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
+  /* Sem `text-transform`: a caixa alta é a forma do texto no dado
+     (`REC_CELENT_EYEBROW`), então o leitor de tela recebe o que está escrito. */
+}
+
+.cel-titulo {
+  margin: 0;
+  /* O teto de 2,9rem vem da passada anterior e continua válido: a manchete é uma
+     frase de 78 caracteres, e na escala display da referência ela ocuparia quatro
+     linhas dentro de uma coluna de 40%. 46,4px a 1440 cabe em três/quatro linhas
+     e mantém a hierarquia de manchete. O piso subiu de 1,45rem para 1,6rem porque
+     na coluna única do mobile a manchete não divide mais espaço com a arte. */
+  font-size: clamp(1.6rem, 3.2vw, 2.9rem);
+  /* «Manchete com peso entre 700 e 800.» */
+  font-weight: 800;
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  /* `balance` e não `<br>`: o documento pede quebras equilibradas e proíbe forçar
+     com `<br>` se isso prejudicar a responsividade. */
+  text-wrap: balance;
+  color: var(--cel-tinta-forte);
+}
+
+/* O bloco de premiação: fio vertical CIANO à esquerda + a marca oficial.
+   ⚠️ O fio é ciano, e antes era `--cel-tinta-forte` (navy). Mudou porque o
+   documento é literal: «Adicionar uma linha vertical ciano ao lado do bloco
+   “CELENT — Technology Standout 2023”». */
+.cel-marca {
+  display: flex;
+  align-items: center;
+  margin: clamp(24px, 3.6vw, 40px) 0 clamp(20px, 2.8vw, 28px);
+  padding-inline-start: clamp(14px, 1.6vw, 20px);
+  border-inline-start: 3px solid #05bde8;
+}
+
+.cel-marca img {
+  display: block;
+  width: clamp(150px, 26vw, 232px);
+  height: auto;
+}
+
+.cel-secao .cel-linha1 {
+  margin: 0;
+  font-size: clamp(1.02rem, 1.8vw, 1.28rem);
+  font-weight: 600;
+  line-height: 1.4;
+  text-wrap: pretty;
+  color: var(--cel-tinta-media);
+}
+
+.cel-secao .cel-linha2 {
+  margin: clamp(10px, 1.4vw, 16px) 0 0;
+  font-size: clamp(0.96rem, 1.3vw, 1.08rem);
+  line-height: 1.5;
+  color: var(--cel-tinta-fraca);
+}
+
+/* --- Coluna direita: a moldura da arte ----------------------------------- */
+
+.cel-moldura {
+  position: relative;
+  /* ⚠️ A PROPORÇÃO É A DO ARQUIVO, e é ela que cumpre o item 3 da conferência do
+     documento («os elementos importantes de `cele.png` não foram cortados»). Com a
+     caixa na proporção exata da arte, `cover` não tem o que recortar; o balão
+     «Único player…», que encosta na borda direita do arquivo, fica inteiro.
+     Qualquer outra proporção obrigaria a escolher entre `contain` com barras e
+     `cover` comendo parte da cena.
+
+     ⚠️ ERA `1672 / 941` (1,777) E ESTAVA ERRADO: aquela é a medida da capa anterior
+     da seção (`celent-capa.webp`, SIS-238). `public/cele.png`, o arquivo que esta
+     issue nomeia, mede 1315×867 → 1,517 (medido com `sharp`). Com 1,777 numa arte
+     de 1,517 o `cover` escalava pela largura e comia ~15% da ALTURA, topo e base.
+     A proporção certa devolve esses 15% e deixa a moldura ~17% mais alta na mesma
+     largura — é daí que vem a maior parte do ganho de tamanho pedido. */
+  aspect-ratio: 1315 / 867;
+  /* Cantos: 20px no mobile (a faixa pedida lá é 18–22px) e até 30px no desktop
+     (24–32px). Um `clamp` só cobre as duas faixas sem media query. */
+  border-radius: clamp(20px, 2.2vw, 30px);
+  /* «Borda fina em ciano com baixa opacidade.» */
+  border: 1px solid var(--cel-borda);
+  /* «Fundo branco ou azul-gelo» — é o que aparece atrás enquanto a arte carrega. */
+  background: #f2f9ff;
+  /* ⚠️ A SOMBRA FOI PEDIDA NO CHAT, com estas palavras: «coloca atras da imagem
+     coloque sombra atras dela». Era UMA camada muito suave
+     (`0 18px 48px -24px rgb(6 62 120 / 22%)`), que a essa distância de blur não se
+     lia como sombra — lia como nada. Agora são TRÊS, e cada uma tem função:
+
+       1. contato    — curta e mais fechada, é ela que descola a moldura do papel;
+       2. difusa     — o halo azul largo atrás da arte, o que o pedido chama de
+                       «sombra atrás dela»;
+       3. aro de 1px — `0 0 0 1px` a 6%, o assentamento que impede o halo de virar
+                       borrão na borda superior, onde não há deslocamento vertical.
+
+     Continua sendo AZUL e não preta («sombra azul muito suave» de `docs/celen.md`):
+     o tom é o mesmo `rgb(6 62 120)` de antes, só em mais de uma distância. Nenhuma
+     passa de 26% — o campo é azul-gelo claro, e sombra escura aqui leria como
+     mancha. É `box-shadow` e não pseudo-elemento borrado de propósito: a moldura
+     tem `overflow: hidden` (é ela que faz o papel de máscara da revelação), então
+     um `::before` atrás seria recortado pela própria caixa que devia envolver. */
+  box-shadow:
+    0 10px 24px -14px rgb(6 62 120 / 26%),
+    0 34px 80px -32px rgb(6 62 120 / 34%),
+    0 0 0 1px rgb(6 62 120 / 6%);
+  overflow: hidden;
+  /* Hover: escala de no máximo 1.01 e borda ciano mais forte. Sem inclinação e
+     sem rotação 3D, como o documento manda. */
+  transition:
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 320ms ease,
+    box-shadow 320ms ease;
+}
+
+.cel-moldura:hover {
+  transform: scale(1.01);
+  border-color: var(--cel-borda-forte);
+  /* As mesmas três camadas do repouso, um passo mais fundas — o hover «intensifica
+     discretamente», não troca o desenho da sombra. */
+  box-shadow:
+    0 12px 28px -14px rgb(6 62 120 / 30%),
+    0 40px 92px -32px rgb(6 62 120 / 40%),
+    0 0 0 1px rgb(6 62 120 / 8%);
+}
+
+/* ⚠️ O HOVER É MOVIMENTO DECORATIVO, então morre com movimento reduzido — e morrer
+   aqui não esconde conteúdo nenhum (a escala é 1.01; a arte já está inteira na
+   tela). A borda mais forte FICA, porque é resposta visual sem movimento. Os dois
+   canais da casa são cobertos: a media query e o atributo no `html`. */
+@media (prefers-reduced-motion: reduce) {
+  .cel-moldura,
+  .cel-moldura:hover {
+    transform: none;
+  }
+}
+
+html[data-motion='reduce'] .cel-moldura,
+html[data-motion='reduce'] .cel-moldura:hover {
+  transform: none;
+}
+
+/* O invólucro que desliza da direita para a esquerda (o `ScrollReveal` com
+   `cortina={false}` e `distanciaX={32}`). Ele é o nó animado; quem faz o papel da
+   máscara é o `overflow: hidden` da `.cel-moldura` acima — um `clip-path` aqui
+   esconderia a arte para sempre (o rácio de interseção cai abaixo do `amount` do
+   reveal e o `whileInView` nunca dispara: medida em `ScrollReveal.tsx`) e, de
+   quebra, recortaria a sombra da moldura, que é a razão medida na SIS-262. */
+.cel-mascara {
+  display: block;
+  block-size: 100%;
+}
+
+.cel-mascara img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  /* `cover` porque a caixa tem a proporção do arquivo: aqui ele é equivalente a
+     `contain` sem risco de barras por arredondamento de subpixel. */
+  object-fit: cover;
+}
+
+/* --- Desktop: as duas colunas -------------------------------------------- */
+
+/* 64rem é onde o vão útil (1024 − 2×32 = 960px) já dá 384px de texto e 576px de
+   arte com 72px de `gap` sem comprimir a leitura. Abaixo disso a coluna de texto
+   cairia para ~340px com a manchete em 1,9rem, e o documento manda «mudar para
+   uma coluna ANTES de ocorrer sobreposição». */
+@media (min-width: 64rem) {
+  .cel-grade {
+    /* 38% / 62% — os EXTREMOS das faixas pedidas (38–42% e 58–62%), e não o meio.
+       Era 40/60. Mudou porque a arte estava lendo pequena na tela: dentro do que a
+       issue autoriza, 62% é o máximo de largura que a moldura pode ter, e cada
+       ponto de largura vira altura pela `aspect-ratio`. A coluna de texto a 38%
+       continua na faixa e continua com leitura confortável — a manchete já quebra
+       em 5 linhas curtas, que é o desenho da mock.
+       `minmax(0, …fr)` e não porcentagem: com `fr` o `gap` sai do vão antes do
+       rateio, então a soma nunca passa de 100% e não há transbordo por
+       arredondamento. */
+    /* ⚠️ 34% / 66% — FORA da faixa de 38–42% / 58–62% que `docs/celen.md` escreve, e
+       de propósito. O pedido do chat é literal e é a segunda vez que ele vem: «aumente
+       ainda mais a imagem ta muito pequena». A passada anterior já tinha ido ao
+       EXTREMO do que o documento autoriza (de 40/60 para 38/62) e o resultado ainda
+       leu pequeno na tela — então o teto do documento é o que está sendo revisto, por
+       pedido de quem o escreveu, e não uma regra sendo ignorada por descuido.
+       A faixa antiga fica registrada aqui para quem vier depois saber que a saída
+       dela foi decidida, não acidental. */
+    grid-template-columns: minmax(0, 0.34fr) minmax(0, 0.66fr);
+    /* ⚠️ 40px, e o piso da faixa do documento era 48. Mesmo pedido, mesma lógica: cada
+       pixel que sai do vão volta em largura de moldura (66% deles). 40px continua
+       separando as colunas porque a arte tem ar claro na própria borda — foi o que
+       permitiu descer de 72 para 48 na passada anterior, e continua valendo. */
+    gap: 40px;
+    /* `center` e não `stretch` (que é o default de `align-items` na grade): com
+       `stretch` a moldura esticaria para a altura da coluna de texto e a altura
+       imposta brigaria com a `aspect-ratio` do arquivo — é o defeito medido no
+       painel do ISG (826px de caixa para 543px naturais, com `cover` cortando as
+       laterais). `center` deixa a moldura na altura que a proporção pede. */
+    align-items: center;
+  }
+
+  .cel-moldura {
+    /* ⚠️ SANGRIA À DIREITA, o terceiro lugar de onde sai tamanho (os outros dois são
+       a proporção 34/66 e o vão de 40px, acima). `.container-lp` trava em 1180px, e a
+       partir daí toda largura nova de janela vira margem VAZIA nas duas beiras — é
+       dessa sobra que a moldura passa a comer, e só dela.
+
+       A conta, em vez de um `vw` solto:
+         (100vw − 1180px) / 2   é a margem livre de cada lado;
+         − 56px                 é o afastamento que fica reservado para a beira da
+                                janela — precisa ser maior que a sombra difusa não
+                                ficar cortada e absorve a largura da barra de rolagem,
+                                que `100vw` conta e o layout não;
+         min(72px, …)           teto, para a arte não descolar da coluna de texto;
+         max(0px, …)            piso: sem ele, em janela estreita a conta fica
+                                NEGATIVA e o sinal de fora a viraria margem positiva,
+                                encolhendo a moldura em vez de alargá-la.
+
+       Medido pela aritmética: a 1024 e a 1280 a sangria resolve 0 (a sobra ainda não
+       paga os 56px de afastamento), a 1440 dá os 72px cheios. Com os três ganhos
+       somados, a moldura sai de 701,8px de largura a 1440 para 824,4px — +17,5%, e a
+       altura acompanha pela `aspect-ratio`.
+
+       `overflow: clip` na seção (já declarado no topo) é o que garante que sangrar
+       não cria barra de rolagem horizontal. */
+    margin-inline-end: calc(-1 * max(0px, min(72px, (100vw - 1180px) / 2 - 56px)));
+    /* ⚠️ O RAIO É REDECLARADO AQUI por um ponto medido: o `clamp` da base resolve
+       `2.2vw` = 22,5px exatamente a 1024 de janela, e a faixa pedida no desktop é
+       24–32px (a de 18–22px é do mobile, e lá o piso de 20px cai dentro). Subir o
+       piso da base para 24px estouraria a faixa do mobile pelo outro lado; então a
+       correção é local ao ramo do desktop, onde a faixa é outra. */
+    border-radius: clamp(24px, 2.2vw, 30px);
+  }
+
+  .cel-coluna {
+    /* No desktop o limite é a própria coluna da grade. */
+    max-width: none;
+  }
+}
+
+/* ===========================================================
+   O ARRANJO ANTERIOR — A ARTE COMO FUNDO, COMENTADO E NÃO APAGADO
+   ===========================================================
+
+   Motivo da saída: `docs/celen.md` abre descrevendo EXATAMENTE este arranjo como o
+   defeito a corrigir («A imagem está sendo usada como fundo da seção e o conteúdo
+   textual foi colocado por cima dela») e fecha proibindo-o por nome («Não utilizar a
+   imagem como fundo de toda a seção»). Não é uma regra que passou a estar errada por
+   descuido — ela cumpria o corpo ANTERIOR da issue, que pedia a composição da
+   referência com a tipografia sobre a cena.
+
+   Fica aqui porque as medidas embutidas continuam verdadeiras e caras de refazer:
+   a proporção que impedia `cover` de comer o troféu, a aritmética do `max-block-size`
+   que travava a LARGURA em 1599px acima de 1600 de janela, e o pior pixel da região
+   do texto (rgb(21 91 138), contra o qual tinta escura caía a ~2,9:1) que obrigava ao
+   véu local morrendo em 48%. Se algum dia a decisão voltar a ser sobrepor, é daqui
+   que se parte.
+
+   | .cel-faixa {
+   |   --cel-capa-tinta: #dceefd;   ( média medida da fatia esquerda da arte )
+   |   position: relative; isolation: isolate; overflow: clip;
+   |   background: var(--cel-capa-tinta);
+   |   display: grid; grid-template-rows: auto auto;
+   |   padding-block: clamp(40px, 6vw, 72px) 0;
+   | }
+   | .cel-capa { grid-row: 2; margin-top: clamp(28px, 6vw, 44px); }
+   | .cel-capa img {
+   |   display: block; width: 100%; height: auto;
+   |   aspect-ratio: 1672 / 941; object-fit: contain;
+   | }
+   | .cel-coluna {
+   |   grid-row: 1; position: relative;
+   |   width: min(100% - 2 * clamp(20px, 5vw, 48px), 1200px);
+   |   margin-inline: auto; max-width: 46ch;
+   | }
+   |
+   | @media (min-width: 64rem) {
+   |   .cel-faixa {
+   |     grid-template-rows: auto;
+   |     ( A ALTURA VEM DA PROPORÇÃO DA ARTE: 1672/941 é a caixa que a imagem pede,
+   |        e por isso `cover` não recortava nada. A regra ANTES desta usava
+   |        `min-height: clamp(420px, 34vw, 560px)` com a largura da janela — 2,57:1
+   |        numa arte de 1,78:1 —, e `cover` comia ~25% da altura: o pé do troféu e a
+   |        legenda «Único player…» saíam de quadro. )
+   |     aspect-ratio: 1672 / 941;
+   |     min-block-size: 420px;
+   |     max-block-size: 900px;
+   |     ( ⚠️ `width: 100%` é o que impedia o `max-block-size` de virar defeito de
+   |        LARGURA: sem ela, quando o teto de 900px mordia, a proporção resolvia a
+   |        conta ao contrário e devolvia 900 × 1672/941 = 1599px de largura. Medido:
+   |        janela 1600/1728/1920/2048/2560 → faixa de 1599px em TODAS, ancorada em
+   |        x=0, com tira vazia à direita (449px a 2048) e sobra horizontal do
+   |        documento em 0 — o defeito passava por «arte cortada». )
+   |     width: 100%;
+   |     align-content: start;
+   |     padding-block: clamp(56px, 6vw, 104px) clamp(40px, 5vw, 80px);
+   |   }
+   |   .cel-capa { position: absolute; inset: 0; z-index: -1; grid-row: auto; margin-top: 0; }
+   |   .cel-capa img {
+   |     width: 100%; height: 100%; aspect-ratio: auto;
+   |     object-fit: cover;
+   |     ( Ancorada à DIREITA: é lá que estão o troféu e o quadrante. O que saía de
+   |        quadro era a faixa esquerda, justamente a que ficava atrás do texto. )
+   |     object-position: 100% 50%;
+   |   }
+   |   ( VÉU LOCAL À ESQUERDA. Com `cover` e âncora à direita, o que passava por
+   |      baixo da tipografia podia ser um dos blocos de vidro escuros da cena — pior
+   |      pixel rgb(21 91 138), contra o qual tinta escura caía a ~2,9:1. Morria em
+   |      48% (e não nos 62% da versão anterior, que começava a lavar a placa
+   |      «CELENT Technology Standout 2023»). )
+   |   .cel-faixa::before {
+   |     content: ''; position: absolute; inset: 0;
+   |     ( `0` e não `-1`: a arte estava em `-1`, e no MESMO índice o irmão posterior
+   |        no DOM pintaria por cima do pseudo-elemento. )
+   |     z-index: 0; pointer-events: none;
+   |     background: linear-gradient(90deg,
+   |       rgba(220, 238, 253, 0.94) 0%,
+   |       rgba(220, 238, 253, 0.84) 30%,
+   |       rgba(220, 238, 253, 0) 48%);
+   |   }
+   |   .cel-coluna {
+   |     grid-row: auto; max-width: none;
+   |     width: min(100% - 2 * clamp(20px, 5vw, 48px), 1200px);
+   |   }
+   |   .cel-titulo, .cel-linha1, .cel-linha2, .cel-marca { max-width: 46%; }
+   | }
+   =========================================================== */

@@ -102,8 +102,30 @@ export const PREMIACOES = [
   { value: '3', label: 'Certificações Qualidade e Métricas' },
 ] as const;
 
-export const PREMIACOES_NOTAS = [
-  'Seguradora americana Top 5 no mundo nos elege como Melhor Projeto nas Américas.',
+/**
+ * A lista ficou VAZIA, e de propósito — ela não é morta.
+ *
+ * As duas notas desta seção subiram para a abertura dela, cada uma na sua issue
+ * (Celent na SIS-230, Top 5 na SIS-98), porque é lá que as duas issues as pedem.
+ * O ARRAY continua existindo, e o consumidor
+ * (`src/components/recognition-gallery/RecognitionGallery.tsx`) continua com a
+ * guarda `.length > 0`: quem tiver uma nota nova de premiação para publicar
+ * escreve aqui e o rodapé da seção volta sozinho. Apagar a exportação obrigaria
+ * a refazer o mount para isso.
+ *
+ * O TIPO É ESCRITO À MÃO, `readonly string[]`, e é a lista vazia que obriga:
+ * sem a anotação o `as const` de um array vazio infere `readonly []`, o elemento
+ * vira `never`, e o `.map(n => n.slice(...))` do rodapé reprova no `tsc`
+ * («Property 'slice' does not exist on type 'never'» — foi o erro real). A
+ * anotação diz o que a lista É, e não o que ela tem hoje: quando alguém escrever
+ * a próxima nota, nada mais precisa mudar aqui.
+ */
+export const PREMIACOES_NOTAS: readonly string[] = [
+  /* SIS-98 — a nota Top 5 SAIU desta lista e virou `REC_GAL_TOP5`, em
+     `src/data/reconhecimentos.ts`: a issue pede a frase ao lado de «Prêmios e
+     certificações apresentados em uma galeria viva.», em negrito, no cabeçalho —
+     e cobra por nome que ela não fique duplicada aqui embaixo. Texto idêntico.
+  'Seguradora americana Top 5 no mundo nos elege como Melhor Projeto nas Américas.', */
   /* SIS-230 — a nota da Celent SAIU desta lista e virou `REC_CELENT`, em
      `src/data/reconhecimentos.ts`: a issue pede a frase ao lado do troféu, na
      abertura da seção, e mantê-la também aqui deixaria a mesma frase duas vezes
@@ -131,6 +153,32 @@ export const ISG = [
       'A parceria única da Sistran com Pegasystems permite que ela oriente seus clientes companhias de seguros através da desafiadora transformação digital em seus negócios.',
   },
 ] as const;
+
+/**
+ * SIS-87 — o SELO «Product Challenger» que a mock `public/isg.png` desenha sobre a
+ * fotografia. Não há arquivo oficial do selo no repositório (só o logo,
+ * `public/isg-provider-lens-HD-transparente.png`), e a issue manda, nesse caso,
+ * compor pelo documento «sem inventar claim». Então as duas linhas abaixo são
+ * TRANSCRITAS da mock, letra por letra — inclusive o inglês, que é o original do
+ * mesmo parágrafo que `ISG[2]` traz traduzido. Nada aqui é escrita nova; o que
+ * havia de texto desenhado em pixel passou a existir no DOM, e por isso entra no
+ * `copy-lock.json` como as demais frases da rota.
+ */
+export const ISG_SELO = {
+  title: 'ISG Provider Lens Product Challenger',
+  text: "Sistran's unique partnership with Pegasystems allows it to guide its insurance enterprise clients through the challenging digital business transformation.",
+} as const;
+
+/** Sobretitulo da secao ISG, pedido por `docs/isg.md` (caixa-alta no CSS). */
+export const ISG_EYEBROW = 'Reconhecimento internacional';
+
+/** Rodape legal do reprint, as tres informacoes que `docs/isg.md` lista. */
+export const ISG_CREDITOS = {
+  fonte: '(*) ISG — Consultores Globais em Gestão de Outsourcing',
+  linkRotulo: 'isg-one.com/index/isg-index',
+  linkHref: 'https://isg-one.com/index/isg-index',
+  reprint: 'Reprint autorizado por ISG Provider Lens ©, Brasil',
+} as const;
 
 /** Secao 13 — Por que SISTRAN? Nove blocos, nas duas colunas do site. */
 export const POR_QUE_SISTRAN = [

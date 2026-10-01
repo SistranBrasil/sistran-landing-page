@@ -1,7 +1,7 @@
 "use client"
 
 import "./legacy.css"
-import { motion, useScroll, useSpring, useTransform } from "motion/react"
+import { motion, useScroll, useSpring, useTransform, type MotionStyle } from "motion/react"
 import { useEffect, useRef, useState, type CSSProperties } from "react"
 import { useRevealTrigger } from "@/components/motion/useRevealTrigger"
 import { LIMIAR_REVEAL, MARGEM_REVEAL } from "@/lib/reveal-calibre"
@@ -47,6 +47,44 @@ const useSequenciaLarga = criarConsultaDeMedia("(min-width: 1024px)")
  * não precisa emendar em nada, só terminar parado.
  */
 const SHRINK = [0.72, 0.97] as const
+
+/**
+ * ── 01/10 · «QUANDO CHEGUE NA SESSÃO DO VÍDEO LUMINNA ELE ESTEJA ASSIM» ──────────
+ * O quadro passa a ABRIR DESFOCADO e a ganhar foco com a rolagem — o estado da
+ * captura é o começo da seção, não um momento do meio.
+ *
+ * Fim da janela de foco, em progresso da seção. 0,3 e não 0,72 (o início do `SHRINK`)
+ * de propósito: o desfoque é o estado de CHEGADA, e tem de se resolver enquanto a
+ * montagem ainda está acontecendo. Esticado até o recuo, o vídeo passaria a seção
+ * inteira fora de foco e a montagem — que é o conteúdo do clipe — nunca seria vista.
+ */
+const FOCO = 0.3
+
+/**
+ * Desfoque inicial, em px. 20px sobre um quadro full bleed é o que apaga o desenho
+ * sem apagar a luz: o que resta é o degradê navy/claro da captura.
+ *
+ * ⚠️ `filter: blur()` é dos efeitos mais caros que existem, e aqui ele roda num
+ * `<video>` do tamanho da tela, por quadro de rolagem. Três coisas contêm o custo, e
+ * é melhor saber disso antes de aumentar o número:
+ *   1. a janela é curta (30% do percurso) e depois o valor fica em 0px, onde o
+ *      compositor descarta o filtro;
+ *   2. o `will-change: transform` de `.sequence-visual` NÃO é estendido para
+ *      `filter` — reservar camada para um filtro que vive um terço do percurso custa
+ *      mais memória do que economiza em tempo;
+ *   3. `useVisibilityGate`/sticky mantêm a cena fora de composição quando a seção
+ *      não está na tela.
+ */
+const DESFOQUE = 20
+
+/**
+ * Sangria enquanto desfocado. `blur` amostra o que está FORA do elemento, e fora do
+ * `<video>` não há nada — então a borda desfocada sai transparente e aparece uma
+ * franja do fundo da seção em volta do quadro, dentro da moldura. Ampliar o vídeo em
+ * 8% empurra essa franja para fora do recorte de `.sequence-visual`
+ * (`overflow: hidden`), e em foco o fator volta a 1, sem corte residual.
+ */
+const SANGRIA = 1.08
 
 /* SIS-99 — os três capítulos (`Compreender`, `Transformar`, `Validar e evoluir`)
    saíram a pedido, e com eles todo o maquinário que os sustentava: o componente
@@ -125,6 +163,13 @@ export function ImpactSequence() {
      abrir espaço à esquerda no capítulo do meio, o mais apertado dos três. Sem
      capítulos não há aperto, e um quadro que desliza sem motivo é só drift. */
   const radius = useTransform(scrollYProgress, [SHRINK[0], SHRINK[1]], [0, 28])
+  /* O foco. Ligados ao `scrollYProgress` cru, e não ao `eased`: a mola existe para o
+     `currentTime` do vídeo, onde o degrau da roda do mouse viraria salto de quadro.
+     Desfoque é contínuo por natureza — passá-lo pela mola só atrasaria o foco em
+     relação ao próprio quadro que ele está desfocando. Mesma escolha de
+     `enquadramento` e `radius`, logo acima. */
+  const desfoque = useTransform(scrollYProgress, [0, FOCO], [`${DESFOQUE}px`, "0px"])
+  const sangria = useTransform(scrollYProgress, [0, FOCO], [SANGRIA, 1])
   // Texto e véu saem assim que o recuo começa: legenda sobrando fora de um card
   // pequeno não lê, e o gradiente escuro mancharia o fundo claro da seção.
   const copyFade = useTransform(scrollYProgress, [SHRINK[0], SHRINK[0] + 0.12], [1, 0])
@@ -177,7 +222,33 @@ export function ImpactSequence() {
       >
         <motion.div
           className="sequence-visual"
-          style={reduced ? undefined : { scale, borderRadius: radius }}
+          /* O desfoque chega como VARIÁVEL e não como `filter` aqui, por dois motivos
+             que não são estilo:
+             1. `filter` neste nó pegaria o `.sequence-veil`, que é filho dele — o
+                gradiente de leitura sairia esfumaçado junto e o contraste do título
+                dependeria do progresso da rolagem;
+             2. `.sequence-video` já tem um `filter` próprio (`saturate`/`brightness`)
+                na folha, e declaração inline não se soma a ele: substituiria. Pela
+                variável, a folha compõe os três numa lista só.
+             Com movimento reduzido nada é escrito e os valores de origem do CSS
+             (`0px` / `1`) deixam o quadro nítido — o pôster não abre fora de foco.
+
+             O `as MotionStyle` é pelo MESMO motivo do `as CSSProperties` dos
+             `--reveal-i` mais abaixo, e vale escrever para ninguém tentar removê-lo:
+             `MotionStyle` é `MakeMotion<Omit<CSSProperties, …>>`
+             (`framer-motion/dist/index.d.ts:154-163`) e o `CSSProperties` do React
+             não declara índice `--${string}`. Em runtime `motion` escreve a
+             propriedade customizada sem problema — o que falta é só a assinatura. */
+          style={
+            reduced
+              ? undefined
+              : ({
+                  scale,
+                  borderRadius: radius,
+                  "--sequencia-desfoque": desfoque,
+                  "--sequencia-sangria": sangria,
+                } as MotionStyle)
+          }
         >
           <ScrollVideo
             className="sequence-video"

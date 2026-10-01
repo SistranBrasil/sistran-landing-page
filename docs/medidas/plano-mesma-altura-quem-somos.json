@@ -1,0 +1,696 @@
+{
+  "rota": "http://localhost:3000/quem-somos",
+  "quando": "2026-09-24T18:22:27.695Z",
+  "larguras": [
+    {
+      "largura": 1440,
+      "altura": 900,
+      "superficies": {
+        "alvos": 9,
+        "aindaPintam": []
+      },
+      "leituras": [
+        {
+          "faixa": 1,
+          "altura": 1144,
+          "pontos": {
+            "esq y=120": [
+              220,
+              237,
+              249
+            ],
+            "esq y=meio": [
+              231,
+              243,
+              252
+            ],
+            "dir y=meio": [
+              219,
+              237,
+              250
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              248
+            ]
+          }
+        },
+        {
+          "faixa": 3,
+          "altura": 4166,
+          "pontos": {
+            "esq y=120": [
+              220,
+              238,
+              250
+            ],
+            "esq y=meio": [
+              232,
+              244,
+              252
+            ],
+            "dir y=meio": [
+              218,
+              237,
+              249
+            ],
+            "dir y=h-60": [
+              202,
+              219,
+              246
+            ]
+          }
+        },
+        {
+          "faixa": 4,
+          "altura": 2700,
+          "pontos": {
+            "esq y=120": [
+              220,
+              238,
+              250
+            ],
+            "esq y=meio": [
+              232,
+              244,
+              252
+            ],
+            "dir y=meio": [
+              218,
+              237,
+              249
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              246
+            ]
+          }
+        },
+        {
+          "faixa": 5,
+          "altura": 926,
+          "pontos": {
+            "esq y=120": [
+              220,
+              238,
+              250
+            ],
+            "esq y=meio": [
+              232,
+              244,
+              252
+            ],
+            "dir y=meio": [
+              218,
+              237,
+              249
+            ],
+            "dir y=h-60": [
+              202,
+              219,
+              246
+            ]
+          }
+        },
+        {
+          "faixa": 8,
+          "altura": 2973,
+          "pontos": {
+            "esq y=120": [
+              220,
+              237,
+              249
+            ],
+            "esq y=meio": [
+              231,
+              243,
+              252
+            ],
+            "dir y=meio": [
+              219,
+              237,
+              250
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              247
+            ]
+          }
+        },
+        {
+          "faixa": 9,
+          "altura": 978,
+          "pontos": {
+            "esq y=120": [
+              220,
+              237,
+              249
+            ],
+            "esq y=meio": [
+              231,
+              243,
+              252
+            ],
+            "dir y=meio": [
+              219,
+              237,
+              250
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              248
+            ]
+          }
+        },
+        {
+          "faixa": 11,
+          "altura": 616,
+          "pontos": {
+            "esq y=120": [
+              220,
+              238,
+              250
+            ],
+            "esq y=meio": [
+              232,
+              244,
+              252
+            ],
+            "dir y=meio": [
+              219,
+              237,
+              249
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              246
+            ]
+          }
+        }
+      ],
+      "espalhamento": [
+        {
+          "ponto": "esq y=120",
+          "amplitudePorCanal": [
+            0,
+            1,
+            1
+          ],
+          "pior": 1
+        },
+        {
+          "ponto": "esq y=meio",
+          "amplitudePorCanal": [
+            1,
+            1,
+            0
+          ],
+          "pior": 1
+        },
+        {
+          "ponto": "dir y=meio",
+          "amplitudePorCanal": [
+            1,
+            0,
+            1
+          ],
+          "pior": 1
+        },
+        {
+          "ponto": "dir y=h-60",
+          "amplitudePorCanal": [
+            1,
+            0,
+            2
+          ],
+          "pior": 2
+        }
+      ]
+    },
+    {
+      "largura": 768,
+      "altura": 1024,
+      "superficies": {
+        "alvos": 9,
+        "aindaPintam": []
+      },
+      "leituras": [
+        {
+          "faixa": 1,
+          "altura": 1517,
+          "pontos": {
+            "esq y=120": [
+              219,
+              238,
+              250
+            ],
+            "esq y=meio": [
+              229,
+              242,
+              251
+            ],
+            "dir y=meio": [
+              221,
+              238,
+              250
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              246
+            ]
+          }
+        },
+        {
+          "faixa": 3,
+          "altura": 4294,
+          "pontos": {
+            "esq y=120": [
+              218,
+              236,
+              248
+            ],
+            "esq y=meio": [
+              228,
+              242,
+              251
+            ],
+            "dir y=meio": [
+              222,
+              239,
+              250
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              248
+            ]
+          }
+        },
+        {
+          "faixa": 4,
+          "altura": 2330,
+          "pontos": {
+            "esq y=120": [
+              219,
+              237,
+              249
+            ],
+            "esq y=meio": [
+              229,
+              242,
+              251
+            ],
+            "dir y=meio": [
+              221,
+              238,
+              250
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              246
+            ]
+          }
+        },
+        {
+          "faixa": 5,
+          "altura": 772,
+          "pontos": {
+            "esq y=120": [
+              219,
+              237,
+              249
+            ],
+            "esq y=meio": [
+              229,
+              242,
+              251
+            ],
+            "dir y=meio": [
+              221,
+              238,
+              250
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              246
+            ]
+          }
+        },
+        {
+          "faixa": 8,
+          "altura": 861,
+          "pontos": {
+            "esq y=120": [
+              218,
+              236,
+              248
+            ],
+            "esq y=meio": [
+              229,
+              242,
+              251
+            ],
+            "dir y=meio": [
+              222,
+              238,
+              250
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              247
+            ]
+          }
+        },
+        {
+          "faixa": 9,
+          "altura": 2049,
+          "pontos": {
+            "esq y=120": [
+              219,
+              238,
+              250
+            ],
+            "esq y=meio": [
+              229,
+              242,
+              252
+            ],
+            "dir y=meio": [
+              221,
+              238,
+              250
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              246
+            ]
+          }
+        },
+        {
+          "faixa": 11,
+          "altura": 592,
+          "pontos": {
+            "esq y=120": [
+              219,
+              238,
+              250
+            ],
+            "esq y=meio": [
+              229,
+              242,
+              252
+            ],
+            "dir y=meio": [
+              221,
+              238,
+              250
+            ],
+            "dir y=h-60": [
+              202,
+              219,
+              246
+            ]
+          }
+        }
+      ],
+      "espalhamento": [
+        {
+          "ponto": "esq y=120",
+          "amplitudePorCanal": [
+            1,
+            2,
+            2
+          ],
+          "pior": 2
+        },
+        {
+          "ponto": "esq y=meio",
+          "amplitudePorCanal": [
+            1,
+            0,
+            1
+          ],
+          "pior": 1
+        },
+        {
+          "ponto": "dir y=meio",
+          "amplitudePorCanal": [
+            1,
+            1,
+            0
+          ],
+          "pior": 1
+        },
+        {
+          "ponto": "dir y=h-60",
+          "amplitudePorCanal": [
+            1,
+            0,
+            2
+          ],
+          "pior": 2
+        }
+      ]
+    },
+    {
+      "largura": 390,
+      "altura": 844,
+      "superficies": {
+        "alvos": 9,
+        "aindaPintam": []
+      },
+      "leituras": [
+        {
+          "faixa": 1,
+          "altura": 1758,
+          "pontos": {
+            "esq y=120": [
+              229,
+              242,
+              251
+            ],
+            "esq y=meio": [
+              227,
+              241,
+              251
+            ],
+            "dir y=meio": [
+              230,
+              242,
+              251
+            ],
+            "dir y=h-60": [
+              204,
+              220,
+              248
+            ]
+          }
+        },
+        {
+          "faixa": 3,
+          "altura": 3677,
+          "pontos": {
+            "esq y=120": [
+              229,
+              242,
+              251
+            ],
+            "esq y=meio": [
+              228,
+              242,
+              251
+            ],
+            "dir y=meio": [
+              229,
+              242,
+              251
+            ],
+            "dir y=h-60": [
+              202,
+              218,
+              246
+            ]
+          }
+        },
+        {
+          "faixa": 4,
+          "altura": 2236,
+          "pontos": {
+            "esq y=120": [
+              229,
+              242,
+              251
+            ],
+            "esq y=meio": [
+              228,
+              242,
+              251
+            ],
+            "dir y=meio": [
+              229,
+              242,
+              251
+            ],
+            "dir y=h-60": [
+              202,
+              218,
+              246
+            ]
+          }
+        },
+        {
+          "faixa": 5,
+          "altura": 677,
+          "pontos": {
+            "esq y=120": [
+              229,
+              241,
+              251
+            ],
+            "esq y=meio": [
+              227,
+              241,
+              251
+            ],
+            "dir y=meio": [
+              230,
+              242,
+              251
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              247
+            ]
+          }
+        },
+        {
+          "faixa": 8,
+          "altura": 903,
+          "pontos": {
+            "esq y=120": [
+              229,
+              241,
+              251
+            ],
+            "esq y=meio": [
+              227,
+              241,
+              251
+            ],
+            "dir y=meio": [
+              230,
+              242,
+              251
+            ],
+            "dir y=h-60": [
+              204,
+              220,
+              248
+            ]
+          }
+        },
+        {
+          "faixa": 9,
+          "altura": 1761,
+          "pontos": {
+            "esq y=120": [
+              228,
+              241,
+              250
+            ],
+            "esq y=meio": [
+              227,
+              241,
+              251
+            ],
+            "dir y=meio": [
+              230,
+              242,
+              252
+            ],
+            "dir y=h-60": [
+              204,
+              220,
+              248
+            ]
+          }
+        },
+        {
+          "faixa": 11,
+          "altura": 865,
+          "pontos": {
+            "esq y=120": [
+              229,
+              241,
+              251
+            ],
+            "esq y=meio": [
+              227,
+              241,
+              251
+            ],
+            "dir y=meio": [
+              230,
+              242,
+              251
+            ],
+            "dir y=h-60": [
+              203,
+              219,
+              247
+            ]
+          }
+        }
+      ],
+      "espalhamento": [
+        {
+          "ponto": "esq y=120",
+          "amplitudePorCanal": [
+            1,
+            1,
+            1
+          ],
+          "pior": 1
+        },
+        {
+          "ponto": "esq y=meio",
+          "amplitudePorCanal": [
+            1,
+            1,
+            0
+          ],
+          "pior": 1
+        },
+        {
+          "ponto": "dir y=meio",
+          "amplitudePorCanal": [
+            1,
+            0,
+            1
+          ],
+          "pior": 1
+        },
+        {
+          "ponto": "dir y=h-60",
+          "amplitudePorCanal": [
+            2,
+            2,
+            2
+          ],
+          "pior": 2
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,510 @@
+{
+  "1440x900": {
+    "secao": {
+      "x": 0,
+      "y": -840,
+      "w": 1440,
+      "h": 2700
+    },
+    "trilhaAltura": 2700,
+    "palco": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 900
+    },
+    "rotulo": {
+      "x": 232,
+      "y": 177,
+      "w": 1148,
+      "h": 18
+    },
+    "rotuloCor": "rgb(11, 37, 69)",
+    "tituloTexto": "Valores",
+    "titulo": {
+      "x": 232,
+      "y": 279,
+      "w": 764,
+      "h": 138
+    },
+    "tituloCorpo": "149.76px",
+    "tituloCor": "rgb(11, 37, 69)",
+    "frase": {
+      "x": 232,
+      "y": 441,
+      "w": 714,
+      "h": 82
+    },
+    "fraseCorpo": "31.68px",
+    "pontos": [
+      "Conhecimento em Seguros",
+      "Flexibilidade",
+      "Tecnologia",
+      "Solidez",
+      "Permanência"
+    ],
+    "pontosCaixa": {
+      "x": 232,
+      "y": 567,
+      "w": 764,
+      "h": 79
+    },
+    "arte": {
+      "x": 1036,
+      "y": 290,
+      "w": 344,
+      "h": 344
+    },
+    "arteSrc": "/images/nossa-essencia/valores.webp",
+    "trilhoAtivo": "Valores",
+    "trilhoCaixa": {
+      "x": 60,
+      "y": 450,
+      "w": 132,
+      "h": 26
+    },
+    "trilhoPeso": "700",
+    "segmento": "relative",
+    "rolar": {
+      "x": 60,
+      "y": 802,
+      "w": 884,
+      "h": 23
+    },
+    "rolarOculto": "false",
+    "assinatura": {
+      "x": 1106,
+      "y": 711,
+      "w": 276,
+      "h": 113
+    },
+    "assinaturaFonte": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+    "assinaturaCorpo": "43.2px",
+    "arco": {
+      "x": 893,
+      "y": -109,
+      "w": 1238,
+      "h": 1238
+    },
+    "inert": [
+      {
+        "id": "Missão",
+        "ativo": "false",
+        "inert": true
+      },
+      {
+        "id": "Valores",
+        "ativo": "true",
+        "inert": false
+      },
+      {
+        "id": "Pilares",
+        "ativo": "false",
+        "inert": true
+      }
+    ],
+    "overflowX": 0,
+    "troca": [
+      {
+        "frac": null,
+        "ativo": "Missão",
+        "trilho": "Missão",
+        "rolarOculto": "false"
+      },
+      {
+        "frac": null,
+        "ativo": "Valores",
+        "trilho": "Valores",
+        "rolarOculto": "false"
+      },
+      {
+        "frac": null,
+        "ativo": "Pilares",
+        "trilho": "Pilares",
+        "rolarOculto": "true"
+      }
+    ],
+    "erros": [],
+    "ruins": []
+  },
+  "1280x800": {
+    "secao": {
+      "x": 0,
+      "y": -740,
+      "w": 1280,
+      "h": 2400
+    },
+    "trilhaAltura": 2400,
+    "palco": {
+      "x": 0,
+      "y": 0,
+      "w": 1280,
+      "h": 800
+    },
+    "rotulo": {
+      "x": 210,
+      "y": 155,
+      "w": 1030,
+      "h": 18
+    },
+    "rotuloCor": "rgb(11, 37, 69)",
+    "tituloTexto": "Valores",
+    "titulo": {
+      "x": 210,
+      "y": 253,
+      "w": 682,
+      "h": 122
+    },
+    "tituloCorpo": "133.12px",
+    "tituloCor": "rgb(11, 37, 69)",
+    "frase": {
+      "x": 210,
+      "y": 399,
+      "w": 635,
+      "h": 73
+    },
+    "fraseCorpo": "28.16px",
+    "pontos": [
+      "Conhecimento em Seguros",
+      "Flexibilidade",
+      "Tecnologia",
+      "Solidez",
+      "Permanência"
+    ],
+    "pontosCaixa": {
+      "x": 210,
+      "y": 511,
+      "w": 682,
+      "h": 70
+    },
+    "arte": {
+      "x": 931,
+      "y": 263,
+      "w": 309,
+      "h": 309
+    },
+    "arteSrc": "/images/nossa-essencia/valores.webp",
+    "trilhoAtivo": "Valores",
+    "trilhoCaixa": {
+      "x": 40,
+      "y": 404,
+      "w": 132,
+      "h": 26
+    },
+    "trilhoPeso": "700",
+    "segmento": "relative",
+    "rolar": {
+      "x": 40,
+      "y": 724,
+      "w": 802,
+      "h": 23
+    },
+    "rolarOculto": "false",
+    "assinatura": {
+      "x": 997,
+      "y": 644,
+      "w": 246,
+      "h": 102
+    },
+    "assinaturaFonte": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+    "assinaturaCorpo": "38.4px",
+    "arco": {
+      "x": 794,
+      "y": -90,
+      "w": 1101,
+      "h": 1101
+    },
+    "inert": [
+      {
+        "id": "Missão",
+        "ativo": "false",
+        "inert": true
+      },
+      {
+        "id": "Valores",
+        "ativo": "true",
+        "inert": false
+      },
+      {
+        "id": "Pilares",
+        "ativo": "false",
+        "inert": true
+      }
+    ],
+    "overflowX": 0,
+    "troca": [
+      {
+        "frac": null,
+        "ativo": "Missão",
+        "trilho": "Missão",
+        "rolarOculto": "false"
+      },
+      {
+        "frac": null,
+        "ativo": "Valores",
+        "trilho": "Valores",
+        "rolarOculto": "false"
+      },
+      {
+        "frac": null,
+        "ativo": "Pilares",
+        "trilho": "Pilares",
+        "rolarOculto": "true"
+      }
+    ],
+    "erros": [],
+    "ruins": []
+  },
+  "768x1024": {
+    "secao": {
+      "x": 0,
+      "y": -593,
+      "w": 768,
+      "h": 2330
+    },
+    "trilhaAltura": 2330,
+    "palco": {
+      "x": 0,
+      "y": -593,
+      "w": 768,
+      "h": 2330
+    },
+    "rotulo": {
+      "x": 31,
+      "y": -529,
+      "w": 707,
+      "h": 18
+    },
+    "rotuloCor": "rgb(11, 37, 69)",
+    "tituloTexto": "Missão",
+    "titulo": {
+      "x": 31,
+      "y": -398,
+      "w": 707,
+      "h": 73
+    },
+    "tituloCorpo": "79.872px",
+    "tituloCor": "rgb(11, 37, 69)",
+    "frase": {
+      "x": 31,
+      "y": -309,
+      "w": 406,
+      "h": 94
+    },
+    "fraseCorpo": "18px",
+    "pontos": [
+      "Escalabilidade",
+      "Tecnologia",
+      "Visão de futuro"
+    ],
+    "pontosCaixa": {
+      "x": 31,
+      "y": -140,
+      "w": 707,
+      "h": 21
+    },
+    "arte": {
+      "x": 184,
+      "y": -88,
+      "w": 400,
+      "h": 400
+    },
+    "arteSrc": "/images/nossa-essencia/missao.webp",
+    "trilhoAtivo": "Missão",
+    "trilhoCaixa": {
+      "x": 31,
+      "y": -473,
+      "w": 56,
+      "h": 36
+    },
+    "trilhoPeso": "700",
+    "segmento": "relative",
+    "rolar": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+    },
+    "rolarOculto": "false",
+    "assinatura": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+    },
+    "assinaturaFonte": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+    "assinaturaCorpo": "30px",
+    "arco": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+    },
+    "inert": [
+      {
+        "id": "Missão",
+        "ativo": "true",
+        "inert": false
+      },
+      {
+        "id": "Valores",
+        "ativo": "false",
+        "inert": false
+      },
+      {
+        "id": "Pilares",
+        "ativo": "false",
+        "inert": false
+      }
+    ],
+    "overflowX": 0,
+    "troca": [
+      {
+        "frac": null,
+        "ativo": "Missão",
+        "trilho": "Missão",
+        "rolarOculto": "false"
+      },
+      {
+        "frac": null,
+        "ativo": "Missão",
+        "trilho": "Missão",
+        "rolarOculto": "false"
+      },
+      {
+        "frac": null,
+        "ativo": "Missão",
+        "trilho": "Missão",
+        "rolarOculto": "false"
+      }
+    ],
+    "erros": [],
+    "ruins": []
+  },
+  "390x844": {
+    "secao": {
+      "x": 0,
+      "y": -637,
+      "w": 390,
+      "h": 2236
+    },
+    "trilhaAltura": 2236,
+    "palco": {
+      "x": 0,
+      "y": -637,
+      "w": 390,
+      "h": 2236
+    },
+    "rotulo": {
+      "x": 16,
+      "y": -573,
+      "w": 358,
+      "h": 18
+    },
+    "rotuloCor": "rgb(11, 37, 69)",
+    "tituloTexto": "Missão",
+    "titulo": {
+      "x": 16,
+      "y": -463,
+      "w": 358,
+      "h": 44
+    },
+    "tituloCorpo": "48px",
+    "tituloCor": "rgb(11, 37, 69)",
+    "frase": {
+      "x": 16,
+      "y": -403,
+      "w": 358,
+      "h": 117
+    },
+    "fraseCorpo": "18px",
+    "pontos": [
+      "Escalabilidade",
+      "Tecnologia",
+      "Visão de futuro"
+    ],
+    "pontosCaixa": {
+      "x": 16,
+      "y": -211,
+      "w": 358,
+      "h": 21
+    },
+    "arte": {
+      "x": 16,
+      "y": -166,
+      "w": 358,
+      "h": 358
+    },
+    "arteSrc": "/images/nossa-essencia/missao.webp",
+    "trilhoAtivo": "Missão",
+    "trilhoCaixa": {
+      "x": 16,
+      "y": -527,
+      "w": 56,
+      "h": 36
+    },
+    "trilhoPeso": "700",
+    "segmento": "relative",
+    "rolar": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+    },
+    "rolarOculto": "false",
+    "assinatura": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+    },
+    "assinaturaFonte": "Kalam, \"Kalam Fallback\", Caveat, cursive",
+    "assinaturaCorpo": "30px",
+    "arco": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0
+    },
+    "inert": [
+      {
+        "id": "Missão",
+        "ativo": "true",
+        "inert": false
+      },
+      {
+        "id": "Valores",
+        "ativo": "false",
+        "inert": false
+      },
+      {
+        "id": "Pilares",
+        "ativo": "false",
+        "inert": false
+      }
+    ],
+    "overflowX": 0,
+    "troca": [
+      {
+        "frac": null,
+        "ativo": "Missão",
+        "trilho": "Missão",
+        "rolarOculto": "false"
+      },
+      {
+        "frac": null,
+        "ativo": "Missão",
+        "trilho": "Missão",
+        "rolarOculto": "false"
+      },
+      {
+        "frac": null,
+        "ativo": "Missão",
+        "trilho": "Missão",
+        "rolarOculto": "false"
+      }
+    ],
+    "erros": [],
+    "ruins": []
+  }
+}

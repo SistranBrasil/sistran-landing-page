@@ -1,6 +1,17 @@
 'use client';
 
 /**
+ * ⚠️ FORA DA ROTA DESDE A SIS-165 (29/09). Este arquivo não é montado por página
+ * nenhuma: `/quem-somos` passou a usar `ModelosFluxo` (fluxo horizontal de anéis,
+ * mock 1). Ele fica aqui íntegro de propósito — é a referência do mock 2 (contexto
+ * orbital), que a issue mantém, e religar é descomentar duas linhas em
+ * `src/app/quem-somos/page.tsx`. Duas coisas a saber antes de religar:
+ *   • `MODELOS_ATUACAO` tem TRÊS itens agora (Outsourcing saiu por pedido e está
+ *     comentado em `modelosAtuacao.ts`). A órbita desenha um quadrante por item,
+ *     então ela voltaria com o quadrante `bottom-left` vazio até o quarto voltar.
+ *   • O `<h2>` desta seção e o de `ModelosFluxo` são a MESMA manchete; montar os
+ *     dois ao mesmo tempo a publicaria duas vezes.
+ *
  * Modelos de atuacao — quatro formas de contratacao em orbita (SIS-99).
  *
  * ── Por que deixou de ser uma fila de cartoes numerados ─────────────────────
@@ -35,12 +46,34 @@
  * `aria-label` carrega o nome completo mesmo quando a tela mostra o curto, e o
  * painel é `role="status"` — trocar de modelo é anunciado sem roubar o foco. O
  * estado ativo nunca é so cor: tambem é escala, borda e elevacao.
+ *
+ * ── SIS-165 (28/09) — tres mudancas de composicao, uma so razao ─────────────
+ * 1. O cabecalho saiu de cima do palco e virou a COLUNA DA ESQUERDA: titulo e
+ *    eyebrow a esquerda, diagrama a direita (a partir de 1200px). O painel de
+ *    descricao desceu para a mesma coluna do titulo — com o palco ocupando meia
+ *    largura, nao ha mais folga lateral para o painel absoluto ao lado da estacao
+ *    ativa, e o bloco que fazia isso esta comentado no CSS, no lugar.
+ * 2. «Mercado Segurador» no hub passou a ser MANUSCRITA, no tratamento de
+ *    `docs/fonte2.md` — a quinta consumidora da Kalam no site.
+ * 3. O destaque passou a RODAR sozinho: um rodizio que anda de estacao em estacao
+ *    a cada 3,2s, e que para enquanto o ponteiro ou o foco estao na area. O
+ *    rodizio é a UNICA coisa nova que mexe em estado por tempo; a esfera da orbita
+ *    continua sendo SMIL, fora do React.
  */
 
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { ICONES_MODELOS } from '@/components/ui/ModelosIcones';
+import { useReducedMotion } from '@/lib/motion';
 import { MODELOS_ATUACAO, MODELO_INICIAL, type ModeloAtuacao } from '@/data/modelosAtuacao';
 import './circular-engagement-model.css';
+
+/** Tempo que cada modelo fica em destaque no rodizio automatico.
+ *
+ *  3,2s, e nao 2s: a troca precisa dar tempo de LER as duas linhas do painel
+ *  (titulo + uma frase de ~50 caracteres) antes de virar. Abaixo de ~3s a secao
+ *  vira um letreiro; acima de ~4s a pessoa nao percebe que roda sozinho e o
+ *  criterio "os quatro ciclam" deixa de ser visivel na janela de atencao. */
+const PASSO_RODIZIO_MS = 3200;
 
 /* ── Geometria ────────────────────────────────────────────────────────────────
    As estacoes ficam no angulo parametrico de 45° de cada quadrante, e a linha
@@ -271,8 +304,17 @@ function Estacao({
         }
       }}
     >
-      {/* Segunda base: só aparece no estado ativo, e é ela que da a impressao de
-          a estacao ter subido do plano em vez de so mudar de cor. */}
+      {/* SIS-165 — a PILHA do estado ativo, de baixo para cima. As duas camadas de
+          tras nascem escondidas atras da primeira e só descem quando a estacao
+          fica ativa: é o "3D" do pedido, e é feito de duas elipses deslocadas
+          mais uma sombra projetada, sem `filter` e sem `perspective`.
+
+          Duas camadas, e nao uma: com uma só o nó lia como um disco com sombra
+          (era o que havia antes); com duas ele lia como um EMPILHAMENTO, que é o
+          desenho de "Projetos" na referencia. A terceira nao entra — a partir dela
+          a pilha passa da area de toque da estacao e comeca a encostar no rotulo
+          da estacao de baixo. */}
+      <span className="cem-base cem-base--fundo2" aria-hidden />
       <span className="cem-base cem-base--fundo" aria-hidden />
       <span className="cem-base" aria-hidden />
       <span className="cem-icone" aria-hidden>
@@ -300,6 +342,11 @@ export default function CircularEngagementModel() {
   const [selecionado, setSelecionado] = useState<string>(MODELO_INICIAL);
   const [previa, setPrevia] = useState<string | null>(null);
   const [entrou, setEntrou] = useState(false);
+  /* Rodizio parado porque a pessoa esta olhando de perto. Nao é o mesmo que
+     `previa`: o ponteiro pode estar sobre o painel ou sobre o vao da orbita, sem
+     estacao nenhuma em previa, e mesmo ali o rodizio tem de esperar. */
+  const [pausado, setPausado] = useState(false);
+  const reduzido = useReducedMotion();
 
   /* O hover é EMPRESTADO: quando o ponteiro sai, volta o que estava selecionado
      — nunca o valor inicial. */
@@ -325,6 +372,35 @@ export default function CircularEngagementModel() {
     return () => obs.disconnect();
   }, []);
 
+  /* ── Rodizio automatico do destaque (SIS-165) ──────────────────────────────
+     Quatro travas, e cada uma existe por um motivo diferente:
+
+     • `reduzido` — com movimento reduzido nao ha rodizio NENHUM. A secao fica no
+       estado estatico de `MODELO_INICIAL`, e clique/teclado continuam trocando.
+       Isto é decoracao pelo criterio de `reduced-motion-conteudo`: as quatro
+       descricoes sao alcancaveis por quatro botoes reais, entao parar o ciclo nao
+       esconde conteudo — ao contrario do marquee, que precisa continuar.
+     • `entrou` — antes de a secao aparecer na janela nao ha o que ciclar, e um
+       `setInterval` rodando no topo da rota gastaria quadro por nada.
+     • `pausado` — ponteiro (de MOUSE) ou foco na area.
+     • `previa` — o ponteiro esta sobre uma estacao. Redundante com `pausado` na
+       pratica, e de proposito: se um dia a area perder os handlers, o hover da
+       estacao ainda segura o rodizio.
+
+     `setSelecionado` por funcao, e nao lendo `selecionado`: assim o efeito NAO
+     depende do valor atual e o intervalo nao é recriado a cada troca — se fosse,
+     o relogio reiniciaria sozinho e o passo real ficaria maior que o declarado. */
+  useEffect(() => {
+    if (reduzido || !entrou || pausado || previa !== null) return;
+    const relogio = window.setInterval(() => {
+      setSelecionado((atual) => {
+        const i = MODELOS_ATUACAO.findIndex((m) => m.id === atual);
+        return MODELOS_ATUACAO[(i + 1) % MODELOS_ATUACAO.length].id;
+      });
+    }, PASSO_RODIZIO_MS);
+    return () => window.clearInterval(relogio);
+  }, [reduzido, entrou, pausado, previa]);
+
   /** Setas andam pela orbita na ordem visual (sentido horario, a partir do alto
       a esquerda) e SELECIONAM, porque `focus` ja mostra a previa e um foco que
       nao seleciona deixaria o `aria-pressed` mentindo. */
@@ -343,6 +419,28 @@ export default function CircularEngagementModel() {
     botoesRef.current[destino]?.focus();
   }, []);
 
+  /* As travas do rodizio, num objeto só porque valem para DOIS nós: o palco e o
+     painel. Quem esta lendo a frase do painel tem o mesmo direito de o destaque
+     nao virar debaixo do olho que quem esta com o cursor sobre a estacao.
+
+     `pointerType === 'mouse'` é a parte que importa: num aparelho de toque o
+     `pointerenter` dispara no toque e o `pointerleave` pode NAO vir, e o rodizio
+     ficaria parado para sempre depois do primeiro toque — o oposto do criterio.
+     Com a conferencia, toque nao pausa: quem quer fixar um modelo no celular usa
+     o proprio toque, que seleciona. */
+  const travas = {
+    onPointerEnter: (e: React.PointerEvent) => {
+      if (e.pointerType === 'mouse') setPausado(true);
+    },
+    onPointerLeave: (e: React.PointerEvent) => {
+      if (e.pointerType === 'mouse') setPausado(false);
+    },
+    /* `Capture` porque o foco chega nos `<button>` filhos, e `focus` nao borbulha
+       — sem a fase de captura o Tab pela orbita nao pausaria nada. */
+    onFocusCapture: () => setPausado(true),
+    onBlurCapture: () => setPausado(false),
+  };
+
   return (
     <section
       ref={secaoRef}
@@ -350,7 +448,7 @@ export default function CircularEngagementModel() {
       aria-labelledby={tituloId}
       data-entrou={entrou ? '1' : '0'}
     >
-      <div className="container-lp">
+      <div className="container-lp cem-grade">
         <header className="cem-cabecalho">
           <p className="cem-eyebrow">Modelos de atuação</p>
           {/* Duas linhas declaradas, e nao medidas: o pedido era o titulo entrando
@@ -362,9 +460,30 @@ export default function CircularEngagementModel() {
             <span className="cem-titulo-linha">para o mercado Segurador</span>
           </h2>
           <p className="cem-dica">Passe o cursor para explorar</p>
+
+          {/* Um unico painel, e um unico `role="status"`. Ele mora na coluna do
+              titulo desde a SIS-165 — antes era absoluto ao lado da estacao ativa,
+              e com o palco em meia largura nao ha mais folga lateral para isso (o
+              bloco que fazia a troca de lado esta comentado no CSS, no lugar).
+              Duplicar o elemento por breakpoint faria o leitor de tela anunciar a
+              troca duas vezes. */}
+          <div
+            className="cem-painel"
+            id={painelId}
+            role="status"
+            data-pos={ativo.posicao}
+            {...travas}
+          >
+            {/* `key` remonta o conteudo, e é o que reinicia a animacao de troca
+                sem `setTimeout` nem classe temporaria. */}
+            <div className="cem-painel-corpo" key={ativo.id}>
+              <p className="cem-painel-titulo">{ativo.label}</p>
+              <p className="cem-painel-texto">{ativo.description}</p>
+            </div>
+          </div>
         </header>
 
-        <div className="cem-area">
+        <div className="cem-area" {...travas}>
           {/* `data-pos` aqui e nao dentro do SVG: é o palco que sabe qual
               quadrante esta ativo, e é por ele que o CSS decide onde clarear o
               trecho do anel. */}
@@ -372,9 +491,32 @@ export default function CircularEngagementModel() {
             <Palco g={LARGO} variante="largo" ativo={ativo.id} />
             <Palco g={COMPACTO} variante="compacto" ativo={ativo.id} />
 
+            {/* O HUB. «Mercado Segurador» no tratamento de `docs/fonte2.md`, e a
+                linha «Abordagem completa» que vivia aqui saiu — ela repetia, em
+                caixa-alta e a 12px, as tres primeiras palavras do `<h2>` que agora
+                esta ao lado, na mesma altura dos olhos. Fica comentada e nao
+                apagada porque religar é uma linha, e porque quem devolver o
+                cabecalho para cima do palco (SIS-165 invertida) precisa dela de
+                volta para o hub nao ficar com uma palavra só:
+                  <span className="cem-nucleo-sobre">Abordagem completa</span>
+
+                `aria-hidden` continua: «mercado Segurador» já é lido no `<h2>`, e
+                sem isto o leitor de tela diria a mesma expressao duas vezes. */}
             <p className="cem-nucleo-texto" aria-hidden>
-              <span>Abordagem completa</span>
-              <span className="cem-nucleo-texto-2">Mercado Segurador</span>
+              <span className="cem-nucleo-manuscrito">
+                {/* Duas linhas declaradas, como em `fonte2.md`: a quebra é de
+                    sentido e nao depende da largura do nucleo nem do zoom. */}
+                <span className="cem-nucleo-linha">Mercado</span>
+                <span className="cem-nucleo-linha">Segurador</span>
+                {/* O traco ciano de ~45px do documento, aqui em 38 — é a largura
+                    que cabe sob «Segurador» sem passar da elipse do nucleo. */}
+                <svg className="cem-nucleo-traco" viewBox="0 0 45 8" aria-hidden>
+                  {/* `pathLength=100` deixa o `stroke-dasharray` do desenho de
+                      entrada em porcentagem: o `d` pode ser reajustado sem refazer
+                      a conta do traco. */}
+                  <path d="M1.5 6.2C11 2.4 32 2 43.5 4.1" pathLength={100} />
+                </svg>
+              </span>
             </p>
 
             {MODELOS_ATUACAO.map((m, i) => (
@@ -393,19 +535,6 @@ export default function CircularEngagementModel() {
                 }}
               />
             ))}
-          </div>
-
-          {/* Um unico painel, e um unico `role="status"`. No desktop ele é
-              absoluto ao lado da estacao ativa; no celular volta ao fluxo,
-              abaixo da orbita. Duplicar o elemento por breakpoint faria o leitor
-              de tela anunciar a troca duas vezes. */}
-          <div className="cem-painel" id={painelId} role="status" data-pos={ativo.posicao}>
-            {/* `key` remonta o conteudo, e é o que reinicia a animacao de troca
-                sem `setTimeout` nem classe temporaria. */}
-            <div className="cem-painel-corpo" key={ativo.id}>
-              <p className="cem-painel-titulo">{ativo.label}</p>
-              <p className="cem-painel-texto">{ativo.description}</p>
-            </div>
           </div>
         </div>
       </div>

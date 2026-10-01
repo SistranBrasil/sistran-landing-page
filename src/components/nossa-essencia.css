@@ -1,0 +1,695 @@
+/**
+ * Nossa Essência — Missão · Valores · Pilares.
+ *
+ * MOCK VIGENTE: `public/valores.png` (pedido em chat: «na sessao valores pilares e
+ * missao deve ser feita exatamente assim … com os componente»). Ela SUBSTITUI
+ * `public/ms.png` e, com ela, a parte de composição de `docs/missao,valores.md`.
+ *
+ * ── O que mudou, e por que não é acabamento ─────────────────────────────────
+ * O arranjo anterior (SIS-260) era: navegação com bolinhas à esquerda + UM PAINEL
+ * NAVY à direita, com o título em branco dentro dele, etiquetas em pílula e duas
+ * abas claras espiando por baixo da base. A mock nova não tem painel: o campo é
+ * claro de ponta a ponta, o título é navy e GIGANTE sobre o próprio fundo da
+ * página, as etiquetas viram uma fileira corrida separada por pontos ciano, e a
+ * navegação é um TRILHO vertical fino com um segmento ciano grosso ao lado do
+ * estado vigente. Some a caixa, e com ela somem as regras que existiam só para
+ * ela. As que saíram estão comentadas no lugar onde moravam, com o valor velho.
+ *
+ * ── O que NÃO mudou ─────────────────────────────────────────────────────────
+ * O mecanismo. `--ne-sticky` = 1024px continua escrito duas vezes de propósito,
+ * aqui e em `LARGURA_STICKY` no TSX, porque o TSX é quem decide o `inert` das
+ * camadas inativas e `inert` é atributo, não estilo — nenhum `@media` o alcança.
+ * A trilha de 300svh, as três sentinelas nos terços e o palco pregado seguem
+ * iguais; as três camadas continuam sobrepostas no MESMO `grid-area` (e não em
+ * `absolute`), o que mantém a altura da seção igual à do estado mais alto sem
+ * medir nada em JS.
+ *
+ *   ≥ 1024px  trilha de 300svh + palco sticky; três camadas sobrepostas,
+ *             crossfade; arte à direita; arco e assinatura no campo.
+ *   < 1024px  sem sticky; as três camadas empilhadas em fluxo, arte abaixo do
+ *             texto, trilho na horizontal.
+ */
+
+.ne-secao {
+  position: relative;
+  /* Fundo claro, quase branco azulado. O radial ciano da mock nova é MENOS
+     intenso e mora no alto à direita, atrás do arco. */
+  background:
+    radial-gradient(circle at 82% 16%, rgba(29, 199, 239, 0.07), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f4fafe 100%);
+  /* O sticky não tolera `overflow: hidden` em ancestral (desliga o pregamento),
+     então o corte é só no eixo X — e aqui ele é obrigatório: o arco da mock tem
+     o raio maior que a metade da janela e sai pelas duas bordas. */
+  overflow-x: clip;
+
+  /* SIS-260 — A SUPERFÍCIE DO PAINEL SAIU COM O PAINEL. Era:
+
+         --ne-painel-fundo:
+           radial-gradient(circle at 70% 30%, rgba(18, 110, 196, 0.32), transparent 42%),
+           linear-gradient(135deg, #061d41 0%, #072b58 58%, #051b3b 100%);
+         --ne-painel-borda: 1px solid rgba(61, 186, 235, 0.22);
+         --ne-painel-raio: 26px;
+         --ne-painel-sombra: 0 30px 75px rgba(4, 43, 86, 0.22);
+
+     Ela existia em variável porque era aplicada em dois lugares (ao painel no
+     desktop, a cada camada no celular) e escrever o degradê duas vezes é como um
+     dos dois fica para trás. Sem caixa escura em nenhuma das duas larguras, não
+     há segundo consumidor — e nem primeiro. */
+
+  --ne-ciano: #17d5ef;
+  --ne-azul: #168ef2;
+  --ne-navy: #0b2545;
+  /* O azul-cinza da linha de apoio e dos itens inativos do trilho, medido na
+     mock. */
+  --ne-apoio: #6b8299;
+  /* `cubic-bezier(0.22, 1, 0.36, 1)` é o `easeExpo` de `src/lib/motion.ts`. */
+  --ne-curva: cubic-bezier(0.22, 1, 0.36, 1);
+  --ne-dur: 600ms;
+}
+
+/* ── Decoração ───────────────────────────────────────────────────────────── */
+/* A mock nova tem UM elemento decorativo só: o arco ciano enorme e pálido que
+   toma o lado direito. Saíram a grade pontilhada, as duas linhas finas, os três
+   pontos ciano e o par de quartos de arco das extremidades — eram os «detalhes
+   técnicos discretos» de `docs/missao,valores.md`, e num campo claro sem painel
+   eles competiriam com o título gigante em vez de emoldurá-lo. */
+.ne-decor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* O arco: um círculo de 1px cujo centro fica FORA da tela, à direita e abaixo,
+   de modo que só a curva do quadrante esquerdo atravessa a seção — que é o que a
+   mock mostra. `aspect-ratio: 1` mantém o círculo redondo em qualquer altura. */
+.ne-decor-arco {
+  position: absolute;
+  top: 50%;
+  left: 62%;
+  translate: 0 -50%;
+  width: 86vw;
+  aspect-ratio: 1;
+  border: 1px solid rgba(23, 213, 239, 0.3);
+  border-radius: 50%;
+  /* Um segundo anel, mais pálido e maior, é o que dá a impressão de arco duplo da
+     mock sem um segundo nó. */
+  box-shadow: 0 0 0 1px rgba(23, 213, 239, 0.08);
+}
+
+/* ── Trilha e palco ──────────────────────────────────────────────────────── */
+.ne-trilha {
+  position: relative;
+}
+
+.ne-sentinela {
+  /* Régua para o `IntersectionObserver`, nada mais. Fora do modo sticky é
+     inofensiva — altura zero, e o TSX reconhece esse caso. */
+  position: static;
+  height: 0;
+}
+
+.ne-palco {
+  position: static;
+  display: grid;
+  align-content: center;
+  padding-block: clamp(4rem, 8vw, 7rem);
+}
+
+.ne-grade {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* ── Sobrenome da seção ──────────────────────────────────────────────────── */
+/* «— NOSSA ESSÊNCIA»: traço ciano curto e a palavra em caixa alta espaçada. Na
+   mock ele fica ACIMA de tudo, alinhado com a coluna do título e não com o
+   trilho. */
+.ne-rotulo {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ne-navy);
+}
+
+.ne-rotulo-traco {
+  flex: none;
+  width: 34px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--ne-ciano);
+}
+
+/* ── Trilho ──────────────────────────────────────────────────────────────── */
+/* Os três nomes em coluna, com uma linha de 1px correndo por trás deles e um
+   segmento ciano grosso ao lado do vigente. Saíram as bolinhas:
+
+       .ne-passo-marcador { width: 16px; height: 16px; border-radius: 50%;
+         background: #eaf5fd; border: 1px solid rgba(22, 142, 242, 0.32);
+         box-shadow: inset 0 0 0 3px #ffffff, inset 0 0 0 7px rgba(22, 142, 242, 0.3); }
+       .ne-passo[data-ativo='true'] .ne-passo-marcador { width: 26px; height: 26px;
+         background: linear-gradient(135deg, #22e3ff 0%, var(--ne-azul) 100%);
+         border-color: transparent;
+         box-shadow: inset 0 0 0 0 transparent, 0 0 0 8px rgba(34, 227, 255, 0.18); }
+
+   A mock nova não tem marcador redondo nenhum: quem indica o estado é o segmento
+   do próprio trilho. Duas marcas para a mesma informação seria redundância
+   visual, e a bolinha de 26px com halo é a mais pesada das duas. */
+.ne-passos {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+/* A linha de trás. `::before` e não um nó: é pura tinta. */
+.ne-passos::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: rgba(107, 130, 153, 0.3);
+}
+
+.ne-passo {
+  position: relative;
+}
+
+/* O segmento ciano. Nasce com `scale-y: 0` na origem do próprio item, então ele
+   CRESCE do meio para as pontas ao acender, em vez de aparecer inteiro. */
+.ne-passo::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--ne-azul);
+  scale: 1 0;
+  transition: scale 320ms var(--ne-curva);
+}
+
+.ne-passo[data-ativo='true']::before {
+  scale: 1 1;
+}
+
+.ne-passo-botao {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ne-apoio);
+  transition:
+    color 240ms var(--ne-curva),
+    font-weight 240ms var(--ne-curva);
+}
+
+.ne-passo-botao:focus-visible {
+  outline: 2px solid var(--ne-azul);
+  outline-offset: 6px;
+  border-radius: 8px;
+}
+
+.ne-passo[data-ativo='true'] .ne-passo-botao {
+  color: var(--ne-navy);
+  font-weight: 700;
+}
+
+/* ── «Continue rolando» ──────────────────────────────────────────────────── */
+.ne-rolar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--ne-apoio);
+  opacity: 1;
+  transition: opacity 420ms var(--ne-curva);
+}
+
+.ne-rolar[data-oculto='true'] {
+  opacity: 0;
+}
+
+/* ── Camada (um estado) ──────────────────────────────────────────────────── */
+.ne-camada {
+  display: grid;
+  align-items: center;
+  min-width: 0;
+}
+
+/* SIS-260 — O SELO SAIU. Era:
+
+       .ne-selo { display: inline-grid; place-items: center; width: 58px;
+         height: 58px; border-radius: 16px; color: #56e0ff;
+         background: linear-gradient(145deg, rgba(31, 122, 206, 0.45), rgba(8, 40, 82, 0.55));
+         border: 1px solid rgba(86, 224, 255, 0.28);
+         margin-bottom: clamp(1.25rem, 3vw, 2rem); }
+
+   Era o quadradinho arredondado com o ícone (bússola, gema, colunas) no alto do
+   painel navy, e o degradê dele era feito para ler sobre navy. A mock nova não o
+   tem — e num campo claro ele voltaria a ser uma caixa escura pequena, exatamente
+   a silhueta que o arranjo novo retira. Os ícones seguem registrados em
+   `src/lib/icons.ts` e o campo `selo` segue em `src/data/essencia.ts`. */
+
+.ne-titulo {
+  margin: 0;
+  /* O título da mock, medido: ocupa da coluna do texto até ~58% da janela a
+     1440px, o que dá ~150px de corpo. O piso de 3rem é o celular, onde
+     «Permanência» já é a palavra mais larga da seção. */
+  font-size: clamp(3rem, 10.4vw, 150px);
+  line-height: 0.92;
+  font-weight: 700;
+  /* Negativo de verdade: nesse corpo o espaço entre letras do padrão abre buracos
+     visíveis dentro da palavra. */
+  letter-spacing: -0.03em;
+  color: var(--ne-navy);
+}
+
+/* A linha de apoio sob o título. Ver `subtitulo` em `src/data/essencia.ts` para
+   qual texto cada estado põe aqui. */
+.ne-frase {
+  margin: clamp(1rem, 2vw, 1.5rem) 0 0;
+  max-width: 34ch;
+  font-size: clamp(1.125rem, 2.2vw, 2rem);
+  line-height: 1.3;
+  font-weight: 400;
+  color: var(--ne-apoio);
+}
+
+.ne-nota {
+  margin: clamp(0.75rem, 1.5vw, 1rem) 0 0;
+  max-width: 48ch;
+  font-size: clamp(0.8125rem, 0.95vw, 0.9375rem);
+  line-height: 1.5;
+  font-style: italic;
+  color: rgba(107, 130, 153, 0.85);
+}
+
+/* ── Fileira de pontos ───────────────────────────────────────────────────── */
+/* Os valores em UMA fileira corrida, separados por pontos ciano. Saíram as
+   pílulas:
+
+       .ne-tags { display: flex; flex-wrap: wrap; gap: 12px; }
+       .ne-tag { padding: 10px 20px; border-radius: 999px;
+         border: 1px solid rgba(139, 197, 240, 0.38);
+         background: rgba(255, 255, 255, 0.04); font-size: 0.9375rem;
+         color: rgba(255, 255, 255, 0.92); }
+
+   A cor do texto e o fundo translúcido eram para navy; e a mock nova mostra os
+   cinco valores como TEXTO, no mesmo corpo da prosa, com o ponto no lugar da
+   vírgula. `flex-wrap` fica: a 1440px a mock reparte em duas linhas
+   («Solidez • Permanência» na segunda), e é o próprio wrap que faz isso sem
+   número chumbado.
+
+   O PONTO É `::before` DO ITEM, NÃO SEPARADOR NO JSX: assim ele não existe no
+   texto que o leitor de tela lê nem no que o `copy-lock` conta, e o primeiro item
+   não precisa de exceção — `:first-child` o apaga. */
+.ne-pontos {
+  list-style: none;
+  margin: clamp(1.5rem, 3vw, 2.75rem) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
+}
+
+.ne-ponto {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
+  font-size: clamp(1rem, 1.5vw, 1.375rem);
+  line-height: 1.3;
+  color: var(--ne-navy);
+}
+
+.ne-ponto::before {
+  content: '';
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ne-ciano);
+}
+
+.ne-ponto:first-child::before {
+  display: none;
+}
+
+/* ── Os seis pilares ─────────────────────────────────────────────────────── */
+/* Pilares não cabe na fileira de pontos: são seis FRASES, e enfileiradas com
+   pontos viravam um parágrafo ilegível. Ficam como lista, no corpo e na cor da
+   linha de apoio, com o marcador ciano que a fileira usa — a mesma família
+   visual, sem a promessa de «palavra curta» que o ponto faz. */
+.ne-pilares {
+  list-style: none;
+  margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+  max-width: 62ch;
+}
+
+.ne-pilares li {
+  position: relative;
+  padding-left: 1.25rem;
+  font-size: clamp(0.9375rem, 1.15vw, 1.125rem);
+  line-height: 1.45;
+  color: var(--ne-apoio);
+}
+
+.ne-pilares li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ne-ciano);
+}
+
+/* ── Componente visual ───────────────────────────────────────────────────── */
+/* «com os componente» (pedido em chat): as artes de `public/missao.png`,
+   `valores.png` e `pilares.png` — os diagramas circulares de linha ciano — são o
+   que a frase nomeia, e continuam em cena. A mock recorta o quadro de Valores
+   sem elas; o pedido é explícito em mantê-las, e o único lugar do arranjo novo
+   onde cabem sem cobrir o título é o campo à direita, dentro do arco.
+
+   Sem círculo e sem card em volta: «Eles já possuem sua própria construção
+   circular» (`docs/missao,valores.md`), a única parte da spec que a mock nova não
+   contradiz. */
+.ne-visual {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+}
+
+.ne-visual-img {
+  width: min(100%, 400px);
+  height: auto;
+  object-fit: contain;
+  /* Num campo CLARO o brilho ciano de antes (drop-shadow 28px) não aparecia; o
+     que a arte precisa aqui é o contrário — ela é neon sobre transparente e
+     ficava dura sobre branco. `opacity` levemente abaixo de 1 a assenta no fundo
+     sem lavar as linhas. */
+  opacity: 0.94;
+  filter: drop-shadow(0 18px 34px rgba(11, 37, 69, 0.12));
+}
+
+/* ── «CONHECEMOS SEGUROS.» ───────────────────────────────────────────────── */
+/* A assinatura manuscrita no canto inferior direito da mock. Mesma grafia de
+   `docs/fonte2.md` que `.sobre-assinatura`, `.luminna-frase` e `.solucoes-lema`
+   já consomem: Kalam com Caveat e `cursive` de reserva, peso 400, `#123B5D`,
+   `line-height: 0.95`, `clamp(30px, 3vw, 50px)`, tombo de −4° e o traço ciano
+   `#16BFE8` de ~45px por baixo da última linha. Uma família, uma cor, um tombo.
+
+   Sem placa: o fundo aqui é o branco-azulado da própria seção, contra o qual
+   `#123B5D` passa com folga — e uma placa daria à frase a silhueta de card que
+   este arranjo acabou de retirar de toda a seção.
+
+   `rotate` e NÃO `transform`: a seção pode ganhar `data-reveal` depois, e
+   `data-reveal` é dono do `transform` do nó. */
+.ne-assinatura {
+  margin: 0;
+  width: max-content;
+  max-width: 100%;
+  font-family: var(--font-kalam), 'Caveat', cursive;
+  font-weight: 400;
+  font-size: clamp(30px, 3vw, 50px);
+  line-height: 0.95;
+  color: #123b5d;
+  rotate: -4deg;
+  transform-origin: left center;
+}
+
+/* `display: block` num `span`, e não `<br>` nem dois parágrafos: continua UMA
+   frase para leitor de tela, e a quebra não depende de largura nem de zoom. */
+.ne-assinatura-linha {
+  display: block;
+}
+
+.ne-assinatura-traco {
+  display: block;
+  width: 45px;
+  height: 8px;
+  margin-top: 0.3rem;
+  /* A ponta arredondada passa da caixa do `viewBox`. */
+  overflow: visible;
+  fill: none;
+  stroke: #16bfe8;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* ══ Celular e tablet: sem sticky, três estados em sequência ═══════════════ */
+@media (max-width: 1023.98px) {
+  .ne-grade {
+    gap: clamp(1.75rem, 5vw, 2.5rem);
+  }
+
+  /* O trilho vira uma fileira horizontal (a spec já pedia isso no celular, e o
+     segmento ciano passa de barra lateral a sublinhado). */
+  .ne-passos {
+    grid-auto-flow: column;
+    justify-content: start;
+    gap: clamp(1.25rem, 5vw, 2rem);
+  }
+
+  .ne-passos::before {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 1px;
+  }
+
+  .ne-passo::before {
+    top: auto;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 3px;
+    scale: 0 1;
+  }
+
+  .ne-passo-botao {
+    padding-bottom: 0.75rem;
+  }
+
+  .ne-camada {
+    gap: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  /* O visual vai ABAIXO do texto: é a ordem natural do grid de uma coluna, então
+     basta não declarar colunas. */
+
+  /* Não há rolagem interna a anunciar — os três estados já estão na tela, um
+     abaixo do outro. */
+  .ne-rolar,
+  /* O arco tem 86vw de diâmetro: numa coluna estreita ele deixa de ser moldura e
+     passa a cruzar o título. */
+  .ne-decor-arco,
+  /* A assinatura mede até 50px de corpo com tombo: no celular ela não tem canto
+     livre para onde ir sem encostar na arte ou no texto. Ela também já existe,
+     inteira, na seção «Sobre nós» de `/quem-somos`. */
+  .ne-assinatura {
+    display: none;
+  }
+}
+
+/* ══ Desktop: trilha de 300vh, palco pregado, camadas sobrepostas ═════════ */
+@media (min-width: 1024px) {
+  .ne-trilha {
+    /* Uma viewport por estado. `svh` e não `vh`: em tablet-paisagem a barra de
+       endereço muda de altura e `vh` mediria a maior — a trilha ficaria mais alta
+       que as três sentinelas somadas. */
+    height: 300svh;
+  }
+
+  .ne-sentinela {
+    position: absolute;
+    left: 0;
+    width: 1px;
+    height: calc(100% / 3);
+  }
+
+  .ne-sentinela:nth-child(1) {
+    top: 0;
+  }
+
+  .ne-sentinela:nth-child(2) {
+    top: calc(100% / 3);
+  }
+
+  .ne-sentinela:nth-child(3) {
+    top: calc(200% / 3);
+  }
+
+  .ne-palco {
+    position: sticky;
+    top: 0;
+    min-height: 100svh;
+    /* Pregado, o respiro de cima tem de ser a altura do cabeçalho fixo, não um
+       vão decorativo — `top: 0` alinha o palco ao TOPO da janela, e o vão da
+       seção deixaria a primeira linha atrás do cabeçalho. */
+    /* Medido: com `align-content: center` o palco centralizava a grade e o
+       «NOSSA ESSÊNCIA» parava em y=113 no estado Pilares — 11px abaixo da base do
+       cabeçalho fixo, que mede 102px. Quem manda na posição passa a ser o padding,
+       e a grade se estica para preencher o palco (`stretch`, abaixo): assim o
+       rótulo nasce SEMPRE em 150px, e o pé («Continue rolando» e a assinatura)
+       encosta na base, que é o arranjo da mock.
+       O par 150/48 é o maior respiro que o estado mais alto tolera: Pilares mede
+       684px de conteúdo, e 900 − 150 − 48 = 702. */
+    padding-block: 150px 48px;
+  }
+
+  /* Três faixas na vertical (rótulo / conteúdo / pé) e três colunas: trilho,
+     texto, arte. O trilho em 132px é a largura de «Conhecimento» — não, de
+     «Valores» em negrito a 16px com o vão da barra: medido, 118px, e 132 dá a
+     folga do foco visível. */
+  .ne-grade {
+    /* Preenche o palco: é o que joga a faixa `1fr` (o conteúdo) para o meio e o
+       pé para a base, em vez de deixar as três faixas juntas no centro. */
+    min-height: 100%;
+    grid-template-columns: 132px minmax(0, 1fr) minmax(0, 30%);
+    grid-template-rows: auto 1fr auto;
+    column-gap: clamp(1.5rem, 3vw, 2.5rem);
+    row-gap: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: center;
+  }
+
+  /* O rótulo alinha com a coluna do título, não com o trilho (mock). */
+  .ne-rotulo {
+    grid-column: 2 / -1;
+    grid-row: 1;
+    align-self: end;
+  }
+
+  .ne-nav {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .ne-passos {
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .ne-passo-botao {
+    padding-left: 20px;
+    font-size: 1.0625rem;
+  }
+
+  .ne-palco-conteudo {
+    grid-column: 2 / -1;
+    grid-row: 2;
+    display: grid;
+    min-width: 0;
+  }
+
+  .ne-camada {
+    /* As três no MESMO lugar do grid: é assim que se sobrepõem, e é o que faz a
+       altura do palco ser a do estado mais alto sem medir nada. */
+    grid-area: 1 / 1;
+    /* A arte ocupa a terceira coluna da grade externa; dentro da camada a divisão
+       repete a mesma proporção para que texto e arte de cada estado fiquem nas
+       colunas certas. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 30%);
+    column-gap: clamp(1.5rem, 3vw, 2.5rem);
+    opacity: 0;
+    translate: 0 14px;
+    pointer-events: none;
+    transition:
+      opacity var(--ne-dur) var(--ne-curva),
+      translate var(--ne-dur) var(--ne-curva);
+  }
+
+  .ne-camada[data-ativo='true'] {
+    opacity: 1;
+    translate: 0 0;
+    pointer-events: auto;
+  }
+
+  /* O crossfade do visual, com a escala de 0,94 a 1 da spec. Separado do texto
+     porque é o único pedaço que muda de tamanho. */
+  .ne-visual-img {
+    scale: 0.94;
+    transition: scale var(--ne-dur) var(--ne-curva);
+  }
+
+  .ne-camada[data-ativo='true'] .ne-visual-img {
+    scale: 1;
+  }
+
+  .ne-rolar {
+    grid-column: 1 / 3;
+    grid-row: 3;
+    align-self: end;
+  }
+
+  .ne-assinatura {
+    grid-column: 3;
+    grid-row: 3;
+    justify-self: end;
+    align-self: end;
+  }
+}
+
+/* Acima de 1440px o arco da mock encosta mais para dentro e a arte tem folga. */
+@media (min-width: 1440px) {
+  .ne-visual-img {
+    width: min(100%, 440px);
+  }
+}
+
+/* ══ Movimento reduzido ═══════════════════════════════════════════════════ */
+/* A troca de estado NÃO é decoração: é o que dá acesso a dois terços do conteúdo
+   da seção (ver `skills/reduced-motion-conteudo.md`). Então o que morre aqui é o
+   deslocamento e a escala — a troca continua acontecendo, instantânea, e os três
+   estados seguem alcançáveis pela rolagem e pelo trilho. */
+@media (prefers-reduced-motion: reduce) {
+  .ne-camada,
+  .ne-visual-img,
+  .ne-passo::before,
+  .ne-passo-botao,
+  .ne-rolar {
+    transition: none !important;
+  }
+
+  .ne-camada {
+    translate: none !important;
+  }
+
+  .ne-visual-img {
+    scale: 1 !important;
+  }
+
+  /* Sem transição o segmento precisa nascer no tamanho final, senão o estado
+     vigente fica sem marca nenhuma no trilho. */
+  .ne-passo[data-ativo='true']::before {
+    scale: 1 1 !important;
+  }
+}

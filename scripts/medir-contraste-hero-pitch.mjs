@@ -247,6 +247,15 @@ const preparar = async (navegador, largura, apagar) => {
   const pagina = await navegador.newPage({
     viewport: { width: largura, height: ALTURA },
   });
+  /* SIS-230 — a abertura opcional (`OptionalMorphIntro`) é um overlay de tela
+     cheia em #1273bc. Sem estas duas chaves a sonda fotografa ELA e não a cena:
+     tinta e fundo saem do MESMO pixel de overlay, a diferença A−B some e as sete
+     razões voltam como `1` (foi o que aconteceu antes desta linha existir). A
+     chave de sessão é `CHAVE_SESSAO` em `src/components/intro/OptionalMorphIntro.tsx`. */
+  await pagina.addInitScript(() => {
+    localStorage.setItem("sistran-motion-preference-seen", "1");
+    sessionStorage.setItem("sistran:intro-visto", "1");
+  });
   /* `domcontentloaded`, e NÃO `networkidle`: a home nunca fica com a rede ociosa
      — o vídeo do hero é servido em fatias enquanto toca, e `networkidle` estourou
      os 30s nas três larguras. */
@@ -267,9 +276,12 @@ const preparar = async (navegador, largura, apagar) => {
       "header.fixed,nav.fixed{display:none!important}" +
       "nextjs-portal,[data-nextjs-toast],[data-nextjs-dev-tools-button],[class*=motion-banner],[class*=motion-dialog]{display:none!important}",
   });
-  /* NENHUMA ROLAGEM. O bloco não tem entrada: em `scrollY: 0` ele já está em
-     `opacity: 1` — é a decisão da issue (manchete acima da dobra). Rolar seria
-     medir a SAÍDA dele, cujo destino é `opacity: 0`. */
+  /* NENHUMA ROLAGEM AQUI — mas o que se aproveita deste levantamento é só a
+     LISTA DE ALVOS e o tamanho de fonte.
+     ⚠️ A nota original dizia "o bloco não tem entrada: em `scrollY: 0` ele já está
+     em `opacity: 1`". Isso não vale mais: o `.hero-caption` entra com a rolagem e
+     em `scrollY: 0` está em `opacity: 0`. Tinta, alfa e caixas são remedidos a
+     cada posição do laço de rolagem (ver a nota da SIS-230 lá). */
   await new Promise((res) => setTimeout(res, 3000));
   const medidos = await pagina
     .locator(".hero-pitch")
@@ -331,8 +343,22 @@ for (const largura of LARGURAS) {
       .locator(".hero-pitch")
       .first()
       .evaluate(LEVANTAR, ALVOS);
+    /* SIS-230 — a TINTA e o ALFA também são remedidos aqui, e não só as caixas.
+       A nota antiga de `preparar` ("NENHUMA ROLAGEM: em scrollY 0 ele já está em
+       opacity 1") CADUCOU: hoje o bloco tem entrada, e em `scrollY: 0` o
+       `.hero-caption` está em `opacity: 0` — foi o que a saída mostrou, com
+       `alfa: 0` nos sete alvos nas três larguras. Com alfa 0, `compor(tinta, 0, bg)`
+       devolve o próprio fundo e `razao` sai **1,00** em tudo: não era regressão de
+       contraste, era o levantamento feito no quadro errado. O alfa depende da
+       rolagem (é ele que faz a entrada e a saída), então tem de sair do MESMO
+       quadro de onde saem os pixels. */
     for (const [id, g] of Object.entries(geometria))
-      if (g && medidos[id]) medidos[id].caixas = g.caixas;
+      if (g && medidos[id]) {
+        medidos[id].caixas = g.caixas;
+        medidos[id].alfa = g.alfa;
+        medidos[id].tinta = g.tinta;
+        medidos[id].tintas = g.tintas;
+      }
     lidas.push(estado);
 
     const [a, b] = await Promise.all([

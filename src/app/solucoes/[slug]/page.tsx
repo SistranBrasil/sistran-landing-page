@@ -3,6 +3,9 @@ import PageShell from '@/components/PageShell';
 import PageHero from '@/components/PageHero';
 import ContactCTA from '@/components/ContactCTA';
 import HeroImageBackdrop from '@/components/ui/HeroImageBackdrop';
+/* SIS-120 · item 2 — a terceira camada do fundo da rota `sds` (quadrados
+   arredondados e o arco azul, geometria que gradiente não desenha). */
+import AtmosferaQuadrados from '@/components/ui/AtmosferaQuadrados';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import {
@@ -37,6 +40,7 @@ import QaIntegradoPagina from '@/components/solucoes/QaIntegradoPagina';
 import GuruDeSegurosPagina from '@/components/solucoes/GuruDeSegurosPagina';
 import ConnectApiPagina from '@/components/solucoes/ConnectApiPagina';
 import LuminnaAiPagina from '@/components/solucoes/LuminnaAiPagina';
+import SdsPagina from '@/components/solucoes/SdsPagina';
 
 /* SIS-279 — AS SLUGS COM CORPO PRÓPRIO, num mapa só. A razão de ele existir (e o
    par de `if` que ele substitui) está no comentário do ramo, junto das razões de
@@ -86,6 +90,7 @@ const CORPOS_PROPRIOS: Readonly<
   'guru-de-seguros': GuruDeSegurosPagina,
   'connect-api': ConnectApiPagina,
   'luminna-ai': LuminnaAiPagina,
+  sds: SdsPagina,
 };
 
 /* ── SIS-279 — AS CÁPSULAS DAS SLUGS QUE AINDA PASSAM PELO CAMINHO GENÉRICO ────
@@ -161,7 +166,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!page) return {};
   return {
     title: `${page.name} · Sistran`,
-    description: page.lead,
+    description: page.metadataDescription ?? page.lead,
   };
 }
 
@@ -275,10 +280,44 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
      (a contagem era «QUATRO» até a SIS-287 e «TRÊS» até a SIS-280). */
   const CorpoProprio = CORPOS_PROPRIOS[page.id];
   if (CorpoProprio) {
+    /* SIS-120 · item 2 — O FUNDO SEQUENCIAL DE `/quem-somos` ENTRA SÓ NA SLUG `sds`.
+       O pedido é literal: «`PageShell classeDoMain="sds-canvas"` +
+       `<AtmosferaQuadrados classe="sds-atmosfera" />`», com o token
+       `--fundo-claro-azul-secao` e as ilhas claras transparentes. O mecanismo é o
+       MESMO de `/quem-somos` (SIS-230) e `/solucoes` (SIS-204): um PLANO DE ROTA no
+       `<main>`, ancorado na janela, e não uma cor copiada para dentro de cada faixa —
+       é isso que tira o degrau entre duas seções claras vizinhas.
+
+       ⚠️ A CLASSE É CONDICIONAL, e não aplicada às sete: o escopo da issue é «apenas
+       `/solucoes/sds`», e `classeDoMain` num `PageShell` compartilhado pintaria as
+       outras seis de uma vez. O ternário é o mesmo teste de `page.id` que a linha do
+       `ContactCTA` abaixo já fazia.
+
+       ⚠️ A CAMADA DE ATMOSFERA VEM ANTES DO CORPO no markup, como em
+       `/quem-somos/page.tsx:195`: ela é `position: fixed` com `z-index: -1`, então a
+       ordem não decide o empilhamento — o que ela evita é nascer depois de um nó que
+       possa ganhar `transform` e ancorar o `fixed` na caixa errada. */
+    const ehSds = page.id === 'sds';
+    /* SIS-220 · item 2 — A MESMA MECÂNICA, SEGUNDA SLUG: `luminna-canvas` +
+       `luminna-atmosfera`. Duas classes DIFERENTES e não uma compartilhada com o SDS,
+       nem um `classeDoMain` aplicado às sete: o escopo desta issue é «só esta slug»
+       (item 8), e uma classe comum faria a próxima passada em `/solucoes/sds` repintar
+       esta rota sem saber. O que se repete é o DESENHO, que é o que as duas issues
+       pedem; os valores estão repetidos e não fatorados no `globals.css`, com a razão
+       escrita lá.
+
+       ⚠️ O `ContactCTA` CONTINUA MONTADO NESTA SLUG. O `!ehSds` abaixo é da SIS-120 e
+       vale só para o SDS, cujo corpo traz o próprio fecho de contato; o corpo do
+       Luminna termina no «Conheça também» e depende deste fecho. Trocar o teste por
+       «tem plano de rota?» juntaria duas decisões que não são a mesma. */
+    const ehLuminna = page.id === 'luminna-ai';
+    const classeDoPlano = ehSds ? 'sds-canvas' : ehLuminna ? 'luminna-canvas' : undefined;
     return (
-      <PageShell>
+      <PageShell classeDoMain={classeDoPlano}>
+        {ehSds && <AtmosferaQuadrados classe="sds-atmosfera" />}
+        {ehLuminna && <AtmosferaQuadrados classe="luminna-atmosfera" />}
         <CorpoProprio page={page} />
-        <ContactCTA layoutReferencia contatoNoModal />
+        {!ehSds && <ContactCTA layoutReferencia contatoNoModal />}
       </PageShell>
     );
   }

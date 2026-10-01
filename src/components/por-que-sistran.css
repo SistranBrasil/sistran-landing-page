@@ -1,0 +1,296 @@
+/* «Por que SISTRAN?» de `/quem-somos` — companheiro de `PorQueSistran.tsx`.
+   SIS-199: negrito no destaque do título, cards flutuantes com raio e sombra, hover
+   que troca fundo E cor da letra, e o medalhão 3D como âncora visual dinâmica.
+
+   ── ESTA SEÇÃO É A VERSÃO ESCURA DA FAMÍLIA DOS DIFERENCIAIS ──────────────────
+   A issue manda alinhar os cards «aos outros do site (ex.: família Dif/ESG)», e é o
+   que está aqui: a mesma gramática de `diferenciais-seis.css` — raio de 20px, sombra
+   de duas camadas em azul, flutuação de ~5,4s escalonada por `--i`, hover que só
+   troca cor (nada de layout) e inverte a tipografia junto do fundo. O que muda é o
+   palco: os Diferenciais vivem sobre azul-gelo e invertem para navy no hover; aqui a
+   seção é navy (a alternância de paridade de `main > section:nth-of-type(even)`,
+   `globals.css:17225`), então o repouso é o vidro escuro e o hover inverte para o
+   claro. Mesmo par de tons, na ordem trocada — nenhuma cor nova entrou no site.
+
+   OS `@keyframes` SÃO PRÓPRIOS, e não os `dif-flutua`/`dif-pulsa` do vizinho, de
+   propósito: aqueles moram no CSS de outro componente, e reaproveitá-los por NOME
+   faria a próxima passada nos Diferenciais mudar esta seção sem saber que ela existe.
+   É a mesma razão pela qual a grade dos Diferenciais foi copiada de `tecnologias.css`
+   em vez de importada. São nove linhas duplicadas contra uma dependência invisível.
+
+   ── O QUE SAIU DO CARD ANTIGO ─────────────────────────────────────────────────
+   O card era `glass-card-hover notch-card barra-sinal` + `corner-accent` + `degrau-2`
+   nos ímpares. O que saiu, e a medida de cada saída:
+     · `notch-card` — É A CAUSA MECÂNICA dos dois primeiros itens do aceite, não uma
+       preferência de desenho. A regra (`globals.css:8039`) declara `border-radius: 0`
+       E um `clip-path: polygon(...)`. O raio some por declaração; e `clip-path`
+       recorta na borda da caixa, o que apaga a SOMBRA PROJETADA — ou seja, as quatro
+       camadas de `box-shadow` que `.glass-card` já declarava não chegavam a um pixel
+       da tela. Pedir «raio generoso e sombra de elevação» é, literalmente, pedir a
+       retirada desta classe; a issue já licencia («sem chanfro `notch-card` se
+       atrapalhar o raio»). A regra continua inteira em `globals.css` e em uso nas
+       seções de canto reto.
+     · `barra-sinal` — a barra de 2px nasce no topo do card com canto reto; num card
+       de 20px de raio ela cruza a curva e vaza pelos dois cantos. Mesmo motivo pelo
+       qual ela saiu dos Diferenciais quando o raio entrou.
+     · `corner-accent` — os ticks de 44px são desenhados nos cantos RETOS; sobre o
+       raio eles ficam soltos, flutuando dentro da curva. E o `overflow: hidden` que
+       os continha é o que impediria a sombra de existir.
+     · `degrau-2` nos ímpares — era `transform` de deslocamento permanente para a
+       cascata de entrada ser percebida. Agora quem dá a percepção é a flutuação
+       escalonada por `--i`, e um `transform` estático no mesmo nó brigaria com ela.
+     · `glass-card-hover` — o hover dela troca SÓ superfície (`transform`,
+       `border-color`, sombra). O item 3 da issue pede que «o card muda de cor E as
+       letras também», e cor tipográfica ela não toca. O vidro é redesenhado abaixo. */
+
+/* ── A SEÇÃO: PALCO PRÓPRIO ────────────────────────────────────────────────────
+   ⚠️ A NOTA ANTERIOR AQUI CADUCOU, e o defeito que ela previu aconteceu. Ela dizia:
+   «SEM `background` declarado, e isto é decisão: o navy daqui vem da alternância de
+   paridade da página, e uma declaração local tiraria esta seção da alternância — no
+   dia em que a ordem das seções mudasse, ela ficaria navy no lugar errado.»
+
+   O RACIOCÍNIO ESTAVA INVERTIDO. Depender de `main > section:nth-of-type(even)`
+   (`globals.css:17225`) não protege da ordem das seções — é exatamente o que TORNA a
+   seção sensível a ela. `nth-of-type` conta irmãos: quando a SIS-177 montou uma
+   seção nova (`CelentSpotlight`, `quem-somos/page.tsx:734`) ACIMA desta, a paridade
+   de todas as seguintes virou, e esta seção passou a pegar o bloco CLARO. O
+   resultado é o que foi reportado em chat, «ficou apagado»: tipografia branca
+   (`text-white` no título, `#fff` no `.pqs-titulo`, branco a 85% no `.pqs-texto`)
+   sobre azul-gelo, que é o pior caso de contraste que esta seção admite. E os cards
+   são vidro ESCURO translúcido, calibrados contra navy — sobre o claro eles somem.
+   `globals.css:32353` já tinha escrito o preço: «sem palco o contraste cai de ~7:1
+   para ~1,1:1».
+
+   Então o palco entra, e é o `.palco-faixa-navy` de `sobre-nos.css` — a MESMA
+   declaração que pinta a faixa 1988 / 150+ / 18, não uma cópia dos valores dela
+   (pedido em chat: «o mesmo fundo que tem nessa 1988 / 150+ / 18»). É por isso que
+   este arquivo importa `sobre-nos.css`.
+
+   O palco é OPACO, então a paridade deixa de decidir a cor desta seção: ela é navy
+   onde estiver, e inserir ou remover irmãos acima não a repinta mais. É o mesmo
+   caminho que a SIS-277 abriu para `.agimos-secao`, e fecha a dependência que
+   `globals.css:32353` deixou registrada como pendente para esta. A alternância
+   continua no site e continua valendo para as outras seções — o que sai é só o fato
+   de ESTA depender dela.
+
+   As camadas, de baixo para cima: o palco (na própria `section`), a
+   `.grade-tecnica` em `z-index: -1` (que continua visível: filho de `z` negativo
+   pinta ACIMA do fundo do próprio elemento e abaixo do conteúdo), a
+   `.sobre-atmosfera` em `z-index: 0` e o `.pqs-miolo` em `z-index: 1`. */
+.pqs-miolo {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── A COMPOSIÇÃO: TÍTULO + MEDALHÃO ──────────────────────────────────────────
+   O item 5 pede «composição bonita: título + medalhão + grade de cards na mesma
+   seção navy». O medalhão sobe para a linha do título em vez de virar um card da
+   grade — o aceite proíbe exatamente isso («integrado, não um card genérico
+   encaixado»). Em tela estreita empilha (título, medalhão, grade), que é a ordem de
+   leitura; de 64rem em diante são duas colunas, com o medalhão à direita do título,
+   onde antes havia navy vazio ao lado de um `h2` de duas palavras. */
+.pqs-cabecalho {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.75rem, 4vw, 3rem);
+  align-items: center;
+}
+@media (min-width: 64rem) {
+  .pqs-cabecalho {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(2rem, 5vw, 4.5rem);
+  }
+}
+
+/* O MEDALHÃO. `public/images/porquesistran.png` é 1254×1254 com alfa, e o assunto é
+   um disco que toca as quatro bordas — os cantos são transparentes. Por isso a
+   elevação é `filter: drop-shadow`, que segue o canal alfa, e não `box-shadow`, que
+   desenharia a sombra de um quadrado atrás de um círculo. O halo é um
+   `radial-gradient` num nó irmão `aria-hidden`, atrás da arte: ele é o «brilho» do
+   item 4 e some junto com o resto do movimento quando o movimento é reduzido.
+   O teto de 340px é medido contra a coluna: a 1440 o `container-lp` dá 1180px úteis,
+   o `gap` máximo come 72px e sobram 768px para o título — folga larga para «Por que
+   SISTRAN?» em `text-section`. */
+.pqs-medalhao {
+  position: relative;
+  justify-self: center;
+  flex: none;
+  width: clamp(200px, 26vw, 340px);
+  aspect-ratio: 1;
+}
+.pqs-halo {
+  position: absolute;
+  /* Estourando a caixa da arte de propósito: o brilho é o ar em volta do disco. */
+  inset: -18%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle at 50% 46%,
+    rgb(33 198 244 / 34%) 0%,
+    rgb(33 198 244 / 14%) 42%,
+    transparent 68%
+  );
+  animation: pqs-halo-respira 6.2s ease-in-out infinite;
+}
+.pqs-medalhao img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 26px 44px rgb(1 21 41 / 55%));
+  animation: pqs-flutua 6.2s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Os dois quadros de repouso são `translate3d(0,0,0)` e `scale(1)` pela razão que a
+   casa já registrou nos Diferenciais: com movimento reduzido o reset global corta a
+   duração para 0,01ms e congela a animação no PRIMEIRO quadro — repouso deslocado
+   deixaria a peça torta para sempre. Aqui isso é redobrado pelo `animation: none` do
+   fim do arquivo, mas o quadro continua sendo o seguro de quem depende só do reset. */
+@keyframes pqs-flutua {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -12px, 0);
+  }
+}
+@keyframes pqs-halo-respira {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.06);
+  }
+}
+
+/* ── A GRADE ──────────────────────────────────────────────────────────────────
+   Duas colunas de 48rem em diante, como antes (`md:grid-cols-2`) — e não três: são
+   DEZ blocos, e dez em três colunas deixam uma linha órfã de um card. Em duas, cinco
+   linhas cheias. O `gap` cresceu de 1,25rem fixo para o clamp da família Dif, porque
+   sombra de elevação precisa de ar em volta para ser vista como elevação. */
+.pqs-grade {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1rem, 1.8vw, 1.5rem);
+  margin-top: clamp(2.5rem, 4vw, 3.5rem);
+}
+@media (min-width: 48rem) {
+  .pqs-grade {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* A CÉLULA é o `<li>` do `ScrollReveal`: sem aparência, só estica o card até a altura
+   da linha da grade. Mesma peça que `.dif-celula`, e pelo mesmo motivo — com o card
+   um nível abaixo do nó animado, os dois cards de uma linha ficariam de alturas
+   diferentes. */
+.pqs-celula {
+  display: flex;
+  min-width: 0;
+}
+.pqs-celula > .pqs-card {
+  flex: 1;
+}
+
+/* O CARD, em repouso: vidro escuro redesenhado. Os tokens são os mesmos que a casa
+   usa nos cards de `«Como Agimos»` (SIS-277 §4) — degradê de dois azuis translúcidos,
+   anel ciano a 55%, raio de 20px e relevo interno de 1px. A sombra é a dos
+   Diferenciais com o tom fechado para o navy desta seção: preto sobre navy some, e é
+   `rgb(1 21 41 / …)` que dá a elevação visível contra o fundo da página. */
+.pqs-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: clamp(1.375rem, 1.9vw, 1.75rem);
+  border: 1px solid rgb(78 221 255 / 45%);
+  border-radius: 20px;
+  background: linear-gradient(150deg, rgb(29 133 195 / 40%) 0%, rgb(13 87 151 / 26%) 100%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 12%),
+    0 22px 44px -20px rgb(1 21 41 / 62%),
+    0 2px 8px -3px rgb(1 21 41 / 45%);
+}
+
+.pqs-titulo {
+  margin: 0;
+  color: #fff;
+}
+.pqs-texto {
+  margin-top: 0.75rem;
+  color: rgb(255 255 255 / 85%);
+}
+
+/* A FLUTUAÇÃO fica no `.pqs-card`, que é um nó DENTRO do `<li>` animado — o `<li>` do
+   `ScrollReveal` recebe `transform` inline do motion, e animação CSS vence estilo
+   inline: um `@keyframes` no mesmo nó apagaria o deslocamento da entrada. Dois nós,
+   duas responsabilidades. `--i` vem do JSX; se faltar, atraso 0. Dez cards subindo no
+   mesmo instante leem como a página inteira tremendo. */
+.pqs-card {
+  animation: pqs-flutua 5.8s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * 0.38s);
+  will-change: transform;
+  transition:
+    background 0.32s ease,
+    border-color 0.32s ease,
+    box-shadow 0.32s ease;
+}
+.pqs-titulo,
+.pqs-texto {
+  transition: color 0.32s ease;
+}
+
+/* ── O HOVER (item 3: «muda a cor do card E a cor das letras») ─────────────────
+   O card vai ao claro e a tipografia inverte junto. Contraste conferido na mão sobre
+   o fundo composto do card em hover (~`#f6fcff`): `#0b2d52` dá ~12,9:1 e `#17456f`
+   ~7,9:1 — os dois passam AA com folga, e são os mesmos dois navys que a família Dif
+   já usa (`.dif-frase` em repouso é `#0b2d52`).
+   Só cor e sombra mudam: `background`, `border-color`, `box-shadow` e `color` não
+   reflowam. E a flutuação PAUSA no hover — WCAG 2.2.2 para movimento infinito acima
+   de 5s, e aqui é também funcional: sem pausar, o card desliza por baixo do cursor e
+   o alvo escapa. `:focus-within` acompanha porque os cards são itens de lista
+   percorridos por teclado (hoje sem foco interno, mas a regra é a mesma da casa). */
+.pqs-card:hover,
+.pqs-card:focus-within {
+  background: linear-gradient(150deg, rgb(255 255 255 / 96%) 0%, rgb(238 248 255 / 92%) 100%);
+  border-color: rgb(255 255 255 / 92%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 60%),
+    0 26px 52px -18px rgb(1 21 41 / 68%),
+    0 3px 10px -3px rgb(1 21 41 / 48%);
+  animation-play-state: paused;
+}
+.pqs-card:hover .pqs-titulo,
+.pqs-card:focus-within .pqs-titulo {
+  color: #0b2d52;
+}
+.pqs-card:hover .pqs-texto,
+.pqs-card:focus-within .pqs-texto {
+  color: #17456f;
+}
+
+/* Movimento reduzido, os DOIS canais da casa: a preferência real e o espelho por
+   atributo (`html[data-motion='reduce']`, o seletor do alternador do site). O reset
+   global já corta a duração, mas `animation: none` é explícito — flutuação, halo e
+   respiro são decoração pura, e desligados o card fica em `translate(0)`, o medalhão
+   no lugar e o halo na opacidade do primeiro quadro. Nada some e nada desloca, que é
+   o aceite («reduced-motion = estático sem quebrar layout»). O hover continua: troca
+   de cor não é movimento. */
+@media (prefers-reduced-motion: reduce) {
+  .pqs-card,
+  .pqs-medalhao img,
+  .pqs-halo {
+    animation: none !important;
+  }
+}
+html[data-motion='reduce'] .pqs-card,
+html[data-motion='reduce'] .pqs-medalhao img,
+html[data-motion='reduce'] .pqs-halo {
+  animation: none !important;
+}

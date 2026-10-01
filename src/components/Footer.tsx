@@ -186,7 +186,29 @@ export default function Footer() {
             Institucional
           </h4>
           <ul className="lp-rodape-nav space-y-2">
-            {/* SIS-118 · O BLOG ENTRA NA NAVEGAÇÃO, e entra AQUI. Até agora a
+            {/* ── SIS-266 · O BLOG SAI DAQUI (pedido de 30/09) ───────────────────
+                O `<li>` removido era, verbatim:
+
+                | <li>
+                |   <Link href="/blog" className="text-sm text-ink-muted transition-colors hover:text-white">
+                |     Blog
+                |   </Link>
+                | </li>
+
+                O QUE ISSO DESFAZ, dito por inteiro para não voltar como dúvida: a
+                SIS-118 punha este link aqui exatamente para `/blog` deixar de ser
+                indexável-e-inalcançável, e com ele fora a rota VOLTA a ser órfã na
+                navegação — `sitemap.ts:28-29` continua publicando `/blog` e cada
+                post. Isso é ESCOLHA da issue, não descuido: a SIS-266 manda
+                remover só o link e põe «apagar /blog ou tirar do sitemap» fora de
+                escopo, em palavras. Se a incoerência voltar como problema, o outro
+                lado dela é o sitemap, e é issue própria.
+                A justificativa original fica abaixo como HISTÓRIA — ela explica por
+                que o link existiu e por que, se um dia voltar, volta nesta coluna e
+                não no menu do topo (aquela lista é gerada de `NAV_ITEMS`).
+
+                ── SIS-118 (histórico) · O BLOG ENTRA NA NAVEGAÇÃO, e entra AQUI ──
+                Até agora a
                 única referência a `/blog` em todo o `src/` fora da própria rota
                 era o `sitemap.ts`: a seção era indexável e inalcançável navegando.
                 Das duas saídas que a issue oferece — entrar na navegação ou sair
@@ -202,11 +224,6 @@ export default function Footer() {
                 Fica na coluna "Institucional" — e NÃO na coluna "Navegação", que é
                 gerada de `NAV_ITEMS` e não deve ganhar item que o header não tem,
                 sob pena de as duas listas passarem a divergir. */}
-            <li>
-              <Link href="/blog" className="text-sm text-ink-muted transition-colors hover:text-white">
-                Blog
-              </Link>
-            </li>
             <li>
               <Link
                 href="/politica-de-privacidade"

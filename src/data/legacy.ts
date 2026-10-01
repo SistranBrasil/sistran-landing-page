@@ -309,8 +309,21 @@ export const mosaicTiles: MosaicTile[] = [
 
    `impacto-assembly-scroll.mp4` é all-intra: todo quadro é keyframe, senão cada
    seek do scroll obriga o decodificador a recomeçar do keyframe anterior e a
-   imagem trava em degraus. A SIS-241 reduziu o derivado de 1920x1080, 30fps e
-   6,90 MiB para 1280x720, 24fps e 2,22 MiB, preservando o all-intra:
+   imagem trava em degraus.
+
+   SIS-226 — A FONTE VOLTOU A SER A DA RAIZ DE `public/`, a pedido, e por isso a
+   redução da SIS-241 está DESFEITA nesta seção. Os dois arquivos medidos com
+   `ffprobe` sobre o disco, não estimados:
+
+     public/impacto-assembly-scroll.mp4         1920x1080  30fps  281q  7.231.945 B  ← em uso
+     public/videos/impacto-assembly-scroll.mp4  1280x720   24fps  225q  2.332.360 B  ← derivado SIS-241
+
+   ⚠️ O PORTÃO DE SEEK FOI CONFERIDO NO ARQUIVO NOVO, e é ele que o passo 2 da
+   issue manda medir antes de publicar: 281 pacotes-chave em 281 quadros, ou seja
+   all-intra de verdade — nenhum recompressão com `-g 1` foi necessária. `moov`
+   no offset 36, antes do `mdat`, então `+faststart` também está lá e o seek não
+   espera o arquivo inteiro. Se não fosse all-intra, a receita seria a da
+   SIS-241, que fica registrada porque é a volta de uma linha:
 
      ffmpeg -i public/videos/impacto-assembly-scroll.mp4 -an \
        -vf "scale=1280:720:flags=lanczos,fps=24" -c:v libx264 \
@@ -318,8 +331,22 @@ export const mosaicTiles: MosaicTile[] = [
        -pix_fmt yuv420p -movflags +faststart \
        public/videos/impacto-assembly-scroll.sis241.mp4
 
-   Conferido: 225 pacotes-chave em 225 quadros; seeks aleatórios decodificaram
-   sem erro.
+   ⚠️ O CUSTO É REAL E MEDIDO: +4.899.585 B na home (2,22 MiB → 6,90 MiB neste
+   vídeo, ×3,1), e com `images.unoptimized` (SIS-154) nada disso é reduzido em
+   trânsito — `<video>` nunca passou pelo otimizador de todo modo. É exatamente o
+   peso que a SIS-241 tinha tirado. Fica declarado aqui, e não silenciado, porque
+   a volta é UMA LINHA: `src` de novo em `/videos/impacto-assembly-scroll.mp4`.
+   Nada mais depende da resolução nem da duração — o `ScrollVideo` mapeia o
+   progresso pela `duration` que o próprio arquivo informa (9,367s aqui contra
+   9,375s no derivado), então o percurso de scroll não muda de calibre.
+
+   ⚠️ O ARQUIVO DA RAIZ NÃO ESTAVA VERSIONADO. `git ls-files` não o conhecia e
+   `git check-ignore` confirmou que ele não é ignorado — só nunca foi adicionado,
+   e os doze outros `.mp4` do projeto vivem todos em `public/videos/`. Apontar
+   `src` para um arquivo que existe apenas neste disco daria 404 no deploy e a
+   seção abriria vazia (o `ScrollVideo` mantém `opacity: 0` até haver quadro).
+   Ele foi posto no índice do git junto desta mudança; sem isso a troca não
+   sobrevive ao clone.
 
    O pôster é o quadro de 8,6s (montagem concluída), não o primeiro: o primeiro
    é quase vazio, e é ele que aparece com movimento reduzido, quando não há seek.
@@ -331,7 +358,15 @@ export const impactSequence = {
      só — uma quebra explícita o partiria ao meio. Sem ponto final. */
   title: "Sobre o Luminna AI",
   text: "O Luminna AI representa uma revolução no desenvolvimento de software, proporcionando eficiência, qualidade e rapidez.",
-  src: "/videos/impacto-assembly-scroll.mp4",
+  /* SIS-226 — a fonte apontada pela usuária, na raiz de `public/`. Era
+     `"/videos/impacto-assembly-scroll.mp4"` (derivado da SIS-241). Ver as três
+     medidas no comentário acima: all-intra conferido, peso declarado, arquivo
+     versionado. */
+  src: "/impacto-assembly-scroll.mp4",
+  /* O pôster NÃO acompanha a troca, e não é esquecimento: ele é o quadro de 8,6s
+     desta mesma montagem, continua em `public/videos/` e é o que aparece com
+     movimento reduzido, quando não há seek. Trocá-lo por um quadro extraído do
+     arquivo de 1920px só engordaria a home de novo para mostrar a mesma cena. */
   poster: "/videos/impacto-assembly-poster.jpg",
   /* SIS-99 — os três capítulos (`Compreender`, `Transformar`, `Validar e
      evoluir`) saíram a pedido. Eram um array `chapters` aqui, com um `at` por

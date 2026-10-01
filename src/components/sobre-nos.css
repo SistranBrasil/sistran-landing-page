@@ -460,6 +460,21 @@ html[data-motion='reduce'] .sobre-assinatura-risco {
   z-index: 1;
   margin-top: 56px;
   padding: clamp(2.5rem, 4vw, 3.5rem) 0 clamp(2.75rem, 4.5vw, 4rem);
+}
+
+/* ── O PALCO DA FAIXA, DECLARADO UMA VEZ ──────────────────────────────────────
+   O `background` saiu do bloco acima e virou regra de dois seletores. Motivo: em
+   chat foi pedido que a seção «Por que SISTRAN?» de `/quem-somos` tivesse «o mesmo
+   fundo que tem nessa 1988 / 150+ / 18». «Mesmo» aqui é literal — se as duas
+   pinturas forem declaradas em lugares diferentes, elas divergem na primeira
+   recalibragem, e esta em particular já foi recalibrada uma vez (a nota do `90deg`
+   abaixo). Uma declaração, dois consumidores.
+
+   `.palco-faixa-navy` carrega SÓ a pintura. Recuo, `margin`, `clip-path` e
+   `z-index` ficaram em `.sobre-metricas`, que é o encaixe DELA na página editorial
+   — nada disso serve a uma seção de outra rota com espaçamento próprio. */
+.sobre-metricas,
+.palco-faixa-navy {
   background:
     radial-gradient(ellipse 70% 120% at 12% 0%, rgb(9 58 112 / 85%), transparent 60%),
     /* SIS-42, 2ª passada — ERA `105deg`, e o ângulo é a única coisa que mudou aqui.
@@ -481,6 +496,44 @@ html[data-motion='reduce'] .sobre-assinatura-risco {
   .sobre-metricas {
     clip-path: polygon(0 0, 36% 0, 38% 22px, 100% 22px, 100% 100%, 0 100%);
     padding-top: calc(clamp(2.5rem, 4vw, 3.5rem) + 22px);
+  }
+}
+
+/* ── A FAIXA AVULSA (SIS-272, seção «Números» da home) ────────────────────────
+   Modificador de ENCAIXE, não de desenho: grade, tipografia, ícones, réguas, cores
+   e a camada de atmosfera continuam sendo as mesmas regras acima — é isso que faz a
+   home «ler como» esta faixa. Só duas medidas caem, e as duas por dependerem de
+   coisas que na home não existem:
+
+   1. `margin-top: 56px` — o vão existe para separar a faixa do bloco EDITORIAL de
+      `/quem-somos`, que é irmão anterior dela dentro da mesma seção clara. Na home a
+      faixa é a seção inteira e o que vem antes é outro capítulo, com fundo próprio:
+      56px ali não seriam respiro, seriam uma tira do fundo do capítulo anterior
+      aparecendo entre duas seções que deviam encostar.
+
+   2. O DEGRAU. As porcentagens do `clip-path` acompanham a coluna da foto (ver a
+      nota da linha 454) e os três pontos ciano estão em `left: 6% / 30% / 56%` pela
+      mesma régua. Sem foto acima, o corte diagonal não acompanha nada: sobra um
+      talho de 22px sem origem, mostrando o que estiver atrás. O SVG da aresta e os
+      pontos já não são renderizados (`aresta={false}` no nó); estas duas linhas
+      desfazem o recorte e devolvem o `padding-top` à medida de base, senão a faixa
+      ficaria vazada no topo e ainda com os 22px de compensação. */
+/* SIS-272 (2ª correção de curso, 29/09) — O MODIFICADOR TEM CONSUMIDOR OUTRA VEZ, e a
+   nota que o declarou órfão em algum momento do mesmo dia caducou: a home monta a faixa
+   em `src/app/page.tsx` com `sobre-metricas--avulsa sobre-metricas--sete`. O que mudou
+   entre uma coisa e outra foi a ESCRITA (os sete de `metrics.ts` em vez de 1988/150+/18),
+   e a geometria descrita acima não depende de qual conjunto a faixa desenha — depende de
+   não haver foto acima dela, que é o caso na home com três ou com sete.
+   `/quem-somos` continua sem passar por nenhuma das duas regras: lá a faixa vem com
+   aresta. */
+.sobre-metricas--avulsa {
+  margin-top: 0;
+}
+
+@media (min-width: 62rem) {
+  .sobre-metricas--avulsa {
+    clip-path: none;
+    padding-top: clamp(2.5rem, 4vw, 3.5rem);
   }
 }
 
@@ -594,6 +647,96 @@ html[data-motion='reduce'] .sobre-atmosfera-deriva-b {
   transform: none !important;
 }
 
+/* ── O PULSO DOS NÚMEROS ──────────────────────────────────────────────────────
+   Pedido em chat: «quero que os numeros fiquem se movimentando ou pulsando tanto em
+   quem somos quanto home». A metade «se movimentando» já existia e só para os SETE
+   — é o loop de recontagem do `CountUpNumber` (`emLoop={fonte === 'metricas'}`), que
+   passou a valer nas duas rotas quando a SIS-165 trocou o `Metrics` de `/quem-somos`
+   pela faixa. O que estava parado era a faixa de TRÊS (1988 / 150+ / 18), e é a
+   metade «ou pulsando» que a cobre.
+
+   POR QUE PULSO E NÃO RECONTAGEM NOS TRÊS. A razão está escrita no componente e
+   continua de pé: «1988» é um ANO, e um ano recontando sem parar lê como relógio
+   quebrado — ainda por cima partindo de 1900, que é o `start` dele. O pulso não toca
+   no dígito: ele respira o número inteiro, então serve a um ano tão bem quanto a uma
+   contagem. Por isso a regra é da PEÇA e não de um dos conjuntos: os sete ganham
+   pulso junto com os três, e aí os dois blocos «se movimentam» nas duas rotas por um
+   mecanismo só.
+
+   ⚠️ NÃO É `opacity` — é `transform` + `filter`. Baixar a opacidade de um número
+   sobre este navy baixaria o CONTRASTE dele em fase, e o número é a informação da
+   faixa; o pior quadro da animação passaria a valer menos que o medido. `scale` não
+   mexe em tinta nenhuma, e `brightness` só sobe (1 → 1.16), nunca desce: o pior
+   quadro do pulso é exatamente o estado de repouso já medido.
+
+   A AMPLITUDE É DE 3,5%, e é pequena de propósito: a 1440 são ~2,5px no número de
+   72px da faixa de três e ~1,4px no de 40px da de sete. Acima disso o pulso começa a
+   competir com a leitura do dígito, que é o que a nota da atmosfera logo acima já
+   diz sobre perder a disputa de atenção com o contador. `transform` num item de flex
+   não reflui, então nem o ícone ao lado nem a régua da célula vizinha se movem.
+
+   O ESCALONAMENTO É POR `nth-child`, e não por prop. Sete números pulsando em
+   uníssono leem como falha de renderização, não como efeito — é a mesma conclusão
+   que o `atraso` do contador registra. Em CSS ele sai de graça e serve aos dois
+   conjuntos sem passar índice de fora: as sete linhas abaixo cobrem a faixa de sete,
+   e as três primeiras cobrem a de três. */
+@keyframes sobre-num-pulso {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.035);
+    filter: brightness(1.16);
+  }
+}
+
+.sobre-metrica-valor {
+  animation: sobre-num-pulso 3.4s ease-in-out infinite;
+  /* O centro do número, para o pulso não empurrar o dígito para o lado do ícone. */
+  transform-origin: left center;
+  will-change: transform, filter;
+}
+
+.sobre-metrica:nth-child(2) .sobre-metrica-valor {
+  animation-delay: 0.26s;
+}
+.sobre-metrica:nth-child(3) .sobre-metrica-valor {
+  animation-delay: 0.52s;
+}
+.sobre-metrica:nth-child(4) .sobre-metrica-valor {
+  animation-delay: 0.78s;
+}
+.sobre-metrica:nth-child(5) .sobre-metrica-valor {
+  animation-delay: 1.04s;
+}
+.sobre-metrica:nth-child(6) .sobre-metrica-valor {
+  animation-delay: 1.3s;
+}
+.sobre-metrica:nth-child(7) .sobre-metrica-valor {
+  animation-delay: 1.56s;
+}
+
+/* OS DOIS CANAIS, como na atmosfera acima e no traço da assinatura. Aqui o pulso é
+   DECORAÇÃO pela régua da casa — pará-lo não esconde nada, porque o número está
+   desenhado no estado de repouso e é esse o quadro que o `animation: none` devolve.
+   (O que NÃO é decoração é a contagem, e ela não é tratada aqui: o `CountUpNumber`
+   resolve movimento reduzido em JS, escrevendo o valor FINAL de uma vez.) */
+@media (prefers-reduced-motion: reduce) {
+  .sobre-metrica-valor {
+    animation: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+html[data-motion='reduce'] .sobre-metrica-valor {
+  animation: none !important;
+  transform: none !important;
+  filter: none !important;
+}
+
 /* ── OS TRÊS INDICADORES ──────────────────────────────────────────────────────
    «Sem cards individuais»: o que separa um do outro é uma RÉGUA de 1px, que é o que
    a mock mostra. Daí `border-left` no 2º e no 3º e nada de caixa, fundo ou sombra.
@@ -615,6 +758,164 @@ html[data-motion='reduce'] .sobre-atmosfera-deriva-b {
   .sobre-metricas-grade {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0;
+  }
+}
+
+/* ── A MESMA FAIXA COM SETE INDICADORES ───────────────────────────────────────
+   Correção de curso de 29/09: a seção «Números» da home é ESTE desenho com a
+   escrita dos sete de `metrics.ts`. Nada da identidade da faixa muda aqui — régua
+   de 1px entre as células, ícone e número na mesma linha, rótulo em caixa alta,
+   sem moldura e sem trilho de pontos. O que muda é ESCALA, e por aritmética:
+
+   Sete colunas no vão da faixa a 1440 dão (1500 − 216 − 136) / 7 = 164px cada. O
+   número de 72px da faixa de três não cabe ali — «650+» em Geist Mono a 72px mede
+   ~173px de avanço, sozinho, antes do ícone de 52px e do vão entre os dois. A nota
+   do contador já registrava o mesmo tipo de estouro uma escala antes: 96px
+   empurravam «150+» para fora da coluna a 1024, com TRÊS colunas.
+
+   Daí os três valores abaixo, calculados para a coluna de 164px:
+     número  40px  → «650+» ≈ 96px de avanço
+     ícone   30px
+     vão      8px  → 134px, com 30px de folga dentro do recuo de 2×12px
+   Medido depois de escrito, nas três janelas do aceite — os números estão no
+   comentário da issue, não nesta nota, porque é a medida que vale e ela é de lá.
+
+   O RECUO LATERAL CAI de clamp(1.5rem, 2.4vw, 2.5rem) para clamp(0.5rem, 1vw,
+   0.75rem): com sete réguas verticais o recuo antigo comeria 80px de 164, e o
+   número encostaria na régua da célula vizinha.
+
+   ⚠️ NÃO HÁ `--sobre-num-tam` NA REGRA DA FAIXA DE TRÊS, de propósito: o valor
+   original é o FALLBACK dentro do `var()` no componente. Declará-lo aqui também
+   criaria dois lugares dizendo a mesma medida, e o dia em que eles divergissem
+   `/quem-somos` mudaria de tamanho sem ninguém ter pedido. */
+.sobre-metricas--sete .sobre-metricas-grade {
+  /* O teto de 1500px sai: com sete colunas o limite útil é a janela, e parar em
+     1500 num monitor largo deixaria as réguas fora do prumo do resto da rota. */
+  gap: clamp(1.25rem, 2vw, 2rem);
+}
+
+@media (min-width: 48rem) {
+  /* Quatro e três, e não sete apertados: entre 48rem e 90rem a coluna de sete
+     ficaria abaixo de 110px, onde «650+» a 40px já não entra. Sete itens em quatro
+     colunas caem 4 + 3 — a última fileira fica curta, e é o arranjo honesto; forçar
+     `auto-fit` daria um número de colunas diferente a cada 40px de janela e a régua
+     vertical mudaria de lugar sem motivo visível. */
+  .sobre-metricas--sete .sobre-metricas-grade {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .sobre-metricas--sete .sobre-metrica {
+    padding: 0.25rem clamp(0.5rem, 1vw, 0.75rem);
+  }
+
+  /* A régua não pode ser «todo mundo menos o primeiro» quando há mais de uma
+     fileira: o 5º item abre fileira nova e herdaria uma régua à esquerda, pendurada
+     no vazio. `nth-child(4n + 1)` é o primeiro de cada fileira de quatro. */
+  .sobre-metricas--sete .sobre-metrica:nth-child(4n + 1) {
+    border-left: 0;
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 90rem) {
+  /* Os sete numa fileira só, que é o arranjo da referência. */
+  .sobre-metricas--sete .sobre-metricas-grade {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+
+    /* ── A LARGURA, QUE ERA O ERRO DE RAIZ ────────────────────────────────────
+       O recuo `216px / 136px` da regra geral (linha ~810) existe por ALINHAMENTO:
+       o primeiro indicador tem de nascer na mesma abscissa da FOTOGRAFIA que fica
+       acima dele em `/quem-somos` (medido: as duas caixas em x=216 a 1440), e um
+       piso diferente deixaria a régua da faixa fora do prumo da foto.
+
+       NA HOME NÃO EXISTE ESSA FOTO. É a mesma razão pela qual a home passa
+       `aresta={false}`: nada acima da faixa para o desenho acompanhar. Então os
+       352px que os dois recuos comiam não alinhavam com nada — só apertavam sete
+       colunas num vão de 1088px, dando 155px por célula. Com o recuo simétrico de
+       48px o vão vira 1344px e a célula 192px.
+
+       É por isso que a correção anterior (tracking e recuo da célula, 5px de cada
+       vez) estava tratando o sintoma: a palavra não era grande demais, a coluna era
+       estreita demais. Com 37px a mais por coluna o tracking volta a 0.05em e o
+       recuo da célula a 12px — ambos mais próximos da faixa de três, que é a
+       identidade a preservar — e ainda sobra folga de sobra.
+
+       Fica dentro de `--sete` e não na regra geral: mexer lá moveria a faixa de
+       `/quem-somos`, que é justamente o que a issue manda não fazer. */
+    padding-left: clamp(2rem, 3.5vw, 4rem);
+    padding-right: clamp(2rem, 3.5vw, 4rem);
+  }
+
+  .sobre-metricas--sete {
+    --sobre-num-tam: clamp(1.875rem, 2.8vw, 2.5rem);
+  }
+
+  .sobre-metricas--sete .sobre-metrica-icone {
+    width: clamp(26px, 2.1vw, 30px);
+    height: clamp(26px, 2.1vw, 30px);
+  }
+
+  .sobre-metricas--sete .sobre-metrica-topo {
+    gap: 0.5rem;
+  }
+
+  /* O rótulo de sete palavras («Mil horas de Capacidade Produtiva no Brasil») numa
+     coluna de 164px: o `letter-spacing: 0.1em` da faixa de três soma ~4 caracteres
+     de largura por linha e quebrava «Capacidade» no meio. 0.06em mantém a caixa
+     alta legível e devolve a palavra inteira.
+
+     0.06em AINDA NÃO BASTAVA PARA UMA PALAVRA. Medido na tela: «Reconhecimentos»
+     pedia 135px num vão de texto de 130px e passava 5px POR CIMA DA RÉGUA, para
+     dentro da célula do «130+ Clientes». As outras seis maiores palavras sobravam de
+     15px («Implementação», 115) a 65px («Clientes»), então o defeito era de UMA
+     palavra — e é por isso que a correção mexe em 5px de folga e não na escala toda:
+     encolher a fonte dos sete rótulos para resolver um caso deixaria os outros seis
+     menores sem motivo, e 12,24px já é o piso confortável deste corpo em caixa alta.
+
+     ⚠️ E ESSA CORRIDA ATRÁS DE 5px FOI TRATAR O SINTOMA. Passei duas rodadas
+     raspando tracking (0.06 → 0.045 → 0.035em) e recuo (12 → 10 → 8px) para a palavra
+     caber numa coluna de 155px, e cada rodada terminava com folga de 1 a 7px — pouca
+     o bastante para a quebra reaparecer numa máquina com outra renderização de fonte,
+     que foi exatamente o que aconteceu («RECONHECIMENTO / S» na tela da usuária). A
+     causa não era a palavra ser larga: era a COLUNA ser estreita, por causa do recuo
+     de 216/136px que não alinha com nada na home (ver a nota na regra da grade acima).
+     Com a coluna em 192px o tracking volta a 0.05em e o recuo da célula a 0.75rem —
+     mais perto da faixa de três, que é a identidade a preservar. Os números finais
+     estão na conferência da issue.
+
+     ⚠️ `overflow-wrap: break-word` é REDE, não a correção. Com a folga acima nenhuma
+     das sete palavras quebra hoje. Ele existe porque a largura da régua para uma
+     palavra indivisível é uma propriedade do TEXTO, e o texto mora em `metrics.ts`:
+     no dia em que um rótulo ganhar uma palavra mais longa, o defeito reaparece —
+     e sem esta linha ele reaparece como glifo cruzando a régua (invisível para
+     qualquer medida da caixa do `<p>`, que é bloco e tem sempre a largura da coluna)
+     em vez de como uma quebra feia, que pelo menos se vê. Foi exatamente esse o
+     ponto cego da passada anterior: a sonda mediu o NÚMERO caber e deu verde. */
+  .sobre-metricas--sete .sobre-metrica-rotulo {
+    font-size: clamp(0.75rem, 0.85vw, 0.875rem);
+    letter-spacing: 0.05em;
+    margin-top: 0.625rem;
+    overflow-wrap: break-word;
+  }
+
+  /* O recuo da célula volta a 12px de cada lado: é a distância entre a régua e a
+     primeira letra, e com a coluna em 192px não há mais motivo para raspá-la. */
+  .sobre-metricas--sete .sobre-metrica {
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+  }
+
+  /* A régua volta a ser «todos menos o primeiro»: numa fileira só, `4n + 1` daria
+     uma régua a menos no 5º item, no meio da fileira. */
+  .sobre-metricas--sete .sobre-metrica:nth-child(4n + 1) {
+    border-left: 1px solid rgb(165 240 255 / 22%);
+    padding-left: 0.75rem;
+  }
+
+  .sobre-metricas--sete .sobre-metrica:first-child {
+    border-left: 0;
+    padding-left: 0;
   }
 }
 
@@ -704,6 +1005,13 @@ html[data-motion='reduce'] .sobre-atmosfera-deriva-b {
 
   .sobre-metricas {
     margin-top: 40px;
+  }
+
+  /* SIS-272 — o `margin-top: 0` do modificador tem a MESMA especificidade (0,1,0)
+     que a regra de cima e vem antes dela no arquivo: sem esta repetição, a faixa
+     avulsa da home voltaria a abrir 40px abaixo de 62rem. Não é redundância. */
+  .sobre-metricas--avulsa {
+    margin-top: 0;
   }
 
   .sobre-metricas-grade {

@@ -61,6 +61,17 @@
  *     que é o contrato daquele par de mapas (escuro = ausência). A linha removida
  *     ficou comentada lá com o motivo, e ela trocou de grafia junto.
  *
+ * ── SIS-220 (2ª volta) · A CONTA DE «TRÊS BLOCOS» ACIMA CADUCOU: SÃO QUATRO ────
+ * Entrou o bloco «Luminna AI» (eyebrow «Ecossistema», 8 produtos com `highlights` de
+ * métrica), entre «Benefícios» e «Integração Versátil». Tudo que os dois parágrafos
+ * acima dizem continua valendo, com os números corrigidos: QUATRO `heading` →
+ * «Início» + quatro paradas = 5, e a âncora nova é `luminna-ai` (é `idDoBloco` da
+ * marca, e por isso é homônima da chave da slug em `pageSections.ts` — a ressalva
+ * está escrita lá). A faixa é clara, logo a slug está no mapa CLARO com TRÊS das
+ * quatro paradas; «Benefícios» segue a única escura e sem chave.
+ * Os números de faixa das referências acima («faixa 2», «faixa 6») NÃO mudaram: a
+ * seção nova é a «4-B» exatamente para não invalidá-los.
+ *
  * ── IDENTIDADE PRÓPRIA (variar 1–2 componentes vs as irmãs) ───────────────────
  * O assunto desta solução é ESTEIRA DE DESENVOLVIMENTO — SDLC, DevOps, ferramentas
  * integradas —, e as três peças que divergem desenham isso:
@@ -80,6 +91,72 @@
  * NÃO ENTRA CARIMBO: não existe cápsula `carimbo-…-luminna-…` em `public/` — as que
  * existem são de `match-ai`, `smart-miner`, `fast` e `connect-api`, e usar qualquer
  * uma publicaria o nome de OUTRO produto no topo desta rota.
+ *
+ * ── SIS-220 · A PREMISSA DO PARÁGRAFO ACIMA CADUCOU (e ele fica como histórico) ─
+ * «NÃO ENTRA CARIMBO» era verdade porque as artes não existiam. Chegaram DUAS, e
+ * nenhuma delas nomeia produto — elas nomeiam SEÇÃO, que é justamente o que faltava:
+ *   public/carimbo-desafios-ticket-outline-0757c7.png    807 × 288 (medido no arquivo)
+ *   public/carimbo-beneficios-ticket-outline-0757c7.png  807 × 288
+ * Então o motivo original («publicaria o nome de outro produto») não se aplica a
+ * estas duas, e elas entram nas faixas 3 e 4 por `CarimboBatida`. O que NÃO mudou:
+ * segue não havendo cápsula de ABERTURA para esta slug, e o hero segue sem carimbo.
+ *
+ * ⚠️ AS DUAS ARTES SÃO CONTORNO `#0757c7` (a cor está no nome do arquivo), e a de
+ * «Benefícios» vai para a ÚNICA faixa navy da página. Contorno azul-médio sobre
+ * `#001A3D` é quase invisível, e o aceite pede carimbo LEGÍVEL — então na faixa
+ * escura a tinta é reacendida no CSS (`.luminna-carimbo--escuro`), não trocada de
+ * arte: não existe variante branca com a palavra «Benefícios», e a única branca em
+ * `public/` diz «COMO Agimos», que é outra seção de outra rota.
+ *
+ * ── SIS-220 (2ª volta) · E ESSA RESSALVA TAMBÉM CADUCOU: A ARTE BRANCA CHEGOU ───
+ * O parágrafo acima fica como histórico de por que o filtro existiu. A premissa era
+ * «não existe variante branca com a palavra Benefícios» — passou a existir:
+ * `carimbo-beneficios-ticket-outline-ffffff.png`, #FFFFFF em 100% dos pixels
+ * opacos (conferido no pixel, não no nome do arquivo). Com contraste nativo sobre
+ * `#001A3D`, `.luminna-carimbo--escuro` perdeu a razão de ser e SAIU do JSX e do
+ * CSS. Não era inofensivo deixar: o `opacity: 0.92` do hack rebaixaria a arte
+ * branca de graça, e um `filter` no nó da cápsula cria contexto de empilhamento,
+ * que é referência que a animação da batida não deve ganhar sem motivo.
+ * O `alt` das duas é VAZIO de propósito, e é o caso que o próprio `CarimboBatida`
+ * documenta («vazio só se houver um equivalente textual ao lado»): a arte traz
+ * escrita a MESMA palavra do `h2` que está do lado, e `alt` preenchido faria o leitor
+ * de tela anunciar «Desafios… Desafios».
+ *
+ * ── SIS-220 · O VÍDEO «SOBRE O LUMINNA AI» É O DA HOME, O MESMO COMPONENTE ─────
+ * `<ImpactSequence />` entra nesta rota SEM CÓPIA e SEM PARÂMETRO NOVO: a seção que
+ * a home monta em `app/page.tsx:429` já é sobre este produto — o `h2` dela é
+ * literalmente «Sobre o Luminna AI», o texto e o `kicker` vêm de
+ * `src/data/legacy.ts` (`impactSequence`) e o vídeo é o `impacto-assembly-scroll.mp4`
+ * (SIS-226). Duplicar o bloco com dado próprio era o caminho de as duas leituras
+ * divergirem na primeira troca de vídeo.
+ * ⚠️ ELE FICA FORA DE QUALQUER `RevealScope`, como na home: a seção é `sticky` e
+ * `RevealScope` viraria ancestral com `transform`, que é o que troca a referência do
+ * `sticky` da janela para a caixa (a nota está no próprio `ImpactSequence`). É por
+ * isso que este é o único bloco desta página montado nu, sem envelope de reveal.
+ * ⚠️ A SUPERFÍCIE DELE NÃO É O PLANO DA ROTA: `.sequence` é `.lp-section--cream`,
+ * opaca, e é o que o aceite chama de «creme preservado». O plano contínuo passa por
+ * baixo sem regra nenhuma.
+ *
+ * ── SIS-220 · `docs/fonte2.md`: CONFERIDO ITEM A ITEM, NADA A MUDAR ───────────
+ * O item 3 da issue pede a manuscrita «em 1–2 pontos» e diz «completar/alinhar ao
+ * doc». Conferido linha por linha contra `docs/fonte2.md`, o hero já cumpre o
+ * documento INTEIRO: texto HTML e não pixel, Kalam com Caveat/`cursive` de reserva,
+ * peso 400, as QUATRO linhas exatas, `#123B5D`, `line-height: 0.95`,
+ * `clamp(30px, 3vw, 50px)`, `rotate: -4deg`, traço `#16BFE8` de ~45px inclinado e
+ * desenhado da esquerda para a direita, pouso na área clara e reposicionamento no
+ * telefone (ver o bloco `.luminna-frase` no `globals.css`). Não sobrou item.
+ * O SEGUNDO PONTO NÃO FOI ABERTO, e é decisão e não esquecimento: o documento
+ * especifica UMA frase, e qualquer segundo ponto sairia de um dos dois lugares
+ * proibidos — escrever frase nova (o «não reescrever a copy» do próprio pedido) ou
+ * jogar um parágrafo já publicado no `clamp(30px, 3vw, 50px)` da manuscrita, que é
+ * corpo de 30–50px para três linhas de texto corrido. «1–2» está cumprido em 1.
+ *
+ * ── SIS-220 · ITEM 2: O PLANO DA ROTA NÃO NASCE AQUI ─────────────────────────
+ * `classeDoMain="luminna-canvas"` e `<AtmosferaQuadrados classe="luminna-atmosfera" />`
+ * são montados no `PageShell` de `solucoes/[slug]/page.tsx`, porque é lá que o
+ * `<main>` desta rota existe — este arquivo é o CONTEÚDO dele. As faixas claras
+ * deixam de pintar por `.luminna-canvas .section-light` no `globals.css`; as navy
+ * (`bg-[#001A3D]`) e o hero sangrado seguem opacos e cobrem o plano sem regra.
  *
  * ── A CAPA: POR QUE ELA NÃO VEM DE `capasSolucoes.ts` ─────────────────────────
  * `CAPAS_DE_ABERTURA` tem SEIS entradas e a ausência desta é DELIBERADA — item 4 da
@@ -115,7 +192,9 @@
  * `globals.css`, com os DOIS canais de movimento reduzido.
  */
 
-import { useState } from 'react';
+/* SIS-220 (5ª volta) — `useState` saiu com o único estado do arquivo (o do modal de
+   contato, que perdeu o gatilho junto com o CTA do hero).
+   import { useState } from 'react'; */
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -136,7 +215,15 @@ import {
   TrendingUp,
   Wrench,
 } from 'lucide-react';
-import ContactModal from '@/components/ContactModal';
+import CarimboBatida from '@/components/CarimboBatida';
+/* SIS-220 (5ª volta) — três montagens saíram da rota e os imports vão com elas, senão
+   o lint aponta símbolo não usado. Cada uma tem a razão escrita no lugar onde estava:
+   o Ecossistema (escrita fora do paste), o modal de contato (sem gatilho) e a
+   ImpactSequence (copy de `legacy.ts` que duplica o fecho e o título dos Desafios).
+   import EcossistemaLuminna from './EcossistemaLuminna';
+   import ContactModal from '@/components/ContactModal';
+   import { ImpactSequence } from '@/components/legacy/ImpactSequence'; */
+import HeroVideoBackdrop from '@/components/ui/HeroVideoBackdrop';
 import RevealScope from '@/components/motion/RevealScope';
 import { ACCELERATORS } from '@/data/accelerators';
 import { ACCELERATOR_PAGES, idDoBloco, type AcceleratorPage } from '@/data/acceleratorPages';
@@ -168,6 +255,24 @@ const ICONES_BENEFICIOS = [BadgeCheck, Gauge, Coins, Smile, Target, Rocket, Shie
    Projetos). */
 const ICONES_INTEGRACAO = [GitBranch, ScanSearch, BrainCircuit, ListChecks];
 
+/* ── OS ÍCONES DO ECOSSISTEMA MUDARAM DE CASA (SIS-220, 3ª volta) ─────────────
+   A tabela vive em `EcossistemaLuminna.tsx`, junto da faixa que a usa, e passou a
+   ser mapa POR `id` em vez de array por índice — por índice, incluir um produto no
+   meio da lista trocaria o glifo de todos os seguintes em silêncio. Os oito glifos
+   são os mesmos. O que estava aqui:
+
+   | const ICONES_ECOSSISTEMA = [
+   |   BookOpen,
+   |   Ruler,
+   |   CodeXml,
+   |   Bug,
+   |   FileText,
+   |   FlaskConical,
+   |   ClipboardCheck,
+   |   Terminal,
+   | ];
+*/
+
 /* ── AS MARCAS DE CADA CATEGORIA DE INTEGRAÇÃO (SIS-280 item 3) ────────────────
    A mock `public/images/integracao.png` mostra, em cada um dos quatro cartões, uma
    fileira de PÍLULAS BRANCAS com o logotipo de cada ferramenta. A issue amarra a
@@ -184,6 +289,29 @@ const ICONES_INTEGRACAO = [GitBranch, ScanSearch, BrainCircuit, ListChecks];
    «não forçar». Eles são LINGUAGEM, não ferramenta integrada, e nenhuma das quatro
    categorias do dado é sobre linguagem — entrariam como enfeite numa fileira que a
    mock usa para dizer «com o quê o Luminna conversa».
+
+   ── SIS-220 (2ª volta, item 3) · JAVA E PYTHON ENTRAM, POR DECISÃO DA ISSUE ─────
+   O parágrafo acima fica como histórico: a leitura («linguagem ≠ ferramenta») não
+   mudou, a DECISÃO mudou — «hoje omite de propósito … agora entram». Registrar isso
+   importa para a próxima volta não desfazer por achar que foi descuido.
+
+   EM QUAL CARTÃO, e a escolha é declarada porque a issue pede que seja: os quatro
+   são «Repositórios de código», «Ferramentas de Análise de Código», «Serviços de IA»
+   e «Ferramentas de Gestão de Projetos». A issue prefere «o cartão de
+   repositórios/stack se o dado tiver» — não existe cartão de stack, então vão para
+   REPOSITÓRIOS DE CÓDIGO: é a única das quatro categorias cujo assunto é o código em
+   si, e não uma ferramenta que age sobre ele. «Análise de Código» seria defensável
+   (SonarQube e Fortify analisam Java e Python), mas ali a fileira lista o ANALISADOR,
+   e pôr a linguagem ao lado dele troca o sujeito da frase. A ambiguidade está
+   reportada no comentário da issue, como ela manda.
+
+   `largura` das duas calculada da proporção intrínseca MEDIDA, na mesma régua de
+   20px do resto da tabela:
+       java   1677 × 2048 → 20 × 1677/2048 = 16,4 → 16
+       python 2048 × 1556 → 20 × 2048/1556 = 26,3 → 26
+   Java é a única arte RETRATO da tabela (mais alta que larga), e é por isso que ela
+   sai tão estreita: a régua é a ALTURA, e a altura dela é o lado maior.
+
    `largura` é a largura da pílula para ALTURA FIXA de 20px, calculada da proporção
    INTRÍNSECA de cada PNG (todos 2048px de lado maior). Com `images: { unoptimized:
    true }` (SIS-154) o par `width`/`height` não corta arquivo nenhum: ele reserva a
@@ -194,6 +322,10 @@ const MARCAS_DE_INTEGRACAO: { rotulo: string; arquivo: string; largura: number }
   [
     { rotulo: 'Microsoft Azure', arquivo: 'azure-logo-hd-transparente.png', largura: 62 },
     { rotulo: 'Bitbucket', arquivo: 'bitbucket-logo-hd-transparente.png', largura: 52 },
+    /* SIS-220 (2ª volta, item 3) — as duas linguagens, aqui e não nos outros três
+       cartões. O porquê está no docblock acima. */
+    { rotulo: 'Java', arquivo: 'java-logo-hd-transparente.png', largura: 16 },
+    { rotulo: 'Python', arquivo: 'python-logo-hd-transparente.png', largura: 26 },
   ],
   [
     { rotulo: 'OpenText Fortify', arquivo: 'fortify-logo-hd-transparente.png', largura: 51 },
@@ -209,6 +341,103 @@ const MARCAS_DE_INTEGRACAO: { rotulo: string; arquivo: string; largura: number }
     { rotulo: 'Jira', arquivo: 'jira-logo-hd-transparente.png', largura: 53 },
   ],
 ];
+
+/* ── SIS-220 · item 4 — A ALTURA DAS LOGOS DAS PÍLULAS ─────────────────────────
+   Era 20px de logo dentro de uma cápsula de 32px (`h-8` / `h-5`), e o pedido é
+   «aumentar bastante, de forma clara»: passa a 36px de logo em cápsula de 56px, ou
+   seja 1,8× a marca e 1,75× a cápsula. Não é um número escolhido no olho: 36px é o
+   ponto em que a marca mais ESTREITA desta tabela (o Copilot do GitHub, 19px de
+   largura para 20px de altura) alcança ~34px de largura — abaixo disso ela continua
+   do tamanho de um ícone ao lado de palavras como «SonarQube», que é o desequilíbrio
+   que a mock não tem.
+   A CONSTANTE EXISTE PARA A TABELA ABAIXO NÃO PRECISAR SER REESCRITA: as `largura`
+   continuam declaradas para a altura de REFERÊNCIA de 20px (foi assim que saíram da
+   proporção intrínseca de cada PNG, todos com 2048px de lado maior), e a largura
+   publicada é derivada. Reescrever as nove à mão seria nove chances de achatar uma
+   marca de terceiro, que é o defeito que `width`/`height` existem para evitar com
+   `images: { unoptimized: true }` (SIS-154). */
+const ALTURA_LOGO_PILULA = 36;
+const ALTURA_LOGO_REFERENCIA = 20;
+const larguraDaPilula = (larguraEm20: number) =>
+  Math.round((larguraEm20 * ALTURA_LOGO_PILULA) / ALTURA_LOGO_REFERENCIA);
+
+/* ── SIS-220 · item 5 — AS DUAS CÁPSULAS DE SEÇÃO ──────────────────────────────
+   Dimensões MEDIDAS nos arquivos, e não estimadas: é desse par que `CarimboBatida`
+   monta o `--carimbo-batida-ar`, e é esse `aspect-ratio` que impede a cápsula de
+   achatar.
+
+   SIS-220 (2ª volta, itens 1 e 2) — AS DUAS ARTES FORAM TROCADAS, e as duas mudaram
+   de razão de aspecto, então o par de dimensões tinha de mudar junto:
+
+     Desafios   807 × 288 (2,80:1) → 993 × 300 (3,31:1)
+     Benefícios 807 × 288 (2,80:1) → 771 × 288 (2,68:1)
+
+   Medido com `sharp` nos arquivos instalados, não copiado da issue (os números
+   coincidem com os dela). As duas têm canal alfa real, e a tinta foi conferida no
+   pixel: a de Desafios é #0757C7 chapado em 97% dos pixels opacos (7,87,199, o
+   resto é antialiasing da borda) e a de Benefícios é #FFFFFF em 100% deles.
+
+   OS ARQUIVOS SAÍRAM DA RAIZ DE `public/` para
+   `public/images/solucoes/luminna/carimbo/`, que é onde a issue os endereça — e é
+   melhor lugar: as artes desta rota passam a morar junto das logos dela.
+
+   ⚠️ E ELES NÃO ESTAVAM NO DISCO. Os dois caminhos antigos
+   (`/carimbo-desafios-…`, `/carimbo-beneficios-…`) apontavam para arquivos ausentes
+   da árvore de trabalho — a volta anterior os deixou apenas no índice do git e a
+   árvore foi revertida depois. Ou seja: as duas seções serviam 404 até esta volta.
+   As artes novas vieram dos anexos da própria issue e estão versionadas. */
+/* `alt` VAZIO nas duas — a razão está no docblock: a arte escreve a mesma palavra do
+   `h2` que fica ao lado.
+   `gatilho: 'viewport'` nas duas, e não `'rota'`: as duas faixas nascem MUITO abaixo
+   da dobra (a 3ª e a 4ª seções de uma página de seis), e bater na montagem seria
+   bater com a peça fora de quadro — quem rolasse até lá encontraria o carimbo já
+   assentado. É a distinção que o próprio componente documenta. */
+const CARIMBO_DESAFIOS = {
+  src: '/images/solucoes/luminna/carimbo/carimbo-desenvolvimento-ticket-outline-0757c7.png',
+  largura: 993,
+  altura: 300,
+};
+const CARIMBO_BENEFICIOS = {
+  src: '/images/solucoes/luminna/carimbo/carimbo-beneficios-ticket-outline-ffffff.png',
+  largura: 771,
+  altura: 288,
+};
+/* ── SIS-220 (onda visual) · O CARIMBO DA CAPA ─────────────────────────────────
+   «SISTRAN / Luminna AI», ticket de contorno BRANCO, acima do letreiro.
+   780 × 288 lido no IHDR do arquivo (2,71:1) — medido, não copiado da issue, porque
+   `CarimboBatida` monta `--carimbo-batida-ar` a partir deste par e um par errado
+   ACHATA a cápsula em silêncio em vez de dar erro.
+   A TINTA NÃO É RECOLORIDA, e isso é medido: #FFFFFF em 100% dos pixels opacos, com
+   canal alfa real. Sobre o hero escuro o contraste é nativo — a issue manda «não
+   inventar versão azul» e não há `filter` nenhum aqui (ver, no `globals.css`, por que
+   o hack de recolorir dos Benefícios foi retirado quando a arte branca apareceu).
+   ⚠️ O CAMINHO É A RAIZ DE `images/`, e não `images/solucoes/luminna/carimbo/`, onde
+   moram os outros dois desta rota. É onde a issue endereça o arquivo e é onde ele
+   está no disco; não movi para não trocar o caminho que a issue cita. Se a arte for
+   arrumada de lugar um dia, o par a mexer é este `src` e o arquivo.
+   `gatilho: 'rota'` — e aqui é o contrário dos outros dois: esta peça está NA DOBRA,
+   então bater na montagem é exatamente o que se quer. `'viewport'` a deixaria
+   esperando um cruzamento que já aconteceu. */
+const CARIMBO_CAPA = {
+  src: '/images/carimbo-luminna-ai-ticket-outline-ffffff.png',
+  largura: 780,
+  altura: 288,
+};
+
+/* ── SIS-220 · item 4 — A MARCA DO HUB ─────────────────────────────────────────
+   A arte BRANCA do produto, que é uma das duas que a issue nomeia («`luminnadoisnn.png`
+   / arte branca»). Entre as duas, esta: o hub é um disco `#001A3D` e este arquivo é
+   vetor de tinta branca com o ponto em `#71d0f6`, então ele não precisa de véu nem
+   perde definição quando o disco cresce. O `luminnadoisnn.png` traz a TAGLINE junto
+   da marca — dentro de um disco, a tagline chegaria a ~8px de altura, ilegível, e é
+   ela que o hero já publica em tamanho de letreiro.
+   As dimensões são as do `viewBox` do próprio arquivo (2882,24 × 823,85, arredondadas
+   para cima): com `unoptimized` elas só reservam a caixa. */
+const LOGO_DO_HUB = {
+  src: '/luminna-logo-branca.svg',
+  largura: 2883,
+  altura: 824,
+};
 
 /* A POSIÇÃO DE CADA CARTÃO NO ARRANJO DA MOCK, de `lg` para cima: dois à esquerda,
    dois à direita, o hub na coluna do meio. Abaixo de `lg` não há nada a posicionar —
@@ -278,6 +507,46 @@ function LigacoesDoHub() {
    faixa. */
 const TITULO_SDLC = 'Todo o Ciclo de Vida de Desenvolvimento de Software';
 const TITULO_REVOLUCAO = 'Uma revolução no desenvolvimento de software';
+
+/* ── SIS-220 (onda visual, item 5) · «LUMINNA AI» REALÇADO NO CARTÃO DO FECHO ──
+   O mesmo tratamento de PERSONALIZAÇÃO no Match AI (`MatchAiPagina.tsx:795`): tarja
+   `#0060A8` com texto branco. A grafia fica «Luminna AI» como está no dado — o Match
+   AI usa caixa alta porque o TERMO DELE é caixa alta, não porque a tarja exija.
+
+   Por que uma função e não o texto partido à mão no JSX: a copy é dado
+   (`acceleratorPages.ts`) e tem de continuar sendo. Escrever `O `, `<mark>`, ` representa…`
+   no componente faria o parágrafo existir em dois lugares, e o `copy-lock` passaria a
+   ver dois fragmentos onde há uma frase. Aqui o dado entra inteiro e a partição é
+   derivada dele.
+
+   `split` com separador capturado devolve os pedaços intercalados com os casamentos,
+   então os índices PARES são texto e os ÍMPARES são o termo. É por isso que a `key`
+   pode ser o índice: a lista é derivada de uma string imutável na renderização, não
+   uma coleção reordenável.
+
+   ⚠️ CASA A GRAFIA EXATA, com dois `n`. Se alguém «corrigir» o dado para «Lumina»
+   (é como o paste escreve, e a 5ª volta normalizou justamente isso), o realce
+   simplesmente não acende — o texto continua certo, sem tarja. Falha silenciosa e
+   inofensiva, de propósito: melhor um parágrafo sem destaque que um `<mark>` em volta
+   de meia palavra. */
+const TERMO_REALCADO = 'Luminna AI';
+
+function realcarLuminna(texto: string) {
+  /* Regex com GRUPO para o separador vir junto; `g` para pegar todas as ocorrências.
+     O termo não tem metacaractere nenhum, então não precisa de escape. */
+  return texto.split(new RegExp(`(${TERMO_REALCADO})`, 'g')).map((pedaco, i) =>
+    i % 2 === 1 ? (
+      <mark
+        key={i}
+        className="rounded bg-[#0060A8] px-1.5 py-0.5 font-semibold !text-white"
+      >
+        {pedaco}
+      </mark>
+    ) : (
+      pedaco
+    ),
+  );
+}
 
 /* O índice da cascata vive em `--reveal-i`; o atraso sai de
    `calc(var(--motion-stagger-reveal) * var(--reveal-i))`. Mesmo helper das irmãs, pela
@@ -387,6 +656,19 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
      continua achando o que não tem, que é o que a faixa 6 publica. */
   const desafios = page.blocks.find((b) => b.heading === 'Desafios no desenvolvimento de software');
   const beneficios = page.blocks.find((b) => b.heading === 'Benefícios');
+  /* SIS-220 (2ª volta, item 4) — o bloco novo, achado pelo `heading` como todos os
+     outros. O `heading` é a MARCA («Luminna AI»), e é isso que o torna reconhecível
+     sem ambiguidade: nenhum outro bloco desta slug se chama assim. */
+  /* SIS-220 (3ª volta) — o `heading` mudou de «Luminna AI» para «Tecnologia aplicada
+     em todo o ciclo», por pedido literal da issue («Não utilizar `Luminna AI` como
+     título da seção»), e o bloco perdeu os itens: os oito produtos agora são dado
+     tipado em `luminnaEcossistema.ts`. Logo o `find` é por título novo e o `kind` é
+     `paragraphs` — o que este bloco ainda carrega é o CABEÇALHO da faixa.
+     SIS-220 (5ª volta): o `find` NÃO ACHA MAIS NADA, de propósito — o bloco foi
+     comentado no dado porque a sua escrita não está no paste. A linha fica porque a
+     montagem comentada lá embaixo depende dela, e porque é este `find` que documenta
+     por qual título a faixa era localizada.
+     const ecossistema = page.blocks.find((b) => b.heading === 'Tecnologia aplicada em todo o ciclo'); */
   const integracao = page.blocks.find((b) => b.heading === 'Integração Versátil');
   const fecho = page.blocks.find((b) => b.kind === 'paragraphs' && !b.heading);
 
@@ -400,9 +682,15 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
     ? page.lead.slice(0, page.lead.indexOf(','))
     : page.lead;
 
-  /* Um estado só para o modal: `ContactModal` cuida de `showModal()`, do portal, da
-     pausa do scroll suave e da devolução do foco ao gatilho. */
-  const [contatoAberto, setContatoAberto] = useState(false);
+  /* SIS-220 (5ª volta) — O ESTADO SAIU COM O SEU ÚNICO GATILHO. O CTA do hero era o
+     último chamador de `setContatoAberto` (o botão do Ecossistema já tinha saído na 4ª
+     volta); sem ele, o estado ficaria sempre `false` e o `<ContactModal>` no pé da
+     página seria um diálogo que ninguém consegue abrir. Os dois saem juntos, e com eles
+     os imports de `useState` e `ContactModal`.
+     Nota original, que volta a valer se o CTA voltar: «Um estado só para o modal:
+     `ContactModal` cuida de `showModal()`, do portal, da pausa do scroll suave e da
+     devolução do foco ao gatilho.»
+     const [contatoAberto, setContatoAberto] = useState(false); */
 
   return (
     <>
@@ -493,6 +781,24 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                 `images: { unoptimized: true }` o que baixa é o arquivo do disco, então o
                 par serve para reservar a caixa e não distorcer a marca. `priority`
                 porque está na dobra e é o nome da página. */}
+            {/* SIS-220 (onda visual, item 1) — O CARIMBO ACIMA DO LETREIRO.
+                FORA do `<h1>`: dentro, ele entraria no nome acessível do cabeçalho e o
+                `h1` passaria a se chamar «Luminna AI Luminna AI» (a arte escreve a
+                mesma marca que o letreiro). `alt=""` pela mesma razão — é acento
+                gráfico de uma palavra que o nó seguinte já publica em tamanho de
+                letreiro.
+                `data-reveal` com cascata 0 e o carimbo batendo por rota: a batida é a
+                primeira coisa que acontece na dobra, e o letreiro sobe atrás dela. */}
+            <p data-reveal="fade-up">
+              <CarimboBatida
+                src={CARIMBO_CAPA.src}
+                alt=""
+                larguraIntrinseca={CARIMBO_CAPA.largura}
+                alturaIntrinseca={CARIMBO_CAPA.altura}
+                className="luminna-carimbo luminna-carimbo--capa"
+                gatilho="rota"
+              />
+            </p>
             <h1 data-reveal="fade-up" className="luminna-letreiro">
               {VITRINE && (
                 <Image
@@ -523,6 +829,11 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                 da casa usa. NÃO é `.btn-primary` — o degradê da casa com tinta branca
                 não passa no piso na ponta clara (medido na SIS-292). O número desta
                 pílula está na sonda desta issue. */}
+            {/* SIS-220 (5ª volta) — O CTA SAI. «Fale com um especialista» é escrita que
+                não está no paste, e a issue é explícita sobre o hero: «sem
+                bullets/CTAs com texto fora do paste». O molde e o número de contraste
+                medido na SIS-292 ficam registrados na nota acima para quando a área
+                reintroduzir um CTA com escrita aprovada.
             <p data-reveal="fade-up" style={cascata(2)}>
               <button
                 type="button"
@@ -533,6 +844,7 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                 <ArrowRight className="h-4 w-4" strokeWidth={2.2} aria-hidden />
               </button>
             </p>
+            */}
           </div>
           {/* ── A FRASE MANUSCRITA DO HERO (SIS-280 item 4, `docs/fonte2.md`) ──
               TEXTO HTML, não pixel: a especificação abre exigindo que a frase seja
@@ -556,6 +868,12 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
               para leitor de tela e dois lugares para a escrita divergir.
               A ENTRADA é `data-reveal="fade-up"` — o mecanismo de reveal da casa, que
               já respeita movimento reduzido — e a cascata a põe DEPOIS do botão. */}
+          {/* SIS-220 (5ª volta) — A FRASE MANUSCRITA SAI. «Grandes ideias constroem
+              amanhã.» é escrita nossa (nasceu da SIS-280, de `docs/fonte2.md`) e não
+              está no paste; a regra desta volta é que o hero só publique o que a marca
+              e o «Sobre» pedem. O CSS (`.luminna-frase*` em `globals.css`) e a nota de
+              projeto acima ficam intactos — é uma peça pronta, não um erro, e voltar é
+              descomentar estas nove linhas.
           <p data-reveal="fade-up" style={cascata(3)} className="luminna-frase">
             <span className="luminna-frase-linha">Grandes</span>
             <span className="luminna-frase-linha">ideias</span>
@@ -565,6 +883,7 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
               <line className="luminna-frase-risco" pathLength="1" x1="1.5" y1="6.4" x2="43.5" y2="1.6" />
             </svg>
           </p>
+          */}
         </RevealScope>
       </section>
 
@@ -608,31 +927,77 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                 {page.lead}
               </p>
             </div>
-            {/* A FOTO É A CAPA DO CARTÃO da vitrine — a mesma do hero, porque esta slug
-                não tem uma segunda arte, e é justamente por isso que aqui ela entra num
-                quadro 4/3 com recorte diferente em vez de repetir o panorama.
-                Decorativa (`alt=""`) porque o título e o parágrafo ao lado já dizem o
-                que ela ilustra. */}
-            {VITRINE && (
-              <div
-                data-reveal="scale-soft"
-                style={cascata(2)}
-                className="luminna-midia relative aspect-[4/3] overflow-hidden rounded-3xl border border-[#0079CB]/18"
-              >
-                <Image
-                  src={VITRINE.capaCard}
-                  alt=""
-                  aria-hidden
-                  fill
-                  sizes="(min-width: 1180px) 500px, 100vw"
-                  loading="lazy"
-                  className="luminna-midia-arte object-cover"
-                />
-              </div>
-            )}
+            {/* SIS-220 (onda visual, item 2) — A ARTE DO ANEL SDLC NO LUGAR DA FOTO.
+                Entra `luminnaprimeirasessao.png` (1399 × 1124 lido no IHDR). Fica
+                DECORATIVA, como a issue prefere: `alt=""` + `aria-hidden`, porque o
+                título e o `lead` ao lado já dizem o que ela ilustra — e um `alt`
+                honesto de um diagrama de ciclo seria um parágrafo, não uma linha.
+
+                ⚠️ DUAS MUDANÇAS QUE NÃO SÃO ENFEITE, e são a razão de isto não ser
+                uma troca de `src`:
+                · `object-contain` e não `object-cover`. A anterior era FOTO, e cortar
+                  foto é recorte; esta é DIAGRAMA, e `cover` comeria as bordas do anel
+                  — ou seja, os rótulos das etapas do ciclo, que é tudo o que a arte
+                  tem a dizer.
+                · `aspect-[5/4]` e não `4/3`. 1399 × 1124 é 1,245:1, que é 5/4 quase
+                  exato; num quadro 4/3 o `contain` deixaria duas faixas vazias nas
+                  laterais, e a borda arredondada do quadro passaria longe da arte.
+                A guarda `VITRINE &&` caiu com a foto: o `src` agora é literal e não
+                depende do `find` na vitrine. */}
+            <div
+              data-reveal="scale-soft"
+              style={cascata(2)}
+              className="luminna-midia luminna-midia--diagrama relative aspect-[5/4] overflow-hidden rounded-3xl border border-[#0079CB]/18"
+            >
+              <Image
+                src="/images/solucoes/luminna/luminnaprimeirasessao.png"
+                alt=""
+                aria-hidden
+                fill
+                sizes="(min-width: 1180px) 500px, 100vw"
+                loading="lazy"
+                className="luminna-midia-arte object-contain"
+              />
+            </div>
           </div>
         </RevealScope>
       </section>
+
+      {/* ── 2b. SOBRE O LUMINNA AI — O VÍDEO PRESO AO SCROLL (SIS-220 item 6) ─
+          O MESMO componente da home, montado nu e sem prop nenhuma: a seção já é sobre
+          este produto (o `h2` é «Sobre o Luminna AI»), a escrita vem de
+          `src/data/legacy.ts` e o vídeo é o `impacto-assembly-scroll.mp4` da SIS-226.
+          «Exatamente como na home» é literal — mesmo componente, mesmo dado, mesmo
+          vídeo, mesmo caminho de movimento reduzido (`data-static` + pôster, resolvido
+          dentro dele).
+          AQUI, E NÃO NO FIM DA PÁGINA: a faixa 2 acima abre o ciclo de vida em texto e
+          a faixa 3 abaixo é «Desafios no desenvolvimento de software» — que é
+          exatamente o `kicker` com que esta seção FECHA (a ordem de leitura invertida
+          pela SIS-214). Posta aqui, ela apresenta o produto depois da abertura e
+          entrega o gancho na faixa seguinte; posta no fim, o gancho apontaria para o
+          «Conheça também».
+          SEM `RevealScope` E SEM `data-reveal` POR FORA, como em `app/page.tsx:428`: a
+          seção é `sticky` de 200svh e um envelope com `transform` trocaria a referência
+          do `sticky` da janela para a caixa. O reveal da legenda é interno
+          (`useRevealTrigger` no próprio sticky).
+          A SUPERFÍCIE É DELA: `.sequence` é `.lp-section--cream`, opaca — o plano azul
+          da rota passa por baixo sem uma regra a mais, e é o «creme preservado» do
+          aceite. Por isso também ela não ganha `.section-light` nem grafismo de canto:
+          o quadro de vídeo cobre os primeiros 100svh de ponta a ponta. */}
+      {/* SIS-220 (5ª volta) — A SEÇÃO SAI DA ROTA, e a issue deu as duas saídas:
+          «alinhar ao "Sobre" do paste OU remover da rota se duplicar o lead». Duplica,
+          duas vezes: o `text` de `impactSequence` («O Luminna AI representa uma
+          revolução no desenvolvimento de software, proporcionando eficiência, qualidade
+          e rapidez.») é palavra por palavra a primeira oração do FECHO da página, e o
+          `kicker` é «Desafios no desenvolvimento de software», que é o título da faixa
+          3 logo abaixo. Era ela o «segundo "revolução…" solto» que a issue nomeia.
+          ALINHAR ERA A SAÍDA ERRADA aqui: a escrita mora em `src/data/legacy.ts`, e a
+          HOME monta o mesmo componente com o mesmo dado (`app/page.tsx:429`). Editar o
+          dado para servir esta rota reescreveria a copy da home, que está fora do
+          escopo desta issue. Remover a montagem resolve só onde o problema está.
+          O vídeo `impacto-assembly-scroll.mp4` (SIS-226) continua em uso pela home.
+      <ImpactSequence />
+      */}
 
       {/* ── 3. DESAFIOS NO DESENVOLVIMENTO DE SOFTWARE (a grade de cards) ─────
           Título, ordem e textos são do dado; o que este arquivo declara são os ícones.
@@ -658,16 +1023,36 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
             margem={MARGEM_REVEAL}
             data-reveal-nome="luminna-desafios"
           >
-            <h2
-              data-reveal="fade-up"
-              id={idDoBloco(desafios.heading)}
-              className="font-display text-section font-bold text-ink"
-            >
-              {desafios.heading}
-            </h2>
+            {/* SIS-220 item 5 — O CARIMBO AO LADO DO TÍTULO, e não sobre ele: a arte
+                escreve a MESMA palavra do `h2`, então sobrepor as duas seria a palavra
+                duas vezes em cima de si mesma. A linha é `flex-wrap` com o título
+                mandando (`min-w-0`), de modo que no telefone a cápsula cai para baixo
+                inteira em vez de comprimir o `h2` — é o que faz 390px funcionar sem um
+                segundo nó condicional. */}
+            <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-5">
+              <h2
+                data-reveal="fade-up"
+                id={idDoBloco(desafios.heading)}
+                className="font-display text-section min-w-0 font-bold text-ink"
+              >
+                {desafios.heading}
+              </h2>
+              <CarimboBatida
+                src={CARIMBO_DESAFIOS.src}
+                alt=""
+                larguraIntrinseca={CARIMBO_DESAFIOS.largura}
+                alturaIntrinseca={CARIMBO_DESAFIOS.altura}
+                className="luminna-carimbo"
+                gatilho="viewport"
+              />
+            </div>
             {/* O APOIO é a `description` da vitrine — a única frase desta rota que vem
                 de `accelerators.ts`, usada UMA vez, e por isso não há duas aberturas
                 dizendo a mesma coisa (o defeito que a SIS-120 removeu do template). */}
+            {/* SIS-220 (5ª volta) — O APOIO SAI. A `description` de `accelerators.ts`
+                não está no paste, e o paste abre os Desafios direto nos quatro cards.
+                O dado FICA onde está e continua servindo o cartão da vitrine em
+                /solucoes — o que saiu é a segunda publicação dele, aqui.
             {VITRINE && (
               <p
                 data-reveal="fade-up"
@@ -677,6 +1062,7 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                 {VITRINE.description}
               </p>
             )}
+            */}
             <ul className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {desafios.items.map((item, i) => {
                 const Icone = ICONES_DESAFIOS[i] ?? Sparkles;
@@ -698,12 +1084,19 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                        instante da sobreposição. */
                     className="luminna-cartao relative flex flex-col items-start overflow-hidden rounded-2xl border border-[#0079CB]/18 bg-white p-5 pb-7"
                   >
-                    <span aria-hidden className="luminna-selo relative mb-4 block h-12 w-12">
+                    {/* SIS-220 item 1 («ícones reforçados nas faixas») — o disco era
+                        `h-12 w-12` com glifo de 20px e traço 1,6; agora é `h-14 w-14`
+                        com glifo de 28px e traço 1,9. O glifo cresce 40% e o disco
+                        17%, então o ícone passa a ocupar metade do selo em vez de um
+                        terço — é o reforço, e o disco não vira mancha. O traço sobe
+                        junto porque glifo maior com o mesmo `strokeWidth` fica MAIS
+                        fino em proporção, que é o contrário do pedido. */}
+                    <span aria-hidden className="luminna-selo relative mb-4 block h-14 w-14">
                       {/* O ARCO é nó IRMÃO do ícone e é ele que recebe a rotação: girar
                           o nó que contém o glifo deixaria o desenho tombando junto. */}
                       <span aria-hidden className="luminna-arco absolute inset-0" />
                       <span className="absolute inset-0 flex items-center justify-center">
-                        <Icone className="h-5 w-5 text-[#0079CB]" strokeWidth={1.6} />
+                        <Icone className="h-7 w-7 text-[#0079CB]" strokeWidth={1.9} />
                       </span>
                     </span>
                     <h3 className="font-display text-base leading-snug text-ink">{item.term}</h3>
@@ -774,13 +1167,32 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
             margem={MARGEM_REVEAL}
             data-reveal-nome="luminna-beneficios"
           >
-            <h2
-              data-reveal="fade-up"
-              id={idDoBloco(beneficios.heading)}
-              className="font-display text-section font-bold text-white"
-            >
-              {beneficios.heading}
-            </h2>
+            {/* SIS-220 item 5 — O CARIMBO DE «BENEFÍCIOS». Mesmo arranjo do de
+                Desafios, com UMA diferença declarada: `luminna-carimbo--escuro`
+                reacende a tinta, porque a arte é contorno `#0757c7` e esta é a faixa
+                navy. A razão de reacender em vez de trocar de arte está no docblock —
+                não existe variante branca com esta palavra.
+
+                SIS-220 (2ª volta, item 2): passou a existir. A arte é branca de
+                origem e `luminna-carimbo--escuro` SAIU desta `className` — o arranjo
+                agora é idêntico ao de Desafios, sem exceção nenhuma. */}
+            <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-5">
+              <h2
+                data-reveal="fade-up"
+                id={idDoBloco(beneficios.heading)}
+                className="font-display text-section min-w-0 font-bold text-white"
+              >
+                {beneficios.heading}
+              </h2>
+              <CarimboBatida
+                src={CARIMBO_BENEFICIOS.src}
+                alt=""
+                larguraIntrinseca={CARIMBO_BENEFICIOS.largura}
+                alturaIntrinseca={CARIMBO_BENEFICIOS.altura}
+                className="luminna-carimbo"
+                gatilho="viewport"
+              />
+            </div>
             {/* A COLUNA DE SETE, e o fio vertical ao lado dela. Uma coluna e não grade
                 de três: sete itens numa grade de três deixa uma fileira órfã de um, e é
                 a coluna que dá sentido ao fio descendo. De `sm` para cima o conteúdo
@@ -804,9 +1216,17 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                           bolinhas». Caixa chapada porque cai sobre a arte velada. */}
                       <span
                         aria-hidden
-                        className="luminna-no flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#57B7EE]/40 bg-[#001A3D]"
+                        /* SIS-220 item 1 — o disco do nó era `h-10 w-10` com glifo de
+                           20px; agora `h-12 w-12` com 24px e traço 1,9. Ele NÃO vai aos
+                           56px do cartão de Desafios, e o limite é geométrico: aqui o
+                           disco divide UMA LINHA com o `h3` e o parágrafo do item (dois
+                           blocos de texto empilhados em `py-4`), então um disco maior
+                           que a altura desse par passaria a mandar na altura da faixa —
+                           sete vezes. No cartão de Desafios ele está sozinho na sua
+                           linha, e por isso lá pode crescer mais. */
+                        className="luminna-no flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#57B7EE]/40 bg-[#001A3D]"
                       >
-                        <Icone className="h-5 w-5 text-[#B6DFF9]" strokeWidth={1.6} />
+                        <Icone className="h-6 w-6 text-[#B6DFF9]" strokeWidth={1.9} />
                       </span>
                       <span className="block">
                         <h3 className="font-display text-base leading-snug text-white">
@@ -822,6 +1242,50 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
           </RevealScope>
         </section>
       )}
+
+      {/* ── 4-B. ECOSSISTEMA — A FAIXA SAIU DAQUI (SIS-220, 3ª volta) ─────────
+          O desenho da 2ª volta (grade rígida de oito cartões brancos iguais, título
+          «Luminna AI», métricas sempre à mostra no pé) foi REPROVADO em cima de uma
+          tela: «Não passa o pedido novo». O que entra no lugar é
+          `EcossistemaLuminna`, construído a partir de `docs/luminnaecosistema.md` e
+          de `public/imagensexemplo/ecossitema.png` — composição bento, filtros que
+          filtram de verdade, contador e painel de resultados que abre dentro do
+          cartão ativo.
+          POR QUE COMPONENTE E NÃO MAIS MARCAÇÃO AQUI: a faixa passou a ter ESTADO
+          (filtro ativo e cartão aberto), e este arquivo tem 1.600 linhas e um estado
+          só. No mesmo componente, cada clique numa pastilha re-renderizaria o hero,
+          a sequência de impacto e o hub de integração. O JSX da 2ª volta está
+          guardado, inteiro, no pé de `EcossistemaLuminna.tsx`.
+          «4-B» E NÃO «5», como antes e pelo mesmo motivo: o docblock do topo cita as
+          faixas por número, e renumerar de 5 a 7 deixaria aquelas referências
+          apontando para a faixa errada.
+          A guarda mudou de `kind` — o bloco do dado é `paragraphs` agora, e o que
+          ele carrega é o cabeçalho: título (que é a âncora), `navLabel` (a
+          sobrancelha) e o parágrafo de apoio.
+
+          ⚠️ SIS-220 (5ª VOLTA): NADA DISSO ESTÁ MONTADO. O bloco de dado foi comentado
+          em `acceleratorPages.ts`, então `ecossistema` é `undefined` e a guarda já
+          bastaria — a montagem está comentada TAMBÉM porque a issue pede as duas coisas
+          («comentar montagem + bloco») e porque uma guarda que nunca abre é uma faixa
+          que reaparece sozinha no dia em que alguém descomentar o dado sem ler isto.
+          `EcossistemaLuminna.tsx` e `luminnaEcossistema.ts` ficam em disco, sem
+          consumidor: são peça pronta e a única cópia das métricas medidas.
+      {ecossistema?.kind === 'paragraphs' && ecossistema.heading && (
+        <EcossistemaLuminna
+          titulo={ecossistema.heading}
+          idDaAncora={idDoBloco(ecossistema.heading)}
+          sobrancelha={ecossistema.navLabel}
+          descricao={ecossistema.paragraphs[0]}
+          // `aoConhecer={() => setContatoAberto(true)}` estava aqui na 3ª volta: os dois
+          // cartões sem métrica (TEST e PROMPT) mostravam «Conheça a solução →» e o
+          // destino era o modal de contato desta página. O botão foi retirado na 4ª
+          // volta por pedido direto, e a prop foi embora com ele.
+          // (A nota antiga dizia que `setContatoAberto` seguia em uso «por outros pontos
+          //  da página». Não seguia: o CTA do hero era o único chamador restante, e ele
+          //  saiu nesta volta — o estado e o `ContactModal` saíram com ele.)
+        />
+      )}
+      */}
 
       {/* ── 5. INTEGRAÇÃO VERSÁTIL — O ARRANJO DA MOCK (SIS-280 item 3) ───────
           O LAYOUT é o de `public/images/integracao.png`: um HUB redondo escuro no
@@ -883,18 +1347,44 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
               {/* O HUB. PRIMEIRO no DOM de propósito: empilhado no telefone ele é o
                   título visual do arranjo, e no `lg` a coluna do meio o põe no centro
                   sem mexer na ordem de leitura. Não é cabeçalho (`h3`) — é a marca
-                  repetida em forma de selo, e o cabeçalho da faixa é o `h2` acima.
-                  `aria-hidden` NO ÍCONE só; o nome fica legível. */}
+                  repetida em forma de selo, e o cabeçalho da faixa é o `h2` acima. */}
+              {/* SIS-220 item 4 — o hub era `Sparkles` (24px) + `{page.name}` escrito
+                  em `text-base`. Trocado pela ARTE REAL: a logo branca do produto,
+                  `LOGO_DO_HUB`. Três consequências que precisam ficar escritas:
+
+                  · O TEXTO SAIU, e com ele o nome legível que estava aqui. Quem passa
+                    a nomear o hub é o `alt={page.name}` da imagem — mesmo conteúdo,
+                    mesmo leitor de tela, um nó a menos. Por isso a imagem NÃO leva
+                    `alt=""`: sem ela o arranjo hub-and-spoke ficaria com o centro
+                    anônimo, e o `h2` da faixa fala de integração, não do produto.
+                  · O DISCO CRESCEU de 160/176px para 208/240px, porque a logo é
+                    deitada (2883 × 824 ≈ 3,5:1) e uma arte deitada dentro de um
+                    círculo só cabe pela largura: num disco de 176px a margem segura
+                    horizontal dá ~150px de arte, e 150px de largura = 43px de altura.
+                    Em 240px a arte vai a 160px de largura sem encostar na borda.
+                  · `width`/`height` continuam sendo o par intrínseco do arquivo, não
+                    o tamanho pintado — quem pinta é o `w-[…]`. Com `unoptimized` a
+                    arte sai do disco como está; o par só reserva a caixa na proporção
+                    certa e impede o achatamento durante o carregamento.
+
+                  ⚠️ A arte escolhida é `luminna-logo-branca.svg` e NÃO o
+                  `luminnadoisnn.png` que a issue cita como exemplo: o PNG traz o
+                  tagline abaixo do nome, e num disco a linha do tagline cairia em
+                  ~8px — ilegível, e ilegível dentro do elemento que é o centro
+                  visual da faixa. O vetor branco é só a marca, e é vetor. */}
               <div
                 data-reveal="fade-up"
                 style={cascata(2)}
-                className="luminna-hub relative z-10 mx-auto flex h-40 w-40 flex-col items-center justify-center gap-1 rounded-full bg-[#001A3D] text-center lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-44 lg:w-44"
+                className="luminna-hub relative z-10 mx-auto flex h-52 w-52 flex-col items-center justify-center rounded-full bg-[#001A3D] text-center lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:h-60 lg:w-60"
               >
                 <span aria-hidden className="luminna-hub-anel absolute inset-0" />
-                <Sparkles className="h-6 w-6 text-[#57B7EE]" strokeWidth={1.6} aria-hidden />
-                <span className="font-display px-4 text-base leading-snug font-semibold text-white">
-                  {page.name}
-                </span>
+                <Image
+                  src={LOGO_DO_HUB.src}
+                  alt={page.name}
+                  width={LOGO_DO_HUB.largura}
+                  height={LOGO_DO_HUB.altura}
+                  className="h-auto w-[8.5rem] lg:w-[10rem]"
+                />
               </div>
               {integracao.items.map((item, i) => {
                 const Icone = ICONES_INTEGRACAO[i] ?? Sparkles;
@@ -909,7 +1399,12 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                     <span aria-hidden className="luminna-selo relative block h-12 w-12">
                       <span aria-hidden className="luminna-arco absolute inset-0" />
                       <span className="absolute inset-0 flex items-center justify-center">
-                        <Icone className="h-6 w-6 text-[#0079CB]" strokeWidth={1.5} />
+                        {/* SIS-220 item 1 — 24px → 28px e traço 1,5 → 1,8, o mesmo
+                            reforço aplicado aos outros dois selos da rota. O disco
+                            fica em `h-12 w-12`: ele já é o maior arco da faixa e
+                            crescer mais o aproximaria do hub, que é quem deve
+                            dominar este arranjo. */}
+                        <Icone className="h-7 w-7 text-[#0079CB]" strokeWidth={1.8} />
                       </span>
                     </span>
                     <p className="font-display mt-4 text-base leading-snug font-semibold text-ink">
@@ -919,19 +1414,40 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                         natureza, e o nome de cada marca sai no `alt`. A pílula é branca
                         com borda finíssima, como na mock — o cartão já é branco, então
                         quem separa é a borda e não o fundo. */}
+                    {/* SIS-220 item 4 — A ESCALA DAS PÍLULAS.
+
+                        Estava: cápsula `h-8` (32px) com logo `h-5` (20px), ou seja
+                        6px de respiro em cima e embaixo de uma arte de 20px. Uma
+                        marca como o GitHub Copilot, que é quadrada, ocupava 20 × 20px
+                        — do tamanho de um favicon, dentro de um cartão de 300px.
+
+                        Agora: cápsula `h-14` (56px) com logo `h-9` (36px). 36px é o
+                        número escolhido, e a razão é a marca mais ESTREITA da tabela:
+                        as larguras em `MARCAS_DE_INTEGRACAO` estão medidas para 20px
+                        de altura, e a menor delas fica em ~19px de largura. A 36px de
+                        altura essa mesma marca chega a ~34px de largura — passa a ter
+                        presença de logo em vez de presença de ícone, e é o ponto em
+                        que a menor marca do conjunto deixa de parecer um detalhe.
+
+                        ⚠️ A tabela NÃO foi reescrita. Cada `largura` continua sendo a
+                        largura daquela arte A 20px, e é `larguraDaPilula()` que a
+                        converte para 36px. Reescrever os números à mão em onze linhas
+                        é justamente como uma delas acaba achatada: com o par
+                        derivado, a proporção de toda marca nova sai certa sem ninguém
+                        precisar medir de novo. */}
                     {marcas.length > 0 && (
-                      <ul className="mt-4 flex flex-wrap items-center gap-2">
+                      <ul className="mt-5 flex flex-wrap items-center gap-2.5">
                         {marcas.map((marca) => (
                           <li
                             key={marca.arquivo}
-                            className="flex h-8 items-center rounded-lg border border-[#001A3D]/10 bg-white px-2.5 shadow-[0_1px_2px_rgba(0,26,61,0.06)]"
+                            className="flex h-14 items-center rounded-xl border border-[#001A3D]/10 bg-white px-3.5 shadow-[0_1px_2px_rgba(0,26,61,0.06)]"
                           >
                             <Image
                               src={`/images/solucoes/luminna/${marca.arquivo}`}
                               alt={marca.rotulo}
-                              width={marca.largura}
-                              height={20}
-                              className="h-5 w-auto"
+                              width={larguraDaPilula(marca.largura)}
+                              height={ALTURA_LOGO_PILULA}
+                              className="h-9 w-auto"
                             />
                           </li>
                         ))}
@@ -957,16 +1473,85 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
       {fecho?.kind === 'paragraphs' && (
         <section
           className="section-py relative overflow-clip bg-[#001A3D]"
-          aria-labelledby={idDoBloco(TITULO_REVOLUCAO)}
+          /* SIS-220 (onda visual, item 6) — NOME ACESSÍVEL SEM `h2` VISUAL.
+             O título sai de cena (item 1), mas a seção não pode ficar anônima: a
+             lista de regiões de um leitor de tela passaria a ter um item sem rótulo
+             entre duas faixas nomeadas. `aria-label` com o título antigo, e não um
+             `h2` em `sr-only`, por uma razão medível: um `h2` oculto continua na
+             ÁRVORE DE CABEÇALHOS, e quem navega por cabeçalhos pularia para um
+             título que ninguém vê na tela — descasando a navegação por voz da
+             navegação visual. `aria-label` nomeia a região sem inventar cabeçalho.
+             ⚠️ Saiu `aria-labelledby={idDoBloco(TITULO_REVOLUCAO)}`: o `id` que ele
+             apontava morava no `h2` removido, e referência pendurada em `id` que não
+             existe mais deixa a seção sem nome nenhum, não com o nome antigo. */
+          aria-label={TITULO_REVOLUCAO}
         >
-          <div aria-hidden className="grade-tecnica luminna-grade" />
-          <AnelDoCiclo className="luminna-ciclo--escuro luminna-ciclo--baixo" />
-          <RevealScope
-            className="container-lp relative z-10"
-            limiar={LIMIAR_REVEAL}
-            margem={MARGEM_REVEAL}
-            data-reveal-nome="luminna-fecho"
+          {/* SIS-220 (onda visual, item 3) — O VÍDEO DA JORNADA, no primitivo da casa.
+              `HeroVideoBackdrop` e não um `<video>` escrito aqui porque o problema
+              difícil desta peça já está resolvido lá e é contraintuitivo: `autoPlay`
+              é GATILHO DE PARTIDA, não estado — o snapshot de servidor de
+              `useReducedMotion` é sempre `false`, então o HTML sai com o atributo, o
+              laço começa, e apagar o atributo depois não para nada. Lá a pausa é
+              imperativa (`pause()` + `currentTime = 0`, casando com o pôster) e a
+              árvore é UM nó nos dois casos, sem divergência de hidratação. Repetir
+              isso inline seria repetir a chance de errar.
+              O pôster foi gerado do QUADRO 0 do próprio arquivo, e isso não é detalhe:
+              o estado parado do componente é `currentTime = 0`, então qualquer outro
+              quadro apareceria como um salto no instante em que o vídeo some.
+              ⚠️ `jornada.mp4` tem 15,8MB para 8s de laço — pesado para fundo
+              decorativo. Não reencodei porque está fora do escopo desta issue; fica
+              anotado no comentário dela.
+              A grade e o anel continuam, e ficam DENTRO do envelope: eles são a
+              assinatura da faixa, e o véu passa por cima do vídeo, não deles. */}
+          <HeroVideoBackdrop
+            src="/videos/jornada.mp4"
+            poster="/videos/jornada-poster.webp"
+            className="hero-backdrop--luminna-fecho"
           >
+            <div aria-hidden className="grade-tecnica luminna-grade" />
+            <AnelDoCiclo className="luminna-ciclo--escuro luminna-ciclo--baixo" />
+            <RevealScope
+              className="container-lp relative z-10"
+              limiar={LIMIAR_REVEAL}
+              margem={MARGEM_REVEAL}
+              data-reveal-nome="luminna-fecho"
+            >
+              {/* SIS-220 (onda visual, item 4) — O CARTÃO CENTRADO.
+                  Um parágrafo só (o dado já é único desde a 5ª volta da copy), então
+                  não há `.map` de dois nem cascata de índice: o cartão É o conteúdo da
+                  faixa. `max-w-3xl mx-auto` centra sem grid de duas colunas — a coluna
+                  de arte saiu com o slot 3D. */}
+              <div
+                data-reveal="scale-soft"
+                /* ⚠️ CONSERTO 01/10 — O CARTÃO INVERTEU: claro, com a escrita no tom
+                   contrário. Era `bg-[#001A3D]/72` + `text-white/90`, ou seja escuro
+                   sobre escuro, e ele desaparecia dentro do take.
+                   `#F1F7FC` a 96% e não branco puro nem 100% de opacidade: 4% deixam
+                   o movimento do vídeo insinuado nas bordas (é o que justifica haver
+                   vídeo atrás) sem que o take atravesse a leitura, e o cinza-azulado
+                   é o claro da casa, não um branco solto.
+                   A tinta é `#0B2A4A`, o navy do texto — contraste ~12:1 sobre esse
+                   fundo, bem acima do AA de 4,5:1, com folga de sobra para os 4% de
+                   vídeo que atravessam. Sem opacidade na tinta: `text-white/90` fazia
+                   sentido sobre escuro, mas tinta clareada sobre fundo claro é
+                   justamente como se perde contraste sem perceber. */
+                className="luminna-fecho-card mx-auto max-w-3xl rounded-3xl border border-[#0079CB]/22 bg-[#F1F7FC]/96 p-7 text-center backdrop-blur-sm sm:p-10"
+              >
+                <p className="text-lg leading-relaxed text-[#0B2A4A]">
+                  {realcarLuminna(fecho.paragraphs[0])}
+                </p>
+              </div>
+            </RevealScope>
+          </HeroVideoBackdrop>
+          {/* SIS-220 (onda visual, itens 1 e 2) — O TÍTULO E O SLOT 3D SAÍRAM.
+              Comentados, não apagados, porque o que sai aqui é a ÚNICA ocorrência
+              publicada de `TITULO_REVOLUCAO` na rota e a única leitura do slot — e a
+              nota longa abaixo é o registro de por que a caixa tinha proporção fixa.
+
+              ⚠️ `TITULO_REVOLUCAO` CONTINUA EM USO: é o `aria-label` da seção, acima.
+              Quem for remover a constante por «não é mais renderizada» quebra o nome
+              acessível da faixa.
+
             <h2
               data-reveal="fade-up"
               id={idDoBloco(TITULO_REVOLUCAO)}
@@ -974,19 +1559,70 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
             >
               {TITULO_REVOLUCAO}
             </h2>
-            <div className="mt-6 max-w-3xl space-y-4">
-              {fecho.paragraphs.map((p, i) => (
-                <p
-                  key={p.slice(0, 40)}
-                  data-reveal="fade-up"
-                  style={cascata(i + 1)}
-                  className="text-lg leading-relaxed text-white/85"
+
+              SIS-220 item 7 — O SEGUNDO SLOT 3D, e o que «lugar medido» quer dizer.
+
+                A rota fica com DOIS slots fora da Integração, ambos declarados aqui
+                no código e não improvisados na hora:
+                  · faixa 2 (ciclo de vida) — `luminna-midia`, `aspect-[4/3]`,
+                    `sizes="(min-width: 1180px) 500px, 100vw"`;
+                  · esta faixa (fecho) — `luminna-slot3d`, `aspect-[5/4]`, coluna de
+                    `minmax(0,0.85fr)` ao lado do texto, `sizes` abaixo.
+                Medido = a caixa tem proporção fixa e largura anunciada ANTES de a
+                arte existir. É o que permite trocar o conteúdo por um render 3D sem
+                mexer no layout: a reserva já está feita, o `aspect-[…]` não deixa a
+                faixa pular quando a arte chegar, e o `sizes` já diz qual largura
+                pedir. Uma caixa de altura automática só descobriria isso depois.
+
+                ⚠️ O QUE ESTÁ DENTRO HOJE NÃO É 3D. É `VITRINE.capaCard`, a capa do
+                cartão da vitrine — placeholder honesto, exatamente como a issue
+                autoriza («placeholders até haver arte»). Está `aria-hidden` com
+                `alt=""` porque não acrescenta informação a estes dois parágrafos; no
+                dia em que entrar um render de verdade, o que muda é o `src` e o `alt`
+                passa a ser descrição — o resto da caixa fica.
+
+                ⚠️ E AQUI TEM O DEFEITO MEDIDO NA FAIXA 4 (linha 886): nada de
+                `z-index` negativo. Esta faixa é `bg-[#001A3D]` chapado e não abre
+                contexto de empilhamento só por ser `relative`; um filho negativo
+                desceria para trás do próprio fundo e a arte desapareceria. Esta fica
+                no fluxo, dentro do `RevealScope` que já é `z-10`.
+
+              ⚠️ A grade de duas colunas sai INTEIRA, e não só a coluna da direita: com
+              um parágrafo único e nenhuma arte ao lado, `lg:grid-cols-[1fr_0.85fr]`
+              deixaria o texto comprimido a 54% da largura com metade da faixa vazia.
+
+            <div className="mt-6 grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
+              <div className="max-w-3xl space-y-4">
+                {fecho.paragraphs.map((p, i) => (
+                  <p
+                    key={p.slice(0, 40)}
+                    data-reveal="fade-up"
+                    style={cascata(i + 1)}
+                    className="text-lg leading-relaxed text-white/85"
+                  >
+                    {p}
+                  </p>
+                ))}
+              </div>
+              {VITRINE && (
+                <div
+                  data-reveal="scale-soft"
+                  style={cascata(fecho.paragraphs.length + 1)}
+                  className="luminna-slot3d relative aspect-[5/4] overflow-hidden rounded-3xl border border-[#57B7EE]/25"
                 >
-                  {p}
-                </p>
-              ))}
+                  <Image
+                    src={VITRINE.capaCard}
+                    alt=""
+                    aria-hidden
+                    fill
+                    sizes="(min-width: 1180px) 460px, 100vw"
+                    loading="lazy"
+                    className="luminna-slot3d-arte object-cover"
+                  />
+                </div>
+              )}
             </div>
-          </RevealScope>
+          */}
         </section>
       )}
 
@@ -1117,8 +1753,12 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
           `title`/`description`: os defaults são a escrita «Fale com a gente». Ele se
           portala para fora daqui, então a posição no markup não afeta o desenho — o que
           ela evita é nascer dentro de uma seção com `transform`/`filter`, que ancoraria
-          o `fixed` do `<dialog>` no lugar errado. */}
+          o `fixed` do `<dialog>` no lugar errado.
+          SIS-220 (5ª volta): SEM GATILHO NA ROTA, o modal saiu junto com o CTA do hero —
+          ver a nota no lugar do `useState`, acima. O contato continua alcançável pelo
+          cabeçalho, que monta o seu próprio `ContactModal` em toda a página.
       <ContactModal open={contatoAberto} onClose={() => setContatoAberto(false)} />
+      */}
     </>
   );
 }

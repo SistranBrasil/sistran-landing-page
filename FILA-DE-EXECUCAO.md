@@ -87,7 +87,7 @@ item 2 da **SIS-185** (violeta de `BRASIL`).
 |---|---|---|
 | **SIS-182** | Todo | `matchMedia` → `useSyncExternalStore` |
 | **SIS-183** | Todo | Auditoria dos dois interruptores de movimento |
-| **SIS-184** | Todo | `/esg` scroll lateral no celular |
+| **SIS-184** | Todo | home | ScrollSpy: SOLUÇÕES (e seções claras) com cor contrária ao fundo — slot 29/09 |
 | **SIS-186** | Todo | Contraste × antialiasing em texto miúdo |
 | **SIS-185** | Backlog | Divisas SP/PR + token violeta `BRASIL` |
 | **SIS-187** | Backlog | Emenda hero → grade (precisa do seu aval) |
@@ -106,16 +106,20 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-196** | Todo | 3 + layout | Soluções de Negócios: **redesenho inteiro** sticky storytelling (`docs/secao-sticky-storytelling-terminal.md`) — não só efeito em cima do teatro atual |
 | **SIS-197** | Todo | 4 | Presets `data-reveal` nos blocos estáticos |
 | **SIS-198** | Todo | hero | Tamanho fixo (sem scale/drop) + contorno ciano melhorado — ref 2ª captura; skills `.claude/gsap-skills` |
-| **SIS-199** | Todo | home | Backdrop inteiro = azul claro + grade leve (igual Soluções / `--fundo-claro-secao`) |
+| **SIS-230** | Todo | home | Fundo claro = mesma estrutura/visual de `/quem-somos` (token azul + malha pontos + AtmosferaQuadrados) — slot 28/09 |
 | **SIS-200** | In Review | números | Sete células iguais + ícone dinâmico por métrica |
 | **SIS-203** | Todo | números | Hover fluido nas células, menos névoa branca, bolinhas sob cada número |
-| **SIS-201** | In Review | parceiros | Cards horizontais Terminal + logos/eco (conferir) |
-| **SIS-202** | In Review | parceiros | Etapas: **layout** RoadmapTrail + textos `TIMELINE_EVENTS` (reparo: sem copy Luminna) |
+| **SIS-201** | Todo | parceiros | Cards mais abaixo + carimbo colado + placas grandes iguais (Samplemed/Azure) — slot 30/09 |
+| **SIS-202** | In Review | parceiros | Trajetória preview: curva = `exemplopreview.png` + selos 1988 pílula/glow — slot 30/09 |
+| **SIS-205** | Todo | parceiros | Palco implantações: fundo azul claro + cards dinâmicos (contorno=tag) + 1988/ícone/curvas = preview — slot 30/09 |
 | **SIS-218** | Todo | parceiros | Parceiros: seção fixa + avanço lateral com scroll da página (irmã da 219) |
-| **SIS-219** | Todo | parceiros | Logos dos cards bem maiores e mais destacadas (irmã da 218) |
-| **SIS-220** | Todo | parceiros | Linha do tempo: viajante = logo Luminna igual `/transformacao-legado` |
+| **SIS-219** | Todo | parceiros | Cards: logo=hover + placa branca + sem título; Picsel nova; CTA leve só AWS/Addactis/FRISS/Sensedia → Partner Finder — slot 24/09 |
+| **SIS-220** | Todo | solucoes/luminna-ai | Capa: carimbo ticket; SDLC: `luminnaprimeirasessao.png`; fecho: vídeo `jornada.mp4` + card com mark «Luminna AI» — slot 30/09 |
+| **SIS-123** | Todo | legal | `/politica-de-privacidade`: fundo contínuo = `/solucoes` + títulos em destaque + escrita maior + bloco no meio — slot 30/09 |
+| **SIS-124** | Todo | legal | `/relatorio-de-transparencia-salarial`: texto + imagem `Imagem-Relatorio-de-Transparencia-Salarial-1.jpg` — slot 30/09 |
+| **SIS-266** | Todo | footer | Retirar link Blog da coluna Institucional — slot 30/09 |
+| **SIS-226** | Todo | site | Cookies: banner 1ª visita → cookie lateral; pílula só hover; clique = painel + scroll — slot 30/09 |
 | **SIS-204** | Todo | solucoes | Seção Consultoria = mock `consultoria.png` + `docs/consultoria.md` + `consultoria-img.png` — slot 22/09 |
-| **SIS-205** | Todo | eventos | Botão YouTube só em Web Summit AI + Suitability (demais cards sem botão) |
 | **SIS-206** | Todo | esg | Reparo: título da abertura quebrado (frase ESG) |
 | **SIS-207** | Todo | esg | SOCIAL: foguete silhueta branca + trajeto em toda a seção |
 | **SIS-208** | Todo | esg | ENVIRONMENT: cards da captura (círculo, sombra, flutuação) |
@@ -123,29 +127,35 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-210** | Todo | esg | GOVERNANCE: mesmos cards da captura (sombra + flutuação) |
 | **SIS-211** | In Review | contato | Números: fundo azul claro + cards tipo Implementações + seção mais baixa |
 | **SIS-256** | Todo | contato | Números: cards mais estreitos e sem contador 01 / 07 |
-| **SIS-260** | Todo | contato | Números: grade de quadradinhos discretos igual à home |
+| **SIS-49** | Todo | contato | Números: grade de quadradinhos discretos igual à home — slot 23/09 (saiu de SIS-260) |
 | **SIS-212** | Todo | contato | Negrito em «Preencha o formulário e fale com a gente!» |
-| **SIS-213** | Todo | home | Números: retirar sombra/faixa branca do fundo |
-| **SIS-214** | Todo | home | Sobre o Luminna AI entre Números e Desafios |
+| **SIS-213** | Todo | home | Tirar sombra navy entre Números e vídeo Luminna (`.sequence::after`) — slot 28/09 |
+| **SIS-214** | Entregue | home | Sobre o Luminna AI entre Números e Desafios (arquivo) |
 | **SIS-215** | Todo | eventos | Retirar/clarear bandas azuis escuras no início e fim do scroll |
 | **SIS-216** | Todo | solucoes/smart-miner | Artes dos 4 cards + Onde usar (`public/images/solucoes/smart/`) — pós SIS-279; slot 22/09 |
-| **SIS-244** | Backlog | home | Soluções: trocar imagens — **artes da usuária** (não despachar ao robô) |
+| **SIS-244** | Todo | home | Soluções: 4 imagens = `escritoriosp.png` → `sp1-1.jpeg` → `escritoriosp1.png` → AWS event — slot 01/10 |
 | **SIS-267** | Backlog | arte | Logo Picsel HD (PNG + transparente) — **sua**; não despachar até o arquivo |
 | **SIS-217** | Todo | solucoes | Cards aceleradores: logos `public/images/logos` + reação no hover |
-| **SIS-221** | Todo | quem-somos | Escritórios BRASIL: baixar marcador do 2º andar SP na torre |
+| **SIS-221** | Todo | quem-somos | Escritórios: mapa + cards mesmo tamanho em PB/SP/RJ (mocks mapaescritorio) — slot 29/09 |
+| **SIS-165** | Todo | quem-somos | Números = faixa da home (`FaixaIndicadores` + 7 métricas) — slot 29/09 |
+| **SIS-177** | Todo | quem-somos | Celent = `docs/celen.md` + mock `exemplocele.png` (2 cols; `cele.png` à D, não fundo) — slot 29/09 |
+| **SIS-199** | Todo | quem-somos | Por que SISTRAN?: negrito SISTRAN + cards flutuantes/hover + medalhão `porquesistran.png` — slot 28/09 |
+| **SIS-277** | Todo | quem-somos | Como Agimos = `docs/comagimos.md` + mock `exemplocomoagimos.png` (8 cards, sem numeração) — slot 28/09 |
+| **SIS-98** | Todo | quem-somos | Modelos: 4 PNG + TituloAceso (como Reconhecimentos) + «Segurador» fonte2; sem descriptions — slot 29/09 |
+| **SIS-170** | Todo | quem-somos | Premiações: halo/sombra atrás da Gaivota (presença igual ao ISO) — slot 29/09 |
 | **SIS-222** | Todo | contato | Loading a cada entrada até página + mapa prontos |
-| **SIS-245** | Done | contato | Onde Estamos: endereço Pato Branco, sem link RJ, mapa azul mais claro |
+| **SIS-245** | Todo | home | Pilares do hero: Lucide → `1home`–`4home.png` (ordem Conhecimento→…→Solidez) — slot 28/09 |
 | **SIS-255** | Todo | contato | Onde Estamos: sombra atrás do mapa menos escura e menos quadrada |
 | **SIS-259** | Todo | contato | Retirar sombra branca entre logos e «SAIBA MAIS…» |
 | **SIS-263** | In Review | contato | Reveal on scroll em toda a página (`docs/scroll.md` + RevealScope) |
 | **SIS-269** | Todo | contato | Reveal deve acompanhar o scroll (não tudo após o load) — **antes das irmãs** |
 | **SIS-270** | Todo | trabalhe-conosco | Reveal on scroll (`docs/scroll.md`) — após SIS-269 |
 | **SIS-271** | Todo | esg | Reveal on scroll (`docs/scroll.md`) — após SIS-269 |
-| **SIS-272** | Todo | eventos | Reveal on scroll (`docs/scroll.md`) — após SIS-269 |
+| **SIS-272** | Todo | home | Números: manter layout Metrics (7) — 850+ / 23+ / 130+ / 650+ / 230+ / 35+ / 25+ — slot 29/09 |
 | **SIS-273** | Todo | solucoes | Reveal on scroll (`docs/scroll.md`) — após SIS-269 |
 | **SIS-275** | In Review | home | Reveal on scroll (`docs/scroll.md`) — entregue; conferência dispensada |
 | **SIS-274** | Todo | loading | RouteLoadGate: fundo `#1273bc` + logo HD no lugar de SISTRAN |
-| **SIS-278** | Todo | site | Barra de progresso de scroll no topo (ciano, acima do navbar) |
+| **SIS-278** | Todo | site | Restaurar barra de scroll no topo (gradiente + ponta) em todas as páginas — slot 01/10 |
 | **SIS-266** | Todo | footer | Item ativo na coluna Navegação conforme a página |
 | **SIS-247** | In Review | esg | Capa de abertura = esgcapa.png |
 | **SIS-257** | In Review | esg | Capa «ESG - Environment, Social & Governance» + seção intro com esg1.png |
@@ -157,8 +167,14 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-279** | Todo | site | Logo Luminna → `luminnadoisnn.png` em todos os usos — slot 22/09 |
 | **SIS-268** | In Review · conferido | quem-somos | Fale com a Gente! = `layoutReferencia` (padrão esg/solucoes/labs) — slot 22/09 |
 | **(fechada)** | Done | quem-somos | Sobre nós = mock `sobrenos.png` — fechada 22/09 (slot virrou Tecnologias) |
-| **SIS-42** | Todo | quem-somos | Perfil = `posicionamentoperfil.png` em casca arredondada + fundo grade/riscos (tipo contato home) — rev. 22/09 |
+| **(fechada)** | Done | quem-somos | Perfil = `posicionamentoperfil.png` — fechada 22/09 (slot virrou SDS card) |
+| **SIS-42** | Todo | solucoes | Card SDS ao lado do Luminna (`logo-sds.png` + `docs/sds.md` §1) — slot 23/09 |
+| **SIS-93** | In Review | solucoes | Página `/solucoes/sds` = `docs/sds.md` §2+ (conferido) |
+| **SIS-120** | Todo | solucoes/sds | Hero enxuto + intro (`sdsprimeirasessao`) + cards plataforma menores + carrossel Impacto — slot 30/09 |
 | **SIS-280** | Todo | quem-somos | Tecnologias = mock `tecnologia.png` + `docs/tecnologia.md` + carimbo ticket — slot 22/09 |
+| **SIS-87** | Todo | quem-somos | ISG = mock `isg.png` + `docs/isg.md` + logo HD + `isgprovider.png` — slot 23/09 |
+| **SIS-253** | Todo | quem-somos | Conheça também = molde Match AI (Labs + University) — slot 23/09 |
+| **SIS-260** | Todo | quem-somos | Nossa Essência = mock `ms.png` + `docs/missao,valores.md` + missao/valores/pilares.png — slot 23/09 |
 | **SIS-181** | Todo | solucoes | Fale com a Gente! igual ao mobile em telas menores — slot reaproveitado 22/09 |
 | **SIS-281** | Todo | sistran-university | Capa «Sistran University» em negrito + Autossuficiência vira seção própria |
 | **SIS-282** | Todo | sistran-university | Negrito em «Formar especialistas…» + «Em parceria com o Unidep» |
@@ -171,8 +187,7 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-224** | In Review | trabalhe-conosco | Suavizar véu/sombra feia da abertura |
 | **SIS-258** | Todo | trabalhe-conosco | Abertura igual a exemplotrabalheconosco.png |
 | **SIS-264** | Todo | trabalhe-conosco | Tipografia maior na abertura + limpar form/faixas |
-| **SIS-225** | Todo | parceiros | Capa `fundocapaparceiros` no fundo do título + descrição |
-| **SIS-226** | Todo | home | Hero: escritas alternando no vídeo (3 slides + pitch final) |
+| **SIS-225** | Todo | parceiros | Intro: trocar arte por `escritoriopb/pb3.png` — slot 29/09 |
 | **SIS-227** | Todo | sistran-labs | Capa `SISTRAN-LABS.png` no fundo do título |
 | **SIS-286** | Todo | esg | Scroll bidirecional (scrub GSAP · `docs/scroll.md` §6) — irmã da família scrub; slot 22/09 |
 | **SIS-287** | Todo | solucoes/qa-integrado | Mesma estrutura do Match AI + identidade própria (`QaIntegradoPagina`) — irmã SIS-279; slot 22/09 |
@@ -182,22 +197,22 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-293** | In Review | sistran-labs | 3 fotos (abas) surgindo de lado — **supersedida em parte por SIS-294** (pares texto+foto) |
 | **SIS-294** | Todo | sistran-labs | Intro: 3 parágrafos + abas em zigzag (azul claro) |
 | **SIS-228** | Todo | parceiros | Sombra atrás do título + descrição na abertura (pós-225) |
-| **SIS-229** | In Review | sistran-labs | Principais Soluções (arte) — **cards desta seção supersedidos por SIS-292** |
-| **SIS-230** | In Review | quem-somos | Premiações Celent (montagem 230) — supersedida visualmente por SIS-238 |
+| **SIS-229** | Todo | sistran-labs | Principais Soluções: retirar legenda «Seis frentes…» — slot 28/09 |
+| **(slot)** | — | — | SIS-230 reutilizado 28/09 → home fundo = quem-somos (Premiações Celent ficou em SIS-238) |
 | **SIS-231** | Todo | solucoes | Remover seção Transformação de Legado (método / quatro movimentos) |
 | **SIS-232** | In Review | eventos | Miniaturas laterais maiores e mais perto do card em destaque |
 | **SIS-233** | Todo | esg | Título e descrição da abertura iguais ao padrão de /contato |
 | **SIS-234** | In Review | esg | SOCIAL: foguete do scroll colorido e 3D (logo Gerando Talentos) |
 | **SIS-254** | Todo | esg | SOCIAL: foguete do scroll = foguete.png (substitui SVG) |
-| **SIS-235** | Todo | eventos | Tag «Realizado pela Sistran» vira componente carimbo |
-| **SIS-236** | Todo | parceiros | Tirar tarja azul clara da capa / emenda |
-| **SIS-277** | Todo | parceiros | Tag da abertura = `carimbo-parcerias.png` com efeito ao entrar |
+| **SIS-235** | Todo | eventos | Todas as tags de kind → carimbos de `EVENTOS/carimbos` (pasta vazia — aguarda artes) — slot 29/09 |
+| **SIS-236** | Todo | parceiros | Fundo contínuo = mesmo padrão de /quem-somos (canvas + atmosfera) — slot 29/09 |
+| **SIS-277** | Entregue | parceiros | Tag da abertura = carimbo (supersedido visualmente: carimbo migra para `#parceiros` em SIS-225) |
 | **SIS-237** | In Review | esg | ENVIRONMENT + GOVERNANCE: flutuação e hover bem perceptíveis |
 | **SIS-252** | Todo | esg | ENVIRONMENT + GOVERNANCE: azul bem clarinho no repouso + troca de cor no hover |
 | **SIS-253** | Todo | esg | Fale com a Gente! = falecomagente.png (+ ponto na linha, hover botão) |
 | **SIS-265** | Todo | esg | Fale com a Gente!: logo HD `logosistranaltadefinicao.png` |
 | **SIS-276** | Todo | esg | Fale com a Gente!: grafismo cortado/baixo demais no rodapé |
-| **SIS-238** | Todo | quem-somos | Premiações: fundo cele.png + layout escritas/logo (exemplcelent) |
+| **SIS-238** | Todo | quem-somos | Nossa Trajetória / Reconhecimentos = mock `trofeis.png` + `docs/trofeus.md` — slot 24/09 |
 | **SIS-239** | In Review | eventos | Mobile: carrossel horizontal automático dos eventos |
 | **SIS-251** | Todo | eventos | Mobile: carrossel mais intuitivo (swipe + auto) — pós SIS-239 |
 | **SIS-240** | Todo | home | BrandGrid: logos ilegíveis em repouso (7/15 &lt; 3:1) |

@@ -1548,7 +1548,17 @@ export default function Metrics() {
           faixa sem conteúdo dissolve a própria arte em `--paper`; a
           `.sequence::after` recebe a mesma cor do outro lado e continua cobrindo
           o quadro do vídeo. A emenda deixa de ser um degrau navy→branco sem
-          inventar texto nem reintroduzir um rodapé de marcas. */}
+          inventar texto nem reintroduzir um rodapé de marcas.
+
+          SIS-213 — O PARÁGRAFO ACIMA É HISTÓRICO E JÁ NÃO DESCREVE NADA QUE EXISTA:
+          esta faixa não tem mais tinta `--paper` (só altura; mostra o `.impact-fundo`
+          sobre o `#041b3d` da seção), e a `.sequence::after` do outro lado saiu
+          inteira na 2ª passagem desta issue. Não há mais véu em nenhum dos dois
+          lados — a fronteira é corte direto, por decisão do pedido. O que este
+          `<span>` ainda faz, e o motivo de continuar aqui, é ocupar altura real
+          depois do palco para que os últimos indicadores não encostem na seção
+          seguinte. Se alguém for zerar esta altura, é a distância que se perde, não
+          uma dissolução. */}
       <span aria-hidden className="impact-saida" />
       {/* SIS-101 — a faixa de logos de parceiros, agora como rodapé desta seção
           em vez de seção independente. Ver a nota na abertura do

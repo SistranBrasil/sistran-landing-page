@@ -1,0 +1,358 @@
+{
+  "etapas1440": [
+    {
+      "etapa": 0,
+      "x": 240,
+      "y": 320,
+      "w": 721,
+      "h": 466,
+      "titulo": "Prêmios Cobertura Performance",
+      "tinta": "escura",
+      "camadas": {
+        "fitas": {
+          "zIndex": "0",
+          "opacidade": 1,
+          "ariaHidden": true
+        },
+        "malha": {
+          "zIndex": "0",
+          "opacidade": 0.085,
+          "ariaHidden": true
+        },
+        "malhaLuz": {
+          "zIndex": "0",
+          "opacidade": 0.34,
+          "ariaHidden": true
+        },
+        "base": {
+          "zIndex": "1",
+          "opacidade": 1,
+          "ariaHidden": true
+        },
+        "aro3": {
+          "zIndex": "1",
+          "opacidade": 1,
+          "ariaHidden": true
+        },
+        "arteZ": "2"
+      },
+      "contraste": {
+        "comFundoNovo": {
+          "pixelsDeTinta": 73185,
+          "pixelsDeFundoMarinhoDescartados": 18663,
+          "papelMaisClaro": "252,253,252",
+          "razaoMedia": 5.42,
+          "razaoPiorPixel": 2.57
+        },
+        "semFundoNovo": {
+          "pixelsDeTinta": 72334,
+          "pixelsDeFundoMarinhoDescartados": 20712,
+          "papelMaisClaro": "252,253,252",
+          "razaoMedia": 5.49,
+          "razaoPiorPixel": 2.57
+        },
+        "deltaRazaoMedia": -0.07,
+        "deltaRazaoPiorPixel": 0
+      }
+    },
+    {
+      "etapa": 1,
+      "x": 479,
+      "y": 320,
+      "w": 721,
+      "h": 466,
+      "titulo": "Reconhecimentos internacionais",
+      "tinta": "escura",
+      "camadas": {
+        "fitas": {
+          "zIndex": "0",
+          "opacidade": 1,
+          "ariaHidden": true
+        },
+        "malha": {
+          "zIndex": "0",
+          "opacidade": 0.085,
+          "ariaHidden": true
+        },
+        "malhaLuz": {
+          "zIndex": "0",
+          "opacidade": 0.34,
+          "ariaHidden": true
+        },
+        "base": {
+          "zIndex": "1",
+          "opacidade": 1,
+          "ariaHidden": true
+        },
+        "aro3": {
+          "zIndex": "1",
+          "opacidade": 1,
+          "ariaHidden": true
+        },
+        "arteZ": "2"
+      },
+      "contraste": {
+        "comFundoNovo": {
+          "pixelsDeTinta": 14851,
+          "pixelsDeFundoMarinhoDescartados": 40802,
+          "papelMaisClaro": "221,238,246",
+          "razaoMedia": 3.12,
+          "razaoPiorPixel": 2.21
+        },
+        "semFundoNovo": {
+          "pixelsDeTinta": 13801,
+          "pixelsDeFundoMarinhoDescartados": 42777,
+          "papelMaisClaro": "220,237,246",
+          "razaoMedia": 3.1,
+          "razaoPiorPixel": 2.19
+        },
+        "deltaRazaoMedia": 0.02,
+        "deltaRazaoPiorPixel": 0.02
+      }
+    },
+    {
+      "etapa": 2,
+      "x": 719,
+      "y": 320,
+      "w": 721,
+      "h": 466,
+      "titulo": "Certificações de qualidade e métricas",
+      "tinta": "escura",
+      "camadas": {
+        "fitas": {
+          "zIndex": "0",
+          "opacidade": 1,
+          "ariaHidden": true
+        },
+        "malha": {
+          "zIndex": "0",
+          "opacidade": 0.085,
+          "ariaHidden": true
+        },
+        "malhaLuz": {
+          "zIndex": "0",
+          "opacidade": 0.34,
+          "ariaHidden": true
+        },
+        "base": {
+          "zIndex": "1",
+          "opacidade": 1,
+          "ariaHidden": true
+        },
+        "aro3": {
+          "zIndex": "1",
+          "opacidade": 1,
+          "ariaHidden": true
+        },
+        "arteZ": "2"
+      },
+      "contraste": {
+        "comFundoNovo": {
+          "pixelsDeTinta": 28429,
+          "pixelsDeFundoMarinhoDescartados": 101189,
+          "papelMaisClaro": "220,239,247",
+          "razaoMedia": 2.83,
+          "razaoPiorPixel": 2.22
+        },
+        "semFundoNovo": {
+          "pixelsDeTinta": 26902,
+          "pixelsDeFundoMarinhoDescartados": 104593,
+          "papelMaisClaro": "221,238,246",
+          "razaoMedia": 2.81,
+          "razaoPiorPixel": 2.2
+        },
+        "deltaRazaoMedia": 0.02,
+        "deltaRazaoPiorPixel": 0.02
+      }
+    },
+    {
+      "etapa": 3,
+      "x": 719,
+      "y": 320,
+      "w": 721,
+      "h": 466,
+      "titulo": "Certificações de qualidade e métricas",
+      "tinta": "escura",
+      "camadas": {
+        "fitas": {
+          "zIndex": "0",
+          "opacidade": 1,
+          "ariaHidden": true
+        },
+        "malha": {
+          "zIndex": "0",
+          "opacidade": 0.085,
+          "ariaHidden": true
+        },
+        "malhaLuz": {
+          "zIndex": "0",
+          "opacidade": 0.34,
+          "ariaHidden": true
+        },
+        "base": {
+          "zIndex": "1",
+          "opacidade": 1,
+          "ariaHidden": true
+        },
+        "aro3": {
+          "zIndex": "1",
+          "opacidade": 1,
+          "ariaHidden": true
+        },
+        "arteZ": "2"
+      },
+      "contraste": {
+        "comFundoNovo": {
+          "pixelsDeTinta": 28429,
+          "pixelsDeFundoMarinhoDescartados": 101189,
+          "papelMaisClaro": "220,239,247",
+          "razaoMedia": 2.83,
+          "razaoPiorPixel": 2.22
+        },
+        "semFundoNovo": {
+          "pixelsDeTinta": 26902,
+          "pixelsDeFundoMarinhoDescartados": 104593,
+          "papelMaisClaro": "221,238,246",
+          "razaoMedia": 2.81,
+          "razaoPiorPixel": 2.2
+        },
+        "deltaRazaoMedia": 0.02,
+        "deltaRazaoPiorPixel": 0.02
+      }
+    }
+  ],
+  "efeitoPonteiro1440": {
+    "cursoDoPonteiroPx": 339,
+    "longe": {
+      "sx": "0.2493",
+      "sy": "0.4202",
+      "pixelMedio": "20.9,62.63,100.59",
+      "pixelMaisClaro": "93,126,153",
+      "luminanciaMedia": 0.046,
+      "luminanciaDoFio": 0.1955
+    },
+    "perto": {
+      "sx": "0.7193",
+      "sy": "0.4202",
+      "pixelMedio": "22.25,64.3,102.05",
+      "pixelMaisClaro": "113,150,174",
+      "luminanciaMedia": 0.0483,
+      "luminanciaDoFio": 0.2838
+    },
+    "deltaSx": 0.47,
+    "deltaLuminanciaMedia": 0.0023,
+    "deltaLuminanciaDoFio": 0.0883,
+    "deltaDoFioPor100px": 0.02605,
+    "razaoDoFioContraOCampo": 3.39,
+    "aoSairVoltaAoCentro": true,
+    "sxAoSair": "0.5000"
+  },
+  "geometria768": {
+    "comFundoNovo": {
+      "transbordoHorizontalDaPagina": 131,
+      "overflowDaJanela": "hidden",
+      "camadas": [
+        {
+          "sel": ".rgal-fitas",
+          "transbordaAJanelaDeMascara": 0
+        },
+        {
+          "sel": ".rgal-malha",
+          "transbordaAJanelaDeMascara": 0
+        },
+        {
+          "sel": ".rgal-malha-luz",
+          "transbordaAJanelaDeMascara": 0
+        }
+      ]
+    },
+    "semFundoNovo": {
+      "transbordoHorizontalDaPagina": 131,
+      "overflowDaJanela": "hidden",
+      "camadas": [
+        {
+          "sel": ".rgal-fitas",
+          "transbordaAJanelaDeMascara": null
+        },
+        {
+          "sel": ".rgal-malha",
+          "transbordaAJanelaDeMascara": null
+        },
+        {
+          "sel": ".rgal-malha-luz",
+          "transbordaAJanelaDeMascara": null
+        }
+      ]
+    }
+  },
+  "geometria390": {
+    "comFundoNovo": {
+      "transbordoHorizontalDaPagina": 128,
+      "overflowDaJanela": "hidden",
+      "camadas": [
+        {
+          "sel": ".rgal-fitas",
+          "transbordaAJanelaDeMascara": 0
+        },
+        {
+          "sel": ".rgal-malha",
+          "transbordaAJanelaDeMascara": 0
+        },
+        {
+          "sel": ".rgal-malha-luz",
+          "transbordaAJanelaDeMascara": 0
+        }
+      ]
+    },
+    "semFundoNovo": {
+      "transbordoHorizontalDaPagina": 128,
+      "overflowDaJanela": "hidden",
+      "camadas": [
+        {
+          "sel": ".rgal-fitas",
+          "transbordaAJanelaDeMascara": null
+        },
+        {
+          "sel": ".rgal-malha",
+          "transbordaAJanelaDeMascara": null
+        },
+        {
+          "sel": ".rgal-malha-luz",
+          "transbordaAJanelaDeMascara": null
+        }
+      ]
+    }
+  },
+  "movimentoReduzido_consultaDeMidia": {
+    "paineis": 4,
+    "nenhumPresoInvisivel": true,
+    "opacidadesDistintas": [
+      0.085,
+      0.34,
+      1
+    ],
+    "duracoesDistintas": [
+      "0.15s"
+    ],
+    "sxNaCamadaDeLuz": ".5",
+    "syNaCamadaDeLuz": ".5",
+    "mascaraNoCentro": true,
+    "sxHerdadoNoPainel": null
+  },
+  "movimentoReduzido_alternadorDoSite": {
+    "paineis": 4,
+    "nenhumPresoInvisivel": true,
+    "opacidadesDistintas": [
+      0.085,
+      0.34,
+      1
+    ],
+    "duracoesDistintas": [
+      "0.15s"
+    ],
+    "sxNaCamadaDeLuz": ".5",
+    "syNaCamadaDeLuz": ".5",
+    "mascaraNoCentro": true,
+    "sxHerdadoNoPainel": null
+  }
+}

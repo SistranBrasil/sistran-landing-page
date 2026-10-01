@@ -135,7 +135,75 @@
       "faltando": []
     },
     "movimento": {
-      "nosAnimados": 0
+      "nosAnimados": 12,
+      "nomes": [
+        "dif-flutua",
+        "dif-pulsa"
+      ],
+      "flutuar": [
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "0s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "0.42s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "0.84s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "1.26s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "1.68s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "2.1s"
+        }
+      ],
+      "pulsar": [
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0.23s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0.46s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0.69s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0.92s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "1.15s"
+        }
+      ]
     },
     "transbordoDocumentoPx": 0,
     "contraste": {
@@ -145,7 +213,7 @@
         "fontSizePx": "15.2px",
         "fontWeight": "600",
         "x": 101,
-        "y": 212,
+        "y": 211,
         "alfaDoTexto": 1,
         "fundoAmostrado": "rgb(251 254 255)",
         "razao": 16.03,
@@ -268,9 +336,55 @@
     },
     "gradePinta": {
       "comparavel": true,
-      "pixeisDiferentes": 5147,
-      "fracaoDoQuadroPct": 1.56,
-      "maiorDeltaRGB": 113
+      "pixeisDiferentes": 5111,
+      "fracaoDoQuadroPct": 1.55,
+      "maiorDeltaRGB": 43
+    },
+    "amplitudeDoMovimento": {
+      "cartoesPx": [
+        8,
+        8,
+        8,
+        7.99,
+        8,
+        8
+      ],
+      "iconesEscala": [
+        0.14,
+        0.14,
+        0.14,
+        0.14,
+        0.14,
+        0.14
+      ],
+      "entradaEmRepouso": true
+    },
+    "hover": {
+      "antes": {
+        "fundo": "linear-gradient(160deg, rgba(255, 255, 255, 0.92) 0%, rgba(246, 252, 255, 0.88) 100%)",
+        "frase": "rgb(10, 31, 68)",
+        "icone": "rgb(6, 50, 92)",
+        "selo": "rgba(33, 198, 244, 0.1)"
+      },
+      "depois": {
+        "fundo": "linear-gradient(160deg, rgb(8, 58, 99) 0%, rgb(4, 34, 61) 100%)",
+        "frase": "rgb(255, 255, 255)",
+        "icone": "rgb(255, 255, 255)",
+        "selo": "rgba(255, 255, 255, 0.14)",
+        "flutuacaoPausada": "paused"
+      },
+      "inverteu": true,
+      "contraste": {
+        "cor": "rgb(255, 255, 255)",
+        "x": 101,
+        "y": 205,
+        "nome": "frase-hover",
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(7 50 87)",
+        "razao": 13.1,
+        "fundoPiorPixel": "rgb(7 51 88)",
+        "razaoPiorPixel": 12.94
+      }
     }
   },
   "768": {
@@ -409,7 +523,75 @@
       "faltando": []
     },
     "movimento": {
-      "nosAnimados": 0
+      "nosAnimados": 12,
+      "nomes": [
+        "dif-flutua",
+        "dif-pulsa"
+      ],
+      "flutuar": [
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "0s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "0.42s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "0.84s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "1.26s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "1.68s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "2.1s"
+        }
+      ],
+      "pulsar": [
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0.23s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0.46s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0.69s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0.92s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "1.15s"
+        }
+      ]
     },
     "transbordoDocumentoPx": 0,
     "contraste": {
@@ -419,10 +601,10 @@
         "fontSizePx": "15.2px",
         "fontWeight": "600",
         "x": 105,
-        "y": 388,
+        "y": 384,
         "alfaDoTexto": 1,
-        "fundoAmostrado": "rgb(252 254 255)",
-        "razao": 16.06,
+        "fundoAmostrado": "rgb(251 254 255)",
+        "razao": 16.03,
         "fundoPiorPixel": "rgb(251 253 254)",
         "razaoPiorPixel": 15.93
       },
@@ -542,9 +724,55 @@
     },
     "gradePinta": {
       "comparavel": true,
-      "pixeisDiferentes": 14871,
-      "fracaoDoQuadroPct": 2.15,
-      "maiorDeltaRGB": 192
+      "pixeisDiferentes": 12961,
+      "fracaoDoQuadroPct": 1.88,
+      "maiorDeltaRGB": 83
+    },
+    "amplitudeDoMovimento": {
+      "cartoesPx": [
+        7.99,
+        8,
+        8,
+        8,
+        8,
+        7.99
+      ],
+      "iconesEscala": [
+        0.14,
+        0.14,
+        0.14,
+        0.14,
+        0.14,
+        0.14
+      ],
+      "entradaEmRepouso": true
+    },
+    "hover": {
+      "antes": {
+        "fundo": "linear-gradient(160deg, rgba(255, 255, 255, 0.92) 0%, rgba(246, 252, 255, 0.88) 100%)",
+        "frase": "rgb(10, 31, 68)",
+        "icone": "rgb(6, 50, 92)",
+        "selo": "rgba(33, 198, 244, 0.1)"
+      },
+      "depois": {
+        "fundo": "linear-gradient(160deg, rgb(8, 58, 99) 0%, rgb(4, 34, 61) 100%)",
+        "frase": "rgb(255, 255, 255)",
+        "icone": "rgb(255, 255, 255)",
+        "selo": "rgba(255, 255, 255, 0.14)",
+        "flutuacaoPausada": "paused"
+      },
+      "inverteu": true,
+      "contraste": {
+        "cor": "rgb(255, 255, 255)",
+        "x": 105,
+        "y": 380,
+        "nome": "frase-hover",
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(7 50 87)",
+        "razao": 13.1,
+        "fundoPiorPixel": "rgb(7 51 88)",
+        "razaoPiorPixel": 12.94
+      }
     }
   },
   "1440": {
@@ -683,7 +911,75 @@
       "faltando": []
     },
     "movimento": {
-      "nosAnimados": 0
+      "nosAnimados": 12,
+      "nomes": [
+        "dif-flutua",
+        "dif-pulsa"
+      ],
+      "flutuar": [
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "0s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "0.42s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "0.84s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "1.26s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "1.68s"
+        },
+        {
+          "nome": "dif-flutua",
+          "dur": "5.4s",
+          "atraso": "2.1s"
+        }
+      ],
+      "pulsar": [
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0.23s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0.46s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0.69s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "0.92s"
+        },
+        {
+          "nome": "dif-pulsa",
+          "dur": "2.8s",
+          "atraso": "1.15s"
+        }
+      ]
     },
     "transbordoDocumentoPx": 0,
     "contraste": {
@@ -693,12 +989,12 @@
         "fontSizePx": "15.2px",
         "fontWeight": "600",
         "x": 263,
-        "y": 462,
+        "y": 461,
         "alfaDoTexto": 1,
         "fundoAmostrado": "rgb(251 254 255)",
         "razao": 16.03,
-        "fundoPiorPixel": "rgb(249 252 254)",
-        "razaoPiorPixel": 15.77
+        "fundoPiorPixel": "rgb(249 253 255)",
+        "razaoPiorPixel": 15.88
       },
       "titulo": {
         "texto": "Diferenciais",
@@ -816,14 +1112,210 @@
     },
     "gradePinta": {
       "comparavel": true,
-      "pixeisDiferentes": 41720,
-      "fracaoDoQuadroPct": 3.02,
-      "maiorDeltaRGB": 611
+      "pixeisDiferentes": 38297,
+      "fracaoDoQuadroPct": 2.77,
+      "maiorDeltaRGB": 567
+    },
+    "tituloPorRolagem": {
+      "diferenciais": {
+        "presente": true,
+        "spansAnimados": 12,
+        "pesoDaFonte": "700",
+        "amplitudeDoRisco": 1,
+        "escalaMinima": 0,
+        "escalaMaxima": 1,
+        "amplitudeDaOpacidade": 0.82,
+        "amostras": [
+          {
+            "passo": 0,
+            "topoDoTituloPx": 960,
+            "menorOpacidade": 0.18,
+            "maiorOpacidade": 0.18,
+            "escalaDoRisco": 0
+          },
+          {
+            "passo": 1,
+            "topoDoTituloPx": 850,
+            "menorOpacidade": 0.18,
+            "maiorOpacidade": 0.451,
+            "escalaDoRisco": 0.088
+          },
+          {
+            "passo": 2,
+            "topoDoTituloPx": 739,
+            "menorOpacidade": 0.18,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 0.383
+          },
+          {
+            "passo": 3,
+            "topoDoTituloPx": 629,
+            "menorOpacidade": 0.18,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 0.675
+          },
+          {
+            "passo": 4,
+            "topoDoTituloPx": 519,
+            "menorOpacidade": 0.65,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 0.968
+          },
+          {
+            "passo": 5,
+            "topoDoTituloPx": 408,
+            "menorOpacidade": 1,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 1
+          },
+          {
+            "passo": 6,
+            "topoDoTituloPx": 298,
+            "menorOpacidade": 1,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 1
+          },
+          {
+            "passo": 7,
+            "topoDoTituloPx": 187,
+            "menorOpacidade": 1,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 1
+          },
+          {
+            "passo": 8,
+            "topoDoTituloPx": 77,
+            "menorOpacidade": 1,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 1
+          }
+        ]
+      },
+      "referencia": {
+        "presente": true,
+        "spansAnimados": 6,
+        "pesoDaFonte": "400",
+        "amplitudeDoRisco": 1,
+        "escalaMinima": 0,
+        "escalaMaxima": 1,
+        "amplitudeDaOpacidade": 0.82,
+        "amostras": [
+          {
+            "passo": 0,
+            "topoDoTituloPx": 960,
+            "menorOpacidade": 0.18,
+            "maiorOpacidade": 0.18,
+            "escalaDoRisco": 0
+          },
+          {
+            "passo": 1,
+            "topoDoTituloPx": 850,
+            "menorOpacidade": 0.18,
+            "maiorOpacidade": 0.416,
+            "escalaDoRisco": 0.077
+          },
+          {
+            "passo": 2,
+            "topoDoTituloPx": 739,
+            "menorOpacidade": 0.18,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 0.333
+          },
+          {
+            "passo": 3,
+            "topoDoTituloPx": 629,
+            "menorOpacidade": 0.18,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 0.587
+          },
+          {
+            "passo": 4,
+            "topoDoTituloPx": 519,
+            "menorOpacidade": 0.488,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 0.841
+          },
+          {
+            "passo": 5,
+            "topoDoTituloPx": 408,
+            "menorOpacidade": 1,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 1
+          },
+          {
+            "passo": 6,
+            "topoDoTituloPx": 298,
+            "menorOpacidade": 1,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 1
+          },
+          {
+            "passo": 7,
+            "topoDoTituloPx": 187,
+            "menorOpacidade": 1,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 1
+          },
+          {
+            "passo": 8,
+            "topoDoTituloPx": 77,
+            "menorOpacidade": 1,
+            "maiorOpacidade": 1,
+            "escalaDoRisco": 1
+          }
+        ]
+      }
+    },
+    "amplitudeDoMovimento": {
+      "cartoesPx": [
+        7.97,
+        7.96,
+        7.97,
+        7.97,
+        7.96,
+        7.96
+      ],
+      "iconesEscala": [
+        0.14,
+        0.14,
+        0.14,
+        0.14,
+        0.14,
+        0.14
+      ],
+      "entradaEmRepouso": true
+    },
+    "hover": {
+      "antes": {
+        "fundo": "linear-gradient(160deg, rgba(255, 255, 255, 0.92) 0%, rgba(246, 252, 255, 0.88) 100%)",
+        "frase": "rgb(10, 31, 68)",
+        "icone": "rgb(6, 50, 92)",
+        "selo": "rgba(33, 198, 244, 0.1)"
+      },
+      "depois": {
+        "fundo": "linear-gradient(160deg, rgb(8, 58, 99) 0%, rgb(4, 34, 61) 100%)",
+        "frase": "rgb(255, 255, 255)",
+        "icone": "rgb(255, 255, 255)",
+        "selo": "rgba(255, 255, 255, 0.14)",
+        "flutuacaoPausada": "paused"
+      },
+      "inverteu": true,
+      "contraste": {
+        "cor": "rgb(255, 255, 255)",
+        "x": 263,
+        "y": 528,
+        "nome": "frase-hover",
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(7 50 87)",
+        "razao": 13.1,
+        "fundoPiorPixel": "rgb(7 51 87)",
+        "razaoPiorPixel": 12.96
+      }
     }
   },
   "peca": "Diferenciais /quem-somos",
   "url": "http://localhost:3000/quem-somos",
-  "quando": "2026-09-23T13:24:09.120Z",
+  "quando": "2026-09-23T15:40:49.103Z",
   "movimentoReduzido": {
     "media-query": {
       "dataMotion": null,

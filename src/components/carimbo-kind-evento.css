@@ -1,0 +1,103 @@
+/**
+ * SIS-235 — folha do carimbo de `kind` dos eventos.
+ *
+ * Renomeada de `carimbo-realizado-sistran.css` quando o carimbo deixou de ser só
+ * o de `proprio` e passou a ser os quatro. O seletor (`.eventos-carimbo`) NÃO
+ * mudou: é o mesmo elemento, com a arte trocando por `kind`.
+ *
+ * Um só número governa o tamanho — `--carimbo-w` —, e a altura sai do
+ * `aspect-ratio` da arte. Assim quem quiser mudar a escala num lugar não precisa
+ * acertar duas medidas que podem divergir e distorcer o desenho.
+ */
+
+.eventos-carimbo {
+  /* 520x399 é o tamanho intrínseco dos quatro arquivos gerados pelo script —
+     iguais de propósito, é o mesmo desenho com a palavra trocada. Escrito como
+     razão, e não como altura em px, porque é o que garante que o oval não achate
+     se alguém mexer só na largura. */
+  --carimbo-ar: 520 / 399;
+
+  /* ⚠️ TAMANHO MEDIDO, NÃO ESCOLHIDO — e é o número que a issue pede ("legível sem
+     dominar o título"). A linha-base, com o chip que sai de cena (sonda
+     `medir-carimbo-sis235.mjs`, evento `web-summit-ai`):
+
+       1440 palco:  chip 186,5x24,3 · título fs 24,5 caixa 562,5x56,3 · arte h 316,4
+       390 lista:   chip 183x23,9  · título fs 18,4 caixa 285,8x42,3 · arte h 160,8
+
+     O chip tinha 24px de altura. O carimbo tem a altura da LARGURA/1,30, então
+     cada px de largura custa 0,77px de altura, e essa altura sai de dentro do
+     cartão — que é `max-height: 100%` com a arte (`aspect-ratio: 16/9`) como único
+     item flexível. Quem paga o carimbo é a FOTO. É a escassez vertical que a
+     SIS-232 mediu na faixa lateral, agora dentro do cartão.
+
+     ⚠️ O NÚMERO NÃO MUDOU ao passar de um kind para quatro, e isso é decisão, não
+     esquecimento: antes o carimbo aparecia em 3 dos 15 eventos e o chip (24px de
+     altura) nos outros 12; agora o carimbo é a tag de TODOS, então os 12 cartões
+     que pagavam 24px passaram a pagar a altura do carimbo. O custo vertical saiu
+     de 3 cartões para 15. Aumentar `--carimbo-w` aqui multiplicaria esse custo por
+     quinze — se a foto ficar apertada em algum evento, o caminho é reduzir este
+     número, não crescer. */
+  --carimbo-w: clamp(6.5rem, 9.2vw, 8.75rem);
+
+  display: block;
+  width: var(--carimbo-w);
+  aspect-ratio: var(--carimbo-ar);
+
+  /* O TOMBO. As artes são ovais RETOS (medidos: o desenho não vem inclinado), e a
+     issue previu este ramo. −6deg e não mais: em −10deg o canto do oval passava a
+     linha do título em 1440, e carimbo que encosta no texto lê como erro de
+     layout, não como carimbo.
+
+     ⚠️ ESTA DECLARAÇÃO SÓ VALE PARA A INSTÂNCIA QUE NÃO ANIMA (o carrossel de 390).
+     Ela foi escrita apostando que `rotate`, sendo propriedade separada, COMPÕE com
+     o `transform` do GSAP — repouso no CSS, entrada no JS. Compõe pela
+     especificação, e não na prática: o CSSPlugin grava `rotate: none` no atributo
+     `style` junto do transform, de propósito, para não disputar com as
+     propriedades individuais. Medido no palco em 1440: `rotate` computado `none`,
+     caixa 132,5x101,6 (oval RETO) contra 142,4x114,9 com movimento reduzido, onde
+     o GSAP não escreve nada.
+     Por isso o mesmo −6° está no estado FINAL do tween (`TOMBO_DEG` no TSX). Os
+     dois números são os dois caminhos para o mesmo repouso — mexer num exige mexer
+     no outro. */
+  rotate: -6deg;
+
+  /* `transform-origin` no centro é o padrão e é o certo aqui: a batida cresce e
+     assenta em torno do próprio miolo, como borracha descendo reta no papel. */
+
+  /* Um carimbo não tem sombra de caixa — a tinta está NO papel, não sobre ele.
+     Nenhuma `box-shadow`, nenhum `filter: drop-shadow`. O contraste já está
+     resolvido pelo fundo: a placa do cartão é `rgba(255,255,255,0.96)` (medido em
+     `events-spotlight.css`), então o azul `#004fb4` da tinta assenta sobre branco.
+     É também por isso que o CORPO das quatro artes é o mesmo azul e só o acento
+     tracejado usa o `tone` do kind: `global` tem `tone` `#A78BFA`, e um oval lilás
+     com texto lilás sobre branco não sustenta o contraste que a tag precisa (ver a
+     apuração no cabeçalho de `scripts/gerar-carimbos-kind-sis235.mjs`).
+     A premissa da issue de "legível sobre a foto" não se aplica: o chip que sai de
+     cena vive na área de TEXTO do cartão, acima do título, e não sobre a arte. */
+}
+
+.eventos-carimbo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* `contain` e não `cover`: `cover` recortaria a borda desgastada do oval, que é
+     justamente o que faz o desenho parecer carimbo. */
+  object-fit: contain;
+}
+
+/* ── MOVIMENTO REDUZIDO ──
+   O componente já não monta a linha do tempo quando a preferência está ligada (ver
+   `prefersReducedMotion` no TSX), então aqui não há animação para desligar. A regra
+   existe para o caso de o GSAP ter escrito `transform` num frame antes do
+   desmonte: sem ela sobraria uma matriz inline, e o carimbo ficaria numa escala que
+   ninguém pediu. Estado final explícito, nunca `opacity: 0`.
+
+   A tag é CONTEÚDO (diz a categoria do evento), então ela nunca pode depender de
+   animação para aparecer — é o caso da tabela em `reduced-motion`: parar o efeito,
+   garantir o estado final legível. */
+@media (prefers-reduced-motion: reduce) {
+  .eventos-carimbo {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

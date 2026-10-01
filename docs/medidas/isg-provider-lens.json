@@ -1,0 +1,1258 @@
+{
+  "390": {
+    "secaoMontada": true,
+    "contratos": {
+      "ariaLabelledby": "isg",
+      "ancorasIsgNaRota": 1,
+      "headingTag": "H2",
+      "nomeAcessivelDoHeading": "ISG Provider Lens",
+      "nomeVazio": false,
+      "secoesIsgNaRota": 1,
+      "recognitionTheaterIntacto": true,
+      "porQueSistranIntacto": true,
+      "tecnologiasIntacta": true,
+      "diferenciaisSeisIntacta": true
+    },
+    "naoSaoTresCards": {
+      "glassCardsNaSecao": 0,
+      "notchCardsNaSecao": 0,
+      "blockquotes": 1,
+      "diferenciais": 2,
+      "tituloEmTipografiaHtml": false
+    },
+    "assets": {
+      "foto": {
+        "src": "/isgprovider.png",
+        "apontaParaOArquivo": true,
+        "naturalWidth": 1122,
+        "naturalHeight": 1402,
+        "carregou": true,
+        "dimensoesConferem": true,
+        "objectFit": "cover",
+        "alt": "Profissional analisando indicadores do mercado de seguros em uma tela digital",
+        "altDescritivo": true
+      },
+      "logo": {
+        "src": "/isg-provider-lens-HD-transparente.png",
+        "apontaParaOArquivo": true,
+        "naturalWidth": 2560,
+        "naturalHeight": 868,
+        "carregou": true,
+        "dimensoesConferem": true,
+        "alt": "ISG Provider Lens",
+        "altExato": true,
+        "animacao": "none"
+      }
+    },
+    "logoNaCaixa": {
+      "janela": {
+        "x": 20,
+        "y": 149.88,
+        "largura": 350,
+        "altura": 53.61,
+        "direita": 370,
+        "base": 203.48
+      },
+      "imagem": {
+        "x": 13.03,
+        "y": 118.16,
+        "largura": 364.08,
+        "altura": 123.44,
+        "direita": 377.11,
+        "base": 241.6
+      },
+      "proporcaoDaJanela": 6.53,
+      "proporcaoDaTinta": 6.53,
+      "overflowDaJanela": "hidden",
+      "imagemMaiorQueAJanela": true,
+      "imagemDeslocadaParaCima": true,
+      "transformDaImagem": "matrix(1, 0, 0, 1, -6.96846, -31.7123)",
+      "larguraMaximaPx": 350
+    },
+    "selo": {
+      "caixa": {
+        "x": 33,
+        "y": 509.42,
+        "largura": 324,
+        "altura": 146.56,
+        "direita": 357,
+        "base": 655.98
+      },
+      "painel": {
+        "x": 20,
+        "y": 231.48,
+        "largura": 350,
+        "altura": 437.5,
+        "direita": 370,
+        "base": 668.98
+      },
+      "contidoNoPainel": true,
+      "recuoEsquerda": 13,
+      "recuoDireita": 13,
+      "recuoBase": 13,
+      "position": "absolute",
+      "fundo": "linear-gradient(135deg, rgb(91, 63, 168) 0%, rgb(68, 51, 160) 55%, rgb(47, 75, 176) 100%)",
+      "raio": "16px",
+      "marcaAriaHidden": true
+    },
+    "composicao": {
+      "painel": {
+        "x": 20,
+        "y": 231.48,
+        "largura": 350,
+        "altura": 437.5,
+        "direita": 370,
+        "base": 668.98
+      },
+      "conteudo": {
+        "x": 0,
+        "y": 0,
+        "largura": 0,
+        "altura": 0,
+        "direita": 0,
+        "base": 0
+      },
+      "fracaoDaFotoPct": 100,
+      "fotoAEsquerda": false,
+      "alturaDoPainelPx": 437.5,
+      "raioDoPainel": "26px",
+      "bordaDoPainel": "1px solid rgba(0, 170, 230, 0.22)",
+      "sombraDoPainel": "rgba(8, 39, 86, 0.12) 0px 24px 60px 0px",
+      "fundoDaSecao": "radial-gradient(circle at 10% 10%, rgba(0, 183, 235, 0.08), rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 85%, rgba(48, 105, 220, 0.09), rgba(0, 0, 0, 0) 32%), none",
+      "corDeFundoDaSecao": "rgb(247, 251, 255)",
+      "fiosVerticais": [
+        "0px",
+        "0px"
+      ],
+      "colunasDosDiferenciais": "1fr",
+      "citacaoLarguraTotal": null
+    },
+    "decorativos": {
+      "aspasForaDaArvore": true,
+      "corDasAspas": "rgba(0, 121, 203, 0.16)",
+      "linhaDoEyebrowAriaHidden": true,
+      "tracosAriaHidden": true,
+      "iconesAriaHidden": true,
+      "iconesDistintos": 2
+    },
+    "pedido2309": {
+      "recuoDaCitacao": "24px 20px",
+      "corpoDoGlifo": "56px",
+      "flutuacao": {
+        "nome": "isg-flutua",
+        "duracao": "5.4s",
+        "iteracoes": "infinite",
+        "transformDoBlockquote": "matrix(1, 0, 0, 1, 0, -0.0719624)",
+        "animacaoNaCasca": "none"
+      },
+      "grade": {
+        "existe": true,
+        "ariaHidden": true,
+        "zIndex": "-1",
+        "pointerEvents": "none",
+        "modulo": "96px 96px, 96px 96px",
+        "ancora": "fixed, fixed",
+        "linha": "linear-gradient(rgba(14, 216, 246, 0.14) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(90deg, rgba(14, 216, 246, 0.14) 1px, rgba(0, 0, 0, 0) 1px)",
+        "mascara": "linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0) 18%, rgb(0, 0, 0) 82%, rgba(0, 0, 0, 0))",
+        "moduloDaSecaoLight": "96px 96px, 96px 96px",
+        "ancoraDaSecaoLight": "fixed, fixed",
+        "emFase": true
+      }
+    },
+    "link": {
+      "href": "https://isg-one.com/index/isg-index",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "seguro": true
+    },
+    "escritaPreservada": [
+      {
+        "trecho": "expertise é inquestionável, possuindo mais d",
+        "presente": true
+      },
+      {
+        "trecho": "Possui aceleradores para melhorar o \"time to",
+        "presente": true
+      },
+      {
+        "trecho": "A parceria única da Sistran com Pegasystems ",
+        "presente": true
+      },
+      {
+        "trecho": "ISG Provider Lens Product Challenger",
+        "presente": true
+      },
+      {
+        "trecho": "Sistran's unique partnership with Pegasystem",
+        "presente": true
+      },
+      {
+        "trecho": "(*) ISG — Consultores Globais em Gestão de O",
+        "presente": true
+      },
+      {
+        "trecho": "isg-one.com/index/isg-index",
+        "presente": true
+      },
+      {
+        "trecho": "Reprint autorizado por ISG Provider Lens ©, ",
+        "presente": true
+      },
+      {
+        "trecho": "Reconhecimento internacional",
+        "presente": true
+      },
+      {
+        "trecho": "Conhecimento e experiência",
+        "presente": true
+      },
+      {
+        "trecho": "Portfólio robusto",
+        "presente": true
+      },
+      {
+        "trecho": "Comentário do Analista",
+        "presente": true
+      }
+    ],
+    "transbordo": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "excedente": 0
+    },
+    "ordemVisual": [
+      "eyebrow",
+      "logo",
+      "foto",
+      "diferencial-1",
+      "diferencial-2",
+      "citacao",
+      "creditos"
+    ],
+    "contraste": {
+      "eyebrow": {
+        "texto": "Reconhecimento internacional",
+        "cor": "rgb(2, 78, 134)",
+        "fontSizePx": "12px",
+        "fontWeight": "700",
+        "x": 20,
+        "y": 89,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(207 229 242)",
+        "razao": 6.63,
+        "fundoPiorPixel": "rgb(206 227 241)",
+        "razaoPiorPixel": 6.52
+      },
+      "diferencialTitulo": {
+        "texto": "Conhecimento e experiência",
+        "cor": "rgb(10, 31, 68)",
+        "fontSizePx": "17px",
+        "fontWeight": "700",
+        "x": 20,
+        "y": 829,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(247 251 255)",
+        "razao": 15.63,
+        "fundoPiorPixel": "rgb(247 251 255)",
+        "razaoPiorPixel": 15.63
+      },
+      "diferencialTexto": null,
+      "citacaoTitulo": null,
+      "citacaoTexto": null,
+      "creditos": null,
+      "seloTitulo": {
+        "texto": "ISG Provider Lens Product Challenger",
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fontSizePx": "15px",
+        "fontWeight": "700",
+        "x": 93,
+        "y": 534,
+        "alfaDoTexto": 0.88,
+        "fundoAmostrado": "rgb(84 59 166)",
+        "razao": 6.75,
+        "fundoPiorPixel": "rgb(85 60 166)",
+        "razaoPiorPixel": 6.73
+      },
+      "seloTexto": {
+        "texto": "Sistran's unique partnership with Pegasystems allo",
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fontSizePx": "12px",
+        "fontWeight": "400",
+        "x": 93,
+        "y": 579,
+        "alfaDoTexto": 0.88,
+        "fundoAmostrado": "rgb(80 57 164)",
+        "razao": 7,
+        "fundoPiorPixel": "rgb(81 58 165)",
+        "razaoPiorPixel": 6.9
+      },
+      "link": null
+    },
+    "emendas": {
+      "acima": {
+        "achouCima": true,
+        "achouBaixo": true,
+        "mesmoPai": true,
+        "vizinhas": true,
+        "fillDoChanfro": "#f7fbff",
+        "fronteiraYpx": 422,
+        "colunas": [
+          {
+            "x": 23,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(234 247 254)",
+            "deltaRGB": 18
+          },
+          {
+            "x": 78,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(234 247 254)",
+            "deltaRGB": 18
+          },
+          {
+            "x": 137,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(235 247 254)",
+            "deltaRGB": 17
+          },
+          {
+            "x": 195,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(237 248 254)",
+            "deltaRGB": 14
+          },
+          {
+            "x": 254,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(238 248 254)",
+            "deltaRGB": 13
+          },
+          {
+            "x": 312,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(240 249 254)",
+            "deltaRGB": 10
+          },
+          {
+            "x": 367,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(242 249 254)",
+            "deltaRGB": 8
+          }
+        ],
+        "maiorDeltaRGB": 18
+      },
+      "abaixo": {
+        "achouCima": true,
+        "achouBaixo": true,
+        "mesmoPai": true,
+        "vizinhas": true,
+        "fillDoChanfro": "#f7fbff",
+        "fronteiraYpx": 422,
+        "colunas": [
+          {
+            "x": 23,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 92 157)",
+            "deltaRGB": 504
+          },
+          {
+            "x": 78,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 91 156)",
+            "deltaRGB": 506
+          },
+          {
+            "x": 137,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 90 155)",
+            "deltaRGB": 508
+          },
+          {
+            "x": 195,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 89 153)",
+            "deltaRGB": 511
+          },
+          {
+            "x": 254,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 88 152)",
+            "deltaRGB": 513
+          },
+          {
+            "x": 312,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 87 151)",
+            "deltaRGB": 515
+          },
+          {
+            "x": 367,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 86 149)",
+            "deltaRGB": 518
+          }
+        ],
+        "maiorDeltaRGB": 518
+      }
+    }
+  },
+  "768": {
+    "secaoMontada": true,
+    "contratos": {
+      "ariaLabelledby": "isg",
+      "ancorasIsgNaRota": 1,
+      "headingTag": "H2",
+      "nomeAcessivelDoHeading": "ISG Provider Lens",
+      "nomeVazio": false,
+      "secoesIsgNaRota": 1,
+      "recognitionTheaterIntacto": true,
+      "porQueSistranIntacto": true,
+      "tecnologiasIntacta": true,
+      "diferenciaisSeisIntacta": true
+    },
+    "naoSaoTresCards": {
+      "glassCardsNaSecao": 0,
+      "notchCardsNaSecao": 0,
+      "blockquotes": 1,
+      "diferenciais": 2,
+      "tituloEmTipografiaHtml": false
+    },
+    "assets": {
+      "foto": {
+        "src": "/isgprovider.png",
+        "apontaParaOArquivo": true,
+        "naturalWidth": 1122,
+        "naturalHeight": 1402,
+        "carregou": true,
+        "dimensoesConferem": true,
+        "objectFit": "cover",
+        "alt": "Profissional analisando indicadores do mercado de seguros em uma tela digital",
+        "altDescritivo": true
+      },
+      "logo": {
+        "src": "/isg-provider-lens-HD-transparente.png",
+        "apontaParaOArquivo": true,
+        "naturalWidth": 2560,
+        "naturalHeight": 868,
+        "carregou": true,
+        "dimensoesConferem": true,
+        "alt": "ISG Provider Lens",
+        "altExato": true,
+        "animacao": "none"
+      }
+    },
+    "logoNaCaixa": {
+      "janela": {
+        "x": 24,
+        "y": 182.06,
+        "largura": 360,
+        "altura": 55.14,
+        "direita": 384,
+        "base": 237.2
+      },
+      "imagem": {
+        "x": 16.83,
+        "y": 149.45,
+        "largura": 374.47,
+        "altura": 126.95,
+        "direita": 391.3,
+        "base": 276.4
+      },
+      "proporcaoDaJanela": 6.53,
+      "proporcaoDaTinta": 6.53,
+      "overflowDaJanela": "hidden",
+      "imagemMaiorQueAJanela": true,
+      "imagemDeslocadaParaCima": true,
+      "transformDaImagem": "matrix(1, 0, 0, 1, -7.16733, -32.6155)",
+      "larguraMaximaPx": 360
+    },
+    "selo": {
+      "caixa": {
+        "x": 49,
+        "y": 1030.53,
+        "largura": 420,
+        "altura": 109.67,
+        "direita": 469,
+        "base": 1140.2
+      },
+      "painel": {
+        "x": 24,
+        "y": 265.2,
+        "largura": 720,
+        "altura": 900,
+        "direita": 744,
+        "base": 1165.2
+      },
+      "contidoNoPainel": true,
+      "recuoEsquerda": 25,
+      "recuoDireita": 275,
+      "recuoBase": 25,
+      "position": "absolute",
+      "fundo": "linear-gradient(135deg, rgb(91, 63, 168) 0%, rgb(68, 51, 160) 55%, rgb(47, 75, 176) 100%)",
+      "raio": "16px",
+      "marcaAriaHidden": true
+    },
+    "composicao": {
+      "painel": {
+        "x": 24,
+        "y": 265.2,
+        "largura": 720,
+        "altura": 900,
+        "direita": 744,
+        "base": 1165.2
+      },
+      "conteudo": {
+        "x": 0,
+        "y": 0,
+        "largura": 0,
+        "altura": 0,
+        "direita": 0,
+        "base": 0
+      },
+      "fracaoDaFotoPct": 100,
+      "fotoAEsquerda": false,
+      "alturaDoPainelPx": 900,
+      "raioDoPainel": "26px",
+      "bordaDoPainel": "1px solid rgba(0, 170, 230, 0.22)",
+      "sombraDoPainel": "rgba(8, 39, 86, 0.12) 0px 24px 60px 0px",
+      "fundoDaSecao": "radial-gradient(circle at 10% 10%, rgba(0, 183, 235, 0.08), rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 85%, rgba(48, 105, 220, 0.09), rgba(0, 0, 0, 0) 32%), none",
+      "corDeFundoDaSecao": "rgb(247, 251, 255)",
+      "fiosVerticais": [
+        "0px",
+        "0px"
+      ],
+      "colunasDosDiferenciais": "1fr",
+      "citacaoLarguraTotal": null
+    },
+    "decorativos": {
+      "aspasForaDaArvore": true,
+      "corDasAspas": "rgba(0, 121, 203, 0.16)",
+      "linhaDoEyebrowAriaHidden": true,
+      "tracosAriaHidden": true,
+      "iconesAriaHidden": true,
+      "iconesDistintos": 2
+    },
+    "pedido2309": {
+      "recuoDaCitacao": "24px 28px 26px 80px",
+      "corpoDoGlifo": "56px",
+      "flutuacao": {
+        "nome": "isg-flutua",
+        "duracao": "5.4s",
+        "iteracoes": "infinite",
+        "transformDoBlockquote": "matrix(1, 0, 0, 1, 0, -0.294574)",
+        "animacaoNaCasca": "none"
+      },
+      "grade": {
+        "existe": true,
+        "ariaHidden": true,
+        "zIndex": "-1",
+        "pointerEvents": "none",
+        "modulo": "96px 96px, 96px 96px",
+        "ancora": "fixed, fixed",
+        "linha": "linear-gradient(rgba(14, 216, 246, 0.14) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(90deg, rgba(14, 216, 246, 0.14) 1px, rgba(0, 0, 0, 0) 1px)",
+        "mascara": "linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0) 18%, rgb(0, 0, 0) 82%, rgba(0, 0, 0, 0))",
+        "moduloDaSecaoLight": "96px 96px, 96px 96px",
+        "ancoraDaSecaoLight": "fixed, fixed",
+        "emFase": true
+      }
+    },
+    "link": {
+      "href": "https://isg-one.com/index/isg-index",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "seguro": true
+    },
+    "escritaPreservada": [
+      {
+        "trecho": "expertise é inquestionável, possuindo mais d",
+        "presente": true
+      },
+      {
+        "trecho": "Possui aceleradores para melhorar o \"time to",
+        "presente": true
+      },
+      {
+        "trecho": "A parceria única da Sistran com Pegasystems ",
+        "presente": true
+      },
+      {
+        "trecho": "ISG Provider Lens Product Challenger",
+        "presente": true
+      },
+      {
+        "trecho": "Sistran's unique partnership with Pegasystem",
+        "presente": true
+      },
+      {
+        "trecho": "(*) ISG — Consultores Globais em Gestão de O",
+        "presente": true
+      },
+      {
+        "trecho": "isg-one.com/index/isg-index",
+        "presente": true
+      },
+      {
+        "trecho": "Reprint autorizado por ISG Provider Lens ©, ",
+        "presente": true
+      },
+      {
+        "trecho": "Reconhecimento internacional",
+        "presente": true
+      },
+      {
+        "trecho": "Conhecimento e experiência",
+        "presente": true
+      },
+      {
+        "trecho": "Portfólio robusto",
+        "presente": true
+      },
+      {
+        "trecho": "Comentário do Analista",
+        "presente": true
+      }
+    ],
+    "transbordo": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "excedente": 0
+    },
+    "ordemVisual": [
+      "eyebrow",
+      "logo",
+      "foto",
+      "diferencial-1",
+      "diferencial-2",
+      "citacao",
+      "creditos"
+    ],
+    "contraste": {
+      "eyebrow": {
+        "texto": "Reconhecimento internacional",
+        "cor": "rgb(2, 78, 134)",
+        "fontSizePx": "12px",
+        "fontWeight": "700",
+        "x": 24,
+        "y": 121,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(209 229 242)",
+        "razao": 6.65,
+        "fundoPiorPixel": "rgb(197 222 238)",
+        "razaoPiorPixel": 6.18
+      },
+      "diferencialTitulo": null,
+      "diferencialTexto": null,
+      "citacaoTitulo": null,
+      "citacaoTexto": null,
+      "creditos": null,
+      "seloTitulo": null,
+      "seloTexto": null,
+      "link": null
+    },
+    "emendas": {
+      "acima": {
+        "achouCima": true,
+        "achouBaixo": true,
+        "mesmoPai": true,
+        "vizinhas": true,
+        "fillDoChanfro": "#f7fbff",
+        "fronteiraYpx": 500,
+        "colunas": [
+          {
+            "x": 46,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(234 248 254)",
+            "deltaRGB": 17
+          },
+          {
+            "x": 154,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(234 247 254)",
+            "deltaRGB": 18
+          },
+          {
+            "x": 269,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(236 248 254)",
+            "deltaRGB": 15
+          },
+          {
+            "x": 384,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(239 249 254)",
+            "deltaRGB": 11
+          },
+          {
+            "x": 499,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(243 250 255)",
+            "deltaRGB": 5
+          },
+          {
+            "x": 614,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(246 251 255)",
+            "deltaRGB": 1
+          },
+          {
+            "x": 722,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(247 251 255)",
+            "deltaRGB": 0
+          }
+        ],
+        "maiorDeltaRGB": 18
+      },
+      "abaixo": {
+        "achouCima": true,
+        "achouBaixo": true,
+        "mesmoPai": true,
+        "vizinhas": true,
+        "fillDoChanfro": "#f7fbff",
+        "fronteiraYpx": 500,
+        "colunas": [
+          {
+            "x": 46,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 91 157)",
+            "deltaRGB": 505
+          },
+          {
+            "x": 154,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 89 154)",
+            "deltaRGB": 510
+          },
+          {
+            "x": 269,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 88 152)",
+            "deltaRGB": 513
+          },
+          {
+            "x": 384,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 86 148)",
+            "deltaRGB": 519
+          },
+          {
+            "x": 499,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 84 146)",
+            "deltaRGB": 523
+          },
+          {
+            "x": 614,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 82 142)",
+            "deltaRGB": 529
+          },
+          {
+            "x": 722,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 80 140)",
+            "deltaRGB": 533
+          }
+        ],
+        "maiorDeltaRGB": 533
+      }
+    }
+  },
+  "1440": {
+    "secaoMontada": true,
+    "contratos": {
+      "ariaLabelledby": "isg",
+      "ancorasIsgNaRota": 1,
+      "headingTag": "H2",
+      "nomeAcessivelDoHeading": "ISG Provider Lens",
+      "nomeVazio": false,
+      "secoesIsgNaRota": 1,
+      "recognitionTheaterIntacto": true,
+      "porQueSistranIntacto": true,
+      "tecnologiasIntacta": true,
+      "diferenciaisSeisIntacta": true
+    },
+    "naoSaoTresCards": {
+      "glassCardsNaSecao": 0,
+      "notchCardsNaSecao": 0,
+      "blockquotes": 1,
+      "diferenciais": 2,
+      "tituloEmTipografiaHtml": false
+    },
+    "assets": {
+      "foto": {
+        "src": "/isgprovider.png",
+        "apontaParaOArquivo": true,
+        "naturalWidth": 1122,
+        "naturalHeight": 1402,
+        "carregou": true,
+        "dimensoesConferem": true,
+        "objectFit": "cover",
+        "alt": "Profissional analisando indicadores do mercado de seguros em uma tela digital",
+        "altDescritivo": true
+      },
+      "logo": {
+        "src": "/isg-provider-lens-HD-transparente.png",
+        "apontaParaOArquivo": true,
+        "naturalWidth": 2560,
+        "naturalHeight": 868,
+        "carregou": true,
+        "dimensoesConferem": true,
+        "alt": "ISG Provider Lens",
+        "altExato": true,
+        "animacao": "none"
+      }
+    },
+    "logoNaCaixa": {
+      "janela": {
+        "x": 639.41,
+        "y": 171.61,
+        "largura": 460,
+        "altura": 70.45,
+        "direita": 1099.41,
+        "base": 242.06
+      },
+      "imagem": {
+        "x": 630.25,
+        "y": 129.93,
+        "largura": 478.5,
+        "altura": 162.23,
+        "direita": 1108.75,
+        "base": 292.16
+      },
+      "proporcaoDaJanela": 6.53,
+      "proporcaoDaTinta": 6.53,
+      "overflowDaJanela": "hidden",
+      "imagemMaiorQueAJanela": true,
+      "imagemDeslocadaParaCima": true,
+      "transformDaImagem": "matrix(1, 0, 0, 1, -9.15849, -41.6796)",
+      "larguraMaximaPx": 460
+    },
+    "selo": {
+      "caixa": {
+        "x": 187,
+        "y": 536.28,
+        "largura": 384.22,
+        "altura": 109.67,
+        "direita": 571.22,
+        "base": 645.95
+      },
+      "painel": {
+        "x": 162,
+        "y": 128.19,
+        "largura": 434.22,
+        "altura": 542.77,
+        "direita": 596.22,
+        "base": 670.95
+      },
+      "contidoNoPainel": true,
+      "recuoEsquerda": 25,
+      "recuoDireita": 25,
+      "recuoBase": 25,
+      "position": "absolute",
+      "fundo": "linear-gradient(135deg, rgb(91, 63, 168) 0%, rgb(68, 51, 160) 55%, rgb(47, 75, 176) 100%)",
+      "raio": "16px",
+      "marcaAriaHidden": true
+    },
+    "composicao": {
+      "painel": {
+        "x": 162,
+        "y": 128.19,
+        "largura": 434.22,
+        "altura": 542.77,
+        "direita": 596.22,
+        "base": 670.95
+      },
+      "conteudo": {
+        "x": 639.41,
+        "y": 128.19,
+        "largura": 638.59,
+        "altura": 722.47,
+        "direita": 1278,
+        "base": 850.66
+      },
+      "fracaoDaFotoPct": 40.47,
+      "fotoAEsquerda": true,
+      "alturaDoPainelPx": 542.77,
+      "raioDoPainel": "26px",
+      "bordaDoPainel": "1px solid rgba(0, 170, 230, 0.22)",
+      "sombraDoPainel": "rgba(8, 39, 86, 0.12) 0px 24px 60px 0px",
+      "fundoDaSecao": "radial-gradient(circle at 10% 10%, rgba(0, 183, 235, 0.08), rgba(0, 0, 0, 0) 30%), radial-gradient(circle at 92% 85%, rgba(48, 105, 220, 0.09), rgba(0, 0, 0, 0) 32%), none",
+      "corDeFundoDaSecao": "rgb(247, 251, 255)",
+      "fiosVerticais": [
+        "0px",
+        "1px"
+      ],
+      "colunasDosDiferenciais": "319.297px 319.297px",
+      "citacaoLarguraTotal": 1
+    },
+    "decorativos": {
+      "aspasForaDaArvore": true,
+      "corDasAspas": "rgba(0, 121, 203, 0.16)",
+      "linhaDoEyebrowAriaHidden": true,
+      "tracosAriaHidden": true,
+      "iconesAriaHidden": true,
+      "iconesDistintos": 2
+    },
+    "pedido2309": {
+      "recuoDaCitacao": "24px 28px 26px 80px",
+      "corpoDoGlifo": "56px",
+      "flutuacao": {
+        "nome": "isg-flutua",
+        "duracao": "5.4s",
+        "iteracoes": "infinite",
+        "transformDoBlockquote": "matrix(1, 0, 0, 1, 0, -0.636117)",
+        "animacaoNaCasca": "none"
+      },
+      "grade": {
+        "existe": true,
+        "ariaHidden": true,
+        "zIndex": "-1",
+        "pointerEvents": "none",
+        "modulo": "96px 96px, 96px 96px",
+        "ancora": "fixed, fixed",
+        "linha": "linear-gradient(rgba(14, 216, 246, 0.14) 1px, rgba(0, 0, 0, 0) 1px), linear-gradient(90deg, rgba(14, 216, 246, 0.14) 1px, rgba(0, 0, 0, 0) 1px)",
+        "mascara": "linear-gradient(rgba(0, 0, 0, 0), rgb(0, 0, 0) 18%, rgb(0, 0, 0) 82%, rgba(0, 0, 0, 0))",
+        "moduloDaSecaoLight": "96px 96px, 96px 96px",
+        "ancoraDaSecaoLight": "fixed, fixed",
+        "emFase": true
+      }
+    },
+    "link": {
+      "href": "https://isg-one.com/index/isg-index",
+      "target": "_blank",
+      "rel": "noopener noreferrer",
+      "seguro": true
+    },
+    "escritaPreservada": [
+      {
+        "trecho": "expertise é inquestionável, possuindo mais d",
+        "presente": true
+      },
+      {
+        "trecho": "Possui aceleradores para melhorar o \"time to",
+        "presente": true
+      },
+      {
+        "trecho": "A parceria única da Sistran com Pegasystems ",
+        "presente": true
+      },
+      {
+        "trecho": "ISG Provider Lens Product Challenger",
+        "presente": true
+      },
+      {
+        "trecho": "Sistran's unique partnership with Pegasystem",
+        "presente": true
+      },
+      {
+        "trecho": "(*) ISG — Consultores Globais em Gestão de O",
+        "presente": true
+      },
+      {
+        "trecho": "isg-one.com/index/isg-index",
+        "presente": true
+      },
+      {
+        "trecho": "Reprint autorizado por ISG Provider Lens ©, ",
+        "presente": true
+      },
+      {
+        "trecho": "Reconhecimento internacional",
+        "presente": true
+      },
+      {
+        "trecho": "Conhecimento e experiência",
+        "presente": true
+      },
+      {
+        "trecho": "Portfólio robusto",
+        "presente": true
+      },
+      {
+        "trecho": "Comentário do Analista",
+        "presente": true
+      }
+    ],
+    "transbordo": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "excedente": 0
+    },
+    "ordemVisual": [
+      "eyebrow",
+      "foto",
+      "logo",
+      "diferencial-1",
+      "diferencial-2",
+      "citacao",
+      "creditos"
+    ],
+    "contraste": {
+      "eyebrow": {
+        "texto": "Reconhecimento internacional",
+        "cor": "rgb(2, 78, 134)",
+        "fontSizePx": "12.96px",
+        "fontWeight": "700",
+        "x": 639,
+        "y": 137,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(216 228 240)",
+        "razao": 6.68,
+        "fundoPiorPixel": "rgb(214 227 239)",
+        "razaoPiorPixel": 6.6
+      },
+      "diferencialTitulo": {
+        "texto": "Conhecimento e experiência",
+        "cor": "rgb(10, 31, 68)",
+        "fontSizePx": "17px",
+        "fontWeight": "700",
+        "x": 639,
+        "y": 374,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(244 248 253)",
+        "razao": 15.24,
+        "fundoPiorPixel": "rgb(243 247 252)",
+        "razaoPiorPixel": 15.1
+      },
+      "diferencialTexto": {
+        "texto": "expertise é inquestionável, possuindo mais de 40 i",
+        "cor": "rgb(10, 31, 68)",
+        "fontSizePx": "15px",
+        "fontWeight": "400",
+        "x": 639,
+        "y": 408,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(244 248 253)",
+        "razao": 15.24,
+        "fundoPiorPixel": "rgb(243 247 252)",
+        "razaoPiorPixel": 15.1
+      },
+      "citacaoTitulo": {
+        "texto": "Comentário do Analista",
+        "cor": "rgb(10, 31, 68)",
+        "fontSizePx": "16px",
+        "fontWeight": "700",
+        "x": 720,
+        "y": 650,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(254 255 255)",
+        "razao": 16.22,
+        "fundoPiorPixel": "rgb(254 255 255)",
+        "razaoPiorPixel": 16.22
+      },
+      "citacaoTexto": {
+        "texto": "A parceria única da Sistran com Pegasystems permit",
+        "cor": "rgb(10, 31, 68)",
+        "fontSizePx": "15px",
+        "fontWeight": "400",
+        "x": 720,
+        "y": 686,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(254 255 255)",
+        "razao": 16.22,
+        "fundoPiorPixel": "rgb(254 255 255)",
+        "razaoPiorPixel": 16.22
+      },
+      "creditos": {
+        "texto": "(*) ISG — Consultores Globais em Gestão de Outsour",
+        "cor": "rgb(10, 31, 68)",
+        "fontSizePx": "13px",
+        "fontWeight": "400",
+        "x": 639,
+        "y": 813,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(247 251 255)",
+        "razao": 15.63,
+        "fundoPiorPixel": "rgb(246 250 254)",
+        "razaoPiorPixel": 15.49
+      },
+      "seloTitulo": {
+        "texto": "ISG Provider Lens Product Challenger",
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fontSizePx": "15px",
+        "fontWeight": "700",
+        "x": 247,
+        "y": 561,
+        "alfaDoTexto": 0.88,
+        "fundoAmostrado": "rgb(84 60 166)",
+        "razao": 6.74,
+        "fundoPiorPixel": "rgb(85 60 166)",
+        "razaoPiorPixel": 6.73
+      },
+      "seloTexto": {
+        "texto": "Sistran's unique partnership with Pegasystems allo",
+        "cor": "rgba(255, 255, 255, 0.88)",
+        "fontSizePx": "12px",
+        "fontWeight": "400",
+        "x": 247,
+        "y": 587,
+        "alfaDoTexto": 0.88,
+        "fundoAmostrado": "rgb(82 58 165)",
+        "razao": 6.87,
+        "fundoPiorPixel": "rgb(83 59 165)",
+        "razaoPiorPixel": 6.79
+      },
+      "link": {
+        "texto": "isg-one.com/index/isg-index",
+        "cor": "rgb(11, 110, 168)",
+        "fontSizePx": "13px",
+        "fontWeight": "400",
+        "x": 1008,
+        "y": 813,
+        "alfaDoTexto": 1,
+        "fundoAmostrado": "rgb(238 243 252)",
+        "razao": 4.95,
+        "fundoPiorPixel": "rgb(237 242 251)",
+        "razaoPiorPixel": 4.91
+      }
+    },
+    "emendas": {
+      "acima": {
+        "achouCima": true,
+        "achouBaixo": true,
+        "mesmoPai": true,
+        "vizinhas": true,
+        "fillDoChanfro": "#f7fbff",
+        "fronteiraYpx": 480,
+        "colunas": [
+          {
+            "x": 86,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(232 247 254)",
+            "deltaRGB": 20
+          },
+          {
+            "x": 288,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(234 248 254)",
+            "deltaRGB": 17
+          },
+          {
+            "x": 504,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(243 250 255)",
+            "deltaRGB": 5
+          },
+          {
+            "x": 720,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(247 251 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 936,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(247 251 255)",
+            "deltaRGB": 0
+          },
+          {
+            "x": 1152,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(246 251 255)",
+            "deltaRGB": 1
+          },
+          {
+            "x": 1354,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(247 251 255)",
+            "deltaRGB": 0
+          }
+        ],
+        "maiorDeltaRGB": 20
+      },
+      "abaixo": {
+        "achouCima": true,
+        "achouBaixo": true,
+        "mesmoPai": true,
+        "vizinhas": true,
+        "fillDoChanfro": "#f7fbff",
+        "fronteiraYpx": 480,
+        "colunas": [
+          {
+            "x": 86,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 91 156)",
+            "deltaRGB": 506
+          },
+          {
+            "x": 288,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 88 153)",
+            "deltaRGB": 512
+          },
+          {
+            "x": 504,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 86 149)",
+            "deltaRGB": 518
+          },
+          {
+            "x": 720,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 83 145)",
+            "deltaRGB": 525
+          },
+          {
+            "x": 936,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 81 141)",
+            "deltaRGB": 531
+          },
+          {
+            "x": 1152,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 77 136)",
+            "deltaRGB": 540
+          },
+          {
+            "x": 1354,
+            "acima": "rgb(247 251 255)",
+            "abaixo": "rgb(0 74 131)",
+            "deltaRGB": 548
+          }
+        ],
+        "maiorDeltaRGB": 548
+      }
+    }
+  },
+  "peca": "ISG Provider Lens /quem-somos",
+  "issue": "SIS-87",
+  "url": "http://localhost:3000/quem-somos",
+  "quando": "2026-09-23T18:38:27.036Z",
+  "movimentoReduzido": {
+    "media-query": {
+      "dataMotion": null,
+      "enquadramento": {
+        "topo": 0,
+        "base": 978,
+        "alturaDaJanela": 960,
+        "emQuadro": true
+      },
+      "nosAnimados": 0,
+      "animacaoDaCitacao": "none",
+      "blocos": 6,
+      "blocosVisiveis": 6,
+      "piorOpacidade": 1,
+      "piorDeslocamentoPx": 0,
+      "imagensCarregadas": 2
+    },
+    "atributo": {
+      "dataMotion": "reduce",
+      "enquadramento": {
+        "topo": 0,
+        "base": 979,
+        "alturaDaJanela": 960,
+        "emQuadro": true
+      },
+      "nosAnimados": 0,
+      "animacaoDaCitacao": "none",
+      "blocos": 6,
+      "blocosVisiveis": 6,
+      "piorOpacidade": 1,
+      "piorDeslocamentoPx": 0,
+      "imagensCarregadas": 2
+    }
+  }
+}

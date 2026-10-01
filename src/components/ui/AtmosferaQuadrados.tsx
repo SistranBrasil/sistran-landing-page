@@ -37,12 +37,23 @@
  * dois canais de movimento reduzido — a sonda mede zero animação correndo nos
  * dois, e é esse zero que prova que a camada não precisa de ressalva.
  */
-export default function AtmosferaQuadrados() {
+/* `classe` existe porque a camada passou a ser montada em DUAS rotas (`/solucoes`
+   e, a pedido de 24/09, `/quem-somos`), e cada uma tem o próprio bloco de CSS no
+   fim do `globals.css`. É uma prop e não um seletor compartilhado pelo mesmo
+   motivo que `.dif-grade` não importa `.tec-fundo__grade`: o bloco de `/solucoes`
+   é da SIS-204, e um seletor meu lá faria a próxima passada naquela rota mexer
+   nesta sem saber. Quem não passa nada continua com a classe de `/solucoes`,
+   IDÊNTICO ao que era. */
+export default function AtmosferaQuadrados({
+  classe = 'solucoes-atmosfera',
+}: {
+  classe?: string;
+}) {
   return (
     /* `aria-hidden` e fora de qualquer landmark de conteúdo: é pintura. O
        `pointer-events: none` está na folha, não aqui, porque ele é condição da
        camada existir (ela cobre a janela inteira e cliparia a página toda). */
-    <div aria-hidden className="solucoes-atmosfera">
+    <div aria-hidden className={classe}>
       <svg viewBox="0 0 1440 1000" preserveAspectRatio="xMidYMid slice" focusable="false">
         {/* LINHAS FINAS — as quatro que estruturam a composição, sangrando de
             borda a borda. Elas não são a grade (a grade é o gradiente no
