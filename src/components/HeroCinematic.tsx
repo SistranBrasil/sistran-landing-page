@@ -621,19 +621,20 @@ export default function HeroCinematic() {
                as fontes e as imagens que o próprio portão está esperando, e o
                overlay durava mais por causa do que ele mesmo cobria.
 
-               Não depende de `fase` nem de `rm`: com movimento reduzido, ou
-               aberto no meio da página, não há entrada automática, mas a
-               raspagem da Fase B precisa do arquivo do mesmo jeito. O que muda é
+               Não dependia de `fase` nem de `rm` quando a entrada automática
+               existia, e continua não dependendo de nada além do portão: a
+               raspagem precisa do arquivo de todo jeito. O que isto muda é
                QUANDO ele é pedido, nunca SE. */
             carregar={liberado}
-            /* Fase A. `rm &&` não é redundante com a guarda do efeito: aquela
-               decide se a fase COMEÇA, e esta garante que ela não sobrevive a
-               alguém ligar movimento reduzido pelo botão da interface com a
-               entrada em curso. */
-            reproduzir={!rm && fase === 'entrada'}
-            tetoReproducao={TETO_ENTRADA}
-            onFracao={aoFracaoDoVideo}
-            onEntradaEncerrada={encerrarEntrada}
+            /* 02/10/2026 — as quatro propriedades da Fase A saíram com ela (ver o
+               bloco de registro no corpo do componente). Sem elas o `ScrollVideo`
+               cai no default `reproduzir={false}`: nunca chama `play()`, e
+               `progress` é o único escritor de `currentTime` — que é o pedido,
+               «deixar o controle só no scroll».
+                 | reproduzir={!rm && fase === 'entrada'}
+                 | tetoReproducao={TETO_ENTRADA}
+                 | onFracao={aoFracaoDoVideo}
+                 | onEntradaEncerrada={encerrarEntrada} */
           />
         </motion.div>
 
