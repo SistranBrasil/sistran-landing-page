@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useActionState, useCallback, useEffect, useState } from 'react';
-import { criarEvento, salvarEvento, type EstadoSalvamento } from '../acoes';
+import { criarEvento, eventoPublicado, salvarEvento, type EstadoSalvamento } from '../acoes';
 import type { EventoBruto } from '@/lib/eventosArquivo';
 import CampoArte from './CampoArte';
 import PreviaEvento from './PreviaEvento';
@@ -85,8 +85,65 @@ export default function FormularioEvento({
    * a edição — onde navegar embora seria errado — e porque `redirect()` no servidor
    * descartaria o estado de erro que este componente existe para preservar.
    */
+  /**
+   * ⚠️ A ESPERA ENTRE O «ok» E A NAVEGAÇÃO — 02/10, a pedido: «coloque uma tela de
+   * carregamento em vez de eu precisar recarregar até aparecer».
+   *
+   * A linha que estava aqui era `router.push(...)` direto, e o problema dela não era
+   * pressa: era navegar para uma página que pode responder 404. `criarEvento` devolve `ok`
+   * depois de a loja aceitar a gravação, mas quem atende a navegação seguinte é outra
+   * requisição — possivelmente outra instância — e a loja é consistente EVENTUALMENTE.
+   * Chegar antes do documento propagar dá `notFound()`, que é terminal: não há o que
+   * esperar numa tela de 404 a não ser recarregar na mão, que é exatamente a queixa.
+   *
+   * Então a navegação só acontece depois de `eventoPublicado` confirmar que o evento está
+   * legível PELA MESMA função que a página vai usar para procurá-lo.
+   *
+   * ⚠️ E A ESPERA É LIMITADA, de propósito. Tela de carregamento infinita trocaria um
+   * defeito visível por um invisível: se a produção não estiver conseguindo LER a loja —
+   * outra falha possível, em que `lerDaNuvem` cai no `events.json` do pacote sem reclamar —
+   * nenhuma quantidade de tentativas resolve, e um giro eterno esconderia isso. Passado o
+   * limite, a tela diz o que aconteceu e oferece os dois caminhos reais.
+   */
+  /**
+   * ⚠️ `esperando` É DERIVADO, e não `useState` com `setEsperando(true)` no efeito: a regra
+   * `react-hooks/set-state-in-effect` marca o segundo, e com razão — não há nada a
+   * sincronizar com o mundo de fora, a informação «a criação deu ok, logo estou esperando»
+   * já está na mão. É o mesmo raciocínio que `CampoArte` registra em `previaPendente`.
+   *
+   * Fica verdadeiro no instante em que a ação devolve `ok` e só deixa de ser quando a
+   * navegação desmonta este componente — que é exatamente a duração da espera.
+   */
+  const esperando = criando && estado.estado === 'ok';
+  /* Este continua estado: ele nasce do TEMPO passando, que é mundo de fora, e quem o escreve
+     é um callback assíncrono — não o corpo do efeito. */
+  const [demorou, setDemorou] = useState(false);
+
   useEffect(() => {
-    if (criando && estado.estado === 'ok') router.push(`/admin/eventos/${estado.id}`);
+    if (!criando || estado.estado !== 'ok') return;
+    const alvo = estado.id;
+    /* `cancelado` porque o componente pode sair de cena no meio (a própria navegação o
+       desmonta) e aí `setDemorou` num componente morto é aviso de React e laço solto. */
+    let cancelado = false;
+
+    (async () => {
+      /* 20 voltas de 1,5s ≈ 30s. O piso de cache do Blob é de um minuto, mas ele deixou de
+         pesar aqui: a leitura passou a usar chave única (ver `lerDaNuvem`), então o que
+         resta de espera é só a propagação dos metadados — segundos, não minutos. */
+      for (let volta = 0; volta < 20; volta += 1) {
+        if (cancelado) return;
+        if (await eventoPublicado(alvo)) {
+          if (!cancelado) router.push(`/admin/eventos/${alvo}`);
+          return;
+        }
+        await new Promise((segue) => setTimeout(segue, 1500));
+      }
+      if (!cancelado) setDemorou(true);
+    })();
+
+    return () => {
+      cancelado = true;
+    };
   }, [criando, estado, router]);
   const [valores, setValores] = useState<EventoBruto>(evento);
   const trocar = <C extends keyof EventoBruto>(campo: C, valor: EventoBruto[C]) =>
@@ -117,6 +174,71 @@ export default function FormularioEvento({
 
   return (
     <div className="mt-8 grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
+      {/**
+       * A TELA DE ESPERA da criação. `fixed inset-0` cobrindo tudo porque o formulário
+       * abaixo não aceita mais nada de útil: o evento já foi gravado, e reenviar daria
+       * «já existe um evento com este identificador». Cobrir é mais honesto que deixar
+       * campos clicáveis que só produzem erro.
+       */}
+      {esperando && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed inset-0 z-50 grid place-items-center bg-[#0f172a]/55 px-4 backdrop-blur-sm"
+        >
+          <div className="w-[min(30rem,100%)] rounded-2xl bg-white p-7 text-center shadow-[0_24px_64px_rgba(16,24,40,0.28)]">
+            {demorou ? (
+              <>
+                <h2 className="text-lg font-medium text-[#0f172a]">
+                  O evento foi gravado, mas ainda não aparece
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-[#475467]">
+                  A gravação foi aceita — o evento existe. O que não aconteceu em 30 segundos
+                  foi ele voltar na leitura do catálogo, e isso não é coisa que mais espera
+                  resolva.
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-[#475467]">
+                  {/* Dito porque muda o que ela faz em seguida: se o catálogo publicado não
+                      está sendo lido, criar de novo só vai bater em «já existe». */}
+                  Abra a lista: se o evento estiver lá, foi só demora e está tudo certo. Se
+                  não estiver, a leitura do catálogo está caindo no arquivo do pacote — e aí
+                  é configuração do servidor, não algo a repetir aqui.
+                </p>
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                  <Link
+                    href="/admin/eventos"
+                    className="rounded-full bg-[#0079cb] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-white no-underline"
+                  >
+                    ver a lista
+                  </Link>
+                  <Link
+                    href={`/admin/eventos/${estado.estado === 'ok' ? estado.id : ''}`}
+                    className="rounded-full border border-black/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[#344054] no-underline"
+                  >
+                    tentar abrir o evento
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                {/* `animate-spin` do Tailwind; o `aria-hidden` evita o leitor de tela
+                    anunciar um anel decorativo — quem fala é o texto abaixo, dentro do
+                    `role="status"`. */}
+                <div
+                  aria-hidden
+                  className="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-[#0079cb]/25 border-t-[#0079cb]"
+                />
+                <h2 className="mt-5 text-lg font-medium text-[#0f172a]">Publicando o evento…</h2>
+                <p className="mt-2 text-sm leading-relaxed text-[#475467]">
+                  Já está gravado. Esperando ele aparecer no catálogo para abrir a página —
+                  costuma levar poucos segundos.
+                </p>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="space-y-6">
         {/* ⚠️ AGORA EXISTE NA CRIAÇÃO TAMBÉM — 02/10, a pedido. A nota anterior dizia que
             não podia existir, e o argumento era este: «`enviarArte` publica os binários E

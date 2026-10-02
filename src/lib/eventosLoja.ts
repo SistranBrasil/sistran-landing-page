@@ -115,7 +115,31 @@ async function lerDaNuvem(): Promise<EventoBruto[] | null> {
     const emMemoria = memoriaValida(info.uploadedAt);
     if (emMemoria) return emMemoria;
 
-    const resposta = await fetch(`${info.url}?v=${info.uploadedAt.getTime()}`, {
+    /**
+     * ⚠️ A CHAVE DE CACHE É ÚNICA POR LEITURA, e não o `uploadedAt` — 02/10, porque um
+     * evento recém-criado dava 404 na página dele em produção.
+     *
+     * A linha era `?v=${info.uploadedAt.getTime()}`, e o raciocínio dela está no docblock
+     * acima: carimbo novo a cada publicação, URL nova, cache sem nada para servir. O furo é
+     * que ele depende de o carimbo JÁ TER AVANÇADO, e os metadados da loja são consistentes
+     * eventualmente — lido junto da escrita, o `uploadedAt` pode ainda ser o anterior. Com o
+     * carimbo anterior a URL é byte a byte a mesma de antes, essa URL está no CDN, e o que
+     * volta é o catálogo velho. O evento foi gravado e a leitura não o vê.
+     *
+     * `recemPublicado` foi a primeira tentativa de tapar isso e NÃO ALCANÇA PRODUÇÃO: é
+     * memória de processo, e na Vercel o POST que escreve e o GET seguinte caem em instâncias
+     * diferentes com frequência. A instância que responde a navegação nunca publicou nada,
+     * então a memória dela está vazia. Em desenvolvimento há um processo só e por isso
+     * funcionava na minha máquina — é a forma clássica de um defeito só aparecer no ar.
+     *
+     * Valor único por requisição mata a classe inteira do problema: chave que nunca existiu
+     * no CDN não tem resposta guardada para devolver, então a leitura sempre vai à origem. O
+     * preço é não aproveitar o cache do Blob neste documento — e é um preço pequeno e
+     * conhecido: é um JSON de 15 linhas de evento, e a frescura dele é o requisito («quando
+     * salvar já vai adicionar ao site»). Cache de um minuto num documento que o operador
+     * acabou de mudar é exatamente o que não se quer.
+     */
+    const resposta = await fetch(`${info.url}?v=${Date.now()}-${Math.random()}`, {
       cache: 'no-store',
     });
     if (!resposta.ok) return null;

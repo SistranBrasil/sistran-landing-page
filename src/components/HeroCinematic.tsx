@@ -17,11 +17,13 @@
  * nunca saíram do repositório — só do mount, e voltaram a ele.
  *
  * Sequência:
- *   0.00–0.58  O vídeo avança quadro a quadro com a rolagem (ver `ScrollVideo`)
- *              SIS-189 — e agora começa a andar SOZINHO ao entrar na home, nesta
- *              mesma faixa: 0.58 é o teto da entrada automática, não por acaso —
- *              é onde o vídeo deixa de ser o assunto.
- *              O contrato das duas fases está na nota de `scrollYProgress`.
+ *   0.00–1.00  O vídeo avança quadro a quadro com a rolagem (ver `ScrollVideo`)
+ *              SIS-189 tinha feito ele começar a andar SOZINHO ao entrar na home,
+ *              até um teto de 0.58. **ISSO SAIU A PEDIDO (02/10/2026):** o vídeo
+ *              não toca por conta própria em momento nenhum, e a rolagem volta a
+ *              ser o ÚNICO relógio da cena — que é o que esta peça era antes da
+ *              SIS-189. A maquinaria das duas fases fica comentada no corpo do
+ *              componente, com o motivo de cada parte.
  *   0.01–0.58  As TRÊS legendas entram e saem em janelas próprias
  *              (SIS-226; janelas em `ui/HeroCaptions.tsx`. A ENTRADA da primeira
  *              não é rolagem: é uma revelação de montagem, ao entrar no site —
@@ -100,10 +102,18 @@
  * `.brand-line` decorativas.
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+/* 02/10/2026 — a entrada automática saiu, e com ela todos os ganchos que só ela
+   usava. Antes era:
+     | import { useCallback, useEffect, useRef, useState } from 'react';
+   `useCallback` servia a `encerrarEntrada` e `aoFracaoDoVideo`; `useState` à
+   `fase`; `useEffect` aos três efeitos da Fase A. Sobra `useRef`, do
+   `wrapperRef`, que é alvo do `useScroll` e não tem nada a ver com reprodução. */
+import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useReducedMotion, useScrollOpacity } from '@/lib/motion';
-import { syncSmoothScroll } from '@/lib/smoothScroll';
+/* Só a Fase A empurrava a página (ela escrevia posição de rolagem a partir do
+   `currentTime`). Sem ela, o hero não move a página — quem move é o usuário.
+     | import { syncSmoothScroll } from '@/lib/smoothScroll'; */
 /* SIS-226 — as três legendas voltaram. O import ficou comentado desde a SIS-192
    exatamente para que religar fosse uma linha, e foi. */
 import HeroCaptions from './ui/HeroCaptions';
@@ -171,203 +181,201 @@ export default function HeroCinematic() {
   const liberado = portao ? portao.liberado : true;
 
   /* ── SIS-243 · A PÁGINA SE MEXEU ENQUANTO O PORTÃO ESTAVA DE PÉ? ──────────
-     Adiar a decisão até a liberação abriu uma brecha no ponto 3 da issue, e ela
-     é do portão, não do hero: enquanto o overlay está na tela, `html` e `body`
-     ficam com `overflow: hidden` (`RouteLoadGate.module.css`), e conteúdo não
-     rolável tem a posição GRAMPEADA em 0 pelo navegador. Medido numa abertura
-     por âncora (`/#contato`): o navegador rola para 8915 aos 563ms, o trinco
-     grampeia de volta para 0 aos 898ms, e o portão libera aos 1350ms com a
-     página no topo — indistinguível de quem abriu no topo.
+     SAIU EM 02/10/2026, junto com a entrada automática. Esta memória existia
+     para UMA decisão só: "promover a Fase A ou não". Sem Fase A não há decisão,
+     e um ouvinte de `scroll` que alimenta uma `ref` que ninguém lê é custo por
+     quadro sem leitor.
 
-     Daí a memória: se em ALGUM instante, antes da liberação, a página esteve
-     fora do topo, a abertura automática não acontece. Uma `ref`, e não estado:
-     ela é lida uma vez, na decisão, e um `setState` por evento de rolagem
-     reentraria no render a cada quadro.
+     O que ela resolvia, para quem precisar reconstituir: enquanto o overlay do
+     portão está na tela, `html` e `body` ficam com `overflow: hidden`
+     (`RouteLoadGate.module.css`), e conteúdo não rolável tem a posição
+     GRAMPEADA em 0 pelo navegador. Medido numa abertura por âncora
+     (`/#contato`): o navegador rolava para 8915 aos 563ms, o trinco grampeava
+     de volta para 0 aos 898ms, e o portão liberava aos 1350ms com a página no
+     topo — indistinguível de quem abriu no topo. Sem a memória, o automático
+     disparava para quem tinha aberto a página no meio do hero.
 
-     O ouvinte só existe ENQUANTO o portão está de pé — depois dele quem rola é
-     o usuário (ou a própria Fase A), e aí a memória não significa mais nada.
-     Nas limpezas de um mesmo commit o React desfaz todos os efeitos antes de
-     rodar os novos, então a `ref` chega intacta à decisão logo abaixo. */
-  const saiuDoTopo = useRef(false);
-  useEffect(() => {
-    if (liberado) return;
-    const anotar = () => {
-      if (window.scrollY > 4) saiuDoTopo.current = true;
-    };
-    /* Leitura imediata além do ouvinte: restauração de rolagem (F5 no meio da
-       página) pode acontecer antes de este componente montar, e aí não há
-       evento nenhum para ouvir. */
-    anotar();
-    window.addEventListener('scroll', anotar, { passive: true });
-    return () => window.removeEventListener('scroll', anotar);
-  }, [liberado]);
+       | const saiuDoTopo = useRef(false);
+       | useEffect(() => {
+       |   if (liberado) return;
+       |   const anotar = () => {
+       |     if (window.scrollY > 4) saiuDoTopo.current = true;
+       |   };
+       |   // Leitura imediata além do ouvinte: restauração de rolagem (F5 no
+       |   // meio da página) pode acontecer antes de este componente montar, e
+       |   // aí não há evento nenhum para ouvir.
+       |   anotar();
+       |   window.addEventListener('scroll', anotar, { passive: true });
+       |   return () => window.removeEventListener('scroll', anotar);
+       | }, [liberado]);
+
+     `liberado` CONTINUA em uso, e por outro motivo: ele adia o download dos
+     10,43 MiB do vídeo (`carregar`, adiante). Isso é da SIS-243 e não da
+     SIS-189 — não some com a entrada automática. */
 
   /* Eixo de tempo único do hero: um `t ∈ [0,1]` que alimenta o vídeo, a manchete
-     e o recolhimento em card. É o mesmo de sempre — o que a SIS-189 muda é QUEM
-     escreve esse `t`, e nunca são dois ao mesmo tempo.
+     e o recolhimento em card.
 
-     SIS-189 — ERA: "Nada de play/pause — o vídeo só existe como função do
-     scroll." Deixou de ser verdade a pedido: ao entrar na home o vídeo começa
-     sozinho. SIS-243 — e "ao entrar" passou a ter hora marcada: é quando o
-     `RouteLoadGate` tira o overlay da tela, não quando o componente monta (ver
-     `liberado`, no topo da função). Em duas fases:
+     ── 02/10/2026 · VOLTOU A HAVER UM ESCRITOR SÓ, E ELE É A ROLAGEM ─────────
+     A frase original desta nota era: "Nada de play/pause — o vídeo só existe
+     como função do scroll." A SIS-189 a derrubou a pedido (o vídeo passava a
+     começar sozinho ao entrar na home) e **ela voltou a valer, também a pedido.**
+     `t` é `scrollYProgress` e nada mais, nos dois sentidos.
 
-       FASE A (entrada, automática)  o vídeo TOCA e é ele o relógio. A fração de
-         `currentTime` vira posição de rolagem (`aoFracaoDoVideo`), então a página
-         acompanha e a manchete e o card leem o mesmo `t` de sempre. A raspagem
-         fica suspensa dentro do `ScrollVideo`.
-       FASE B (a rolagem assume)  no primeiro gesto do usuário — ou se a página
-         divergir do alvo, que é como a barra de rolagem entra — o vídeo pausa e
-         `t` volta a ser `scrollYProgress`, nos DOIS sentidos. Rolar para cima
-         rebobina vídeo e card juntos.
+     O que existia e saiu, para quem precisar reconstituir:
 
-     A Fase A não retoma no meio do percurso, e nem se o usuário voltar ao topo:
-     é UMA VEZ POR VISITA. A issue deixa a retomada em aberto e pede o registro —
-     ela está de fora porque "voltou ao topo e ficou parado" é indistinguível de
-     "está lendo a manchete", e devolver o controle da página a quem parou de rolar
-     é justamente o que a rolagem automática não deve fazer.
+       FASE A (entrada, automática)  o vídeo TOCAVA e era ele o relógio. A fração
+         de `currentTime` virava posição de rolagem (`aoFracaoDoVideo`), então a
+         PÁGINA acompanhava o vídeo. A raspagem ficava suspensa dentro do
+         `ScrollVideo`. Uma vez por visita, e com hora marcada pela SIS-243: a
+         liberação do `RouteLoadGate`, não a montagem.
+       FASE B (a rolagem assume)  no primeiro gesto — ou se a página divergisse
+         do alvo, que era como a barra de rolagem entrava — o vídeo pausava e `t`
+         voltava a ser `scrollYProgress`.
 
-     Substitui o `driveVideoByScroll` que ficava aqui comentado: aquele escrevia
-     `currentTime` a cada frame de um lerp, inclusive durante um seek pendente,
-     e é exatamente isso que entope a fila do decodificador. O acelerador certo
-     está em `ScrollVideo`. */
+     Hoje só existe o que era a Fase B, e ela não precisa de nome.
+
+     ⚠️ O QUE NÃO VOLTA: o `driveVideoByScroll` com `requestAnimationFrame` +
+     lerp que já ficava comentado aqui antes da SIS-189. Ele escrevia
+     `currentTime` a cada frame, inclusive durante um seek pendente, e é
+     exatamente isso que entope a fila do decodificador — o vídeo trava em vez de
+     acompanhar. O acelerador certo é o `seeking` do próprio elemento, e está em
+     `ScrollVideo`. Tirar a reprodução automática NÃO é voltar àquilo. */
   const { scrollYProgress } = useScroll({
     target: wrapperRef,
     offset: ['start start', 'end end'],
   });
 
-  /* Teto da Fase A: o vídeo é o assunto até 0.58. O NÚMERO NÃO MUDA com a SIS-198,
-     a justificativa dele muda: era "0.62 é onde o `scale` começa a fechar o card",
-     e o `scale` não existe mais. O que 0.58 marca agora é onde a pastilha de
-     convite já terminou de sair (`cueFade`, 0.55 → 0.78) e o último beat de
-     enquadramento (`BEATS` termina em 0.6) está se resolvendo — ou seja, o fim da
-     parte da rolagem que o vídeo conduz, que é exatamente o que o teto quer dizer.
-     Mexer nele para 0.62 ou 0.96 agora seria arrastar a rolagem automática por
-     mais tela sem nada novo acontecendo nela.
-     Forçar play até `t = 1` levaria
-     a página sozinha até a grade de marcas, que não é entrada de hero, é embarque
-     à força. O número está AQUI, e não dentro do `ScrollVideo`: é a partitura
-     desta cena, não uma propriedade do vídeo. */
-  const TETO_ENTRADA = 0.58;
+  /* ══════════════════════════════════════════════════════════════════════════
+     02/10/2026 — A ENTRADA AUTOMÁTICA SAIU INTEIRA. O QUE SEGUE É O REGISTRO.
 
-  /* Nasce em 'rolagem' — o comportamento de antes desta issue. A entrada é uma
-     PROMOÇÃO decidida depois de montar, e nunca o contrário: assim servidor e
-     cliente renderizam a mesma árvore, e qualquer caminho em que a decisão não
-     aconteça (movimento reduzido, página aberta no meio do hero, `play()`
-     recusado) cai no comportamento que já existia. */
-  const [fase, setFase] = useState<'entrada' | 'rolagem'>('rolagem');
-  const alvoDaEntrada = useRef<number | null>(null);
+     Pedido: «na hero, quando o vídeo está tocando sozinho, retirar o start
+     sozinho; deixar o controle só no scroll.» Não é ajuste de número — é a
+     retirada da Fase A da SIS-189, e com ela sai TODO o aparato que existia só
+     para ela. Ficou comentado em vez de apagado porque religar é uma decisão de
+     produto, e quem religar precisa dos quatro caminhos de saída e das duas
+     guardas de posição — foram eles que custaram as medições da SIS-243.
 
-  useEffect(() => {
-    /* SIS-243 — primeira guarda, antes de qualquer outra: enquanto o overlay da
-       rota estiver na tela, não há entrada a promover. O efeito roda de novo
-       quando `liberado` vira `true`, e só então decide.
-       Isto NÃO é uma segunda chance de entrada: a fase continua sendo promovida
-       no máximo uma vez por visita, porque `liberado` só muda uma vez por ciclo
-       do portão (ele remonta por rota, `key={pathname}`) e a saída da Fase A não
-       mexe em nenhuma dependência deste efeito. */
-    if (!liberado) return;
+     Por que o aparato era tão grande para um `play()`: a Fase A invertia o
+     sentido do controle. Em vez de a rolagem mover o vídeo, o vídeo movia a
+     PÁGINA (`syncSmoothScroll`). Isso obriga a detectar quando o usuário retoma
+     o controle — por gesto, por arrastar a barra de rolagem, por abrir a página
+     no meio — senão a cena briga com ele. Nada disso é necessário quando a
+     rolagem é o único relógio, e é por isso que a retirada DIMINUI o componente
+     em vez de só desligar uma linha.
 
-    const el = wrapperRef.current;
-    if (!el) return;
+       | // Teto da Fase A: o vídeo era o assunto até 0.58 — onde a pastilha de
+       | // convite já terminou de sair (`cueFade`, 0.55 → 0.78) e o último beat
+       | // de enquadramento (`BEATS` termina em 0.6) está se resolvendo. Forçar
+       | // play até `t = 1` levaria a página sozinha até a grade de marcas, que
+       | // não é entrada de hero, é embarque à força.
+       | const TETO_ENTRADA = 0.58;
+       |
+       | // Nascia em 'rolagem'. A entrada era uma PROMOÇÃO decidida depois de
+       | // montar, e nunca o contrário: assim servidor e cliente renderizavam a
+       | // mesma árvore, e qualquer caminho em que a decisão não acontecesse
+       | // (movimento reduzido, página aberta no meio do hero, `play()`
+       | // recusado) caía no comportamento de rolagem.
+       | const [fase, setFase] = useState<'entrada' | 'rolagem'>('rolagem');
+       | const alvoDaEntrada = useRef<number | null>(null);
+       |
+       | useEffect(() => {
+       |   // SIS-243 — enquanto o overlay da rota estivesse na tela, não havia
+       |   // entrada a promover: o vídeo gastava a entrada tocando para ninguém.
+       |   if (!liberado) return;
+       |   const el = wrapperRef.current;
+       |   if (!el) return;
+       |   // As DUAS chaves de movimento reduzido, lidas aqui e não pelo `rm`:
+       |   // `useReducedMotion` nasce `false` de propósito (senão servidor e
+       |   // cliente divergem) e só converge num efeito posterior — decidir pelo
+       |   // valor dele nesta passada ligaria o automático, por um quadro, para
+       |   // quem pediu para não ver movimento.
+       |   const reduzido =
+       |     window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+       |     document.documentElement.dataset.motion === 'reduce';
+       |   if (reduzido) return;
+       |   // Um quadro de folga: a decisão depende de `window.scrollY`, que o
+       |   // navegador só restaura depois da primeira pintura.
+       |   const quadro = requestAnimationFrame(() => {
+       |     // Página aberta JÁ dentro do hero não dispara automático. 4px de
+       |     // tolerância porque restauração de scroll e barras de endereço
+       |     // móveis deixam sobra de 1–2px.
+       |     if (saiuDoTopo.current || window.scrollY > 4) return;
+       |     setFase('entrada');
+       |   });
+       |   return () => cancelAnimationFrame(quadro);
+       | }, [liberado]);
+       |
+       | // Saía da Fase A e não voltava. Uma função só para os quatro caminhos
+       | // de saída (gesto, divergência, teto, recusa do `play()`) porque o
+       | // estado final é o mesmo — e era ele que garantia o escritor único de
+       | // `currentTime`.
+       | const encerrarEntrada = useCallback(() => {
+       |   alvoDaEntrada.current = null;
+       |   setFase('rolagem');
+       | }, []);
+       |
+       | // Relógio da Fase A: a fração do vídeo virava posição de rolagem.
+       | // Pelo Lenis, sempre, e não por `window.scrollTo`: o Lenis guarda a
+       | // própria posição animada e não acompanha um scroll feito por fora —
+       | // sem isso o primeiro giro de roda saltaria de volta para onde ele
+       | // achava que estava, e o `useScroll` divergiria da tela.
+       | const aoFracaoDoVideo = useCallback(
+       |   (fracao: number) => {
+       |     const el = wrapperRef.current;
+       |     if (!el) return;
+       |     const topo = el.getBoundingClientRect().top + window.scrollY;
+       |     const alcance = el.offsetHeight - window.innerHeight;
+       |     if (alcance <= 0) return;
+       |     // Divergência = o usuário mexeu na página por um caminho que não
+       |     // emite gesto no `window` — arrastar a barra de rolagem é o caso
+       |     // real. Sem isto a Fase A brigava com ele.
+       |     const anterior = alvoDaEntrada.current;
+       |     if (anterior != null && Math.abs(window.scrollY - anterior) > 24) {
+       |       encerrarEntrada();
+       |       return;
+       |     }
+       |     // Segunda leitura da posição: há caminhos que posicionam a página
+       |     // depois do quadro de folga (restauração lenta, âncora resolvida na
+       |     // hidratação, script de terceiro). Medido: sem ela, abrir em y=900
+       |     // caía para 306 com o vídeo tocando.
+       |     if (anterior == null && window.scrollY > 4) {
+       |       encerrarEntrada();
+       |       return;
+       |     }
+       |     const destino = Math.round(topo + fracao * alcance);
+       |     alvoDaEntrada.current = destino;
+       |     syncSmoothScroll(destino);
+       |     // Sem Lenis (não é criado com movimento reduzido do sistema) o
+       |     // registro é no-op e a página não andaria.
+       |     if (window.scrollY !== destino) window.scrollTo(0, destino);
+       |   },
+       |   [encerrarEntrada],
+       | );
+       |
+       | // Primeiro gesto do usuário encerrava a entrada. `pointerdown` entrava
+       | // na lista por causa do clique na barra de rolagem em alguns
+       | // navegadores. Todos `passive` e `once`: nenhum cancela nada, e um
+       | // basta.
+       | useEffect(() => {
+       |   if (fase !== 'entrada') return;
+       |   const gestos = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const;
+       |   const sair = () => encerrarEntrada();
+       |   for (const g of gestos) {
+       |     window.addEventListener(g, sair, { passive: true, once: true });
+       |   }
+       |   return () => {
+       |     for (const g of gestos) window.removeEventListener(g, sair);
+       |   };
+       | }, [fase, encerrarEntrada]);
 
-    /* As DUAS chaves de movimento reduzido, lidas aqui e não pelo `rm` do
-       componente: `useReducedMotion` nasce `false` de propósito (senão servidor e
-       cliente divergem) e só converge num efeito posterior — decidir pelo valor
-       dele nesta passada ligaria o automático para quem pediu para não ver
-       movimento, pelo tempo de um quadro. */
-    const reduzido =
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-      document.documentElement.dataset.motion === 'reduce';
-    if (reduzido) return;
-
-    /* Um quadro de folga antes de decidir, por dois motivos: a decisão depende de
-       `window.scrollY`, que o navegador só restaura depois da primeira pintura
-       (volta do histórico, recarga no meio da página); e marcar estado de forma
-       síncrona dentro do efeito é o `setState` em cascata que o lint da casa
-       aponta. */
-    const quadro = requestAnimationFrame(() => {
-      /* Ponto 5 da issue: página aberta JÁ dentro do hero não dispara automático.
-         A tolerância é de 4px porque restauração de scroll e barras de endereço
-         móveis deixam sobra de 1–2px.
-         SIS-243 — a leitura de agora não basta mais: o trinco do portão zera a
-         posição de quem abriu no meio (ver `saiuDoTopo`, acima). São as duas
-         condições, e a memória é a que vale para o caminho novo. */
-      if (saiuDoTopo.current || window.scrollY > 4) return;
-      setFase('entrada');
-    });
-    return () => cancelAnimationFrame(quadro);
-  }, [liberado]);
-
-  /* Sai da Fase A e não volta. Uma função só para os quatro caminhos de saída
-     (gesto, divergência, teto, recusa do `play()`) porque o estado final é o
-     mesmo — e é ele que garante o escritor único de `currentTime`. */
-  const encerrarEntrada = useCallback(() => {
-    alvoDaEntrada.current = null;
-    setFase('rolagem');
-  }, []);
-
-  /* Relógio da Fase A: a fração do vídeo vira posição de rolagem.
-     Pelo Lenis, sempre (`syncSmoothScroll`), e não por `window.scrollTo`: o Lenis
-     guarda a própria posição animada e não acompanha um scroll feito por fora —
-     sem isso o primeiro giro de roda saltaria de volta para onde ele achava que
-     estava, e o `useScroll` divergiria do que está na tela. O `immediate` dele é
-     o que faz este caminho ser posicionamento, não uma segunda animação
-     disputando o eixo. */
-  const aoFracaoDoVideo = useCallback(
-    (fracao: number) => {
-      const el = wrapperRef.current;
-      if (!el) return;
-      const topo = el.getBoundingClientRect().top + window.scrollY;
-      const alcance = el.offsetHeight - window.innerHeight;
-      if (alcance <= 0) return;
-
-      /* Divergência = o usuário mexeu na página por um caminho que não emite
-         gesto no `window` — arrastar a barra de rolagem é o caso real. Sem esta
-         verificação a Fase A brigaria com ele arrastando a página de volta. */
-      const anterior = alvoDaEntrada.current;
-      if (anterior != null && Math.abs(window.scrollY - anterior) > 24) {
-        encerrarEntrada();
-        return;
-      }
-      /* Primeira fração da fase: a página tem de estar no topo AINDA. A guarda do
-         efeito lê `window.scrollY` um quadro depois de montar, e há caminhos que
-         posicionam a página depois disso (restauração de scroll lenta, âncora
-         resolvida na hidratação, script de terceiro). Sem esta segunda leitura, a
-         Fase A puxaria a página de volta ao topo — o oposto do ponto 5. Medido:
-         sem ela, abrir em y=900 caía para 306 com o vídeo tocando. */
-      if (anterior == null && window.scrollY > 4) {
-        encerrarEntrada();
-        return;
-      }
-
-      const destino = Math.round(topo + fracao * alcance);
-      alvoDaEntrada.current = destino;
-      syncSmoothScroll(destino);
-      /* Sem Lenis (ele não é criado com movimento reduzido do sistema) o registro
-         é no-op e a página não andaria. Não deveria acontecer — movimento
-         reduzido nem chega a ligar a Fase A —, mas o custo de garantir é uma
-         linha, e o defeito seria "o vídeo toca e a página fica parada". */
-      if (window.scrollY !== destino) window.scrollTo(0, destino);
-    },
-    [encerrarEntrada],
-  );
-
-  /* Primeiro gesto do usuário encerra a entrada. `pointerdown` entra na lista por
-     causa do clique na barra de rolagem em alguns navegadores; onde ele não
-     dispara, quem pega é a verificação de divergência acima. Todos `passive` e
-     `once`: nenhum deles cancela nada, e um basta. */
-  useEffect(() => {
-    if (fase !== 'entrada') return;
-    const gestos = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const;
-    const sair = () => encerrarEntrada();
-    for (const g of gestos) {
-      window.addEventListener(g, sair, { passive: true, once: true });
-    }
-    return () => {
-      for (const g of gestos) window.removeEventListener(g, sair);
-    };
-  }, [fase, encerrarEntrada]);
+     ⚠️ PARA QUEM FOR RELIGAR: o `ScrollVideo` CONTINUA sabendo os dois modos
+     (`reproduzir`, `tetoReproducao`, `onFracao`, `onEntradaEncerrada`), com
+     default `false`. A primitiva não foi tocada de propósito — ela é usada por
+     `legacy/ImpactSequence` e `legacy/StackScenes`, e o modo de reprodução é
+     opt-in. Religar aqui é descomentar este bloco e as quatro propriedades no
+     `<ScrollVideo>` adiante, mais os imports do topo.
+     ══════════════════════════════════════════════════════════════════════════ */
 
   /* 55% é onde a terceira legenda já está saindo (`0.54–0.58` na partitura) e a
      rolagem deixa de ser conduzida pelo vídeo. SIS-226 — dizia "onde a manchete já

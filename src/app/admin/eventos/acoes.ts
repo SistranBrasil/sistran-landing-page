@@ -247,6 +247,29 @@ export async function criarEvento(
   return { estado: 'ok', id };
 }
 
+/**
+ * O evento já está LEGÍVEL para quem for abrir a página dele? — 02/10.
+ *
+ * ⚠️ POR QUE ISTO EXISTE, e por que não é desconfiança do `criarEvento`: a gravação pode
+ * ter dado certo e a leitura seguinte ainda não enxergar o documento, porque a loja é
+ * consistente eventualmente. Era o que produzia 404 na página do evento recém-criado. A
+ * correção da chave de cache em `lerDaNuvem` fecha o caminho do corpo cacheado, mas não
+ * existe promessa de que o `head` da loja veja num milissegundo o que outro processo
+ * acabou de escrever. Então quem navega CONFERE antes de navegar, em vez de apostar.
+ *
+ * É a leitura mais honesta possível do destino: a MESMA função que a página do evento usa
+ * (`lerCatalogoPublicado`), e não um atalho que consultaria outra fonte e responderia
+ * «existe» sobre uma pergunta diferente da que a página vai fazer.
+ *
+ * `impedimento()` aqui também, pelo motivo do topo do arquivo — é a sexta porta POST. Ela
+ * só devolve sim/não sobre um id, mas uma porta aberta que diz quais ids existem é um
+ * inventário do catálogo para quem não entrou.
+ */
+export async function eventoPublicado(id: string): Promise<boolean> {
+  if (await impedimento()) return false;
+  return (await lerCatalogoPublicado()).some((e) => e.id === id);
+}
+
 export type EstadoLista =
   | { estado: 'inicial' }
   | { estado: 'ok' }
