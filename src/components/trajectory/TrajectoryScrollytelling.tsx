@@ -429,11 +429,37 @@ export function TrajectoryScrollytelling({ anoFinal }: { anoFinal: number }) {
                     haveria a que se referir sem repetir a medida do recuo. */}
                 <TimelineColumnStart />
 
+                {/**
+                 * ⚠️ O RÓTULO PRECISA DO TESTE `type === 'milestone'`, e isto DERRUBAVA O
+                 * BUILD — 02/10, descoberto num `vercel --prod` que falhou em
+                 * `npm run build`.
+                 *
+                 * A linha era `TRAJECTORY_ITEMS[focoBase]?.data.tags?.[0] ?? null`, e o `?.`
+                 * depois de `tags` parece cobrir o caso — mas não cobre nada aqui: o
+                 * opcional protege contra `tags` ser `undefined`, e o problema é que o campo
+                 * NÃO EXISTE em `CapabilityCheckpointData`. `data` é a união dos dois
+                 * formatos, e só o marco guarda geração (`tags?: string[]` em
+                 * `MilestoneCardData`). `tsc` recusava com TS2339, `next build` não ignora
+                 * erro de tipo (não há `typescript.ignoreBuildErrors` no `next.config`), e o
+                 * deploy morria aí.
+                 *
+                 * O teste é o MESMO que `CAPITULO_POR_INDICE` já faz em
+                 * `src/data/trajectory.ts:401` para ler esta mesma `tags` — aquela leitura
+                 * sempre compilou justamente porque estreita a união antes. `TrajectoryItem`
+                 * é união discriminada por `type`, então esse teste é o que o TypeScript
+                 * aceita como prova.
+                 *
+                 * O COMPORTAMENTO NÃO MUDA, e vale dizer por que não é sorte: em competência
+                 * `tags` já era `undefined` em tempo de execução, então a expressão antiga
+                 * caía no `?? null` exatamente nos casos em que a nova cai. O que muda é só
+                 * o build parar de falhar — nenhum rótulo aparece ou desaparece da tela.
+                 */}
                 <TimelineColumnMarker
                   rotulo={
-                    focoBase >= 0
-                      ? (TRAJECTORY_ITEMS[focoBase]?.data.tags?.[0] ?? null)
-                      : null
+                    (() => {
+                      const foco = focoBase >= 0 ? TRAJECTORY_ITEMS[focoBase] : undefined;
+                      return foco?.type === 'milestone' ? (foco.data.tags?.[0] ?? null) : null;
+                    })()
                   }
                 />
 
