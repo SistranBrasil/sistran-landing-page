@@ -207,13 +207,56 @@
      da marca e o gêmeo CSS de `easeExpo` em `src/lib/motion.ts`. Duas curvas
      quase iguais com nomes diferentes é como um sistema de movimento começa a
      se desfazer. Nada de verde-limão da referência entra aqui. */
+/* ── 02/10 · SIS-307 · A ESCALA FOI ENCURTADA, E O PEDIDO É POR ESCRITO ──────
+   «quando vai escrolando as coisas demora e nao aparece, preciso que os efeitos
+   sejam tão rápidos conforme o scroll». É o segundo pedido escrito de cadência
+   na história deste bloco — o primeiro foi a 2ª volta da SIS-263, que pediu
+   «mais fluido» e produziu os 820ms de escopo de `/contato`. Os dois pedidos
+   apontam para lados opostos, e este é o mais recente e o mais amplo: vale para
+   o site todo, então mexe nos TOKENS, não num escopo.
+
+   O que a sonda mediu antes desta mudança (`next dev`, 1440×900, rolagem
+   contínua), em PIXELS DE ROLAGEM entre o bloco entrar na tela e terminar o
+   efeito — que é a unidade do pedido, porque é a rolagem que a pessoa gasta
+   esperando:
+
+     /solucoes    mediana 417px   p90 626px
+     /contato     mediana 578px   p90 662px
+     /quem-somos  mediana 683px
+     pior caso    1953px — uma logo da grade de marcas
+
+   Numa dobra de 900px, esperar 600px de rolagem é esperar dois terços de tela.
+   A causa não é o gatilho (esse foi tratado em `src/lib/reveal-calibre.ts`): é
+   duração somada a escalonamento cumulativo.
+
+   `--motion-logo: 2400ms` com `--motion-stagger-logo: 100ms` era o pior número
+   do site por uma margem enorme: a grade tem 15 marcas, então a última
+   terminava em 2400 + 100×14 = **3800ms** depois de a seção acender. Nenhuma
+   outra entrada do projeto passava de 1,2s. 560ms com 30ms de passo põe a
+   última em 980ms — ainda a mais longa da casa, porque são 15 itens e a cascata
+   é o ponto da seção, mas quase 4× mais curta.
+
+   `--motion-stagger-*` cai junto com as durações de propósito: escalonamento é
+   multiplicado pelo índice, então é ele que domina em qualquer grupo grande.
+   80ms em oito irmãos somavam 560ms ANTES de o oitavo começar a animar; 45ms
+   somam 315ms. A faixa de 70–120ms que o §4.3 de `docs/scroll.md` recomenda foi
+   escrita para listas curtas e sem este pedido em mãos — a divergência fica
+   registrada aqui para não parecer descuido.
+
+   `--motion-stagger-char: 14ms` NÃO muda: quem o consome acende caractere por
+   caractere na cadência da própria rolagem (ver a nota de `.progressive-char`),
+   e encurtá-lo não adianta um quadro.
+
+   As CURVAS não mudam. O pedido é sobre tempo, e trocar `--motion-ease-out`
+   mexeria na assinatura de movimento da marca — que é o que a nota acima
+   defende, e nada no pedido o contradiz. */
   --motion-ease-out: var(--ease-out);
-  --motion-reveal-fast: 300ms;
-  --motion-reveal-base: 500ms;
-  --motion-reveal-slow: 1000ms;
-  --motion-logo: 2400ms;
-  --motion-stagger-logo: 100ms;
-  --motion-stagger-word: 55ms;
+  --motion-reveal-fast: 220ms;
+  --motion-reveal-base: 340ms;
+  --motion-reveal-slow: 520ms;
+  --motion-logo: 560ms;
+  --motion-stagger-logo: 30ms;
+  --motion-stagger-word: 30ms;
   --motion-stagger-char: 14ms;
   /* SIS-197 — cadência dos presets de `data-reveal` (Efeito 4). A issue pede
      "~80ms" por filho e cita `data-stagger` como veículo; o veículo aqui é este
@@ -223,7 +266,10 @@
      bloco sem escalonamento nenhum e nenhum erro. A issue autoriza ("ou a API
      equivalente da primitiva"). Um bloco que precise de outra cadência
      redeclara o token no próprio escopo. */
-  --motion-stagger-reveal: 80ms;
+  /* 02/10 · SIS-307 — de 80ms para 45ms. Ver o bloco de razões acima, junto das
+     durações: num grupo de oito irmãos o escalonamento era 560ms de espera antes
+     de o último começar, e isso somava à duração dele. */
+  --motion-stagger-reveal: 45ms;
   --motion-distance-sm: 24px;
   --motion-distance-md: 48px;
   --motion-signal: var(--color-sky);
@@ -1320,7 +1366,30 @@ body::after {
    logo abaixo usa !important e continua vencendo nas ilhas escuras. */
 .section-light [class~="text-ink"],
 .section-light [class*="text-white"],
-.section-light span:not([class*="badge"]):not([class*="pill"]):not([class*="eyebrow"]):not([class*="tag-section"]) {
+/* ⚠️ 02/10 — `gatilho-chip` ENTROU NA LISTA DE ISENCOES («o ver fotos ficou apagado»).
+   A pastilha «Ver fotos» dos cartoes de escritorio de /quem-somos é um
+   `<span class="os-gatilho-chip">` que pinta a PROPRIA superficie: gradiente navy
+   opaco com tinta `#eaf9ff` (`.os-gatilho-chip`, linha ~6917). Esta regra generica
+   passava por cima da tinta dela e pintava navy `#0a1f44` — navy sobre navy.
+   MEDIDO por raster antes do conserto, a 1440x900 com a cena pousada em Pato Branco:
+   superficie rgb(2,41,95), tinta no percentil 1 rgb(7,119,151), razao 2,76:1
+   (3,16:1 no pixel extremo). A AA pede 4,5:1 para texto de 12px. Depois: 12,7:1.
+   A CONTA DE ESPECIFICIDADE é o motivo de o conserto ser AQUI e nao uma regra nova
+   junto da pastilha: este seletor soma (0,5,1) — os quatro `:not([class*=…])` valem
+   quatro classes — contra (0,1,0) de `.os-gatilho-chip`. Nenhum seletor plausivel
+   escrito ao lado da pastilha empata sem virar `!important` ou uma corrente
+   artificial de classes, e os precedentes da casa (SIS-211, SIS-291) mostram as duas
+   saidas ficando feias. Excluir no ponto onde a tinta é imposta é mais barato.
+   ISENTO A CLASSE, E NAO `[class*="chip"]`, de proposito: ha outras pastilhas com
+   «chip» no nome (`evento-chip`, `ecossistema-chip`, `trajetoria-chip`, `lp-chip`,
+   `eventos-destaque-chip`) e parte delas vive em faixa clara, onde receber navy desta
+   regra é o comportamento CERTO. Um `chip` generico consertaria uma e arriscaria
+   cinco. `gatilho-chip` casa so com esta.
+   A pastilha pertence a familia que as quatro isencoes acima ja descrevem — span que
+   tem fundo proprio e portanto tinta propria. É a mesma razao de `badge` e `pill`
+   estarem na lista, nao uma excecao de caso. */
+.section-light
+  span:not([class*="badge"]):not([class*="pill"]):not([class*="eyebrow"]):not([class*="tag-section"]):not([class*="gatilho-chip"]) {
   color: #0a1f44;
 }
 /* dot da tag-section sobre fundo claro: azul da marca */
@@ -22983,9 +23052,13 @@ html[data-motion='reduce'] .cta-reativo:has(:focus-visible) {
     transform: translate3d(0, 16px, 0);
   }
 
+  /* 02/10 · SIS-307 — 1100ms/60ms viraram 420ms/20ms. Este bloco repetia à mão
+     os números do desktop pela metade; mantida a PROPORÇÃO (mobile mais curto,
+     que é o que o doc pede), aplicada a nova escala. 15 marcas × 20ms + 420ms =
+     700ms para a última, contra 1940ms antes. */
   [data-logo] {
-    transition-duration: 1100ms;
-    transition-delay: calc(60ms * var(--logo-i, 0));
+    transition-duration: 420ms;
+    transition-delay: calc(20ms * var(--logo-i, 0));
   }
 }
 

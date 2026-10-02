@@ -32,8 +32,19 @@ export { MARGEM_REVEAL, LIMIAR_REVEAL } from '@/lib/reveal-calibre';
  * Duração e curva do reveal desta rota. Espalhar num `style` de `RevealScope`.
  * O cast existe porque `CSSProperties` do React não tipa custom property.
  */
+/* 02/10 · SIS-307 — 820ms VIROU 520ms, E A CURVA FICOU.
+   Os 820ms existiam por um pedido escrito (2ª volta da SIS-263: «mais fluido»).
+   Agora há um pedido escrito mais recente e mais amplo — «os efeitos tão rápidos
+   conforme o scroll» — e `/contato` era a rota MAIS LENTA do site: a sonda mediu
+   mediana de 578px de rolagem entre o bloco entrar na tela e terminar, com o
+   diálogo de contato em 662px. Entre dois pedidos que se contradizem vale o
+   último.
+   O que NÃO se desfaz é a curva: expo-out é a metade «fluido» daquele pedido, e
+   ela não custa tempo nenhum — custa distribuição do tempo. Por isso aqui ficou
+   `520ms` (o novo `--motion-reveal-slow`, e não o `base`): a rota continua
+   deliberadamente a mais demorada da casa, só deixou de ser 2,4× o resto. */
 export const AFINACAO_REVEAL = {
-  '--reveal-dur': '820ms',
+  '--reveal-dur': '520ms',
   '--reveal-ease': 'cubic-bezier(0.19, 1, 0.22, 1)',
 } as CSSProperties;
 
@@ -44,7 +55,14 @@ export const AFINACAO_REVEAL = {
  * recomenda — e o §4.3 é também quem proíbe subir mais: acima de 150ms a fileira
  * passa de 1s e quem rola rápido vê a página se montando atrasada.
  */
+/* 02/10 · SIS-307 — 95ms viraram 52ms, pela mesma aritmética da nota original,
+   recalculada na duração nova: o que sustentava 95ms era a razão entre passo e
+   duração (95/820 ≈ 0,116) — abaixo disso os sete indicadores leem como
+   simultâneos. Com 520ms a mesma razão dá 60ms, e 52ms é o valor que mantém a
+   cascata legível e põe os sete em 7 × 52 = 364ms, contra 665ms antes. Continua
+   acima do token global (45ms) pela razão original: aqui são sete irmãos numa
+   fileira, e é a cascata que se quer ver. */
 export const AFINACAO_INDICADORES = {
   ...AFINACAO_REVEAL,
-  '--motion-stagger-reveal': '95ms',
+  '--motion-stagger-reveal': '52ms',
 } as CSSProperties;

@@ -69,8 +69,14 @@
  * escopo está na dobra é medida desta rota e está anotada ao lado de cada um, no
  * JSX de `EventsSpotlight.tsx`.
  */
-export const MARGEM_REVEAL = '0px 0px -12% 0px';
-export const LIMIAR_REVEAL = 0.15;
+/* 02/10 · SIS-307 — O PAR CANONICO SAIU DAQUI, e e a propria nota acima que
+   pedia isso: estes dois literais eram copia byte a byte de
+   `src/lib/reveal-calibre.ts`, e o pedido «os efeitos tao rapidos conforme o
+   scroll» teria de ser aplicado em quatro arquivos para valer no site todo. A
+   reexportacao mantem o nome importado pelos componentes desta rota
+   intacto — nenhum `import` muda — e deixa a razao dos numeros num lugar so.
+   O que e ESPECIFICO da rota continua declarado logo abaixo. */
+export { MARGEM_REVEAL, LIMIAR_REVEAL } from '@/lib/reveal-calibre';
 
 /**
  * Para o único escopo que vive DENTRO do palco `sticky` (o contador). Ver a

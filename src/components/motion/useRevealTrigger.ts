@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import { LIMIAR_REVEAL, MARGEM_REVEAL } from '@/lib/reveal-calibre';
+
 /**
  * SIS-193 — o gatilho único dos efeitos de rolagem descritos em
  * `docs/efeitos-scroll-terminal-industries.md`.
@@ -60,11 +62,19 @@ type Opcoes = {
   pronto?: boolean;
 };
 
+/* 02/10 · SIS-307 — OS PADRÕES VÊM DO CALIBRE CANÔNICO, e não mais de literais
+   daqui. Eram `0.2` e `'0px 0px -12% 0px'`, escritos à mão, enquanto
+   `src/lib/reveal-calibre.ts` dizia `0.15`/`-12%` e quatro rotas reexportavam
+   dele: quem não passava opção explícita acendia numa geometria que NENHUM
+   arquivo de calibre descrevia. O pedido «os efeitos tão rápidos conforme o
+   scroll» precisa valer para esses chamadores também, e com dois números em dois
+   lugares ele valeria só para metade do site. A razão de cada número está no
+   docblock do canônico. */
 export function useRevealTrigger<T extends HTMLElement = HTMLDivElement>({
-  limiar = 0.2,
+  limiar = LIMIAR_REVEAL,
   umaVez = true,
   reverterSomenteAcima = false,
-  margem = '0px 0px -12% 0px',
+  margem = MARGEM_REVEAL,
   pronto = true,
 }: Opcoes = {}) {
   const ref = useRef<T>(null);
