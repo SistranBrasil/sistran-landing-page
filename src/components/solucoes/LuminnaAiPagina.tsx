@@ -216,11 +216,14 @@ import {
   Wrench,
 } from 'lucide-react';
 import CarimboBatida from '@/components/CarimboBatida';
-/* SIS-220 (5ª volta) — três montagens saíram da rota e os imports vão com elas, senão
-   o lint aponta símbolo não usado. Cada uma tem a razão escrita no lugar onde estava:
-   o Ecossistema (escrita fora do paste), o modal de contato (sem gatilho) e a
-   ImpactSequence (copy de `legacy.ts` que duplica o fecho e o título dos Desafios).
-   import EcossistemaLuminna from './EcossistemaLuminna';
+import EcossistemaLuminna from './EcossistemaLuminna';
+/* SIS-220 (5ª volta) — DUAS montagens seguem fora da rota e os imports vão com elas,
+   senão o lint aponta símbolo não usado: o modal de contato (sem gatilho) e a
+   ImpactSequence (copy de `legacy.ts` que duplica o fecho e o título dos Desafios). A
+   razão de cada uma está escrita no lugar onde ela estava.
+   O ECOSSISTEMA SAIU DESTA LISTA em 02/10: ele voltou à rota a pedido, e o import
+   acima é o dele. A razão da volta está em `acceleratorPages.ts`, em cima do bloco
+   `paragraphs` «Tecnologia aplicada em todo o ciclo».
    import ContactModal from '@/components/ContactModal';
    import { ImpactSequence } from '@/components/legacy/ImpactSequence'; */
 import HeroVideoBackdrop from '@/components/ui/HeroVideoBackdrop';
@@ -664,11 +667,13 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
      título da seção»), e o bloco perdeu os itens: os oito produtos agora são dado
      tipado em `luminnaEcossistema.ts`. Logo o `find` é por título novo e o `kind` é
      `paragraphs` — o que este bloco ainda carrega é o CABEÇALHO da faixa.
-     SIS-220 (5ª volta): o `find` NÃO ACHA MAIS NADA, de propósito — o bloco foi
-     comentado no dado porque a sua escrita não está no paste. A linha fica porque a
-     montagem comentada lá embaixo depende dela, e porque é este `find` que documenta
-     por qual título a faixa era localizada.
-     const ecossistema = page.blocks.find((b) => b.heading === 'Tecnologia aplicada em todo o ciclo'); */
+     A nota da 5ª volta que estava aqui dizia que o `find` «NÃO ACHA MAIS NADA, de
+     propósito», porque o bloco tinha sido comentado no dado. Caducou em 02/10: o bloco
+     voltou e o `find` acha de novo. A razão da volta está em `acceleratorPages.ts`, em
+     cima dele. */
+  const ecossistema = page.blocks.find(
+    (b) => b.heading === 'Tecnologia aplicada em todo o ciclo',
+  );
   const integracao = page.blocks.find((b) => b.heading === 'Integração Versátil');
   const fecho = page.blocks.find((b) => b.kind === 'paragraphs' && !b.heading);
 
@@ -1243,7 +1248,7 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
         </section>
       )}
 
-      {/* ── 4-B. ECOSSISTEMA — A FAIXA SAIU DAQUI (SIS-220, 3ª volta) ─────────
+      {/* ── 4-B. ECOSSISTEMA — A MARCAÇÃO SAIU DAQUI PARA UM COMPONENTE (3ª volta) ──
           O desenho da 2ª volta (grade rígida de oito cartões brancos iguais, título
           «Luminna AI», métricas sempre à mostra no pé) foi REPROVADO em cima de uma
           tela: «Não passa o pedido novo». O que entra no lugar é
@@ -1263,13 +1268,18 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
           ele carrega é o cabeçalho: título (que é a âncora), `navLabel` (a
           sobrancelha) e o parágrafo de apoio.
 
-          ⚠️ SIS-220 (5ª VOLTA): NADA DISSO ESTÁ MONTADO. O bloco de dado foi comentado
-          em `acceleratorPages.ts`, então `ecossistema` é `undefined` e a guarda já
-          bastaria — a montagem está comentada TAMBÉM porque a issue pede as duas coisas
-          («comentar montagem + bloco») e porque uma guarda que nunca abre é uma faixa
-          que reaparece sozinha no dia em que alguém descomentar o dado sem ler isto.
-          `EcossistemaLuminna.tsx` e `luminnaEcossistema.ts` ficam em disco, sem
-          consumidor: são peça pronta e a única cópia das métricas medidas.
+          ⚠️ ESTÁ MONTADO DE NOVO (02/10). A 5ª volta da SIS-220 comentou esta montagem
+          E o bloco de dado em `acceleratorPages.ts` — duas coisas, porque uma guarda
+          que nunca abre é uma faixa que reaparece sozinha no dia em que alguém
+          descomentar só o dado. As duas foram religadas na mesma passada, mais a chave
+          `tecnologia-aplicada-em-todo-o-ciclo` em `pageSections.ts`, que é o que dá a
+          tinta certa ao rótulo do indicador lateral sobre esta faixa clara.
+          A razão da volta não é «mudamos de ideia sobre o desenho»: a retirada tinha
+          sido por procedência de escrita (a frase de apoio não estava no paste daquela
+          volta), e a escrita dos oito produtos chegou no chat de 02/10. Está por
+          extenso em cima do bloco de dado.
+          A guarda continua sendo `kind === 'paragraphs'` com `heading` — o bloco carrega
+          cabeçalho, não itens; os oito produtos vivem em `luminnaEcossistema.ts`. */}
       {ecossistema?.kind === 'paragraphs' && ecossistema.heading && (
         <EcossistemaLuminna
           titulo={ecossistema.heading}
@@ -1285,7 +1295,6 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
           //  saiu nesta volta — o estado e o `ContactModal` saíram com ele.)
         />
       )}
-      */}
 
       {/* ── 5. INTEGRAÇÃO VERSÁTIL — O ARRANJO DA MOCK (SIS-280 item 3) ───────
           O LAYOUT é o de `public/images/integracao.png`: um HUB redondo escuro no
@@ -1534,8 +1543,30 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                    fundo, bem acima do AA de 4,5:1, com folga de sobra para os 4% de
                    vídeo que atravessam. Sem opacidade na tinta: `text-white/90` fazia
                    sentido sobre escuro, mas tinta clareada sobre fundo claro é
-                   justamente como se perde contraste sem perceber. */
-                className="luminna-fecho-card mx-auto max-w-3xl rounded-3xl border border-[#0079CB]/22 bg-[#F1F7FC]/96 p-7 text-center backdrop-blur-sm sm:p-10"
+                   justamente como se perde contraste sem perceber.
+
+                   ⚠️ CONSERTO 02/10 — O CONSERTO DE 01/10 NUNCA ENTROU EM VIGOR, e o
+                   motivo é uma pegadinha do Tailwind que falha calada. Estava escrito
+                   `bg-[#F1F7FC]/96` e `border-[#0079CB]/22`: o modificador de opacidade
+                   sem colchetes é procurado na ESCALA do tema, e a escala padrão do
+                   Tailwind 3 vai de cinco em cinco (0,5,10,…,100). `96` e `22` não estão
+                   nela, então as duas classes NÃO GERAM CSS NENHUM — o cartão ficava com
+                   fundo totalmente transparente e a borda caía na cinza padrão do
+                   preflight. Era o cartão «apagado» da captura de 02/10: a nota acima
+                   dizia «4% deixam o vídeo insinuado» e na prática eram 100%.
+                   Nada apita nisso: não é erro de tipo, o lint não vê classe de Tailwind
+                   e o build não valida nome de utilitário. Classe inexistente é
+                   indistinguível de classe ausente.
+                   `/[96%]` e `/[22%]` — com colchetes — são a forma arbitrária, que não
+                   passa pela escala. Verificado rodando o Tailwind num arquivo mínimo:
+                   `/96` não emite regra, `/[96%]` emite `background-color: rgb(241 247
+                   252 / 96%)`. Os valores são os mesmos que a nota de 01/10 escolheu;
+                   só a sintaxe estava errada.
+                   ⚠️ ISTO NÃO É CASO ÚNICO: a varredura de 02/10 achou 102 modificadores
+                   fora da escala em 30 arquivos (quase todos `border-…/12` e `/18`, que
+                   degradam em silêncio para a borda cinza). Está listado na SIS-305 e
+                   não foi corrigido aqui — só este cartão, que é o que estava ilegível. */
+                className="luminna-fecho-card mx-auto max-w-3xl rounded-3xl border border-[#0079CB]/[22%] bg-[#F1F7FC]/[96%] p-7 text-center backdrop-blur-sm sm:p-10"
               >
                 <p className="text-lg leading-relaxed text-[#0B2A4A]">
                   {realcarLuminna(fecho.paragraphs[0])}

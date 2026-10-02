@@ -429,26 +429,34 @@ const TOM_CLARO_DE_ACELERADOR: Readonly<Record<string, ReadonlySet<string>>> = {
      cujo título é DERIVADO e não `heading` de bloco — logo ela não é parada, e não há
      o que ficar sem chave aqui. */
   'guru-de-seguros': new Set(['como-funciona', 'de-onde-pode-ser-acessada']),
-  /* SIS-280 — as paradas CLARAS do `luminna-ai`. A slug tem três `heading` (logo
-     quatro paradas com o «topo», e o indicador monta), mas só estas duas ancoram
-     faixa `.section-light` no corpo próprio; «Benefícios» é a faixa escura e por
+  /* SIS-280 — as paradas CLARAS do `luminna-ai`. «Benefícios» é a faixa escura e por
      isso não aparece em mapa nenhum. A chave tem dois n porque a slug tem — ver o
-     bloco SIS-280 no mapa de cima. */
-  /* SIS-220 (5ª volta) — A PARADA DO ECOSSISTEMA SAI, porque a faixa saiu da rota: a
-     escrita dela não está no paste que a página passou a publicar, e o bloco está
-     comentado em `acceleratorPages.ts`. Com ele fora, `idDoBloco` nunca emite
-     `tecnologia-aplicada-em-todo-o-ciclo` e a chave ficaria apontando para uma âncora
-     que não existe — não é erro de execução, é lixo que o próximo leitor lê como
-     verdade.
-     As duas notas que estavam aqui (2ª e 3ª voltas) descreviam a entrada e a troca de
-     âncora dessa mesma parada e caducaram inteiras; foram removidas em vez de
-     empilhadas, porque somadas contavam três estados e nenhum deles é o atual.
-     A SLUG VOLTA A TER TRÊS `heading` — quatro paradas com o «topo». É exatamente o
-     piso em que `SECOES_DE_ACELERADOR` ainda monta o indicador em vez de devolver
-     `VAZIO` (ele exige três paradas restantes), e vale dizer: tirar UMA parada a mais
+     bloco SIS-280 no mapa de cima.
+     A contagem que esta nota trazia («três `heading`, logo quatro paradas») era da
+     época em que o Ecossistema estava fora; hoje são quatro `heading` e cinco paradas.
+     Das três claras, duas usam `.section-light` e a do Ecossistema não — ver a nota
+     abaixo, que é onde isso importa. */
+  /* A PARADA DO ECOSSISTEMA VOLTA (02/10, pedido direto) — o bloco `paragraphs`
+     «Tecnologia aplicada em todo o ciclo» foi religado em `acceleratorPages.ts`, então
+     `idDoBloco` volta a emitir `tecnologia-aplicada-em-todo-o-ciclo` e a chave volta a
+     ter âncora de verdade. A razão da volta está na nota em cima daquele bloco: a
+     retirada tinha sido por falta de escrita autorizada, e a escrita chegou.
+
+     ⚠️ A FAIXA É CLARA MAS NÃO USA `.section-light`: `EcossistemaLuminna.tsx` tem fundo
+     próprio (azul-gelo com grade e curvas) e o componente registra, no `<section>`, que
+     «a faixa continua CLARA para o indicador lateral (a chave está em
+     `pageSections.ts`)». Esta linha é essa chave. Sem ela o rótulo do indicador sai com
+     a tinta de faixa escura sobre fundo claro — some, e não quebra nada que apite.
+
+     A nota da 5ª volta da SIS-220 que estava aqui explicava a retirada e caducou junto
+     com ela. Ela também dizia que a slug ficava com TRÊS `heading` — quatro paradas com
+     o «topo» — e que é exatamente o piso em que `SECOES_DE_ACELERADOR` monta o
+     indicador em vez de devolver `VAZIO`. ISSO SEGUE VALENDO como aviso: com o
+     Ecossistema de volta são quatro `heading` e há uma de folga, mas tirar duas paradas
      desta rota apaga a coluna lateral inteira. */
   'luminna-ai': new Set([
     'desafios-no-desenvolvimento-de-software',
+    'tecnologia-aplicada-em-todo-o-ciclo',
     'integracao-versatil',
   ]),
   sds: new Set([

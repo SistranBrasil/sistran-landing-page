@@ -227,12 +227,18 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
           { term: 'Aumento da Robustez de Sistemas', text: 'Soluções mais estáveis e seguras' },
         ],
       },
-      /* ⚠️ LEIA ISTO ANTES DAS DUAS NOTAS ABAIXO (SIS-220, 5ª volta): elas contam por
-         que a faixa Ecossistema foi construída e depois reduzida a cabeçalho, e AMBAS
-         AS PREMISSAS CADUCARAM — a faixa saiu da rota. Ficam como histórico de decisão
-         (é nelas que está registrado onde foram parar os oito produtos e por que a
-         métrica de +55% está sob o CASE e não sob o TEST), e não como descrição do que
-         a página publica hoje. Nada abaixo deste ponto está montado em /luminna-ai. */
+      /* ⚠️ LEIA ISTO ANTES DAS DUAS NOTAS ABAIXO: elas contam por que a faixa
+         Ecossistema foi construída (2ª volta) e depois reduzida a cabeçalho (3ª volta),
+         e são HISTÓRICO DE DECISÃO — não descrição do que a página publica hoje. É
+         nelas que está registrado onde foram parar os oito produtos e por que a métrica
+         de +55% está sob o CASE e não sob o TEST, que é o que ainda vale.
+
+         O QUE CADUCOU: a linha que estava aqui dizia «a faixa saiu da rota» e «nada
+         abaixo deste ponto está montado em /luminna-ai». As duas valeram entre a 5ª
+         volta da SIS-220 e 02/10, e hoje são falsas — o bloco `paragraphs` logo abaixo
+         está ATIVO e a faixa voltou. O que segue comentado é só o bloco `list` da 2ª
+         volta, no pé, que é a escrita anterior ao documento. A razão da volta está na
+         nota em cima daquele bloco. */
       /* SIS-220 (2ª volta, item 4) — O ECOSSISTEMA DE PRODUTOS, QUE NÃO EXISTIA.
          O bloco é NOVO no dado: até aqui a slug tinha três `heading` (Desafios,
          Benefícios, Integração Versátil) e nenhuma lista dos oito produtos, embora
@@ -334,17 +340,33 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
          |   { term: 'LUMINNA PROMPT AI',
          |     text: 'Direcionamento das respostas da IA de forma mais precisa, garantindo maior aderência às necessidades do negócio.' },
          | ],                                                                      */
-      /* SIS-220 — O ECOSSISTEMA SAI DA ROTA. Não é redesenho nem "enxugar": a frase
-         «Soluções especializadas que apoiam planejamento, desenvolvimento, qualidade e
-         conhecimento.» não existe no paste, e o pedido é que a página publique SÓ o
-         paste. Era a última versão viva do bloco (a de 8 produtos já estava desativada
-         logo abaixo) — com as duas comentadas, a rota não tem mais faixa Ecossistema.
+      /* ── O ECOSSISTEMA VOLTA À ROTA (02/10, pedido direto) ────────────────────────
+         A 5ª volta da SIS-220 tinha comentado este bloco por um motivo só, e ele era de
+         procedência de escrita, não de desenho: a frase «Soluções especializadas que
+         apoiam planejamento, desenvolvimento, qualidade e conhecimento.» não estava no
+         paste daquela volta, e o pedido era publicar SÓ o paste. Nada foi reprovado — a
+         faixa saiu por falta de texto autorizado.
 
-         ⚠️ `src/data/luminnaEcossistema.ts` e `EcossistemaLuminna.tsx` FICAM EM DISCO,
-         intactos, e sem consumidor nesta rota. Não estão órfãos por descuido: os dados
-         dos 8 produtos são a única cópia dos ganhos medidos (+84% revisão, +85% doc…) e
-         apagá-los perderia número que ninguém remede. Se a faixa voltar, descomentar o
-         bloco de `list` abaixo e a montagem em `LuminnaAiPagina.tsx` basta.
+         ⚠️ O QUE MUDOU A PREMISSA: a usuária colou a escrita dos oito produtos no chat
+         de 02/10 (nomes, descrições e as métricas +60%/+95%/+84%/−57%/+85%/+55%) e
+         mandou «pode voltar com o Ecossistema». A escrita passou a ter procedência, e o
+         motivo da retirada deixou de existir. Não é reversão de decisão de layout.
+
+         ⚠️ A ESCRITA PUBLICADA É A DO `docs/luminnaecosistema.md`, que é o que
+         `luminnaEcossistema.ts` já carrega — e não a do paste de 02/10, que repete o
+         paste da 2ª volta. O documento SUCEDE aquele paste e as divergências estão
+         anotadas uma a uma no docblock daquele arquivo (CODE perdeu a lista de
+         tecnologias, DOC/CASE/PROMPT foram reescritas). Trocar para o paste agora
+         desfaria a 3ª volta inteira; se for isso que se quer, é pedido novo e o lugar é
+         `luminnaEcossistema.ts`, não aqui.
+
+         ⚠️ TRÊS COISAS ANDAM JUNTAS, e separar qualquer uma quebra algo em silêncio:
+         este bloco, a chave `tecnologia-aplicada-em-todo-o-ciclo` em `pageSections.ts`
+         (sem ela o rótulo do indicador vai com tinta clara sobre faixa clara) e a
+         montagem em `LuminnaAiPagina.tsx`. As três foram religadas na mesma passada.
+
+         ⚠️ O `copy-lock` NÃO FOI RODADO nesta passada, como também não foi na 3ª volta
+         que mudou esta escrita de nó. Fica dito para não passar por conferido. */
       {
         kind: 'paragraphs',
         heading: 'Tecnologia aplicada em todo o ciclo',
@@ -353,7 +375,6 @@ export const ACCELERATOR_PAGES: readonly AcceleratorPage[] = [
           'Soluções especializadas que apoiam planejamento, desenvolvimento, qualidade e conhecimento.',
         ],
       },
-      */
       /* O BLOCO ANTIGO, DESATIVADO E NÃO APAGADO (regra da casa). Ativo, ele
          duplicaria a faixa: `LuminnaAiPagina` acha o bloco por `heading` e os dois
          títulos são diferentes, então os dois montariam.
