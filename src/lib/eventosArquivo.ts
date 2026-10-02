@@ -54,16 +54,52 @@ export function lerCatalogo(): EventoBruto[] {
  * colocar os dois arquivos nas pastas e escolhê-los aqui.
  */
 export function artesDisponiveis(): { imagens: string[]; miniaturas: string[] } {
-  const lista = (pasta: string, prefixoUrl: string) =>
-    readdirSync(pasta, { withFileTypes: true })
-      .filter((e) => e.isFile() && /\.(webp|jpg|jpeg|png)$/i.test(e.name))
-      .map((e) => `${prefixoUrl}/${e.name}`)
-      .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+  /**
+   * ⚠️ A LEITURA DA PASTA PODE FALHAR EM PRODUÇÃO, e por isso devolve lista vazia em vez
+   * de lançar. `public/` é servido pelo CDN e NÃO há promessa de que os arquivos estejam
+   * no sistema de arquivos da função serverless — um `readdirSync` ali pode voltar
+   * `ENOENT`. Antes isso não aparecia porque o admin só rodava em disco; agora ele abre em
+   * produção, e uma exceção aqui derrubaria a página inteira em vez de apenas deixar o
+   * `<select>` de artes antigas curto. As artes novas vêm do Blob e não dependem desta
+   * lista.
+   */
+  const lista = (pasta: string, prefixoUrl: string) => {
+    try {
+      return readdirSync(pasta, { withFileTypes: true })
+        .filter((e) => e.isFile() && /\.(webp|jpg|jpeg|png)$/i.test(e.name))
+        .map((e) => `${prefixoUrl}/${e.name}`)
+        .sort((a, b) => a.localeCompare(b, 'pt-BR'));
+    } catch {
+      return [];
+    }
+  };
 
   return {
     imagens: lista(PASTA_ARTE, '/images/EVENTOS'),
     miniaturas: lista(path.join(PASTA_ARTE, 'thumb'), '/images/EVENTOS/thumb'),
   };
+}
+
+/**
+ * A arte veio da LOJA (Vercel Blob) em vez da pasta do repositório?
+ *
+ * ⚠️ POR QUE A CONFERÊNCIA DE ARTE PRECISOU DE UM SEGUNDO CAMINHO. `artesDisponiveis`
+ * lista arquivos do disco, e era a lista inteira do que podia ser escolhido. Desde que o
+ * upload publica no Blob (ver `eventosLoja.ts`), uma arte válida pode ser uma URL absoluta
+ * que não existe em pasta nenhuma — e sem este teste `problemas()` rejeitaria a foto que
+ * o próprio formulário acabou de subir.
+ *
+ * O teste é ESTREITO de propósito: só `https` no domínio do Blob. Aceitar qualquer URL
+ * transformaria o campo num `<img src>` apontando para fora, o que é arte de terceiro
+ * servida como se fosse nossa — e quebra no dia em que o terceiro apagar o arquivo.
+ */
+function ehArteDaLoja(valor: string): boolean {
+  try {
+    const url = new URL(valor);
+    return url.protocol === 'https:' && url.hostname.endsWith('.public.blob.vercel-storage.com');
+  } catch {
+    return false;
+  }
 }
 
 /**
@@ -87,11 +123,31 @@ export function problemas(evento: EventoBruto): string[] {
   if (!Object.prototype.hasOwnProperty.call(ICONS, evento.icon)) {
     erros.push(`Ícone inválido: "${evento.icon}".`);
   }
+  /**
+   * ⚠️ QUANDO A LISTA DA PASTA ESTÁ VAZIA, A CONFERÊNCIA DE PERTENCIMENTO É DISPENSADA —
+   * e isso não é afrouxar a validação, é não inverter o significado dela. Lista vazia
+   * agora quer dizer «não consegui ler a pasta» (ver `artesDisponiveis`), não «não há
+   * arte». Exigir pertencimento contra uma lista vazia faria o admin em produção recusar
+   * `/images/EVENTOS/summit-julho-26.jpg` — a arte que está no ar neste instante — e
+   * ninguém conseguiria salvar nem uma correção de vírgula no título.
+   *
+   * O que sobra sem a lista é o teste de PREFIXO, que é o que impedia o caminho hostil:
+   * `../../` e URL de terceiro continuam barrados.
+   */
   const { imagens, miniaturas } = artesDisponiveis();
-  if (evento.image && !imagens.includes(evento.image)) {
+  const arteAceita = (valor: string, lista: string[], prefixo: string) =>
+    ehArteDaLoja(valor) ||
+    (lista.length > 0
+      ? lista.includes(valor)
+      : /* `..` é barrado explicitamente: `/images/EVENTOS/../../algo` passa no
+           `startsWith` e sai da pasta. Com a lista disponível isso não era possível,
+           porque pertencer à lista já implicava estar dentro dela. */
+        valor.startsWith(prefixo) && !valor.includes('..'));
+
+  if (evento.image && !arteAceita(evento.image, imagens, '/images/EVENTOS/')) {
     erros.push(`Arte não encontrada em public/images/EVENTOS: "${evento.image}".`);
   }
-  if (evento.thumb && !miniaturas.includes(evento.thumb)) {
+  if (evento.thumb && !arteAceita(evento.thumb, miniaturas, '/images/EVENTOS/thumb/')) {
     erros.push(`Miniatura não encontrada em public/images/EVENTOS/thumb: "${evento.thumb}".`);
   }
   return erros;

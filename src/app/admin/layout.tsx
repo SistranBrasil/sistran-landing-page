@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import Image from 'next/image';
 import Link from 'next/link';
 import { VARIAVEL_SENHA } from '@/lib/adminGate';
 import { COOKIE_SESSAO, tokenConfere } from '@/lib/adminSessao';
@@ -47,12 +48,54 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="relative z-0 min-h-dvh w-full bg-[#f4f5f7] text-[#0f172a]">
-      <header className="sticky top-0 z-20 border-b border-black/[0.07] bg-white/85 backdrop-blur-md">
+      {/**
+       * ⚠️ A BARRA FICOU AZUL E GANHOU A LOGO — 01/10, a pedido.
+       *
+       * O que estava aqui era `bg-white/85` com um ponto de acento, e a nota dizia: «Ponto
+       * de acento em vez de logotipo: o admin não é o site, e um logotipo aqui convidaria a
+       * tratar esta casca como página pública.» A premissa de leitura envelheceu — a casca
+       * já se distingue do site por não ter o menu institucional, que é a proibição real da
+       * issue («zero link público»), e isso não mudou.
+       *
+       * ⚠️ O FUNDO AZUL É EXIGÊNCIA DO ARQUIVO, não enfeite: a logo é o símbolo BRANCO com
+       * canal alfa — está medido na nota de `ContactCTAReferencia.tsx`, 80,6% dos pixels em
+       * alpha=0 e nenhum pixel opaco escuro. Sobre a barra branca anterior ela
+       * simplesmente não apareceria.
+       *
+       * ⚠️ `#0b3a5c`, E NÃO O `#1273bc` DO `body`, e a escolha é por MEDIÇÃO de contraste:
+       * sobre `#1273bc` o branco dá 5,0:1 — passa, mas só no branco puro, e os links desta
+       * barra são brancos ESMAECIDOS. Em `white/70` sobre `#1273bc` a razão cai para ~3,6:1
+       * e reprova em texto de 11 px. Sobre `#0b3a5c` o branco puro dá 11,8:1 e o `white/70`
+       * dá 6,6:1, os dois acima dos 4,5:1 de AA. O token já existe no projeto.
+       *
+       * ⚠️ SÓ A BARRA, e o conteúdo abaixo continua claro — ver a nota do topo deste
+       * arquivo, que segue valendo inteira: o que o admin mostra são as FOTOS do site, e
+       * azul saturado atrás delas mente sobre as cores da arte que se está escolhendo.
+       * Deixar a página toda azul estragaria exatamente o julgamento de imagem que o resto
+       * do trabalho de hoje existiu para melhorar. Se o azul tiver de descer para o
+       * conteúdo, é decisão de desenho a tomar olhando uma arte de evento em cima dele.
+       */}
+      <header className="sticky top-0 z-20 border-b border-white/10 bg-[#0b3a5c]/95 backdrop-blur-md">
         <div className="mx-auto flex h-14 w-full max-w-6xl items-center gap-3 px-5 sm:px-8">
-          {/* Ponto de acento em vez de logotipo: o admin não é o site, e um
-              logotipo aqui convidaria a tratar esta casca como página pública. */}
-          <span aria-hidden className="h-2 w-2 rounded-full bg-[#0079cb]" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#475467]">
+          {/* `aria-hidden` + `alt=""`: o nome da marca já está escrito no texto ao lado, e
+              descrever a logo o leria duas vezes.
+
+              O arquivo vem de `/images/loading/`, e o caminho é HISTÓRICO — ele foi gerado
+              para o portão de carregamento (`scripts/gerar-logo-portao-sis274.mjs`), mas é
+              o mesmo símbolo branco e é a derivada mais leve que existe no projeto: 320 px
+              e 11 KB, contra 640 px e 27 KB da versão do CTA. Em 26 px ele é reduzido ~12×,
+              então sobra resolução para qualquer DPR. Não inventei um asset novo para não
+              deixar duas cópias da mesma arte envelhecendo em paralelo. */}
+          <Image
+            src="/images/loading/logo-sistran-portao.webp"
+            alt=""
+            aria-hidden
+            width={320}
+            height={320}
+            priority
+            className="h-[26px] w-[26px]"
+          />
+          <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white">
             Sistran · admin
           </span>
           {/* Links ENTRE ferramentas internas, não para o site: a proibição de
@@ -63,13 +106,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <nav className="flex items-center gap-1">
               <Link
                 href="/admin/eventos"
-                className="rounded-full px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-[#667085] no-underline transition-colors hover:bg-black/[0.04] hover:text-[#0f172a]"
+                className="rounded-full px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-white/70 no-underline transition-colors hover:bg-white/10 hover:text-white"
               >
                 Eventos
               </Link>
               <Link
                 href="/admin/carimbo"
-                className="rounded-full px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-[#667085] no-underline transition-colors hover:bg-black/[0.04] hover:text-[#0f172a]"
+                className="rounded-full px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-white/70 no-underline transition-colors hover:bg-white/10 hover:text-white"
               >
                 Carimbo
               </Link>
@@ -79,7 +122,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <form action={sair} className="ml-auto">
               <button
                 type="submit"
-                className="rounded-full px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-[#667085] transition-colors hover:bg-black/[0.04] hover:text-[#0f172a]"
+                /* Os hovers trocaram `bg-black/[0.04]` por `bg-white/10`: realce escuro
+                   sobre fundo escuro é realce invisível. */
+                className="rounded-full px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-white/70 transition-colors hover:bg-white/10 hover:text-white"
               >
                 Sair
               </button>

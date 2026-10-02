@@ -142,7 +142,7 @@ export const EVENT_KINDS = ['proprio', 'global', 'nacional', 'parceiro'] as cons
  * derrubaria o `getIcon` no meio da cena. Falhar aqui, com o id do evento no
  * texto do erro, é o sinal legível — e ele chega no build, não no visitante.
  */
-function conferido(bruto: (typeof catalogo)[number]): SistranEvent {
+function conferido(bruto: CatalogoBruto): SistranEvent {
   if (!(EVENT_KINDS as readonly string[]).includes(bruto.kind)) {
     throw new Error(`events.json: evento "${bruto.id}" tem kind inválido: "${bruto.kind}"`);
   }
@@ -153,3 +153,54 @@ function conferido(bruto: (typeof catalogo)[number]): SistranEvent {
 }
 
 export const EVENTS: readonly SistranEvent[] = catalogo.map(conferido);
+
+/**
+ * A MESMA CONFERÊNCIA, PARA CATÁLOGO QUE CHEGA EM TEMPO DE EXECUÇÃO — 01/10.
+ *
+ * ⚠️ POR QUE ELA NÃO PODE LANÇAR, ao contrário de `conferido` acima. `conferido` roda no
+ * build e lançar é o comportamento certo lá: o erro aparece para quem está compilando,
+ * com o id do evento no texto, e nenhum visitante vê nada. Esta versão roda a cada
+ * requisição sobre um catálogo que vem da LOJA (Vercel Blob, ver `eventosLoja.ts`), fora
+ * do alcance de qualquer portão do repositório. Lançar aqui trocaria «um evento com
+ * `icon` inválido» por «a página de eventos inteira fora do ar» — e o segundo é muito
+ * pior que o primeiro para quem só queria ler sobre os outros quatorze.
+ *
+ * Então o evento inválido é DESCARTADO, e não consertado nem renderizado pela metade:
+ * `getIcon` derrubaria a cena no meio e o rótulo de categoria sairia `undefined`.
+ *
+ * ⚠️ ISTO NÃO SUBSTITUI `problemas()` de `eventosArquivo.ts`, que continua sendo a porta
+ * antes da gravação. Esta função é a rede embaixo dela — para loja editada por fora, para
+ * um `kind` que deixe de existir no código depois de já ter sido publicado, e para
+ * qualquer caminho que um dia escreva na loja sem passar pelo admin.
+ */
+/**
+ * ⚠️ O PARÂMETRO NÃO É `(typeof catalogo)[number]`, e a diferença não é estética: o
+ * TypeScript lê o JSON como uma UNIÃO de formas exatas — o evento que tem `image` no
+ * arquivo vira um tipo onde `image: string` é obrigatório. Catálogo que chega da loja em
+ * tempo de execução não tem como satisfazer isso, porque `image` é opcional de verdade.
+ * Daí a forma estrutural declarada aqui, que é o que o campo realmente é.
+ */
+type CatalogoBruto = {
+  id: string;
+  title: string;
+  kind: string;
+  icon: string;
+  description: string;
+  featured?: boolean;
+  image?: string;
+  thumb?: string;
+  youtube?: boolean;
+};
+
+export function conferirCatalogo(brutos: readonly CatalogoBruto[]): SistranEvent[] {
+  const validos: SistranEvent[] = [];
+  for (const bruto of brutos) {
+    try {
+      validos.push(conferido(bruto));
+    } catch {
+      /* Silencioso de propósito no que chega ao visitante; quem precisa saber é quem
+         opera, e a lista do admin mostra o evento com os campos como estão. */
+    }
+  }
+  return validos;
+}

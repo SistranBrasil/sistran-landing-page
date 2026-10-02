@@ -2,17 +2,25 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ICONS } from '@/lib/icons';
 import { EVENT_KINDS, EVENT_KIND_META, type EventKind } from '@/data/events';
-import { artesDisponiveis, buscarEvento } from '@/lib/eventosArquivo';
+import { artesDisponiveis } from '@/lib/eventosArquivo';
+import { lerCatalogoPublicado, naNuvem } from '@/lib/eventosLoja';
 import FormularioEvento from './FormularioEvento';
 
-/** Lê do disco a cada requisição — mesma razão da lista. */
+/**
+ * Lê a loja a cada requisição — mesma razão da lista.
+ *
+ * ⚠️ `buscarEvento` SAIU DAQUI (ele lê `src/data/events.json` do disco). Em produção o
+ * disco não tem o catálogo publicado, e o formulário abriria com o texto do build: quem
+ * editasse duas vezes sobrescreveria a primeira edição com o texto velho — o mesmo defeito
+ * que a nota original desta página existia para evitar, só que agora na loja.
+ */
 export const dynamic = 'force-dynamic';
 
 export default async function AdminEventoPage({ params }: { params: Promise<{ id: string }> }) {
   /* `params` é Promise no App Router deste projeto (mesmo padrão de
      `src/app/blog/[slug]/page.tsx`). */
   const { id } = await params;
-  const evento = buscarEvento(id);
+  const evento = (await lerCatalogoPublicado()).find((e) => e.id === id);
   if (!evento) notFound();
 
   const { imagens, miniaturas } = artesDisponiveis();
@@ -37,6 +45,7 @@ export default async function AdminEventoPage({ params }: { params: Promise<{ id
         icones={Object.keys(ICONS).sort()}
         imagens={imagens}
         miniaturas={miniaturas}
+        naNuvem={naNuvem()}
       />
     </>
   );

@@ -148,15 +148,20 @@ import CarimboKindEvento from "./CarimboKindEvento";
 /* SIS-235 — `EVENT_KIND_META` saiu do import junto com o chip textual: quem lê o
    `label` e o `tone` do kind agora é o `CarimboKindEvento`.
    import { EVENTS, EVENT_KIND_META } from "@/data/events"; */
-import { EVENTS } from "@/data/events";
+import { EVENTS, type SistranEvent } from "@/data/events";
 import { YOUTUBE_URL } from "@/data/contact";
 import { prefersReducedMotion, useReducedMotion } from "@/lib/motion";
 import { criarConsultaDeMedia } from "@/lib/mediaStore";
 
-/* Contagem em UM lugar só, derivada do catálogo: o contador, o `aria-valuemax` e
-   a divisão das colunas leem daqui. Escrever "15" à mão em três lugares é como as
-   contagens divergem sem ninguém notar. */
-const TOTAL = EVENTS.length;
+/* ⚠️ `TOTAL` DESCEU PARA DENTRO DO COMPONENTE — 01/10, e não é arrumação de gosto.
+   Enquanto ele era constante de módulo, a contagem era a do catálogo EMPACOTADO NO
+   BUILD, porque era isso que `EVENTS` significava. Desde que o catálogo passou a vir
+   por prop (ver `eventos`, abaixo), uma contagem de módulo seria 15 fixo mesmo quando
+   a rota entregasse 16 — e o `% TOTAL` do laço pularia o evento recém-criado.
+   A regra que a nota original defendia continua valendo, e é justamente por isso que
+   ele continua existindo em UM lugar só: o contador, o `aria-valuemax` e a divisão das
+   colunas leem daquele `const`, não de um "15" repetido.
+const TOTAL = EVENTS.length; */
 
 /**
  * SIS-239 — ESPELHO EXATO da `@media (min-width: 1024px)` que, em
@@ -208,7 +213,27 @@ const RETOMADA_MS = 7000;
  */
 const ROLAGEM_NOSSA_MS = 1400;
 
-export default function EventsSpotlight() {
+/**
+ * ⚠️ O CATÁLOGO AGORA ENTRA POR PROP — 01/10, e é a mudança que torna possível publicar
+ * evento sem deploy.
+ *
+ * Antes este componente importava `EVENTS` direto do módulo, que é `events.json` lido no
+ * BUILD. Era essa linha, e só ela, que fazia qualquer edição do admin só aparecer ao
+ * visitante no deploy seguinte: por mais que o arquivo mudasse, o que o navegador recebia
+ * era o array compilado. Quem lê o catálogo passou a ser a rota (`/eventos-inovacao`,
+ * componente de servidor), que consulta a loja e entrega aqui.
+ *
+ * ⚠️ O PADRÃO `= EVENTS` NÃO É SOBRA, e tirá-lo é o erro provável da próxima volta. Ele
+ * mantém o componente montável sem prop — é o que o `PreviaEvento` do admin e qualquer
+ * uso futuro esperam, e é o que garante que um esquecimento na rota apareça como catálogo
+ * do build em vez de tela quebrada por `undefined.length`.
+ */
+export default function EventsSpotlight({
+  eventos = EVENTS,
+}: {
+  eventos?: readonly SistranEvent[];
+}) {
+  const TOTAL = eventos.length;
   const [ativo, setAtivo] = useState(0);
   const trilhaRef = useRef<HTMLDivElement>(null);
 
@@ -273,10 +298,14 @@ export default function EventsSpotlight() {
      divisão é por índice do catálogo e não "o destaque sai da lista". */
   const [esquerda, direita] = useMemo(
     () => [
-      EVENTS.map((e, i) => ({ e, i })).filter(({ i }) => i % 2 === 0),
-      EVENTS.map((e, i) => ({ e, i })).filter(({ i }) => i % 2 === 1),
+      eventos.map((e, i) => ({ e, i })).filter(({ i }) => i % 2 === 0),
+      eventos.map((e, i) => ({ e, i })).filter(({ i }) => i % 2 === 1),
     ],
-    [],
+    /* ⚠️ `eventos` ENTROU NAS DEPENDÊNCIAS, que antes eram vazias de propósito porque
+       `EVENTS` era constante de módulo e nunca mudava. Agora o catálogo pode mudar entre
+       renderizações (publicação nova), e um `[]` aqui serviria as colunas do catálogo
+       anterior — evento criado apareceria no contador e não na coluna. */
+    [eventos],
   );
 
   /**
@@ -472,7 +501,12 @@ export default function EventsSpotlight() {
       });
       if (porGesto) segurarAutoplay();
     },
-    [semMovimento, segurarAutoplay],
+    /* `TOTAL` entrou na lista em 01/10, quando ele deixou de ser constante de módulo e
+       passou a vir de `eventos.length` (ver a nota da linha 156). Com o catálogo chegando
+       por prop ele MUDA entre renders — um evento criado no admin faz 15 virar 16 — e sem
+       a dependência este callback ficaria com o laço preso no número antigo, pulando
+       justamente o evento que acabou de ser publicado. */
+    [semMovimento, segurarAutoplay, TOTAL],
   );
 
   /**
@@ -597,7 +631,7 @@ export default function EventsSpotlight() {
     }
   };
 
-  const evento = EVENTS[ativo];
+  const evento = eventos[ativo];
   /* SIS-235 — saiu com o chip textual: o `label` e o `tone` do kind eram lidos
      SÓ por ele, e agora quem resolve os dois é o `CarimboKindEvento` (o `label`
      vira o `alt`, o `tone` já está pintado na arte). Fica comentado junto do chip
@@ -607,7 +641,7 @@ export default function EventsSpotlight() {
   /* A miniatura, em dois estados: a vaga VAZIA e tracejada quando aquele evento é
      o destaque (é o que amarra coluna e centro), e o botão com `thumb` + título
      quando não é. Os dois ocupam a MESMA vaga, então a coluna não se reorganiza. */
-  const miniatura = ({ e, i }: { e: (typeof EVENTS)[number]; i: number }) => {
+  const miniatura = ({ e, i }: { e: SistranEvent; i: number }) => {
     const emDestaque = i === ativo;
     if (emDestaque) {
       return (
@@ -974,7 +1008,7 @@ export default function EventsSpotlight() {
           className="eventos-destaque-trilha"
           aria-hidden="true"
         >
-          {EVENTS.map((e, i) => (
+          {eventos.map((e, i) => (
             <span
               key={e.id}
               data-evento-i={i}
@@ -1166,7 +1200,7 @@ export default function EventsSpotlight() {
           onFocus={() => setComFoco(true)}
           onBlur={() => setComFoco(false)}
         >
-          {EVENTS.map((e) => {
+          {eventos.map((e) => {
             /* SIS-235 — mesmo motivo do `meta` do palco: só o chip textual lia
                isto. const m = EVENT_KIND_META[e.kind]; */
             return (
@@ -1291,7 +1325,7 @@ export default function EventsSpotlight() {
             data-andando={autoplayPausado ? "nao" : "sim"}
             style={{ "--evt-autoplay": `${AUTOPLAY_MS}ms` } as CSSProperties}
           >
-            {EVENTS.map((e, i) => (
+            {eventos.map((e, i) => (
               <span
                 key={e.id}
                 className="eventos-lista-bussola-marca"

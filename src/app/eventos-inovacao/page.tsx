@@ -7,6 +7,8 @@ import HeroVideoBackdrop from "@/components/ui/HeroVideoBackdrop";
 // import EventsMosaic from '@/components/EventsMosaic';
 // import EventsGrid from '@/components/EventsGrid'; */
 import EventsSpotlight from "@/components/EventsSpotlight";
+import { conferirCatalogo } from "@/data/events";
+import { lerCatalogoPublicado } from "@/lib/eventosLoja";
 import Social from "@/components/Social";
 /* SIS-152 — comentado junto com o consumo no fim do arquivo. Import ativo sem uso
    quebra o lint; apagar apagaria a pista de como religar. Mesmo padrão da home
@@ -16,6 +18,27 @@ import Social from "@/components/Social";
 export const metadata = {
   title: "Eventos & Inovação · Sistran",
 };
+
+/**
+ * ⚠️ A ROTA PASSOU A SER DINÂMICA — 01/10, e o preço é consciente.
+ *
+ * O pedido é «quando salvar já vai adicionar ao site». Para cumprir isso ao pé da letra, o
+ * catálogo é lido da loja a cada requisição (`lerCatalogoPublicado`, que usa
+ * `cache: 'no-store'`), e não de um HTML pré-renderizado.
+ *
+ * POR QUE NÃO ISR COM `revalidatePath`, que seria mais barato: o cache do Vercel Blob não
+ * pode descer abaixo de 1 minuto («cannot be set to a value lower than 1 minute», no tipo
+ * do SDK). Numa rota estática revalidada, a releitura logo após o salvamento ainda poderia
+ * receber do CDN o catálogo anterior, e o evento novo apareceria até um minuto depois.
+ * «Até um minuto depois» não é «já».
+ *
+ * O QUE ISSO CUSTA, medido em natureza e não em palpite: duas idas à loja por visita (uma
+ * `head` para o carimbo, uma busca do JSON), ambas na mesma região da função. O HTML
+ * deixa de ser servido do CDN. Se um dia esta rota virar gargalo, o lugar de resolver é
+ * aqui — e a troca a fazer é aceitar a janela de um minuto, não voltar a importar `EVENTS`
+ * no componente de cliente, que é o que fazia a publicação esperar o deploy.
+ */
+export const dynamic = "force-dynamic";
 
 /* A pagina do site é so a sequencia dos 15 eventos: nao tem abertura, nem
    introducao, nem heading de pagina. O hero abaixo carrega apenas o titulo do
@@ -66,7 +89,12 @@ export const metadata = {
    (Antes de SIS-166 o que rolava eram quinze blocos de TEXTO em fluxo passando por
    cima do palco. A mecânica é a mesma; o que mudou é que o texto passou a ser lido
    no cartão central, e não em blocos que rolam.) */
-export default function Page() {
+export default async function Page() {
+  /* O catálogo vem da loja (ou do JSON do pacote, quando a loja está vazia) e desce por
+     prop até o `EventsSpotlight`. É aqui que a publicação do admin encontra o visitante —
+     ver a nota de `dynamic`, acima, e a de `eventos` no componente. */
+  const eventos = conferirCatalogo(await lerCatalogoPublicado());
+
   return (
     <PageShell>
       {/* SIS-105 — vídeo em laço atrás da abertura, mesmo tratamento de
@@ -220,7 +248,7 @@ export default function Page() {
           por rolagem que a rota tem abaixo de 1024px é a da Social, e ela é
           medida junto com o resto em `scripts/medir-reveal-eventos-sis272.mjs`
           justamente para que ninguém a redescubra como ausência. */}
-      <EventsSpotlight />
+      <EventsSpotlight eventos={eventos} />
 
       {/* SIS-215 — A CLASSE MUDOU: `palco-de-cena-escura` -> `palco-emenda-de-claro-curta`.
 

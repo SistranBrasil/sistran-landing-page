@@ -24,3 +24,5 @@ sonda*.mjs
 docs/capturas/
 *.tmp.json
 *.tmp.mjs
+
+.env*
