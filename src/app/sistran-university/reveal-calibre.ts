@@ -30,6 +30,10 @@
  * expo-out) porque a 2ª volta da SIS-263 pediu «mais fluido» POR ESCRITO; a
  * SIS-289 pede o efeito «igual ao de /contato» em MECANISMO e em CADÊNCIA POR
  * SCROLL, e é isso que o par acima entrega. Os 500ms de `--motion-reveal-base` e
+ * [05/10 · SIS-242 — ESTES DOIS NÚMEROS CADUCARAM: hoje são 340ms e 45ms
+ * (`globals.css`, SIS-307). A conclusão do parágrafo continua valendo e é por
+ * isso que ele fica; quem lesse só os números concluiria que esta rota está FORA
+ * do token e viria «consertar» para 500/80, desfazendo a SIS-307 nesta pasta.]
  * os 80ms de `--motion-stagger-reveal` são os tokens do projeto, e inventar uma
  * terceira cadência sem pedido é o que faz a próxima issue ter três lugares para
  * corrigir. Se a afinação for pedida, ela entra aqui como `AFINACAO_REVEAL` e

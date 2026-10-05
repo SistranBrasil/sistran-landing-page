@@ -3,6 +3,7 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { useRevealTrigger } from './useRevealTrigger';
 import { useRouteLoadGate } from '@/components/loading/RouteLoadGate';
+import { LIMIAR_REVEAL, MARGEM_REVEAL } from '@/lib/reveal-calibre';
 
 /**
  * SIS-193 — a única fiação entre um trecho de página e os estados de movimento
@@ -58,8 +59,20 @@ export default function RevealScope({
   esperarRota = false,
   umaVez = true,
   reverterSomenteAcima = false,
-  limiar = 0.2,
-  margem = '0px 0px -12% 0px',
+  /* 05/10 · SIS-242 — OS PADRÕES VÊM DO CALIBRE CANÔNICO. Eram `0.2` e
+     `'0px 0px -12% 0px'`, escritos à mão aqui.
+     A SIS-307 trocou os padrões do `useRevealTrigger` por `LIMIAR_REVEAL` /
+     `MARGEM_REVEAL` e o docblock do canônico passou a dizer que o par «é
+     consumido TAMBÉM como padrão do `useRevealTrigger`». Só que ISTO não era
+     verdade para quem usa `RevealScope`: o componente sempre repassa `limiar` e
+     `margem` EXPLICITAMENTE para o hook, então o padrão do hook nunca chegava —
+     o que chegava eram estes dois literais velhos. Resultado medido na SIS-242:
+     8 das 97 montagens de `RevealScope` não passam `limiar` e acendiam em
+     `0.2`/`-12%`, a geometria que a SIS-307 existiu para aposentar.
+     Passar `undefined` em vez de reexportar daria o mesmo efeito e esconderia o
+     número do leitor; nomear a constante deixa o padrão legível aqui e único lá. */
+  limiar = LIMIAR_REVEAL,
+  margem = MARGEM_REVEAL,
   'data-reveal-nome': nome,
 }: Props) {
   /* O portão devolve `null` fora do `RouteLoadGate` (testes, storybook, rota sem

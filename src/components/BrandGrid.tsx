@@ -26,9 +26,9 @@
  *     cópia é `aria-hidden`; sem duplicata não há risco de leitura dobrada e o
  *     `alt` de cada logo é lido uma vez só.
  *  3. `loading="lazy"` passa a valer de verdade. Na faixa, `lazy` numa cópia
- *     visível não adia nada. Aqui toda célula está fora da dobra — e o
- *     `fetchPriority="low"` da SIS-136 continua, pelo mesmo motivo de lá: logo
- *     decorativa não disputa o primeiro paint com o hero.
+ *     visível não adia nada. Aqui toda célula está fora da dobra.
+ *     (O `fetchPriority="low"` que esta linha citava saiu em 02/10 pela SIS-241;
+ *     a razão está no bloco mais abaixo e no comentário junto ao `<img>`.)
  *
  *     SIS-179 — A RAZÃO DE "FORA DA DOBRA" MUDOU, OS ATRIBUTOS NÃO.
  *     Estava escrito "a grade FECHA A PÁGINA, então toda célula está fora da
@@ -44,6 +44,20 @@
  *     forte: o LCP da home é o vídeo do hero, 10,43 MiB, e quinze logos disputando
  *     banda com ele é exatamente o que `low` existe para evitar.
  *     Nenhum dos três atributos (`loading`, `decoding`, `fetchPriority`) muda.
+ *
+ *     ⚠️ 02/10 · SIS-241 — ESTE PARÁGRAFO CADUCOU, e o que o derruba é o
+ *     parágrafo ACIMA dele. Se a primeira célula só entra na viewport depois de
+ *     duas a três telas de rolagem, então `loading="lazy"` já garante que ela
+ *     não é buscada durante o primeiro paint: quando a requisição sai, o hero
+ *     terminou há muito. A disputa com os 10,43 MiB do vídeo, que era a razão
+ *     inteira do `low`, não acontece — `lazy` sozinho já a impede.
+ *     O que o `low` fazia de fato era outra coisa, e ruim: punha as quinze atrás
+ *     das OUTRAS imagens que carregam no mesmo instante que elas, inclusive
+ *     fotos de 2 MB (medido em 02/10: 31 imagens na home, 20,6 MB, todas
+ *     começando ~752ms). Resultado relatado por escrito, com captura: a parede
+ *     acesa com UMA logo de quinze, as outras catorze em células vazias.
+ *     Somar `lazy` + `low` é adiar duas vezes. Ficou só o `lazy`.
+ *     Hoje são DOIS atributos (`loading`, `decoding`) e eles não mudam.
  *
  *     SIS-240 — OS 10,43 MiB FORAM RECONFERIDOS, E CONTINUAM SENDO ESSE NÚMERO.
  *     A issue pedia atualizar este bloco se ele citasse peso ou hero vencidos.
@@ -83,6 +97,7 @@ import './brand-grid.css';
 import { CLIENTS } from '@/data/clients';
 import RevealScope from '@/components/motion/RevealScope';
 import RevealText from '@/components/motion/RevealText';
+import { LIMIAR_REVEAL } from '@/lib/reveal-calibre';
 
 /* Só as marcas COM arquivo de logo, mesmo filtro do `SignalMarquee` e pela mesma
    razão: a célula é uma placa gráfica, e um chip textual no meio da malha leria
@@ -103,7 +118,9 @@ export function BrandGrid() {
       <div className="container-lp">
         {/* SIS-194 — o título sobe por baixo de máscara, palavra por palavra, e
             entra ANTES das logos: ele está acima no DOM e tem gatilho próprio,
-            mais cedo (a cascata só acende com 20% do campo em cena). O texto é o
+            mais cedo (05/10 · SIS-242: eram «20% do campo em cena»; hoje os dois
+            leem o par canônico, e o título continua antes por estar acima no
+            DOM e ser um bloco baixo, não por ter limiar menor). O texto é o
             mesmo, travado no `copy-lock`: `RevealText` recebe a frase como
             `children` de texto puro e a devolve inteira no `aria-label`. */}
         <RevealText id="marcas-grade-titulo" className="marcas-grade-titulo">
@@ -118,13 +135,29 @@ export function BrandGrid() {
             título → lista de 15. */}
         {/* SIS-195 — o envelope da cascata. A combinação abaixo equivale a
             `toggleActions: play none none reverse`: sair por baixo conserva o
-            final e só voltar acima do gatilho desfaz a entrada. `limiar: 0.2` é
-            o "20% da seção" do doc. É um `<div>` inerte; a calha do campo segue
-            resolvida sobre a largura do PRÓPRIO campo. */}
+            final e só voltar acima do gatilho desfaz a entrada. É um `<div>`
+            inerte; a calha do campo segue resolvida sobre a largura do PRÓPRIO
+            campo. */}
+        {/* 05/10 · SIS-242 — `limiar={0.2}` VIROU `LIMIAR_REVEAL`.
+            A nota acima justificava o 0.2 como «o "20% da seção" do doc», e essa
+            leitura é o próprio defeito desta issue: o limiar é fração da ALTURA
+            DO CAMPO, não da viewport, e o campo são 5×3 células — o bloco mais
+            alto da home. 20% dele é muito mais rolagem do que 20% de uma seção
+            de texto, e a parede acendia tarde justamente por ser grande.
+            O par canônico desacopla a ignição do tamanho (a razão está no
+            docblock de `src/lib/reveal-calibre.ts`, nota da SIS-307); o 0.2
+            tinha ficado aqui porque esta linha passa o valor À MÃO e não lê o
+            canônico — mesma causa do `RevealText` e do padrão do `RevealScope`,
+            os três corrigidos juntos nesta issue.
+            `umaVez={false}` + `reverterSomenteAcima` NÃO mudam: a hipótese 3 da
+            issue suspeitava deles, mas é essa dupla que dá o
+            `play none none reverse` do doc, e reverter só acima é o que impede
+            a parede de apagar com a pessoa parada nela.
+              | limiar={0.2} */}
         <RevealScope
           umaVez={false}
           reverterSomenteAcima
-          limiar={0.2}
+          limiar={LIMIAR_REVEAL}
         >
           <div className="marcas-grade-campo">
           {/* `<ul>` e não `<div>`: são quinze itens equivalentes, e o leitor de tela
@@ -159,13 +192,25 @@ export function BrandGrid() {
                   data-logo=""
                   style={{ '--logo-i': indice } as CSSProperties}
                 >
+                {/* 02/10 · SIS-241 — `fetchPriority="low"` SAIU DAQUI.
+                    Ele pedia ao navegador para buscar estas quinze por último,
+                    e por último queria dizer atrás dos 20,6 MB de imagem que a
+                    home entrega: as células acendiam vazias e a pessoa via a
+                    parede montar com uma logo só. Medido em 02/10 na produção —
+                    as quinze somam 1.019 KB (26 a 54 KB cada), que é 5% do peso
+                    da home, e são o CONTEÚDO da faixa, não enfeite.
+                    `loading="lazy"` FICA: ele só adia até a faixa se aproximar,
+                    que é o comportamento certo para um bloco abaixo da dobra. O
+                    que estava errado era pedir prioridade baixa DEPOIS de já ter
+                    adiado — as duas coisas somadas punham o conteúdo atrás de
+                    fotos de 2 MB que ninguém está olhando naquele instante.
+                      | fetchPriority="low" */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={marca.logo}
                   alt={marca.name}
                   loading="lazy"
                   decoding="async"
-                  fetchPriority="low"
                 />
                 </span>
               </li>

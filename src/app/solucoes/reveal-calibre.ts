@@ -70,6 +70,10 @@
  * Duração e curva também não: `/contato` as afinou (820ms, expo-out) porque a 2ª
  * volta da SIS-263 pediu «mais fluido» POR ESCRITO. A SIS-273 não pede, e os
  * 500ms de `--motion-reveal-base` com os 80ms de `--motion-stagger-reveal` são
+ * [05/10 · SIS-242 — ESTES DOIS NÚMEROS CADUCARAM: hoje são 340ms e 45ms
+ * (`globals.css`, SIS-307). A conclusão do parágrafo continua valendo e é por
+ * isso que ele fica; quem lesse só os números concluiria que esta rota está FORA
+ * do token e viria «consertar» para 500/80, desfazendo a SIS-307 nesta pasta.]
  * os tokens do projeto. Inventar uma terceira cadência sem pedido é o que faz a
  * próxima issue ter três lugares para corrigir.
  */

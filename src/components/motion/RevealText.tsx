@@ -2,6 +2,7 @@
 
 import type { CSSProperties, ElementType } from 'react';
 import { useRevealTrigger } from './useRevealTrigger';
+import { LIMIAR_REVEAL, MARGEM_REVEAL } from '@/lib/reveal-calibre';
 
 /**
  * SIS-194 — título que sobe por baixo de uma máscara, palavra por palavra
@@ -46,10 +47,26 @@ export default function RevealText({
 }: Props) {
   /* `top 82%` do doc: o título acende pouco depois de encostar na tela. Uma vez
      só — reversão é da parede de logos, não de título de seção. */
+  /* 05/10 · SIS-242 — A GEOMETRIA PASSOU A SER A CANÔNICA. Eram `limiar: 0.1` e
+     `margem: '0px 0px -18% 0px'`, escritos aqui e NÃO tocados pela SIS-307:
+     ela trocou o par no canônico e nos quatro `reveal-calibre.ts` de rota, e
+     este arquivo ficou de fora porque não importava de lugar nenhum.
+     É o defeito que a SIS-242 relata no primeiro critério, e o título da faixa
+     «Impulsionando…» é o ÚNICO uso de `RevealText` no site — então estes dois
+     literais eram, na prática, o calibre daquele título e de mais nada.
+     O que eles custavam: `-18%` de uma dobra de 900px são 162px de rolagem a
+     mais depois de o título entrar na tela, e os 10% de limiar somam a altura
+     do próprio título em cima disso. Com o par canônico (`0.04` / `-3%`) sobram
+     27px, e a ignição deixa de depender de quantas linhas o título quebrou.
+     `umaVez: true` FICA, pela razão da nota acima: reversão é da parede de
+     logos, não de título — e é também o que impede o título de apagar quando a
+     pessoa oscila na faixa.
+       | limiar: 0.1,
+       | margem: '0px 0px -18% 0px', */
   const { ref } = useRevealTrigger<HTMLElement>({
-    limiar: 0.1,
+    limiar: LIMIAR_REVEAL,
     umaVez: true,
-    margem: '0px 0px -18% 0px',
+    margem: MARGEM_REVEAL,
   });
 
   /* `split(/(\s+)/)` guarda os separadores: o espaço fica FORA da máscara, senão

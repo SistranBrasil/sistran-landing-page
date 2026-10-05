@@ -73,6 +73,10 @@
  * Duração e curva também não estão: `/contato` as afinou (820ms, expo-out)
  * porque a 2ª volta da SIS-263 pediu «mais fluido» POR ESCRITO. A SIS-271 não
  * pede, e os 500ms de `--motion-reveal-base` mais os 80ms de
+ * [05/10 · SIS-242 — ESTES DOIS NÚMEROS CADUCARAM: hoje são 340ms e 45ms
+ * (`globals.css`, SIS-307). A conclusão do parágrafo continua valendo e é por
+ * isso que ele fica; quem lesse só os números concluiria que esta rota está FORA
+ * do token e viria «consertar» para 500/80, desfazendo a SIS-307 nesta pasta.]
  * `--motion-stagger-reveal` são os tokens do projeto. Inventar uma terceira
  * cadência sem pedido é o que faz a próxima issue ter três lugares para corrigir.
  */
@@ -85,4 +89,19 @@
    O que e ESPECIFICO da rota continua declarado logo abaixo. */
 export { MARGEM_REVEAL, LIMIAR_REVEAL } from '@/lib/reveal-calibre';
 /** Escopos altos (as duas grades de seis cartões e a grade do Gerando Talentos). */
-export const LIMIAR_REVEAL_BLOCO = 0.35;
+/* 05/10 · SIS-242 — 0.35 VIROU 0.24, pela mesma aritmética da nota acima,
+   recalculada na base nova. O que a sonda da SIS-271 mediu NÃO foi o 0.35: foi o
+   DESLOCAMENTO de ignição que traz a segunda fileira para dentro da tela, e a
+   própria nota o escreve como diferença — «(0.35 − 0.15) × altura ≈ 110–129px».
+   A base saiu de `0.15` para `0.04` na SIS-307 e esta linha não foi relida, então
+   o delta efetivo virou 0.31 × altura ≈ 170–200px: 50% mais atraso do que a
+   medida justificou, no escopo mais alto de `/esg`. Preservar o delta medido
+   (0.20) sobre a base nova dá 0.04 + 0.20 = 0.24, e é o número que mantém o
+   efeito que a SIS-271 comprou sem herdar o atraso que a SIS-242 relata.
+   Preservar o DELTA e não a FRAÇÃO é o certo porque o requisito original é em
+   pixels — «trazer as duas fileiras de baixo para dentro da tela» —, e pixel de
+   deslocamento é o que a diferença de limiar produz, não o limiar absoluto.
+   O resíduo declarado do último parágrafo do Gerando Talentos continua de pé e
+   continua sendo granularidade de escopo, não calibre.
+     | export const LIMIAR_REVEAL_BLOCO = 0.35; */
+export const LIMIAR_REVEAL_BLOCO = 0.24;

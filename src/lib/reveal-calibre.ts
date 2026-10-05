@@ -40,6 +40,22 @@
  * O par é consumido TAMBÉM como padrão do `useRevealTrigger`, que antes repetia
  * `0.2`/`-12%` por conta dele. Um número, um lugar.
  *
+ * ── 05/10 · SIS-242 · «UM NÚMERO, UM LUGAR» AINDA NÃO ERA VERDADE
+ * A frase acima estava certa sobre o hook e ERRADA sobre o site, e a diferença
+ * custou a SIS-242 inteira: `RevealScope` repassa `limiar` e `margem`
+ * EXPLICITAMENTE para o hook, então o padrão novo do hook nunca chegava a
+ * ninguém — quem não passava prop recebia os `0.2`/`-12%` que estavam escritos à
+ * mão no próprio `RevealScope`. Eram 8 das 97 montagens. Dois outros pontos
+ * liam literais velhos pelo mesmo motivo: `RevealText` (`0.1`/`-18%`, o título
+ * da parede de marcas, que é o seu único uso no site) e o `limiar={0.2}` passado
+ * à mão na `BrandGrid`. Os três passaram a ler daqui.
+ * Lição que vale para a próxima mudança de calibre: trocar o padrão de uma
+ * primitiva não alcança quem repassa o valor adiante. O que prova a troca é
+ * contar os pontos que passam o número À MÃO, não ler o padrão.
+ *
+ * `LIMIAR_REVEAL_BLOCO` de `/esg` também foi recalculado na SIS-242, porque o
+ * que a SIS-271 mediu foi o DELTA sobre a base — e a base mudou aqui.
+ *
  * Rotas que afinam duração/curva (`AFINACAO_REVEAL`) ou limiar de bloco alto
  * (`LIMIAR_REVEAL_BLOCO`, `MARGEM_REVEAL_TRILHO`, …) continuam com o que é
  * específico delas no `reveal-calibre.ts` da pasta — só o par canônico mora
