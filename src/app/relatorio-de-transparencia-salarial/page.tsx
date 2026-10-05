@@ -287,7 +287,7 @@ export default function Page() {
               href="/Imagem-Relatorio-de-Transparencia-Salarial-1.jpg"
               target="_blank"
               rel="noopener noreferrer"
-              className="block rounded-2xl border border-[#0079cb]/14 bg-white p-3 shadow-[0_1rem_2.5rem_-1rem_rgba(3,25,48,0.18)] md:p-5"
+              className="block rounded-2xl border border-[#0079cb]/[14%] bg-white p-3 shadow-[0_1rem_2.5rem_-1rem_rgba(3,25,48,0.18)] md:p-5"
             >
               {/* `width`/`height` são as dimensões INTRÍNSECAS medidas do arquivo
                   (3511 × 2321). `h-auto w-full` deixa a folha acompanhar a largura

@@ -97,7 +97,7 @@ export default function Hero() {
             style={rm ? undefined : { y, scale, opacity }}
             className="flex flex-col gap-7"
           >
-            <span data-hero-step className="shine-badge inline-flex w-fit items-center gap-2.5 rounded-full border border-white/12 bg-white/[0.04] px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#B8DDF6] backdrop-blur">
+            <span data-hero-step className="shine-badge inline-flex w-fit items-center gap-2.5 rounded-full border border-white/[12%] bg-white/[0.04] px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#B8DDF6] backdrop-blur">
               <span className="h-1.5 w-1.5 rounded-full bg-[#0ed8f6] pulse-glow" />
               Especialistas em seguros desde 1988
             </span>
@@ -143,7 +143,7 @@ export default function Hero() {
                   return (
                     <span
                       key={d.id}
-                      className="inline-flex flex-none snap-start items-center gap-2 rounded-full border border-white/12 bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-white"
+                      className="inline-flex flex-none snap-start items-center gap-2 rounded-full border border-white/[12%] bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-white"
                     >
                       <Icon className="h-3.5 w-3.5" style={{ color: d.color }} strokeWidth={1.8} />
                       {d.title}

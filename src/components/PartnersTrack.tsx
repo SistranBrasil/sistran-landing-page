@@ -290,7 +290,7 @@ export default function PartnersTrack() {
            os overrides de `.section-light` pintariam `h3`/`p` de navy sobre
            navy. Ver `globals.css`. */
         className={
-          'on-dark relative flex flex-col overflow-hidden rounded-3xl border border-white/12 p-7' +
+          'on-dark relative flex flex-col overflow-hidden rounded-3xl border border-white/[12%] p-7' +
           (naTrilha ? ' parceiros-painel' : '') +
           (naTrilha && i === ativo ? ' parceiros-painel--ativo' : '')
         }
@@ -341,7 +341,7 @@ export default function PartnersTrack() {
                chip cresce com o conteúdo. */}
             {/* Chip de categoria: conteúdo já aprovado, e existe nos dezesseis. */}
             <span
-              className="inline-flex items-center rounded-full border border-white/12 bg-white/[0.04] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em]"
+              className="inline-flex items-center rounded-full border border-white/[12%] bg-white/[0.04] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.16em]"
               style={{ color: tone, fontFamily: MONO }}
             >
               {PARTNER_CATEGORIES[p.category].label}

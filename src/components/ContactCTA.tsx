@@ -208,7 +208,7 @@ export default function ContactCTA({
           whileInView="visible"
           viewport={VP}
           className={clsx(
-            'relative overflow-hidden rounded-3xl border border-white/12 p-10 md:p-14',
+            'relative overflow-hidden rounded-3xl border border-white/[12%] p-10 md:p-14',
             reativo && 'cta-reativo-cartao',
           )}
           style={{
@@ -266,7 +266,7 @@ export default function ContactCTA({
         >
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/12 blur-[110px]"
+            className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/[12%] blur-[110px]"
           />
           {/* SIS-142 · ponto de atenção 5 cumprido ao pé da letra: o efeito de
               ponteiro NÃO é novo. É o `TechnicalCursorReveal` que já estava neste

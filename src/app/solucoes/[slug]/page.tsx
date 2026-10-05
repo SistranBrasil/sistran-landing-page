@@ -448,7 +448,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
                   {atual ? (
                     <span
                       aria-current="page"
-                      className="inline-block rounded-full border border-[#2AC4FF]/70 bg-[#2AC4FF]/14 px-4 py-2 text-sm font-semibold text-white"
+                      className="inline-block rounded-full border border-[#2AC4FF]/70 bg-[#2AC4FF]/[14%] px-4 py-2 text-sm font-semibold text-white"
                     >
                       {p.name}
                     </span>

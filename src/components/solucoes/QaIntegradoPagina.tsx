@@ -549,7 +549,7 @@ export default function QaIntegradoPagina({ page }: { page: AcceleratorPage }) {
               <div
                 data-reveal="scale-soft"
                 style={cascata(2)}
-                className="qaintegrado-midia relative aspect-[4/3] overflow-hidden rounded-3xl border border-[#0079CB]/18"
+                className="qaintegrado-midia relative aspect-[4/3] overflow-hidden rounded-3xl border border-[#0079CB]/[18%]"
               >
                 <Image
                   src={VITRINE?.capaCard ?? CAPA}
@@ -624,7 +624,7 @@ export default function QaIntegradoPagina({ page }: { page: AcceleratorPage }) {
                        `bg-white` chapado e não translúcido: o cartão sobe e escala
                        sobre a folha, e com fundo translúcido o vizinho apareceria por
                        baixo no instante da sobreposição. */
-                    className="qaintegrado-cartao qaintegrado-midia relative flex overflow-hidden rounded-2xl border border-[#0079CB]/18 bg-white"
+                    className="qaintegrado-cartao qaintegrado-midia relative flex overflow-hidden rounded-2xl border border-[#0079CB]/[18%] bg-white"
                   >
                     <div className="relative w-16 shrink-0 overflow-hidden sm:w-20">
                       {/* PLACEHOLDER DECLARADO (item 3 da issue: «imagem = capa QA até
@@ -664,7 +664,7 @@ export default function QaIntegradoPagina({ page }: { page: AcceleratorPage }) {
                     <div className="relative flex-1 p-5">
                       <span
                         aria-hidden
-                        className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl border border-[#0079CB]/18 bg-[#0079CB]/8"
+                        className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl border border-[#0079CB]/[18%] bg-[#0079CB]/[8%]"
                       >
                         <Icone className="h-5 w-5 text-[#0079CB]" strokeWidth={1.6} />
                       </span>
@@ -919,7 +919,7 @@ export default function QaIntegradoPagina({ page }: { page: AcceleratorPage }) {
                   {atual ? (
                     <span
                       aria-current="page"
-                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/12 px-3 py-1.5 text-xs font-semibold text-[#0a1f44]"
+                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/[12%] px-3 py-1.5 text-xs font-semibold text-[#0a1f44]"
                     >
                       {p.name}
                     </span>
@@ -942,7 +942,7 @@ export default function QaIntegradoPagina({ page }: { page: AcceleratorPage }) {
                 {/* O cartão INTEIRO é o link: alvo grande e um único destino. */}
                 <Link
                   href={`/solucoes/${a.id}`}
-                  className="qaintegrado-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/18 transition-colors hover:border-[#0079CB]/55"
+                  className="qaintegrado-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/[18%] transition-colors hover:border-[#0079CB]/55"
                 >
                   <Image
                     src={a.capaCard}

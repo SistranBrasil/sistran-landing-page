@@ -455,7 +455,7 @@ export default function FastPagina({ page }: { page: AcceleratorPage }) {
               que recorta e ARTE que se move. Um nó só seria dono do `transform`
               duas vezes. */}
           <div data-reveal="scale-soft" style={cascata(2)} className="matchai-midia relative">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/12 shadow-[0_32px_80px_-40px_rgba(0,0,0,0.75)]">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/[12%] shadow-[0_32px_80px_-40px_rgba(0,0,0,0.75)]">
               <Image
                 data-route-critical-media=""
                 src={CAPA}
@@ -481,7 +481,7 @@ export default function FastPagina({ page }: { page: AcceleratorPage }) {
               <div className="matchai-ficha flex items-center gap-3 rounded-2xl border border-white/60 bg-white/95 px-4 py-3 shadow-[0_22px_50px_-24px_rgba(0,20,50,0.55)] backdrop-blur-sm">
                 <span
                   aria-hidden
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0079CB]/12"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0079CB]/[12%]"
                 >
                   <FileSearch className="h-5 w-5 text-[#0060A8]" strokeWidth={1.8} />
                 </span>
@@ -545,12 +545,12 @@ export default function FastPagina({ page }: { page: AcceleratorPage }) {
                        razão medida lá: o cartão sobe e escala sobre a folha, e com
                        fundo translúcido o vizinho aparecia por baixo no instante
                        da sobreposição. */
-                    className="matchai-cartao relative h-full rounded-2xl border border-[#0079CB]/18 bg-white p-6 shadow-[0_18px_44px_-30px_rgba(0,55,100,0.45)]"
+                    className="matchai-cartao relative h-full rounded-2xl border border-[#0079CB]/[18%] bg-white p-6 shadow-[0_18px_44px_-30px_rgba(0,55,100,0.45)]"
                   >
                     <span aria-hidden className="matchai-halo" />
                     <span
                       aria-hidden
-                      className="relative flex h-12 w-12 items-center justify-center rounded-full bg-[#0079CB]/12"
+                      className="relative flex h-12 w-12 items-center justify-center rounded-full bg-[#0079CB]/[12%]"
                     >
                       <Icone className="h-6 w-6 text-[#0079CB]" strokeWidth={1.6} />
                     </span>
@@ -709,7 +709,7 @@ export default function FastPagina({ page }: { page: AcceleratorPage }) {
                       'matchai-coluna ' +
                       (i === 0
                         ? 'px-0 text-left sm:pr-6'
-                        : 'border-t border-[#0079CB]/18 px-0 pt-8 text-left sm:border-l sm:border-t-0 sm:px-6 sm:pt-0')
+                        : 'border-t border-[#0079CB]/[18%] px-0 pt-8 text-left sm:border-l sm:border-t-0 sm:px-6 sm:pt-0')
                     }
                   >
                     {metrica && (
@@ -717,7 +717,7 @@ export default function FastPagina({ page }: { page: AcceleratorPage }) {
                         <span className="flex items-center gap-3">
                           <span
                             aria-hidden
-                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#0079CB]/12"
+                            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#0079CB]/[12%]"
                           >
                             <Icone className="h-5 w-5 text-[#0060A8]" strokeWidth={1.8} />
                           </span>
@@ -822,7 +822,7 @@ export default function FastPagina({ page }: { page: AcceleratorPage }) {
               </p>
             </div>
             <div data-reveal="scale-soft" style={cascata(2)} className="matchai-midia relative">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-3xl border border-[#0079CB]/18 shadow-[0_24px_60px_-36px_rgba(0,55,100,0.55)]">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-3xl border border-[#0079CB]/[18%] shadow-[0_24px_60px_-36px_rgba(0,55,100,0.55)]">
                 <Image
                   src={CAPA}
                   alt=""
@@ -896,7 +896,7 @@ export default function FastPagina({ page }: { page: AcceleratorPage }) {
                   {atual ? (
                     <span
                       aria-current="page"
-                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/12 px-4 py-2 text-sm font-semibold text-[#0a1f44]"
+                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/[12%] px-4 py-2 text-sm font-semibold text-[#0a1f44]"
                     >
                       {p.name}
                     </span>
@@ -919,7 +919,7 @@ export default function FastPagina({ page }: { page: AcceleratorPage }) {
                 {/* O cartão INTEIRO é o link: alvo grande e um único destino. */}
                 <Link
                   href={`/solucoes/${a.id}`}
-                  className="matchai-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/18 transition-colors hover:border-[#0079CB]/55"
+                  className="matchai-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/[18%] transition-colors hover:border-[#0079CB]/55"
                 >
                   <Image
                     src={a.capaCard}
@@ -989,7 +989,7 @@ export default function FastPagina({ page }: { page: AcceleratorPage }) {
        // `shrink-0` no disco: sem ele o flex comprime o ícone quando o título
        // quebra.
        return (
-         <div className="flex h-full w-full items-center gap-3.5 rounded-2xl border border-white/14 bg-white/[0.06] p-4">
+         <div className="flex h-full w-full items-center gap-3.5 rounded-2xl border border-white/[14%] bg-white/[0.06] p-4">
            <span aria-hidden className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#0ed8f6]/25 bg-[#0ed8f6]/10">
              <Icone className="h-5 w-5 text-[#A5F0FF]" strokeWidth={1.7} />
            </span>

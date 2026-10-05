@@ -1074,7 +1074,7 @@ export default function Page() {
                     {/* O cartão INTEIRO é o link: alvo grande e um destino só. */}
                     <Link href={p.href} className="group block">
                       <figure className="m-0">
-                        <span className="matchai-midia relative block aspect-[16/9] overflow-hidden rounded-xl border border-[#0079CB]/18 transition-colors group-hover:border-[#0079CB]/55">
+                        <span className="matchai-midia relative block aspect-[16/9] overflow-hidden rounded-xl border border-[#0079CB]/[18%] transition-colors group-hover:border-[#0079CB]/55">
                           <Image
                             src={p.capa}
                             alt=""

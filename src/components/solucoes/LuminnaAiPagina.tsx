@@ -952,7 +952,7 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
             <div
               data-reveal="scale-soft"
               style={cascata(2)}
-              className="luminna-midia luminna-midia--diagrama relative aspect-[5/4] overflow-hidden rounded-3xl border border-[#0079CB]/18"
+              className="luminna-midia luminna-midia--diagrama relative aspect-[5/4] overflow-hidden rounded-3xl border border-[#0079CB]/[18%]"
             >
               <Image
                 src="/images/solucoes/luminna/luminnaprimeirasessao.png"
@@ -1087,7 +1087,7 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                        `bg-white` chapado e não translúcido: o cartão sobe e escala sobre
                        a folha, e com fundo translúcido o vizinho apareceria por baixo no
                        instante da sobreposição. */
-                    className="luminna-cartao relative flex flex-col items-start overflow-hidden rounded-2xl border border-[#0079CB]/18 bg-white p-5 pb-7"
+                    className="luminna-cartao relative flex flex-col items-start overflow-hidden rounded-2xl border border-[#0079CB]/[18%] bg-white p-5 pb-7"
                   >
                     {/* SIS-220 item 1 («ícones reforçados nas faixas») — o disco era
                         `h-12 w-12` com glifo de 20px e traço 1,6; agora é `h-14 w-14`
@@ -1403,7 +1403,7 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                     key={item.text}
                     data-reveal="fade-up"
                     style={cascata(i + 3)}
-                    className={`luminna-cartao relative z-10 overflow-hidden rounded-2xl border border-[#0079CB]/18 bg-white px-5 py-5 pb-7 ${POSICOES_DE_INTEGRACAO[i] ?? ''}`}
+                    className={`luminna-cartao relative z-10 overflow-hidden rounded-2xl border border-[#0079CB]/[18%] bg-white px-5 py-5 pb-7 ${POSICOES_DE_INTEGRACAO[i] ?? ''}`}
                   >
                     <span aria-hidden className="luminna-selo relative block h-12 w-12">
                       <span aria-hidden className="luminna-arco absolute inset-0" />
@@ -1562,10 +1562,16 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                    `/96` não emite regra, `/[96%]` emite `background-color: rgb(241 247
                    252 / 96%)`. Os valores são os mesmos que a nota de 01/10 escolheu;
                    só a sintaxe estava errada.
-                   ⚠️ ISTO NÃO É CASO ÚNICO: a varredura de 02/10 achou 102 modificadores
-                   fora da escala em 30 arquivos (quase todos `border-…/12` e `/18`, que
-                   degradam em silêncio para a borda cinza). Está listado na SIS-305 e
-                   não foi corrigido aqui — só este cartão, que é o que estava ilegível. */
+                   ⚠️ ISTO NÃO ERA CASO ÚNICO: a varredura de 02/10 achou 102
+                   modificadores fora da escala (quase todos `border-…/12` e `/18`, que
+                   degradam em silêncio para a borda cinza). Em 02/10 só este cartão
+                   tinha sido corrigido.
+                   ✅ 05/10/2026 — a SIS-305 corrigiu os outros 94, em 24 arquivos (dos
+                   102 achados pelo regex, 8 eram CITAÇÕES em comentário como as de
+                   cima, e não classes). Todos foram para a forma com colchetes, a
+                   mesma deste cartão. E agora há portão: `npm run test:opacidade`
+                   reprova opacidade fora da escala, então esta pegadinha não volta
+                   calada. */
                 className="luminna-fecho-card mx-auto max-w-3xl rounded-3xl border border-[#0079CB]/[22%] bg-[#F1F7FC]/[96%] p-7 text-center backdrop-blur-sm sm:p-10"
               >
                 <p className="text-lg leading-relaxed text-[#0B2A4A]">
@@ -1710,7 +1716,7 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                   {atual ? (
                     <span
                       aria-current="page"
-                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/12 px-3 py-1.5 text-xs font-semibold text-[#0a1f44]"
+                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/[12%] px-3 py-1.5 text-xs font-semibold text-[#0a1f44]"
                     >
                       {p.name}
                     </span>
@@ -1733,7 +1739,7 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                 {/* O cartão INTEIRO é o link: alvo grande e um único destino. */}
                 <Link
                   href={`/solucoes/${a.id}`}
-                  className="luminna-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/18 transition-colors hover:border-[#0079CB]/55"
+                  className="luminna-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/[18%] transition-colors hover:border-[#0079CB]/55"
                 >
                   <Image
                     src={a.capaCard}

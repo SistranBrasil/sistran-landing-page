@@ -41,7 +41,7 @@ export default function PillarsCarousel() {
 
   return (
     <div
-      className="relative overflow-hidden rounded-3xl border border-white/12 bg-gradient-to-br from-[#083156]/95 to-[#041D37]/95 p-7 backdrop-blur-xl"
+      className="relative overflow-hidden rounded-3xl border border-white/[12%] bg-gradient-to-br from-[#083156]/95 to-[#041D37]/95 p-7 backdrop-blur-xl"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       role="region"

@@ -13,7 +13,8 @@
     "maplibre:worker": "node scripts/copiar-worker-maplibre.mjs",
     "predev": "node scripts/copiar-worker-maplibre.mjs",
     "prebuild": "node scripts/copiar-worker-maplibre.mjs",
-    "test:extrator": "node scripts/copy-lock.mjs --autoteste"
+    "test:extrator": "node scripts/copy-lock.mjs --autoteste",
+    "test:opacidade": "node scripts/verificar-opacidades-sis305.mjs"
   },
   "dependencies": {
     "@vercel/blob": "^2.8.0",

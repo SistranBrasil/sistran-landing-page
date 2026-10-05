@@ -221,7 +221,7 @@ function BlocoDeEvento({
           SIS-106 — o raio vem do token `--radius-card`, o mesmo do cartão do
           desktop, e não de um `rounded-2xl` solto que era 16px contra 24px. */}
       {e.image && (
-        <div className="relative mb-6 aspect-[900/506] w-full overflow-hidden rounded-[var(--radius-card)] border border-white/12 lg:hidden">
+        <div className="relative mb-6 aspect-[900/506] w-full overflow-hidden rounded-[var(--radius-card)] border border-white/[12%] lg:hidden">
           <Image
             src={e.image}
             alt={e.title}

@@ -697,7 +697,7 @@ export default function Header() {
                 <div hidden={!aberto} className="absolute left-0 top-full z-10 pt-[10px]">
                   <ul
                     id={idSub}
-                    className="min-w-[13rem] overflow-hidden rounded-[14px] border border-white/12 p-1.5"
+                    className="min-w-[13rem] overflow-hidden rounded-[14px] border border-white/[12%] p-1.5"
                     style={{
                       background: PILL_BG_STRONG,
                       backdropFilter: 'blur(20px)',
@@ -716,8 +716,8 @@ export default function Header() {
                       const classeDoItem = clsx(
                         'block whitespace-nowrap rounded-[10px] px-3 py-2 text-[0.78rem] font-semibold transition-colors',
                         filhoAtivo
-                          ? 'bg-white/12 text-white'
-                          : 'text-white/70 hover:bg-white/8 hover:text-white',
+                          ? 'bg-white/[12%] text-white'
+                          : 'text-white/70 hover:bg-white/[8%] hover:text-white',
                       );
                       return (
                         <li key={filho.label}>
@@ -788,7 +788,7 @@ export default function Header() {
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? 'Fechar menu' : 'Abrir menu'}
           aria-expanded={open}
-          className="ml-2 inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-white/12 bg-white/5 [@media(min-width:1440px)]:hidden"
+          className="ml-2 inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-white/[12%] bg-white/5 [@media(min-width:1440px)]:hidden"
         >
           {open ? (
             <X className="h-5 w-5" strokeWidth={1.8} />
@@ -800,7 +800,7 @@ export default function Header() {
         {/* Mobile drawer */}
         <div
           className={clsx(
-            'absolute inset-x-0 top-[calc(100%+8px)] overflow-hidden rounded-[20px] border border-white/12 text-white transition-[max-height,opacity] duration-300 [@media(min-width:1440px)]:hidden',
+            'absolute inset-x-0 top-[calc(100%+8px)] overflow-hidden rounded-[20px] border border-white/[12%] text-white transition-[max-height,opacity] duration-300 [@media(min-width:1440px)]:hidden',
             open ? 'max-h-[80vh] opacity-100' : 'pointer-events-none max-h-0 opacity-0',
           )}
           style={{
@@ -832,7 +832,7 @@ export default function Header() {
                     {item.label}
                   </Link>
                   {item.children ? (
-                    <ul className="ml-4 mt-0.5 space-y-0.5 border-l border-white/12 pl-2">
+                    <ul className="ml-4 mt-0.5 space-y-0.5 border-l border-white/[12%] pl-2">
                       {item.children.map((filho) => {
                         const filhoAtivo = matchActive(filho.href, pathname, activeHash);
                         /* SIS-280 — mesma bifurcação do submenu de desktop, pela

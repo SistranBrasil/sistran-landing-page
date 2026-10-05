@@ -600,7 +600,7 @@ export default function SmartMinerPagina({ page }: { page: AcceleratorPage }) {
                        translúcido: o cartão sobe e escala sobre a folha, e com fundo
                        translúcido o vizinho aparece por baixo no instante da
                        sobreposição. */
-                    className="smartminer-cartao smartminer-midia relative overflow-hidden rounded-2xl border border-[#0079CB]/18 bg-white"
+                    className="smartminer-cartao smartminer-midia relative overflow-hidden rounded-2xl border border-[#0079CB]/[18%] bg-white"
                   >
                     <div className="relative aspect-[16/9] overflow-hidden">
                       {/* PLACEHOLDER DECLARADO (item 3 da issue: «slots de imagem sem
@@ -627,7 +627,7 @@ export default function SmartMinerPagina({ page }: { page: AcceleratorPage }) {
                           do glifo passaria a depender de qual pixel da foto caiu ali. */}
                       <span
                         aria-hidden
-                        className="-mt-9 mb-3 flex h-12 w-12 items-center justify-center rounded-xl border border-[#0079CB]/18 bg-white shadow-[0_10px_24px_-14px_rgba(0,55,100,0.5)]"
+                        className="-mt-9 mb-3 flex h-12 w-12 items-center justify-center rounded-xl border border-[#0079CB]/[18%] bg-white shadow-[0_10px_24px_-14px_rgba(0,55,100,0.5)]"
                       >
                         <Icone className="h-6 w-6 text-[#0079CB]" strokeWidth={1.6} />
                       </span>
@@ -702,7 +702,7 @@ export default function SmartMinerPagina({ page }: { page: AcceleratorPage }) {
                     terceiro véu lá em cima), e num quadro 4/3 ele entra CORTADO no meio
                     das letras — foi o que a captura de 1440 desta issue mostrou. A capa
                     do cartão é a mesma arte da vitrine desta solução, sem letreiro. */}
-                <div className="smartminer-midia relative aspect-[4/3] overflow-hidden rounded-3xl border border-[#0079CB]/18">
+                <div className="smartminer-midia relative aspect-[4/3] overflow-hidden rounded-3xl border border-[#0079CB]/[18%]">
                   <Image
                     src={VITRINE?.capaCard ?? CAPA}
                     alt=""
@@ -714,7 +714,7 @@ export default function SmartMinerPagina({ page }: { page: AcceleratorPage }) {
                   />
                 </div>
                 {ondeUsar.paragraphs[1] && (
-                  <div className="smartminer-balao absolute bottom-0 left-4 right-4 rounded-2xl border border-[#0079CB]/18 bg-white p-4 shadow-[0_10px_18px_-12px_rgba(0,30,70,0.35),0_30px_60px_-26px_rgba(0,30,70,0.55)] sm:left-8 sm:right-8">
+                  <div className="smartminer-balao absolute bottom-0 left-4 right-4 rounded-2xl border border-[#0079CB]/[18%] bg-white p-4 shadow-[0_10px_18px_-12px_rgba(0,30,70,0.35),0_30px_60px_-26px_rgba(0,30,70,0.55)] sm:left-8 sm:right-8">
                     {/* O BICO: quadrado girado 45° com as duas bordas de cima pintadas
                         e o resto herdando o fundo do balão — a ponta SEM um segundo nó e
                         sem `clip-path`, que cortaria a borda de 1px. Aponta para CIMA,
@@ -722,7 +722,7 @@ export default function SmartMinerPagina({ page }: { page: AcceleratorPage }) {
                         diagonal menos a borda. */}
                     <span
                       aria-hidden
-                      className="absolute -top-[7px] left-8 h-3 w-3 rotate-45 border-l border-t border-[#0079CB]/18 bg-white"
+                      className="absolute -top-[7px] left-8 h-3 w-3 rotate-45 border-l border-t border-[#0079CB]/[18%] bg-white"
                     />
                     <p data-balao="" className="relative text-sm leading-relaxed text-ink-muted">
                       {ondeUsar.paragraphs[1]}
@@ -926,7 +926,7 @@ export default function SmartMinerPagina({ page }: { page: AcceleratorPage }) {
                   {atual ? (
                     <span
                       aria-current="page"
-                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/12 px-3 py-1.5 text-xs font-semibold text-[#0a1f44]"
+                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/[12%] px-3 py-1.5 text-xs font-semibold text-[#0a1f44]"
                     >
                       {p.name}
                     </span>
@@ -949,7 +949,7 @@ export default function SmartMinerPagina({ page }: { page: AcceleratorPage }) {
                 {/* O cartão INTEIRO é o link: alvo grande e um único destino. */}
                 <Link
                   href={`/solucoes/${a.id}`}
-                  className="smartminer-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/18 transition-colors hover:border-[#0079CB]/55"
+                  className="smartminer-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/[18%] transition-colors hover:border-[#0079CB]/55"
                 >
                   <Image
                     src={a.capaCard}

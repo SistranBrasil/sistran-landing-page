@@ -612,7 +612,7 @@ export default function ConnectApiPagina({ page }: { page: AcceleratorPage }) {
               <div
                 data-reveal="scale-soft"
                 style={cascata(3)}
-                className="connectapi-midia relative aspect-[4/3] overflow-hidden rounded-3xl border border-[#0079CB]/18"
+                className="connectapi-midia relative aspect-[4/3] overflow-hidden rounded-3xl border border-[#0079CB]/[18%]"
               >
                 <Image
                   src={VITRINE?.capaCard ?? CAPA}
@@ -694,7 +694,7 @@ export default function ConnectApiPagina({ page }: { page: AcceleratorPage }) {
                        `bg-white` chapado e não translúcido: o cartão sobe e escala sobre
                        a folha, e com fundo translúcido o vizinho apareceria por baixo no
                        instante da sobreposição. */
-                    className="connectapi-cartao relative overflow-hidden rounded-2xl border border-[#0079CB]/18 bg-white"
+                    className="connectapi-cartao relative overflow-hidden rounded-2xl border border-[#0079CB]/[18%] bg-white"
                   >
                     <span
                       aria-hidden
@@ -721,7 +721,7 @@ export default function ConnectApiPagina({ page }: { page: AcceleratorPage }) {
                           branca chapada porque ele cai metade sobre a foto. */}
                       <span
                         aria-hidden
-                        className="absolute -top-5 left-5 flex h-10 w-10 items-center justify-center rounded-xl border border-[#0079CB]/18 bg-white"
+                        className="absolute -top-5 left-5 flex h-10 w-10 items-center justify-center rounded-xl border border-[#0079CB]/[18%] bg-white"
                       >
                         <Icone className="h-5 w-5 text-[#0079CB]" strokeWidth={1.6} />
                       </span>
@@ -881,7 +881,7 @@ export default function ConnectApiPagina({ page }: { page: AcceleratorPage }) {
                   key={item.term}
                   data-reveal="fade-up"
                   style={cascata(i + 2)}
-                  className="connectapi-cartao relative flex flex-col items-start rounded-2xl border border-[#0079CB]/18 bg-white p-5"
+                  className="connectapi-cartao relative flex flex-col items-start rounded-2xl border border-[#0079CB]/[18%] bg-white p-5"
                 >
                   {/* O ORDINAL numa pastilha, e `aria-hidden`: a marcação já é `<ol>`, e
                       o número lido em voz alta depois do ordinal que o leitor de tela
@@ -948,7 +948,7 @@ export default function ConnectApiPagina({ page }: { page: AcceleratorPage }) {
                     return (
                       <li
                         key={linha.nome}
-                        className="flex items-center gap-3 rounded-2xl border border-[#0079CB]/18 bg-white px-4 py-3 text-sm font-semibold text-[#0a1f44] lg:justify-end lg:text-right"
+                        className="flex items-center gap-3 rounded-2xl border border-[#0079CB]/[18%] bg-white px-4 py-3 text-sm font-semibold text-[#0a1f44] lg:justify-end lg:text-right"
                       >
                         <Icone
                           className="h-4 w-4 shrink-0 text-[#0079CB] lg:order-2"
@@ -990,7 +990,7 @@ export default function ConnectApiPagina({ page }: { page: AcceleratorPage }) {
                   {CAPACIDADES.map((cap) => (
                     <li
                       key={cap.nome}
-                      className="flex items-center gap-3 rounded-2xl border border-[#0079CB]/18 bg-white px-4 py-3 text-sm font-semibold text-[#0a1f44]"
+                      className="flex items-center gap-3 rounded-2xl border border-[#0079CB]/[18%] bg-white px-4 py-3 text-sm font-semibold text-[#0a1f44]"
                     >
                       <cap.icone
                         className="h-4 w-4 shrink-0 text-[#0079CB]"
@@ -1057,7 +1057,7 @@ export default function ConnectApiPagina({ page }: { page: AcceleratorPage }) {
                   {atual ? (
                     <span
                       aria-current="page"
-                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/12 px-3 py-1.5 text-xs font-semibold text-[#0a1f44]"
+                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/[12%] px-3 py-1.5 text-xs font-semibold text-[#0a1f44]"
                     >
                       {p.name}
                     </span>
@@ -1080,7 +1080,7 @@ export default function ConnectApiPagina({ page }: { page: AcceleratorPage }) {
                 {/* O cartão INTEIRO é o link: alvo grande e um único destino. */}
                 <Link
                   href={`/solucoes/${a.id}`}
-                  className="connectapi-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/18 transition-colors hover:border-[#0079CB]/55"
+                  className="connectapi-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/[18%] transition-colors hover:border-[#0079CB]/55"
                 >
                   <Image
                     src={a.capaCard}

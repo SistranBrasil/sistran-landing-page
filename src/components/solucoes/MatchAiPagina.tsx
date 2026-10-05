@@ -848,7 +848,7 @@ export default function MatchAiPagina({ page }: { page: AcceleratorPage }) {
             {/* A MOLDURA em faixa clara: a borda passa de `white/12` (invisível
                 sobre branco) para o azul institucional a 12%, e a sombra perde a
                 profundidade de fundo escuro. */}
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-[#0079CB]/12 shadow-[0_32px_80px_-40px_rgba(0,26,61,0.35)]">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-[#0079CB]/[12%] shadow-[0_32px_80px_-40px_rgba(0,26,61,0.35)]">
               <Image
                 src={CAPA}
                 alt=""
@@ -975,7 +975,7 @@ export default function MatchAiPagina({ page }: { page: AcceleratorPage }) {
                        a borda; `bg-white` chapado em vez de `bg-white/80` porque o
                        cartão SOBE e ESCALA sobre a folha — com fundo translúcido o
                        vizinho aparecia por baixo no instante da sobreposição. */
-                    className="matchai-cartao matchai-midia relative flex items-stretch gap-4 rounded-2xl border border-[#0079CB]/18 bg-white p-5"
+                    className="matchai-cartao matchai-midia relative flex items-stretch gap-4 rounded-2xl border border-[#0079CB]/[18%] bg-white p-5"
                   >
                     <span aria-hidden className="matchai-halo" />
                     <div className="relative flex min-w-0 flex-1 flex-col">
@@ -1074,7 +1074,7 @@ export default function MatchAiPagina({ page }: { page: AcceleratorPage }) {
           lugares — seria a mesma imagem duas vezes na mesma faixa. Era:
 
             <motion.div variants={vCard} className="relative">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/12">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/[12%]">
                 <Image src={CAPA} alt="" aria-hidden fill
                   sizes="(min-width: 1180px) 520px, 100vw" loading="lazy" className="object-cover" />
               </div>
@@ -1130,7 +1130,7 @@ export default function MatchAiPagina({ page }: { page: AcceleratorPage }) {
                 O leve degradê que sobra (95→90) existe só para a arte não ficar
                 uniformemente apagada: é o suficiente para a composição aparecer sem
                 que a leitura dependa de qual pedaço da foto caiu atrás de qual passo. */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#001A3D]/95 via-[#001A3D]/92 to-[#001A3D]/90" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#001A3D]/95 via-[#001A3D]/[92%] to-[#001A3D]/90" />
           </div>
           {/* A malha e o circuito ENTRAM DEPOIS da foto e do véu, de propósito: o
               véu apaga a arte a 90–95% e a malha tem de ficar SOBRE ele, senão a
@@ -1302,7 +1302,7 @@ export default function MatchAiPagina({ page }: { page: AcceleratorPage }) {
                   fora do fio do texto, e é do tipo que a referência põe no balão
                   (uma afirmação curta de credibilidade). Nada de copy nova. */}
               <div data-reveal="scale-soft" style={cascata(2)} className="relative pb-14 lg:pb-16">
-                <div className="matchai-midia relative aspect-[4/3] overflow-hidden rounded-3xl border border-[#0079CB]/18">
+                <div className="matchai-midia relative aspect-[4/3] overflow-hidden rounded-3xl border border-[#0079CB]/[18%]">
                   <Image
                     src={FOTO_POSICIONAMENTO}
                     alt=""
@@ -1323,7 +1323,7 @@ export default function MatchAiPagina({ page }: { page: AcceleratorPage }) {
                     `matchai-balao` é o POP: sobe e cresce com repique quando o
                     escopo da seção acende, pela transição em `translate`/`scale`
                     que o `globals.css` liga ao `[data-in]`. */}
-                <div className="matchai-balao absolute bottom-0 left-4 right-4 rounded-2xl border border-[#0079CB]/18 bg-white p-4 shadow-[0_10px_18px_-12px_rgba(0,30,70,0.35),0_30px_60px_-26px_rgba(0,30,70,0.55)] sm:left-8 sm:right-8">
+                <div className="matchai-balao absolute bottom-0 left-4 right-4 rounded-2xl border border-[#0079CB]/[18%] bg-white p-4 shadow-[0_10px_18px_-12px_rgba(0,30,70,0.35),0_30px_60px_-26px_rgba(0,30,70,0.55)] sm:left-8 sm:right-8">
                   {/* O BICO. Quadrado girado 45° com as duas bordas de cima
                       pintadas e o resto herdando o fundo do balão: é o que dá a
                       ponta SEM um segundo nó e sem `clip-path`, que cortaria a
@@ -1331,7 +1331,7 @@ export default function MatchAiPagina({ page }: { page: AcceleratorPage }) {
                       balão sai. `-top-[7px]` = metade da diagonal menos a borda. */}
                   <span
                     aria-hidden
-                    className="absolute -top-[7px] left-8 h-3 w-3 rotate-45 border-l border-t border-[#0079CB]/18 bg-white"
+                    className="absolute -top-[7px] left-8 h-3 w-3 rotate-45 border-l border-t border-[#0079CB]/[18%] bg-white"
                   />
                   <p data-balao="" className="relative text-sm leading-relaxed text-ink-muted">
                     {posicionamento.paragraphs[BALAO]}
@@ -1356,7 +1356,7 @@ export default function MatchAiPagina({ page }: { page: AcceleratorPage }) {
                        apurado nos outros cards: o cartão escala sobre a folha e,
                        translúcido, o vizinho aparecia por baixo no instante da
                        sobreposição. */
-                    className="matchai-coluna rounded-2xl border border-[#0079CB]/18 bg-white p-6 shadow-[0_18px_44px_-30px_rgba(0,55,100,0.45)]"
+                    className="matchai-coluna rounded-2xl border border-[#0079CB]/[18%] bg-white p-6 shadow-[0_18px_44px_-30px_rgba(0,55,100,0.45)]"
                   >
                     <Icone aria-hidden className="h-8 w-8 text-[#0079CB]" strokeWidth={1.6} />
                     {/* NEGRITO da lista fechada (item 3): «Complementa o
@@ -1461,7 +1461,7 @@ export default function MatchAiPagina({ page }: { page: AcceleratorPage }) {
                   {atual ? (
                     <span
                       aria-current="page"
-                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/12 px-3 py-1.5 text-xs font-semibold text-[#0a1f44]"
+                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/[12%] px-3 py-1.5 text-xs font-semibold text-[#0a1f44]"
                     >
                       {p.name}
                     </span>
@@ -1484,7 +1484,7 @@ export default function MatchAiPagina({ page }: { page: AcceleratorPage }) {
                 {/* O cartão INTEIRO é o link: alvo grande e um único destino. */}
                 <Link
                   href={`/solucoes/${a.id}`}
-                  className="matchai-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/18 transition-colors hover:border-[#0079CB]/55"
+                  className="matchai-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/[18%] transition-colors hover:border-[#0079CB]/55"
                 >
                   <Image
                     src={a.capaCard}

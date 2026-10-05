@@ -963,7 +963,7 @@ export default function MapaUnidades({ cabecalho }: { cabecalho?: ReactNode }) {
                   aria-pressed={atual}
                   className={`flex w-full items-center gap-3 rounded-2xl border p-3.5 text-left transition-colors ${
                     atual
-                      ? 'border-[#2AC4FF]/70 bg-[#2AC4FF]/14 text-white'
+                      ? 'border-[#2AC4FF]/70 bg-[#2AC4FF]/[14%] text-white'
                       : 'border-white/15 bg-white/[0.06] text-white/85 hover:border-[#2AC4FF]/50 hover:bg-white/10'
                   }`}
                 >

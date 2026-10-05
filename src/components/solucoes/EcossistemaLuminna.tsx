@@ -481,7 +481,7 @@ export default function EcossistemaLuminna({ titulo, idDaAncora, sobrancelha, de
    |     return (
    |       <li key={item.term ?? item.text}
    |           data-reveal="fade-up" style={cascata(i + 2)}
-   |           className="luminna-cartao relative flex h-full flex-col items-start overflow-hidden rounded-2xl border border-[#0079CB]/18 bg-white p-5">
+   |           className="luminna-cartao relative flex h-full flex-col items-start overflow-hidden rounded-2xl border border-[#0079CB]/[18%] bg-white p-5">
    |         <span aria-hidden className="luminna-selo relative mb-4 block h-14 w-14">
    |           <span aria-hidden className="luminna-arco absolute inset-0" />
    |           <span className="absolute inset-0 flex items-center justify-center">

@@ -826,7 +826,7 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                     key={item.term}
                     data-reveal="fade-up"
                     style={cascata(index + 1)}
-                    className="relative rounded-2xl border border-white/12 bg-white/[0.055] p-6"
+                    className="relative rounded-2xl border border-white/[12%] bg-white/[0.055] p-6"
                   >
                     <span className="font-mono text-sm font-semibold tabular-nums text-[#A5F0FF]">
                       {String(index + 1).padStart(2, '0')}
@@ -882,7 +882,7 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                   key={item.term}
                   data-reveal="fade-up"
                   style={{ ...cascata(index + 1), '--sds-pilar-i': index } as React.CSSProperties}
-                  className="sds-pilar overflow-hidden rounded-3xl border border-[#0079CB]/18 bg-white shadow-[0_20px_55px_-40px_rgba(0,55,100,.55)]"
+                  className="sds-pilar overflow-hidden rounded-3xl border border-[#0079CB]/[18%] bg-white shadow-[0_20px_55px_-40px_rgba(0,55,100,.55)]"
                 >
                   {/* A CAPA. `alt=""` + `aria-hidden`: é ambientação — a foto é do
                       conjunto genérico da casa (`/images/solucoes/1.png`…`4.png`, o
@@ -906,7 +906,7 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                     className="sds-pilar-capa"
                   />
                   <div className="p-7">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0079CB]/12">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0079CB]/[12%]">
                     {index === 0 ? (
                       <FileCheck2 className="h-6 w-6 text-[#0060A8]" aria-hidden />
                     ) : index === 1 ? (
@@ -950,7 +950,7 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                 {agentes.intro}
               </p>
             )}
-            <div data-reveal="scale-soft" style={cascata(2)} className="mt-12 rounded-3xl border border-white/12 bg-white/[0.045] p-5 sm:p-8">
+            <div data-reveal="scale-soft" style={cascata(2)} className="mt-12 rounded-3xl border border-white/[12%] bg-white/[0.045] p-5 sm:p-8">
               <div className="grid items-center gap-6 lg:grid-cols-[1fr_auto_1fr]">
                 {/* ── PEDIDO: «deixa dinâmico e pulsando e mudando de cor; a parte
                     azul atrás do fundo deve ter o mesmo layout» ────────────────────
@@ -1029,7 +1029,7 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                <div aria-hidden className="absolute inset-0
                     bg-[radial-gradient(circle_at_80%_20%,rgba(165,240,255,.24),transparent_35%)]" />
                …
-                 <div className="rounded-3xl border border-white/22 bg-[#001A3D]/82 p-7
+                 <div className="rounded-3xl border border-white/[22%] bg-[#001A3D]/[82%] p-7
                       shadow-… backdrop-blur-md sm:p-10 lg:p-14">
 
            `#087CC3` era a ÚNICA faixa de azul saturado da rota, e dentro dela havia um
@@ -1147,7 +1147,7 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                 Era uma grade 2x3 de rótulos SEM ícone nenhum:
 
                   <div data-reveal="scale-soft" style={cascata(2)}
-                       className="grid grid-cols-2 gap-3 rounded-3xl border border-white/12
+                       className="grid grid-cols-2 gap-3 rounded-3xl border border-white/[12%]
                                   bg-white/[0.045] p-5 sm:p-7">
                     {['Apólices', …].map((item) => (
                       <div key={item} className="rounded-xl border border-white/10
@@ -1348,7 +1348,7 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                 {/* A BARRA DO NAVEGADOR. `aria-hidden` inteira: os três pontos são
                     desenho, e o endereço já está no nome acessível do link abaixo —
                     lido duas vezes viraria ruído. */}
-                <span aria-hidden className="flex items-center gap-2 border-b border-[#0079CB]/12 bg-[#F2F8FD] px-4 py-2.5">
+                <span aria-hidden className="flex items-center gap-2 border-b border-[#0079CB]/[12%] bg-[#F2F8FD] px-4 py-2.5">
                   <span className="flex gap-1.5">
                     <span className="h-2.5 w-2.5 rounded-full bg-[#0079CB]/25" />
                     <span className="h-2.5 w-2.5 rounded-full bg-[#0079CB]/25" />
@@ -1493,7 +1493,7 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                   href="https://sds-landing-page-six.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-[#0079CB]/28 bg-[#0079CB]/[0.06] px-5 py-3 text-sm font-bold text-[#0060A8] transition-colors hover:bg-[#0079CB]/10"
+                  className="inline-flex items-center gap-2 rounded-full border border-[#0079CB]/[28%] bg-[#0079CB]/[0.06] px-5 py-3 text-sm font-bold text-[#0060A8] transition-colors hover:bg-[#0079CB]/10"
                 >
                   Explore a demonstração do SDS
                   <ExternalLink className="h-4 w-4" aria-hidden />
@@ -1552,7 +1552,7 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                   {atual ? (
                     <span
                       aria-current="page"
-                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/12 px-3 py-1.5 text-xs font-semibold text-[#0a1f44]"
+                      className="inline-block rounded-full border border-[#0079CB]/70 bg-[#0079CB]/[12%] px-3 py-1.5 text-xs font-semibold text-[#0a1f44]"
                     >
                       {p.name}
                     </span>
@@ -1575,7 +1575,7 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                 {/* O cartão INTEIRO é o link: alvo grande e um único destino. */}
                 <Link
                   href={`/solucoes/${a.id}`}
-                  className="matchai-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/18 transition-colors hover:border-[#0079CB]/55"
+                  className="matchai-midia group relative block aspect-[16/10] overflow-hidden rounded-xl border border-[#0079CB]/[18%] transition-colors hover:border-[#0079CB]/55"
                 >
                   <Image
                     src={a.capaCard}

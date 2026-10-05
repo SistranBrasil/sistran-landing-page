@@ -246,7 +246,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="container-lp mt-10 flex flex-col gap-2 border-t border-white/8 pt-6 md:flex-row md:items-center md:justify-between">
+      <div className="container-lp mt-10 flex flex-col gap-2 border-t border-white/[8%] pt-6 md:flex-row md:items-center md:justify-between">
         <p className="text-xs text-ink-faint">2026 ©SISTRAN. Todos os direitos reservados.</p>
         {/* Caminho de volta permanente para a escolha feita na primeira visita. */}
         <MotionPreferenceTrigger className="text-xs text-ink-faint underline underline-offset-4 transition-colors hover:text-white" />

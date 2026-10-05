@@ -56,7 +56,7 @@ function PartnerCard({ p, index }: { p: Partner; index: number }) {
       /* on-dark: o card mantem fundo navy mesmo quando a secao e clara.
          Sem isso os overrides de .section-light pintariam h3/p de navy sobre
          navy. Ver globals.css. */
-      className="on-dark group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/12 p-7 backdrop-blur-xl"
+      className="on-dark group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/[12%] p-7 backdrop-blur-xl"
       style={{
         // Navy escuro: o card precisa contrastar com o fundo azul medio da
         // pagina. Um branco translucido ficava com a mesma cor do fundo.
@@ -138,7 +138,7 @@ function PartnerCard({ p, index }: { p: Partner; index: number }) {
             {String(index + 1).padStart(2, '0')}
           </span>
           <span
-            className="inline-flex items-center rounded-full border border-white/12 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em]"
+            className="inline-flex items-center rounded-full border border-white/[12%] bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em]"
             style={{ color: tone }}
           >
             {PARTNER_CATEGORIES[p.category].label}
@@ -231,7 +231,7 @@ export default function PartnersGrid() {
     <section className="cv-auto section-py relative overflow-hidden">
       {/* Ambient orbs */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-0 top-40 h-[400px] w-[400px] rounded-full bg-[#0079CB]/14 blur-[130px]" />
+        <div className="absolute left-0 top-40 h-[400px] w-[400px] rounded-full bg-[#0079CB]/[14%] blur-[130px]" />
         <div className="absolute right-0 bottom-40 h-[440px] w-[440px] rounded-full bg-[#7c3aed]/10 blur-[130px]" />
       </div>
 
@@ -240,7 +240,7 @@ export default function PartnersGrid() {
         {/* Barra de filtros: fica fora dos cards, direto sobre o fundo claro da
             secao — daí borda azul e base branca em vez de white/12 + white/3%,
             que sobre claro nao se enxergavam. */}
-        <div className="mb-10 flex flex-wrap items-center gap-2 rounded-2xl border border-[#0079CB]/18 bg-white/70 p-2 shadow-[0_12px_34px_-24px_rgba(0,121,203,0.6)] backdrop-blur-lg">
+        <div className="mb-10 flex flex-wrap items-center gap-2 rounded-2xl border border-[#0079CB]/[18%] bg-white/70 p-2 shadow-[0_12px_34px_-24px_rgba(0,121,203,0.6)] backdrop-blur-lg">
           {filters.map((f) => {
             const active = filter === f.key;
             return (

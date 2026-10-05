@@ -340,8 +340,8 @@ export default function Accelerators() {
           dele. Mesmo arranjo da Consultoria. O ciano substitui o violeta
           `#A78BFA`: a paleta da marca é branco + azuis. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
-        <div className="absolute left-0 top-32 h-[380px] w-[380px] rounded-full bg-[#0079CB]/14 blur-[130px]" />
-        <div className="absolute right-0 bottom-32 h-[420px] w-[420px] rounded-full bg-[#0ed8f6]/12 blur-[130px]" />
+        <div className="absolute left-0 top-32 h-[380px] w-[380px] rounded-full bg-[#0079CB]/[14%] blur-[130px]" />
+        <div className="absolute right-0 bottom-32 h-[420px] w-[420px] rounded-full bg-[#0ed8f6]/[12%] blur-[130px]" />
       </div>
 
       <div className="container-lp relative z-10">
@@ -431,7 +431,7 @@ export default function Accelerators() {
 
                 {/* Mesmo selo da Consultoria: sobre azul claro, borda e texto brancos
                     sumiriam. *\/}
-                <span className="inline-flex h-fit items-center gap-2 rounded-full border border-[#0079CB]/22 bg-white/70 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0060a8]">
+                <span className="inline-flex h-fit items-center gap-2 rounded-full border border-[#0079CB]/[22%] bg-white/70 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#0060a8]">
                   {ACCELERATORS.length} aceleradores
                 </span>
 
