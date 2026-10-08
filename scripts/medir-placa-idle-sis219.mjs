@@ -153,7 +153,15 @@ for (const cenario of CENARIOS) {
         (c.cta.target === '_blank' &&
           c.cta.rel?.includes('noopener') &&
           c.cta.rel?.includes('noreferrer') &&
-          c.cta.href?.startsWith('https://partners.amazonaws.com/')),
+          /* ERA `startsWith('https://partners.amazonaws.com/')`, de quando os
+             quatro CTAs iam para a listagem da Sistran no AWS Partner Central.
+             Hoje só o card da AWS vai para lá — Addactis, FRISS e Sensedia
+             apontam para os próprios sites (ver `saibaMaisUrl` em
+             `src/data/partners.ts`). O que o portão mede continua sendo o que
+             importava: destino externo por HTTPS, em aba nova e com `rel`
+             seguro. Travar o domínio aqui só reprovaria a página por estar
+             certa. */
+          c.cta.href?.startsWith('https://')),
     );
   const brancas = comPlaca.filter((c) => c.fundoPlaca === 'rgb(255, 255, 255)').length;
   const ecoOculto = cenario.reduzido

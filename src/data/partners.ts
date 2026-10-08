@@ -30,11 +30,16 @@ export type Partner = {
    * SIS-219 — destino do «saiba mais» do card, quando existe.
    *
    * SÓ QUATRO PARCEIROS TÊM, e isso é o pedido literal da issue: «coloque o
-   * saiba mais em apenas 4 cards» — aws, addactis, friss e sensedia —, todos
-   * apontando para a MESMA página (a listagem da Sistran no AWS Partner
-   * Central). Os outros doze ficam sem CTA nenhum, e é por isso que o campo é
-   * opcional em vez de obrigatório com string vazia: card sem `saibaMaisUrl`
-   * não renderiza o link, e não há como esquecer de esconder um vazio.
+   * saiba mais em apenas 4 cards» — aws, addactis, friss e sensedia. Os outros
+   * doze ficam sem CTA nenhum, e é por isso que o campo é opcional em vez de
+   * obrigatório com string vazia: card sem `saibaMaisUrl` não renderiza o link,
+   * e não há como esquecer de esconder um vazio.
+   *
+   * ⚠️ JÁ NÃO SÃO QUATRO LINKS PARA A MESMA PÁGINA. Até este pedido, os quatro
+   * apontavam para a listagem da Sistran no AWS Partner Central; agora só a AWS
+   * aponta para lá, e Addactis, FRISS e Sensedia apontam para os SEUS próprios
+   * sites (ver as constantes abaixo). Quem for revisar o histórico: a nota do
+   * `AWS_PARTNER_CENTRAL_URL` continua correta para o card da AWS, e só para ele.
    *
    * É URL externa e absoluta de propósito — não é rota interna, então não passa
    * por `next/link` de app router; o componente abre em aba nova com
@@ -47,16 +52,32 @@ export type Partner = {
 };
 
 /**
- * SIS-219 — o destino único do «saiba mais». É a listagem da Sistran no AWS
- * Partner Central, a mesma página para os quatro cards, conforme o adendo da
- * issue: «com o link https://partners.amazonaws.com/partners/0010h00001c9KHZAA2/SISTRAN%20INFORMATICA%20LTDA».
+ * SIS-219 — o destino do «saiba mais» DO CARD DA AWS. É a listagem da Sistran no
+ * AWS Partner Central, conforme o adendo da issue: «com o link
+ * https://partners.amazonaws.com/partners/0010h00001c9KHZAA2/SISTRAN%20INFORMATICA%20LTDA».
  *
- * Constante e não string repetida quatro vezes: são quatro campos que têm de
- * apontar para o mesmo lugar, e URL copiada é URL que divergirá em uma das
- * cópias no dia em que ela mudar.
+ * ERA O DESTINO DOS QUATRO CARDS e hoje é só deste um — ver a nota em
+ * `saibaMaisUrl`. A constante fica mesmo com um único consumidor: é a URL mais
+ * longa e mais frágil do arquivo (tem escape `%20` no nome da empresa), e tê-la
+ * nomeada é o que impede que alguém a reescreva à mão num card.
  */
 export const AWS_PARTNER_CENTRAL_URL =
   'https://partners.amazonaws.com/partners/0010h00001c9KHZAA2/SISTRAN%20INFORMATICA%20LTDA';
+
+/* OS SITES PRÓPRIOS DOS OUTROS TRÊS PARCEIROS, pedidos nominalmente:
+   «addactis (https://www.addactis.com/), Friss (https://www.friss.com/pt-pt/),
+   Sensidia (https://www.sensedia.com.br/)».
+
+   Duas coisas que NÃO são descuido de cópia:
+     · a FRISS vai para `/pt-pt/` e não para a raiz — é o endereço que o pedido
+       traz, e é a versão em português do site. Tirar o segmento mandaria o
+       visitante para a home em inglês;
+     · o pedido escreve «Sensidia», mas o parceiro é a **Sensedia** (é a grafia do
+       card, do logo e do próprio domínio `sensedia.com.br`). Mantida a grafia
+       correta; o `i` era erro de digitação no pedido, não um parceiro diferente. */
+export const ADDACTIS_URL = 'https://www.addactis.com/';
+export const FRISS_URL = 'https://www.friss.com/pt-pt/';
+export const SENSEDIA_URL = 'https://www.sensedia.com.br/';
 
 export const PARTNER_CATEGORIES: Record<PartnerCategory, { label: string }> = {
   seguros: { label: 'Especialistas em seguros' },
@@ -163,7 +184,9 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Briefcase',
     logo: '/images/Addactis-logo.png',
     logoAlt: 'Addactis',
-    saibaMaisUrl: AWS_PARTNER_CENTRAL_URL,
+    /* ERA `AWS_PARTNER_CENTRAL_URL` (SIS-219). O card mandava para a listagem da
+       Sistran na AWS, que não fala da Addactis — agora vai para o site dela. */
+    saibaMaisUrl: ADDACTIS_URL,
     cardImage: '/parceiros-implementacoes/08-addactis-actuarial-bg.png',
     cardImageAlt: 'Addactis',
     /* No site este card repete, palavra por palavra, o texto da AWS — inclusive
@@ -192,7 +215,9 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Shield',
     logo: '/images/Friss.png',
     logoAlt: 'FRISS',
-    saibaMaisUrl: AWS_PARTNER_CENTRAL_URL,
+    /* ERA `AWS_PARTNER_CENTRAL_URL` (SIS-219) — agora o site da própria FRISS,
+       na versão em português (`/pt-pt/`), como o pedido especifica. */
+    saibaMaisUrl: FRISS_URL,
     cardImage: '/parceiros-implementacoes/10-friss-fraud-prevention-bg.png',
     cardImageAlt: 'FRISS',
     description:
@@ -238,7 +263,9 @@ export const PARTNERS: readonly Partner[] = [
     icon: 'Code2',
     logo: '/images/Sensedia-logo-website-UPDATED2.png',
     logoAlt: 'Sensedia',
-    saibaMaisUrl: AWS_PARTNER_CENTRAL_URL,
+    /* ERA `AWS_PARTNER_CENTRAL_URL` (SIS-219) — agora o site brasileiro da
+       própria Sensedia. */
+    saibaMaisUrl: SENSEDIA_URL,
     cardImage: '/parceiros-implementacoes/12-sensedia-api-management-bg.png',
     cardImageAlt: 'Sensedia',
     description:

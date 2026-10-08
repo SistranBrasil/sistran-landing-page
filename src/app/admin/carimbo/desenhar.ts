@@ -25,6 +25,7 @@
  */
 
 export const FORMATOS = [
+  'site',
   'capsule',
   'seal',
   'split',
@@ -39,6 +40,7 @@ export type Formato = (typeof FORMATOS)[number];
 export type Acabamento = 'outline' | 'solid';
 
 export const ROTULO_FORMATO: Record<Formato, string> = {
+  site: 'Site',
   capsule: 'Cápsula',
   seal: 'Selo',
   split: 'Dividido',
@@ -48,6 +50,98 @@ export const ROTULO_FORMATO: Record<Formato, string> = {
   monogram: 'Monograma',
   certificate: 'Certificado',
 };
+
+/**
+ * ══ O FORMATO «SITE» — A ESTRUTURA DE `public/images/carimbo site novo.png` ═════
+ * Pedido de 08/10: «quero que tenha exatamente essa estrutura, conseguindo alterar
+ * as cores e a escrita dentro».
+ *
+ * ⚠️ OS NÚMEROS NÃO FORAM ESTIMADOS NO OLHO. Cada um saiu de uma varredura dos
+ * pixels do arquivo de referência (1139 × 282, tinta `#0e5dcb`), lendo onde o alfa
+ * acende em linhas e colunas escolhidas. O que a varredura devolveu:
+ *
+ *   · borda externa .......... 6px de espessura, encostada na aresta
+ *   · silhueta ............... cápsula de cantos totais (raio = 282/2 = 141)
+ *   · fio pontilhado interno . eixo a 18,5px da aresta, 4px de espessura,
+ *                              traços de 6px com período de 14,7px
+ *   · símbolo ................ círculo de 198px de diâmetro, aro de 12px,
+ *                              centro em (192,5 · 140,5) → margem de 94px
+ *   · divisor ................ 7px de largura em x≈350, do topo à base do símbolo
+ *
+ * Tudo aqui é expresso como FRAÇÃO DA ALTURA (`H`), e não em `F` como o resto do
+ * arquivo. A razão é que a referência não tem texto: a única medida que amarra
+ * todas as outras é a altura da cápsula, e qualquer proporção escrita contra o
+ * `font-size` deixaria de valer no instante em que a escrita mudasse de tamanho.
+ */
+const SITE = {
+  /** Espessura da borda externa — 6/282. */
+  borda: 0.02128,
+  /** Eixo do fio pontilhado, medido da aresta para dentro — 18,5/282. */
+  recuoPontilhado: 0.06560,
+  /** Espessura do fio pontilhado — 4/282. */
+  fioPontilhado: 0.01418,
+  /** Traço e vão do pontilhado — 6/282 e (14,7−6)/282. */
+  traco: 0.02128,
+  vaoTraco: 0.03085,
+  /** Margem da aresta até o símbolo, e dela até o fim do texto — 94/282. */
+  margem: 0.33333,
+  /** Vão entre o símbolo e o divisor — 56/282. */
+  vaoDivisor: 0.19858,
+  /** Largura do divisor — 7/282. */
+  divisor: 0.02482,
+  /** Diâmetro do símbolo contra a altura — 198/282. É o que fixa `H` a partir dele. */
+  simbolo: 0.70213,
+} as const;
+
+/**
+ * O RECORTE DO SÍMBOLO dentro do arquivo de referência, em pixels do próprio
+ * arquivo. Quadrado por medição: 94…291 na horizontal e 42…239 na vertical.
+ */
+export const RECORTE_SIMBOLO = { x: 94, y: 42, lado: 198 } as const;
+
+/** O caminho do arquivo de referência, servido de `public/`. */
+export const ARTE_REFERENCIA = '/images/carimbo site novo.png';
+
+/**
+ * Pinta o símbolo do arquivo de referência NA COR PEDIDA.
+ *
+ * ⚠️ POR QUE A ARTE, E NÃO O VETOR DE `desenharSimbolo`. Aquele desenho é uma
+ * aproximação em três traços — serve para os outros sete formatos, mas o pedido
+ * aqui é a estrutura EXATA do arquivo, e o «S» dele é feito de duas cunhas cheias
+ * que nenhuma das três linhas reproduz.
+ *
+ * A recoloração é `source-in` num canvas descartável: a arte entra como MÁSCARA
+ * (ela é uma tinta chapada sobre transparência) e o preenchimento assume a cor.
+ * É o que mantém «alterar as cores» valendo para uma arte que, em si, é azul.
+ */
+function desenharSimboloDaArte(
+  ctx: CanvasRenderingContext2D,
+  arte: CanvasImageSource,
+  x: number,
+  y: number,
+  lado: number,
+  cor: string,
+) {
+  /* ⚠️ O MOLDE NASCE NA RESOLUÇÃO DE DESTINO, e é daí que vem a leitura da matriz:
+     `lado` está em px LÓGICOS, mas o contexto pode estar em 4× na hora de exportar.
+     Recolorir no tamanho lógico e deixar o `drawImage` final ampliar devolveria o
+     símbolo borrado justamente nas densidades altas, que é quando ele importa. */
+  const escala = ctx.getTransform().a || 1;
+  const alvo = Math.max(1, Math.ceil(lado * escala));
+  const molde = document.createElement('canvas');
+  molde.width = alvo;
+  molde.height = alvo;
+  const m = molde.getContext('2d');
+  if (!m) return;
+
+  const { x: sx, y: sy, lado: s } = RECORTE_SIMBOLO;
+  m.drawImage(arte, sx, sy, s, s, 0, 0, alvo, alvo);
+  m.globalCompositeOperation = 'source-in';
+  m.fillStyle = cor;
+  m.fillRect(0, 0, alvo, alvo);
+
+  ctx.drawImage(molde, x, y, lado, lado);
+}
 
 export type Opcoes = {
   prefixo: string;
@@ -62,6 +156,13 @@ export type Opcoes = {
   /** `font-size` do carimbo em px: é a unidade de tudo. */
   base: number;
   familia: string;
+  /**
+   * A arte de referência já decodificada, usada SÓ pelo formato «site» (é de lá
+   * que sai o símbolo recolorido). Fica opcional porque ela carrega assíncrona: na
+   * primeira pintura ainda não existe, e o desenho cai no símbolo vetorial em vez
+   * de não desenhar nada.
+   */
+  arte?: CanvasImageSource | null;
 };
 
 /** Formatos que empilham logo e texto no centro, em vez de alinhar em linha. */
@@ -178,6 +279,9 @@ function caminhoFormato(
       ctx.closePath();
       return;
 
+    // A referência é uma cápsula de cantos totais, como `capsule` — o que separa
+    // os dois formatos é o acabamento de dentro, não a silhueta.
+    case 'site':
     case 'capsule':
       caminhoRetangulo(ctx, x, y, lw, lh, [lh / 2, lh / 2, lh / 2, lh / 2]);
       return;
@@ -307,6 +411,13 @@ export function montarCarimbo(ctx: CanvasRenderingContext2D, o: Opcoes): Montado
   // O recheio de cada formato, copiado do CSS: é ele que muda a silhueta tanto
   // quanto o raio da borda.
   const recheio: Record<Formato, [number, number]> = {
+    /* ⚠️ O «site» NÃO USA ESTA LINHA para medir — ele tem o bloco próprio logo
+       abaixo, porque suas folgas são fração da ALTURA e não do `font-size`. Os
+       valores aqui são a tradução dos medidos (0,528F e 1,167F ≈ 0,333H) e existem
+       para o `Record` continuar exaustivo: sem a chave, acrescentar um formato
+       deixaria de quebrar a compilação, que é a única rede que garante que todo
+       formato novo passe por aqui. */
+    site: [0.528 * F, 1.167 * F],
     capsule: [0.72 * F, 1.15 * F],
     seal: [0.9 * F, 1.1 * F],
     split: [0.72 * F, 1.0 * F],
@@ -321,7 +432,19 @@ export function montarCarimbo(ctx: CanvasRenderingContext2D, o: Opcoes): Montado
   let largura: number;
   let altura: number;
 
-  if (empilhado) {
+  if (formato === 'site') {
+    /* ⚠️ A ALTURA SAI DO CONTEÚDO DIVIDIDA PELA FRAÇÃO MEDIDA, e não do conteúdo
+       mais um recheio. É isso que mantém o símbolo em exatamente 0,702 da altura —
+       a proporção da referência — em qualquer `base`. Somar folga em `F` daria
+       0,699 com o símbolo mandando e erraria mais conforme a escrita crescesse. */
+    altura = Math.max(ladoSimbolo, alturaCopy) / SITE.simbolo;
+    /* `SITE.simbolo * altura` e não `ladoSimbolo`: quando a escrita é mais alta que
+       o símbolo, a cápsula cresce e o símbolo cresce com ela — se a largura
+       continuasse contando o lado antigo, a margem da direita encolheria sozinha. */
+    largura =
+      altura * (SITE.margem * 2 + SITE.vaoDivisor * 2 + SITE.divisor + SITE.simbolo) +
+      larguraCopy;
+  } else if (empilhado) {
     const alturaEmpilhada =
       ladoSimbolo +
       0.45 * F +
@@ -363,7 +486,7 @@ export function montarCarimbo(ctx: CanvasRenderingContext2D, o: Opcoes): Montado
   const sen = Math.abs(Math.sin(rad));
   // A borda é centrada no caminho: metade dela fica FORA do retângulo medido, e
   // sem essa folga o PNG corta o traço nas quatro laterais.
-  const folga = larguraBorda;
+  const folga = formato === 'site' ? SITE.borda * altura : larguraBorda;
   const larguraCaixa = Math.ceil((largura + folga * 2) * cos + (altura + folga * 2) * sen);
   const alturaCaixa = Math.ceil((largura + folga * 2) * sen + (altura + folga * 2) * cos);
 
@@ -375,6 +498,83 @@ export function montarCarimbo(ctx: CanvasRenderingContext2D, o: Opcoes): Montado
 
     c.lineJoin = 'round';
     c.lineCap = 'butt';
+
+    /* ══ O FORMATO «SITE» TEM PINTOR PRÓPRIO ═══════════════════════════════════
+       Um bloco à parte, e não seis condicionais novas enfiadas no desenho
+       compartilhado. O desenho abaixo serve oito formatos que são variações do
+       mesmo esqueleto; este é uma RÉPLICA de um arquivo, com borda mais fina,
+       pontilhado opaco de passo medido e símbolo que vem de uma arte. Costurar
+       isso no caminho comum tornaria qualquer ajuste nos outros um risco para
+       este — e vice-versa.
+
+       O que ele NÃO faz, por fidelidade à referência: textura diagonal (não existe
+       no arquivo) e serial (não há lugar para ele entre o divisor e a aresta). */
+    if (formato === 'site') {
+      const H = altura;
+      const borda = SITE.borda * H;
+      const tinta = o.acabamento === 'solid' ? '#ffffff' : o.cor;
+
+      // 1. corpo, só no acabamento sólido
+      if (o.acabamento === 'solid') {
+        caminhoFormato(c, 'site', largura, altura, F);
+        c.fillStyle = o.cor;
+        c.fill();
+      }
+
+      // 2. a borda externa, encostada na aresta (daí o recuo de meia espessura)
+      caminhoFormato(c, 'site', largura, altura, F, borda / 2);
+      c.strokeStyle = o.cor;
+      c.lineWidth = borda;
+      c.stroke();
+
+      /* 3. o fio pontilhado interno. ⚠️ SEM `globalAlpha`: o pontilhado dos outros
+            formatos é meio transparente, e o da referência não é — a varredura leu
+            a tinta cheia nos traços. Baixar o alfa aqui "porque é assim nos outros"
+            seria trocar o arquivo pedido por um parecido. */
+      c.save();
+      c.setLineDash([SITE.traco * H, SITE.vaoTraco * H]);
+      c.lineWidth = SITE.fioPontilhado * H;
+      c.strokeStyle = tinta;
+      caminhoFormato(c, 'site', largura, altura, F, SITE.recuoPontilhado * H);
+      c.stroke();
+      c.restore();
+
+      const cy = altura / 2;
+      const lado = SITE.simbolo * H;
+      const xSimbolo = SITE.margem * H;
+
+      // 4. o símbolo, recolorido a partir da arte (ou o vetor, até ela carregar)
+      if (o.arte) desenharSimboloDaArte(c, o.arte, xSimbolo, cy - lado / 2, lado, tinta);
+      else desenharSimbolo(c, xSimbolo, cy - lado / 2, lado, tinta);
+
+      // 5. o divisor vertical, da borda de cima à de baixo do símbolo
+      const xDivisor = xSimbolo + lado + SITE.vaoDivisor * H + (SITE.divisor * H) / 2;
+      c.save();
+      c.strokeStyle = tinta;
+      c.lineWidth = SITE.divisor * H;
+      c.beginPath();
+      c.moveTo(xDivisor, cy - lado / 2);
+      c.lineTo(xDivisor, cy + lado / 2);
+      c.stroke();
+      c.restore();
+
+      // 6. a escrita, nas mesmas duas linhas dos outros formatos
+      const xTexto = xDivisor + (SITE.divisor * H) / 2 + SITE.vaoDivisor * H;
+      c.fillStyle = tinta;
+      c.textBaseline = 'middle';
+      c.textAlign = 'left';
+      let yTexto = cy - alturaCopy / 2;
+
+      c.font = fonte(pequeno.peso, pequeno.tamanho, familia);
+      escreverTracking(c, pequeno.texto, xTexto, yTexto + pequeno.tamanho / 2, pequeno.tracking);
+      yTexto += pequeno.tamanho + gapCopy;
+
+      c.font = fonte(marca.peso, marca.tamanho, familia);
+      escreverTracking(c, marca.texto, xTexto, yTexto + marca.tamanho / 2, marca.tracking);
+
+      c.restore();
+      return;
+    }
 
     // 1. corpo
     if (solido) {

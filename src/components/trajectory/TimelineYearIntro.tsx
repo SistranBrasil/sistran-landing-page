@@ -30,7 +30,23 @@ import { TRAJECTORY_ANO_INICIAL, TRAJECTORY_CAPABILITIES } from '@/data/trajecto
  */
 const ICONE_DE_ABERTURA = TRAJECTORY_CAPABILITIES[0]?.icon;
 
-export function TimelineYearIntro() {
+/**
+ * ── A ESCRITA ENCURTA QUANDO UM CARD CHEGA AO LADO — 08/10 ────────────────────
+ * «a partir desse card, quando estiver do lado [1ª geração · Empresas PME ·
+ * Commercial Union · Gente Seguradora], deve mudar a escrita de "O início da nossa
+ * trajetória" para apenas "Nossa trajetória", e tire a escrita "Começamos" para
+ * "Uma história construída ao lado do mercado segurador."»
+ *
+ * Quem decide é `TrajectoryScrollytelling` (`ativo >= 1`), não este componente: o
+ * índice do card em cena é estado DE LÁ, e trazer a conta para cá exigiria repetir
+ * o `Math.round(--p)` num segundo lugar.
+ *
+ * ⚠️ UM NÓ DE TEXTO POR FRASE, e as duas versões nunca coexistem no documento. Fazer
+ * as duas conviverem com uma delas apagada por CSS poria o leitor de tela a ler o
+ * título duas vezes — e `aria-hidden` na que estivesse fora dependeria de a folha e
+ * o atributo concordarem em qual é qual.
+ */
+export function TimelineYearIntro({ resumido = false }: { resumido?: boolean }) {
   return (
     <div className="trajetoria-abertura">
       <div className="trajetoria-abertura-marca">
@@ -58,9 +74,13 @@ export function TimelineYearIntro() {
         <Image src="/images/sistran-corp-logo.png" alt="" width={560} height={374} />
       </span>
 
-      <h4 className="trajetoria-abertura-titulo">O início da nossa trajetória</h4>
+      <h4 className="trajetoria-abertura-titulo">
+        {resumido ? 'Nossa trajetória' : 'O início da nossa trajetória'}
+      </h4>
       <p className="trajetoria-abertura-texto">
-        Começamos uma história construída ao lado do mercado segurador.
+        {resumido
+          ? 'Uma história construída ao lado do mercado segurador.'
+          : 'Começamos uma história construída ao lado do mercado segurador.'}
       </p>
     </div>
   );

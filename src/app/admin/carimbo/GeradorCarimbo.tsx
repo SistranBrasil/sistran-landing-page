@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  ARTE_REFERENCIA,
   FORMATOS,
   ROTULO_FORMATO,
   renderizar,
@@ -57,9 +58,14 @@ export function GeradorCarimbo() {
   const [marca, setMarca] = useState('Sistran');
   const [serial, setSerial] = useState('SIS • 2026');
   const [cor, setCor] = useState<string>(CORES[0].valor);
-  const [formato, setFormato] = useState<Formato>('capsule');
+  /* «Site» é o padrão desde 08/10: é a estrutura do carimbo em uso
+     (`public/images/carimbo site novo.png`), e abrir a ferramenta já nela é o que
+     evita exportar no formato antigo por inércia. */
+  const [formato, setFormato] = useState<Formato>('site');
   const [acabamento, setAcabamento] = useState<Acabamento>('outline');
-  const [rotacao, setRotacao] = useState(-3);
+  /* Sem inclinação por padrão: a referência é reta, e o `-3deg` dos outros
+     formatos deixaria a réplica torta no primeiro quadro. */
+  const [rotacao, setRotacao] = useState(0);
   const [textura, setTextura] = useState(true);
   const [base, setBase] = useState(24);
   const [escala, setEscala] = useState(3);
@@ -75,6 +81,34 @@ export function GeradorCarimbo() {
   useEffect(() => {
     let vivo = true;
     document.fonts?.ready.then(() => vivo && setFonteCarregada(true));
+    return () => {
+      vivo = false;
+    };
+  }, []);
+
+  /**
+   * A ARTE DE REFERÊNCIA, de onde o formato «site» tira o símbolo.
+   *
+   * Em estado, e não em `ref`: é a chegada dela que tem de disparar um redesenho —
+   * guardada em `ref` a prévia ficaria com o símbolo vetorial até o próximo
+   * toque num controle. Até carregar, o desenho usa o vetor, então nunca há um
+   * quadro com o carimbo sem marca.
+   */
+  const [arte, setArte] = useState<HTMLImageElement | null>(null);
+
+  useEffect(() => {
+    let vivo = true;
+    const img = new Image();
+    /* A arte é do mesmo domínio (`public/`), mas o canvas que a recolore é lido de
+       volta com `source-in` e depois exportado: sem o `crossOrigin` explícito,
+       qualquer movimentação futura dela para um CDN sujaria o canvas e o
+       `toBlob` passaria a falhar com erro de segurança. */
+    img.crossOrigin = 'anonymous';
+    img.src = ARTE_REFERENCIA;
+    img
+      .decode()
+      .then(() => vivo && setArte(img))
+      .catch(() => undefined);
     return () => {
       vivo = false;
     };
@@ -98,13 +132,14 @@ export function GeradorCarimbo() {
       rotacao,
       textura,
       base,
+      arte,
       familia:
         typeof window === 'undefined'
           ? 'system-ui, sans-serif'
           : getComputedStyle(document.body).fontFamily || 'system-ui, sans-serif',
       ...patch,
     }),
-    [prefixo, marca, serial, cor, formato, acabamento, rotacao, textura, base],
+    [prefixo, marca, serial, cor, formato, acabamento, rotacao, textura, base, arte],
   );
 
   const [medidas, setMedidas] = useState({ largura: 0, altura: 0 });
@@ -368,7 +403,7 @@ export function GeradorCarimbo() {
             onClick={baixarLote}
             className="cursor-pointer rounded-xl border border-black/[0.12] bg-white px-4 py-2.5 text-sm font-semibold text-[#0f172a] transition-colors hover:border-[#0079cb]/50"
           >
-            Baixar os 8 formatos
+            Baixar os {FORMATOS.length} formatos
           </button>
         </div>
       </aside>

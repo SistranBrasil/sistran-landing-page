@@ -555,7 +555,10 @@ export default function PartnerTerminalCards() {
                   externo. O `aria-label` repete o nome do parceiro: são quatro
                   links com o mesmo texto visível na mesma página, e sem ele a
                   lista de links do leitor de tela traria «Saiba mais» quatro
-                  vezes, indistinguíveis. */}
+                  vezes, indistinguíveis — e hoje os quatro destinos são
+                  DIFERENTES (só a AWS vai para o Partner Central; Addactis,
+                  FRISS e Sensedia vão para os próprios sites), o que torna o
+                  `aria-label` ainda mais necessário do que quando eram iguais. */}
               {partner.saibaMaisUrl && (
                 <a
                   className="partner-terminal__saiba-mais"

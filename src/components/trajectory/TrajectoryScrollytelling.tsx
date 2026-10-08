@@ -363,7 +363,22 @@ export function TrajectoryScrollytelling({ anoFinal }: { anoFinal: number }) {
           <TimelineProgress ativo={capituloAtivo} />
 
           <div className="trajetoria-palco-corpo">
-            <TimelineYearIntro />
+            {/* ⚠️ `resumido` ENTRA NO SEGUNDO CARD — pedido da usuária (08/10): «a partir
+                desse card, quando estiver do lado [1ª geração · Empresas PME · Commercial
+                Union · Gente Seguradora], deve mudar a escrita». O card nomeado é o de
+                ÍNDICE 1, então `ativo >= 1` é a condição literal do pedido.
+
+                ⚠️ É `ativo`, E NÃO UMA COMPARAÇÃO COM `--p` NO CSS. `ativo` já é o estado
+                DISCRETO desta seção (`Math.round(p)`, o mesmo que decide `data-estado` dos
+                cards): a troca acontece de uma vez, no mesmo instante em que o card ao lado
+                passa a ser o ativo. Uma rampa de opacidade sobre `--p` reescreveria o texto
+                a cada quadro na faixa de transição e faria as linhas re-quebrarem no meio da
+                rolagem.
+
+                No modo estático `ativo` fica fixo em 0 de propósito (ver `desligar()`), e é
+                o que se quer aqui: lá a abertura é um bloco de texto acima da coluna, lido
+                uma vez antes de tudo — a frase completa é a certa. */}
+            <TimelineYearIntro resumido={ativo >= 1} />
 
             <div className="trajetoria-viewport">
               <div

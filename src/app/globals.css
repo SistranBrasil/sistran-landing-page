@@ -33947,11 +33947,23 @@ html[data-motion='reduce'] .sds-frase-risco {
   background: rgba(255, 255, 255, 0.72);
   box-shadow: 0 8px 18px -16px rgba(0, 55, 100, 0.45);
 }
-@media (min-width: 1024px) {
-  .sds-oque-placa {
-    margin-inline-start: calc(var(--sds-oque-i, 0) * 0.5rem);
-  }
-}
+/* ── PEDIDO: «deixe mais harmonioso, essa seção está feia visualmente» ─────────
+   O DEGRAU SAIU. Era isto:
+
+     @media (min-width: 1024px) {
+       .sds-oque-placa { margin-inline-start: calc(var(--sds-oque-i, 0) * 0.5rem); }
+     }
+
+   A ideia (escada de 0.5rem por placa) funcionava quando o `h2` ficava acima da
+   grade, em largura inteira: o degrau era o único desalinho da faixa e lia como
+   intenção. Com o título AGORA NA MESMA COLUNA, há três bordas esquerdas
+   empilhadas — título, placa 01 e placa 02 — e a de baixo fora do prumo das
+   outras duas. Uma borda esquerda quebrada é o que mais pesa num bloco de texto,
+   e é a primeira coisa que se vê na captura do pedido.
+
+   A variável `--sds-oque-i` CONTINUA sendo escrita no JSX e não foi removida: é
+   o índice da placa, e é o que um degrau futuro (ou um atraso de revelação por
+   posição) voltaria a consumir sem precisar mexer no componente. */
 .sds-oque-selo {
   display: grid;
   place-items: center;
@@ -33972,14 +33984,77 @@ html[data-motion='reduce'] .sds-frase-risco {
   display: grid;
   align-items: center;
   gap: 1.25rem;
-  margin-top: 1.25rem;
+  /* ERA `margin-top: 1.25rem`, que servia para afastar a grade do fio que vinha
+     ACIMA dela. O título e o fio entraram na coluna esquerda (ver a nota no JSX),
+     então não há mais nada acima para afastar — o vão agora é interno à coluna. */
+  margin-top: 0;
 }
 @media (min-width: 1024px) {
   .sds-oque-composicao {
-    grid-template-columns: minmax(0, 32rem) 12rem;
-    justify-content: start;
-    gap: 1.75rem;
+    /* ERA `minmax(0, 32rem) 12rem` com `justify-content: start` e `gap: 1.75rem`.
+       Somadas, as duas colunas davam ~46rem dentro de um contêiner de ~70rem: o
+       bloco ficava encostado à esquerda com um terço da faixa vazio à direita, e
+       o cartão de 12rem — estreito e alto — não equilibrava a massa preta do
+       título. É o desequilíbrio que a captura do pedido mostra.
+
+       Agora são DOIS POLOS: a coluna de texto segue com medida de leitura
+       (34rem ≈ 70 caracteres, o limite onde o olho ainda acha a linha seguinte) e
+       o cartão vai para 15rem e encosta na borda DIREITA da faixa, via
+       `space-between`. O vão deixa de ser sobra no fim e passa a ser o respiro
+       entre as duas peças. */
+    /* ── PEDIDO: «aumente o card para ficar mais próximo ao vídeo» ───────────
+       A coluna foi de 15rem (240px) para 22.5rem — que é EXATAMENTE 360px, a
+       largura nativa de `/videos/tile-sdsapres.mp4` (medido: 360×640, ou seja o
+       mesmo 9:16 da caixa, então não havia recorte; o que havia era redução).
+       A 240px o arquivo era desenhado a 2/3 do tamanho e a interface de dentro
+       do take — tabelas, heatmaps, rótulos — virava borrão; é o que a captura do
+       pedido mostra. Em 360px cada pixel do vídeo cai sobre um pixel da tela.
+
+       NÃO PASSAR DISSO: acima de 360px o vídeo começa a ser ampliado, e aí o
+       card fica grande ao custo de ficar embaçado — o oposto do pedido. Para
+       crescer mais seria preciso reexportar o arquivo em dobro.
+
+       A SOMA AINDA CABE: 34rem + 2.5rem + 22.5rem = 59rem (944px) contra os
+       ~1116px do contêiner a 1440 e os ~960px a 1024, que é onde esta regra
+       começa a valer. */
+    grid-template-columns: minmax(0, 34rem) 22.5rem;
+    justify-content: space-between;
+    gap: 2.5rem;
   }
+}
+
+/* ── A COLUNA ESQUERDA: TÍTULO, FIO E ESCADA ───────────────────────────────────
+   Um só filho da grade para as três peças, senão o `h2` ocuparia uma célula e
+   empurraria o cartão de link para a linha de baixo. `justify-items: start` porque
+   o fio tem 1px de largura: em grid, sem isso ele esticaria para a faixa toda e o
+   gradiente vertical viraria uma linha horizontal de 32rem. */
+.sds-oque-coluna {
+  display: grid;
+  justify-items: start;
+}
+/* O FIO, encurtado. Vinha com `margin-top: 2rem` e `height: 5.5rem` de quando era
+   irmão do `h2` em fluxo normal e descia para a grade — depois 4rem. Com 4rem ele
+   ainda abria um vão de ~7rem entre título e placas, e um stub de 1px no meio de
+   tanto branco não lê como grafismo, lê como sujeira (é o que aparece na captura).
+   Em 2.25rem ele volta a fazer o que o desenho pedia: COSTURAR título e cards. */
+.sds-oque-coluna .sds-oque-fio {
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  height: 2.25rem;
+}
+/* Contrapartida do `justify-items: start`: ele encolhe TODO filho ao conteúdo, e o
+   título e a escada precisam da largura inteira da coluna (o `h2` para quebrar nas
+   34rem e não no comprimento da frase; as placas para alinharem a borda direita). */
+.sds-oque-coluna > h2,
+.sds-oque-coluna > .sds-oque-escada {
+  width: 100%;
+}
+/* `text-wrap: balance` distribui as linhas do título em vez de encher cada uma até
+   estourar: as quatro linhas desiguais da captura («Uma plataforma / para toda / a
+   jornada / de sinistros») viram linhas de comprimento parecido. É progressive
+   enhancement — quem não suporta cai no quebra-linha normal, que é o de hoje. */
+.sds-oque-coluna > h2 {
+  text-wrap: balance;
 }
 .sds-oque-video {
   overflow: hidden;
@@ -33991,6 +34066,171 @@ html[data-motion='reduce'] .sds-frase-risco {
   border: 1px solid rgba(0, 121, 203, 0.2);
   background: #001a3d;
   box-shadow: 0 18px 44px -32px rgba(0, 55, 100, 0.6);
+}
+
+/* ── O TILE DA DEMONSTRAÇÃO COMO CARTÃO DE LINK, NO MOLDE DO «DESCUBRA» ────────
+   `.sds-oque-demo` é a ÂNCORA e o CARTÃO; `.sds-oque-video` é só a caixa da mídia
+   dentro dela. A separação existe porque a caixa tem `overflow: hidden` e proporção
+   fixa — rodapé ali dentro seria recortado.
+
+   O CARTÃO BRANCO é a correção do «muito apagado»: a faixa desta seção é clara, e
+   um link que fosse só texto azul + selo translúcido não tinha nenhuma peça de fundo
+   cheio para o olho ancorar. Branco sobre a faixa + borda + sombra recortam o objeto,
+   e a pílula sólida do rodapé faz o papel de botão. É o mesmo arranjo do cartão de
+   `descubra.luminna…` em `LuminnaAiPagina`, reproduzido aqui.
+
+   ARQUIVO DA VERSÃO ANTERIOR (substituída no mesmo pedido, por ficar fraca sobre
+   fundo claro): o embrulho era transparente, o selo ficava em
+   `right/bottom: 0.5rem` com `background: rgba(0,26,61,.7)`, e a legenda era
+   `.sds-oque-demo-rotulo` em grid com `.sds-oque-demo-acao` a 0.8125rem/600 em
+   `#0060a8` e sublinhado só no hover. Nada disso tinha preenchimento sólido — está
+   aqui só para não se repropor o mesmo desenho. */
+.sds-oque-demo {
+  display: grid;
+  gap: 0;
+  /* ERA `min(100%, 12rem)`, o teto herdado do tile decorativo, depois 15rem. O
+     teto TEM de acompanhar a coluna declarada em `.sds-oque-composicao` (hoje
+     22.5rem): um teto menor deixaria folga dentro da própria célula, o cartão não
+     encostaria na borda direita da faixa e o `space-between` perderia o efeito.
+     Em telas estreitas a grade é de uma coluna só, e aí quem limita é o
+     `max-width` — por isso ele existe além do `width: 100%`. */
+  width: 100%;
+  max-width: 22.5rem;
+  margin-inline: auto;
+  overflow: hidden;
+  border-radius: 1.1rem;
+  border: 1px solid rgba(0, 121, 203, 0.22);
+  background: #fff;
+  box-shadow: 0 24px 60px -42px rgba(0, 55, 100, 0.6);
+  text-decoration: none;
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+@media (hover: hover) {
+  .sds-oque-demo:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 121, 203, 0.55);
+    box-shadow: 0 30px 66px -36px rgba(0, 55, 100, 0.68);
+  }
+}
+.sds-oque-demo:focus-visible {
+  outline: 2px solid #0079cb;
+  outline-offset: 3px;
+}
+/* Dentro do cartão a mídia perde a própria moldura: a borda, o raio de fora e a
+   sombra agora são do cartão, e duas bordas concêntricas a 1px de distância é o que
+   faz um cartão parecer mal recortado. A largura também sai — quem a dita é o
+   cartão, e `min(100%, 12rem)` repetido nos dois criaria o vão do `margin-inline`. */
+.sds-oque-demo .sds-oque-video {
+  position: relative;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* O SELO, CENTRADO sobre o take como no Luminna — centro é onde o olho já está. Fica
+   em regra e não em utilitários porque reage ao hover da ÂNCORA, que é ancestral do
+   `group` da mídia e fora do alcance de `group-hover`. */
+.sds-oque-selo-saida {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: rgba(0, 26, 61, 0.58);
+  color: #fff;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition:
+    background-color 0.35s ease,
+    transform 0.35s ease;
+}
+@media (hover: hover) {
+  .sds-oque-demo:hover .sds-oque-selo-saida {
+    background: rgba(0, 96, 168, 0.9);
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+/* O RODAPÉ. Empilhado (host em cima, pílula embaixo) porque a caixa tem 12rem — no
+   Luminna os dois cabem lado a lado, aqui não. */
+/* O rodapé e o selo crescem junto com o cartão: num cartão de 360px o selo de 3rem
+   e o rótulo de 11px voltariam a parecer miniaturas de um cartão de 240px. */
+.sds-oque-demo-rodape {
+  display: grid;
+  gap: 0.55rem;
+  justify-items: center;
+  padding: 0.9rem 1rem 1rem;
+  border-top: 1px solid rgba(0, 121, 203, 0.14);
+  text-align: center;
+}
+.sds-oque-demo-host {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgba(0, 41, 77, 0.78);
+  overflow-wrap: anywhere;
+}
+/* A PÍLULA — a peça que resolve o «apagado». Fundo cheio `#0060A8`, texto branco em
+   `font-weight: 700`: é o mesmo botão do cartão da Luminna. Largura total porque numa
+   caixa de 12rem uma pílula centrada e estreita volta a parecer rótulo, não botão. */
+.sds-oque-demo-pilula {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 9999px;
+  background: #0060a8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  transition: background-color 0.3s ease;
+}
+@media (hover: hover) {
+  .sds-oque-demo:hover .sds-oque-demo-pilula {
+    background: #004d8a;
+  }
+}
+
+/* MOVIMENTO REDUZIDO. O levantar do cartão e o crescer do selo são decoração pura:
+   morrem nos dois canais, e o que SOBRA é justamente o que comunica o link — cartão
+   branco, borda, selo centrado, host e pílula sólida continuam de pé. */
+@media (prefers-reduced-motion: reduce) {
+  .sds-oque-demo,
+  .sds-oque-selo-saida {
+    transition: none;
+  }
+  .sds-oque-demo:hover {
+    transform: none;
+  }
+  /* O selo NÃO volta a `transform: none`: o `translate(-50%, -50%)` é o que o
+     centra, não é movimento. Só o `scale` do hover sai. */
+  .sds-oque-demo:hover .sds-oque-selo-saida {
+    transform: translate(-50%, -50%);
+  }
+}
+html[data-motion='reduce'] .sds-oque-demo,
+html[data-motion='reduce'] .sds-oque-selo-saida {
+  transition: none;
+}
+html[data-motion='reduce'] .sds-oque-demo:hover .sds-oque-selo-saida {
+  transform: translate(-50%, -50%);
+}
+html[data-motion='reduce'] .sds-oque-demo:hover {
+  transform: none;
 }
 
 /* ── «TRÊS PILARES» — A CAPA E A FLUTUAÇÃO ─────────────────────────────────────

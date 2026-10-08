@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { tomDoFundoEm, type TomDoFundo } from '@/lib/tomDoFundo';
+import { tomDoFundoEmPontos, type TomDoFundo } from '@/lib/tomDoFundo';
 import {
   navIdiomaForPath,
   sectionsForPath,
@@ -73,11 +73,14 @@ export default function ScrollSpy() {
   const tom: TomDoFundo | 'escuro' = tomMedido ?? tomAtivo;
   const onLight = tom === 'claro';
   const onMedium = tom === 'medio';
-  /* `'midia'` NÃO tem par de cores próprio aqui, e é de propósito: ela cai no
-     ramo `else` dos ternários abaixo, que é o claro-sobre-escuro (branco + ciano)
-     — a combinação certa DEPOIS do véu que o CSS põe atrás da coluna. Tratá-la
-     como um quarto par de tintas daria uma cor nova para resolver um problema que
-     não é de cor. Quem lê `'midia'` é o `data-tom` no `<nav>`. */
+  /* `'midia'` continua sem par de cores próprio e continua caindo no ramo `else`
+     (branco + ciano), mas a RAZÃO mudou em 08/10/2026: o véu que a tornava legível
+     foi retirado por pedido, e agora `'midia'` só sobra quando há raster que NÃO
+     foi possível amostrar (canvas contaminado, mídia sem quadro). O caso comum —
+     foto, vídeo e canvas já pintados — é amostrado por `tomDoFundo` e entra como
+     COR, então vira claro/médio/escuro como qualquer superfície. Branco é a aposta
+     de último recurso porque as fotos em sangria desta LP são veladas em marinho.
+     Quem lê `'midia'` é o `data-tom` no `<nav>` — hoje só para diagnóstico. */
 
   // SIS-182 — substituído por `useColunaVisivel()` no topo do arquivo. O corpo
   // fica registrado porque a RAZÃO do limiar (SIS-100) é o que se consulta ao
@@ -204,10 +207,20 @@ export default function ScrollSpy() {
      quadro) seria duas leituras por quadro. Com o `rAF` é no máximo uma, e no
      momento em que o navegador já ia recalcular de todo jeito.
 
-     O ponto medido é o CENTRO da coluna, não o canto: é onde o rótulo pousa, e é
-     a leitura que corresponde ao que o olho compara. `navRef` entra como
-     `ignorar` — sem isso o primeiro elemento da pilha seria o próprio nav e a
-     medição se olharia no espelho. */
+     ⚠️ O PONTO MEDIDO ERA O CENTRO DA COLUNA, e isso estava errado — corrigido em
+     08/10/2026 pela conferência de todas as rotas. A coluna tem ~380px de altura
+     (sete paradas) e o rótulo ATIVO pode estar em qualquer uma delas: medir o
+     centro vertical pintava a palavra com a resposta de um lugar onde ela não
+     está. Medido: «Integração» a 3,34:1 em `/solucoes/sds` e em `/quem-somos`,
+     «Monitoramento» a 3,51:1 em `/solucoes/fast` — em todos, o ponto do centro era
+     claro e o pedaço sob a palavra era o azul da marca, rgb(18,117,190).
+     Agora os pontos são os do RÓTULO ATIVO (começo, meio e fim da palavra, na
+     altura dela) mais o traço — e a tinta tem de fechar 4,5:1 contra o pior deles,
+     que é o que `tomDoFundoEmPontos` faz. Três pontos e não um varrimento: o que
+     muda atrás de 130px é emenda de seção ou borda de cartão, e as pontas são onde
+     isso aparece.
+     `navRef` entra como `ignorar` — sem isso o primeiro elemento da pilha seria o
+     próprio nav e a medição se olharia no espelho. */
   useEffect(() => {
     if (!wide || sections.length === 0) return;
     let pedido = 0;
@@ -216,11 +229,33 @@ export default function ScrollSpy() {
       const nav = navRef.current;
       if (!nav) return;
       const r = nav.getBoundingClientRect();
-      const novo = tomDoFundoEm(
-        Math.round(r.left + r.width / 2),
-        Math.round(r.top + r.height / 2),
-        nav,
-      );
+      /* O rótulo ativo é o único com `opacity: 1` em repouso — é a mesma condição
+         que o CSS usa, então não há segunda fonte de verdade para «qual é o ativo».
+         Abaixo de 1440 o CSS o apaga: aí não há tinta na tela e vale a coluna. */
+      const rotulo = Array.from(
+        nav.querySelectorAll<HTMLElement>('.scrollspy-rotulo'),
+      ).find((n) => getComputedStyle(n).opacity === '1');
+      const pontos: { x: number; y: number; principal?: boolean }[] = [
+        /* O traço, que também é tinta e também precisa contrastar. */
+        { x: r.left + 12, y: r.top + r.height / 2 },
+      ];
+      if (rotulo) {
+        const q = rotulo.getBoundingClientRect();
+        if (q.width > 0 && q.height > 0) {
+          const meio = q.top + q.height / 2;
+          pontos.push(
+            { x: q.left + 2, y: meio },
+            /* `principal`: o meio da palavra é onde está a massa dos glifos, e é por
+               ele que a escolha se decide quando o rótulo atravessa uma emenda e
+               nenhuma tinta fecha o piso nos dois lados — ver `tomDoFundo`. */
+            { x: q.left + q.width / 2, y: meio, principal: true },
+            { x: q.right - 2, y: meio },
+          );
+        }
+      } else {
+        pontos.push({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+      }
+      const novo = tomDoFundoEmPontos(pontos, nav);
       /* `null` (ponto fora da janela) MANTÉM o tom anterior, pelo mesmo motivo que
          o observador mantém a seção ativa no vão entre duas: trocar de cor num
          quadro sem informação é piscada, não correção. */
@@ -231,10 +266,49 @@ export default function ScrollSpy() {
       pedido = requestAnimationFrame(medir);
     };
     medir();
+    /* ⚠️ UMA MEDIÇÃO NA MONTAGEM NÃO BASTA, e isto era o pior defeito da conferência
+       de 08/10/2026 — os únicos dois `1:1` que sobraram, em `/` e em
+       `/parceiros-e-implementacoes`, os dois no TOPO da página.
+       O mecanismo: na montagem a animação de entrada do hero ainda tem os nós em
+       `opacity: 0`, e a medição PULA nó invisível (com razão — ele não pinta). A busca
+       então cai até o `body`, que é o azul da marca `rgb(18,115,188)`, e responde
+       `'escuro'` → tinta BRANCA. Um instante depois a entrada termina e o hero é
+       claro, mas a medição só roda em `scroll`/`resize`: quem chega e NÃO rola fica
+       com rótulo branco sobre superfície clara. Medido: três pontos lendo gradiente
+       `rgb(242,249,254)`/`rgb(227,241,251)` com `data-tom="escuro"` — 1:1.
+       Então remede algumas vezes depois da entrada. Os instantes cobrem a duração das
+       animações de entrada da casa, e `fonts.ready` entra porque a troca de fonte
+       muda a CAIXA do rótulo (e a caixa é o que define os pontos amostrados).
+       Barato: cada remedição é uma leitura coalescida por `rAF`, e são quatro. */
+    const atrasos = [60, 260, 700, 1400, 2400, 3600].map((ms) => window.setTimeout(agendar, ms));
+    document.fonts?.ready.then(agendar).catch(() => undefined);
+    /* ⚠️ E NÃO SÓ INSTANTES FIXOS. A primeira tentativa desta correção remedia em
+       quatro instantes até 1,4s e TROCOU o defeito de lado: a medição passou a pegar
+       um quadro intermediário da entrada (superfície ainda clara), fixar `'claro'` e
+       não remedir quando a arte escura do hero finalmente pintava — navy sobre
+       `rgb(9,30,67)`, 1,01:1 no topo de `/quem-somos`, `/solucoes` e
+       `/parceiros-e-implementacoes`. Instante fixo é palpite sobre quando a página
+       para de mudar.
+       `load` em FASE DE CAPTURA no documento é o evento real: `<img>` e `<video>` não
+       borbulham `load`, mas na captura o documento os vê — então cada arte que chega
+       dispara uma remedição, que é exatamente quando a superfície mudou. Os instantes
+       ficam como rede para o que não emite evento (fim de `transition`/`animation`). */
+    const aoCarregarMidia = () => agendar();
+    document.addEventListener('load', aoCarregarMidia, true);
+    window.addEventListener('load', aoCarregarMidia);
     window.addEventListener('scroll', agendar, { passive: true });
     window.addEventListener('resize', agendar);
+    /* Fim de animação/transição de entrada: o outro momento em que a superfície muda
+       sem rolagem. `true` pela mesma razão do `load` — nem tudo borbulha. */
+    document.addEventListener('transitionend', aoCarregarMidia, true);
+    document.addEventListener('animationend', aoCarregarMidia, true);
     return () => {
       if (pedido) cancelAnimationFrame(pedido);
+      for (const t of atrasos) clearTimeout(t);
+      document.removeEventListener('load', aoCarregarMidia, true);
+      window.removeEventListener('load', aoCarregarMidia);
+      document.removeEventListener('transitionend', aoCarregarMidia, true);
+      document.removeEventListener('animationend', aoCarregarMidia, true);
       window.removeEventListener('scroll', agendar);
       window.removeEventListener('resize', agendar);
     };

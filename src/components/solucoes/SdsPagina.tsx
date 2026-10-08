@@ -742,7 +742,25 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
             margem={MARGEM_REVEAL}
             data-reveal-nome="sds-o-que-e"
           >
-            <TituloSecao heading={oQueE.heading!} claro />
+            {/* ── PEDIDO: «pegar esse título … em cima dos cards do lado esquerdo e
+                deixar o de clicar do lado direito de todos» ──────────────────────
+                O `h2` SAIU daqui (onde era largura inteira da faixa, acima da grade)
+                e entrou na COLUNA ESQUERDA da `.sds-oque-composicao`, junto do fio e
+                da escada de placas. Com isso a coluna direita — o cartão de link —
+                passa a ter como par vertical o conjunto «título + fio + cards», e não
+                só os cards: é o que o pedido chama de «do lado direito de todos».
+
+                O `<TituloSecao>` continua sendo o mesmo componente, então o `id` do
+                bloco (que a `ScrollSpy` e o `aria-labelledby` da `<section>` usam)
+                não muda de valor nem de dono. O que muda é só onde ele é renderizado.
+
+                ERA:
+                  <TituloSecao heading={oQueE.heading!} claro />
+                  … fio …
+                  <div className="sds-oque-composicao">
+                    <ol className="sds-oque-escada">…</ol>
+                    <a …>…</a>
+                  </div> */}
 
               {/* SIS-120 · item 5 — A FRASE MANUSCRITA DE `docs/fonte2.md`, em UM
                   ponto editorial e não em dois. A issue admite «1–2»; este é o
@@ -793,14 +811,20 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                   declarada (`aria-hidden`) e morre nos dois canais de movimento
                   reduzido pelo CSS, não por hook: sem `useEffect` não há quadro de
                   movimento antes do hook convergir. */}
-              <span aria-hidden data-reveal="fade-up" style={cascata(1)} className="sds-oque-fio">
-                <span className="sds-oque-fio-pulso" />
-              </span>
               {/* Os dois parágrafos continuam em `paragrafos(oQueE)`. O vídeo é o
                   mesmo `/videos/tile-sdsapres.mp4`. `autoPlay` fica `false` no
                   markup — o efeito acima chama `play()` só sem movimento reduzido. */}
               <div className="sds-oque-composicao">
-                <ol className="sds-oque-escada">
+                {/* A COLUNA ESQUERDA: título, fio e escada num só filho da grade. O
+                    embrulho existe para que a grade continue com DUAS colunas — se as
+                    três peças fossem filhas diretas, o `h2` cairia numa célula e o
+                    cartão desceria para a linha de baixo. */}
+                <div className="sds-oque-coluna">
+                  <TituloSecao heading={oQueE.heading!} claro />
+                  <span aria-hidden data-reveal="fade-up" style={cascata(1)} className="sds-oque-fio">
+                    <span className="sds-oque-fio-pulso" />
+                  </span>
+                  <ol className="sds-oque-escada">
                   {paragrafos(oQueE).map((texto, index) => (
                     <li
                       key={texto}
@@ -814,7 +838,8 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                       <p className="text-sm leading-relaxed text-ink-muted">{texto}</p>
                     </li>
                   ))}
-                </ol>
+                  </ol>
+                </div>
                 {/* ── O TILE VIROU O LINK DA DEMONSTRAÇÃO ─────────────────────
                     PEDIDO: «colocar aqui o link e deixar desse tamanho mesmo» — então
                     o destino que morava no cartão da faixa «Demonstração oficial»
@@ -840,36 +865,75 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                         escala no hover e dos dois canais de movimento reduzido, as
                         mesmas dos outros previews da casa (casam por CLASSE, então
                         valem para `<video>`). */}
+                {/* ── O LINK PASSA A SEGUIR O CARTÃO DO «DESCUBRA» DA LUMINNA ─────
+                    PEDIDO: «deixe ser mais parecido com o link de clicar do Luminna,
+                    pois aqui no SDS está ficando muito apagado». A versão anterior
+                    (selo de 32px no canto + legenda em texto azul claro) era FRACA
+                    porque nada ali tinha preenchimento sólido: sobre a faixa clara,
+                    texto `#0060A8` a 13px e um selo translúcido no canto somam pouco
+                    peso e o olho passa reto.
+
+                    O padrão que funciona nesta casa já existe em `LuminnaAiPagina`
+                    (o cartão do `descubra.luminna…`) e é copiado aqui PEÇA POR PEÇA:
+                      1. cartão BRANCO com borda e sombra envolvendo a mídia — é ele
+                         que recorta a página e diz «objeto», não «fundo»;
+                      2. selo circular CENTRADO sobre o take, não no canto — centro é
+                         onde o olho já está, e é a convenção universal de «abre»;
+                      3. rodapé com o HOST e uma PÍLULA SÓLIDA `#0060A8` com texto
+                         branco. A pílula é o que resolve o «apagado»: é a única peça
+                         com fundo cheio, e é ela que lê como botão.
+                    A diferença é só de empilhamento: lá o rodapé é `justify-between`
+                    numa linha, aqui a caixa tem 12rem e host + pílula lado a lado
+                    quebrariam feio — então vão em duas linhas, pílula ocupando a
+                    largura toda.
+
+                    A CAIXA DA MÍDIA NÃO MUDOU: `.sds-oque-video` segue com
+                    `min(100%, 12rem)` × 9/16, como o pedido original fixou. O que
+                    mudou é que ela agora vive DENTRO da âncora, porque legenda e
+                    rodapé não cabem sob `overflow: hidden` + proporção fixa.
+
+                    O `sr-only` continua sendo o nome acessível completo: o visível diz
+                    «Abrir demonstração» e o host, e é a legenda que diz que abre em
+                    outra aba (WCAG 2.4.4). */}
                 <a
                   href={SDS_DEMO_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-reveal="fade-up"
                   style={cascata(2)}
-                  className="sds-oque-video matchai-midia group relative block transition-colors hover:border-[#0079CB]/55"
+                  className="sds-oque-demo matchai-midia group"
                 >
-                  <video
-                    ref={videoPlataforma}
-                    aria-hidden
-                    className="sds-tile-video matchai-midia-arte"
-                    src="/videos/tile-sdsapres.mp4"
-                    poster="/videos/tile-sdsapres-poster.webp"
-                    autoPlay={false}
-                    loop
-                    muted
-                    playsInline
-                    preload="metadata"
-                  />
-                  {/* O SELO DE SAÍDA, no canto para não cobrir o take. Glifo de link
-                      externo e não triângulo de «play»: o vídeo já está em laço e o
-                      clique não toca nada — ele abre a demonstração. `aria-hidden` e
-                      `pointer-events-none`: o nome do link já está no `sr-only` e o
-                      alvo de clique é a âncora inteira. */}
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute right-2 bottom-2 flex h-8 w-8 items-center justify-center rounded-full border border-white/70 bg-[#001A3D]/70 backdrop-blur-sm transition-colors group-hover:bg-[#0060A8]/90"
-                  >
-                    <ExternalLink className="h-4 w-4 text-white" strokeWidth={2} aria-hidden />
+                  <span className="sds-oque-video block">
+                    <video
+                      ref={videoPlataforma}
+                      aria-hidden
+                      className="sds-tile-video matchai-midia-arte"
+                      src="/videos/tile-sdsapres.mp4"
+                      poster="/videos/tile-sdsapres-poster.webp"
+                      autoPlay={false}
+                      loop
+                      muted
+                      playsInline
+                      preload="metadata"
+                    />
+                    {/* O SELO, CENTRADO como no Luminna. Glifo de link externo e não
+                        triângulo de «play»: o vídeo já está em laço e o clique não
+                        toca nada — ele abre a demonstração. `aria-hidden` e
+                        `pointer-events-none`: o nome do link está no `sr-only` e o
+                        alvo de clique é a âncora inteira. */}
+                    <span aria-hidden className="sds-oque-selo-saida">
+                      <ExternalLink className="h-5 w-5" strokeWidth={2} aria-hidden />
+                    </span>
+                  </span>
+                  {/* O RODAPÉ. Host em cima, pílula sólida embaixo — a pílula carrega
+                      `on-dark` porque é fundo escuro dentro de faixa clara, e é essa
+                      classe que a casa usa para reger a tinta dos filhos ali. */}
+                  <span aria-hidden className="sds-oque-demo-rodape">
+                    <span className="sds-oque-demo-host">{SDS_DEMO_HOST}</span>
+                    <span className="on-dark sds-oque-demo-pilula">
+                      Abrir demonstração
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                    </span>
                   </span>
                   <span className="sr-only">
                     Abrir a demonstração oficial do SDS em {SDS_DEMO_HOST}, em uma nova aba.
