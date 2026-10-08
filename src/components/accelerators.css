@@ -532,6 +532,14 @@ html[data-motion='reduce'] .accel-card:hover .accel-card__foto {
   transition: transform 300ms var(--ease-out);
 }
 
+/* SDS 3D e Guru: artes com mais altura útil (ícone + letreiro + subtítulo).
+   Piso geral 3,25rem (~52px) deixa as duas miúdas no card; 5,5rem (~88px)
+   ≈ +70% sem comer a descrição. Por `data-accel`, não por posição. */
+.accel-card[data-accel='sds'] .accel-logo__img,
+.accel-card[data-accel='guru-de-seguros'] .accel-logo__img {
+  max-height: 5.5rem;
+}
+
 /* SIS-216 — este seletor tinha um segundo lado, `.accel-item--destaque
    .accel-logo__eco-img`, que saiu com o eco (motivo no bloco abaixo).
 

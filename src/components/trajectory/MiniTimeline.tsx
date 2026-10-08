@@ -117,45 +117,55 @@ function pontoNaPerna(perna: NomeDaPerna, t: number): readonly [number, number] 
   return [de + (para - de) * t, y];
 }
 
-/* Cinco pontos — dentro da faixa de «entre cinco e sete» do doc; contando os dois
-   selos daria sete. As POSIÇÕES são as do mock (dois na perna de cima, um na do
-   meio, dois na de baixo) e não representam contagem nenhuma: é identificação
-   visual, como a legenda declara.
+/* Todas as paradas que já têm arte no acervo — a mesma lista dos cards, na mesma
+   ordem. Pedido de 05/10: a miniatura mostrava cinco logos e o resto da trajetória
+   ficava só nos cards. Marco sem arquivo continua de fora: monograma de duas letras
+   neste desenho seria texto miúdo.
 
-   ── SIS-205 · O PONTO DEIXOU DE DECLARAR CATEGORIA E PASSOU A APONTAR UM MARCO ──
-   Antes cada ponto trazia uma `categoria` escrita à mão. Agora traz o `id` de um
-   marco de `TRAJECTORY_ITEMS`, e categoria e logo saem DELE. O ganho não é
-   arrumação: a issue pede logos de «empresas reais (não inventar arte)», e a única
-   forma de garantir isso por construção é não haver, neste arquivo, um lugar onde
-   escrever nome ou arquivo de marca. A cor do nó, de lambuja, deixa de poder
-   discordar da empresa que a logo ao lado mostra.
-
-   ⚠️ A SEQUÊNCIA DE CORES DO MOCK NÃO SOBREVIVEU A ISSO, e a troca é consciente.
-   O mock alternava large-company / sme / solution / large-company / sme; as cinco
-   marcas abaixo dão solution / sme / large-company / solution / large-company. O
-   que decidiu foi a CRONOLOGIA: as pontas desta linha são os selos `1988` e o ano
-   corrente, então a ordem ao longo do traço tem de ser a ordem dos dados — e as
-   categorias, nos dados, não alternam nesse ritmo. Colocar a Assurant (2020s)
-   antes da Zurich (1ª geração) para reproduzir uma cor seria escrever uma data
-   errada num desenho cujo assunto é data. As três categorias continuam
-   representadas, que é o que a legenda ao lado precisa para se ler.
-
-   A ORDEM AO LONGO DO TRAÇO É CRESCENTE, e vale conferir antes de mexer nos `t`:
-   a perna do meio corre da DIREITA para a ESQUERDA (de `X_VOLTA_DIREITA` para
-   `X_VOLTA_ESQUERDA`), então `t` maior ali é mais à esquerda. A leitura
-   topo→meio→baixo com estes `t` dá 1 → 5 → 14 → 18 → 24, que é a ordem dos ids.
-
-   Por que estes cinco: são os marcos que (a) têm arte no acervo — `logoDaMarca`
-   devolve arquivo para os cinco — e (b) espalham as gerações de 1ª a Implantação.
-   Marco sem arte cai no ramo de reserva logo abaixo e simplesmente não ganha
-   chip. */
-const PONTOS: readonly { perna: NomeDaPerna; t: number; marco: string }[] = [
-  { perna: 'topo', t: 0.308, marco: 'marco-1' },
-  { perna: 'topo', t: 0.709, marco: 'marco-5' },
-  { perna: 'meio', t: 0.723, marco: 'marco-14' },
-  { perna: 'baixo', t: 0.38, marco: 'marco-18' },
-  { perna: 'baixo', t: 0.748, marco: 'marco-24' },
+   A ordem ao longo do traço é a dos dados. A perna do meio corre da direita para a
+   esquerda, então `t` maior ali é mais à esquerda — o primeiro marco da fatia fica
+   no `t` menor. As faixas deixam folga nas pontas para o selo de 1988, as duas
+   voltas e o selo do ano corrente. */
+const FAIXAS: readonly { perna: NomeDaPerna; de: number; ate: number; vao: number }[] = [
+  { perna: 'topo', de: 0.1, ate: 0.9, vao: 0.8 * (X_VOLTA_DIREITA - X_INICIO) },
+  { perna: 'meio', de: 0.16, ate: 0.84, vao: 0.68 * (X_VOLTA_DIREITA - X_VOLTA_ESQUERDA) },
+  { perna: 'baixo', de: 0.08, ate: 0.84, vao: 0.76 * (X_FIM - X_VOLTA_ESQUERDA) },
 ];
+
+const MARCOS_COM_LOGO = TRAJECTORY_ITEMS.flatMap((item) =>
+  item.type === 'milestone' && item.data.logo ? [item.data] : [],
+);
+
+function quotasPorPerna(total: number): number[] {
+  const soma = FAIXAS.reduce((acc, faixa) => acc + faixa.vao, 0);
+  const bases = FAIXAS.map((faixa) => Math.floor((faixa.vao / soma) * total));
+  let resto = total - bases.reduce((acc, n) => acc + n, 0);
+  const ordem = FAIXAS.map((faixa, i) => ({
+    i,
+    frac: (faixa.vao / soma) * total - bases[i],
+  })).sort((a, b) => b.frac - a.frac);
+  for (const { i } of ordem) {
+    if (resto === 0) break;
+    bases[i] += 1;
+    resto -= 1;
+  }
+  return bases;
+}
+
+const PONTOS: readonly { perna: NomeDaPerna; t: number; marco: string }[] = (() => {
+  const quotas = quotasPorPerna(MARCOS_COM_LOGO.length);
+  let cursor = 0;
+  return FAIXAS.flatMap((faixa, indice) => {
+    const n = quotas[indice];
+    const fatia = MARCOS_COM_LOGO.slice(cursor, cursor + n);
+    cursor += n;
+    return fatia.map((marco, i) => ({
+      perna: faixa.perna,
+      t: n === 1 ? (faixa.de + faixa.ate) / 2 : faixa.de + ((faixa.ate - faixa.de) * i) / (n - 1),
+      marco: marco.id,
+    }));
+  });
+})();
 
 /* Índice dos marcos por id, montado uma vez na carga do módulo. `TRAJECTORY_ITEMS`
    traz marcos E competências intercaladas; só os marcos têm marca. */
@@ -164,7 +174,7 @@ const MARCO_POR_ID = new Map(
 );
 
 /**
- * Os cinco pontos já resolvidos: coordenada, categoria e arte.
+ * Os pontos já resolvidos: coordenada, categoria e arte.
  *
  * ⚠️ O `filter` NÃO É DEFENSIVIDADE VAZIA. `PONTOS` cita ids à mão, e um id que
  * deixasse de existir (marco renomeado, timeline reordenada) daria `undefined` —
@@ -289,12 +299,12 @@ export function MiniTimeline({ anoFinal }: { anoFinal: number }) {
           CSS com `clamp`, e a POSIÇÃO é a mesma geometria em porcentagem, então o
           chip acompanha a linha em qualquer largura sem encolher com ela.
 
-          `aria-hidden` nos chips, e não `alt` com o nome da empresa: as cinco
-          marcas estão escritas por extenso nos cards do fluxo detalhado, logo
-          abaixo na mesma seção, e o `aria-label` do `<svg>` já declara o desenho
-          como síntese. Anunciar cinco marcas aqui seria ler como conteúdo novo o
-          que é recorte visual de conteúdo que vem inteiro adiante — a mesma razão
-          que `aria-hidden` a placa do `MilestoneCard`.
+          `aria-hidden` nos chips, e não `alt` com o nome da empresa: as marcas
+          estão escritas por extenso nos cards do fluxo detalhado, logo abaixo na
+          mesma seção, e o `aria-label` do `<svg>` já declara o desenho como
+          síntese. Anunciá-las aqui seria ler como conteúdo novo o que é recorte
+          visual de conteúdo que vem inteiro adiante — a mesma razão que
+          `aria-hidden` a placa do `MilestoneCard`.
 
           Só entra chip onde há ARTE NO ACERVO (`logo` presente). Não há ramo de
           monograma aqui, ao contrário do card: duas letras num chip de 36px sobre a

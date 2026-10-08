@@ -33785,6 +33785,14 @@ html[data-motion='reduce'] .sds-frase-risco {
   --carimbo-batida-w: clamp(8.5rem, 11vw, 10.5rem);
 }
 
+/* Logo 3D da marca no hero (`/sds3d2.png`). Mesmo papel de
+   `.matchai-marca-hero`: largura de manchete, altura pela razão intrínseca. */
+.sds-marca-hero {
+  display: block;
+  width: clamp(14rem, 30vw, 26rem);
+  height: auto;
+}
+
 /* ── «O QUE É O SDS?» — O FIO COM PULSO QUE DESCE ──────────────────────────────
    Entra no lugar da frase manuscrita retirada. Mecanismo do `.matchai-fio`: uma
    haste de 1px em degradê e um ponto que percorre. A altura é fixa porque a haste é

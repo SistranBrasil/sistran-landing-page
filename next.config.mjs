@@ -1,9 +1,37 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  /* SIS-154 — decisão de deploy em aberto. Com isto, `sizes` no JSX não escolhe
-     resolução (não há `srcset`). Ver `docs/images-unoptimized.md`. */
-  images: { unoptimized: true },
+  /* 02/10 · SIS-241 — O OTIMIZADOR FOI LIGADO, e o que destravou foi uma MEDIDA,
+     não uma mudança de opinião.
+     A nota que estava aqui dizia «decisão de deploy em aberto», e
+     `docs/images-unoptimized.md` fixou o portão para fechar o assunto: «só
+     reabrir quando existir resposta explícita de publicação — estático/sem
+     otimizador → desfecho A; `next start` ou CDN com loader → desfecho B».
+     A resposta foi medida em 02/10, com sonda de navegador contra
+     `sistran-landing-page.vercel.app`: a LP é publicada na VERCEL, que tem
+     runtime Node. Logo é o desfecho B («é resíduo»), e não o A que o documento
+     supunha por analogia com a frente AWS da vitrine (S3 + CloudFront + OAC).
+     Essa analogia era a única base da hipótese, e estava errada SOBRE ESTA LP.
+
+     O que a flag custava, medido na mesma passada: 20,6 MB de imagem entregues
+     na home em 31 arquivos, todos começando a baixar no mesmo instante (~752ms)
+     e disputando a conexão; 388 MB em `public/`, 278 MB só de PNG — com uma
+     FOTOGRAFIA de 9,2 MB codificada em PNG (`images/escritoriosp/sp5.png`).
+     Com `unoptimized` os 60 arquivos que importam `next/image` serviam o byte
+     original, em resolução cheia e sem `srcset`: os 106 `sizes=` do projeto
+     eram decorativos, como o título do documento já dizia.
+
+     ⚠️ TIRAR A FLAG ACENDE OS 106 `sizes=` DE UMA VEZ. O documento avisa que
+     errar o `sizes` para BAIXO é o lado ruim — o navegador serve candidato menor
+     que a caixa e a foto sai borrada em produção sem ninguém ter tocado naquela
+     linha (precedente SIS-139: a trilha da grade não era a caixa da foto). Por
+     isso a varredura dos `sizes` foi feita ANTES, comparando o candidato que o
+     navegador escolhe com a caixa medida em três larguras; o resultado está no
+     comentário da SIS-241.
+     O que NÃO foi feito, por restrição em vigor («não teste, não faça build»):
+     a medida de peso e LCP em `next start` que o documento pede no item 3. Ela
+     fica para quem puder rodar build. */
+  images: {},
   /* SIS-280 — a slug do Luminna AI passou a ter dois n (`/solucoes/lumina-ai` →
      `/solucoes/luminna-ai`). O redirect existe porque o endereço velho circula
      fora do nosso controle: ele esteve no sitemap, e link indexado ou salvo por

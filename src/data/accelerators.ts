@@ -75,9 +75,9 @@ export type Accelerator = {
        name: 'SDS — Sistema Digital de Sinistros',
        eyebrow: 'JORNADA INTELIGENTE DE SINISTROS',
        description: '…',
-       logo: '/imagens/logo-sds.png',
-       logoWidth: 560,
-       logoHeight: 302,
+       logo: '/sds3d2.png',
+       logoWidth: 1707,
+       logoHeight: 921,
        tone: '#2F91F7',
      };
 
@@ -91,9 +91,9 @@ export const SDS_ACCELERATOR: Readonly<Accelerator> = {
   name: 'SDS — Sistema Digital de Sinistros',
   description:
     'Conecta o comunicado, a análise documental, o apoio antifraude e a regulação em uma jornada rastreável, conduzida por agentes especializados e com a decisão humana preservada.',
-  logo: '/imagens/logo-sds.png',
-  logoWidth: 560,
-  logoHeight: 302,
+  logo: '/sds3d2.png',
+  logoWidth: 1707,
+  logoHeight: 921,
   /* A DERIVADA WebP, e não `/images/solucoes/sds.png` que foi entregue: com
      `images: { unoptimized: true }` o PNG iria ao navegador como está — 1578 kB
      numa caixa de 548px. A derivada tem 1100x449 e 26 kB, gerada com os MESMOS

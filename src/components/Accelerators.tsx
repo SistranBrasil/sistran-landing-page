@@ -115,7 +115,11 @@ function AccelCard({ a, destaque }: { a: Accelerator; destaque: boolean }) {
          borda mascarado, o brilho que seguia o ponteiro e o orbe do canto): a
          capa fotográfica ocupa o lugar visual das três, e nenhuma utilitária
          `group-hover:` sobrou para ancorar. */
+      /* `data-accel` = identidade do produto (não posição): exceções de escala
+         da logo em CSS (SDS, Guru) não podem ser `nth-child` — reordenar a
+         lista moveria o tamanho em silêncio. */
       className="accel-card on-dark"
+      data-accel={a.id}
     >
       {/* A CAPA, e ela é DECORAÇÃO: `alt=""` + `aria-hidden`. A informação do
           card está toda em texto ao lado (nome no `<h3>`, descrição no `<p>`), e

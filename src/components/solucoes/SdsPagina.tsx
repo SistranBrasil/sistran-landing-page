@@ -97,6 +97,14 @@ const HERO_HIGHLIGHTS = [
    `--carimbo-batida-ar`; um número redondo achata a cápsula. */
 const CARIMBO_CAPA = { largura: 735, altura: 336 } as const;
 
+/* Logo 3D da marca (`public/sds3d2.png`, 1707×921). Substitui `logo-sds.png`
+   no hero (papel de manchete, como `.matchai-marca-hero`) e nos dados do card. */
+const MARCA_SDS = {
+  src: '/sds3d2.png',
+  largura: 1707,
+  altura: 921,
+} as const;
+
 /* Título local: o nav lateral sai dos blocos de `acceleratorPages`, então este
    `h2` não vira parada. */
 const TITULO_ABERTURA = 'O que é o SDS';
@@ -495,12 +503,15 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
               className="sds-carimbo"
               gatilho="rota"
             />
-            <h1
-              data-reveal="fade-up"
-              style={cascata(1)}
-              className="mt-5 max-w-2xl font-display text-pagehero-medio font-bold tracking-tight text-white"
-            >
-              SDS — Sistema Digital de Sinistros
+            <h1 data-reveal="fade-up" style={cascata(1)} className="mt-4 font-display">
+              <Image
+                src={MARCA_SDS.src}
+                alt="SDS — Sistema Digital de Sinistros"
+                width={MARCA_SDS.largura}
+                height={MARCA_SDS.altura}
+                priority
+                className="sds-marca-hero"
+              />
             </h1>
             <p
               data-reveal="fade-up"
@@ -546,9 +557,9 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
               devolver a placa ao hero traz a segunda capa de novo. Se a área quiser o
               logo visível, o lugar é uma faixa CLARA própria (a seção «O que é SDS»
               logo abaixo já é `section-light-blue`), porque o problema medido continua
-              valendo: `public/imagens/logo-sds.png` é azul (#2F7FE0 → #1D63C8) sobre
-              transparente, sem contorno claro, e sobre navy fica perto de 2:1. Não há
-              variante branca no repositório — esse era, e segue sendo, o nó.
+              valendo: a logo antiga (`logo-sds.png`) era azul sobre transparente e
+              no navy ficava perto de 2:1. A marca atual é `public/sds3d2.png`
+              (faces brancas + contorno azul) e mora no `h1` do hero.
 
               O `data-route-critical-media` que estava no `<Image>` do logo migrou para
               a arte da capa: o portão de rota tem de esperar a maior imagem acima da
@@ -580,11 +591,11 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
             <div className="relative rounded-3xl border border-[#0079CB]/20 bg-[linear-gradient(170deg,#FFFFFF_0%,#EAF4FE_55%,#DCEDFC_100%)] p-7 shadow-[0_26px_60px_-24px_rgba(0,12,30,.55)] sm:p-10">
               <Image
                 data-route-critical-media=""
-                src="/imagens/logo-sds.png"
+                src="/sds3d2.png"
                 alt=""
                 aria-hidden
-                width={560}
-                height={302}
+                width={1707}
+                height={921}
                 priority
                 (`drop-shadow` azulado SAIU: sobre superfície clara ele virava
                  halo sujo em volta do glifo em vez de relevo.)

@@ -219,3 +219,4 @@ Ordem sugerida: **193 → 195 / 194 → 196 → 197**. As quatro efeitos bloquei
 | **SIS-242** | Todo | site | Reveal atrasado/preso: textos/blocos demoram ou só aparecem ao voltar no scroll (primitiva) — slot 01/10 |
 | **SIS-241** | Todo | home | Peso: 24 MB entregues + ~163 MB bruto em public/ |
 | **SIS-243** | Todo | home | Hero: vídeo só inicia depois do carregamento da página |
+| **SIS-308** | Todo | admin | `/admin/carimbo`: cápsula = referência (borda sólida + dashed + logo \| texto; escrita e cor no admin) — criada 05/10 |
