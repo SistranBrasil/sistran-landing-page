@@ -195,6 +195,7 @@
 /* SIS-220 (5ª volta) — `useState` saiu com o único estado do arquivo (o do modal de
    contato, que perdeu o gatilho junto com o CTA do hero).
    import { useState } from 'react'; */
+import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -202,6 +203,7 @@ import {
   BadgeCheck,
   BrainCircuit,
   Coins,
+  ExternalLink,
   FileText,
   Gauge,
   GitBranch,
@@ -237,6 +239,27 @@ import { LIMIAR_REVEAL, MARGEM_REVEAL } from './reveal-calibre';
    e não digitado — duas cópias do mesmo caminho divergiriam na primeira troca de arte.
    A razão de a capa sair daqui e não de `capasSolucoes.ts` está no docblock. */
 const VITRINE = ACCELERATORS.find((a) => a.id === 'luminna-ai');
+
+/* ── O PREVIEW DO «DESCUBRA LUMINNA» ──────────────────────────────────────────
+   Destino e host em constantes, e o host DERIVADO da URL em vez de digitado: o
+   endereço aparece em três lugares da peça (a barra do navegador, a legenda visível e
+   o nome acessível do link), e três literais iguais divergem na primeira troca.
+   `new URL(...).host` resolve isso em tempo de módulo, sem custo por render.
+   O molde é o do preview da rota irmã do SDS (`SdsPagina.tsx`, «Demonstração
+   oficial»): moldura com barra de navegador, o cartão INTEIRO como âncora e legenda
+   em `sr-only`. A diferença é a mídia — lá é um screenshot parado, aqui é o laço de
+   `/videos/luminnaloop.mp4`. */
+const DESCUBRA_URL = 'https://descubra.luminna.sistran.com.br/';
+const DESCUBRA_HOST = new URL(DESCUBRA_URL).host;
+const DESCUBRA_VIDEO = '/videos/luminnaloop.mp4';
+/* Pôster gerado do QUADRO 0 do próprio arquivo (ffmpeg, `select=eq(n\,0)`), como o de
+   `jornada.mp4`: é ele que cobre o intervalo até o primeiro quadro chegar e é ele que
+   fica para quem pede menos movimento, quando o laço é pausado em `currentTime = 0`.
+   Qualquer outro quadro apareceria como um salto no instante da pausa. */
+const DESCUBRA_POSTER = '/videos/luminnaloop-poster.webp';
+/* A proporção é a do ARQUIVO (1280×720, medido com ffprobe), então `object-cover` não
+   tem o que recortar e a caixa não pula quando o vídeo chega. */
+const DESCUBRA_PROPORCAO = '16 / 9';
 
 /* ── OS ÍCONES DOS CARDS DE «DESAFIOS» ─────────────────────────────────────────
    Na ordem dos itens do dado, e cada um é leitura literal do `term` que acompanha:
@@ -651,6 +674,48 @@ function FioVertical() {
 }
 
 export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
+  /* O LAÇO DO PREVIEW, com a mesma lição do `HeroVideoBackdrop` e do vídeo da rota do
+     SDS: o markup sai SEM `autoPlay`, porque esse atributo é GATILHO DE PARTIDA e não
+     estado. Se ele fosse escrito como `autoPlay={!reduzido}`, o HTML do servidor (onde
+     a preferência é sempre `false`, senão a hidratação diverge) sairia com o atributo,
+     o navegador começaria a tocar, e apagá-lo depois não pararia nada — o laço seguiria
+     rodando para quem pediu menos movimento. Então o `play()` é imperativo e só
+     acontece depois da hidratação.
+     OS DOIS CANAIS: a preferência do sistema E o botão da interface
+     (`html[data-motion="reduce"]`) — é a dupla que o resto da casa lê, e um laço
+     infinito é exatamente o movimento decorativo que essa escolha existe para
+     desligar. Parado fica o pôster, que é o quadro 0; nenhuma informação vive no
+     vídeo, então pausar não custa conteúdo.
+     O `MutationObserver` e o `matchMedia` ficam escutando porque a escolha pode mudar
+     no meio da sessão: sem isso, ligar «reduzir movimento» não pararia um laço já em
+     curso, e desligar não religaria.
+     `play()` pode ser rejeitado por política de autoplay (aba sem gesto do usuário);
+     nesse caso fica o pôster, que é o fallback desejado. */
+  const videoPreview = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoPreview.current;
+    if (!video) return;
+    const consulta = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const aplicar = () => {
+      const reduzido = consulta.matches || document.documentElement.dataset.motion === 'reduce';
+      if (reduzido) {
+        video.pause();
+        video.currentTime = 0;
+        return;
+      }
+      void video.play().catch(() => undefined);
+    };
+    aplicar();
+    consulta.addEventListener('change', aplicar);
+    const vigia = new MutationObserver(aplicar);
+    vigia.observe(document.documentElement, { attributes: true, attributeFilter: ['data-motion'] });
+    return () => {
+      consulta.removeEventListener('change', aplicar);
+      vigia.disconnect();
+    };
+  }, []);
+
   /* Os blocos por `heading`, e não por índice: índice é dependência invisível, e um
      bloco novo no dado reordenaria as seções em silêncio (a nota é a do Match AI). O
      guarda de `kind` é o que deixa o TypeScript saber que `items`/`paragraphs` existem.
@@ -1469,6 +1534,166 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
           </RevealScope>
         </section>
       )}
+
+      {/* ── 5B. O PREVIEW DO «DESCUBRA LUMINNA» ──────────────────────────────
+          PEDIDO: um preview clicável que leva ao site, com o vídeo em laço.
+
+          ENTRA ENTRE A INTEGRAÇÃO E O FECHO, e nenhuma das seções de `page.blocks`
+          saiu para abrir espaço — é a mesma posição que o preview da rota irmã do SDS
+          ocupa, e é de propósito: a peça mostra o produto no ar logo antes do
+          parágrafo de fecho, em vez de competir com o hero.
+          `section-light` repetindo a faixa anterior (Integração também é clara) não
+          quebra o ritmo da rota: as faixas 2 e 3 já são duas claras seguidas. A
+          alternativa, faixa escura, encostaria em outra escura (o fecho) E num vídeo
+          de fundo — duas mídias em movimento colados.
+
+          ⚠️ O CARTÃO INTEIRO É A ÂNCORA, e tudo dentro dele é `<span>`: um link
+          dentro de outro é marcação inválida, o navegador desmonta o aninhamento e o
+          destino do clique fica imprevisível. Por isso a pílula «Abrir o site» é
+          `<span>` com `group-hover`, não um segundo `<a>`.
+
+          ⚠️ `on-dark` NA PÍLULA é obrigatório, e não é estética: dentro de
+          `.section-light` os overrides da casa pintam de navy tudo que traga
+          `text-white` (`[class*="text-white"] { color: #0a1f44 }` em `globals.css`),
+          então uma pílula de fundo cheio ficaria com tinta navy sobre azul escuro. */}
+      <section
+        className="section-light section-py relative overflow-clip"
+        /* PEDIDO: «retire essa parte e deixe só o vídeo» — saem o sobretítulo «No ar»,
+           o `h2` e a linha de apoio (comentados abaixo). A faixa fica com a peça só.
+           `aria-label` E NÃO `aria-labelledby`: o `id="descubra-luminna"` morava no
+           `h2` que saiu, e referência pendurada em `id` inexistente deixa a região SEM
+           NOME NENHUM — não com o nome antigo. É a mesma correção que a faixa 6 desta
+           rota já tinha precisado (ver a nota lá).
+           E não entra um `h2` em `sr-only` no lugar: cabeçalho oculto continua na
+           árvore de cabeçalhos, e quem navega por cabeçalhos pularia para um título que
+           ninguém vê — descasando a navegação por voz da visual. `aria-label` nomeia a
+           região sem inventar cabeçalho. */
+        aria-label="Conheça a experiência Luminna"
+      >
+        <AcentosClaros />
+        <RevealScope
+          className="container-lp relative z-10"
+          limiar={LIMIAR_REVEAL}
+          margem={MARGEM_REVEAL}
+          data-reveal-nome="luminna-descubra"
+        >
+          {/* O SOBRETÍTULO, O TÍTULO E A LINHA DE APOIO — FORA DE CENA por pedido.
+              Comentados e não apagados: a escrita foi aprovada e voltar é descomentar.
+              ⚠️ Quem religar isto tem de devolver `aria-labelledby="descubra-luminna"`
+              na seção e tirar o `aria-label`, senão a faixa passa a ter dois nomes
+              acessíveis — e o `aria-label` ganha, deixando o `h2` visível fora do nome.
+              A cascata voltaria a ser 1, 2 e 3 (a `figure` é a última).
+
+          <p data-reveal="fade-up" className="eyebrow">
+            No ar
+          </p>
+          <h2
+            id="descubra-luminna"
+            data-reveal="fade-up"
+            style={cascata(1)}
+            className="mt-3 max-w-4xl font-display text-section font-bold text-ink"
+          >
+            Conheça a experiência Luminna
+          </h2>
+          <p
+            data-reveal="fade-up"
+            style={cascata(2)}
+            className="mt-3 max-w-2xl text-base leading-relaxed text-ink-muted"
+          >
+            Navegue pelo ecossistema em uma experiência completa, com os agentes, a
+            jornada e os benefícios da plataforma.
+          </p>
+          */}
+
+          {/* SEM `mt-10` e SEM `cascata`: o espaço de 2,5rem existia para separar a
+              peça do parágrafo que saiu, e a cascata escalonava a entrada DEPOIS dos
+              três nós acima. Com a `figure` sendo o primeiro (e único) filho, o
+              respiro é o `section-py` da faixa e a entrada é imediata. */}
+          <figure data-reveal="scale-soft" className="m-0 mx-auto max-w-4xl">
+            {/* `luminna-midia`/`luminna-midia-arte` são as classes desta rota (o avanço
+                de escala no hover e os dois canais de movimento reduzido já vivem
+                nelas, em `globals.css`). Elas casam por CLASSE e não por seletor de
+                `img`, então valem para o `<video>` do mesmo jeito. */}
+            <a
+              href={DESCUBRA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="luminna-midia group block overflow-hidden rounded-2xl border border-[#0079CB]/20 bg-white shadow-[0_24px_70px_-45px_rgba(0,55,100,.6)] transition-colors hover:border-[#0079CB]/55"
+            >
+              {/* A BARRA DO NAVEGADOR, `aria-hidden` inteira: os três pontos são
+                  desenho e o endereço já está no nome acessível do link — lido duas
+                  vezes viraria ruído. É ela que diz «isto é um site, e está no ar». */}
+              <span
+                aria-hidden
+                className="flex items-center gap-2 border-b border-[#0079CB]/[12%] bg-[#F2F8FD] px-4 py-2.5"
+              >
+                <span className="flex gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#0079CB]/25" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#0079CB]/25" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#0079CB]/25" />
+                </span>
+                <span className="min-w-0 flex-1 truncate rounded-full bg-white px-3 py-1 text-[11px] font-semibold text-ink-muted">
+                  {DESCUBRA_HOST}
+                </span>
+              </span>
+              <span className="relative block overflow-hidden" style={{ aspectRatio: DESCUBRA_PROPORCAO }}>
+                {/* `loop` É ATRIBUTO DO ELEMENTO, não um `onEnded` que rebobina: o
+                    navegador emenda o laço sem passar pelo JS, e por isso não há
+                    engasgo no ponto de volta.
+                    `muted` é condição do autoplay (nenhum navegador toca som sem gesto
+                    do usuário) e `playsInline` impede o fullscreen forçado no iOS.
+                    `autoPlay={false}` explícito, e o `play()` vem do efeito no topo do
+                    componente — a razão está escrita lá.
+                    `preload="metadata"` e não `auto`: são 2,7MB abaixo da dobra, e o
+                    que o navegador precisa antes de tocar é só a duração e o primeiro
+                    quadro; o pôster cobre o resto da espera.
+                    `aria-hidden` porque o vídeo não acrescenta informação além do que
+                    o nome do link e a legenda já dizem — é a vitrine do destino. */}
+                <video
+                  ref={videoPreview}
+                  aria-hidden
+                  src={DESCUBRA_VIDEO}
+                  poster={DESCUBRA_POSTER}
+                  autoPlay={false}
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  className="luminna-midia-arte h-full w-full object-cover"
+                />
+                {/* O SELO CENTRAL é affordance de SAÍDA, e o glifo é o de link externo
+                    e NÃO um triângulo de «play»: o vídeo já está tocando em laço, e o
+                    clique não toca nada — ele abre o site. Um botão de play que não
+                    toca é falsa pista nos dois estados (em movimento reduzido ele
+                    estaria sobre um pôster parado que o clique também não inicia).
+                    `pointer-events-none` para não abrir um alvo de clique concorrente
+                    dentro da âncora. */}
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 flex items-center justify-center"
+                >
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/70 bg-[#001A3D]/55 backdrop-blur-sm transition-colors group-hover:bg-[#0060A8]/85">
+                    <ExternalLink className="h-6 w-6 text-white" strokeWidth={2} aria-hidden />
+                  </span>
+                </span>
+              </span>
+              <span className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
+                <span className="text-sm font-semibold text-ink">{DESCUBRA_HOST}</span>
+                <span className="on-dark inline-flex items-center gap-2 rounded-full bg-[#0060A8] px-4 py-2 text-xs font-bold text-white transition-colors group-hover:bg-[#004D8A]">
+                  Abrir o site
+                  <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+                </span>
+              </span>
+            </a>
+            {/* A LEGENDA é o nome acessível completo do link, em `sr-only`: o `<a>` tem
+                como conteúdo visível o host e «Abrir o site», e é a legenda que diz
+                para onde vai e que abre em outra aba (WCAG 2.4.4). */}
+            <figcaption className="sr-only">
+              Abrir o site Descubra Luminna em {DESCUBRA_HOST}, em uma nova aba.
+            </figcaption>
+          </figure>
+        </RevealScope>
+      </section>
 
       {/* ── 6. UMA REVOLUÇÃO NO DESENVOLVIMENTO DE SOFTWARE (o fecho escuro) ──
           Os DOIS parágrafos do bloco sem `heading`, publicados inteiros, sob um título

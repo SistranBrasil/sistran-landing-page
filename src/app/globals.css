@@ -583,6 +583,72 @@ body::after {
   }
 }
 
+/* ⚠️ O VÉU DA COLUNA SOBRE FOTOGRAFIA — `data-tom='midia'`, escrito por
+   `ScrollSpy.tsx` a partir da medição do fundo (`src/lib/tomDoFundo.ts`).
+
+   Por que existe uma quarta resposta além de claro/médio/escuro: em
+   `/parceiros-e-implementacoes` a coluna atravessa 16.680px de `#parceiros`, e o
+   que está atrás dela ali não é cor nenhuma — são as fotos dos parceiros em tela
+   cheia. Medido na rolagem, a luminância sob a coluna salta entre branco
+   (L=1,00) e marinho (L=0,009) quatro vezes dentro da MESMA seção. Nenhuma tinta
+   fixa resolve: branco morre nos trechos claros (1,13:1) e navy morre nos
+   escuros (1,05:1). Sobre imagem a resposta certa não é escolher melhor a tinta,
+   é deixar de depender do que está atrás.
+
+   Então o véu, e só aqui: nas superfícies de cor chapada a tinta medida já fecha
+   4,5:1 e a coluna continua exatamente como foi desenhada, sem placa nenhuma.
+
+   `::before` em vez de `padding`/`background` no próprio nav: padding moveria os
+   traços e o rótulo, e as coordenadas da coluna são medidas e citadas no bloco
+   SIS-170 logo acima. O pseudo-elemento pinta por trás (`z-index: -1`) sem tocar
+   em uma única posição. `inset` negativo para o véu respirar além do texto.
+
+   `pointer-events: none` porque ele cobre a área dos links — sem isso o véu
+   comeria o clique dos próprios itens que vem proteger. */
+/* Sem regra de `position` aqui de propósito: o `fixed` da marcação já cria o
+   contexto de posicionamento que o `::before` precisa, e repeti-lo criaria uma
+   segunda fonte de verdade para a mesma coisa. */
+/* ⚠️ O VÉU SAIU DE CENA (pedido: «tire esse fundo e volte como era antes»). A placa
+   cinza-escura arredondada atrás da coluna é ESTA regra, e nada mais — o `data-tom`
+   continua sendo medido e escrito por `ScrollSpy.tsx`, e as outras respostas
+   (claro/médio/escuro) seguem pintando a tinta dos traços e do rótulo como sempre.
+   Sem a regra, `'midia'` volta a se comportar como antes de o véu existir: a coluna
+   herda a tinta padrão e não ganha superfície nenhuma.
+
+   ⚠️ COMENTADO SEM OS COMENTÁRIOS INTERNOS, de propósito: comentário de CSS NÃO
+   ANINHA — um fechamento interno encerraria este bloco aqui e despejaria
+   declarações soltas, que o build aceita calado e o lint não vê. Os números que
+   estavam nas notas de dentro ficam como prosa, para não se perderem:
+     · `background: rgba(2, 7, 14, 0.62)` — sobre foto BRANCA compõe rgb(97,99,102),
+       onde o branco mede 4,54:1 e o ciano do traço 5,1:1. O pior caso é a foto mais
+       clara do acervo, e foi por ele que o valor foi escolhido.
+     · `backdrop-filter: blur(6px)` era acabamento, não contraste: o número acima
+       fecha sem ele. Existia porque a borda reta do véu cortava o detalhe da foto e
+       lia como retângulo colado.
+   A razão de o véu ter nascido está na nota longa acima (a coluna atravessando
+   16.680px de foto em `/parceiros-e-implementacoes`, com a luminância saltando entre
+   L=1,00 e L=0,009 quatro vezes na mesma seção). Se o contraste sobre aquelas fotos
+   voltar a incomodar, é esta regra que volta — e aí o caminho melhor é véu LOCAL no
+   rótulo, não placa na coluna inteira.
+
+.scrollspy-coluna[data-tom='midia']::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -0.625rem -0.75rem;
+  border-radius: 0.75rem;
+  background: rgba(2, 7, 14, 0.62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events: none;
+}
+*/
+
+/* (Caducou com o véu, e vale se ele voltar: movimento reduzido NÃO o desligava — véu
+   não é movimento, é legibilidade. Ficava registrado porque a varredura de
+   `prefers-reduced-motion` deste arquivo apaga `backdrop-filter` em outros lugares, e
+   ali seria perda de contraste.) */
+
 /* ===========================================================
    Componentes utilitários
    =========================================================== */

@@ -50,6 +50,19 @@
   --tec-capsula-w: clamp(150px, 13vw, 190px);
   --tec-capsula-h: 78px;
   --tec-vao: clamp(18px, 1.8vw, 32px);
+  /* A COLUNA DO CARIMBO, em variáveis, porque agora DUAS regras dependem dela: a
+     arte do carimbo (que a consome como `--carimbo-batida-w`) e o recuo da faixa
+     de baixo — pedido da usuária, 08/10: a faixa de baixo não leva carimbo, mas
+     «deixa o espaço do carimbo», começando no mesmo x da faixa de cima. Medida
+     num lugar só para que o recuo não saia de sincronia na primeira mudança de
+     largura do carimbo (foi o que levou os 370/300/245 a virarem variável). */
+  --tec-carimbo-w: 370px;
+  --tec-carimbo-pad: clamp(20px, 4vw, 56px);
+  --tec-topo-vao: clamp(12px, 1.6vw, 28px);
+  /* Largura do carimbo + seu padding dos dois lados + o vão da linha de cima. */
+  --tec-recuo-faixa: calc(
+    var(--tec-carimbo-w) + 2 * var(--tec-carimbo-pad) + var(--tec-topo-vao)
+  );
 
   position: relative;
   /* `isolation: isolate` para que os planos decorativos (`z-index` baixos) não
@@ -182,12 +195,28 @@
 .tec-topo {
   display: flex;
   align-items: center;
-  gap: clamp(12px, 1.6vw, 28px);
+  gap: var(--tec-topo-vao);
 }
 
 .tec-topo > .tec-faixa {
   flex: 1;
   min-width: 0;
+}
+
+/* ── A FAIXA DE BAIXO COMEÇA ONDE A DE CIMA COMEÇA ─────────────────────────────
+   Pedido da usuária (08/10): a faixa de baixo não leva carimbo, mas «deixa o
+   espaço do carimbo» — as duas faixas passam a nascer no MESMO x.
+
+   É `margin-inline-start`, e não um quarto filho vazio em `.tec-topo`, porque a
+   faixa de baixo é filha direta de `.tec-miolo` (a de cima é filha de `.tec-topo`,
+   que divide a linha com o carimbo). O seletor de filho direto é o que separa as
+   duas sem tocar na de cima.
+
+   A faixa continua sangrando à DIREITA: o recuo é só da borda esquerda, a máscara
+   das duas pontas é a mesma, e cada grupo (2220px) segue mais largo que a janela
+   recuada — a emenda não entra em cena. */
+.tec-miolo > .tec-faixa {
+  margin-inline-start: var(--tec-recuo-faixa);
 }
 
 /* ── O CARIMBO ─────────────────────────────────────────────────────────────────
@@ -198,14 +227,14 @@
    O padding lateral é DESTE bloco e não da seção, porque as faixas têm de sangrar
    além das bordas («faixas horizontais continuando além das bordas da tela»). */
 .tec-carimbo {
-  padding-inline: clamp(20px, 4vw, 56px);
+  padding-inline: var(--tec-carimbo-pad);
 }
 
 /* Os 370px do doc. A variável é declarada DENTRO de `.carimbo-batida` (com o
    `clamp` de `/parceiros`), e declaração no elemento vence herança do pai — por
    isso a classe vai no próprio nó da arte, como em `.svc-palco-carimbo-arte`. */
 .tec-carimbo__arte {
-  --carimbo-batida-w: 370px;
+  --carimbo-batida-w: var(--tec-carimbo-w);
 }
 
 /* ── AS FAIXAS ────────────────────────────────────────────────────────────────
@@ -226,6 +255,19 @@
      `technology-showcase.css` e o alvo de navegadores é o mesmo. */
   mask-image: linear-gradient(90deg, transparent 0%, #000 10%, #000 90%, transparent 100%);
   overflow: hidden;
+  /* FOLGA VERTICAL PARA A SOMBRA DAS CÁPSULAS (pedido da usuária, 08/10: «a faixa
+     de baixo deve ter a sombra igual à de cima»).
+
+     A sombra da cápsula desce 10px com 24px de borrão, e a faixa media exatamente
+     os 78px da cápsula: com `overflow: hidden` ela era cortada rente ao cartão nas
+     DUAS faixas — e a de baixo, sem o carimbo ao lado para quebrar a leitura,
+     ficava visivelmente chapada. A folga é padding (e não `overflow-clip-margin`)
+     porque a `mask-image` acima recorta na caixa de borda: o que ficasse fora do
+     padding seria apagado pela máscara, não pelo overflow.
+
+     16px cobrem os 10px de deslocamento e o resto do borrão; a máscara continua
+     só horizontal, então nada muda nas pontas. */
+  padding-block: 16px;
 }
 
 .tec-faixa__fita {
@@ -442,12 +484,11 @@
   .tec-secao {
     /* «Diminuir o espaçamento entre as cápsulas» (item 8, tablet). */
     --tec-vao: clamp(14px, 2vw, 22px);
+    /* Os 300px do doc para tablet. A medida é da SEÇÃO (e não mais da arte)
+       porque o recuo da faixa de baixo lê a mesma variável — mudar num lugar
+       move as duas coisas juntas. */
+    --tec-carimbo-w: 300px;
     min-height: 760px;
-  }
-
-  .tec-carimbo__arte {
-    /* Os 300px do doc para tablet. */
-    --carimbo-batida-w: 300px;
   }
 
   .tec-destaque {
@@ -479,6 +520,10 @@
     --tec-capsula-w: 128px;
     --tec-capsula-h: 66px;
     --tec-vao: 14px;
+    /* O meio dos 230–260px do doc. «Alinhado à esquerda, conforme o padrão
+       existente da página» — o `align-items: flex-start` de `.tec-miolo` já é o
+       padrão das outras seções da rota, então não há `margin-inline: auto`. */
+    --tec-carimbo-w: 245px;
     /* «Altura mínima confortável, sem sobreposição» — o conteúdo empilhado manda,
        e os 850px do desktop deixariam um vazio enorme. */
     min-height: 0;
@@ -499,11 +544,13 @@
     margin-top: clamp(20px, 6vw, 32px);
   }
 
-  .tec-carimbo__arte {
-    /* O meio dos 230–260px do doc. «Alinhado à esquerda, conforme o padrão
-       existente da página» — o `align-items: flex-start` de `.tec-miolo` já é o
-       padrão das outras seções da rota, então não há `margin-inline: auto`. */
-    --carimbo-batida-w: 245px;
+  /* O RECUO SAI NO CELULAR. Aqui a linha de cima EMPILHA (`.tec-topo { display:
+     block }`, logo acima), então a faixa de cima também nasce na borda — não há
+     espaço de carimbo a reservar, e reservá-lo deixaria a faixa de baixo com
+     ~100px de janela, o mesmo cálculo que já tirou o carimbo do lado da faixa de
+     cima neste breakpoint. */
+  .tec-miolo > .tec-faixa {
+    margin-inline-start: 0;
   }
 
   .tec-fundo__orbita:nth-of-type(2) {

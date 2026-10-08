@@ -47,7 +47,15 @@ const LARGURA = 800;
 
 /* Altura do DESENHO. Os `y` abaixo são coordenadas dentro desta faixa e não
    mudaram na SIS-205 — a serpentina é a mesma que a SIS-202 mediu no mock. */
-const ALTURA_DESENHO = 240;
+const ALTURA_DESENHO = 256;
+/* Era 240. Cresceu os MESMOS 16 que o `Y_BAIXO` desceu (ver abaixo), e só por isso:
+   as logos da perna de baixo penduram 52 unidades ABAIXO dela, então descer a perna
+   sem crescer a faixa comeria a banda reservada no rodapé do desenho e as logos
+   passariam a invadir a legenda. Crescendo igual, a folga de baixo fica exatamente a
+   de hoje — o que mudou é só o vão entre a perna do meio e a de baixo.
+   Lembrete do bloco abaixo: com `width: 100%; height: auto` a escala do traço é
+   `larguraRenderizada / 800` e NÃO depende da altura — crescer aqui reserva banda,
+   não encolhe a serpentina. */
 
 /* ⚠️ A `viewBox` GANHOU FOLGA EM CIMA E EMBAIXO, e não é enfeite: é onde a fileira
    de logos da SIS-205 mora. As logos ficam na ponta EXTERNA das hastes, ou seja
@@ -72,7 +80,15 @@ const ALTURA = ALTURA_DESENHO + FOLGA_LOGOS * 2;
 
 const Y_TOPO = 52;
 const Y_MEIO = 122;
-const Y_BAIXO = 189;
+/* ⚠️ 205 E NÃO 189, e o motivo é colisão medida, não gosto.
+   As logos da perna do MEIO penduram para baixo (`sentido` +1 fora da perna de cima),
+   com centro a 52 unidades do nó — ou seja aterrando a ~174, a 15 unidades de uma
+   perna de baixo que estava em 189. Descontada a meia-espessura do traço e a caixa da
+   arte, a folga real medida no navegador era de 5 unidades a 1440px e de 0,1 a 390px:
+   as logos encostavam na linha, que é o que o pedido relatou.
+   Os 16 a mais levam a pior folga para ~16 unidades. O arco da volta se ajusta sozinho
+   (`RAIO_BAIXO` é derivado), então não há número a acertar em dois lugares. */
+const Y_BAIXO = 205;
 
 const X_INICIO = 60;
 const X_VOLTA_DIREITA = 541;

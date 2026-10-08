@@ -1130,6 +1130,17 @@
   display: flex;
   gap: 0.75rem;
   align-items: center;
+  /* ⚠️ `wrap` É O QUE RESOLVE A SOBREPOSIÇÃO EM TELA ESTREITA, e tem de vir
+     junto com o `min-width: min-content` do selo logo abaixo — uma sem a outra
+     não conserta nada.
+     A 360px as três peças (placa de 92px + geração + pílula de categoria) não
+     cabem na mesma linha. Em `nowrap` o flex não tinha para onde ir: encolhia o
+     selo abaixo da largura da palavra «GERAÇÃO», que não quebra, e a palavra
+     transbordava da própria caixa POR CIMA da pílula — medido em 24 de 24
+     cards, 45px de transbordo e 64px de sobreposição a 360px.
+     Com `wrap` a pílula desce para uma segunda linha quando não couber, e nas
+     larguras em que as três cabem nada muda (o flex só quebra no estouro). */
+  flex-wrap: wrap;
 }
 
 /* O glifo genérico de prédio SAIU do `MilestoneCard` no pedido de 30/09 («coloque as
@@ -1189,7 +1200,15 @@
    encostada na placa — a ordem da captura da versão publicada. */
 .trajetoria-card-selo {
   flex: 1 1 auto;
-  min-width: 0;
+  /* Era `min-width: 0`. O `0` é o idiom certo para caixa cujo conteúdo ENCURTA
+     (texto com `ellipsis`, por exemplo); aqui o conteúdo é uma palavra única em
+     caixa-alta com `letter-spacing`, que não quebra nem encurta — então o `0`
+     autorizava o flex a dar à caixa menos largura do que o texto ocupa, e o
+     excedente ia pintar em cima da pílula vizinha.
+     `min-content` é o piso honesto: a caixa nunca fica menor que a palavra mais
+     larga, o flex passa a ter de quebrar a linha (ver `flex-wrap` no `-topo`), e
+     o texto fica dentro do que lhe pertence. */
+  min-width: min-content;
 }
 
 /* A cor vem do token da categoria (`--chip-cor`, escrito no JSX). Nunca é o ÚNICO
@@ -1197,6 +1216,11 @@
 .trajetoria-chip {
   display: inline-flex;
   align-items: center;
+  /* Não encolhe. Como item de flex o padrão (`0 1 auto`) deixava a pílula ser
+     comprimida e «EMPRESAS GRANDES» quebrava em duas linhas dentro dela mesmo
+     numa linha só para si — o que engordava a cabeça do card sem precisar. Com
+     `0 0 auto` ela mantém a largura do próprio texto e é a LINHA que quebra. */
+  flex: 0 0 auto;
   padding: 0.22rem 0.6rem;
   border: 1px solid color-mix(in srgb, var(--chip-cor, var(--signal)) 55%, transparent);
   border-radius: 999px;

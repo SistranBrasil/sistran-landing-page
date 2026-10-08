@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { tomDoFundoEm, type TomDoFundo } from '@/lib/tomDoFundo';
 import {
   navIdiomaForPath,
   sectionsForPath,
@@ -48,8 +49,35 @@ export default function ScrollSpy() {
   const [tomAtivo, setTomAtivo] = useState<'escuro' | NonNullable<PageSection['tom']>>(
     'escuro',
   );
-  const onLight = tomAtivo === 'claro';
-  const onMedium = tomAtivo === 'medio';
+
+  /* ⚠️ O TOM PASSOU A SER MEDIDO NO PONTO, e o `tomAtivo` acima virou só a
+     RESERVA (ele continua alimentado pelo mapa, para o primeiro quadro e para
+     quando a medição não responde).
+
+     O que o modelo por seção não dava conta, medido em
+     `/parceiros-e-implementacoes`: `#parceiros` é UMA seção de 16.680px cujo
+     fundo na margem esquerda alterna entre branco e azul-marinho quatro vezes —
+     porque ali o fundo são as FOTOS dos parceiros em tela cheia, não uma cor da
+     seção. Com um tom só para a seção inteira, 72 de 120 passos de rolagem
+     mediram abaixo de 4,5:1, e o pior deu 1,05:1. Nenhum valor declarado
+     resolveria: a pergunta «claro ou escuro?» não tem resposta única dentro
+     daquela seção.
+
+     `tomMedido` responde pelo ponto onde a coluna está, a cada quadro de
+     rolagem. `'midia'` é resposta de primeira classe: sobre fotografia não
+     existe tinta certa, então em vez de escolher uma o rótulo ganha um véu
+     próprio (ver o CSS de `.scrollspy-rotulo[data-tom='midia']`). */
+  const [tomMedido, setTomMedido] = useState<TomDoFundo | null>(null);
+  const navRef = useRef<HTMLElement | null>(null);
+
+  const tom: TomDoFundo | 'escuro' = tomMedido ?? tomAtivo;
+  const onLight = tom === 'claro';
+  const onMedium = tom === 'medio';
+  /* `'midia'` NÃO tem par de cores próprio aqui, e é de propósito: ela cai no
+     ramo `else` dos ternários abaixo, que é o claro-sobre-escuro (branco + ciano)
+     — a combinação certa DEPOIS do véu que o CSS põe atrás da coluna. Tratá-la
+     como um quarto par de tintas daria uma cor nova para resolver um problema que
+     não é de cor. Quem lê `'midia'` é o `data-tom` no `<nav>`. */
 
   // SIS-182 — substituído por `useColunaVisivel()` no topo do arquivo. O corpo
   // fica registrado porque a RAZÃO do limiar (SIS-100) é o que se consulta ao
@@ -140,7 +168,21 @@ export default function ScrollSpy() {
          certa nas seções com `sticky`/ScrollTrigger (Soluções, Números,
          ImpactSequence, StackScenes): a geometria delas muda durante a rolagem,
          mas o bloco que ocupa o meio da janela continua sendo o mesmo. */
-      { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 },
+      /* ⚠️ `threshold: 0` E NÃO `0.01`, e isto é um defeito corrigido, não um
+         ajuste de gosto. `threshold` é fração da área DO ALVO, não da faixa — e a
+         faixa aqui tem 5% da janela (100 − 40 − 55), ou ~45px a 900px de altura.
+         Para uma seção ALTA, 1% da área dela é maior que a faixa inteira, então o
+         cruzamento nunca é reportado e a seção nunca acende. Medido em
+         `/parceiros-e-implementacoes`: `#parceiros` tem 16.680px (1% = 167px) e
+         `#linha-do-tempo` 9.448px (1% = 94px), contra 45px de faixa — as duas
+         eram invisíveis para o observador. O sintoma não era só a marcação errada:
+         como o TOM vem da seção ativa, ele ficava presa em `escuro` e o rótulo
+         saía branco sobre a seção clara, a 1,13:1. Quanto mais alta a seção, mais
+         garantido o defeito, o que é o oposto do que um limiar deveria fazer.
+         Com `0`, qualquer sobreposição conta — é o que a faixa estreita já
+         expressa por si. Não afrouxa nada: quem decide o ativo é a varredura de
+         `ordem` de baixo para cima, não o limiar. */
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 },
     );
     sections.forEach((s) => {
       const el = document.getElementById(s.id);
@@ -154,6 +196,48 @@ export default function ScrollSpy() {
       observer.observe(observado);
     });
     return () => observer.disconnect();
+  }, [wide, sections]);
+
+  /* A MEDIÇÃO DO FUNDO. Roda na rolagem e no resize, coalescida por
+     `requestAnimationFrame`: `elementsFromPoint` + `getComputedStyle` força
+     layout, e chamar isso por evento de rolagem (que o Lenis dispara a cada
+     quadro) seria duas leituras por quadro. Com o `rAF` é no máximo uma, e no
+     momento em que o navegador já ia recalcular de todo jeito.
+
+     O ponto medido é o CENTRO da coluna, não o canto: é onde o rótulo pousa, e é
+     a leitura que corresponde ao que o olho compara. `navRef` entra como
+     `ignorar` — sem isso o primeiro elemento da pilha seria o próprio nav e a
+     medição se olharia no espelho. */
+  useEffect(() => {
+    if (!wide || sections.length === 0) return;
+    let pedido = 0;
+    const medir = () => {
+      pedido = 0;
+      const nav = navRef.current;
+      if (!nav) return;
+      const r = nav.getBoundingClientRect();
+      const novo = tomDoFundoEm(
+        Math.round(r.left + r.width / 2),
+        Math.round(r.top + r.height / 2),
+        nav,
+      );
+      /* `null` (ponto fora da janela) MANTÉM o tom anterior, pelo mesmo motivo que
+         o observador mantém a seção ativa no vão entre duas: trocar de cor num
+         quadro sem informação é piscada, não correção. */
+      if (novo) setTomMedido((antes) => (antes === novo ? antes : novo));
+    };
+    const agendar = () => {
+      if (pedido) return;
+      pedido = requestAnimationFrame(medir);
+    };
+    medir();
+    window.addEventListener('scroll', agendar, { passive: true });
+    window.addEventListener('resize', agendar);
+    return () => {
+      if (pedido) cancelAnimationFrame(pedido);
+      window.removeEventListener('scroll', agendar);
+      window.removeEventListener('resize', agendar);
+    };
   }, [wide, sections]);
 
   if (!wide || sections.length === 0) return null;
@@ -192,9 +276,15 @@ export default function ScrollSpy() {
 
   return (
     <nav
+      ref={navRef}
       lang={idioma.lang}
       aria-label={idioma.rotulo}
-      className="fixed left-3 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-3 2xl:left-5"
+      /* `data-tom` no NAV, e não em cada item: o véu de `'midia'` é um só, atrás
+         da coluna inteira (ver `globals.css`). Um por item viraria fileira de
+         etiquetas, e o traço de cada item também precisa do véu — ciano sobre
+         foto clara mede 1,5:1 tanto quanto o rótulo branco. */
+      data-tom={tom}
+      className="scrollspy-coluna fixed left-3 top-1/2 z-30 flex -translate-y-1/2 flex-col gap-3 2xl:left-5"
     >
       {sections.map((s) => {
         const isActive = active === s.id;

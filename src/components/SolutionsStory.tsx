@@ -40,6 +40,46 @@ import { useReducedMotion } from '@/lib/motion';
 import RevealScope from '@/components/motion/RevealScope';
 import { LIMIAR_REVEAL, MARGEM_REVEAL } from '@/lib/reveal-calibre';
 
+/* ⚠️ `sizes` POR FOTO, E NÃO UM `vw` PARA AS QUATRO — a razão é `object-fit: cover`.
+   `sizes` descreve quantos pixels de ARQUIVO o navegador precisa, e num recorte
+   `cover` isso NÃO é a largura da caixa: a caixa mostra só uma janela do arquivo, e
+   o que está fora dela também foi baixado em escala. Com as fotos deitadas o recorte
+   é governado pela ALTURA (a caixa é mais alta que larga), então a conta é
+     fonte necessária = altura da caixa × proporção do arquivo
+   e o `vw` que estava escrito não aparece nela — por isso a unidade aqui é px.
+
+   O que o `vw` anterior (`56vw` / `100vw`) causava, medido no navegador: a 1024px o
+   navegador escolhia a variante de 640px, da qual `cover` aproveitava 25,6% da
+   largura — 164px de fonte esticados numa caixa de 487px, ampliação de 2,97×. A
+   1440px dava 2,29×; a 390px, 1,99×. É a foto borrada que o pedido relatou.
+
+   Esta é exatamente a armadilha que o `next.config.mjs` registra ao tirar a flag
+   `unoptimized`: «errar o `sizes` para BAIXO … a foto sai borrada em produção sem
+   ninguém ter tocado naquela linha». A varredura de então comparou o candidato com a
+   CAIXA; para foto recortada por `cover`, a caixa é a medida errada.
+
+   Alturas da caixa, do CSS: `min(58svh, 34rem)` ≈ 780px no desktop e ≈ 522px em tela
+   estreita — e as DUAS entram, uma por ramo do `sizes`. Escrever só a do desktop
+   também daria foto nítida (erra para o lado certo), mas mandaria 1920px para uma
+   caixa de 359px no telefone: nitidez é obrigação, pagar em dado móvel por pixel que
+   nunca será visto não é. O ramo estreito usa 522 × proporção.
+
+   `sp1-1.jpeg` é RETRATO (3000×4000): nela o recorte é governado pela largura, não
+   pela altura, e a caixa já é a medida correta — fica sem entrada e cai no padrão. */
+const FONTE_NECESSARIA: Record<string, string> = {
+  // 1957×804 (2,43:1) → estreito 522 × 2,43 ≈ 1270px · desktop 780 × 2,43 ≈ 1900px
+  'apis-projetos': '(max-width: 1023px) 1270px, 1900px',
+  // 1707×921 (1,85:1) → estreito 522 × 1,85 ≈ 970px · desktop 780 × 1,85 ≈ 1450px
+  'tipos-servico': '(max-width: 1023px) 970px, 1450px',
+  // 1414×1113 (1,27:1) → estreito 522 × 1,27 ≈ 670px · desktop 780 × 1,27 ≈ 1000px
+  'staff-augmentation': '(max-width: 1023px) 670px, 1000px',
+};
+
+/* O padrão de quem não está no mapa: a caixa é a medida honesta. Mesmos números do
+   `sizes` que estava escrito no JSX, preservados para não mexer no que já servia. */
+const SIZES_PADRAO_FLUXO = '(max-width: 1023px) 92vw, 46vw';
+const SIZES_PADRAO_PAINEL = '(max-width: 1023px) 100vw, 56vw';
+
 /* SIS-98 — O LIMIAR GOVERNA A ESTRUTURA, E NÃO MAIS O MODO DIRIGIDO.
    Era este o maior buraco da home mobile: abaixo de 1024px `dirigindo` era
    `false`, então as quatro frases vinham como parágrafo pronto, nada acendia com
@@ -320,13 +360,18 @@ export default function SolutionsStory() {
                 ) : (
                   <p className="story-frase">{s.description}</p>
                 )}
-                <figure className="story-passo__midia">
+                {/* `data-foto` com o id da solução: é o gancho que permite ao CSS
+                    dar enquadramento próprio a UMA foto sem criar uma classe por
+                    card. O recorte não é propriedade do layout (todas as quatro
+                    caixas são iguais), é propriedade da FOTO — e só a do card 1
+                    precisa de ajuste. Ver `solutions-story.css`. */}
+                <figure className="story-passo__midia" data-foto={s.id}>
                   {s.image ? (
                     <Image
                       src={s.image}
                       alt={s.imageAlt ?? ''}
                       fill
-                      sizes="(max-width: 1023px) 92vw, 46vw"
+                      sizes={FONTE_NECESSARIA[s.id] ?? SIZES_PADRAO_FLUXO}
                       preload={i === 0}
                     />
                   ) : null}
@@ -351,6 +396,11 @@ export default function SolutionsStory() {
                   key={s.id}
                   className="story-media__item story-midia__item"
                   data-active={i === ativo ? 'true' : 'false'}
+                  /* Mesmo gancho da cópia em fluxo acima, e tem de existir nos
+                     dois: o painel desktop e a figura em telas estreitas são dois
+                     caminhos de render da MESMA foto, e um enquadramento escrito
+                     só num deles mudaria o recorte ao cruzar 1024px. */
+                  data-foto={s.id}
                 >
                   {/* `image` é opcional no tipo `Solution` (a página de Soluções
                       reaproveita os mesmos dados sem foto). Sem a guarda, uma
@@ -361,7 +411,7 @@ export default function SolutionsStory() {
                       src={s.image}
                       alt={s.imageAlt ?? ''}
                       fill
-                      sizes="(max-width: 1023px) 100vw, 56vw"
+                      sizes={FONTE_NECESSARIA[s.id] ?? SIZES_PADRAO_PAINEL}
                       /* A primeira já foi pré-carregada pela cópia em fluxo, que
                          também é o fallback SSR/no-JS. Aqui ela só precisa ser
                          descoberta imediatamente quando o palco é promovido. */

@@ -51,8 +51,51 @@ export const LARGURA_MINIMA_HD = 2200;
    scrub era um SEGUNDO filtro em cima do primeiro — com a roda a 1 dente/80 ms o quadro desenhado
    ficava até 11 quadros atrás da posição já suavizada do scroll, e o hero parecia "pesado". Com
    `true` o playhead segue exatamente a posição que o Lenis entrega a cada quadro: a suavidade vem
-   do Lenis, a precisão vem daqui. Um número volta a fazer sentido só se o Lenis sair. */
-export const SCRUB: true | number = true;
+   do Lenis, a precisão vem daqui. Um número volta a fazer sentido só se o Lenis sair.
+
+   Desativado em 08/10/2026: o ScrollTrigger deixou de ter tween (ele só publica o destino, e quem
+   anda até lá é o seguidor abaixo), e `scrub` do ScrollTrigger só governa animação. A conclusão
+   acima continua valendo e está embutida no seguidor — nada de segundo filtro por tempo fixo. */
+// export const SCRUB: true | number = true;
+
+/* SEGUIDOR AMORTECIDO do playhead (ver `useHeroFrameSequence`). O ScrollTrigger entrega a posição
+   de rolagem sem filtro; o que o olho vê não é mais essa posição crua.
+
+   Por que: o curso do hero (~340svh) cobre os 361 quadros do tier desktop, ou seja ~6,6px de
+   rolagem por quadro. Um dente de roda (~100px) pede ~15 quadros DE UMA VEZ, e um gesto de
+   trackpad pede muito mais. Mesmo com a janela de decode mirando à frente, nenhuma cadência de
+   decode entrega isso, e o `maisProximoDecodificado` passava a desenhar um quadro distante:
+   avanço aos tropeços, com a sensação de peso que o `scrub` numérico também dava (e por outro
+   motivo). Em vez de atrasar TUDO por um tempo fixo, o playhead persegue o destino com constante
+   de tempo curta e um teto de quadros por segundo:
+     • parado ou em rolagem lenta, `diferença × k` é menor que o teto → segue 1:1, sem atraso
+       perceptível (é o ganho que a retirada do `scrub: 0.3` trouxe, e ele fica);
+     • num arranque, o teto corta o salto e a cena continua andando depois do gesto até alcançar
+       a posição — cadência constante em vez de congelar-e-saltar, e o decode tem como acompanhar.
+
+   `SUAVIZACAO_MS` é a constante de tempo (e^-dt/τ, independente da taxa de quadros da tela). O
+   dimensionamento NÃO é por gosto: numa rolagem contínua o atraso em regime é `velocidade × τ`, e
+   a roda sintética da sonda (`scripts/medir-hero-quadros.mjs`, critério 8) anda a ~112 quadros/s
+   de conteúdo com teto de 20 quadros de atraso em p90. τ = 60 ms dá ~7 quadros — longe do teto e
+   longe dos 11 quadros que faziam o `scrub: 0.3` parecer pesado. 110 ms (a primeira tentativa)
+   daria ~12: suavizaria igual e devolveria o peso. Não subir sem rodar a sonda.
+
+   `VELOCIDADE_MAX_QUADROS_S` é o teto, e existe só para o DEGRAU — âncora que salta meio hero,
+   `invalidateOnRefresh`, flick de trackpad: nesses casos `diferença × k` sozinho pediria uma
+   centena de quadros num tique. 240 (10× os 24 fps do master) nunca é alcançado por rolagem
+   humana contínua, então não acumula atraso; um teto perto da velocidade real da roda (foi o erro
+   de 72) transformaria o seguidor numa correia sempre atrasada, com o atraso crescendo enquanto o
+   gesto durasse.
+
+   `EPSILON_QUADRO` encerra o loop quando a sobra é menor que um décimo de quadro: sem ele o
+   decaimento exponencial nunca chega ao destino e o rAF roda para sempre. */
+export const SUAVIZACAO_MS = 60;
+export const VELOCIDADE_MAX_QUADROS_S = 240;
+export const EPSILON_QUADRO = 0.1;
+/* Acima deste intervalo entre dois quadros de animação o seguidor é desligado e o playhead salta
+   para a posição da rolagem — ver `tique` em `useHeroFrameSequence`. 120 ms = ~8 fps: abaixo
+   disso o movimento já não é contínuo para o olho, e amortecer só acumularia atraso. */
+export const SALTO_MS = 120;
 
 /* Fila de rede (ver `frameLoader`). A pré-busca anda bem à frente da janela de decode: blob é
    barato (~90–120 KB) e a rede chega antes do decode precisar. */

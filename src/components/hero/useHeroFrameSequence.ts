@@ -3,9 +3,15 @@
 /**
  * useHeroFrameSequence — liga a rolagem ao Canvas do hero.
  *
- *   GSAP ScrollTrigger (scrub) ─► playhead.frame ─► render() ─► FrameRenderer.desenhar(bitmap)
- *                                                      │
- *                                 FrameLoader.focar ◄──┴──► DecodeWindow.atualizar
+ *   GSAP ScrollTrigger ─► destino ─► tique() [seguidor amortecido] ─► playhead.frame
+ *                                        │                               │
+ *                                        └─► render() ─► FrameRenderer.desenhar(bitmap)
+ *                                                           │
+ *                                      FrameLoader.focar ◄──┴──► DecodeWindow.atualizar
+ *
+ * O ScrollTrigger não anima nada: publica só o DESTINO (progresso × quadros). Entre o destino e o
+ * quadro desenhado há um seguidor com constante de tempo e teto de quadros/s — é ele que torna o
+ * avanço contínuo quando a rolagem pede 15 quadros de uma vez. Ver `SUAVIZACAO_MS` no config.
  *
  * O ScrollTrigger mede o MESMO elemento e os MESMOS limites que o `useScroll` do `motion/react`
  * em `HeroCinematic` (`#top`, `top top` → `bottom bottom`): os dois relógios lêem a mesma
@@ -32,10 +38,13 @@ import { prefersReducedMotion } from '@/lib/motion';
 import { consultaCombina } from '@/lib/mediaStore';
 import {
   CONCORRENCIA_DOWNLOAD,
+  EPSILON_QUADRO,
   JANELA_INICIAL,
   PONTO_DE_QUEBRA_DESKTOP,
   PREFETCH,
-  SCRUB,
+  SALTO_MS,
+  SUAVIZACAO_MS,
+  VELOCIDADE_MAX_QUADROS_S,
   ehHd,
   escolherTier,
   janelaDeDecode,
@@ -118,8 +127,12 @@ export function useHeroFrameSequence({ gatilho, carregar }: Params): RefsDoHero 
       }
       const total = t.quadros;
       const janela = janelaDeDecode(t, desktop);
+      /* `destino` é onde a rolagem está; `playhead.frame` é onde o desenho está. O seguidor
+         amortecido do loop abaixo é o que separa os dois — ver `SUAVIZACAO_MS` no config. */
       const playhead = { frame: 0 };
+      let destino = 0;
       let direcao: 1 | -1 = 1;
+      let ultimoTique = 0;
 
       renderer = new FrameRenderer(el);
       /* Para a medição (`scripts/medir-hero-quadros.mjs`): tier e total escolhidos. */
@@ -127,14 +140,19 @@ export function useHeroFrameSequence({ gatilho, carregar }: Params): RefsDoHero 
       el.dataset.total = String(total);
 
       const render = () => {
-        raf = 0;
         if (!renderer || !decoder || !loader) return;
         const alvo = clamp(Math.round(playhead.frame), 0, total - 1);
+        const alvoDaRolagem = clamp(Math.round(destino), 0, total - 1);
         /* Alvo do playhead (antes do fallback para o decodificado mais próximo): a diferença
            entre `data-alvo` e `data-quadro` é o atraso de decode, medido pela sonda. */
         el.dataset.alvo = String(alvo);
-        loader.focar(alvo, direcao);
-        decoder.atualizar(alvo, direcao);
+        /* A FILA E O DECODE MIRAM A ROLAGEM, NÃO O DESENHO. O seguidor amortecido anda alguns
+           quadros atrás de propósito; se a mira da rede e do decode andasse atrasada com ele, o
+           pipeline buscaria sempre o que já passou. Medido em 08/10/2026: mirar no desenho levou
+           o atraso de decode p90 de 45–52 para 185 quadros, com 5 quadros distintos em 76 rAF
+           (a cena praticamente congelada). O desenho é amortecido; a mira é crua. */
+        loader.focar(alvoDaRolagem, direcao);
+        decoder.atualizar(alvo, alvoDaRolagem, direcao);
         /* O quadro certo se já está decodificado; senão o decodificado mais próximo. Nunca um
            canvas vazio, nunca decode síncrono no caminho do frame. */
         const i = decoder.maisProximoDecodificado(alvo);
@@ -147,8 +165,36 @@ export function useHeroFrameSequence({ gatilho, carregar }: Params): RefsDoHero 
         if (renderer.ultimoDesenhado === i) el.dataset.quadro = String(i);
         if (el.dataset.estado !== 'ativo') marcar('ativo');
       };
+      /* Um tique: aproxima o playhead do destino e desenha. Enquanto sobrar distância, reagenda —
+         é por isso que a cena continua andando (e suavizando) depois de o gesto de rolagem acabar. */
+      const tique = (agora: number) => {
+        raf = 0;
+        const bruto = ultimoTique ? agora - ultimoTique : 16;
+        const dt = Math.min(64, bruto);
+        ultimoTique = agora;
+        const falta = destino - playhead.frame;
+        /* Quando a tela não está entregando quadros (aba que volta do segundo plano, CPU tomada:
+           medido a ~1 fps com o antivírus varrendo), amortecer não suaviza nada — só acumula
+           atraso, porque o seguidor só pode andar uma vez por quadro de animação. Acima de
+           `SALTO_MS` o playhead vai direto para a posição da rolagem: nessas condições o olho vê
+           um corte seco de qualquer forma, e é melhor que ele mostre o quadro certo. */
+        if (bruto > SALTO_MS) {
+          playhead.frame = destino;
+        } else if (Math.abs(falta) <= EPSILON_QUADRO) {
+          playhead.frame = destino;
+        } else {
+          /* Decaimento exponencial: mesma constante de tempo a 60 Hz e a 120 Hz. */
+          const k = 1 - Math.exp(-dt / SUAVIZACAO_MS);
+          const teto = (VELOCIDADE_MAX_QUADROS_S * dt) / 1000;
+          const avanco = clamp(falta * k, -teto, teto);
+          playhead.frame += avanco;
+          direcao = avanco < 0 ? -1 : 1;
+          agendarRender();
+        }
+        render();
+      };
       const agendarRender = () => {
-        if (!raf) raf = requestAnimationFrame(render);
+        if (!raf) raf = requestAnimationFrame(tique);
       };
 
       loader = new FrameLoader({
@@ -191,22 +237,27 @@ export function useHeroFrameSequence({ gatilho, carregar }: Params): RefsDoHero 
       /* Zoom do navegador muda o DPR sem mudar a caixa CSS: o ResizeObserver não vê. */
       window.addEventListener('resize', medir);
 
+      const publicarDestino = (self: ScrollTrigger) => {
+        if (self.end <= self.start) return;
+        destino = clamp(self.progress, 0, 1) * (total - 1);
+        agendarRender();
+      };
+
       gsap.registerPlugin(ScrollTrigger);
       ctx = gsap.context(() => {
-        gsap.to(playhead, {
-          frame: total - 1,
-          ease: 'none',
-          onUpdate: agendarRender,
-          scrollTrigger: {
-            trigger: trig,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: SCRUB,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              direcao = self.direction === -1 ? -1 : 1;
-            },
-          },
+        /* ScrollTrigger sem tween: ele só publica o DESTINO. Quem anda até lá é o seguidor
+           amortecido em `tique` — um `gsap.to` escreveria `playhead.frame` por cima dele. */
+        ScrollTrigger.create({
+          trigger: trig,
+          start: 'top top',
+          end: 'bottom bottom',
+          invalidateOnRefresh: true,
+          onUpdate: (self) => publicarDestino(self),
+          /* Um refresh pode cair com o `#top` ainda sem altura medida (`end === start`): o
+             ScrollTrigger então reporta `progress = 1`, o destino saltaria para o último quadro e
+             o seguidor sairia andando para lá — foi o que fez a sonda ler o quadro 360 na posição
+             0 do percurso. `publicarDestino` descarta esse caso. */
+          onRefresh: (self) => publicarDestino(self),
         });
       });
       agendarRender();

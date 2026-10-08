@@ -243,6 +243,33 @@
   object-fit: cover;
 }
 
+/* O ENQUADRAMENTO DA FOTO DO CARD 1, e é o único card que precisa de um.
+   `escritoriosp.png` é um panorama de 1957×804 numa caixa quase quadrada
+   (684×780 no desktop, 359×490 a 390px): com `cover`, o que aparece é uma janela
+   de 36% da largura do arquivo no desktop e 28% em tela estreita — o resto fica
+   fora. Em `50%` (o padrão) essa janela cai centrada em x≈978, que é o colega de
+   camisa xadrez à direita do grupo; as pessoas da metade esquerda ficavam
+   cortadas na borda, que é o que o pedido relatou.
+
+   25% põe a janela em x≈313..1018 no desktop e x≈351..904 a 390px — as duas
+   enquadram o mesmo trio da esquerda, com o colega de camisa branca no centro e
+   ninguém partido pela borda. Medido no navegador nas duas larguras.
+
+   ⚠️ UM ÚNICO VALOR SERVE AOS DOIS CAMINHOS DE RENDER mas NÃO dá a mesma janela
+   em todas as caixas, e isso é da unidade, não um descuido: a porcentagem de
+   `object-position` é fração do que SOBRA (`larguraEscalada - larguraDaCaixa`),
+   então quanto mais estreita a caixa, mais estreita a janela e mais o mesmo 25%
+   «anda». Por isso o número foi conferido nas duas pontas em vez de calculado
+   numa só. Y fica em 50%: a altura do arquivo cabe quase inteira, não há o que
+   escolher.
+
+   Vale enquanto a foto do card 1 for esta. Trocar o arquivo invalida o número —
+   e o sintoma seria gente cortada outra vez, não um erro de build. */
+.story-passo__midia[data-foto='apis-projetos'] img,
+.story-midia__item[data-foto='apis-projetos'] img {
+  object-position: 25% 50%;
+}
+
 /* O painel desktop é desligado por padrão: assim no-JS nunca empilha imagens. */
 .story-solucoes__midia-col {
   display: none;

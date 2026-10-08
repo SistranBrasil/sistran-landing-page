@@ -44,6 +44,8 @@ export class DecodeWindow {
   private readonly bitmaps = new Map<number, ImageBitmap>();
   private readonly decodificando = new Set<number>();
   private centro = 0;
+  /** Onde a rolagem está (o centro é onde o DESENHO está). Ver `atualizar`. */
+  private destino = 0;
   private direcao: 1 | -1 = 1;
   private encerrado = false;
   /* Velocidade do playhead em quadros/ms (média móvel), para mirar à frente. */
@@ -78,21 +80,31 @@ export class DecodeWindow {
     return melhor;
   }
 
-  /** Recalcula a janela e agenda decodes (mais perto do centro primeiro). Idempotente. */
-  atualizar(centro: number, direcao: 1 | -1): void {
+  /**
+   * Recalcula a janela e agenda decodes. Idempotente.
+   *
+   * `centro` é o quadro que está sendo DESENHADO (é ao redor dele que os bitmaps têm de existir);
+   * `destino` é onde a ROLAGEM está. Os dois se separam porque o playhead do desenho é amortecido
+   * (ver `SUAVIZACAO_MS`), e a distinção não é cosmética: a velocidade que orienta a mira é medida
+   * em `destino`, nunca em `centro`. Medido em 08/10/2026 — alimentar a mira com a posição já
+   * amortecida subestima a velocidade justamente no arranque e manda decodificar quadros que a
+   * rolagem acabou de passar: o atraso de decode p90 foi de 45–52 para 185 quadros.
+   */
+  atualizar(centro: number, destino: number, direcao: 1 | -1): void {
     if (this.encerrado) return;
     const agora = performance.now();
     if (this.ultimoInstante) {
       const dt = agora - this.ultimoInstante;
       if (dt > 0) {
-        const v = (centro - this.ultimoCentro) / dt;
+        const v = (destino - this.ultimoCentro) / dt;
         /* Média móvel curta: reage a uma arrancada em dois ticks e não treme a cada um. */
         this.velocidade = this.velocidade * 0.5 + v * 0.5;
       }
     }
-    this.ultimoCentro = centro;
+    this.ultimoCentro = destino;
     this.ultimoInstante = agora;
     this.centro = centro;
+    this.destino = destino;
     this.direcao = direcao;
     const [ini, fim] = this.limites();
 
@@ -118,11 +130,20 @@ export class DecodeWindow {
     this.decodificando.clear();
   }
 
+  /**
+   * A janela cobre a PONTE entre o quadro desenhado e a posição da rolagem, mais as margens
+   * `atras`/`frente` viradas para o sentido do movimento. Cobrir só o centro deixaria a mira
+   * (que fica em `destino`, à frente) fora dos limites, e `agendar` descartaria exatamente os
+   * quadros que vai precisar. A ponte é curta e limitada: o atraso do seguidor em regime é
+   * `velocidade × SUAVIZACAO_MS`, no pior caso o teto de 240 quadros/s × 60 ms ≈ 15 quadros.
+   */
   private limites(): [number, number] {
     const { atras, frente, total } = this.o;
     const a = this.direcao === 1 ? atras : frente;
     const f = this.direcao === 1 ? frente : atras;
-    return [Math.max(0, this.centro - a), Math.min(total - 1, this.centro + f)];
+    const lo = Math.min(this.centro, this.destino);
+    const hi = Math.max(this.centro, this.destino);
+    return [Math.max(0, Math.round(lo - a)), Math.min(total - 1, Math.round(hi + f))];
   }
 
   private agendar(): void {
@@ -131,9 +152,9 @@ export class DecodeWindow {
        decodificávamos sempre o quadro seguinte, que já tinha sido ultrapassado quando o bitmap
        chegava, e a cena congelava e saltava numa rolagem contínua (medido em 08/10/2026: atraso de
        decode p90 de 147–200 quadros a ~112 quadros/s). A ordem passa a ser pela distância ao
-       ponto onde o playhead ESTARÁ quando o decode terminar (`centro + velocidade × latência`),
-       limitado à janela. Parado, a mira é o próprio centro. */
-    const mira = Math.min(fim, Math.max(ini, Math.round(this.centro + this.velocidade * this.latenciaMs)));
+       ponto onde a ROLAGEM estará quando o decode terminar (`destino + velocidade × latência`),
+       limitado à janela. Parado, a mira é o próprio destino — que então é igual ao centro. */
+    const mira = Math.min(fim, Math.max(ini, Math.round(this.destino + this.velocidade * this.latenciaMs)));
     const candidatos: number[] = [];
     for (let i = ini; i <= fim; i++) {
       if (this.bitmaps.has(i) || this.decodificando.has(i)) continue;

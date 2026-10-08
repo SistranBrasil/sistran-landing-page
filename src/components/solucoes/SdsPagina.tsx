@@ -367,18 +367,51 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
      `true` não pausa o que já começou. O CSS desta rota declara que não mexe nesse
      atributo. O play fica para depois da hidratação, lendo os dois canais da casa. */
   const videoPlataforma = useRef<HTMLVideoElement>(null);
+  /* ⚠️ VOLTOU A SER UM `<video>` SÓ na rota. Houve um segundo nó com a mesma fonte
+     (o cartão da «Demonstração oficial»), e a faixa saiu por pedido — o `ref` dele
+     saiu junto, senão ficaria um `ref` que nunca aponta para nada.
+     Fica o número medido enquanto os dois existiram, porque ele CORRIGE uma nota
+     antiga do arquivo que dizia que dois `<video>` com a mesma fonte seriam «dois
+     downloads do mesmo arquivo»: pelo CDP
+     (`Network.loadingFinished.encodedDataLength`, o byte que de fato cruza a rede),
+     com os dois tocando, foram 2 requisições somando 512.421 bytes — UMA vez o
+     arquivo (511.843). A primeira é a sondagem de `preload="metadata"`, que fecha a
+     conexão depois do cabeçalho; a segunda traz o arquivo, e o outro nó é servido sem
+     tráfego novo. O que se paga duas vezes é decode e composição, não rede.
+     ⚠️ E NÃO MEDIR ISSO PELA PERFORMANCE API: `getEntriesByType('resource')` devolveu
+     UMA entrada só para as duas requisições (faixas de mídia são coalescidas), e o log
+     de respostas do Playwright mostra dois corpos cheios porque o próprio
+     `response.body()` busca de novo. As duas leituras levam a conclusões opostas; a do
+     CDP é a que conta bytes. */
 
   useEffect(() => {
     const video = videoPlataforma.current;
     if (!video) return;
-    const reduzido =
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-      document.documentElement.dataset.motion === 'reduce';
-    if (reduzido) {
-      video.pause();
-      return;
-    }
-    void video.play().catch(() => undefined);
+    /* COM ESCUTA, e não leitura única: a versão anterior lia os dois canais UMA vez só
+       — ligar «reduzir movimento» depois do carregamento não parava o laço que já
+       estava rodando, e desligar não o religava. */
+    const consulta = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const aplicar = () => {
+      const reduzido = consulta.matches || document.documentElement.dataset.motion === 'reduce';
+      if (reduzido) {
+        video.pause();
+        /* Volta ao quadro 0 para casar com o pôster, que é o estado parado que a
+           preferência pede. */
+        video.currentTime = 0;
+      } else {
+        /* Pode ser rejeitado por política de autoplay (aba sem gesto do usuário);
+           nesse caso fica o pôster, que é o fallback desejado. */
+        void video.play().catch(() => undefined);
+      }
+    };
+    aplicar();
+    consulta.addEventListener('change', aplicar);
+    const vigia = new MutationObserver(aplicar);
+    vigia.observe(document.documentElement, { attributes: true, attributeFilter: ['data-motion'] });
+    return () => {
+      consulta.removeEventListener('change', aplicar);
+      vigia.disconnect();
+    };
   }, []);
 
   const oQueE = bloco(page, 'Uma plataforma para toda a jornada de sinistros');
@@ -782,23 +815,66 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                     </li>
                   ))}
                 </ol>
-                <div
+                {/* ── O TILE VIROU O LINK DA DEMONSTRAÇÃO ─────────────────────
+                    PEDIDO: «colocar aqui o link e deixar desse tamanho mesmo» — então
+                    o destino que morava no cartão da faixa «Demonstração oficial»
+                    (removida, ver a nota lá embaixo) passa a ser ESTE tile, e a caixa
+                    não muda: `width: min(100%, 12rem)` e `aspect-ratio: 9/16` seguem
+                    vindo de `.sds-oque-video` em `globals.css`, intactos.
+
+                    ERA UM `<div aria-hidden>` E AGORA É UM `<a>`, e a troca não é só
+                    de tag:
+                      · o `aria-hidden` SAI do embrulho. Link escondido do leitor de
+                        tela é link que não existe para quem navega por teclado — e
+                        pior, `aria-hidden` num nó focável é violação de ARIA (o foco
+                        entra num elemento que a árvore de acessibilidade não tem). Ele
+                        fica no `<video>`, que continua sendo decoração.
+                      · o nome acessível vem do `<span class="sr-only">`: é a única
+                        coisa que identifica o destino, porque o tile é só imagem em
+                        movimento (WCAG 2.4.4).
+                      · `block` e `relative` como utilitários porque `.sds-oque-video`
+                        nasceu para um `<div>` e não declara `display` — `<a>` é inline
+                        por padrão, e aí `width`/`aspect-ratio` não valeriam nada. O
+                        `relative` é o que ancora o selo do canto.
+                      · `matchai-midia`/`matchai-midia-arte` são as classes do avanço de
+                        escala no hover e dos dois canais de movimento reduzido, as
+                        mesmas dos outros previews da casa (casam por CLASSE, então
+                        valem para `<video>`). */}
+                <a
+                  href={SDS_DEMO_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   data-reveal="fade-up"
                   style={cascata(2)}
-                  className="sds-oque-video"
-                  aria-hidden
+                  className="sds-oque-video matchai-midia group relative block transition-colors hover:border-[#0079CB]/55"
                 >
                   <video
                     ref={videoPlataforma}
-                    className="sds-tile-video"
+                    aria-hidden
+                    className="sds-tile-video matchai-midia-arte"
                     src="/videos/tile-sdsapres.mp4"
+                    poster="/videos/tile-sdsapres-poster.webp"
                     autoPlay={false}
                     loop
                     muted
                     playsInline
                     preload="metadata"
                   />
-                </div>
+                  {/* O SELO DE SAÍDA, no canto para não cobrir o take. Glifo de link
+                      externo e não triângulo de «play»: o vídeo já está em laço e o
+                      clique não toca nada — ele abre a demonstração. `aria-hidden` e
+                      `pointer-events-none`: o nome do link já está no `sr-only` e o
+                      alvo de clique é a âncora inteira. */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute right-2 bottom-2 flex h-8 w-8 items-center justify-center rounded-full border border-white/70 bg-[#001A3D]/70 backdrop-blur-sm transition-colors group-hover:bg-[#0060A8]/90"
+                  >
+                    <ExternalLink className="h-4 w-4 text-white" strokeWidth={2} aria-hidden />
+                  </span>
+                  <span className="sr-only">
+                    Abrir a demonstração oficial do SDS em {SDS_DEMO_HOST}, em uma nova aba.
+                  </span>
+                </a>
               </div>
           </RevealScope>
         </section>
@@ -1282,30 +1358,30 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
       )}
 
       {/* ══════════════════════════════════════════════════════════════════════
-          SIS-120 · itens 3 e 6 — A DEMONSTRAÇÃO OFICIAL, O TILE DE VÍDEO E OS
-          SLOTS 3D. Faixa clara, logo ANTES do fecho: a ordem é «entenda →
-          veja rodando → fale com o time», e pôr o preview depois do CTA faria o
-          leitor sair da página antes de chegar nele.
+          A FAIXA «DEMONSTRAÇÃO OFICIAL» SAIU DE CENA (pedido: «remover a sessão de
+          demonstração»), e o DESTINO NÃO SE PERDEU: o link para
+          `sds-landing-page-six.vercel.app` passou a ser o TILE DE VÍDEO da faixa «Uma
+          plataforma para toda a jornada de sinistros» — ver a nota em cima dele. Então
+          a rota continua tendo um caminho para a demonstração, no tamanho que o pedido
+          fixou (`.sds-oque-video`, 12rem), e deixou de ter uma faixa inteira só para
+          isso. `SDS_DEMO_URL`/`SDS_DEMO_HOST` seguem em uso por aquele link.
 
-          ⚠️ PREVIEW POR MINIATURA, E NÃO `iframe`, ENTRE AS DUAS OPÇÕES QUE A ISSUE
-          DÁ («iframe / card com thumbnail + CTA»). Três razões, e nenhuma é gosto:
-            1. Acessibilidade — um `iframe` de página inteira injeta na rota uma
-               segunda árvore navegável por teclado, com os próprios cabeçalhos e
-               links, dentro de uma caixa de ~500px. O leitor de tela passa a ter dois
-               documentos; o teclado, uma armadilha de foco.
-            2. Custo — a landing da Vercel baixa inteira (JS incluso) para todo mundo
-               que rolar até aqui, mesmo quem não quer abri-la.
-            3. Controle — ela é de OUTRO domínio: qualquer troca de cabeçalho
-               `X-Frame-Options`/`frame-ancestors` lá derruba o bloco daqui, calado.
-          A miniatura é `/images/solucoes/sds.png` (1962×801, medido com `sharp`), que
-          é a arte da própria solução — e a moldura ganha uma barra de navegador com o
-          endereço do ar, que é o que diz «isto é um site, e ele está no ar» sem
-          precisar carregá-lo.
+          ⚠️ O MARKUP VAI ABAIXO, COMENTADO, mas SEM o bloco dos slots 3D + tile que já
+          estava fora de cena dentro dele: era código morto dentro de código morto, e
+          comentário de bloco NÃO ANINHA — o fechamento dele encerraria este comentário
+          e despejaria JSX solto no arquivo (armadilha que esta mesma seção já pagou uma
+          vez). Os slots e aquela variante do tile estão no histórico do git, no commit
+          que introduziu a faixa; `SLOTS_3D` continua comentado no topo do arquivo.
+          ⚠️ TODO comentário interno aqui está como `//` pela mesma razão.
 
-          ⚠️ O BLOCO NÃO SUBSTITUI CONTEÚDO INSTITUCIONAL, que é a ressalva escrita da
-          issue: ele ENTRA entre a integração e o fecho, e nenhuma das oito seções de
-          `page.blocks` saiu para abrir espaço.
-          ══════════════════════════════════════════════════════════════════════ */}
+          A razão de ESTAR AQUI, que vale se a faixa voltar: a ordem era «entenda → veja
+          rodando → fale com o time», e pôr o preview depois do CTA faria o leitor sair
+          da página antes de chegar nele. E preview por MINIATURA, nunca `iframe`: (1) um
+          `iframe` de página inteira injeta uma segunda árvore navegável por teclado
+          dentro de uma caixa de ~500px, (2) a landing de fora baixa inteira para quem
+          só rolou até aqui, (3) é outro domínio — uma troca de `X-Frame-Options` lá
+          derrubaria o bloco daqui, calado.
+
       <section
         className="section-light section-py relative overflow-clip"
         aria-labelledby="sds-demonstracao"
@@ -1328,37 +1404,23 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
             Demonstração oficial
           </h2>
 
-          {/* ── PEDIDO: «aqui deixe só o preview» ────────────────────────────────
-              Era uma grade de duas colunas
-              (`lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]`), com o preview na
-              esquerda e, na direita, o tile de vídeo 9:16 e os dois slots 3D. Com uma
-              peça só a grade perde a função: vira `mx-auto` com teto de largura, e o
-              teto existe para o screenshot não esticar além da resolução do arquivo
-              (1962x801) e amolecer.
-              O VÍDEO NÃO FOI APAGADO — foi MOVIDO para «Uma plataforma para toda a
-              jornada de sinistros», em tamanho menor, no mesmo pedido (ver a nota lá).
-              Os DOIS SLOTS 3D saem como consequência declarada: eram placeholders
-              medidos esperando arte que nunca chegou, e «só o preview» não os
-              acomoda. `SLOTS_3D` fica no topo do arquivo, comentado, com os títulos —
-              é o caminho de volta quando a arte existir. */}
           <div className="mt-10">
-            {/* ── O PREVIEW ────────────────────────────────────────────────── */}
-            <figure data-reveal="scale-soft" style={cascata(2)} className="m-0 mx-auto max-w-4xl">
-              {/* `matchai-midia` / `matchai-midia-arte` REUSADAS COM O NOME DE LÁ, de
-                  propósito, e pela mesma razão registrada em `/quem-somos`
-                  (`page.tsx:1052`): elas são a regra global que dá o avanço de escala
-                  da arte no hover E os dois canais de movimento reduzido. Duplicá-las
-                  com nome novo seriam duas verdades para o mesmo gesto; renomeá-las
-                  obrigaria a editar o Match AI, que a issue põe fora de escopo. */}
+            // O cartão: moldura com barra de navegador, âncora única e legenda em
+            // `sr-only`. `max-w-md` era a forma da mídia depois da troca do screenshot
+            // (1962×801) pelo vídeo retrato 360×640; com `max-w-4xl` o vídeo só caberia
+            // cortado numa fatia horizontal ou como tira estreita numa janela vazia.
+            // `matchai-midia`/`matchai-midia-arte`: as classes do avanço de escala no
+            // hover e dos dois canais de movimento reduzido, casando por CLASSE (então
+            // valem para `<video>`), reusadas com o nome do Match AI de propósito.
+            <figure data-reveal="scale-soft" style={cascata(2)} className="m-0 mx-auto max-w-md">
               <a
                 href={SDS_DEMO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="matchai-midia group block overflow-hidden rounded-2xl border border-[#0079CB]/20 bg-white shadow-[0_24px_70px_-45px_rgba(0,55,100,.6)] transition-colors hover:border-[#0079CB]/55"
               >
-                {/* A BARRA DO NAVEGADOR. `aria-hidden` inteira: os três pontos são
-                    desenho, e o endereço já está no nome acessível do link abaixo —
-                    lido duas vezes viraria ruído. */}
+                // A barra do navegador, `aria-hidden` inteira: os três pontos são
+                // desenho e o endereço já está no nome acessível do link.
                 <span aria-hidden className="flex items-center gap-2 border-b border-[#0079CB]/[12%] bg-[#F2F8FD] px-4 py-2.5">
                   <span className="flex gap-1.5">
                     <span className="h-2.5 w-2.5 rounded-full bg-[#0079CB]/25" />
@@ -1369,28 +1431,28 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                     {SDS_DEMO_HOST}
                   </span>
                 </span>
-                {/* A proporção é a do ARQUIVO (1962/801 = 2,449), então `object-cover`
-                    não tem o que recortar da arte. `sizes` é inerte hoje
-                    (`images: { unoptimized: true }`, SIS-154) e por isso mesmo tem de
-                    ficar verdadeiro: acima de 1180px a coluna vale ~700px do
-                    container de 1180. */}
-                <span className="relative block aspect-[1962/801] overflow-hidden">
-                  <Image
-                    src="/images/solucoes/sds.png"
-                    alt=""
+                // `aspect-[9/16]` é a proporção do arquivo, então `cover` não recorta.
+                // `autoPlay={false}` + `play()` no efeito: `autoPlay` é gatilho de
+                // partida, não estado. Pôster = quadro 0, que é o estado parado sob
+                // movimento reduzido.
+                <span className="relative block aspect-[9/16] overflow-hidden bg-[#001A3D]">
+                  <video
+                    ref={videoPreview}
                     aria-hidden
-                    fill
-                    sizes="(min-width: 1180px) 700px, 92vw"
-                    loading="lazy"
-                    className="matchai-midia-arte object-cover"
+                    src="/videos/tile-sdsapres.mp4"
+                    poster="/videos/tile-sdsapres-poster.webp"
+                    autoPlay={false}
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                    className="matchai-midia-arte h-full w-full object-cover"
                   />
                 </span>
                 <span className="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
                   <span className="text-sm font-semibold text-ink">{SDS_DEMO_HOST}</span>
-                  {/* A PÍLULA É `<span>` E NÃO UM SEGUNDO LINK: o cartão inteiro já é
-                      a âncora, e um link dentro de outro é marcação inválida — o
-                      navegador desmonta o aninhamento e o alvo fica imprevisível. O
-                      rótulo é o literal da issue. */}
+                  // A pílula é `<span>` e não um segundo link: o cartão inteiro já é a
+                  // âncora, e link dentro de link é marcação inválida.
                   <span className="on-dark inline-flex items-center gap-2 rounded-full bg-[#0060A8] px-4 py-2 text-xs font-bold text-white transition-colors group-hover:bg-[#004D8A]">
                     Abrir demonstração
                     <ExternalLink className="h-3.5 w-3.5" aria-hidden />
@@ -1401,81 +1463,10 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
                 Abrir a demonstração oficial do SDS em {SDS_DEMO_HOST}, em uma nova aba.
               </figcaption>
             </figure>
-
-            {/* ── O TILE DE VÍDEO + OS DOIS SLOTS 3D — FORA DE CENA ────────────
-                PEDIDO: «aqui deixe só o preview». O `<video>` renasceu na faixa «Uma
-                plataforma para toda a jornada de sinistros», com `autoPlay` só sem
-                movimento reduzido, `muted`, `playsInline` e `preload="metadata"`.
-                Os slots 3D saem sem substituto.
-                ⚠️ QUEM RELIGAR ISTO TEM DE TIRAR O VÍDEO DE LÁ: dois `<video>` com a
-                mesma fonte na mesma rota são dois downloads do mesmo arquivo.
-
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              <div
-                data-reveal="scale-soft"
-                style={cascata(3)}
-                className="relative overflow-hidden rounded-2xl border border-[#0079CB]/20 bg-[#001A3D] shadow-[0_24px_70px_-45px_rgba(0,55,100,.6)]"
-              >
-                // ⚠️ Este comentário era `{/* … *\/}` e foi reescrito como `//` ao ser
-                // comentado junto com o bloco: comentário de bloco NÃO ANINHA, e o
-                // fechamento interno fecharia o comentário externo aqui — esta linha já
-                // caiu nessa armadilha uma vez ESCREVENDO A ADVERTÊNCIA: citar a
-                // sequência `asterisco-barra` literalmente basta para quebrar, então
-                // ela é NOMEADA e nunca escrita. Sem isso o resto do
-                // JSX solto. Mesma armadilha já registrada no CSS desta rota.
-                // A proporção 9/16 é a do arquivo (360×640, o reencode descrito em
-                    `src/data/legacy.ts`), então a caixa não corta quadro nenhum.
-
-                    LOOP SOLTO, e não dirigido por rolagem: a issue admite os dois
-                    («autoplay muted loop ou scrub leve») e este tile é vitrine, não
-                    peça de narrativa — `scrub` exigiria vídeo all-intra (`-g 1`) para
-                    cada quadro ser destino de `seek`, e este reencode tem GOP normal,
-                    de propósito e documentado lá. Pedir `currentTime` nele daria
-                    salto de keyframe em keyframe.
-
-                    `muted` é obrigatório para o autoplay (política dos navegadores) e
-                    `playsInline` impede o fullscreen forçado no iOS. Com movimento
-                    reduzido não toca: fica o `poster`… que não existe para este
-                    arquivo, então fica o PRIMEIRO QUADRO, que `preload="metadata"`
-                    garante baixado. É a mesma decisão de `legacy/StackScenes.tsx:546`,
-                    onde este mesmo vídeo já é montado.
-                <video
-                  className="sds-tile-video aspect-[9/16] w-full"
-                  src="/videos/tile-sdsapres.mp4"
-                  autoPlay={!movimentoReduzido}
-                  loop
-                  muted
-                  playsInline
-                  preload="metadata"
-                  aria-label="Apresentação do SDS em vídeo, sem áudio"
-                />
-                <span aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#001A3D] to-transparent p-4 pt-10">
-                  <span className="flex items-center gap-2 text-xs font-semibold text-[#A5F0FF]">
-                    <MonitorPlay className="h-4 w-4" strokeWidth={1.8} />
-                    SDS em operação
-                  </span>
-                </span>
-              </div>
-
-              {SLOTS_3D.map((slot, index) => (
-                <div
-                  key={slot.id}
-                  data-reveal="fade-up"
-                  style={cascata(index + 4)}
-                  className="sds-slot3d"
-                >
-                  <span aria-hidden className="flex items-center gap-2 p-4 text-xs font-semibold text-[#0060A8]/70">
-                    <Box className="h-4 w-4" strokeWidth={1.8} />
-                    3D
-                  </span>
-                  <span className="sr-only">{slot.titulo}</span>
-                </div>
-              ))}
-            </div>
-            */}
           </div>
         </RevealScope>
       </section>
+          ══════════════════════════════════════════════════════════════════════ */}
 
       {fecho && (
         <section className="section-light section-py relative overflow-clip" aria-labelledby={idDoBloco(fecho.heading!)}>

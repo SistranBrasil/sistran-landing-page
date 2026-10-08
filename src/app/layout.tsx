@@ -7,9 +7,13 @@ import PageTransition from '@/components/ui/PageTransition';
 import AnchorFocus from '@/components/ui/AnchorFocus';
 import ScrollProgressBar from '@/components/ui/ScrollProgressBar';
 import MotionPolicyProvider from '@/components/layout/MotionPolicyProvider';
-import { MotionPreferenceIntro } from '@/components/layout/MotionPreferenceIntro';
-/* SIS-226 — import estático, como o `MotionPreferenceIntro` logo acima e pelo
-   mesmo motivo: o CMP abre sozinho na primeira visita, e adiá-lo por uma
+/* Era `import { MotionPreferenceIntro } from '@/components/layout/MotionPreferenceIntro';`.
+   Saiu a pedido: só o banner de cookies abre sozinho agora. O componente
+   continua no repositório e o diálogo segue alcançável pelo rodapé
+   (`MotionPreferenceTrigger`) — a preferência de movimento continua sendo uma
+   escolha possível, o que deixou de existir é a interrupção na primeira visita. */
+/* SIS-226 — import estático, pelo mesmo motivo que o do prompt de movimento
+   acima era: o CMP abre sozinho na primeira visita, e adiá-lo por uma
    requisição faria a página aparecer inteira antes de existir o pedido de
    consentimento. */
 import CookieConsent from '@/components/layout/CookieConsent';
@@ -366,15 +370,18 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             (`PageShell` e a home) — sem o tabIndex o navegador move o foco para
             o body e o Tab seguinte volta ao topo. O `<main>` fica na rota, e
             nao aqui, para nao aninhar dois. */}
-        <MotionPreferenceIntro />
-        {/* SIS-226 — o CMP, e DEPOIS do prompt de movimento no JSX de propósito.
-            Não é ordem de pintura (os dois se portam para `document.body` e a
-            camada é decidida pelo `z-index`: 90 no banner de movimento, 80/91 no
-            lançador/painel de cookies). É ordem de LEITURA para quem vier
-            depois: os dois são decisões de nível de documento, moram lado a
-            lado, e a sequência entre eles está escrita em `CookieConsent.tsx` —
-            o CMP espera a escolha de movimento, porque a 390px os dois
-            disputariam a mesma faixa de baixo da tela.
+        {/* Era `<MotionPreferenceIntro />`, o prompt de movimento de primeira
+            visita. Retirado a pedido — o único aviso que abre sozinho agora é o
+            de cookies, logo abaixo. A escolha de movimento não se perdeu: o
+            gatilho no rodapé abre o mesmo diálogo, e o padrão continua sendo o
+            `prefers-reduced-motion` do dispositivo, lido pelo script inline mais
+            acima. Ao devolver esta linha, devolver também o portão de sequência
+            em `CookieConsent.tsx` (está comentado lá, com o motivo). */}
+        {/* SIS-226 — o CMP. Ficava DEPOIS do prompt de movimento no JSX de
+            propósito, por ordem de leitura; agora é o único dos dois que abre
+            sozinho. A camada continua decidida pelo `z-index` (80/91 no
+            lançador/painel de cookies), e não pela ordem no JSX — os dois se
+            portam para `document.body`.
             Fora de `/admin` por dentro do componente, e não por um route group:
             é o mesmo caminho que a SIS-216 abriu para o diálogo de movimento. */}
         <CookieConsent />

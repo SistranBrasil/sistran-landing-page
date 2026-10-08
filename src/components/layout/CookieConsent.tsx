@@ -3,7 +3,10 @@
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { hasSeenMotionPrompt } from '@/lib/motionPreference';
+/* Era `import { hasSeenMotionPrompt } from '@/lib/motionPreference';`, usado só
+   pelo portão de sequência mais abaixo neste arquivo. Saiu junto com ele: o
+   banner de movimento não abre mais na primeira visita (ver `layout.tsx`), então
+   não há mais dois banners disputando a faixa de baixo da tela. */
 import {
   aplicarConsentimento,
   CONSENTIMENTO_MINIMO,
@@ -103,7 +106,11 @@ export default function CookieConsent() {
       aplicarConsentimento(gravado);
       return;
     }
-    /* ⚠️ SEQUÊNCIA COM O BANNER DE MOVIMENTO, e é o que resolve o item 5 da
+    /* ⚠️ HISTÓRICO — a sequência descrita neste parágrafo NÃO VIGORA MAIS; o
+       portão que ela justificava está comentado logo abaixo. Fica registrada
+       porque é a razão de ele existir, e volta a valer se o prompt de movimento
+       voltar a abrir sozinho.
+       SEQUÊNCIA COM O BANNER DE MOVIMENTO, e era o que resolvia o item 5 da
        issue sem tocar uma linha daquele componente.
        `.motion-banner` é `fixed; bottom: 1rem` com `width: min(100% - 2rem,
        500px)`: a 390px ele ocupa a faixa inteira de baixo, exatamente onde este
@@ -121,7 +128,15 @@ export default function CookieConsent() {
        pedido derrubou. A sequência com o banner de movimento continua idêntica:
        o que ela protege é a FAIXA DE BAIXO da tela, e a faixa de cookies mora
        nela tanto quanto o painel morava. */
-    if (!hasSeenMotionPrompt()) return;
+    /* ⚠️ O PORTÃO ACIMA CADUCOU, e era `if (!hasSeenMotionPrompt()) return;`.
+       Ele existia só para desempatar a faixa de baixo da tela a 390px, onde o
+       `.motion-banner` e esta faixa se sobrepunham na primeira visita. Com o
+       prompt de movimento fora do ar (comentado em `layout.tsx`), o portão
+       passaria a ser uma espera por um clique que nunca acontece: em visitante
+       novo `hasSeenMotionPrompt()` nunca viraria `true` e a faixa de cookies
+       NUNCA abriria — ou seja, deixar o portão de pé derrubaria o consentimento
+       junto. Se o prompt de movimento voltar a abrir sozinho, esta linha volta
+       com ele; o texto acima explica por quê. */
     setMostrarBanner(true);
   }, [noAdmin]);
 
