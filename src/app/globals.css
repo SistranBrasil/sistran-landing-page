@@ -1647,22 +1647,24 @@ body::after {
    ficam em fluxo normal dentro desta secao, e com altura fixa eles vazariam por
    cima da secao seguinte. Como o conteudo em fluxo é menor que o minimo, o
    percurso de rolagem continua o mesmo. */
+/* 07/10/2026 — O PERCURSO PASSA A SER MEDIDO EM PIXELS, NÃO EM vh.
+   Era `170vh` aqui e `260vh` em ≥1024px: ~590px e ~1440px de curso numa janela de
+   900px. Com a cena virando sequência de quadros (183 no celular, 365 no desktop,
+   ver `hero/HeroCanvas`), isso dava ~3px e ~4px de rolagem por quadro — um giro
+   de roda atravessava um terço da narrativa. O curso agora é `100svh` (a cena
+   sticky) + uma distância fixa: 2000px no celular (~11px por quadro, uma
+   arrastada de polegar ≈ um terço do percurso) e 3200px em ≥1024px (~8,8px por
+   quadro; 85px por dente da roda com o `wheelMultiplier` do Lenis ≈ 10 quadros).
+   Pixels e não vh porque o que importa é a razão gesto/quadro, e ela não deve
+   mudar com a altura da janela. A nota antiga sobre o relatório de UX (p13, hero
+   longo cobra rolagem sem entregar conteúdo) continua válida como teto: 3200px
+   fica no piso da faixa pedida (3000–4500px). */
 #top {
-  min-height: 170vh;
+  min-height: calc(100svh + 2000px);
 }
-/* 260vh -> 320vh: os 60vh a mais sao o tempo de leitura dos indicadores de
-   "Resultados", que agora fecham o percurso. O hero havia sido encurtado
-   justamente por cobrar rolagem sem entregar conteudo (relatorio de UX, p13);
-   aqui a rolagem a mais entrega escrita, nao mais video. */
 @media (min-width: 1024px) {
   #top {
-    /* 320vh -> 260vh (orquestração visual). Volta ao valor anterior à inclusão
-       dos indicadores de "Resultados" no fim do percurso do hero: com "Sistran
-       em números" reconstruída como a seção de prova e escala, o hero não
-       precisa mais sustentar a leitura desses indicadores até o fim. O motivo
-       original do encurtamento vale de novo — hero longo cobra rolagem sem
-       entregar conteúdo novo (relatório de UX, p13). */
-    min-height: 260vh;
+    min-height: calc(100svh + 3200px);
   }
 }
 
@@ -2854,20 +2856,42 @@ h3[id] {
    Hero conduzido por scroll: vídeo de fundo + convite de scroll
    =========================================================== */
 
-/* Vídeo posicionado pelo scroll (ver src/components/primitives/ScrollVideo.tsx).
-   Fica na camada da atmosfera do hero, que continua atrás dele — enquanto o
-   arquivo não chega, é a atmosfera que se vê, não um retângulo preto. */
-.hero-video {
+/* 07/10/2026 — O VÍDEO SAIU. A cena cinematográfica é uma sequência de quadros
+   desenhada em `<canvas>` (ver `src/components/hero/HeroCanvas.tsx`). O que havia:
+
+     .hero-video { position:absolute; inset:0; width:100%; height:100%;
+                   object-fit:cover; opacity:0.9999 }
+
+   O `0.9999` existia porque o Chrome/Edge no Windows promovia um `<video>` em
+   opacidade 1 a um plano de overlay por hardware que ignorava `z-index`. Canvas
+   não tem esse caminho, então a regra não volta.
+
+   Pôster embaixo, canvas em cima, os dois cobrindo a caixa. O `cover` do canvas
+   NÃO é CSS: o backing é `css × DPR` e o recorte é calculado no `drawImage`
+   (`frameRenderer.ts`) — é isso que impede o navegador de ampliar um bitmap de
+   1440 px de forma borrada. O pôster continua `object-fit: cover` porque é um
+   `<img>` e é o que se vê antes do primeiro quadro, com movimento reduzido e em
+   navegador sem AVIF. */
+.hero-canvas-caixa {
   position: absolute;
   inset: 0;
+}
+.hero-poster,
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
+}
+.hero-poster {
   object-fit: cover;
-  /* Opacidade exatamente 1 deixa o Chrome/Edge no Windows promover o vídeo a um
-     plano de overlay por hardware, que ignora `z-index` e desenha por cima de
-     tudo — inclusive do conteúdo do hero. Qualquer valor abaixo de 1 tira o
-     vídeo desse caminho e ele volta a respeitar a ordem normal do DOM. */
-  opacity: 0.9999;
+}
+/* Contexto `alpha: false` nasce PRETO. O canvas só aparece depois que o primeiro
+   quadro foi desenhado (`data-estado="ativo"`, escrito por `useHeroFrameSequence`);
+   até lá quem se vê é o pôster. Sem transição: os dois são o mesmo quadro. */
+.hero-canvas:not([data-estado='ativo']) {
+  visibility: hidden;
 }
 
 /* SIS-190 — moldura do quadro do vídeo. A base é NÃO EXISTIR: a referência

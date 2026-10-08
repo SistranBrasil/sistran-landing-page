@@ -3,6 +3,14 @@
 /**
  * HeroCinematic — Hero cinematográfico controlado por scroll.
  *
+ * 07/10/2026 — ONDE ESTE ARQUIVO DIZ "VÍDEO", LEIA "SEQUÊNCIA DE QUADROS": a cena
+ * deixou de ser um `<video>` raspado por `currentTime` e passou a ser quadros AVIF
+ * desenhados em `<canvas>` pelo scroll (ver `hero/HeroCanvas` e a nota junto das
+ * antigas constantes `HERO_VIDEO`/`HERO_POSTER`, adiante). O percurso do `#top`
+ * passou a ser `100svh + 2000px` / `100svh + 3200px` (ver `globals.css`). Tudo o
+ * mais nesta partitura — legendas, manchete, beats, vinheta, moldura, pastilha —
+ * continua exatamente como descrito abaixo.
+ *
  * Wrapper de 300vh (desktop) / 200vh (mobile) com cena sticky em 100svh. O vídeo
  * é o conteúdo da cena; ao lado dele, na coluna esquerda, passam as três legendas
  * do hero (ver `HeroCaptions`) e, por último, a manchete da home (ver
@@ -109,7 +117,7 @@
    `fase`; `useEffect` aos três efeitos da Fase A. Sobra `useRef`, do
    `wrapperRef`, que é alvo do `useScroll` e não tem nada a ver com reprodução. */
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, transform, useScroll, useTransform } from 'motion/react';
 import { useReducedMotion, useScrollOpacity } from '@/lib/motion';
 /* Só a Fase A empurrava a página (ela escrevia posição de rolagem a partir do
    `currentTime`). Sem ela, o hero não move a página — quem move é o usuário.
@@ -119,7 +127,11 @@ import { useReducedMotion, useScrollOpacity } from '@/lib/motion';
 import HeroCaptions from './ui/HeroCaptions';
 import HeroPitch from './ui/HeroPitch';
 import { useRouteLoadGate } from './loading/RouteLoadGate';
-import { ScrollVideo } from './primitives/ScrollVideo';
+/* 07/10/2026 — o `<video>` saiu da cena. `primitives/ScrollVideo` FICA no repositório
+   (ainda é usado por `legacy/ImpactSequence` e `legacy/StackScenes`); o hero passa a
+   desenhar uma sequência de quadros em `<canvas>`, ver `hero/HeroCanvas`.
+     | import { ScrollVideo } from './primitives/ScrollVideo'; */
+import HeroCanvas from './hero/HeroCanvas';
 import { ScrollCue } from './primitives/ScrollCue';
 
 /**
@@ -146,15 +158,26 @@ import { ScrollCue } from './primitives/ScrollCue';
    `object-fit: cover` quase não corta. E o assunto de cada beat (o rotulo
    "Brasil", as torres, a marca) vive no centro/direita do quadro — nenhum deles
    cai na borda esquerda que a `mask-image` dissolve no branco. */
-const HERO_VIDEO = '/videos/hero-scroll-v2.mp4';
-
-/* Primeiro quadro do proprio video: enquanto o arquivo carrega, o hero mostra a
-   cena inicial em vez de preto. Gerado com
-   `ffmpeg -i hero-scroll-v2.mp4 -frames:v 1 -vf scale=720:720 -quality 72 hero-scroll-v2-poster.webp`.
-   Reduzido a 720: em 1440 cheio o mesmo quadro dava 369 KB, e um cartaz que só
-   se vê por um instante não paga esse preço. Anterior:
-     const HERO_POSTER = '/videos/hero-scroll-poster.webp'; */
-const HERO_POSTER = '/videos/hero-scroll-v2-poster.webp';
+/* ══ 07/10/2026 — O VÍDEO SAIU; A CENA É UMA SEQUÊNCIA DE QUADROS EM CANVAS ═══
+   Eram:
+     const HERO_VIDEO  = '/videos/hero-scroll-v2.mp4';          // 1440², all-intra, 10,43 MiB
+     const HERO_POSTER = '/videos/hero-scroll-v2-poster.webp';  // 720², 58 KB
+   Por quê: raspar `currentTime` de um H.264 (mesmo all-intra, CRF 35) entregava
+   quadros borrados — o decodificador buscava a cada gesto e a compressão comia o
+   mapa, os prédios e os textos do vídeo. Agora o scroll move um `playhead.frame`
+   (GSAP ScrollTrigger, `scrub: 0.3`) e o quadro correspondente é desenhado num
+   `<canvas>` no DPR da tela, a partir de quadros AVIF gerados do MASTER de 2160²
+   (não do MP4 comprimido). Tudo em `src/components/hero/`:
+     heroFrameConfig.ts     tiers, URLs, janela de decode (lê hero-frames.manifest.json)
+     frameLoader.ts         fila de rede com prioridade ao redor do playhead
+     decodeWindow.ts        ImageBitmaps ao redor do playhead
+     frameRenderer.ts       canvas: DPR, cover, draw
+     useHeroFrameSequence   o hook que amarra tudo ao `#top`
+     HeroCanvas.tsx         pôster + canvas + preloads
+   Geração: `node scripts/gerar-quadros-hero.mjs`. Spec e medições em
+   `docs/superpowers/specs/2026-10-07-hero-frame-sequence-design.md`.
+   O 1:1 e a leitura do quadro (assunto no centro/direita) continuam valendo: a
+   sequência é o mesmo enquadramento do vídeo, só que do master. */
 
 export default function HeroCinematic() {
   const rm = useReducedMotion();
@@ -503,7 +526,19 @@ export default function HeroCinematic() {
      `transparent` ao tom final, e opacidade multiplica os dois — o miolo
      transparente continua transparente, só a borda pesa mais ou menos. Trocar a
      string do `background` a cada quadro reconstruiria o gradiente na GPU. */
-  const vinheta = useTransform(scrollYProgress, BEATS, [0.7, 0.7, 1, 0.58, 0.7]);
+  /* 08/10/2026 — a vinheta SAI no fim do percurso. Os últimos quadros da sequência são o end
+     card da marca (logo navy sobre BRANCO, ver `FIM` em `scripts/gerar-quadros-hero.mjs`): uma
+     vinheta navy de 0,7 em cima de um card branco escurecia os cantos e lia como sujeira. O card
+     entra entre os quadros 336 e 348 de 361 (≈0,93–0,96 do percurso); a vinheta cai de 0,7 a 0
+     entre 0,90 e 0,96, junto com ele. Antes: `useTransform(scrollYProgress, BEATS, [0.7, 0.7, 1,
+     0.58, 0.7])`. Os BEATS de enquadramento (`scale`/`x`/`y`) não mudam. */
+  /* Forma de FUNÇÃO, não de array: na forma de array o `motion` 12 acelera `opacity` numa
+     `Animation` nativa com `ViewTimeline`, que mede a visibilidade do próprio nó e ignora o
+     relógio passado — o mesmo defeito que `useScrollOpacity` (`@/lib/motion`) e o `HeroPitch`
+     documentam. Medido aqui em 08/10/2026: com o array, a vinheta ficava em 0,7 no fim do
+     percurso. `transform` é o interpolador por trechos do próprio `motion`. */
+  const mapaDaVinheta = transform([...BEATS, 0.9, 0.96], [0.7, 0.7, 1, 0.58, 0.7, 0.7, 0]);
+  const vinheta = useTransform(() => mapaDaVinheta(scrollYProgress.get()));
 
   return (
     /* Altura do percurso (200vh / 320vh) e cena sticky vivem em globals.css. */
@@ -610,32 +645,21 @@ export default function HeroCinematic() {
                 'linear-gradient(165deg, #041B3D 0%, #062B54 42%, #0A3E70 78%, #0F5590 100%)',
             }}
           />
-          <ScrollVideo
-            className="hero-video"
-            src={HERO_VIDEO}
-            poster={HERO_POSTER}
-            progress={scrollYProgress}
-            /* SIS-243/SIS-241 — os 10,43 MiB do `hero-scroll-v2.mp4` só partem depois que
-               o portão da rota libera. Enquanto ele está de pé, o hero é o
-               PÔSTER (58 KB) e nada mais: era o vídeo que disputava banda com
-               as fontes e as imagens que o próprio portão está esperando, e o
-               overlay durava mais por causa do que ele mesmo cobria.
+          {/* 07/10/2026 — era `<ScrollVideo className="hero-video" src={HERO_VIDEO}
+              poster={HERO_POSTER} progress={scrollYProgress} carregar={liberado} />`.
 
-               Não dependia de `fase` nem de `rm` quando a entrada automática
-               existia, e continua não dependendo de nada além do portão: a
-               raspagem precisa do arquivo de todo jeito. O que isto muda é
-               QUANDO ele é pedido, nunca SE. */
-            carregar={liberado}
-            /* 02/10/2026 — as quatro propriedades da Fase A saíram com ela (ver o
-               bloco de registro no corpo do componente). Sem elas o `ScrollVideo`
-               cai no default `reproduzir={false}`: nunca chama `play()`, e
-               `progress` é o único escritor de `currentTime` — que é o pedido,
-               «deixar o controle só no scroll».
-                 | reproduzir={!rm && fase === 'entrada'}
-                 | tetoReproducao={TETO_ENTRADA}
-                 | onFracao={aoFracaoDoVideo}
-                 | onEntradaEncerrada={encerrarEntrada} */
-          />
+              O canvas NÃO recebe `scrollYProgress`: o relógio dele é um GSAP
+              ScrollTrigger próprio, medindo o MESMO `#top` com os MESMOS limites
+              (`top top` → `bottom bottom` ≡ `start start` → `end end` do
+              `useScroll`), com `scrub` para a inércia que um `MotionValue` cru não
+              tem. As legendas, a manchete, a pastilha, os beats e a vinheta
+              continuam no `motion`, intocados.
+
+              `carregar={liberado}` continua valendo pelo mesmo motivo da SIS-243:
+              a fila de quadros (dezenas de MiB) só parte depois que o portão da
+              rota sai da tela; antes disso o hero é o pôster e nada mais. Muda
+              QUANDO os quadros são pedidos, nunca SE. */}
+          <HeroCanvas gatilho={wrapperRef} carregar={liberado} />
         </motion.div>
 
         {/* Vinheta radial: escurece as bordas e joga o olho para o centro, e

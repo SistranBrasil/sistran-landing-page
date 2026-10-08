@@ -1,4 +1,10 @@
 /**
+ * ⚠️ 07/10/2026 — SUPERADA. O hero não tem mais `<video>` nem `.hero-video`: a cena é
+ * uma sequência de quadros em canvas (`src/components/hero/`). O contrato que esta
+ * sonda provava — nada de rede da mídia antes de o portão liberar — continua valendo
+ * e passou a ser medido por `scripts/medir-hero-quadros.mjs` (pedidos a `/hero/` só
+ * depois de `data-route-liberado="true"`). O arquivo fica como registro da SIS-243.
+ *
  * SIS-243 — prova, no navegador, que o vídeo do hero da home só existe DEPOIS
  * que o `RouteLoadGate` sai da tela.
  *
