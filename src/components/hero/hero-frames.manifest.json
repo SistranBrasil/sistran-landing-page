@@ -1,0 +1,50 @@
+{
+  "versao": "v1",
+  "base": "/hero/sistran/v1",
+  "fonte": {
+    "arquivo": "docs/fontes/videos/videohero.mp4",
+    "quadros": 361,
+    "fps": 24,
+    "largura": 2160,
+    "altura": 2160
+  },
+  "tiers": {
+    "mobile": {
+      "pasta": "mobile",
+      "quadros": 181,
+      "passo": 2,
+      "largura": 1080,
+      "altura": 1440,
+      "formato": "avif",
+      "crf": 30,
+      "bytes": 17690803,
+      "poster": "poster.webp",
+      "posterBytes": 411926
+    },
+    "desktop": {
+      "pasta": "desktop",
+      "quadros": 361,
+      "passo": 1,
+      "largura": 1152,
+      "altura": 1152,
+      "formato": "avif",
+      "crf": 30,
+      "bytes": 33418022,
+      "poster": "poster.webp",
+      "posterBytes": 384270
+    },
+    "desktop-hd": {
+      "pasta": "desktop-hd",
+      "quadros": 361,
+      "passo": 1,
+      "largura": 1440,
+      "altura": 1440,
+      "formato": "avif",
+      "crf": 30,
+      "bytes": 43407293,
+      "poster": "poster.webp",
+      "posterBytes": 538850
+    }
+  },
+  "geradoEm": "2026-10-08T04:24:38.331Z"
+}

@@ -26,3 +26,7 @@ docs/capturas/
 *.tmp.mjs
 
 .env*
+
+# Quadros intermediários do hero (scripts/gerar-quadros-hero.mjs)
+.tmp-hero-frames/
+.tmp-hero-frames-*.log

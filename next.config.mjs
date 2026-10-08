@@ -66,5 +66,20 @@ const nextConfig = {
   async redirects() {
     return [{ source: '/solucoes/lumina-ai', destination: '/solucoes/luminna-ai', permanent: true }];
   },
+  /* 07/10/2026 — os quadros do hero (`public/hero/sistran/v1/...`, centenas de AVIF) são
+     imutáveis por construção: o caminho carrega a versão, e regenerar a sequência é subir
+     uma pasta nova (`v2`). Sem isto a Vercel serve `public/` com `max-age=0, must-revalidate`
+     e cada revisita faria ~365 requisições condicionais. */
+  async headers() {
+    /* Só em produção. Em `next dev` o `immutable` fazia o navegador reaproveitar quadros velhos
+       depois de regenerar a sequência (o `fetch()` da fila usa o cache HTTP) — medido em 08/10. */
+    if (process.env.NODE_ENV !== 'production') return [];
+    return [
+      {
+        source: '/hero/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+    ];
+  },
 };
 export default nextConfig;
