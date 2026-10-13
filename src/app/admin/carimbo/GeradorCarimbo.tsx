@@ -1,6 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useActionState, useCallback, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { salvarCarimbo, type EstadoCarimbo } from './acoes';
+import type { CarimboBruto } from '@/lib/carimbosTipos';
 import {
   ARTE_REFERENCIA,
   FORMATOS,
@@ -51,23 +54,44 @@ function nomeArquivo(o: Opcoes) {
   return `carimbo-${marca || 'sistran'}-${o.formato}-${o.acabamento}-${cor}.png`;
 }
 
-export function GeradorCarimbo() {
+/**
+ * ⚠️ O GERADOR GANHOU PERSISTÊNCIA, e o motor de desenho não foi tocado.
+ *
+ * Até aqui ele só exportava arquivo: desenhava no canvas e disparava um
+ * `<a download>`. Agora ele também SALVA — e o que é salvo são duas coisas
+ * juntas: o PNG (que é o que o site pinta) e a RECEITA (que é o que torna o
+ * carimbo reeditável; ver `ReceitaCarimbo`).
+ *
+ * `emEdicao` chega quando a URL traz `?editar=<id>`: os controles nascem com os
+ * valores daquele carimbo em vez dos padrões, e o `idOriginal` viaja escondido no
+ * formulário para que renomear não troque a chave — id trocado é toda referência
+ * ao carimbo apontando para o vazio.
+ *
+ * O botão «Baixar PNG» FICA. Ele continua sendo o caminho para quem precisa do
+ * arquivo fora do site (apresentação, documento, arte de terceiro), e era o único
+ * uso da ferramenta até agora.
+ */
+export function GeradorCarimbo({ emEdicao }: { emEdicao?: CarimboBruto }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const router = useRouter();
 
-  const [prefixo, setPrefixo] = useState('Realizado pela');
-  const [marca, setMarca] = useState('Sistran');
-  const [serial, setSerial] = useState('SIS • 2026');
-  const [cor, setCor] = useState<string>(CORES[0].valor);
+  const [nome, setNome] = useState(emEdicao?.nome ?? '');
+  const [prefixo, setPrefixo] = useState(emEdicao?.receita.prefixo ?? 'Realizado pela');
+  const [marca, setMarca] = useState(emEdicao?.receita.marca ?? 'Sistran');
+  const [serial, setSerial] = useState(emEdicao?.receita.serial ?? 'SIS • 2026');
+  const [cor, setCor] = useState<string>(emEdicao?.receita.cor ?? CORES[0].valor);
   /* «Site» é o padrão desde 08/10: é a estrutura do carimbo em uso
      (`public/images/carimbo site novo.png`), e abrir a ferramenta já nela é o que
      evita exportar no formato antigo por inércia. */
-  const [formato, setFormato] = useState<Formato>('site');
-  const [acabamento, setAcabamento] = useState<Acabamento>('outline');
+  const [formato, setFormato] = useState<Formato>((emEdicao?.receita.formato as Formato) ?? 'site');
+  const [acabamento, setAcabamento] = useState<Acabamento>(
+    (emEdicao?.receita.acabamento as Acabamento) ?? 'outline',
+  );
   /* Sem inclinação por padrão: a referência é reta, e o `-3deg` dos outros
      formatos deixaria a réplica torta no primeiro quadro. */
-  const [rotacao, setRotacao] = useState(0);
-  const [textura, setTextura] = useState(true);
-  const [base, setBase] = useState(24);
+  const [rotacao, setRotacao] = useState(emEdicao?.receita.rotacao ?? 0);
+  const [textura, setTextura] = useState(emEdicao?.receita.textura ?? true);
+  const [base, setBase] = useState(emEdicao?.receita.base ?? 24);
   const [escala, setEscala] = useState(3);
   const [fundo, setFundo] = useState<(typeof FUNDOS)[number]['valor']>('xadrez');
 
@@ -180,6 +204,59 @@ export function GeradorCarimbo() {
     }
   }, [baixar, montarOpcoes]);
 
+  /**
+   * O SALVAMENTO. O `FormData` é montado à mão em vez de vir de campos `name=`
+   * do formulário, e é deliberado: o PNG não é um campo que o operador preenche
+   * — ele é desenhado no instante do clique, num canvas descartável, com as
+   * mesmas opções da prévia. Montar aqui é o que garante que o arquivo salvo é
+   * byte a byte o que está na tela.
+   *
+   * ⚠️ A DENSIDADE DO SALVAMENTO É A ESCOLHIDA no controle, igual ao download.
+   * As medidas que vão para o catálogo são as do BITMAP (`canvas.width/height`),
+   * não as da caixa lógica: é o par largura/altura que `CarimboBatida` usa para
+   * montar o `aspect-ratio`, e a razão é a mesma nos dois (3× mantém a razão).
+   */
+  const [estadoSalvar, acaoSalvar, salvando] = useActionState<EstadoCarimbo, FormData>(
+    salvarCarimbo,
+    { estado: 'inicial' },
+  );
+
+  const salvar = useCallback(async () => {
+    const canvas = document.createElement('canvas');
+    const o = montarOpcoes();
+    renderizar(canvas, o, escala);
+    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, 'image/png'));
+    if (!blob) return;
+
+    const dados = new FormData();
+    dados.set('nome', nome);
+    if (emEdicao) dados.set('idOriginal', emEdicao.id);
+    dados.set('prefixo', o.prefixo);
+    dados.set('marca', o.marca);
+    dados.set('serial', o.serial);
+    dados.set('cor', o.cor);
+    dados.set('formato', o.formato);
+    dados.set('acabamento', o.acabamento);
+    dados.set('rotacao', String(o.rotacao));
+    if (o.textura) dados.set('textura', 'on');
+    dados.set('base', String(o.base));
+    dados.set('largura', String(canvas.width));
+    dados.set('altura', String(canvas.height));
+    dados.set('png', new File([blob], 'carimbo.png', { type: 'image/png' }));
+    acaoSalvar(dados);
+  }, [acaoSalvar, emEdicao, escala, montarOpcoes, nome]);
+
+  /* Depois de criar, volta para a aba dos lugares — é lá que o carimbo novo
+     serve para alguma coisa, e deixar o operador na tela de criação faria
+     parecer que nada aconteceu. Na EDIÇÃO não há navegação: quem está acertando
+     um texto costuma salvar duas ou três vezes seguidas. */
+  useEffect(() => {
+    if (estadoSalvar.estado === 'ok' && !emEdicao) {
+      const t = setTimeout(() => router.push('/admin/carimbo'), 1200);
+      return () => clearTimeout(t);
+    }
+  }, [emEdicao, estadoSalvar, router]);
+
   const campo =
     'w-full rounded-lg border border-black/[0.12] bg-white px-3 py-2 text-sm text-[#0f172a] outline-none transition-colors focus:border-[#0079cb]';
   const rotulo = 'mb-1.5 block font-mono text-[11px] uppercase tracking-[0.16em] text-[#667085]';
@@ -228,6 +305,24 @@ export function GeradorCarimbo() {
 
       {/* ── controles ───────────────────────────────────────────────────────── */}
       <aside className="grid gap-4 self-start rounded-2xl border border-black/[0.07] bg-white p-4 shadow-[0_1px_2px_rgba(16,24,40,0.04)]">
+        {/* ── O NOME, primeiro campo: é a identidade do carimbo no catálogo ──── */}
+        <div>
+          <label className={rotulo} htmlFor="nome">
+            Nome do carimbo
+          </label>
+          <input
+            id="nome"
+            className={campo}
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+            placeholder="ex.: Realizado pela Sistran 2026"
+          />
+          <p className="mt-1.5 text-[11px] leading-snug text-[#98a2b3]">
+            É por este nome que você vai achá-lo na lista de lugares e dentro de um evento. Não
+            aparece no site.
+          </p>
+        </div>
+
         <div>
           <label className={rotulo} htmlFor="prefixo">
             Linha de cima
@@ -391,10 +486,44 @@ export function GeradorCarimbo() {
         </div>
 
         <div className="grid gap-2 border-t border-black/[0.07] pt-4">
+          {/* SALVAR vem antes de BAIXAR e é o botão sólido: depois deste pedido, o
+              caminho principal da ferramenta é aplicar no site, não exportar
+              arquivo para copiar à mão. */}
+          <button
+            type="button"
+            onClick={salvar}
+            disabled={salvando || nome.trim().length === 0}
+            className="cursor-pointer rounded-xl bg-[#0f172a] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#1d2939] disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            {salvando
+              ? 'Salvando…'
+              : emEdicao
+                ? 'Salvar alterações'
+                : 'Salvar carimbo'}
+          </button>
+
+          <div aria-live="polite">
+            {estadoSalvar.estado === 'ok' && (
+              <p className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
+                {estadoSalvar.recado}
+              </p>
+            )}
+            {estadoSalvar.estado === 'erro' && (
+              <ul role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
+                {estadoSalvar.problemas.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+
           <button
             type="button"
             onClick={() => baixar(montarOpcoes())}
-            className="cursor-pointer rounded-xl bg-[#0079cb] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#0668ab]"
+            /* Era o botão sólido azul; virou secundário quando «salvar» passou a
+               ser a ação principal. Dois botões cheios lado a lado não dizem qual
+               é o caminho esperado. */
+            className="cursor-pointer rounded-xl border border-black/[0.12] bg-white px-4 py-2.5 text-sm font-semibold text-[#0f172a] transition-colors hover:border-[#0079cb]/50"
           >
             Baixar PNG
           </button>

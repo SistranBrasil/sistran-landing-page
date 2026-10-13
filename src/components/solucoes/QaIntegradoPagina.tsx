@@ -142,7 +142,7 @@ import {
   Users,
 } from 'lucide-react';
 import ContactModal from '@/components/ContactModal';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import RevealScope from '@/components/motion/RevealScope';
 import { ACCELERATORS } from '@/data/accelerators';
 import {
@@ -440,7 +440,8 @@ export default function QaIntegradoPagina({ page }: { page: AcceleratorPage }) {
                 Ela NÃO é `data-reveal` — quem a faz entrar é a batida —, então a
                 cascata do bloco não muda: o `h1` já era o índice 0 e o parágrafo
                 segue no 1. */}
-            <CarimboBatida
+            <CarimboDoLugar
+              lugar="solucao-qa-integrado"
               src={CARIMBO.src}
               alt=""
               larguraIntrinseca={CARIMBO.largura}

@@ -7,6 +7,8 @@ import PageTransition from '@/components/ui/PageTransition';
 import AnchorFocus from '@/components/ui/AnchorFocus';
 import ScrollProgressBar from '@/components/ui/ScrollProgressBar';
 import MotionPolicyProvider from '@/components/layout/MotionPolicyProvider';
+import { CarimbosEmUsoProvider } from '@/components/carimbo/CarimbosEmUsoProvider';
+import { carimbosEmUso } from '@/lib/carimbosEmUso';
 /* Era `import { MotionPreferenceIntro } from '@/components/layout/MotionPreferenceIntro';`.
    Saiu a pedido: só o banner de cookies abre sozinho agora. O componente
    continua no repositório e o diálogo segue alcançável pelo rodapé
@@ -298,7 +300,25 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+/**
+ * ⚠️ O LAYOUT RAIZ VIROU `async`, e a razão é o catálogo de carimbos.
+ *
+ * `carimbosEmUso()` é a única leitura assíncrona daqui, e ela acontece UMA vez por
+ * renderização em vez de uma por seção com carimbo. O layout é o único ponto que
+ * cobre os vinte lugares do inventário, que estão espalhados por sete rotas e, na
+ * maioria, dentro de componente de cliente — ver o docblock de
+ * `CarimbosEmUsoProvider` para por que não desce por prop.
+ *
+ * ⚠️ ISTO NÃO TORNA AS ROTAS DINÂMICAS. A leitura usa `lerCatalogoDoSite()`, que
+ * busca com cache etiquetado (`ETIQUETA_CARIMBOS`) e não `no-store`: em
+ * pré-renderização ela roda no build, e quem a refaz é o `revalidatePath` das
+ * ações do admin. Era a condição do pedido — as páginas continuam estáticas e
+ * atualizam ao salvar. Uma leitura `no-store` aqui arrastaria TODA rota do site
+ * para renderização por visita.
+ */
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const carimbos = await carimbosEmUso();
+
   return (
     /* `suppressHydrationWarning` só aqui, e por um motivo específico: o script
        inline abaixo grava `data-motion` em `<html>` ANTES do primeiro paint, que
@@ -399,14 +419,20 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             Fora de `/admin` por dentro do componente, como o `CookieConsent`. */}
         <ScrollProgressBar />
         <AnchorFocus />
-        <MotionPolicyProvider>
-          <RouteLoadGate>
-            <a href="#conteudo" className="skip-link">
-              Pular para o conteúdo
-            </a>
-            <PageTransition>{children}</PageTransition>
-          </RouteLoadGate>
-        </MotionPolicyProvider>
+        {/* O provedor de carimbos envolve TUDO, por fora do `RouteLoadGate`: há
+            carimbo em seção de rota e em componente compartilhado, e um deles
+            (`CarimboBatida` com `gatilho="rota"`) lê o portão de carregamento por
+            dentro. Ficar por fora garante que a ordem dos dois não importa. */}
+        <CarimbosEmUsoProvider valor={carimbos}>
+          <MotionPolicyProvider>
+            <RouteLoadGate>
+              <a href="#conteudo" className="skip-link">
+                Pular para o conteúdo
+              </a>
+              <PageTransition>{children}</PageTransition>
+            </RouteLoadGate>
+          </MotionPolicyProvider>
+        </CarimbosEmUsoProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

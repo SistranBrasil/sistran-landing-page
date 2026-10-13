@@ -53,6 +53,7 @@ export default function FormularioEvento({
   icones,
   imagens,
   miniaturas,
+  carimbos,
   modo = 'editar',
   naNuvem,
 }: {
@@ -61,6 +62,8 @@ export default function FormularioEvento({
   icones: string[];
   imagens: string[];
   miniaturas: string[];
+  /** Os carimbos do catálogo, para o campo de troca. Lista vazia = nenhum criado. */
+  carimbos: { id: string; nome: string }[];
   modo?: 'editar' | 'criar';
   /** Onde o salvamento vai cair, para a mensagem de sucesso não mentir. */
   naNuvem: boolean;
@@ -364,6 +367,43 @@ export default function FormularioEvento({
                     </option>
                   ))}
                 </select>
+                {/* ── O CARIMBO, colado na categoria de propósito ──────────────
+                    Ele fica aqui, e não junto dos campos de arte, porque é a
+                    categoria que decide o carimbo quando este campo está vazio —
+                    os dois controles governam a mesma peça da tela. Separá-los
+                    faria o operador trocar a categoria sem perceber que acabou de
+                    trocar o carimbo também. */}
+                <label className={`${rotulo} mt-5`} htmlFor="carimbo">
+                  Carimbo
+                </label>
+                <select
+                  id="carimbo"
+                  name="carimbo"
+                  value={valores.carimbo ?? ''}
+                  onChange={(e) => trocar('carimbo', e.target.value)}
+                  className={campo}
+                  disabled={carimbos.length === 0}
+                >
+                  <option value="">Seguir a categoria</option>
+                  {carimbos.map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.nome}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-2 text-[12px] leading-snug text-[#98a2b3]">
+                  {carimbos.length === 0 ? (
+                    <>
+                      Nenhum carimbo criado ainda — este evento usa a arte da categoria. Crie um em{' '}
+                      <Link href="/admin/carimbo?aba=criar" className="text-[#0079cb]">
+                        Carimbos
+                      </Link>
+                      .
+                    </>
+                  ) : (
+                    'Vazio usa a arte da categoria, como hoje. Escolher um carimbo troca só o deste evento.'
+                  )}
+                </p>
               </div>
               <div>
                 <label className={rotulo} htmlFor="icon">

@@ -1,5 +1,5 @@
 import './trajectory.css';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import { anoAtual } from '@/data/trajectory';
 import { TrajectoryOverview } from './TrajectoryOverview';
 import { TrajectoryScrollytelling } from './TrajectoryScrollytelling';
@@ -88,7 +88,8 @@ export function TrajectorySection({ id }: { id?: string }) {
           <h2 id="trajetoria-titulo" className="sr-only">
             Nossa trajetória
           </h2>
-          <CarimboBatida
+          <CarimboDoLugar
+            lugar="parceiros-trajetoria"
             src="/carimbo-trajetoria-ticket-outline-0757c7.png"
             /* Vazio porque o `<h2>` acima diz a mesma frase — ver o docblock. */
             alt=""

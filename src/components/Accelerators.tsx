@@ -19,7 +19,7 @@ import { SOLUTIONS_CATALOG, type Accelerator } from '@/data/accelerators';
    GENÉRICO da casa (SIS-277), o mesmo de `/parceiros-e-implementacoes` e
    `/sistran-labs`: batida por `fromTo`, reduce nascendo no estado final, razão de
    aspecto vinda das dimensões do arquivo. Nada de GSAP ad hoc aqui. */
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import { vGrid, vCard, vHeader, vTitle, vSubtitle, VP, useReducedMotion } from '@/lib/motion';
 /* SIS-216 — `useTilt` SAIU DAQUI, e não por gosto: ele escreve o `transform` do
    card em `style` inline, a cada quadro de `mousemove`. O hover que esta issue
@@ -397,7 +397,8 @@ export default function Accelerators() {
                 segue valendo porque o invólucro é DESCENDENTE de `.accel-cabeca`,
                 não um novo escopo. */}
             <div className="accel-cabeca-linha">
-              <CarimboBatida
+              <CarimboDoLugar
+                lugar="solucoes-aceleradores"
                 src="/images/carimbo-disruptiva-ticket-outline-0757c7.png"
                 alt=""
                 larguraIntrinseca={723}

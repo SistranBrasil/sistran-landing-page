@@ -31,7 +31,23 @@ const nextConfig = {
      O que NÃO foi feito, por restrição em vigor («não teste, não faça build»):
      a medida de peso e LCP em `next start` que o documento pede no item 3. Ela
      fica para quem puder rodar build. */
-  images: {},
+  images: {
+    /* ⚠️ O BLOB PRECISA ESTAR DECLARADO, senão `next/image` RECUSA a URL.
+       Com o otimizador ligado (nota acima), toda imagem remota tem de bater com
+       um padrão daqui — `next/image` lança «hostname is not configured» e o nó
+       não renderiza. As artes publicadas pelo admin voltam como URL absoluta do
+       Blob (`https://<id>.public.blob.vercel-storage.com/...`), tanto o carimbo
+       gerado em `/admin/carimbo` quanto a arte de evento que `publicarArte` já
+       gravava desde a SIS-241 — ou seja, isto também fecha um furo que já
+       existia no caminho de eventos.
+       O host é por SUFIXO porque o subdomínio é o id da loja, que muda por
+       projeto e não se pode cravar; `pathname` fica aberto porque os caminhos são
+       montados no servidor (`eventos/arte/...`, `carimbos/arte/...`) e nunca
+       recebidos do navegador. */
+    remotePatterns: [
+      { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
+    ],
+  },
   /* SIS-280 — a slug do Luminna AI passou a ter dois n (`/solucoes/lumina-ai` →
      `/solucoes/luminna-ai`). O redirect existe porque o endereço velho circula
      fora do nosso controle: ele esteve no sitemap, e link indexado ou salvo por

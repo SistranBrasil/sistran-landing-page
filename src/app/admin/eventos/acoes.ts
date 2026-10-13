@@ -124,6 +124,13 @@ function doFormulario(formulario: FormData, base: EventoBruto): EventoBruto {
   else delete evento.featured;
   if (marcado(formulario, 'youtube')) evento.youtube = true;
   else delete evento.youtube;
+  /* O CARIMBO segue a mesma regra de `image`/`thumb`: valor vazio REMOVE a chave
+     em vez de gravar string vazia. É o que faz «seguir a categoria» ser a
+     ausência do campo, e não um valor sentinela que todo leitor teria de saber
+     interpretar — ver `carimbo` em `EventoBruto`. */
+  const carimbo = texto(formulario, 'carimbo').trim();
+  if (carimbo) evento.carimbo = carimbo;
+  else delete evento.carimbo;
   return evento;
 }
 

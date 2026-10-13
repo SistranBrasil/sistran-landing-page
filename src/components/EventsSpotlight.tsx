@@ -866,7 +866,7 @@ export default function EventsSpotlight({
                   `animar` ligado aqui e desligado na lista estreita porque o palco
                   tem UM cartão, que remonta ao trocar de evento; a lista monta os
                   quinze de uma vez (o porquê está no componente do carimbo). */}
-              <CarimboKindEvento kind={evento.kind} animar />
+              <CarimboKindEvento kind={evento.kind} carimboId={evento.carimbo} animar />
               {/* O chip textual que ocupava este lugar nos kinds `global`,
                   `nacional` e `parceiro`, guardado porque é o desenho que volta se o
                   carimbo for revertido. Saiu por pedido da issue: «Zero chip textual
@@ -1209,7 +1209,7 @@ export default function EventsSpotlight({
                     a lista estreita (carrossel da SIS-239) e tem markup próprio. É
                     este bloco que atende o «mobile» do aceite.
                     Sem `animar`: aqui os quinze cartões montam de uma vez. */}
-                <CarimboKindEvento kind={e.kind} />
+                <CarimboKindEvento kind={e.kind} carimboId={e.carimbo} />
                 {/* O chip textual que ocupava este lugar, guardado pelo mesmo motivo
                     do bloco do palco (ver lá).
 

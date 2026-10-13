@@ -5,6 +5,7 @@ import { EVENT_KINDS, EVENT_KIND_META, type EventKind } from '@/data/events';
 import { artesDisponiveis } from '@/lib/eventosArquivo';
 import { lerCatalogoPublicado, naNuvem } from '@/lib/eventosLoja';
 import FormularioEvento from './FormularioEvento';
+import { lerCatalogoFresco } from '@/lib/carimbosLoja';
 
 /**
  * Lê a loja a cada requisição — mesma razão da lista.
@@ -17,6 +18,7 @@ import FormularioEvento from './FormularioEvento';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminEventoPage({ params }: { params: Promise<{ id: string }> }) {
+  const { carimbos: carimbosDoCatalogo } = await lerCatalogoFresco();
   /* `params` é Promise no App Router deste projeto (mesmo padrão de
      `src/app/blog/[slug]/page.tsx`). */
   const { id } = await params;
@@ -45,6 +47,10 @@ export default async function AdminEventoPage({ params }: { params: Promise<{ id
         icones={Object.keys(ICONS).sort()}
         imagens={imagens}
         miniaturas={miniaturas}
+        /* Os carimbos do catálogo, só id e nome: o formulário não desenha carimbo,
+           só escolhe um. Mandar o registro inteiro levaria a receita e as medidas
+           para o cliente sem uso. */
+        carimbos={carimbosDoCatalogo.map(({ id, nome }) => ({ id, nome }))}
         naNuvem={naNuvem()}
       />
     </>

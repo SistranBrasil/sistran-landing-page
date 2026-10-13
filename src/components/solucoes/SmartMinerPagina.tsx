@@ -103,7 +103,7 @@ import {
   Sparkles,
   Workflow,
 } from 'lucide-react';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import ContactModal from '@/components/ContactModal';
 import RevealScope from '@/components/motion/RevealScope';
 import { ACCELERATORS } from '@/data/accelerators';
@@ -487,7 +487,8 @@ export default function SmartMinerPagina({ page }: { page: AcceleratorPage }) {
                 a primeira da cascata — o `cascata()` do letreiro e do lead não muda,
                 porque a cápsula não é `data-reveal`: quem a faz entrar é a própria
                 batida. */}
-            <CarimboBatida
+            <CarimboDoLugar
+              lugar="solucao-smart-miner"
               src={CARIMBO.src}
               alt=""
               larguraIntrinseca={CARIMBO.largura}

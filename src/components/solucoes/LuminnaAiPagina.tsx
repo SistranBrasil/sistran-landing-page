@@ -217,7 +217,7 @@ import {
   TrendingUp,
   Wrench,
 } from 'lucide-react';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import EcossistemaLuminna from './EcossistemaLuminna';
 /* SIS-220 (5ª volta) — DUAS montagens seguem fora da rota e os imports vão com elas,
    senão o lint aponta símbolo não usado: o modal de contato (sem gatilho) e a
@@ -860,7 +860,8 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                 `data-reveal` com cascata 0 e o carimbo batendo por rota: a batida é a
                 primeira coisa que acontece na dobra, e o letreiro sobe atrás dela. */}
             <p data-reveal="fade-up">
-              <CarimboBatida
+              <CarimboDoLugar
+                lugar="luminna-capa"
                 src={CARIMBO_CAPA.src}
                 alt=""
                 larguraIntrinseca={CARIMBO_CAPA.largura}
@@ -1107,7 +1108,8 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
               >
                 {desafios.heading}
               </h2>
-              <CarimboBatida
+              <CarimboDoLugar
+                lugar="luminna-desafios"
                 src={CARIMBO_DESAFIOS.src}
                 alt=""
                 larguraIntrinseca={CARIMBO_DESAFIOS.largura}
@@ -1254,7 +1256,8 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
               >
                 {beneficios.heading}
               </h2>
-              <CarimboBatida
+              <CarimboDoLugar
+                lugar="luminna-beneficios"
                 src={CARIMBO_BENEFICIOS.src}
                 alt=""
                 larguraIntrinseca={CARIMBO_BENEFICIOS.largura}

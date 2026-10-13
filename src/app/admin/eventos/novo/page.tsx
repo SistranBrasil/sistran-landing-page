@@ -4,6 +4,7 @@ import { EVENT_KINDS, EVENT_KIND_META, type EventKind } from '@/data/events';
 import { artesDisponiveis } from '@/lib/eventosArquivo';
 import { naNuvem } from '@/lib/eventosLoja';
 import FormularioEvento from '../[id]/FormularioEvento';
+import { lerCatalogoFresco } from '@/lib/carimbosLoja';
 
 /**
  * CRIAR EVENTO — 01/10, a operação que não existia.
@@ -25,8 +26,9 @@ import FormularioEvento from '../[id]/FormularioEvento';
  */
 export const dynamic = 'force-dynamic';
 
-export default function AdminEventoNovoPage() {
+export default async function AdminEventoNovoPage() {
   const { imagens, miniaturas } = artesDisponiveis();
+  const { carimbos: carimbosDoCatalogo } = await lerCatalogoFresco();
 
   return (
     <>
@@ -47,6 +49,10 @@ export default function AdminEventoNovoPage() {
       <FormularioEvento
         modo="criar"
         naNuvem={naNuvem()}
+        /* Os carimbos do catálogo, só id e nome: o formulário não desenha carimbo,
+           só escolhe um. Mandar o registro inteiro levaria a receita e as medidas
+           para o cliente sem uso. */
+        carimbos={carimbosDoCatalogo.map(({ id, nome }) => ({ id, nome }))}
         /* O evento em branco. `kind` e `icon` já nascem com o primeiro valor válido de cada
            lista porque um `<select>` controlado com `value=""` mostraria a primeira opção
            enquanto o estado diz outra coisa — mentindo sobre o que vai ser gravado. */

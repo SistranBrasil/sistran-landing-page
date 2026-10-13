@@ -10,7 +10,7 @@ import {
   useState,
   useSyncExternalStore,
 } from 'react';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import { PARTNERS, PARTNER_CATEGORIES, type PartnerCategory } from '@/data/partners';
 import { prefersReducedMotion, useReducedMotion } from '@/lib/motion';
 import { useProgressoDeSecao } from '@/lib/scrollProgress';
@@ -304,7 +304,8 @@ export default function PartnerTerminalCards() {
             porque a batida tem de disparar quando a faixa aparece, não na entrada da
             rota. */}
         <div id="parceiros-titulo" className="container-lp partner-terminal__carimbo">
-          <CarimboBatida
+          <CarimboDoLugar
+              lugar="parceiros-cards"
             src="/images/parceiros/carimbo-parcerias-0757c7.webp"
             alt="Parceiros"
             larguraIntrinseca={640}

@@ -141,7 +141,7 @@ import {
   UserRoundCheck,
   Users,
 } from 'lucide-react';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import ContactModal from '@/components/ContactModal';
 import RevealScope from '@/components/motion/RevealScope';
 import { ACCELERATORS } from '@/data/accelerators';
@@ -484,7 +484,8 @@ export default function ConnectApiPagina({ page }: { page: AcceleratorPage }) {
                 com `carimbo-batida.css` está explicado no `globals.css`.
                 Ela NÃO é `data-reveal` — quem a faz entrar é a própria batida —, então
                 a cascata do letreiro e do lead começa em 0 como nas irmãs. */}
-            <CarimboBatida
+            <CarimboDoLugar
+              lugar="solucao-connect-api"
               src={CARIMBO.src}
               alt=""
               larguraIntrinseca={CARIMBO.largura}

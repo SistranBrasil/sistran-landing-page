@@ -46,7 +46,7 @@ import Image from 'next/image';
 // eram do `IntersectionObserver` do contador e do `rAF` dele, e agora vivem em
 // `FaixaIndicadores`. O que resta nesta seção é a parte editorial, sem estado.
 // import { useEffect, useRef, useState } from 'react';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import FaixaIndicadores from '@/components/FaixaIndicadores';
 import RevealScope from '@/components/motion/RevealScope';
 import './sobre-nos.css';
@@ -80,7 +80,8 @@ export default function About() {
             dela seria cortado exatamente na parte que deve sobrar para fora. */}
         <div className="sobre-visual" data-reveal="fade-up">
           <div className="sobre-carimbo-caixa">
-            <CarimboBatida
+            <CarimboDoLugar
+              lugar="quem-somos-sobre-nos"
               src="/carimbo-sobre-nos-capsule-outline-0757c7.png"
               alt="Carimbo Sistran — Sobre nós"
               larguraIntrinseca={873}

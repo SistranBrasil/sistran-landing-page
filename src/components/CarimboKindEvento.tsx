@@ -113,6 +113,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { EVENT_KIND_META, type EventKind } from "@/data/events";
 import { prefersReducedMotion } from "@/lib/motion";
+import { useCarimboPorId } from "@/components/carimbo/CarimbosEmUsoProvider";
 import "./carimbo-kind-evento.css";
 
 /* Dimensões INTRÍNSECAS dos arquivos, conferidas na saída do script (520x399, as
@@ -136,10 +137,29 @@ type Props = {
   animar?: boolean;
   /** `--carimbo-w` desta instância, quando o lugar pede um tamanho próprio. */
   className?: string;
+  /**
+   * O id de um carimbo do catálogo do admin, quando o evento escolheu um.
+   *
+   * ⚠️ O PADRÃO CONTINUA SENDO A ARTE DA CATEGORIA. Ausente, ou apontando para
+   * carimbo que não está no catálogo, este componente se comporta exatamente como
+   * antes — uma arte por `kind`, do jeito que os quinze eventos de hoje usam. A
+   * troca é por evento e opcional, como o pedido definiu.
+   */
+  carimboId?: string;
 };
 
-export default function CarimboKindEvento({ kind, animar = false, className }: Props) {
+export default function CarimboKindEvento({
+  kind,
+  animar = false,
+  className,
+  carimboId,
+}: Props) {
   const raiz = useRef<HTMLSpanElement>(null);
+  /* A arte trocada vem do provedor do layout raiz (`CarimbosEmUsoProvider`), e
+     não por prop desde a rota: `EventsSpotlight` é componente de cliente e o
+     carimbo é escolhido dentro de cada registro de evento — fazer a página
+     resolver exigiria uma segunda lista viajando ao lado de `eventos`. */
+  const trocado = useCarimboPorId(carimboId);
 
   useEffect(() => {
     const no = raiz.current;
@@ -177,16 +197,35 @@ export default function CarimboKindEvento({ kind, animar = false, className }: P
     };
     /* `kind` entra nas dependências: no palco o cartão troca de evento, e a
        batida tem de acontecer de novo quando o carimbo muda de arte. Sem isto, um
-       evento `global` sucedendo um `nacional` trocaria a imagem sem bater. */
-  }, [animar, kind]);
+       evento `global` sucedendo um `nacional` trocaria a imagem sem bater.
+       `trocado?.src` entra junto por isso mesmo: trocar o carimbo de um evento,
+       no admin, é uma troca de arte igual à de `kind` e também merece a batida. */
+  }, [animar, kind, trocado?.src]);
 
   return (
-    <span ref={raiz} className={["eventos-carimbo", className].filter(Boolean).join(" ")}>
+    <span
+      ref={raiz}
+      className={["eventos-carimbo", className].filter(Boolean).join(" ")}
+      /* ⚠️ A RAZÃO DA CAIXA SÓ É ESCRITA QUANDO HÁ TROCA, e é obrigatória nesse
+         caso: as quatro artes de categoria são 520×399 e a folha do componente foi
+         medida nessa razão, enquanto um carimbo do gerador tem a proporção que o
+         texto dele produziu. Sem isto, a arte nova entra esticada na caixa da
+         antiga. Fora da troca, nenhum estilo inline é escrito — o `clearProps:
+         "all"` do GSAP conta com este `<span>` não ter estilo próprio. */
+      style={
+        trocado
+          ? ({ '--carimbo-ar': `${trocado.largura} / ${trocado.altura}` } as React.CSSProperties)
+          : undefined
+      }
+    >
       <Image
-        src={`/images/EVENTOS/carimbos/carimbo-evento-${kind}.webp`}
+        src={trocado?.src ?? `/images/EVENTOS/carimbos/carimbo-evento-${kind}.webp`}
+        /* O `alt` NÃO vem do catálogo: ele diz a CATEGORIA do evento («Evento
+           global»), que é informação do registro e não do desenho. Trocar a arte
+           não muda o que o evento é. */
         alt={EVENT_KIND_META[kind].label}
-        width={ARTE_W}
-        height={ARTE_H}
+        width={trocado?.largura ?? ARTE_W}
+        height={trocado?.altura ?? ARTE_H}
         /* `loading="lazy"`: a tag nunca é o LCP do cartão — a foto do evento é.
            `next.config` está com `images: { unoptimized: true }` (SIS-154), então o
            que baixa é este arquivo do disco, e é por isso que ele já sai do script

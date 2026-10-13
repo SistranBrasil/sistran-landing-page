@@ -18,6 +18,17 @@ export type SistranEvent = {
   description: string;
   icon: IconName;
   featured?: boolean;
+  /**
+   * O id de um carimbo do catálogo do admin, quando este evento escolheu um.
+   *
+   * ⚠️ `string` LARGA e não união fechada, ao contrário de `kind` e `icon`: os
+   * valores válidos são o que existe no catálogo de carimbos NAQUELE INSTANTE, e
+   * isso não é conhecível em tempo de compilação. É também por isso que
+   * `conferido` não valida este campo — e não precisa: id desconhecido faz o
+   * carimbo cair na arte da categoria, que é o padrão, em vez de derrubar a cena
+   * como um `icon` inválido derrubaria.
+   */
+  carimbo?: string;
   image?: string;
   /**
    * SIS-106 — miniatura de 240px para o navegador lateral, em

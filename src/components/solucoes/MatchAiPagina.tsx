@@ -69,7 +69,7 @@ import {
   Trophy,
   Users,
 } from 'lucide-react';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import ContactModal from '@/components/ContactModal';
 import RevealScope from '@/components/motion/RevealScope';
 import { ACCELERATORS } from '@/data/accelerators';
@@ -624,7 +624,8 @@ export default function MatchAiPagina({ page }: { page: AcceleratorPage }) {
                 nomeadas fariam o leitor de tela dizer o nome do produto duas vezes.
                 `gatilho="rota"` continua — a peça vive acima da dobra, onde liberar o
                 portão e entrar em quadro são o mesmo instante. */}
-            <CarimboBatida
+            <CarimboDoLugar
+              lugar="solucao-match-ai"
               src={CARIMBO.src}
               alt=""
               larguraIntrinseca={CARIMBO.largura}

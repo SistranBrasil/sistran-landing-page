@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import Image from 'next/image';
 import { Crosshair } from 'lucide-react';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import RevealScope from '@/components/motion/RevealScope';
 import { CONSULTING_AREAS } from '@/data/consulting';
 import { getIcon } from '@/lib/icons';
@@ -46,7 +46,8 @@ export default function Consulting() {
       <RevealScope className="consultoria-conteudo">
         <div className="consultoria-topo">
           <div className="consultoria-texto" data-reveal="fade-up">
-            <CarimboBatida
+            <CarimboDoLugar
+              lugar="solucoes-consultoria"
               src="/images/carimbo-consultoria-ticket-outline-0757c7.png"
               alt="Carimbo Sistran — Consultoria"
               larguraIntrinseca={963}

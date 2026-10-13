@@ -146,7 +146,7 @@ import {
   Sparkles,
   Zap,
 } from 'lucide-react';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import ContactModal from '@/components/ContactModal';
 import RevealScope from '@/components/motion/RevealScope';
 import { ACCELERATORS } from '@/data/accelerators';
@@ -464,7 +464,8 @@ export default function GuruDeSegurosPagina({ page }: { page: AcceleratorPage })
                 estavam (`h1` sem `cascata`, parágrafo 1, pílula 2). Empurrá-los para
                 abrir lugar faria cada nó esperar uma batida de stagger por um nó que
                 não participa dela. */}
-            <CarimboBatida
+            <CarimboDoLugar
+              lugar="solucao-guru-de-seguros"
               src={CARIMBO.src}
               alt=""
               larguraIntrinseca={CARIMBO.largura}

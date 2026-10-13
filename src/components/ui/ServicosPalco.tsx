@@ -66,7 +66,7 @@
 import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { Database, ShieldCheck } from 'lucide-react';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import RevealScope from '@/components/motion/RevealScope';
 import { useReducedMotion } from '@/lib/motion';
 import { SERVICOS_DIFERENCIAIS } from '@/data/servicosDiferenciais';
@@ -161,7 +161,8 @@ export default function ServicosPalco({ titulo, paragrafos, indicadores, rodape 
                   variável no invólucro: `--carimbo-batida-w` é DECLARADA em
                   `.carimbo-batida` (com o `clamp` de `/parceiros`), então uma
                   herança do pai perderia para a declaração do próprio elemento. */}
-              <CarimboBatida
+              <CarimboDoLugar
+              lugar="servicos-palco"
                 className="svc-palco-carimbo-arte"
                 src="/images/carimbo-diferenciais-ticket-outline-ffffff.png"
                 alt="Diferenciais"

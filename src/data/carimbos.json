@@ -1,0 +1,347 @@
+{
+  "carimbos": [
+    {
+      "id": "sistran-sobre-nos",
+      "nome": "Sistran · Sobre nós",
+      "receita": {
+        "prefixo": "SISTRAN",
+        "marca": "Sobre nós",
+        "serial": "",
+        "cor": "#0757C7",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/sistran-sobre-nos-20261013093837.png",
+      "largura": 861,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:38:37.172Z"
+    },
+    {
+      "id": "tecnologia-disruptiva",
+      "nome": "Tecnologia Disruptiva",
+      "receita": {
+        "prefixo": "TECNOLOGIA",
+        "marca": "Disruptiva",
+        "serial": "",
+        "cor": "#0757C7",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/tecnologia-disruptiva-20261013093841.png",
+      "largura": 873,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:38:41.982Z"
+    },
+    {
+      "id": "servicos-diferenciais",
+      "nome": "Serviços · Diferenciais",
+      "receita": {
+        "prefixo": "SERVIÇOS",
+        "marca": "Diferenciais",
+        "serial": "",
+        "cor": "#FFFFFF",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/servicos-diferenciais-20261013093846.png",
+      "largura": 939,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:38:46.842Z"
+    },
+    {
+      "id": "sistran-consultoria",
+      "nome": "Sistran · Consultoria",
+      "receita": {
+        "prefixo": "SISTRAN",
+        "marca": "Consultoria",
+        "serial": "",
+        "cor": "#0757C7",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/sistran-consultoria-20261013093851.png",
+      "largura": 927,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:38:51.785Z"
+    },
+    {
+      "id": "sistran-tecnologias",
+      "nome": "Sistran · Tecnologias",
+      "receita": {
+        "prefixo": "SISTRAN",
+        "marca": "Tecnologias",
+        "serial": "",
+        "cor": "#0757C7",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/sistran-tecnologias-20261013093856.png",
+      "largura": 945,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:38:56.855Z"
+    },
+    {
+      "id": "nossa-trajetoria",
+      "nome": "Nossa Trajetória",
+      "receita": {
+        "prefixo": "NOSSA",
+        "marca": "Trajetória",
+        "serial": "",
+        "cor": "#0757C7",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/nossa-trajetoria-20261013094053.png",
+      "largura": 852,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:40:53.885Z"
+    },
+    {
+      "id": "parceiros-e-implementacoes",
+      "nome": "Parceiros e Implementações",
+      "receita": {
+        "prefixo": "PARCEIROS E",
+        "marca": "Implementações",
+        "serial": "",
+        "cor": "#0757C7",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/parceiros-e-implementacoes-20261013094101.png",
+      "largura": 1128,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:41:01.456Z"
+    },
+    {
+      "id": "realizado-pela-sistran-labs",
+      "nome": "Realizado pela Sistran Labs",
+      "receita": {
+        "prefixo": "REALIZADO PELA",
+        "marca": "Sistran Labs",
+        "serial": "",
+        "cor": "#0757C7",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/realizado-pela-sistran-labs-20261013094109.png",
+      "largura": 957,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:41:09.631Z"
+    },
+    {
+      "id": "sistran-match-ai",
+      "nome": "Sistran · Match AI",
+      "receita": {
+        "prefixo": "SISTRAN",
+        "marca": "Match AI",
+        "serial": "",
+        "cor": "#FFFFFF",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/sistran-match-ai-20261013094117.png",
+      "largura": 816,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:41:17.987Z"
+    },
+    {
+      "id": "sistran-smart-miner",
+      "nome": "Sistran · Smart Miner",
+      "receita": {
+        "prefixo": "SISTRAN",
+        "marca": "Smart Miner",
+        "serial": "",
+        "cor": "#FFFFFF",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/sistran-smart-miner-20261013094125.png",
+      "largura": 951,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:41:25.892Z"
+    },
+    {
+      "id": "sistran-qa-integrado",
+      "nome": "Sistran · QA Integrado",
+      "receita": {
+        "prefixo": "SISTRAN",
+        "marca": "QA Integrado",
+        "serial": "",
+        "cor": "#FFFFFF",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/sistran-qa-integrado-20261013094134.png",
+      "largura": 990,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:41:34.809Z"
+    },
+    {
+      "id": "sistran-connect-api",
+      "nome": "Sistran · Connect API",
+      "receita": {
+        "prefixo": "SISTRAN",
+        "marca": "Connect API",
+        "serial": "",
+        "cor": "#FFFFFF",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/sistran-connect-api-20261013094143.png",
+      "largura": 954,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:41:43.076Z"
+    },
+    {
+      "id": "sistran-fast",
+      "nome": "Sistran · Fast",
+      "receita": {
+        "prefixo": "SISTRAN",
+        "marca": "Fast",
+        "serial": "",
+        "cor": "#FFFFFF",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/sistran-fast-20261013094151.png",
+      "largura": 699,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:41:51.461Z"
+    },
+    {
+      "id": "guru-de-seguros",
+      "nome": "Guru de Seguros",
+      "receita": {
+        "prefixo": "GURU DE",
+        "marca": "SEGUROS",
+        "serial": "",
+        "cor": "#FFFFFF",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/guru-de-seguros-20261013094159.png",
+      "largura": 861,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:41:59.679Z"
+    },
+    {
+      "id": "sistran-luminna-ai",
+      "nome": "Sistran · Luminna AI",
+      "receita": {
+        "prefixo": "SISTRAN",
+        "marca": "Luminna AI",
+        "serial": "",
+        "cor": "#FFFFFF",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/sistran-luminna-ai-20261013094208.png",
+      "largura": 897,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:42:08.197Z"
+    },
+    {
+      "id": "desafios-no-desenvolvimento",
+      "nome": "Desafios no desenvolvimento",
+      "receita": {
+        "prefixo": "DESAFIOS NO",
+        "marca": "desenvolvimento",
+        "serial": "",
+        "cor": "#0757C7",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/desafios-no-desenvolvimento-20261013094217.png",
+      "largura": 1155,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:42:17.294Z"
+    },
+    {
+      "id": "luminna-ai-beneficios",
+      "nome": "Luminna AI · Benefícios",
+      "receita": {
+        "prefixo": "LUMINNA AI",
+        "marca": "Benefícios",
+        "serial": "",
+        "cor": "#FFFFFF",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/luminna-ai-beneficios-20261013094226.png",
+      "largura": 888,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:42:26.116Z"
+    },
+    {
+      "id": "sistran-sds",
+      "nome": "Sistran · SDS",
+      "receita": {
+        "prefixo": "SISTRAN",
+        "marca": "SDS",
+        "serial": "",
+        "cor": "#FFFFFF",
+        "formato": "site",
+        "acabamento": "outline",
+        "rotacao": 0,
+        "textura": true,
+        "base": 24
+      },
+      "arquivo": "/carimbo/gerados/sistran-sds-20261013094446.png",
+      "largura": 699,
+      "altura": 264,
+      "criadoEm": "2026-10-13T12:44:46.205Z"
+    }
+  ],
+  "aplicacoes": {}
+}

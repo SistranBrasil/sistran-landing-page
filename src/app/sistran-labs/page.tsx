@@ -11,7 +11,7 @@ import PageHero from '@/components/PageHero';
 import ContactCTA from '@/components/ContactCTA';
 import HeroImageBackdrop from '@/components/ui/HeroImageBackdrop';
 import RevealScope from '@/components/motion/RevealScope';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import { LIMIAR_REVEAL, MARGEM_REVEAL } from './reveal-calibre';
 import { CONTACT_EMAIL } from '@/data/contact';
 import { ACCELERATORS } from '@/data/accelerators';
@@ -847,7 +847,8 @@ export default function Page() {
               768px: nessa largura o carimbo e duas linhas de manchete não caberiam
               na mesma faixa sem espremer o h2 a uma palavra por linha. */}
           <div className="labs-principais-cabeca">
-          <CarimboBatida
+          <CarimboDoLugar
+              lugar="labs-principais"
             src="/images/sistran-labs/carimbo-sistran-labs.webp"
             alt="Realizado pela Sistran Labs"
             larguraIntrinseca={640}

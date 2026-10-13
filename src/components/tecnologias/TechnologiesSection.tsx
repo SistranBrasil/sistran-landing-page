@@ -34,7 +34,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import TechnologyMarquee from './TechnologyMarquee';
 import TechnologySpotlight from './TechnologySpotlight';
 import {
@@ -90,7 +90,8 @@ export default function TechnologiesSection() {
             não cabem os dois lado a lado sem esmagar um dos dois. */}
         <div className="tec-topo">
           <div className="tec-carimbo">
-            <CarimboBatida
+            <CarimboDoLugar
+              lugar="quem-somos-tecnologias"
               className="tec-carimbo__arte"
               src="/carimbo-tecnologias-ticket-outline-0757c7.png"
               alt="Carimbo Sistran Tecnologias"

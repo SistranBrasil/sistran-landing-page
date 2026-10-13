@@ -84,7 +84,7 @@ import {
   Sparkles,
   Zap,
 } from 'lucide-react';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import RevealScope from '@/components/motion/RevealScope';
 import { ACCELERATORS } from '@/data/accelerators';
 import {
@@ -369,7 +369,8 @@ export default function FastPagina({ page }: { page: AcceleratorPage }) {
                 o `h1` passa a ser o índice 0 (sem `cascata`), como o do Smart
                 Miner. Deixar o buraco faria a manchete esperar uma batida de
                 stagger por um nó que não existe mais. */}
-            <CarimboBatida
+            <CarimboDoLugar
+              lugar="solucao-fast"
               src={CARIMBO.src}
               alt=""
               larguraIntrinseca={CARIMBO.largura}

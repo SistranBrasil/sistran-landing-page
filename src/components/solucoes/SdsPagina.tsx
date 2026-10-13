@@ -74,7 +74,7 @@ import {
   UserCheck,
   Workflow,
 } from 'lucide-react';
-import CarimboBatida from '@/components/CarimboBatida';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 import RevealScope from '@/components/motion/RevealScope';
 import { ACCELERATORS } from '@/data/accelerators';
 import {
@@ -528,7 +528,8 @@ export default function SdsPagina({ page }: { page: AcceleratorPage }) {
           className="container-lp relative z-10"
         >
           <div>
-            <CarimboBatida
+            <CarimboDoLugar
+              lugar="sds-capa"
               src="/carimbo-sds-ticket-outline-ffffff.png"
               alt=""
               larguraIntrinseca={CARIMBO_CAPA.largura}

@@ -32,6 +32,21 @@ export type EventoBruto = {
   youtube?: boolean;
   image?: string;
   thumb?: string;
+  /**
+   * O ID DE UM CARIMBO DO CATÁLOGO (`src/lib/carimbosTipos.ts`), opcional.
+   *
+   * Ausente — que é o caso dos quinze eventos de hoje — significa «usa a arte da
+   * CATEGORIA», o comportamento que `CarimboKindEvento` sempre teve: uma arte por
+   * `kind`, em `public/images/EVENTOS/carimbos/`. Preenchido, troca a arte daquele
+   * evento pelo carimbo escolhido.
+   *
+   * ⚠️ OPCIONAL E NÃO OBRIGATÓRIO foi decisão de pedido: tornar obrigatório
+   * exigiria escolher carimbo para os quinze eventos já cadastrados, e quem
+   * esquecesse um deixaria o evento sem carimbo nenhum no site.
+   *
+   * Não é validado contra o catálogo em `problemas()` — ver a nota lá.
+   */
+  carimbo?: string;
 };
 
 export function lerCatalogo(): EventoBruto[] {
@@ -150,6 +165,19 @@ export function problemas(evento: EventoBruto): string[] {
   if (evento.thumb && !arteAceita(evento.thumb, miniaturas, '/images/EVENTOS/thumb/')) {
     erros.push(`Miniatura não encontrada em public/images/EVENTOS/thumb: "${evento.thumb}".`);
   }
+  /**
+   * ⚠️ `carimbo` NÃO É CONFERIDO AQUI, e é deliberado. Esta função é síncrona e
+   * roda no caminho de disco; conferir o id exigiria LER o catálogo de carimbos,
+   * que é assíncrono e pode estar no Blob — `problemas()` passaria a fazer rede e
+   * todo chamador viraria `async`.
+   *
+   * O que cobre o risco, nesta ordem:
+   *   · a tela oferece um `<select>` com a lista do catálogo, então o valor não é
+   *     digitado;
+   *   · um id que não existe NÃO quebra o site: `CarimboKindEvento` não acha no
+   *     mapa do provedor e cai na arte da categoria, que é o padrão.
+   * Ou seja, o pior caso é o comportamento de antes desta mudança.
+   */
   return erros;
 }
 
