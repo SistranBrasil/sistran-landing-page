@@ -58,7 +58,15 @@ import AtmosferaQuadrados from '@/components/ui/AtmosferaQuadrados';
 // `<Contact />`): o componente continua no projeto, mas a home não o consome mais
 // — deixá-lo importado quebraria o lint por import não utilizado.
 // import SectionReveal from '@/components/ui/SectionReveal';
-import OptionalMorphIntro from '@/components/intro/OptionalMorphIntro';
+/* 13/10 — A ABERTURA OPCIONAL DA HOME SAIU DE CENA: «possui dois carregamentos
+   quando entra na página pela primeira vez; deixe apenas o que é igual quando
+   navega entre páginas». O motivo inteiro, com a medição, está na nota que ocupa o
+   lugar do mount, mais abaixo.
+   O import fica comentado porque ativo ele quebraria o lint por import não
+   utilizado, e apagado levaria a pista de como religar. O componente
+   (`intro/OptionalMorphIntro.tsx`) e o CSS dele (`.mmi-*` em `globals.css`) seguem
+   íntegros no repositório, e esta era a única montagem.
+   import OptionalMorphIntro from '@/components/intro/OptionalMorphIntro'; */
 // Imports comentados junto com a saída do chanfro e da faixa de logos daqui (ver
 // a nota SIS-101 dentro do `<ProofJourney>`): deixá-los ativos quebraria o lint
 // por import não utilizado, e removê-los apagaria a pista do que havia ali.
@@ -91,9 +99,28 @@ import { ImpactSequence } from '@/components/legacy/ImpactSequence';
 export default function Page() {
   return (
     <>
-      {/* Abertura opcional: so na home, so uma vez por sessao, e sempre por
-          cima de uma pagina que ja terminou de renderizar por baixo. */}
-      <OptionalMorphIntro />
+      {/* ══ AQUI VIVIA A ABERTURA OPCIONAL DA HOME (`<OptionalMorphIntro />`) ═════
+          Era: cena escura, bloco modular que trocava de geometria com o progresso,
+          morfagem na marca do cabeçalho e saída em cortina dividida. Só na home,
+          só uma vez por sessão (`sessionStorage: 'sistran:intro-visto'`).
+
+          SAIU EM 13/10 — «possui dois carregamentos quando entra na página pela
+          primeira vez; deixe apenas o que é igual quando navega entre páginas».
+
+          ⚠️ E O DEFEITO ERA EMPILHAMENTO, NÃO SEQUÊNCIA. Medido no navegador em
+          sessão nova: a cortina do `RouteLoadGate` (a de layout, a que aparece em
+          toda navegação) ficava em cena com opacidade 1 do primeiro quadro ATÉ a
+          abertura terminar — ela não cedia a vez, esperava por baixo. Quem entrava
+          pela primeira vez pagava os dois pedágios em série e via dois
+          carregamentos; quem navegava depois via só a cortina. Foi a cortina que
+          ficou, porque é ela a que se repete.
+
+          ⚠️ O QUE NÃO SAIU: o `data-morph-target` do `Header.tsx` (o destino da
+          morfagem) continua lá. Ele é um atributo vazio, não pinta nada e não custa
+          nada — e é a outra metade do religamento desta abertura. Removê-lo
+          "porque ninguém lê mais" deixaria o componente intacto e inútil.
+
+          Para religar: descomentar o import no topo e esta montagem. Nada mais. */}
       <Header />
       <ScrollSpy />
       {/* TIPOGRAFIA.md — a serifa editorial saiu daqui: ela é do layout raiz

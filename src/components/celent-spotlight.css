@@ -213,8 +213,16 @@
      issue nomeia, mede 1315×867 → 1,517 (medido com `sharp`). Com 1,777 numa arte
      de 1,517 o `cover` escalava pela largura e comia ~15% da ALTURA, topo e base.
      A proporção certa devolve esses 15% e deixa a moldura ~17% mais alta na mesma
-     largura — é daí que vem a maior parte do ganho de tamanho pedido. */
-  aspect-ratio: 1315 / 867;
+     largura — é daí que vem a maior parte do ganho de tamanho pedido.
+
+     ⚠️ 13/10/2026 — ARTE TROCADA NO DISCO: `public/cele.png` passou de 1315×867
+     (1,517) para 3840×2160 (16/9), medido com `ffprobe`. A proporção acompanha, pela
+     mesma razão de sempre — com a caixa na medida exata da arte, `cover` não tem o
+     que recortar. Mantido 1,517 numa arte 16/9, o recorte apareceria nas LATERAIS
+     (~15% da largura) e o balão «Único player…», que encosta na borda direita do
+     arquivo, perderia o pedaço. O par `CAPA_LARGURA`/`CAPA_ALTURA` em
+     `CelentSpotlight.tsx` é esta mesma medida: trocar a arte pede mexer nos dois. */
+  aspect-ratio: 16 / 9;
   /* Cantos: 20px no mobile (a faixa pedida lá é 18–22px) e até 30px no desktop
      (24–32px). Um `clamp` só cobre as duas faixas sem media query. */
   border-radius: clamp(20px, 2.2vw, 30px);

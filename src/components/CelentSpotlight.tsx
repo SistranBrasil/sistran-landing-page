@@ -122,10 +122,22 @@ import './celent-spotlight.css';
    1,517 era escalada pela LARGURA e perdia ~15% da ALTURA — recorte no topo e na
    base da cena, exatamente o que o item 3 da conferência de `docs/celen.md` proíbe.
    Com a proporção certa, `cover` não tem o que comer e a moldura fica ~17% mais
-   alta na mesma largura. É de onde vem a maior parte do ganho de tamanho. */
+   alta na mesma largura. É de onde vem a maior parte do ganho de tamanho.
+
+   ⚠️ 13/10/2026 — A ARTE FOI TROCADA NO DISCO e os números acompanham. O caminho
+   NÃO mudou (`public/cele.png` continua sendo o nome que a issue fixa, e é por isso
+   que a troca é de arquivo e não de `src`); o que mudou é a medida: 1315×867 (1,517)
+   → **3840×2160 (16/9, 1,778)**, medido com `ffprobe` sobre o arquivo novo.
+   Trocar a arte sem trocar estes dois números repetiria o defeito que a nota acima
+   descreve, só com o recorte no outro eixo: a moldura ficaria com `aspect-ratio`
+   1,517 numa arte de 1,778 e o `cover` escalaria pela ALTURA, comendo ~15% da
+   LARGURA — as laterais, onde fica justamente o balão «Único player com
+   conhecimento local e clientes no Brasil», que encosta na borda direita do arquivo.
+   O par aqui e a `aspect-ratio` de `.cel-moldura` em `celent-spotlight.css` são a
+   MESMA medida em dois lugares: quem trocar a arte de novo tem de mexer nos dois. */
 const CAPA = '/cele.png';
-const CAPA_LARGURA = 1315;
-const CAPA_ALTURA = 867;
+const CAPA_LARGURA = 3840;
+const CAPA_ALTURA = 2160;
 
 export default function CelentSpotlight() {
   return (
