@@ -41,8 +41,25 @@
      isso. */
   --carimbo-batida-w: clamp(15rem, 19vw, 17.5rem);
 
+  /* ── UM SÓ BOTÃO DE ESCALA, para todos os carimbos do site ─────────────────
+     PEDIDO 13/10: «quero para todos os carimbos» — a mesma redução que o carimbo
+     do cartão de evento recebeu.
+     A RAZÃO é a mesma de lá, e vale para os dezoito: cada
+     `--carimbo-batida-w` deste projeto foi calibrado contra a arte ANTIGA (o
+     comentário acima registra «55% da largura do título» para a de parcerias). As
+     artes novas são cápsulas com duas linhas preenchendo a altura: na mesma
+     largura de caixa, a letra fica maior e o conjunto pesa mais na página.
+
+     ⚠️ POR QUE UM FATOR E NÃO 11 NÚMEROS NOVOS: há onze `--carimbo-batida-w`
+     espalhados (globals.css, consultoria.css, como-agimos.css…), cada um medido
+     para a sua seção com uma razão própria entre carimbo, título e caixa. Reduzir
+     um por um jogaria fora essa calibragem e precisaria de onze medições novas;
+     multiplicar preserva TODAS as proporções relativas e muda só a escala.
+     Quem quiser voltar ao tamanho anterior troca 0.8 por 1 num lugar só. */
+  --carimbo-batida-escala: 0.8;
+
   display: block;
-  width: var(--carimbo-batida-w);
+  width: calc(var(--carimbo-batida-w) * var(--carimbo-batida-escala));
   aspect-ratio: var(--carimbo-batida-ar);
 
   /* SEM `rotate` DE REPOUSO, e isto é uma decisão medida, não um esquecimento: a
