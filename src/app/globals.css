@@ -36277,6 +36277,20 @@ html[data-motion='reduce'] .cookie-lancador:focus-visible .cookie-lancador-disco
   }
 }
 
+/* O CARIMBO QUE SUBSTITUIU A TAG. A tag media 149x32; a cápsula a 15rem × o fator
+   de escala global (0.8) dá 192px de largura e ~61 de altura — maior que a pílula,
+   como uma marca de tinta deve ser, e ainda bem abaixo do `text-section` do título
+   que vem em seguida.
+   `margin-bottom` negativo porque o vão até o `h2` era de 16px medidos com a tag, e
+   a cápsula tem folga óptica própria nas pontas arredondadas. */
+.ecossistema-carimbo {
+  --carimbo-batida-w: 15rem;
+  margin-bottom: -0.25rem;
+}
+
+/* ⚠️ DORMENTE desde 13/10: a sobrancelha de texto deu lugar ao carimbo acima (ver a
+   nota em `EcossistemaLuminna.tsx`). As duas regras ficam porque são o caminho de
+   volta — o `.ecossistema-sobrancelha-ponto` só existe para ela. */
 .ecossistema-sobrancelha {
   display: inline-flex;
   align-items: center;

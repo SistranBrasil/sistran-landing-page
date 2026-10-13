@@ -76,7 +76,25 @@ export const SOLUTIONS: readonly Solution[] = [
     // O antigo #0079CB era quase invisivel apos a paleta clarear.
     color: '#57B7EE',
     colorOnLight: '#0067AF',
-    image: '/images/home/escritoriosp.png',
+    /* 13/10 — era `/images/home/escritoriosp.png`. Pedido: «essa primeira foto
+       quero que seja substituída por `escritoriosp1 (2).jpg`, mantendo essa pessoa
+       em destaque» (o colega de camisa branca, ao centro do trio sentado).
+
+       É a MESMA CENA em outro arquivo: o grupo do open space de São Paulo, agora
+       num quadro mais largo (2048×841 contra 1957×804) que mostra as pessoas das
+       duas pontas, cortadas no anterior. O `imageAlt` segue valendo palavra por
+       palavra — o assunto não mudou.
+
+       ⚠️ O ENQUADRAMENTO MUDOU COM O ARQUIVO, e tinha de mudar: o
+       `object-position` do card 1 vive em `solutions-story.css` e era calibrado
+       para o arquivo antigo (o próprio comentário de lá avisava que trocar o
+       arquivo invalida o número). Foi recalculado e medido nas duas pontas de
+       caixa — ver a nota em `.story-passo__midia[data-foto='apis-projetos'] img`.
+
+       ⚠️ E ISTO TIRA 2,2 MB DO CAMINHO CRÍTICO: 294 kB de JPG no lugar de 2507 kB
+       de PNG, no card que é `preload`/`eager` na home. O aviso de peso mais acima
+       (7,40 MB na seção) passa a valer para três artes, não quatro. */
+    image: '/images/home/escritoriosp1 (2).jpg',
     imageAlt: 'Equipe Sistran no escritório de São Paulo, em frente aos monitores de desenvolvimento.',
   },
   {

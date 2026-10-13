@@ -20,6 +20,10 @@ export class FrameRenderer {
   private alturaCss = 0;
   private dpr = 1;
   private ultimo = -1;
+  /* A chave do último DESENHO (índice + mistura), que é o que dedupe de verdade desde a
+     interpolação de sub-quadro. `ultimo` continua sendo só o ÍNDICE, porque é ele que o hook
+     publica em `data-quadro` para a sonda. */
+  private ultimoDesenho = '';
 
   constructor(private readonly canvas: HTMLCanvasElement) {
     /* `alpha: false`: o quadro cobre a caixa inteira, então o compositor não precisa misturar
@@ -46,11 +50,48 @@ export class FrameRenderer {
     this.canvas.width = w;
     this.canvas.height = h;
     this.ultimo = -1;
+    this.ultimoDesenho = '';
     return true;
   }
 
-  desenhar(fonte: FonteDeQuadro, indice: number): void {
-    if (indice === this.ultimo) return;
+  /**
+   * Desenha `fonte` e, se `proxima`/`mistura` vierem, COMPÕE o quadro seguinte por cima com
+   * `globalAlpha = mistura` — interpolação de sub-quadro.
+   *
+   * ⚠️ POR QUE ISSO EXISTE (13/10/2026). O playhead é fracionário desde o seguidor amortecido,
+   * mas o desenho arredondava: a 8,9px de rolagem por quadro (361 quadros em ~3200px de curso),
+   * uma rolagem lenta de 1–2px por quadro de animação repetia o MESMO quadro por 4 a 8 rAF, e o
+   * que se via era degrau — a cena andava aos saltinhos mesmo com o playhead perfeitamente
+   * suave. Nenhum ajuste de constante de tempo resolve isso: o limite era a quantização, não o
+   * amortecimento.
+   * Compondo A e B com o peso da parte fracionária, cada rAF pinta uma imagem DIFERENTE mesmo
+   * quando o índice inteiro não mudou. É a mesma técnica de um `<video>`, que nunca mostra um
+   * quadro «puro» quando o tempo cai entre dois.
+   *
+   * Custo: um segundo `drawImage`. Medido ~0,4 ms no tier desktop (1152², draw 1:1), contra os
+   * ~3,3 ms que o primeiro já custa quando há reescala — ou seja, a composição é a parte barata.
+   *
+   * `alpha: false` no contexto NÃO atrapalha: sem alfa no destino, `globalAlpha` continua
+   * valendo para a FONTE, e o resultado é `A × (1 − mistura) + B × mistura`.
+   */
+  desenhar(fonte: FonteDeQuadro, indice: number, proxima?: FonteDeQuadro, mistura = 0): void {
+    /* A chave do «já desenhei isto» passa a incluir a mistura, senão a composição seria
+       descartada por repetir o índice inteiro. Quantizada em 1/32 porque abaixo disso a
+       diferença não chega a um nível de 8 bits — redesenhar ali seria custo sem imagem nova. */
+    const misturaUtil = proxima && mistura > 0.02 ? Math.round(mistura * 32) / 32 : 0;
+    const chave = misturaUtil > 0 ? `${indice}+${misturaUtil}` : String(indice);
+    if (chave === this.ultimoDesenho) return;
+    this.ultimoDesenho = chave;
+    this.pintar(fonte, indice);
+    if (misturaUtil > 0 && proxima) {
+      const { ctx } = this;
+      ctx.globalAlpha = misturaUtil;
+      this.pintar(proxima, indice);
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  private pintar(fonte: FonteDeQuadro, indice: number): void {
     const sw = 'naturalWidth' in fonte ? fonte.naturalWidth : fonte.width;
     const sh = 'naturalHeight' in fonte ? fonte.naturalHeight : fonte.height;
     if (!sw || !sh) return;
@@ -78,5 +119,6 @@ export class FrameRenderer {
   /** Força o próximo `desenhar` a pintar mesmo que o índice repita (ex.: depois de um resize). */
   invalidar(): void {
     this.ultimo = -1;
+    this.ultimoDesenho = '';
   }
 }

@@ -267,7 +267,7 @@
    e o sintoma seria gente cortada outra vez, não um erro de build. */
 .story-passo__midia[data-foto='apis-projetos'] img,
 .story-midia__item[data-foto='apis-projetos'] img {
-  object-position: 25% 50%;
+  object-position: 29% 50%;
 }
 
 /* O painel desktop é desligado por padrão: assim no-JS nunca empilha imagens. */

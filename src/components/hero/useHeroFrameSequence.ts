@@ -141,7 +141,13 @@ export function useHeroFrameSequence({ gatilho, carregar }: Params): RefsDoHero 
 
       const render = () => {
         if (!renderer || !decoder || !loader) return;
-        const alvo = clamp(Math.round(playhead.frame), 0, total - 1);
+        /* A posição é FRACIONÁRIA e o desenho usa o PISO como base, não o arredondado: é o
+           piso mais o vizinho de cima que compõem o quadro interpolado (ver abaixo). Arredondar
+           aqui faria a base saltar para o vizinho quando a fração passa de 0,5, e aí o par
+           «base, base+1» deixaria de conter a posição real. */
+        const pos = clamp(playhead.frame, 0, total - 1);
+        const alvo = Math.floor(pos);
+        const fracao = pos - alvo;
         const alvoDaRolagem = clamp(Math.round(destino), 0, total - 1);
         /* Alvo do playhead (antes do fallback para o decodificado mais próximo): a diferença
            entre `data-alvo` e `data-quadro` é o atraso de decode, medido pela sonda. */
@@ -159,7 +165,21 @@ export function useHeroFrameSequence({ gatilho, carregar }: Params): RefsDoHero 
         if (i < 0) return;
         const bm = decoder.pegar(i);
         if (!bm) return;
-        renderer.desenhar(bm, i);
+        /* ── INTERPOLAÇÃO DE SUB-QUADRO ───────────────────────────────────────────────
+           A posição do playhead é fracionária; o índice desenhado é inteiro. Essa
+           quantização era o último degrau visível: com 8,9px de rolagem por quadro, uma
+           rolagem lenta repete o mesmo inteiro por vários rAF e a cena anda aos
+           saltinhos ainda que o playhead esteja perfeitamente suave.
+           Então o quadro do PISO entra como base e o seguinte por cima, com o peso da
+           parte fracionária — cada rAF pinta imagem nova.
+           SÓ QUANDO O DESENHO ESTÁ EM DIA (`i === alvo`): se já estamos mostrando um
+           quadro de fallback porque o decode não acompanhou, compor com o vizinho
+           misturaria duas imagens ERRADAS e viraria fantasma. Nesse caso desenha-se o
+           quadro seco, como antes.
+           E só quando o vizinho JÁ ESTÁ decodificado — nunca pede decode por isto. */
+        const vizinho =
+          i === alvo && fracao > 0 && alvo + 1 < total ? decoder.pegar(alvo + 1) : undefined;
+        renderer.desenhar(bm, i, vizinho, vizinho ? fracao : 0);
         /* Legível no DOM para a medição (`scripts/medir-hero-quadros.mjs`), como o
            `data-scrub` do `ScrubScope`. Nenhum seletor de CSS depende disto. */
         if (renderer.ultimoDesenhado === i) el.dataset.quadro = String(i);

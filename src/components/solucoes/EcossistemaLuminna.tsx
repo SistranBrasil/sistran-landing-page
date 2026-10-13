@@ -135,6 +135,7 @@ import {
   type MetricaEcossistema,
 } from '@/data/luminnaEcossistema';
 import { LIMIAR_REVEAL, MARGEM_REVEAL } from './reveal-calibre';
+import CarimboDoLugar from '@/components/carimbo/CarimboDoLugar';
 
 /* ── OS ÍCONES, POR `id` E NÃO POR ÍNDICE ──────────────────────────────────────
    Por índice, incluir um produto no meio da lista trocaria o glifo de todos os
@@ -229,6 +230,14 @@ type Props = {
      cartões sem métrica. Saiu com o botão «Conheça a solução →» na 4ª. */
 };
 
+/* A arte do rótulo desta faixa. Medidas do arquivo, para `CarimboBatida` montar o
+   `aspect-ratio` — ver o lugar `luminna-ecossistema` no inventário. */
+const CARIMBO_ECOSSISTEMA = {
+  src: '/carimbo/gerados/luminna-ecossistema-20261013142351.png',
+  largura: 987,
+  altura: 315,
+} as const;
+
 export default function EcossistemaLuminna({ titulo, idDaAncora, sobrancelha, descricao }: Props) {
   const [solucaoAberta, setSolucaoAberta] = useState<string | null>(SOLUCAO_INICIAL);
 
@@ -274,16 +283,40 @@ export default function EcossistemaLuminna({ titulo, idDaAncora, sobrancelha, de
       >
         <div className="ecossistema-cabecalho">
           <div className="ecossistema-cabecalho-texto">
+            {/* ── A TAG «ECOSSISTEMA» VIROU CARIMBO ──────────────────────────────
+                Pedido: «para essa seção ecossistema faça um carimbo no layout novo
+                para substituir a tag Ecossistema». Era:
+
+                  <p aria-hidden data-reveal="fade-up" className="ecossistema-sobrancelha">
+                    <span className="ecossistema-sobrancelha-ponto" />
+                    {sobrancelha}
+                  </p>
+
+                O `aria-hidden` da tag antiga continua valendo como razão, e agora
+                ele mora no `alt=""` do carimbo (ver o `padrao` deste lugar no
+                inventário): lida em sequência, a palavra viraria «Ecossistema
+                Tecnologia aplicada em todo o ciclo» no leitor de tela, que não é o
+                nome do cabeçalho — e ela não se perde, porque é o rótulo que o
+                navegador lateral publica como texto de verdade.
+
+                A GUARDA `sobrancelha &&` FICA. Ela não é mais o conteúdo visível,
+                mas continua sendo o sinal de que este bloco TEM rótulo: bloco sem
+                `navLabel` não ganha carimbo, como não ganhava tag.
+
+                O CSS `.ecossistema-sobrancelha*` fica no `globals.css`, dormente,
+                pela regra da casa — é o caminho de volta. */}
             {sobrancelha && (
-              /* `aria-hidden` porque, lida em sequência, a sobrancelha viraria
-                 «Ecossistema Tecnologia aplicada em todo o ciclo» no leitor de tela,
-                 que não é o nome do cabeçalho — e a palavra não se perde para
-                 ninguém, porque é exatamente o rótulo que o navegador lateral
-                 publica como texto de verdade. */
-              <p aria-hidden data-reveal="fade-up" className="ecossistema-sobrancelha">
-                <span className="ecossistema-sobrancelha-ponto" />
-                {sobrancelha}
-              </p>
+              <CarimboDoLugar
+                lugar="luminna-ecossistema"
+                src={CARIMBO_ECOSSISTEMA.src}
+                alt=""
+                larguraIntrinseca={CARIMBO_ECOSSISTEMA.largura}
+                alturaIntrinseca={CARIMBO_ECOSSISTEMA.altura}
+                className="ecossistema-carimbo"
+                /* `viewport`: esta faixa vive bem abaixo da dobra desta rota, e
+                   bater na montagem seria bater com a peça fora de quadro. */
+                gatilho="viewport"
+              />
             )}
             <h2
               data-reveal="fade-up"

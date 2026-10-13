@@ -334,6 +334,32 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
     },
   },
   {
+    /* ⚠️ O ÚNICO LUGAR QUE NÃO SUBSTITUIU UMA ARTE — substituiu uma TAG DE TEXTO.
+       Aqui havia a sobrancelha `.ecossistema-sobrancelha`: uma pílula com um ponto
+       e a palavra «Ecossistema», vinda do `navLabel` do bloco. A pedido, ela deu
+       lugar a um carimbo no layout novo.
+       Como não existia arte anterior, o `padrao` aponta para a arte GERADA e
+       versionada em `public/carimbo/gerados/`. Isso mantém a regra da casa de pé:
+       o site pinta a partir do repositório e o catálogo só TROCA. Sem isso, a
+       seção dependeria da loja para ter rótulo. */
+    id: 'luminna-ecossistema',
+    rotulo: 'Luminna AI · Ecossistema',
+    rotas: ['/solucoes/luminna-ai'],
+    onde: 'No lugar da tag «Ecossistema», acima do título da seção.',
+    arquivo: 'src/components/solucoes/EcossistemaLuminna.tsx',
+    padrao: {
+      src: '/carimbo/gerados/luminna-ecossistema-20261013142351.png',
+      /* Vazio: o `h2` logo abaixo é o nome do bloco, e o navegador lateral
+         publica «Ecossistema» como texto de verdade — era por isso que a tag
+         antiga já era `aria-hidden`. Nomear a arte faria o leitor de tela dizer
+         «Ecossistema» duas vezes. */
+      alt: '',
+      largura: 987,
+      altura: 315,
+      cor: '#0757C7',
+    },
+  },
+  {
     id: 'sds-capa',
     rotulo: 'Solução · SDS',
     rotas: ['/solucoes/sds'],
