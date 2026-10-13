@@ -6,6 +6,9 @@ import { useState, useTransition } from 'react';
 import { aplicarCarimbo, excluirCarimbo, type EstadoCarimbo } from './acoes';
 import type { LugarCarimbo } from '@/data/carimboLugares';
 import type { CarimboBruto } from '@/lib/carimbosTipos';
+/* A regra do fundo mora em módulo próprio porque a tela de criação usa a mesma —
+   ver o docblock de `fundoDaPrevia`. */
+import { fundoDaPrevia } from './fundoDaPrevia';
 
 /**
  * A ABA «LUGARES DO SITE» — o inventário com o controle de troca.
@@ -23,35 +26,6 @@ import type { CarimboBruto } from '@/lib/carimbosTipos';
  * Sobre nós agora usa o carimbo X»), para que um clique na linha errada seja
  * visível na hora.
  */
-/**
- * O FUNDO DA PRÉVIA, escolhido pela cor da arte.
- *
- * ⚠️ POR QUE NÃO É SEMPRE O XADREZ, que é a convenção para imagem transparente:
- * porque metade das artes é BRANCA — carimbo branco sobre xadrez claro
- * desaparece, e a lista mostrava dez caixas aparentemente vazias. O xadrez só
- * cumpre o papel dele quando há contraste com a tinta.
- *
- * Então: tinta clara ganha fundo NAVY (o `#001A3D` da casa, que é o fundo real
- * onde essas artes brancas vivem no site — ou seja, a prévia passa a mostrar a
- * peça no contexto em que ela existe); tinta escura mantém o xadrez, que ali
- * ainda informa a transparência.
- *
- * A luminância é a fórmula de percepção (coeficientes 0.299/0.587/0.114), e não
- * a média dos canais: num amarelo os dois discordam, e é a percepção que decide
- * se o carimbo vai ser visto.
- */
-const XADREZ = 'repeating-conic-gradient(#e7ebf0 0% 25%, #ffffff 0% 50%) 0 0 / 14px 14px';
-
-function fundoDaPrevia(cor: string): string {
-  const hex = cor.replace('#', '');
-  if (hex.length !== 6) return XADREZ;   // cor fora do formato: não arrisca, usa o xadrez
-  const r = parseInt(hex.slice(0, 2), 16);
-  const g = parseInt(hex.slice(2, 4), 16);
-  const b = parseInt(hex.slice(4, 6), 16);
-  const luminancia = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  return luminancia > 0.65 ? '#001A3D' : XADREZ;
-}
-
 export function LugaresDoSite({
   lugares,
   carimbos,

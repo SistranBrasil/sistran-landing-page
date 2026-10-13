@@ -4,6 +4,10 @@ import { useActionState, useCallback, useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { salvarCarimbo, type EstadoCarimbo } from './acoes';
 import type { CarimboBruto } from '@/lib/carimbosTipos';
+/* `XADREZ` passou a vir do módulo compartilhado: ele era literal aqui e na
+   lista de lugares, e duas cópias do mesmo xadrez divergem na primeira troca de
+   tom. */
+import { fundoDaPrevia, XADREZ } from './fundoDaPrevia';
 import {
   ARTE_REFERENCIA,
   FORMATOS,
@@ -33,15 +37,23 @@ const ACABAMENTOS: { valor: Acabamento; nome: string }[] = [
   { valor: 'solid', nome: 'Sólido' },
 ];
 
+/**
+ * ⚠️ «AUTOMÁTICO» É O PADRÃO, e entrou em 13/10 por uma pergunta certeira: «toda
+ * vez que criar um novo branco vai ficar azul atrás, até quando escolhe a cor na
+ * criação?». Na LISTA já ficava, porque lá o fundo segue a tinta; aqui não — esta
+ * tela abria sempre no xadrez, e escolher branco mostrava uma prévia vazia.
+ *
+ * Os três fundos manuais FICAM: eles existem para conferir a mesma arte sobre
+ * claro e sobre escuro antes de salvar, que é uso legítimo e diferente de «quero
+ * ver o que estou desenhando». O automático só decide o ponto de partida.
+ */
 const FUNDOS = [
+  { valor: 'auto', nome: 'Automático' },
   { valor: 'xadrez', nome: 'Xadrez' },
   { valor: 'claro', nome: 'Claro' },
   { valor: 'escuro', nome: 'Escuro' },
 ] as const;
 
-/** Xadrez de transparência desenhado em CSS: nenhuma imagem para carregar. */
-const XADREZ =
-  'repeating-conic-gradient(#e7ebf0 0% 25%, #ffffff 0% 50%) 0 0 / 18px 18px';
 
 function nomeArquivo(o: Opcoes) {
   const cor = o.cor.replace('#', '').toLowerCase();
@@ -93,7 +105,7 @@ export function GeradorCarimbo({ emEdicao }: { emEdicao?: CarimboBruto }) {
   const [textura, setTextura] = useState(emEdicao?.receita.textura ?? true);
   const [base, setBase] = useState(emEdicao?.receita.base ?? 24);
   const [escala, setEscala] = useState(3);
-  const [fundo, setFundo] = useState<(typeof FUNDOS)[number]['valor']>('xadrez');
+  const [fundo, setFundo] = useState<(typeof FUNDOS)[number]['valor']>('auto');
 
   /**
    * A fonte só vale como estado quando ela TERMINA de carregar: medir com a
@@ -273,7 +285,14 @@ export function GeradorCarimbo({ emEdicao }: { emEdicao?: CarimboBruto }) {
           className="grid min-h-[380px] place-items-center overflow-auto p-8"
           style={{
             background:
-              fundo === 'xadrez' ? XADREZ : fundo === 'escuro' ? '#0b1220' : '#ffffff',
+              fundo === 'auto'
+                ? /* segue a tinta: clara vai para o navy, escura fica no xadrez */
+                  fundoDaPrevia(cor)
+                : fundo === 'xadrez'
+                  ? XADREZ
+                  : fundo === 'escuro'
+                    ? '#0b1220'
+                    : '#ffffff',
           }}
         >
           {/* `block` remove o espaço de linha-base que o canvas herda como inline
