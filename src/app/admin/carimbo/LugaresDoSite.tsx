@@ -23,6 +23,35 @@ import type { CarimboBruto } from '@/lib/carimbosTipos';
  * Sobre nós agora usa o carimbo X»), para que um clique na linha errada seja
  * visível na hora.
  */
+/**
+ * O FUNDO DA PRÉVIA, escolhido pela cor da arte.
+ *
+ * ⚠️ POR QUE NÃO É SEMPRE O XADREZ, que é a convenção para imagem transparente:
+ * porque metade das artes é BRANCA — carimbo branco sobre xadrez claro
+ * desaparece, e a lista mostrava dez caixas aparentemente vazias. O xadrez só
+ * cumpre o papel dele quando há contraste com a tinta.
+ *
+ * Então: tinta clara ganha fundo NAVY (o `#001A3D` da casa, que é o fundo real
+ * onde essas artes brancas vivem no site — ou seja, a prévia passa a mostrar a
+ * peça no contexto em que ela existe); tinta escura mantém o xadrez, que ali
+ * ainda informa a transparência.
+ *
+ * A luminância é a fórmula de percepção (coeficientes 0.299/0.587/0.114), e não
+ * a média dos canais: num amarelo os dois discordam, e é a percepção que decide
+ * se o carimbo vai ser visto.
+ */
+const XADREZ = 'repeating-conic-gradient(#e7ebf0 0% 25%, #ffffff 0% 50%) 0 0 / 14px 14px';
+
+function fundoDaPrevia(cor: string): string {
+  const hex = cor.replace('#', '');
+  if (hex.length !== 6) return XADREZ;   // cor fora do formato: não arrisca, usa o xadrez
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  const luminancia = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminancia > 0.65 ? '#001A3D' : XADREZ;
+}
+
 export function LugaresDoSite({
   lugares,
   carimbos,
@@ -131,15 +160,11 @@ export function LugaresDoSite({
                   key={c.id}
                   className="rounded-2xl border border-black/[0.07] bg-white p-4 shadow-[0_1px_2px_rgba(16,24,40,0.04)]"
                 >
-                  {/* Fundo xadrez porque o PNG é transparente: sobre branco não se
-                      vê que o carimbo claro existe. Mesmo truque da prévia do
-                      gerador, em CSS e sem imagem para carregar. */}
+                  {/* O fundo vem de `fundoDaPrevia`: xadrez para tinta escura,
+                      navy para tinta clara — senão o carimbo branco não aparece. */}
                   <div
                     className="grid min-h-[96px] place-items-center rounded-xl p-3"
-                    style={{
-                      background:
-                        'repeating-conic-gradient(#e7ebf0 0% 25%, #ffffff 0% 50%) 0 0 / 14px 14px',
-                    }}
+                    style={{ background: fundoDaPrevia(c.receita.cor) }}
                   >
                     <Image
                       src={c.arquivo}
@@ -196,9 +221,23 @@ export function LugaresDoSite({
           {lugares.map((lugar) => {
             const escolhido = escolhas[lugar.id] ?? '';
             const carimbo = porId.get(escolhido);
+            /* A cor entra junto com a arte, do mesmo objeto: é ela que decide o
+               fundo da prévia, e misturar a cor de uma com o arquivo da outra
+               faria exatamente o caso que estamos corrigindo (carimbo branco
+               sobre fundo claro). */
             const arte = carimbo
-              ? { src: carimbo.arquivo, largura: carimbo.largura, altura: carimbo.altura }
-              : { src: lugar.padrao.src, largura: lugar.padrao.largura, altura: lugar.padrao.altura };
+              ? {
+                  src: carimbo.arquivo,
+                  largura: carimbo.largura,
+                  altura: carimbo.altura,
+                  cor: carimbo.receita.cor,
+                }
+              : {
+                  src: lugar.padrao.src,
+                  largura: lugar.padrao.largura,
+                  altura: lugar.padrao.altura,
+                  cor: lugar.padrao.cor,
+                };
 
             return (
               <li
@@ -207,10 +246,7 @@ export function LugaresDoSite({
               >
                 <div
                   className="grid min-h-[72px] place-items-center rounded-xl p-2"
-                  style={{
-                    background:
-                      'repeating-conic-gradient(#e7ebf0 0% 25%, #ffffff 0% 50%) 0 0 / 14px 14px',
-                  }}
+                  style={{ background: fundoDaPrevia(arte.cor) }}
                 >
                   <Image
                     src={arte.src}

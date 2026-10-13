@@ -44,8 +44,15 @@ export type LugarCarimbo = {
   onde: string;
   /** O arquivo onde o nó vive, para quem for procurar no código. */
   arquivo: string;
-  /** A arte em vigor hoje, e o destino de «voltar ao original». */
-  padrao: { src: string; alt: string; largura: number; altura: number };
+  /**
+   * A arte em vigor hoje, e o destino de «voltar ao original».
+   *
+   * `cor` NÃO serve ao site — ele pinta o arquivo como ele é. Ela existe para a
+   * PRÉVIA do admin saber escolher o fundo: arte branca sobre o xadrez de
+   * transparência é invisível. Os valores foram medidos por amostragem de pixel
+   * nas 18 artes, e confirmaram o hex que já estava no nome de cada arquivo.
+   */
+  padrao: { src: string; alt: string; largura: number; altura: number; cor: string };
 };
 
 export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
@@ -60,6 +67,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: 'Carimbo Sistran — Sobre nós',
       largura: 873,
       altura: 327,
+      cor: '#0757C7',
     },
   },
   {
@@ -73,6 +81,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: '',
       largura: 723,
       altura: 273,
+      cor: '#0757C7',
     },
   },
   {
@@ -89,6 +98,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: 'Diferenciais',
       largura: 978,
       altura: 348,
+      cor: '#FFFFFF',
     },
   },
   {
@@ -102,6 +112,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: 'Carimbo Sistran — Consultoria',
       largura: 963,
       altura: 348,
+      cor: '#0757C7',
     },
   },
   {
@@ -115,6 +126,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: 'Carimbo Sistran Tecnologias',
       largura: 978,
       altura: 330,
+      cor: '#0757C7',
     },
   },
   {
@@ -128,6 +140,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: '',
       largura: 741,
       altura: 285,
+      cor: '#0757C7',
     },
   },
   {
@@ -154,6 +167,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: 'Parceiros',
       largura: 640,
       altura: 200,
+      cor: '#0757C7',
     },
   },
   {
@@ -167,6 +181,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: 'Realizado pela Sistran Labs',
       largura: 640,
       altura: 224,
+      cor: '#0757C7',
     },
   },
   {
@@ -180,6 +195,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: '',
       largura: 720,
       altura: 309,
+      cor: '#FFFFFF',
     },
   },
   {
@@ -193,6 +209,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: '',
       largura: 825,
       altura: 291,
+      cor: '#FFFFFF',
     },
   },
   {
@@ -206,6 +223,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: '',
       largura: 855,
       altura: 291,
+      cor: '#FFFFFF',
     },
   },
   {
@@ -219,6 +237,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: '',
       largura: 828,
       altura: 291,
+      cor: '#FFFFFF',
     },
   },
   {
@@ -232,6 +251,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: '',
       largura: 612,
       altura: 279,
+      cor: '#FFFFFF',
     },
   },
   {
@@ -245,6 +265,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: '',
       largura: 897,
       altura: 342,
+      cor: '#FFFFFF',
     },
   },
   {
@@ -258,6 +279,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: '',
       largura: 780,
       altura: 288,
+      cor: '#FFFFFF',
     },
   },
   {
@@ -271,6 +293,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: '',
       largura: 993,
       altura: 300,
+      cor: '#0757C7',
     },
   },
   {
@@ -284,6 +307,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: '',
       largura: 771,
       altura: 288,
+      cor: '#FFFFFF',
     },
   },
   {
@@ -297,6 +321,7 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
       alt: '',
       largura: 735,
       altura: 336,
+      cor: '#FFFFFF',
     },
   },
 ];
