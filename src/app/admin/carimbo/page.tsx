@@ -4,6 +4,8 @@ import { GeradorCarimbo } from './GeradorCarimbo';
 import { LugaresDoSite } from './LugaresDoSite';
 import { LUGARES_CARIMBO } from '@/data/carimboLugares';
 import { lerCatalogoFresco, naNuvem } from '@/lib/carimbosLoja';
+import { CarimbosDeEvento } from './CarimbosDeEvento';
+import { EVENT_KINDS, EVENT_KIND_META, type EventKind } from '@/data/events';
 
 /**
  * CONTROLE DE CARIMBOS — duas abas.
@@ -41,6 +43,7 @@ export default async function AdminCarimboPage({
      a que responde à primeira metade do pedido. URL adulterada não deve levar a
      uma tela de formulário. */
   const criando = aba === 'criar';
+  const emEventos = aba === 'eventos';
 
   const catalogo = await lerCatalogoFresco();
 
@@ -56,13 +59,21 @@ export default async function AdminCarimboPage({
       <h1 className="text-3xl font-medium tracking-tight text-[#0f172a]">Carimbos</h1>
       <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#667085]">
         {criando
-          ? 'Escreva o texto, escolha cor e formato, e salve. O carimbo salvo fica disponível para aplicar em qualquer lugar do site e dentro de um evento.'
-          : `Os ${LUGARES_CARIMBO.length} pontos do site que mostram carimbo. Troque o de cada um pelo carimbo que você criou, ou volte à arte original.`}
+          ? 'Escreva o texto, escolha cor e formato, e salve. O carimbo salvo fica disponível para aplicar em qualquer lugar do site, nas categorias de evento e dentro de um evento.'
+          : emEventos
+            ? 'As quatro categorias de evento. O carimbo escolhido aqui vale para todos os eventos da categoria, no palco e na lista.'
+            : `Os ${LUGARES_CARIMBO.length} pontos do site que mostram carimbo. Troque o de cada um pelo carimbo que você criou, ou volte à arte original.`}
       </p>
 
       <nav aria-label="Abas de carimbo" className="mt-6 flex flex-wrap gap-2">
-        <Link href="/admin/carimbo" className={estilo(!criando)}>
+        <Link href="/admin/carimbo" className={estilo(!criando && !emEventos)}>
           Lugares do site
+        </Link>
+        {/* A aba de evento é a terceira e não a segunda: ela é mais estreita que
+            «lugares» (quatro categorias contra dezoito pontos) e mais específica,
+            e «criar» é o destino comum das duas. */}
+        <Link href="/admin/carimbo?aba=eventos" className={estilo(emEventos)}>
+          Carimbos de evento
         </Link>
         <Link href="/admin/carimbo?aba=criar" className={estilo(criando)}>
           Criar carimbo
@@ -83,7 +94,30 @@ export default async function AdminCarimboPage({
         </p>
       )}
 
-      {criando ? (
+      {emEventos ? (
+        <CarimbosDeEvento
+          categorias={EVENT_KINDS.map((kind) => ({
+            kind,
+            rotulo: EVENT_KIND_META[kind as EventKind].label,
+            tom: EVENT_KIND_META[kind as EventKind].tone,
+            /* A arte original de cada categoria é montada por REGRA, igual ao
+               componente do site (`carimbo-evento-${kind}.webp`), e as medidas
+               são as intrínsecas dos quatro arquivos — 520x399, iguais de
+               propósito: é o mesmo desenho com a palavra trocada.
+               `cor` é a tinta do CORPO das quatro (`#004FB4`, do script que as
+               gerou), não o tom da categoria: é ela que decide se a prévia
+               precisa de fundo escuro. */
+            arte: {
+              src: `/images/EVENTOS/carimbos/carimbo-evento-${kind}.webp`,
+              largura: 520,
+              altura: 399,
+              cor: '#004FB4',
+            },
+          }))}
+          carimbos={catalogo.carimbos}
+          kinds={catalogo.kinds}
+        />
+      ) : criando ? (
         /* `editar` pode apontar para carimbo que não existe (URL velha, carimbo
            excluído em outra aba). Nesse caso o `find` devolve `undefined` e a tela
            abre em modo CRIAR, com os padrões — e não numa edição fantasma que

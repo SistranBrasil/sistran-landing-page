@@ -113,7 +113,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { EVENT_KIND_META, type EventKind } from "@/data/events";
 import { prefersReducedMotion } from "@/lib/motion";
-import { useCarimboPorId } from "@/components/carimbo/CarimbosEmUsoProvider";
+import { useCarimboDoKind, useCarimboPorId } from "@/components/carimbo/CarimbosEmUsoProvider";
 import "./carimbo-kind-evento.css";
 
 /* Dimensões INTRÍNSECAS dos arquivos, conferidas na saída do script (520x399, as
@@ -159,7 +159,19 @@ export default function CarimboKindEvento({
      não por prop desde a rota: `EventsSpotlight` é componente de cliente e o
      carimbo é escolhido dentro de cada registro de evento — fazer a página
      resolver exigiria uma segunda lista viajando ao lado de `eventos`. */
-  const trocado = useCarimboPorId(carimboId);
+  /**
+   * A PRECEDÊNCIA, e ela é de três degraus (ver `kinds` em `CatalogoCarimbos`):
+   *   1. o carimbo escolhido NESTE evento — a exceção de um evento só;
+   *   2. o carimbo da CATEGORIA — a regra que vale para todos os eventos dela;
+   *   3. a arte original do kind, que é o padrão e o site como está hoje.
+   *
+   * O `??` entre os dois primeiros é o que permite as duas coisas conviverem:
+   * trocar a categoria não apaga a escolha de um evento específico, e escolher
+   * num evento não mexe nos outros da mesma categoria.
+   */
+  const doEvento = useCarimboPorId(carimboId);
+  const daCategoria = useCarimboDoKind(kind);
+  const trocado = doEvento ?? daCategoria;
 
   useEffect(() => {
     const no = raiz.current;

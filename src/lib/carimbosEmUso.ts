@@ -40,5 +40,12 @@ export async function carimbosEmUso(): Promise<CarimbosEmUso> {
     if (escolhido && porId[escolhido]) porLugar[lugar.id] = porId[escolhido];
   }
 
-  return { porLugar, porId };
+  /* Mesma tolerância das aplicações: categoria apontando para carimbo que não
+     existe mais é ignorada, e o evento cai na arte do kind. */
+  const porKind: Record<string, ArteCarimbo> = {};
+  for (const [kind, carimbo] of Object.entries(catalogo.kinds)) {
+    if (porId[carimbo]) porKind[kind] = porId[carimbo];
+  }
+
+  return { porLugar, porId, porKind };
 }

@@ -5,6 +5,7 @@ import { revalidatePath, updateTag } from 'next/cache';
 import { COOKIE_SESSAO, tokenConfere } from '@/lib/adminSessao';
 import { VARIAVEL_SENHA } from '@/lib/adminGate';
 import { lugarPorId, rotasDoLugar } from '@/data/carimboLugares';
+import { EVENT_KINDS, EVENT_KIND_META, type EventKind } from '@/data/events';
 import {
   ETIQUETA_CARIMBOS,
   lerCatalogoFresco,
@@ -332,6 +333,53 @@ export async function aplicarCarimbo(lugarId: string, carimboId: string): Promis
 }
 
 /**
+ * APLICA (ou desaplica) um carimbo numa CATEGORIA de evento.
+ *
+ * Vale para TODOS os eventos daquela categoria de uma vez — é a diferença em
+ * relação ao campo `carimbo` de cada evento, que é a exceção de um só. Um evento
+ * com escolha própria continua ganhando dela (ver a precedência em
+ * `CarimboKindEvento`).
+ *
+ * Revalida `/eventos-inovacao` e não as rotas de `LUGARES_CARIMBO`: é a única
+ * rota que mostra carimbo de evento.
+ */
+export async function aplicarCarimboDeKind(
+  kind: string,
+  carimboId: string,
+): Promise<EstadoCarimbo> {
+  const barrado = await impedimento();
+  if (barrado) return { estado: 'erro', problemas: [barrado] };
+
+  if (!(EVENT_KINDS as readonly string[]).includes(kind)) {
+    return { estado: 'erro', problemas: [`Categoria de evento desconhecida: "${kind}".`] };
+  }
+
+  const catalogo = await lerCatalogoFresco();
+  if (carimboId && !catalogo.carimbos.some((c) => c.id === carimboId)) {
+    return { estado: 'erro', problemas: [`Carimbo desconhecido: "${carimboId}".`] };
+  }
+
+  const gravado = await publicarSobreBaseFresca((base) => {
+    const kinds = { ...base.kinds };
+    if (carimboId) kinds[kind] = carimboId;
+    else delete kinds[kind];
+    return { ...base, kinds };
+  });
+  if (!gravado.ok) return { estado: 'erro', problemas: [recadoDeFalha(gravado.detalhe)] };
+
+  revalidar(['/eventos-inovacao']);
+
+  const rotulo = EVENT_KIND_META[kind as EventKind].label;
+  const nome = catalogo.carimbos.find((c) => c.id === carimboId)?.nome;
+  return {
+    estado: 'ok',
+    recado: carimboId
+      ? `Eventos de «${rotulo}» agora usam o carimbo "${nome}".`
+      : `Eventos de «${rotulo}» voltaram à arte original da categoria.`,
+  };
+}
+
+/**
  * EXCLUI um carimbo do catálogo.
  *
  * ⚠️ RECUSA ENQUANTO ESTIVER EM USO, em vez de excluir e deixar o lugar cair na
@@ -347,9 +395,17 @@ export async function excluirCarimbo(id: string): Promise<EstadoCarimbo> {
   if (barrado) return { estado: 'erro', problemas: [barrado] };
 
   const catalogo = await lerCatalogoFresco();
-  const usos = Object.entries(catalogo.aplicacoes)
-    .filter(([, carimbo]) => carimbo === id)
-    .map(([lugar]) => lugarPorId(lugar)?.rotulo ?? lugar);
+  const usos = [
+    ...Object.entries(catalogo.aplicacoes)
+      .filter(([, carimbo]) => carimbo === id)
+      .map(([lugar]) => lugarPorId(lugar)?.rotulo ?? lugar),
+    /* As categorias de evento contam como uso: sem isto, excluir um carimbo
+       aplicado numa categoria passaria batido e os eventos dela voltariam à arte
+       original em silêncio — o oposto do que esta recusa existe para evitar. */
+    ...Object.entries(catalogo.kinds)
+      .filter(([, carimbo]) => carimbo === id)
+      .map(([kind]) => `eventos de «${EVENT_KIND_META[kind as EventKind].label}»`),
+  ];
 
   if (usos.length > 0) {
     return {

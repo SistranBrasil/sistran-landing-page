@@ -73,10 +73,29 @@ export type CarimboBruto = {
 export type CatalogoCarimbos = {
   carimbos: CarimboBruto[];
   aplicacoes: Record<string, string>;
+  /**
+   * CATEGORIA DE EVENTO → id de carimbo. A chave é um `EventKind`
+   * (`proprio | global | nacional | parceiro`).
+   *
+   * ⚠️ POR QUE ISTO NÃO É UM «LUGAR» de `LUGARES_CARIMBO`: lugar é uma posição
+   * fixa no layout, e o carimbo de evento não é — ele aparece uma vez por
+   * EVENTO, em dois componentes diferentes, e o que decide qual arte usar é um
+   * campo do registro. Cadastrar «carimbo de evento» como lugar daria um
+   * controle que vale para todos os quinze eventos sem dizer isso em lugar
+   * nenhum.
+   *
+   * A ORDEM DE PRECEDÊNCIA, que é o que faz isto conviver com o campo `carimbo`
+   * de cada evento (ver `EventoBruto`):
+   *   1. o `carimbo` do próprio evento, se tiver — a exceção de um evento só;
+   *   2. o carimbo desta tabela para o `kind` dele — a regra da categoria;
+   *   3. a arte original do kind em `public/images/EVENTOS/carimbos/` — o padrão.
+   * Ausente aqui = cai no 3, que é o site como está hoje.
+   */
+  kinds: Record<string, string>;
 };
 
 /** O catálogo vazio — e o que vale quando a loja ainda não tem nada. */
-export const CATALOGO_VAZIO: CatalogoCarimbos = { carimbos: [], aplicacoes: {} };
+export const CATALOGO_VAZIO: CatalogoCarimbos = { carimbos: [], aplicacoes: {}, kinds: {} };
 
 /**
  * A arte resolvida de um ponto do site: o que o componente precisa para pintar.
@@ -94,9 +113,11 @@ export type ArteCarimbo = { src: string; largura: number; altura: number };
 export type CarimbosEmUso = {
   porLugar: Record<string, ArteCarimbo>;
   porId: Record<string, ArteCarimbo>;
+  /** Categoria de evento → arte já resolvida. */
+  porKind: Record<string, ArteCarimbo>;
 };
 
-export const SEM_CARIMBOS: CarimbosEmUso = { porLugar: {}, porId: {} };
+export const SEM_CARIMBOS: CarimbosEmUso = { porLugar: {}, porId: {}, porKind: {} };
 
 /**
  * Normaliza um nome em id: minúsculas, sem acento, só letras, números e hífen.

@@ -60,11 +60,12 @@ export function conferirCatalogo(bruto: unknown): CatalogoCarimbos {
   if (!bruto || typeof bruto !== 'object') return CATALOGO_VAZIO;
   const obj = bruto as Partial<CatalogoCarimbos>;
   const carimbos = Array.isArray(obj.carimbos) ? obj.carimbos : [];
-  const aplicacoes =
-    obj.aplicacoes && typeof obj.aplicacoes === 'object' && !Array.isArray(obj.aplicacoes)
-      ? (obj.aplicacoes as Record<string, string>)
-      : {};
-  return { carimbos, aplicacoes };
+  const mapa = (v: unknown): Record<string, string> =>
+    v && typeof v === 'object' && !Array.isArray(v) ? (v as Record<string, string>) : {};
+  /* `kinds` pode faltar: é um campo que nasceu depois, e todo catálogo publicado
+     antes dele não o tem. Ausente vira `{}`, que significa «cada categoria na
+     arte original» — o comportamento anterior, sem migração nenhuma. */
+  return { carimbos, aplicacoes: mapa(obj.aplicacoes), kinds: mapa(obj.kinds) };
 }
 
 export type Resultado = { ok: true } | { ok: false; detalhe: string };

@@ -215,7 +215,11 @@ export async function publicarCatalogo(catalogo: CatalogoCarimbos): Promise<Resu
        leram, e guardar a referência deixaria a memória mudar depois de
        publicada. */
     recemPublicado = {
-      catalogo: { carimbos: [...catalogo.carimbos], aplicacoes: { ...catalogo.aplicacoes } },
+      catalogo: {
+        carimbos: [...catalogo.carimbos],
+        aplicacoes: { ...catalogo.aplicacoes },
+        kinds: { ...catalogo.kinds },
+      },
       em: Date.now(),
     };
     return { ok: true };

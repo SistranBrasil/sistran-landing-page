@@ -47,6 +47,17 @@ export function useCarimboDoLugar(lugar: string): ArteCarimbo | undefined {
   return useContext(Contexto).porLugar[lugar];
 }
 
+/**
+ * A arte escolhida para uma CATEGORIA de evento, ou `undefined`.
+ *
+ * `undefined` é o caminho normal: significa «esta categoria está na arte
+ * original», que é o estado de hoje das quatro.
+ */
+export function useCarimboDoKind(kind?: string): ArteCarimbo | undefined {
+  const { porKind } = useContext(Contexto);
+  return kind ? porKind[kind] : undefined;
+}
+
 /** A arte de um carimbo pelo id — o caminho do carimbo escolhido num evento. */
 export function useCarimboPorId(id?: string): ArteCarimbo | undefined {
   const { porId } = useContext(Contexto);
