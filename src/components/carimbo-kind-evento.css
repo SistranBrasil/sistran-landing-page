@@ -44,9 +44,16 @@
      altura inteira: na MESMA largura de caixa, a letra fica muito maior.
      Medido a 1440 com a arte nova: caixa 137x68 e a escrita competindo com o
      título do cartão, que tem `clamp(1.15rem, 1.7vw, 1.6rem)`.
-     80% em cada parada do `clamp` — a proporção entre as três é a mesma, então o
-     comportamento entre breakpoints não muda, só a escala. */
-  --carimbo-w: clamp(5.2rem, 7.35vw, 7rem);
+     SEGUNDA VOLTA (“o carimbo ficou muito pequeno”): 80% era demais. O corte
+     final é 92% do original — e ele só funciona junto com a outra metade da
+     correção, que é a arte. Medido: cada arte de evento tinha 8% da altura em
+     TRANSPARENTE, folga que a rotação de −3° gravada no PNG deixou. Somada ao
+     −6° que este CSS aplica, a cápsula vinha tombada em dobro, desenhada menor
+     que a própria caixa e cercada de vazio — o “espaço grande entre o carimbo e o
+     título” era esse vazio, não uma margem. As quatro artes foram redesenhadas
+     RETAS (como as originais de categoria, que é a premissa deste tombo em CSS),
+     então agora a tinta ocupa a caixa inteira. */
+  --carimbo-w: clamp(6rem, 8.4vw, 8rem);
 
   display: block;
   width: var(--carimbo-w);
@@ -63,6 +70,12 @@
      Não mais que isto: o carimbo é o primeiro item do cartão e encostar na borda
      arredondada de 1rem leria como corte, não como aproximação. */
   margin-top: -0.4rem;
+  /* E encosta um pouco no título: o `gap: 0.6rem` do cartão vale entre todos os
+     filhos, e aqui ele somava ao vazio da arte. Com a arte reta o vazio sumiu;
+     este −0.2rem é o resto do caminho. Não mais: o tombo de −6° faz o canto
+     inferior da cápsula descer além da caixa, e encostar no título leria como
+     erro de layout. */
+  margin-bottom: -0.2rem;
 
   /* O TOMBO. As artes são ovais RETOS (medidos: o desenho não vem inclinado), e a
      issue previu este ramo. −6deg e não mais: em −10deg o canto do oval passava a
