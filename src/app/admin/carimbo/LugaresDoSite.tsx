@@ -60,7 +60,15 @@ export function LugaresDoSite({
       <div aria-live="polite" className="min-h-[2.75rem]">
         {estado.estado === 'ok' && (
           <p className="rounded-lg bg-emerald-50 px-3 py-2 text-sm text-emerald-800">
-            {estado.recado}
+            {estado.recado}{' '}
+            {/* ⚠️ ESTE AVISO É MEDIDO, não cautela genérica: depois de gravar, a
+                loja serviu o corpo anterior por ~90 s (13/10, com URL nova e sem
+                cache). Sem dizer isso, quem recarrega a página do site em dez
+                segundos conclui que a troca não funcionou — e clica de novo, que é
+                justamente o que embaralha as gravações. */}
+            <span className="text-emerald-700/80">
+              No site, a troca aparece em até cerca de um minuto.
+            </span>
           </p>
         )}
         {estado.estado === 'erro' && (

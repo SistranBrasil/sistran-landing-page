@@ -59,10 +59,74 @@ function chao(): CatalogoCarimbos {
 
 type ModoDeCache = 'fresco' | 'site';
 
+/**
+ * ⚠️ O QUE ACABOU DE SER PUBLICADO, guardado em memória — 13/10, depois de
+ * MEDIR uma perda de escritas na loja real: 36 operações seguidas reportaram
+ * sucesso e o catálogo terminou com 8 das 18 aplicações e 7 das 18 artes novas.
+ *
+ * O DEFEITO é de propagação, e é o mesmo que `eventosLoja.ts` documenta — eu
+ * simplesmente não copiei a guarda quando escrevi este módulo, e esta nota
+ * existe para que ninguém a remova por parecer sobra. Toda escrita aqui é
+ * LER-MODIFICAR-GRAVAR o documento INTEIRO. Se a leitura devolve um corpo
+ * levemente atrasado (os metadados e o corpo da loja são consistentes
+ * EVENTUALMENTE), a gravação seguinte sobrescreve o documento sem a alteração
+ * anterior. Uma operação por minuto nunca vê isso; dez cliques em sequência
+ * perdem as do meio, em silêncio, com a tela dizendo «salvo».
+ *
+ * A memória é AUTORIDADE SÓ ENQUANTO É MAIS NOVA que o que a loja declara, e por
+ * no máximo um minuto — os dois limites importam, pelas razões escritas em
+ * `eventosLoja`: «mais nova» deixa a escrita de outra instância vencer assim que
+ * propagar, e o minuto é a largura da janela de corrida (o piso de cache que o
+ * SDK impõe).
+ *
+ * ⚠️ E O QUE ISTO NÃO RESOLVE: na Vercel, dois POSTs seguidos podem cair em
+ * INSTÂNCIAS diferentes, e a instância nova não tem memória nenhuma. É por isso
+ * que a guarda de verdade está na ação, que confere a gravação lendo de volta
+ * (ver `publicarEConferir` em `src/app/admin/carimbo/acoes.ts`). Esta memória
+ * cobre o caso comum — a mesma instância atendendo uma rajada de cliques.
+ */
+let recemPublicado: { catalogo: CatalogoCarimbos; em: number } | null = null;
+
+/**
+ * A LARGURA DA JANELA DE CORRIDA, MEDIDA — não herdada do piso de cache do SDK.
+ *
+ * 13/10: depois de uma escrita, a loja continuou servindo o CORPO ANTERIOR por
+ * ~90 s, com URL nova a cada tentativa (`?v=<agora>-<aleatório>`) e
+ * `cache: 'no-store'`. Ou seja: não era cache de CDN nem do Next — era a
+ * propagação da própria loja. O marcador `uploadedAt` já era o da escrita nova
+ * enquanto o corpo ainda era o velho, o que também derruba a ideia de usar o
+ * `uploadedAt` como prova de frescura.
+ *
+ * 120 s, e não os 60 s que o módulo de eventos assume: o número de lá veio do
+ * piso de `cacheControlMaxAge`, que é outra coisa. Com 60 s, a memória expirava
+ * no meio da janela e a leitura voltava a trazer um corpo velho como base de
+ * escrita — que é exatamente como as alterações se perdem.
+ */
+const JANELA_PROPAGACAO = 120_000;
+
+function memoriaValida(uploadedAt?: Date): CatalogoCarimbos | null {
+  if (!recemPublicado) return null;
+  if (Date.now() - recemPublicado.em >= JANELA_PROPAGACAO) return null;
+  /* Sem `uploadedAt` a memória vence por definição: é a única notícia que temos
+     de que algo foi escrito. */
+  if (uploadedAt && uploadedAt.getTime() >= recemPublicado.em) return null;
+  return recemPublicado.catalogo;
+}
+
+/** Esquece a memória — usado pela conferência, que precisa ver a LOJA. */
+export function esquecerPublicacao(): void {
+  recemPublicado = null;
+}
+
 async function lerDaNuvem(modo: ModoDeCache): Promise<CatalogoCarimbos | null> {
   if (!TOKEN) return null;
   try {
     const info = await head(CAMINHO_CATALOGO, { token: TOKEN });
+
+    /* A memória vem ANTES da busca: se este processo acabou de publicar e a loja
+       ainda não propagou, o que ele escreveu é a melhor notícia que existe. */
+    const emMemoria = memoriaValida(info.uploadedAt);
+    if (emMemoria) return emMemoria;
 
     /**
      * ⚠️ A CHAVE DE CACHE ÚNICA, no modo fresco, é a correção que `eventosLoja`
@@ -147,6 +211,13 @@ export async function publicarCatalogo(catalogo: CatalogoCarimbos): Promise<Resu
       contentType: 'application/json',
       cacheControlMaxAge: 60,
     });
+    /* Cópia, e não a referência: os chamadores montam o objeto a partir do que
+       leram, e guardar a referência deixaria a memória mudar depois de
+       publicada. */
+    recemPublicado = {
+      catalogo: { carimbos: [...catalogo.carimbos], aplicacoes: { ...catalogo.aplicacoes } },
+      em: Date.now(),
+    };
     return { ok: true };
   } catch (causa) {
     return { ok: false, detalhe: causa instanceof Error ? causa.message : String(causa) };

@@ -92,6 +92,35 @@ function revalidar(rotas: string[]): void {
    existir uma operação de fato global — trocar a tinta de todos os carimbos de
    uma vez, por exemplo. */
 
+/**
+ * PUBLICA SOBRE UMA BASE LIDA NA HORA — a guarda contra perda silenciosa.
+ *
+ * ⚠️ O DEFEITO QUE ISTO CORRIGE, medido em 13/10 na loja real: 36 operações
+ * seguidas reportaram sucesso e o catálogo terminou com 8 das 18 aplicações e 7
+ * das 18 artes. Toda escrita aqui é LER-MODIFICAR-GRAVAR o documento inteiro; com
+ * uma leitura levemente atrasada como base, a gravação apaga a alteração
+ * anterior. Quem segura isso é a memória de última publicação em
+ * `carimbosLoja.ts`, e o `montar` abaixo existe para que a base seja SEMPRE a
+ * leitura mais recente possível — nunca um objeto capturado antes das validações.
+ *
+ * ⚠️ POR QUE NÃO HÁ CONFERÊNCIA LENDO DE VOLTA, que foi a primeira versão desta
+ * função: porque a leitura seguinte NÃO PROVA NADA dentro da requisição. Medido:
+ * depois de gravar, a loja serviu o corpo anterior por ~90 s, com URL nova e
+ * `no-store`. Uma conferência assim reprovaria gravações que deram certo — e,
+ * pior, a repetição partiria de uma base velha e desfaria o que acabou de ser
+ * escrito. Um mecanismo de segurança que produz o próprio defeito que deveria
+ * impedir é pior que não ter mecanismo.
+ *
+ * O preço, que a tela diz ao operador: a troca pode levar até cerca de um minuto
+ * para aparecer no site.
+ */
+async function publicarSobreBaseFresca(
+  montar: (base: CatalogoCarimbos) => CatalogoCarimbos,
+): Promise<{ ok: true } | { ok: false; detalhe: string }> {
+  const base = await lerCatalogoFresco();
+  return publicarCatalogo(montar(base));
+}
+
 function texto(formulario: FormData, campo: string): string {
   const bruto = formulario.get(campo);
   return typeof bruto === 'string' ? bruto.trim() : '';
@@ -207,11 +236,18 @@ export async function salvarCarimbo(
     criadoEm: indice >= 0 ? catalogo.carimbos[indice].criadoEm : new Date().toISOString(),
   };
 
-  const carimbos = [...catalogo.carimbos];
-  if (indice >= 0) carimbos[indice] = registro;
-  else carimbos.push(registro);
-
-  const gravado = await publicarCatalogo({ ...catalogo, carimbos });
+  /* `montar` roda sobre a base lida DENTRO de `publicarSobreBaseFresca`, e não
+     sobre o `catalogo` desta closure: entre a leitura que validou e a gravação há
+     o upload da arte (centenas de ms de rede), e é nessa fresta que a base
+     envelhece. Usar a leitura mais nova possível é o que evita regravar um
+     documento sem a alteração de quem clicou antes. */
+  const gravado = await publicarSobreBaseFresca((base) => {
+      const carimbos = [...base.carimbos];
+      const onde = carimbos.findIndex((c) => c.id === id);
+      if (onde >= 0) carimbos[onde] = registro;
+      else carimbos.push(registro);
+      return { ...base, carimbos };
+  });
   if (!gravado.ok) return { estado: 'erro', problemas: [recadoDeFalha(gravado.detalhe)] };
 
   /**
@@ -276,11 +312,12 @@ export async function aplicarCarimbo(lugarId: string, carimboId: string): Promis
     return { estado: 'erro', problemas: [`Carimbo desconhecido: "${carimboId}".`] };
   }
 
-  const aplicacoes: CatalogoCarimbos['aplicacoes'] = { ...catalogo.aplicacoes };
-  if (carimboId) aplicacoes[lugarId] = carimboId;
-  else delete aplicacoes[lugarId];
-
-  const gravado = await publicarCatalogo({ ...catalogo, aplicacoes });
+  const gravado = await publicarSobreBaseFresca((base) => {
+      const aplicacoes: CatalogoCarimbos['aplicacoes'] = { ...base.aplicacoes };
+      if (carimboId) aplicacoes[lugarId] = carimboId;
+      else delete aplicacoes[lugarId];
+      return { ...base, aplicacoes };
+  });
   if (!gravado.ok) return { estado: 'erro', problemas: [recadoDeFalha(gravado.detalhe)] };
 
   revalidar(rotasDoLugar(lugarId));
@@ -324,12 +361,14 @@ export async function excluirCarimbo(id: string): Promise<EstadoCarimbo> {
     };
   }
 
-  const carimbos = catalogo.carimbos.filter((c) => c.id !== id);
-  if (carimbos.length === catalogo.carimbos.length) {
+  if (!catalogo.carimbos.some((c) => c.id === id)) {
     return { estado: 'erro', problemas: [`Carimbo desconhecido: "${id}".`] };
   }
 
-  const gravado = await publicarCatalogo({ ...catalogo, carimbos });
+  const gravado = await publicarSobreBaseFresca((base) => ({
+    ...base,
+    carimbos: base.carimbos.filter((c) => c.id !== id),
+  }));
   if (!gravado.ok) return { estado: 'erro', problemas: [recadoDeFalha(gravado.detalhe)] };
 
   revalidar(['/admin/carimbo']);
