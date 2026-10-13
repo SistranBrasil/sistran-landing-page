@@ -244,24 +244,36 @@
 }
 
 /* O ENQUADRAMENTO DA FOTO DO CARD 1, e é o único card que precisa de um.
-   `escritoriosp.png` é um panorama de 1957×804 numa caixa quase quadrada
-   (684×780 no desktop, 359×490 a 390px): com `cover`, o que aparece é uma janela
-   de 36% da largura do arquivo no desktop e 28% em tela estreita — o resto fica
-   fora. Em `50%` (o padrão) essa janela cai centrada em x≈978, que é o colega de
-   camisa xadrez à direita do grupo; as pessoas da metade esquerda ficavam
-   cortadas na borda, que é o que o pedido relatou.
+   A foto é um panorama (`escritoriosp1 (2).jpg`, 2048×841) numa caixa quase
+   quadrada — 684×780 no desktop e 359×490 a 390px —, então com `cover` o que
+   aparece é uma janela de ~36% da largura do arquivo no desktop e ~30% em tela
+   estreita. Em `50%` (o padrão) essa janela cai no miolo direito do grupo e as
+   pessoas da metade esquerda ficam cortadas na borda, que foi o que o primeiro
+   pedido relatou.
 
-   25% põe a janela em x≈313..1018 no desktop e x≈351..904 a 390px — as duas
-   enquadram o mesmo trio da esquerda, com o colega de camisa branca no centro e
-   ninguém partido pela borda. Medido no navegador nas duas larguras.
+   ⚠️ RECALIBRADO EM 13/10, JUNTO COM A TROCA DO ARQUIVO (era `escritoriosp.png`,
+   1957×804, com 25% aqui — ver a nota em `data/solutions.ts`). O alvo é o pedido:
+   «mantendo essa pessoa em destaque», o colega de camisa branca ao centro do trio
+   sentado, que está em x ≈ 0,362 da largura do arquivo.
+
+   29% é o que o navegador devolveu mais perto dele nas DUAS caixas. Medido:
+
+                      caixa      janela (px do arquivo servido)   centro
+     desktop          684×780    353…1036  de 1900                0,3655
+     mobile (390px)   359×490    258…639   de 1270                0,3528
+
+   Erro de 0,3% para a direita no desktop e 1,0% para a esquerda no mobile, contra
+   o alvo de 0,3623 — e nas duas o colega aparece inteiro, sem ninguém partido pela
+   borda (conferido em captura, não só no número).
 
    ⚠️ UM ÚNICO VALOR SERVE AOS DOIS CAMINHOS DE RENDER mas NÃO dá a mesma janela
    em todas as caixas, e isso é da unidade, não um descuido: a porcentagem de
    `object-position` é fração do que SOBRA (`larguraEscalada - larguraDaCaixa`),
-   então quanto mais estreita a caixa, mais estreita a janela e mais o mesmo 25%
+   então quanto mais estreita a caixa, mais estreita a janela e mais o mesmo 29%
    «anda». Por isso o número foi conferido nas duas pontas em vez de calculado
-   numa só. Y fica em 50%: a altura do arquivo cabe quase inteira, não há o que
-   escolher.
+   numa só — e é por isso que 29% é um MEIO entre os 28,5% que o desktop pediria e
+   os 30,3% do mobile, não o ótimo de nenhum dos dois. Y fica em 50%: a altura do
+   arquivo cabe quase inteira, não há o que escolher.
 
    Vale enquanto a foto do card 1 for esta. Trocar o arquivo invalida o número —
    e o sintoma seria gente cortada outra vez, não um erro de build. */

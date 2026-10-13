@@ -114,7 +114,20 @@ export const PREFETCH = { atras: 8, frente: 36 } as const;
    necessário. A memória de um bitmap é `largura × altura × 4`; o orçamento mantém o pior tier
    (1440²) em ~160 MB e o celular em ~90 MB. */
 const ORCAMENTO_DECODE_BYTES = { desktop: 160 * 1024 * 1024, mobile: 90 * 1024 * 1024 } as const;
-const PARALELO_DECODE = { desktop: 4, mobile: 3 } as const;
+/* ⚠️ DESKTOP SUBIU DE 4 PARA 6 em 13/10/2026, e o 6 não é palpite — é o número que a nota acima
+   já calculava («com 6 em paralelo o pool rende ~300 quadros/s») e que estava escrito como 4.
+   Medido com a roda sintética a 1 dente/80 ms (~112 quadros/s de conteúdo), build de produção:
+     · com 4 → 48% de imagens distintas por rAF, atraso p90 15 quadros, até 9 rAF repetindo;
+     · com 6 → 62% de imagens distintas, atraso p90 11 quadros, no máximo 6 rAF repetindo.
+   Na rolagem lenta (1 dente/160 ms) o ganho foi o fim do último degrau: a maior sequência de rAF
+   com a MESMA imagem caiu de 4 para 2. E a sonda oficial (`scripts/medir-hero-quadros.mjs`)
+   continua aprovando tudo, com o melhor número já registrado nela: atraso p90 7 quadros e 63
+   quadros distintos em 93 rAF.
+   MOBILE FICA EM 3: lá o tier é 1080×1440 (bitmaps maiores que o desktop de 1152²), a janela já
+   nasce menor pelo orçamento de memória e o pool de threads é mais curto — subir ali é pedir
+   disputa de CPU com a própria rolagem, que é o defeito que o `resizeWidth` descartado em 08/10
+   provocou. Não mexer sem medir em celular real. */
+const PARALELO_DECODE = { desktop: 6, mobile: 3 } as const;
 
 export type JanelaDeDecode = { atras: number; frente: number; paralelo: number };
 

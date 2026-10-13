@@ -180,6 +180,10 @@ export function useHeroFrameSequence({ gatilho, carregar }: Params): RefsDoHero 
         const vizinho =
           i === alvo && fracao > 0 && alvo + 1 < total ? decoder.pegar(alvo + 1) : undefined;
         renderer.desenhar(bm, i, vizinho, vizinho ? fracao : 0);
+        /* A mistura de fato aplicada, no DOM pela mesma razão que `data-alvo`/`data-quadro`:
+           sem isto não há como uma sonda distinguir «não interpolou porque a fração era zero»
+           de «não interpolou porque o vizinho não estava decodificado». Nenhum CSS depende. */
+        el.dataset.mistura = vizinho ? fracao.toFixed(2) : '0';
         /* Legível no DOM para a medição (`scripts/medir-hero-quadros.mjs`), como o
            `data-scrub` do `ScrubScope`. Nenhum seletor de CSS depende disto. */
         if (renderer.ultimoDesenhado === i) el.dataset.quadro = String(i);
