@@ -55,8 +55,14 @@
      para a sua seção com uma razão própria entre carimbo, título e caixa. Reduzir
      um por um jogaria fora essa calibragem e precisaria de onze medições novas;
      multiplicar preserva TODAS as proporções relativas e muda só a escala.
-     Quem quiser voltar ao tamanho anterior troca 0.8 por 1 num lugar só. */
-  --carimbo-batida-escala: 0.8;
+     Quem quiser voltar ao tamanho anterior troca 0.8 por 1 num lugar só.
+
+     ⚠️ O FATOR É DECLARADO NO `:root` (em `globals.css`) e não aqui, porque há um
+     consumidor fora desta folha: `.agimos-carimbo` usa `--carimbo-batida-w` mas
+     NÃO é um `.carimbo-batida` (a arte de lá é o título da seção e não passa pelo
+     componente). Declarado só nesta classe, o fator não alcançava aquele caso — e
+     foi exatamente o que apareceu: «na seção como agimos o carimbo não foi
+     atualizado». */
 
   display: block;
   width: calc(var(--carimbo-batida-w) * var(--carimbo-batida-escala));

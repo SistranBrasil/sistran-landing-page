@@ -116,6 +116,29 @@ export const LUGARES_CARIMBO: readonly LugarCarimbo[] = [
     },
   },
   {
+    /* ⚠️ O ÚNICO LUGAR QUE NÃO USA `CarimboBatida`. A arte daqui É O TÍTULO da
+       seção: ela vive dentro do `<h2 id="como-agimos">` e carrega o nome no
+       `alt`. Por isso ela renderiza por `ArteDoLugar` (casca fina, sem batida e
+       sem tombo) em vez de `CarimboDoLugar` — ver os docblocks dos dois.
+       Ele ficou FORA do inventário na primeira volta, e ficou dito na entrega que
+       estava fora. Entrou a pedido («na seção como agimos o carimbo não foi
+       atualizado, e acho que não foi mapeada»). */
+    id: 'quem-somos-como-agimos',
+    rotulo: 'Quem somos · Como Agimos',
+    rotas: ['/quem-somos'],
+    onde: 'É o próprio título da seção «Como Agimos».',
+    arquivo: 'src/components/como-agimos/ComoAgimos.tsx',
+    padrao: {
+      src: '/carimbo-agimos-ticket-outline-ffffff.png',
+      /* O `alt` é o NOME DA SEÇÃO, não a descrição de um selo — é o que a `<h2>`
+         anuncia ao leitor de tela. */
+      alt: 'Como Agimos',
+      largura: 801,
+      altura: 339,
+      cor: '#FFFFFF',
+    },
+  },
+  {
     id: 'quem-somos-tecnologias',
     rotulo: 'Quem somos · Tecnologias',
     rotas: ['/quem-somos'],

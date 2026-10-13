@@ -2326,6 +2326,13 @@ main:focus {
      `--grade-modulo` mora aqui: passou a ter dois consumidores em arquivos
      distantes (`.home-canvas::before` e `.story-solucoes__grade`), e um passo de
      grade declarado em dois lugares é como as malhas divergem sem ninguém ver. */
+  /* O FATOR DE ESCALA DOS CARIMBOS — um número para os dezenove.
+     Ele multiplica todo `--carimbo-batida-w` do projeto (são onze, cada um
+     calibrado para a sua seção). Mora aqui, no `:root`, porque tem consumidor
+     fora da folha do componente: `.agimos-carimbo` usa a largura sem ser um
+     `.carimbo-batida`. Ver a nota em `carimbo-batida.css`. */
+  --carimbo-batida-escala: 0.8;
+
   --grade-fina-modulo: 64px;
   --grade-fina-linha: rgba(4, 58, 99, 0.08);
   --grade-fina-opacidade: 0.32;

@@ -82,7 +82,13 @@
      este −0.2rem é o resto do caminho. Não mais: o tombo de −6° faz o canto
      inferior da cápsula descer além da caixa, e encostar no título leria como
      erro de layout. */
-  margin-bottom: -0.2rem;
+  /* -0.45rem e não -0.2rem (13/10, «o espaço ainda está grande»): medido na
+     TINTA, por varredura de pixels do publicado, o vão era de 8px entre o último
+     pixel da cápsula e o primeiro do título. Caixa não serve para medir isto — o
+     tombo de −6° faz a caixa mentir. 8px → ~4px.
+     Não zero: o canto inferior esquerdo da cápsula é o ponto mais baixo e cai
+     justamente sobre a primeira letra do título. */
+  margin-bottom: -0.45rem;
 
   /* O TOMBO. As artes são ovais RETOS (medidos: o desenho não vem inclinado), e a
      issue previu este ramo. −6deg e não mais: em −10deg o canto do oval passava a

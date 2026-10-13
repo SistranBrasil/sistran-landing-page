@@ -93,7 +93,10 @@
    uma coluna e o clamp bate no `vw` ou no piso, como antes. */
 .agimos-carimbo {
   --carimbo-batida-w: clamp(17rem, 26vw, 23rem);
-  width: var(--carimbo-batida-w);
+  /* O mesmo fator dos outros dezoito (`:root`, em `globals.css`). Esta seção
+     ficou de fora quando o fator nasceu dentro de `.carimbo-batida`, porque aqui
+     a arte não passa pelo componente — é o título da seção. */
+  width: calc(var(--carimbo-batida-w) * var(--carimbo-batida-escala, 1));
   max-width: 100%;
   margin: 0;
 }

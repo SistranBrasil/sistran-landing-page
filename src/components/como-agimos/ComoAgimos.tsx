@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import ArteDoLugar from '@/components/carimbo/ArteDoLugar';
 import RevealScope from '@/components/motion/RevealScope';
 import ScrollReveal from '@/components/ui/ScrollReveal';
 import { COMO_AGIMOS } from '@/data/aSistran';
@@ -189,11 +189,28 @@ export default function ComoAgimos() {
             gatilhos para o mesmo gesto. */}
         <RevealScope className="agimos-abertura">
           <h2 id="como-agimos" className="agimos-carimbo">
-            <Image
+            {/* ── O CARIMBO DESTA SEÇÃO PASSOU A SER TROCÁVEL PELO ADMIN ────────
+                `<ArteDoLugar>` e não `<Image>`: ele pergunta ao catálogo se há
+                carimbo atribuído a `quem-somos-como-agimos` e, se houver, troca o
+                arquivo. Sem atribuição, serve exatamente esta arte — o estado
+                anterior, byte a byte.
+
+                ⚠️ E NÃO `<CarimboDoLugar>`, que é o componente dos outros
+                dezoito: aquele delega a `CarimboBatida`, que traz batida, portão
+                de rota e tombo. Aqui a arte É O TÍTULO da seção (ver «O CARIMBO
+                JÁ É O TÍTULO», no topo deste arquivo) — animar e tombar a
+                manchete não é o desenho desta página. Por isso existe a casca
+                fina em `ArteDoLugar`.
+
+                O `alt` continua sendo o NOME DA SEÇÃO e não pode vir do catálogo:
+                é ele que dá à `<h2>` o texto que o leitor de tela anuncia, e
+                trocar a arte não muda o nome da seção. */}
+            <ArteDoLugar
+              lugar="quem-somos-como-agimos"
               src="/carimbo-agimos-ticket-outline-ffffff.png"
               alt="Como Agimos"
-              width={CARIMBO.largura}
-              height={CARIMBO.altura}
+              largura={CARIMBO.largura}
+              altura={CARIMBO.altura}
               /* Refeito junto com o clamp do CSS (24/09): era `30rem`/`32vw`, a
                  medida de quando o carimbo tinha o container inteiro. Hoje o clamp é
                  `clamp(17rem, 26vw, 23rem)`, e as três paradas abaixo o traduzem —
