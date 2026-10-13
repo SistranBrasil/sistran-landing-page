@@ -30,3 +30,8 @@ docs/capturas/
 # Quadros intermediários do hero (scripts/gerar-quadros-hero.mjs)
 .tmp-hero-frames/
 .tmp-hero-frames-*.log
+
+# Sondas descartaveis de navegador (probe-*.mjs, *-tmp.mjs): ficam no disco de
+# quem as escreveu e nunca no repositorio.
+probe*.mjs
+*-tmp.mjs
