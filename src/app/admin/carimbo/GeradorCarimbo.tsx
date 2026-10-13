@@ -10,7 +10,6 @@ import type { CarimboBruto } from '@/lib/carimbosTipos';
 import { fundoDaPrevia, XADREZ } from './fundoDaPrevia';
 import {
   ARTE_REFERENCIA,
-  FORMATOS,
   ROTULO_FORMATO,
   renderizar,
   type Acabamento,
@@ -95,7 +94,10 @@ export function GeradorCarimbo({ emEdicao }: { emEdicao?: CarimboBruto }) {
   /* «Site» é o padrão desde 08/10: é a estrutura do carimbo em uso
      (`public/images/carimbo site novo.png`), e abrir a ferramenta já nela é o que
      evita exportar no formato antigo por inércia. */
-  const [formato, setFormato] = useState<Formato>((emEdicao?.receita.formato as Formato) ?? 'site');
+  /* Sem setter: não há mais controle que troque o formato. O valor continua
+     vindo de `emEdicao` quando existe, para que reeditar um carimbo antigo não o
+     CONVERTA em silêncio — ver a nota do bloco removido, mais abaixo. */
+  const [formato] = useState<Formato>((emEdicao?.receita.formato as Formato) ?? 'site');
   const [acabamento, setAcabamento] = useState<Acabamento>(
     (emEdicao?.receita.acabamento as Acabamento) ?? 'outline',
   );
@@ -207,14 +209,12 @@ export function GeradorCarimbo({ emEdicao }: { emEdicao?: CarimboBruto }) {
     [escala],
   );
 
-  const baixarLote = useCallback(async () => {
-    // Sem zip: são oito downloads em sequência. O intervalo existe porque o
-    // navegador descarta cliques sintéticos disparados no mesmo tique.
-    for (const f of FORMATOS) {
-      await baixar(montarOpcoes({ formato: f }));
-      await new Promise((r) => setTimeout(r, 220));
-    }
-  }, [baixar, montarOpcoes]);
+  /* ARQUIVADO: `baixarLote`, que baixava um PNG por formato em sequência
+     (`for (const f of FORMATOS) baixar(montarOpcoes({ formato: f }))`, com 220 ms
+     de intervalo porque o navegador descarta cliques sintéticos no mesmo tique).
+     Saiu com o seletor de formato: um botão que exporta oito layouts que a tela
+     não oferece mais só produz arquivo que ninguém vai usar. Volta junto com o
+     seletor, se ele voltar. */
 
   /**
    * O SALVAMENTO. O `FormData` é montado à mão em vez de vir de campos `name=`
@@ -377,9 +377,14 @@ export function GeradorCarimbo({ emEdicao }: { emEdicao?: CarimboBruto }) {
             onChange={(e) => setSerial(e.target.value)}
             placeholder="vazio esconde a linha"
           />
+          {/* O texto era «Só aparece em selo, monograma e certificado — nos outros
+              formatos não há lugar para ela sem apertar a marca». Com o seletor de
+              formato fora da tela, ele passou a citar três opções que não existem
+              mais aqui: dica que manda procurar um controle inexistente é pior que
+              dica nenhuma. O campo FICA porque o valor continua na receita (e
+              volta a aparecer se o seletor voltar), mas agora diz a verdade. */}
           <p className="mt-1.5 text-[11px] leading-snug text-[#98a2b3]">
-            Só aparece em selo, monograma e certificado — nos outros formatos não
-            há lugar para ela sem apertar a marca.
+            Não aparece no layout usado hoje — fica guardada na receita do carimbo.
           </p>
         </div>
 
@@ -412,21 +417,36 @@ export function GeradorCarimbo({ emEdicao }: { emEdicao?: CarimboBruto }) {
           </div>
         </div>
 
-        <div>
-          <span className={rotulo}>Formato</span>
-          <div className="flex flex-wrap gap-1.5">
-            {FORMATOS.map((f) => (
-              <button
-                key={f}
-                type="button"
-                onClick={() => setFormato(f)}
-                className={`${chip} ${formato === f ? chipOn : chipOff}`}
-              >
-                {ROTULO_FORMATO[f]}
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* ── PEDIDO: «no formato eu quero que deixe apenas site» ───────────────
+            O grupo de nove chips SAIU. Era:
+
+              <span className={rotulo}>Formato</span>
+              <div className="flex flex-wrap gap-1.5">
+                {FORMATOS.map((f) => (
+                  <button … onClick={() => setFormato(f)}>{ROTULO_FORMATO[f]}</button>
+                ))}
+              </div>
+
+            Com uma opção só, um grupo de botões não é escolha: é um botão que já
+            está apertado e não faz nada. Então em vez de deixar o chip «Site»
+            sozinho, o controle desapareceu e o estado ficou fixo em `'site'` —
+            que já era o padrão e é o formato dos 22 carimbos do catálogo.
+
+            ⚠️ OS OUTROS OITO FORMATOS CONTINUAM EM `desenhar.ts`, e isso é
+            deliberado: o motor não foi tocado, `FORMATOS` segue exportado e a
+            validação do servidor segue aceitando os nove. Reabrir a escolha é
+            devolver este bloco; apagar o motor seria jogar fora 700 linhas de
+            desenho para atender um pedido de interface.
+
+            A nota que fica abaixo cobre o único caso em que a ausência do
+            controle poderia ESCONDER informação: um carimbo salvo noutro formato
+            (não há nenhum hoje) sendo reeditado. */}
+        {formato !== 'site' && (
+          <p className="rounded-lg bg-amber-50 px-3 py-2 text-[12px] leading-snug text-amber-800">
+            Este carimbo foi criado no formato <strong>{ROTULO_FORMATO[formato]}</strong> e vai
+            continuar nele ao salvar. A escolha de formato não está mais na tela.
+          </p>
+        )}
 
         <div>
           <span className={rotulo}>Acabamento</span>
@@ -545,13 +565,6 @@ export function GeradorCarimbo({ emEdicao }: { emEdicao?: CarimboBruto }) {
             className="cursor-pointer rounded-xl border border-black/[0.12] bg-white px-4 py-2.5 text-sm font-semibold text-[#0f172a] transition-colors hover:border-[#0079cb]/50"
           >
             Baixar PNG
-          </button>
-          <button
-            type="button"
-            onClick={baixarLote}
-            className="cursor-pointer rounded-xl border border-black/[0.12] bg-white px-4 py-2.5 text-sm font-semibold text-[#0f172a] transition-colors hover:border-[#0079cb]/50"
-          >
-            Baixar os {FORMATOS.length} formatos
           </button>
         </div>
       </aside>
