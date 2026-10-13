@@ -83,6 +83,41 @@ const REMETENTE = process.env.CURRICULO_REMETENTE ?? 'Sistran <onboarding@resend
 
 const API = 'https://api.resend.com/emails';
 
+/**
+ * O ENDEREÇO de dentro de `REMETENTE`, sem o nome de exibição.
+ *
+ * ⚠️ POR QUE O `from` NÃO PODE SER O E-MAIL DO CANDIDATO, que seria o literal de
+ * «o e-mail é de quem mandou»: nenhum provedor envia em nome de um endereço que
+ * não é seu. O `from` é autenticado por SPF/DKIM contra o domínio do remetente —
+ * mandar como `fulano@gmail.com` reprovaria as duas checagens e a mensagem cairia
+ * em spam (ou seria recusada na entrada). A identidade do candidato viaja por
+ * três caminhos que FUNCIONAM: o nome de exibição (abaixo), o `reply_to` (que faz
+ * o Responder ir para ele) e o corpo.
+ */
+const ENDERECO_REMETENTE = (REMETENTE.match(/<([^>]+)>/)?.[1] ?? REMETENTE).trim();
+
+/**
+ * O remetente do e-mail do CURRÍCULO: nome do candidato, endereço nosso.
+ *
+ * É o que faz a caixa do RH mostrar «Maria Silva (candidatura pelo site)» na
+ * coluna De, em vez de «Sistran» em todas as linhas — com dez candidaturas, a
+ * lista ficava indistinguível sem abrir cada uma.
+ *
+ * ⚠️ O NOME É SANEADO porque ele vem de campo de formulário e entra num CABEÇALHO
+ * de e-mail. `\r` e `\n` permitiriam injetar cabeçalhos (um `Bcc:` a mais,
+ * por exemplo); `<`, `>` e `"` quebrariam a sintaxe do próprio `From`. O corte em 60
+ * caracteres é contra nome colado de um texto inteiro.
+ */
+function remetenteDoCandidato(nome: string): string {
+  const limpo = nome
+    .replace(/[\r\n]+/g, ' ')
+    .replace(/["<>;,:]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 60);
+  return limpo ? `${limpo} (candidatura pelo site) <${ENDERECO_REMETENTE}>` : REMETENTE;
+}
+
 const texto = (dados: FormData, campo: string) =>
   typeof dados.get(campo) === 'string' ? (dados.get(campo) as string).trim() : '';
 
@@ -217,7 +252,9 @@ export async function enviarCurriculo(
   ];
 
   const enviou = await enviarEmail(chave, {
-    from: REMETENTE,
+    /* O nome de quem mandou na linha De — ver `remetenteDoCandidato`. O endereço
+       continua sendo o nosso, por obrigação de autenticação. */
+    from: remetenteDoCandidato(nome),
     to: [DESTINO],
     /* `reply_to` no candidato: responder no cliente de e-mail vai para ele, e não
        para a caixa de `nao-responda`. */
