@@ -37,11 +37,32 @@
      de 3 cartões para 15. Aumentar `--carimbo-w` aqui multiplicaria esse custo por
      quinze — se a foto ficar apertada em algum evento, o caminho é reduzir este
      número, não crescer. */
-  --carimbo-w: clamp(6.5rem, 9.2vw, 8.75rem);
+  /* ── PEDIDO 13/10: «as escritas está muito grande» ─────────────────────────
+     Era `clamp(6.5rem, 9.2vw, 8.75rem)` (104–140px), número calibrado para a
+     arte ANTIGA — um oval de 520x399, onde o texto ocupava uma fração pequena do
+     desenho. As artes novas são cápsulas de ~2,4:1 com duas linhas preenchendo a
+     altura inteira: na MESMA largura de caixa, a letra fica muito maior.
+     Medido a 1440 com a arte nova: caixa 137x68 e a escrita competindo com o
+     título do cartão, que tem `clamp(1.15rem, 1.7vw, 1.6rem)`.
+     80% em cada parada do `clamp` — a proporção entre as três é a mesma, então o
+     comportamento entre breakpoints não muda, só a escala. */
+  --carimbo-w: clamp(5.2rem, 7.35vw, 7rem);
 
   display: block;
   width: var(--carimbo-w);
   aspect-ratio: var(--carimbo-ar);
+
+  /* ── PEDIDO: «diminua o tamanho entre o card e o carimbo» ──────────────────
+     O vão medido era de 14px até a borda do cartão, e ele NÃO é do carimbo: é o
+     `padding` do `.eventos-destaque-cartao` (`clamp(1rem, 1.4vw, 1.5rem)`), que
+     vale para o título, o texto e a foto também. Mexer nele mudaria o cartão
+     inteiro para resolver uma folga de um elemento.
+     Então a aproximação é local, por margem negativa: sobe só o carimbo, sem
+     tocar no resto do conteúdo. O `transform` do tombo não entra nessa conta —
+     ele não afeta o layout —, por isso o número é previsível.
+     Não mais que isto: o carimbo é o primeiro item do cartão e encostar na borda
+     arredondada de 1rem leria como corte, não como aproximação. */
+  margin-top: -0.4rem;
 
   /* O TOMBO. As artes são ovais RETOS (medidos: o desenho não vem inclinado), e a
      issue previu este ramo. −6deg e não mais: em −10deg o canto do oval passava a
