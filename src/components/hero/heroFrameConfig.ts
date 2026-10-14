@@ -114,20 +114,38 @@ export const PREFETCH = { atras: 8, frente: 36 } as const;
    necessário. A memória de um bitmap é `largura × altura × 4`; o orçamento mantém o pior tier
    (1440²) em ~160 MB e o celular em ~90 MB. */
 const ORCAMENTO_DECODE_BYTES = { desktop: 160 * 1024 * 1024, mobile: 90 * 1024 * 1024 } as const;
-/* ⚠️ DESKTOP SUBIU DE 4 PARA 6 em 13/10/2026, e o 6 não é palpite — é o número que a nota acima
-   já calculava («com 6 em paralelo o pool rende ~300 quadros/s») e que estava escrito como 4.
-   Medido com a roda sintética a 1 dente/80 ms (~112 quadros/s de conteúdo), build de produção:
-     · com 4 → 48% de imagens distintas por rAF, atraso p90 15 quadros, até 9 rAF repetindo;
-     · com 6 → 62% de imagens distintas, atraso p90 11 quadros, no máximo 6 rAF repetindo.
-   Na rolagem lenta (1 dente/160 ms) o ganho foi o fim do último degrau: a maior sequência de rAF
-   com a MESMA imagem caiu de 4 para 2. E a sonda oficial (`scripts/medir-hero-quadros.mjs`)
-   continua aprovando tudo, com o melhor número já registrado nela: atraso p90 7 quadros e 63
-   quadros distintos em 93 rAF.
-   MOBILE FICA EM 3: lá o tier é 1080×1440 (bitmaps maiores que o desktop de 1152²), a janela já
-   nasce menor pelo orçamento de memória e o pool de threads é mais curto — subir ali é pedir
-   disputa de CPU com a própria rolagem, que é o defeito que o `resizeWidth` descartado em 08/10
-   provocou. Não mexer sem medir em celular real. */
-const PARALELO_DECODE = { desktop: 6, mobile: 3 } as const;
+/* ⚠️ DESKTOP VOLTOU A 4 em 14/10/2026, DEPOIS DE MEDIR O COMPASSO. A subida para 6 (13/10) foi
+   justificada por «62% de imagens distintas por rAF contra 48%» e «atraso p90 de 11 contra 15
+   quadros» — números reais, mas de FRESCURA. Travamento não é frescura: é variância de tempo de
+   quadro e bloqueio da thread principal, e nada disso estava sendo medido.
+
+   Medido em 14/10 com `longtask` e rAF sem vsync (o mesmo gesto da sonda oficial: 30 dentes de
+   100 px a cada 80 ms), três voltas por valor, mediana — a progressão da rolagem foi idêntica em
+   todos (quadro final 283–284), então o que muda é só o custo:
+
+     paralelo | trabalho p50 | tarefas longas | BLOQUEIO TOTAL | rAF pintados
+            3 |      51,2 ms |             62 |         582 ms |          140
+            4 |      51,4 ms |             74 |         621 ms |          137
+            5 |      57,2 ms |             85 |         992 ms |          134
+            6 |      61,1 ms |             97 |        1378 ms |          127
+
+   É monótono: cada decode a mais em paralelo bloqueia mais a thread e o navegador PINTA MENOS
+   quadros no mesmo gesto. Com 6, o bloqueio mais que dobra em relação a 4 (as três voltas não se
+   sobrepõem: 600–762 contra 1087–1735) e dez quadros deixam de ser pintados. O ganho de frescura
+   existia, mas era pago em suavidade — e suavidade é o que se vê.
+
+   POR QUE 4 E NÃO 3: 3 empata no bloqueio (582 contra 621, dentro do ruído) e perde frescura. 4 é o
+   valor que vigorou desde 08/10 e cuja frescura a sonda oficial já aprovava.
+
+   ⚠️ O QUE A BANCADA NÃO MEDE: o primeiro instrumento que tentei (intervalo de rAF com vsync) deu
+   INCONCLUSIVO — a 60 Hz os números quantizam em múltiplos de 17 ms e o ruído da máquina engolia a
+   diferença. Quem quiser repetir isto precisa de `--disable-gpu-vsync` e de `longtask`, senão vai
+   concluir que tanto faz.
+
+   MOBILE FICA EM 3, e agora com apoio na tabela acima: o tier de lá é maior (1080×1440 contra
+   1152²), o pool de threads é mais curto e a curva de custo é a mesma. Não mexer sem medir em
+   celular real. */
+const PARALELO_DECODE = { desktop: 4, mobile: 3 } as const;
 
 export type JanelaDeDecode = { atras: number; frente: number; paralelo: number };
 
