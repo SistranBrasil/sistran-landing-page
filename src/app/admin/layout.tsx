@@ -116,6 +116,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               >
                 Carimbo
               </Link>
+              {/* Tutoriais é o TERCEIRO e último, de propósito: os dois primeiros são
+                  onde o trabalho acontece todo dia, e este é onde se aprende a fazê-lo —
+                  visitado muito, no começo, e quase nunca depois. Pôr no meio empurraria
+                  «Carimbo» para a direita sem motivo. */}
+              <Link
+                href="/admin/tutoriais"
+                className="rounded-full px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.16em] text-white/70 no-underline transition-colors hover:bg-white/10 hover:text-white"
+              >
+                Tutoriais
+              </Link>
             </nav>
           )}
           {autenticado && (

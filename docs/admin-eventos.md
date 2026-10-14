@@ -1,5 +1,13 @@
 # Admin de eventos (SIS-216)
 
+> ⚠️ **DOCUMENTO HISTÓRICO — o guia atual é [`ADMIN.md`](ADMIN.md).**
+> Este texto descreve a primeira versão do admin e envelheceu em dois pontos que mudam o
+> que a pessoa faz: a gravação **não cai mais** em `src/data/events.json` em produção (o
+> catálogo passou a ser publicado no Vercel Blob em 01/10, e salvar já muda o site na
+> hora), e o admin ganhou **criar, excluir, reordenar, carimbos e tutoriais**, que não
+> existiam aqui. O campo **«Ícone»** citado abaixo saiu da tela em 14/10. Fica como
+> registro de como a ferramenta nasceu.
+
 Editor interno dos quinze eventos de `/eventos-inovacao`: título, descrição,
 categoria, ícone, arte e miniatura. Atrás de senha, sem link em lugar nenhum do
 site.
