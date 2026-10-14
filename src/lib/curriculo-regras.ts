@@ -50,8 +50,13 @@
 /* SIS-246 — o endereço saiu do literal para o ambiente quando se descobriu que a
    caixa oficial do RH não é acessível a quem decidiu.
    | export const EMAIL_CURRICULO = 'maria.martinelli@sistran.com.br'; */
+/* 14/10/2026 — o padrão passou a ser `genteegestao@sistran.com.br`, a pedido. Era
+   `maria.martinelli@sistran.com.br`, que era caixa pessoal: canal de direitos da
+   LGPD anunciado ao candidato tem de ser endereço da ÁREA, que sobrevive a troca
+   de pessoa. O `process.env` continua na frente, para o endereço poder mudar sem
+   deploy de código. */
 export const EMAIL_CURRICULO =
-  process.env.NEXT_PUBLIC_CURRICULO_EMAIL ?? 'maria.martinelli@sistran.com.br';
+  process.env.NEXT_PUBLIC_CURRICULO_EMAIL ?? 'genteegestao@sistran.com.br';
 
 /* Documento, não imagem e não executável. `.doc` entra porque currículo antigo
    ainda circula nesse formato. Era `ACEITE_PADRAO`, privado do `DemoForm`. */

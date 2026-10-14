@@ -47,7 +47,35 @@ import {
    recebe é mudança de configuração, não de deploy. O destino tem padrão — a
    decisão de 01/10/2026 — para o envio não morrer calado se a variável faltar; a
    CHAVE não tem padrão nenhum, de propósito (ver `semTransporte`). */
-const DESTINO = process.env.CURRICULO_DESTINO ?? EMAIL_CURRICULO;
+/**
+ * A CAIXA QUE RECEBE O CURRÍCULO — e ela DEIXOU DE SEGUIR `EMAIL_CURRICULO`.
+ *
+ * ⚠️ ESTA LINHA ERA `process.env.CURRICULO_DESTINO ?? EMAIL_CURRICULO`, e manter
+ * assim teria derrubado o envio em produção no mesmo instante em que o endereço
+ * publicado mudou para `genteegestao@sistran.com.br` (14/10). O motivo é medido,
+ * não suposto: sem domínio verificado, a Resend recusa qualquer destino que não
+ * seja o e-mail da CONTA, com HTTP 403 e esta mensagem —
+ *
+ *   «You can only send testing emails to your own email address
+ *    (maria.martinelli@sistran.com.br). To send emails to other recipients,
+ *    please verify a domain at resend.com/domains…»
+ *
+ * E `CURRICULO_DESTINO` não está definida na Vercel (conferido: só existe no
+ * `.env.local` desta máquina), então o padrão é o que vale lá. Com o padrão
+ * herdado, toda candidatura passaria a falhar na tela do candidato.
+ *
+ * SÃO DUAS COISAS DIFERENTES, e agora o código diz isso:
+ *   · `EMAIL_CURRICULO` — o endereço que o site PUBLICA como canal de direitos.
+ *     É de área, e muda por decisão de conteúdo.
+ *   · `DESTINO` — a caixa que RECEBE o anexo. Hoje é limitada pelo provedor, não
+ *     por escolha.
+ *
+ * O dia em que `sistran.com.br` for verificado na Resend, isto vira
+ * `CURRICULO_DESTINO` na Vercel apontando para a caixa de Gente e Gestão, e este
+ * padrão volta a ser só um chão.
+ */
+const DESTINO_PADRAO = 'maria.martinelli@sistran.com.br';
+const DESTINO = process.env.CURRICULO_DESTINO ?? DESTINO_PADRAO;
 /**
  * O remetente. O padrão é o endereço de TESTE da Resend, que funciona sem
  * verificar domínio no DNS — assim o envio passa a existir com só a
