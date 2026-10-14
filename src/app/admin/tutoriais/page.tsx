@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ExplicacaoModal } from './ExplicacaoModal';
 
 /**
  * TUTORIAIS — a aba de vídeos de explicação do admin, pedida em 14/10.
@@ -96,6 +97,28 @@ const VIDEOS = [
       'Do começo: entrar no painel, clicar em «+ Novo evento», preencher o identificador, o texto e a classificação, escolher a imagem, criar e esperar a publicação — e conferir o evento já no site. Fecha com um aviso sobre excluir.',
     duracao: '2:40',
     peso: '11,3 MB',
+    /**
+     * ⚠️ OS PASSOS SÃO TRANSCRIÇÃO DAS LEGENDAS DO PRÓPRIO VÍDEO, não um roteiro escrito
+     * por fora: as faixas de legenda foram extraídas com ffmpeg (`fps=1/8` + `crop` da
+     * base + `tile`) e lidas uma a uma. É o que garante que o texto e o vídeo não digam
+     * coisas diferentes — e é o que tem de ser refeito se o vídeo for regravado.
+     */
+    passos: [
+      'Acesse o endereço do admin e abra a tela de entrada.',
+      'Digite a senha de acesso e clique em «Entrar».',
+      'Na lista de Eventos, o botão «+ Novo evento» fica no canto superior direito.',
+      'Clique em «+ Novo evento» para abrir o formulário.',
+      'Crie um identificador curto, em minúsculas e sem acentos. Ele fará parte do endereço do evento.',
+      'Preencha o título e uma descrição clara. Confira o resultado na prévia.',
+      'Escolha a categoria e confira o carimbo. Se disponíveis, selecione também a arte e a miniatura.',
+      'Adicione a imagem principal e confira o enquadramento na prévia.',
+      'Ative as opções complementares (destaque editorial, gravação no YouTube) somente quando se aplicarem ao evento.',
+      'Revise os dados e clique em «Criar evento». Aguarde o salvamento.',
+      'Salvo o cadastro, volte à lista para conferir o cartão do evento.',
+      'Abra o evento recém-criado e confira se o título, a descrição e a imagem aparecem corretamente.',
+    ],
+    atencao:
+      'Antes de excluir, leia a confirmação com atenção: a exclusão remove o evento do catálogo.',
   },
   {
     arquivo: 'tutorial-editar-evento-sistran.mp4',
@@ -105,6 +128,15 @@ const VIDEOS = [
       'Abrir um evento da lista, ajustar o título com a prévia ao lado acompanhando a mudança, salvar, e conferir título, descrição e imagem atualizados em /eventos-inovacao.',
     duracao: '0:51',
     peso: '5,4 MB',
+    passos: [
+      'Na lista de Eventos, clique no cartão do evento que quer mudar.',
+      'A imagem atual é exibida junto da prévia, à direita.',
+      'No campo «Título», ajuste o nome do evento — a prévia acompanha a alteração.',
+      'Clique em «Salvar texto».',
+      'Abra «Eventos & Inovação» no site e aguarde o carregamento.',
+      'Confira o título, a descrição e a imagem do evento atualizados.',
+      'Confirme que a alteração aparece corretamente na página pública.',
+    ],
   },
   {
     arquivo: 'tutorial-carimbos-eventos-sistran.mp4',
@@ -119,6 +151,21 @@ const VIDEOS = [
       'A aba Carimbo: criar um carimbo do zero (nome, linha de cima, marca, selo pequeno, cor e acabamento), julgar o resultado na prévia trocando o fundo entre xadrez, claro e escuro, e depois usar Editar ou Excluir na lista dos carimbos já criados.',
     duracao: '2:42',
     peso: '17,6 MB',
+    passos: [
+      'No painel administrativo, clique em «Carimbo» no menu superior para abrir a área de gestão.',
+      'A tela tem três abas: «Lugares do site», «Carimbos de evento» e «Criar carimbo». Cada uma controla uma etapa diferente.',
+      'Em «Carimbos de evento», escolha um selo para cada categoria. Ele vale para todos os eventos daquela categoria.',
+      'Para montar um modelo novo, abra «Criar carimbo». A prévia mostra o resultado enquanto você configura.',
+      'Dê um nome para localizar o carimbo depois e preencha os campos de texto que vão compor a arte.',
+      'Escolha a cor e o acabamento na paleta. Acompanhe a prévia para conferir contraste e estilo.',
+      'Ajuste tamanho, inclinação e densidade do PNG até chegar ao visual desejado.',
+      'Revise o texto e o desenho na prévia — o fundo xadrez, claro ou escuro ajuda a avaliar o resultado.',
+      'Clique em «Salvar carimbo». O modelo passa a aparecer na lista para reutilização.',
+      'Na aba «Lugares do site», confira os modelos criados e em quantos pontos cada um está sendo usado.',
+      'Na lista de lugares, use o campo «Carimbo» para escolher um modelo ou voltar à arte original.',
+    ],
+    atencao:
+      'Use «Editar» para ajustar um modelo existente. Use «Excluir» somente depois de conferir qual carimbo está selecionado.',
   },
 ] as const;
 
@@ -177,24 +224,49 @@ export default function AdminTutoriaisPage() {
               <p className="mt-1.5 max-w-3xl text-sm leading-relaxed text-[#475467]">
                 {video.resumo}
               </p>
-              {/* O peso do arquivo fica à vista porque quem abre isto num 4G decide
-                  diferente de quem está no escritório. */}
-              <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.14em] text-[#98a2b3]">
-                {video.duracao} · mp4 · {video.peso} ·{' '}
-                <a href={`${LOJA}/${video.arquivo}`} download className="text-[#0079cb]">
-                  baixar
-                </a>
-              </p>
+              {/* O botão da explicação escrita vem ANTES da linha técnica, e a ordem é
+                  deliberada: ele é uma ação (e a segunda mais provável de quem chega
+                  aqui, depois do play), enquanto duração/peso/baixar é informação de
+                  rodapé. Enterrá-lo embaixo de «mp4 · 17,6 MB» o faria parecer parte da
+                  ficha do arquivo. */}
+              <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-3">
+                <ExplicacaoModal
+                  explicacao={{
+                    titulo: video.titulo,
+                    duracao: video.duracao,
+                    passos: video.passos,
+                    atencao: 'atencao' in video ? video.atencao : undefined,
+                  }}
+                />
+                {/* O peso do arquivo fica à vista porque quem abre isto num 4G decide
+                    diferente de quem está no escritório. */}
+                <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#98a2b3]">
+                  {video.duracao} · mp4 · {video.peso} ·{' '}
+                  <a href={`${LOJA}/${video.arquivo}`} download className="text-[#0079cb]">
+                    baixar
+                  </a>
+                </p>
+              </div>
             </div>
           </li>
         ))}
       </ul>
 
+      {/* ⚠️ O RECADO QUE MANDAVA PARA `docs/ADMIN.md` SAIU DAQUI — 14/10, a pedido, e a
+          razão do pedido é correta: quem usa o admin não abre o repositório, então
+          apontar para um arquivo `.md` era empurrar o leitor para um lugar onde ele não
+          vai. A explicação escrita passou a morar no próprio cartão, no botão «passo a
+          passo escrito» (ver `ExplicacaoModal.tsx`).
+
+          O DOCUMENTO CONTINUA EXISTINDO e continua sendo o texto mais completo — ele
+          cobre o que nenhum vídeo cobre (a senha, as duas fontes do catálogo, o mapa dos
+          arquivos). O que mudou é quem ele atende: manutenção, não operação. Por isso o
+          apontamento foi retirado da tela e não o arquivo do repositório.
       <p className="mt-10 max-w-2xl rounded-xl border border-black/[0.07] bg-white px-4 py-3 text-sm leading-relaxed text-[#475467]">
         A versão escrita de tudo isto — incluindo o que os vídeos não cobrem, como a senha,
         os carimbos e o que acontece ao salvar — está em{' '}
         <code className="font-mono text-[#0f172a]">docs/ADMIN.md</code>, no repositório.
-      </p>
+      </p> */}
     </>
   );
 }
