@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ICONS } from '@/lib/icons';
+/* Comentado junto com o `icones=` abaixo, o único consumo nesta página — import ativo
+   sem uso quebra o lint.
+import { ICONS } from '@/lib/icons'; */
 import { EVENT_KINDS, EVENT_KIND_META, type EventKind } from '@/data/events';
 import { artesDisponiveis } from '@/lib/eventosArquivo';
 import { lerCatalogoPublicado, naNuvem } from '@/lib/eventosLoja';
@@ -44,7 +46,8 @@ export default async function AdminEventoPage({ params }: { params: Promise<{ id
           valor,
           rotulo: EVENT_KIND_META[valor as EventKind].label,
         }))}
-        icones={Object.keys(ICONS).sort()}
+        /* icones={Object.keys(ICONS).sort()} — o campo de ícone saiu da tela; ver a nota
+           em `FormularioEvento.tsx`, na desestruturação das props. */
         imagens={imagens}
         miniaturas={miniaturas}
         /* Os carimbos do catálogo, só id e nome: o formulário não desenha carimbo,

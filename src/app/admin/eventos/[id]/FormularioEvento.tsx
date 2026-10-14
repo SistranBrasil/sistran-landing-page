@@ -50,7 +50,10 @@ const ID_CADASTRO = 'cadastro-do-evento';
 export default function FormularioEvento({
   evento,
   categorias,
-  icones,
+  /* Comentado junto com o `<select>` de ícone, o único consumo — prop recebida sem
+     uso quebra o lint. Religar o campo pede descomentar aqui, no tipo abaixo e os
+     `icones=` de `novo/page.tsx` e `[id]/page.tsx`.
+  icones, */
   imagens,
   miniaturas,
   carimbos,
@@ -59,7 +62,7 @@ export default function FormularioEvento({
 }: {
   evento: EventoBruto;
   categorias: { valor: string; rotulo: string }[];
-  icones: string[];
+  /* icones: string[]; — ver a nota na desestruturação acima. */
   imagens: string[];
   miniaturas: string[];
   /** Os carimbos do catálogo, para o campo de troca. Lista vazia = nenhum criado. */
@@ -405,6 +408,17 @@ export default function FormularioEvento({
                   )}
                 </p>
               </div>
+              {/* ── O CAMPO «ÍCONE» SAIU DA TELA — 14/10, a pedido ───────────────────
+                  Ele não mudava nada no site, e isso foi conferido: o único consumidor de
+                  `e.icon` era o `EventsGrid` (`EventsGrid.tsx:252`), que saiu de cena na
+                  SIS-166 e está comentado na rota (`eventos-inovacao/page.tsx:8`). Quem
+                  renderiza hoje é o `EventsSpotlight`, e ele não lê `icon`.
+
+                  ⚠️ O `<input type="hidden">` ABAIXO IMPEDE UMA QUEDA, não é sobra:
+                  `conferirCatalogo` dá `throw` e derruba `/eventos-inovacao` se `icon` não
+                  for um nome do registro (`src/data/events.ts:160`), e `doFormulario` lê o
+                  campo do FormData (`acoes.ts:115`). Sem o oculto, salvar gravaria string
+                  vazia. Ele preserva o valor que o evento já tem.
               <div>
                 <label className={rotulo} htmlFor="icon">
                   Ícone
@@ -422,7 +436,8 @@ export default function FormularioEvento({
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
+              <input type="hidden" name="icon" value={valores.icon} />
             </div>
 
             {/* Listas, e não campo de texto: o caminho existe por construção. Digitar à

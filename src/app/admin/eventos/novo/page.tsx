@@ -67,7 +67,10 @@ export default async function AdminEventoNovoPage() {
           valor,
           rotulo: EVENT_KIND_META[valor as EventKind].label,
         }))}
-        icones={Object.keys(ICONS).sort()}
+        /* icones={Object.keys(ICONS).sort()} — o campo de ícone saiu da tela; ver a nota
+           em `FormularioEvento.tsx`. O `ICONS` CONTINUA IMPORTADO aqui, e não é sobra:
+           é ele que dá o `icon` inicial do evento em branco, logo acima — valor que o
+           `<input type="hidden">` do formulário passa a carregar. */
         imagens={imagens}
         miniaturas={miniaturas}
       />
