@@ -287,6 +287,23 @@
   display: none;
 }
 
+/* 16/10 — O `position` DO ITEM DO PAINEL VIVE AQUI, FORA DA CHAVE DE 1024px.
+   Ele estava declarado só dentro de `@media (min-width: 1024px)` (mais abaixo),
+   e abaixo desse limite o item ficava `static`. Os quatro `<Image fill>` que
+   moram dentro dele têm o PRÓPRIO item como pai posicionado, então o `next/image`
+   avisava no console: «has "fill" and parent element with invalid "position".
+   Provided "static" should be one of absolute,fixed,relative».
+   O aviso era legítimo e não cosmético: `fill` é `position: absolute; inset: 0`,
+   que sem pai posicionado se ancora no primeiro ancestral que houver.
+   Mover o `position` para a base é inerte no que se vê — a coluna inteira é
+   `display: none` aqui, e a partir de 1024px a mesma declaração já valia. O que
+   sai da chave é só o `position`/`inset`; `visibility`, `pointer-events` e a
+   transição do crossfade continuam lá, porque essas sim são do painel ativo. */
+.story-midia__item {
+  position: absolute;
+  inset: 0;
+}
+
 @media (min-width: 1024px) {
   .story-solucoes[data-dirigindo] {
     padding-block: clamp(80px, 11vh, 132px) clamp(64px, 8vh, 96px);
@@ -408,9 +425,9 @@
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 61%, 3.2% 54%, 3.2% 19%, 0 12%);
   }
 
+  /* `position`/`inset` subiram para a regra base (ver a nota em `__midia-col`):
+     aqui ficam só os estados do crossfade. */
   .story-midia__item {
-    position: absolute;
-    inset: 0;
     visibility: hidden;
     pointer-events: none;
     transition:

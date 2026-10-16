@@ -177,7 +177,7 @@
  * `#0079CB`, como nas cinco irmãs.
  *
  * ── O LETREIRO É IMAGEM ───────────────────────────────────────────────────────
- * O `h1` carrega `images/solucoes/luminnadoisnn.png` (2172×724), a arte canônica
+ * O `h1` carrega `compartilhado/luminnadoisnn.png` (2172×724), a arte canônica
  * que `accelerators.ts` também serve nos cartões, achada pelo `id` e não digitada.
  * A imagem traz a grafia LUMINNA com dois n e a tagline; o `alt` é `page.name` —
  * «Luminna AI», também com dois n — e NÃO vazio: `h1` cujo conteúdo inteiro é
@@ -248,15 +248,15 @@ const VITRINE = ACCELERATORS.find((a) => a.id === 'luminna-ai');
    O molde é o do preview da rota irmã do SDS (`SdsPagina.tsx`, «Demonstração
    oficial»): moldura com barra de navegador, o cartão INTEIRO como âncora e legenda
    em `sr-only`. A diferença é a mídia — lá é um screenshot parado, aqui é o laço de
-   `/videos/luminnaloop.mp4`. */
+   `/paginas/solucoes-detalhe/videos/luminnaloop.mp4`. */
 const DESCUBRA_URL = 'https://descubra.luminna.sistran.com.br/';
 const DESCUBRA_HOST = new URL(DESCUBRA_URL).host;
-const DESCUBRA_VIDEO = '/videos/luminnaloop.mp4';
+const DESCUBRA_VIDEO = '/paginas/solucoes-detalhe/videos/luminnaloop.mp4';
 /* Pôster gerado do QUADRO 0 do próprio arquivo (ffmpeg, `select=eq(n\,0)`), como o de
    `jornada.mp4`: é ele que cobre o intervalo até o primeiro quadro chegar e é ele que
    fica para quem pede menos movimento, quando o laço é pausado em `currentTime = 0`.
    Qualquer outro quadro apareceria como um salto no instante da pausa. */
-const DESCUBRA_POSTER = '/videos/luminnaloop-poster.webp';
+const DESCUBRA_POSTER = '/paginas/solucoes-detalhe/videos/luminnaloop-poster.webp';
 /* A proporção é a do ARQUIVO (1280×720, medido com ffprobe), então `object-cover` não
    tem o que recortar e a caixa não pula quando o vídeo chega. */
 const DESCUBRA_PROPORCAO = '16 / 9';
@@ -300,9 +300,9 @@ const ICONES_INTEGRACAO = [GitBranch, ScanSearch, BrainCircuit, ListChecks];
 */
 
 /* ── AS MARCAS DE CADA CATEGORIA DE INTEGRAÇÃO (SIS-280 item 3) ────────────────
-   A mock `public/images/integracao.png` mostra, em cada um dos quatro cartões, uma
+   A mock `public/sem uso/images/integracao.png` mostra, em cada um dos quatro cartões, uma
    fileira de PÍLULAS BRANCAS com o logotipo de cada ferramenta. A issue amarra a
-   origem: «logos SÓ de `public/images/solucoes/luminna/`». Então esta tabela é o
+   origem: «logos SÓ de `public/paginas/solucoes-detalhe/luminna/`». Então esta tabela é o
    inventário daquela pasta, distribuído pelas quatro categorias do dado — nenhum
    caminho vem de fora dela e nenhuma arte foi criada.
    AS DUAS LACUNAS DECLARADAS, e elas são da própria issue: a mock exibe GITHUB (no
@@ -331,40 +331,120 @@ const ICONES_INTEGRACAO = [GitBranch, ScanSearch, BrainCircuit, ListChecks];
    e pôr a linguagem ao lado dele troca o sujeito da frase. A ambiguidade está
    reportada no comentário da issue, como ela manda.
 
-   `largura` das duas calculada da proporção intrínseca MEDIDA, na mesma régua de
-   20px do resto da tabela:
-       java   1677 × 2048 → 20 × 1677/2048 = 16,4 → 16
-       python 2048 × 1556 → 20 × 2048/1556 = 26,3 → 26
    Java é a única arte RETRATO da tabela (mais alta que larga), e é por isso que ela
-   sai tão estreita: a régua é a ALTURA, e a altura dela é o lado maior.
+   sai tão estreita quando a régua é a ALTURA: a altura dela é o lado maior.
 
-   `largura` é a largura da pílula para ALTURA FIXA de 20px, calculada da proporção
-   INTRÍNSECA de cada PNG (todos 2048px de lado maior). Com `images: { unoptimized:
-   true }` (SIS-154) o par `width`/`height` não corta arquivo nenhum: ele reserva a
-   caixa e impede que a marca chegue distorcida.
+   ⚠️ 16/10 — A TABELA PASSOU A GUARDAR AS DIMENSÕES INTRÍNSECAS, e não mais uma
+   `largura` calculada para uma altura de referência. O motivo é um aviso que o
+   `next/image` imprimia no console em SEIS das onze marcas:
+     «has either width or height modified, but not the other.»
+   A condição que o dispara é uma COMPARAÇÃO DE INTEIROS, não uma heurística —
+   `node_modules/next/dist/client/image-component.js:112`:
+       heightModified = img.height.toString() !== img.getAttribute('height')
+       widthModified  = img.width.toString()  !== img.getAttribute('width')
+   e avisa quando exatamente UM dos dois difere. Com `height={36}` + `h-9` a altura
+   renderizada era 36 e batia com o atributo (não modificada), enquanto a largura
+   renderizada saía da proporção real do arquivo e divergia do inteiro declarado —
+   um lado modificado, o outro não.
+
+   E NÃO DAVA PARA ACERTAR ARREDONDANDO. Medido com `sharp`, a largura real a 36px:
+       azure     2048×665  → 110,87   declarado 112
+       bitbucket 2048×789  →  93,44   declarado  94
+       fortify   2048×800  →  92,16   declarado  92  ← já batia, e avisava
+       jira      2048×778  →  94,77   declarado  95  ← já batia, e avisava
+       java      1677×2048 →  29,48   declarado  29  ← já batia, e avisava
+       python    2048×1556 →  47,38   declarado  47  ← já batia, e avisava
+   Quatro das seis já tinham o inteiro "certo" e avisavam de todo jeito: a largura
+   de layout é fracionária e o `img.width` que o navegador devolve arredonda por
+   conta dele (com o DPR no meio). Perseguir o inteiro é um jogo que não fecha.
+
+   A CORREÇÃO É DECLARAR UM PAR QUE O CSS MUDE DOS DOIS LADOS. Basta que nenhum dos
+   dois coincida com o renderizado: aí a condição acima não vale mais, o aviso cessa
+   sem truque, e a proporção sai exata do arquivo — quem calcula a largura publicada
+   é o navegador, e não um `Math.round` nosso.
+
+   ⚠️ E O PAR DECLARADO NÃO PODE SER O INTRÍNSECO. Foi a primeira tentativa, e a
+   sonda de navegador pegou o preço: com `width={2048}` o `next/image` monta o
+   `srcset` a partir da largura DECLARADA, e a URL do otimizador saía
+   `…&w=3840&q=75` — um candidato de 3840px de largura para uma marca que ocupa 36px
+   de altura na tela, nas onze pílulas. Com `images.unoptimized` desligado (ver a
+   nota do `next.config.mjs`), isso é peso real entregue, e peso de imagem é
+   justamente o que a SIS-241 mediu nesta LP.
+
+   ENTÃO O PAR DECLARADO É A ARTE NA ALTURA 2×: 72px, o candidato de retina para os
+   36px publicados. Satisfaz as duas exigências de uma vez — difere do renderizado
+   nos dois lados (36 ≠ 72, e a largura por arrasto), e mantém o `srcset` na faixa
+   pequena que esta caixa pede. A proporção continua vindo da medida intrínseca
+   abaixo, que é a fonte da verdade: o par publicado é DERIVADO dela, nunca digitado.
+   O que o par `width`/`height` sempre fez aqui continua feito — reservar a caixa e
+   impedir que a marca chegue distorcida.
+
+   OS PARES ABAIXO FORAM MEDIDOS com `sharp` nos arquivos instalados, um por um, e
+   não derivados de número anterior — é a mesma régua das cápsulas de seção logo
+   abaixo. Todos têm 2048px no lado maior, exceto as duas artes retrato.
    `rotulo` é o `alt`, e não vazio: a pílula É a informação («integra com o Jira»), e
    logo de terceiro sem nome é conteúdo que não existe para leitor de tela. */
-const MARCAS_DE_INTEGRACAO: { rotulo: string; arquivo: string; largura: number }[][] = [
+const MARCAS_DE_INTEGRACAO: {
+  rotulo: string;
+  arquivo: string;
+  largura: number;
+  altura: number;
+}[][] = [
   [
-    { rotulo: 'Microsoft Azure', arquivo: 'azure-logo-hd-transparente.png', largura: 62 },
-    { rotulo: 'Bitbucket', arquivo: 'bitbucket-logo-hd-transparente.png', largura: 52 },
+    {
+      rotulo: 'Microsoft Azure',
+      arquivo: 'azure-logo-hd-transparente.png',
+      largura: 2048,
+      altura: 665,
+    },
+    {
+      rotulo: 'Bitbucket',
+      arquivo: 'bitbucket-logo-hd-transparente.png',
+      largura: 2048,
+      altura: 789,
+    },
     /* SIS-220 (2ª volta, item 3) — as duas linguagens, aqui e não nos outros três
        cartões. O porquê está no docblock acima. */
-    { rotulo: 'Java', arquivo: 'java-logo-hd-transparente.png', largura: 16 },
-    { rotulo: 'Python', arquivo: 'python-logo-hd-transparente.png', largura: 26 },
+    { rotulo: 'Java', arquivo: 'java-logo-hd-transparente.png', largura: 1677, altura: 2048 },
+    { rotulo: 'Python', arquivo: 'python-logo-hd-transparente.png', largura: 2048, altura: 1556 },
   ],
   [
-    { rotulo: 'OpenText Fortify', arquivo: 'fortify-logo-hd-transparente.png', largura: 51 },
-    { rotulo: 'SonarQube', arquivo: 'sonarqube-logo-hd-transparente.png', largura: 71 },
+    {
+      rotulo: 'OpenText Fortify',
+      arquivo: 'fortify-logo-hd-transparente.png',
+      largura: 2048,
+      altura: 800,
+    },
+    {
+      rotulo: 'SonarQube',
+      arquivo: 'sonarqube-logo-hd-transparente.png',
+      largura: 2048,
+      altura: 580,
+    },
   ],
   [
-    { rotulo: 'AWS', arquivo: 'aws-logo-hd-transparente.png', largura: 31 },
-    { rotulo: 'GitHub Copilot', arquivo: 'github-copilot-logo-hd-transparente.png', largura: 19 },
-    { rotulo: 'Microsoft Copilot', arquivo: 'microsoft-copilot-logo-hd-transparente.png', largura: 21 },
+    { rotulo: 'AWS', arquivo: 'aws-logo-hd-transparente.png', largura: 2048, altura: 1300 },
+    {
+      rotulo: 'GitHub Copilot',
+      arquivo: 'github-copilot-logo-hd-transparente.png',
+      largura: 1910,
+      altura: 2048,
+    },
+    {
+      rotulo: 'Microsoft Copilot',
+      arquivo: 'microsoft-copilot-logo-hd-transparente.png',
+      largura: 2048,
+      altura: 1940,
+    },
   ],
   [
-    { rotulo: 'Azure DevOps', arquivo: 'azure-devops-logo-hd-transparente.png', largura: 24 },
-    { rotulo: 'Jira', arquivo: 'jira-logo-hd-transparente.png', largura: 53 },
+    {
+      rotulo: 'Azure DevOps',
+      arquivo: 'azure-devops-logo-hd-transparente.png',
+      largura: 2048,
+      altura: 1726,
+    },
+    { rotulo: 'Jira', arquivo: 'jira-logo-hd-transparente.png', largura: 2048, altura: 778 },
   ],
 ];
 
@@ -376,16 +456,22 @@ const MARCAS_DE_INTEGRACAO: { rotulo: string; arquivo: string; largura: number }
    largura para 20px de altura) alcança ~34px de largura — abaixo disso ela continua
    do tamanho de um ícone ao lado de palavras como «SonarQube», que é o desequilíbrio
    que a mock não tem.
-   A CONSTANTE EXISTE PARA A TABELA ABAIXO NÃO PRECISAR SER REESCRITA: as `largura`
-   continuam declaradas para a altura de REFERÊNCIA de 20px (foi assim que saíram da
-   proporção intrínseca de cada PNG, todos com 2048px de lado maior), e a largura
-   publicada é derivada. Reescrever as nove à mão seria nove chances de achatar uma
-   marca de terceiro, que é o defeito que `width`/`height` existem para evitar com
-   `images: { unoptimized: true }` (SIS-154). */
+   ⚠️ 16/10 — A ALTURA DE 36px CONTINUA SENDO A PUBLICADA, e quem a aplica é o `h-9`
+   da classe. O que mudou é a RÉGUA de onde sai a largura: era a altura de referência
+   de 20px com a largura digitada na tabela, e agora é a proporção intrínseca medida
+   de cada arte (o porquê está no docblock dela, acima — é o que silencia o aviso de
+   «width or height modified» do `next/image` sem puxar candidato de 3840px).
+   `ALTURA_LOGO_REFERENCIA` foi comentada por ter perdido o consumidor: ativa e sem
+   uso, quebraria o lint por variável não utilizada.
+const ALTURA_LOGO_REFERENCIA = 20; */
 const ALTURA_LOGO_PILULA = 36;
-const ALTURA_LOGO_REFERENCIA = 20;
-const larguraDaPilula = (larguraEm20: number) =>
-  Math.round((larguraEm20 * ALTURA_LOGO_PILULA) / ALTURA_LOGO_REFERENCIA);
+/* O par DECLARADO no `<Image>`: a arte na altura 2× (72px), derivada da medida
+   intrínseca. Os dois lados diferem do renderizado, que é o que cessa o aviso, e a
+   largura do `srcset` fica na faixa da caixa em vez da do arquivo. */
+const parDeclarado = (largura: number, altura: number) => ({
+  width: Math.round((largura * ALTURA_LOGO_PILULA * 2) / altura),
+  height: ALTURA_LOGO_PILULA * 2,
+});
 
 /* ── SIS-220 · item 5 — AS DUAS CÁPSULAS DE SEÇÃO ──────────────────────────────
    Dimensões MEDIDAS nos arquivos, e não estimadas: é desse par que `CarimboBatida`
@@ -404,7 +490,7 @@ const larguraDaPilula = (larguraEm20: number) =>
    resto é antialiasing da borda) e a de Benefícios é #FFFFFF em 100% deles.
 
    OS ARQUIVOS SAÍRAM DA RAIZ DE `public/` para
-   `public/images/solucoes/luminna/carimbo/`, que é onde a issue os endereça — e é
+   `public/paginas/solucoes-detalhe/luminna/carimbo/`, que é onde a issue os endereça — e é
    melhor lugar: as artes desta rota passam a morar junto das logos dela.
 
    ⚠️ E ELES NÃO ESTAVAM NO DISCO. Os dois caminhos antigos
@@ -419,12 +505,12 @@ const larguraDaPilula = (larguraEm20: number) =>
    bater com a peça fora de quadro — quem rolasse até lá encontraria o carimbo já
    assentado. É a distinção que o próprio componente documenta. */
 const CARIMBO_DESAFIOS = {
-  src: '/images/solucoes/luminna/carimbo/carimbo-desenvolvimento-ticket-outline-0757c7.png',
+  src: '/compartilhado/luminna/carimbo/carimbo-desenvolvimento-ticket-outline-0757c7.png',
   largura: 993,
   altura: 300,
 };
 const CARIMBO_BENEFICIOS = {
-  src: '/images/solucoes/luminna/carimbo/carimbo-beneficios-ticket-outline-ffffff.png',
+  src: '/compartilhado/luminna/carimbo/carimbo-beneficios-ticket-outline-ffffff.png',
   largura: 771,
   altura: 288,
 };
@@ -437,7 +523,7 @@ const CARIMBO_BENEFICIOS = {
    canal alfa real. Sobre o hero escuro o contraste é nativo — a issue manda «não
    inventar versão azul» e não há `filter` nenhum aqui (ver, no `globals.css`, por que
    o hack de recolorir dos Benefícios foi retirado quando a arte branca apareceu).
-   ⚠️ O CAMINHO É A RAIZ DE `images/`, e não `images/solucoes/luminna/carimbo/`, onde
+   ⚠️ O CAMINHO É A RAIZ DE `images/`, e não `compartilhado/luminna/carimbo/`, onde
    moram os outros dois desta rota. É onde a issue endereça o arquivo e é onde ele
    está no disco; não movi para não trocar o caminho que a issue cita. Se a arte for
    arrumada de lugar um dia, o par a mexer é este `src` e o arquivo.
@@ -445,7 +531,7 @@ const CARIMBO_BENEFICIOS = {
    então bater na montagem é exatamente o que se quer. `'viewport'` a deixaria
    esperando um cruzamento que já aconteceu. */
 const CARIMBO_CAPA = {
-  src: '/images/carimbo-luminna-ai-ticket-outline-ffffff.png',
+  src: '/compartilhado/carimbo-luminna-ai-ticket-outline-ffffff.png',
   largura: 780,
   altura: 288,
 };
@@ -460,7 +546,7 @@ const CARIMBO_CAPA = {
    As dimensões são as do `viewBox` do próprio arquivo (2882,24 × 823,85, arredondadas
    para cima): com `unoptimized` elas só reservam a caixa. */
 const LOGO_DO_HUB = {
-  src: '/luminna-logo-branca.svg',
+  src: '/paginas/solucoes-detalhe/luminna-logo-branca.svg',
   largura: 2883,
   altura: 824,
 };
@@ -1021,7 +1107,7 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
               className="luminna-midia luminna-midia--diagrama relative aspect-[5/4] overflow-hidden rounded-3xl border border-[#0079CB]/[18%]"
             >
               <Image
-                src="/images/solucoes/luminna/luminnaprimeirasessao.png"
+                src="/paginas/solucoes-detalhe/luminna/luminnaprimeirasessao.png"
                 alt=""
                 aria-hidden
                 fill
@@ -1321,7 +1407,7 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
           «Luminna AI», métricas sempre à mostra no pé) foi REPROVADO em cima de uma
           tela: «Não passa o pedido novo». O que entra no lugar é
           `EcossistemaLuminna`, construído a partir de `docs/luminnaecosistema.md` e
-          de `public/imagensexemplo/ecossitema.png` — composição bento, filtros que
+          de `public/sem uso/imagensexemplo/ecossitema.png` — composição bento, filtros que
           filtram de verdade, contador e painel de resultados que abre dentro do
           cartão ativo.
           POR QUE COMPONENTE E NÃO MAIS MARCAÇÃO AQUI: a faixa passou a ter ESTADO
@@ -1365,7 +1451,7 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
       )}
 
       {/* ── 5. INTEGRAÇÃO VERSÁTIL — O ARRANJO DA MOCK (SIS-280 item 3) ───────
-          O LAYOUT é o de `public/images/integracao.png`: um HUB redondo escuro no
+          O LAYOUT é o de `public/sem uso/images/integracao.png`: um HUB redondo escuro no
           centro, QUATRO cartões ao redor (dois à esquerda, dois à direita) e curvas
           cianas ligando o hub a cada um, com ponto na ponta. Cada cartão traz o ícone
           grande num disco pálido, o nome da categoria e a fileira de pílulas brancas
@@ -1519,11 +1605,17 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
                             key={marca.arquivo}
                             className="flex h-14 items-center rounded-xl border border-[#001A3D]/10 bg-white px-3.5 shadow-[0_1px_2px_rgba(0,26,61,0.06)]"
                           >
+                            {/* O par declarado é a arte na altura 2×, derivado da medida
+                                intrínseca; o tamanho publicado é o `h-9 w-auto`. Ver a
+                                nota na tabela: é esse par que faz o CSS mudar OS DOIS
+                                lados e silencia o aviso «width or height modified, but
+                                not the other» — que aparecia em seis destas onze
+                                marcas — sem pedir ao otimizador um candidato de
+                                3840px, que é o que o par intrínseco pedia. */}
                             <Image
-                              src={`/images/solucoes/luminna/${marca.arquivo}`}
+                              src={`/paginas/solucoes-detalhe/luminna/${marca.arquivo}`}
                               alt={marca.rotulo}
-                              width={larguraDaPilula(marca.largura)}
-                              height={ALTURA_LOGO_PILULA}
+                              {...parDeclarado(marca.largura, marca.altura)}
                               className="h-9 w-auto"
                             />
                           </li>
@@ -1741,8 +1833,8 @@ export default function LuminnaAiPagina({ page }: { page: AcceleratorPage }) {
               A grade e o anel continuam, e ficam DENTRO do envelope: eles são a
               assinatura da faixa, e o véu passa por cima do vídeo, não deles. */}
           <HeroVideoBackdrop
-            src="/videos/jornada.mp4"
-            poster="/videos/jornada-poster.webp"
+            src="/compartilhado/videos/jornada.mp4"
+            poster="/paginas/solucoes-detalhe/videos/jornada-poster.webp"
             className="hero-backdrop--luminna-fecho"
           >
             <div aria-hidden className="grade-tecnica luminna-grade" />
